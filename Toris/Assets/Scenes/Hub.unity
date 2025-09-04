@@ -528,7 +528,10 @@ MonoBehaviour:
   moveSpeed: 1
   moveAction: {fileID: -608311474596187084, guid: a6ab2d197500253419a2a5147dae2391, type: 3}
   animView: {fileID: 1724215954}
-  fireAction: {fileID: 0}
+  fireAction: {fileID: -3522054155507047250, guid: a6ab2d197500253419a2a5147dae2391, type: 3}
+  lockMovementWhileShooting: 1
+  shootLockDuration: 0.2
+  moveWhileShootingMult: 0.4
 --- !u!1 &1245250011
 GameObject:
   m_ObjectHideFlags: 0

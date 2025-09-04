@@ -7,7 +7,6 @@ public class PlayerAnimationView : MonoBehaviour
 
     Vector2 lastDir = Vector2.down;
     float busyUntil = 0f;                      // while playing Shoot/Hurt
-
     string DirPrefix(Vector2 v)
     {
         if (Mathf.Abs(v.x) > Mathf.Abs(v.y)) return "S";
@@ -29,9 +28,22 @@ public class PlayerAnimationView : MonoBehaviour
         animator.Play($"{dir}_{(moving ? "Walk" : "Idle")}");
     }
 
-    public void PlayShoot(float hold = 0.12f)  { PlayOneShot("Shoot", hold); }
-    public void PlayHurt(float hold = 0.18f)   { PlayOneShot("Hurt",  hold); }
-    public void PlayDeath()                    { animator.CrossFade($"{DirPrefix(lastDir)}_Death", 0.05f); busyUntil = float.MaxValue; }
+    float ClipLen(string stateName)
+    {
+        var rc = animator.runtimeAnimatorController;
+        foreach (var c in rc.animationClips)
+            if (c && c.name == stateName) return c.length;
+        return 0.18f; // fallback
+    }
+
+    public void PlayShoot(float hold = -1f)
+    {
+        string state = $"{DirPrefix(lastDir)}_Shoot";
+        animator.CrossFade(state, 0.05f);
+        busyUntil = Time.time + (hold > 0f ? hold : ClipLen(state));
+    }
+    public void PlayHurt(float hold = 0.18f) { PlayOneShot("Hurt", hold); }
+    public void PlayDeath() { animator.CrossFade($"{DirPrefix(lastDir)}_Death", 0.05f); busyUntil = float.MaxValue; }
 
     void PlayOneShot(string action, float hold)
     {

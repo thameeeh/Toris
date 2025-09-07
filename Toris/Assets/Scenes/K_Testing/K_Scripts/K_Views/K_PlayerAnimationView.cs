@@ -51,4 +51,13 @@ public class PlayerAnimationView : MonoBehaviour
         animator.CrossFade($"{dir}_{action}", 0.05f);
         busyUntil = Time.time + hold;          // return control after brief hold
     }
+
+    public void SetFacing(Vector2 dir)
+    {
+        if (dir.sqrMagnitude <= 0.0001f) return;
+        lastDir = dir.normalized;
+
+        if (Mathf.Abs(lastDir.x) > Mathf.Abs(lastDir.y))
+            sr.flipX = lastDir.x > 0;
+    }
 }

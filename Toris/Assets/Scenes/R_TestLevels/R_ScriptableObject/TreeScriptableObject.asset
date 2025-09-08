@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 191fd8bd398392546b80dc0d59990ad1, type: 3}
   m_Name: TreeScriptableObject
   m_EditorClassIdentifier: Assembly-CSharp::TreeScriptableObject
-  prefabName: Madinis
-  numberOfPrefabsToCreate: 4
-  spawnPoints:
-  - {x: 10, y: 0, z: 0}
-  - {x: 20, y: 0, z: 0}
-  - {x: 15, y: 0, z: 0}
-  - {x: 0, y: 10, z: 0}
+  prefabName: Medis
+  pointsList:
+  - {x: 5, y: 10, z: 0}
+  - {x: 10, y: 10, z: 0}
+  - {x: 15, y: 10, z: 0}
+  - {x: 20, y: 10, z: 0}
+  - {x: 25, y: 10, z: 0}
+  - {x: 30, y: 10, z: 0}
+  - {x: 35, y: 10, z: 0}

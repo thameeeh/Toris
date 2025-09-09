@@ -7,6 +7,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public bool IsFacingRight { get; set; } = true;
     [field: SerializeField] public Rigidbody2D rb { get; set; }
 
+    [SerializeField] private Transform playerTransform;
+    public Transform PlayerTransform => playerTransform;
+
     public bool IsAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
 
@@ -18,12 +21,24 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public EnemyAttackState AttackState { get; set; }
     #endregion
 
-    #region Idle Variables
-    public float RandomMovementRange = 5f;
-    public float RandomMovementSpeed = 1f;
+    #region ScriptableObject Variables
+
+    [SerializeField] private EnemyIdleSOBase EnemyIdleBase;
+    [SerializeField] private EnemyChaseSOBase EnemyChaseBase;
+    [SerializeField] private EnemyAttackSOBase EnemyAttackBase;
+
+    public EnemyIdleSOBase EnemyIdleBaseInstance { get; set; }
+    public EnemyChaseSOBase EnemyChaseBaseInstance { get; set; }
+    public EnemyAttackSOBase EnemyAttackBaseInstance { get; set; }
+
     #endregion
+
     private void Awake()
     {
+        EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
+        EnemyChaseBaseInstance = Instantiate(EnemyChaseBase);
+        EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
+
         StateMachine = new EnemyStateMachine();
 
         IdleState = new EnemyIdleState(this, StateMachine);
@@ -36,6 +51,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         CurrentHealth = MaxHealth;
 
         rb.GetComponent<Rigidbody2D>();
+
+        if (!playerTransform)
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        EnemyIdleBaseInstance.Initialize(gameObject, this, playerTransform);
+        EnemyChaseBaseInstance.Initialize(gameObject, this, playerTransform);
+        EnemyAttackBaseInstance.Initialize(gameObject, this, playerTransform);
         
         StateMachine.Initialize(IdleState);
     }
@@ -113,7 +135,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         StateMachine.CurrentEnemyState.AnimationTriggerEvent(triggerType);
     }
 
-    public enum AnimationTriggerType
+    public enum AnimationTriggerType //test
     {
         EnemyDamaged,
         PlayFootstepSound

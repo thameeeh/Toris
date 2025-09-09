@@ -12,9 +12,10 @@ public class K_PlayerController : MonoBehaviour
     [SerializeField] bool lockMovementWhileShooting = true;
     [SerializeField] float shootLockDuration = 0.20f;
     [SerializeField] float moveWhileShootingMult = 0.4f;
-    [SerializeField] K_Arrow arrowPrefab;   // ← assign in Inspector
-    [SerializeField] Transform firePoint;    // optional
+    [SerializeField] K_Arrow arrowPrefab;
+    [SerializeField] Transform firePoint;
     [SerializeField] float fireCooldown = 0.12f;
+
     float nextFireTime;
     float shootLockUntil;
 

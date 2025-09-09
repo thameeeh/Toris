@@ -894,8 +894,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::K_EnemyRandomMovement
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 1082252256}
-  RandomMovementRange: 1
-  RandomMovementSpeed: 0.2
+  playerTransform: {fileID: 0}
+  EnemyIdleBase: {fileID: 11400000, guid: 35f6ac1c72cbf8c4481b02e323f7c3ad, type: 2}
+  EnemyChaseBase: {fileID: 11400000, guid: 77ea470add6fc284d82f98a9c16c8aea, type: 2}
+  EnemyAttackBase: {fileID: 11400000, guid: 56612c8607d80d743ba2227f35dd295e, type: 2}
 --- !u!95 &1082252255
 Animator:
   serializedVersion: 7
@@ -1728,7 +1730,7 @@ Transform:
   m_GameObject: {fileID: 3989888794051850133}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.999, y: -0.469, z: 0}
   m_LocalScale: {x: 0.044221535, y: 0.044221535, z: 0.044221535}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1792,8 +1794,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 3989888794051850136}
-  RandomMovementRange: 1
-  RandomMovementSpeed: 0.2
+  playerTransform: {fileID: 0}
+  EnemyIdleBase: {fileID: 11400000, guid: 35f6ac1c72cbf8c4481b02e323f7c3ad, type: 2}
+  EnemyChaseBase: {fileID: 11400000, guid: 77ea470add6fc284d82f98a9c16c8aea, type: 2}
+  EnemyAttackBase: {fileID: 11400000, guid: 56612c8607d80d743ba2227f35dd295e, type: 2}
 --- !u!50 &3989888794051850136
 Rigidbody2D:
   serializedVersion: 5

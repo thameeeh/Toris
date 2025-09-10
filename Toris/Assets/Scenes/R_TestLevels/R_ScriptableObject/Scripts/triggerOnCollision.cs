@@ -4,7 +4,6 @@ public class triggerOnCollision : MonoBehaviour
 {
 
     public GameObject rock;
-    public GameObject promtText;
     bool isRockInstantiated = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,16 +20,11 @@ public class triggerOnCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Y SOAB I'm In");
+        Debug.Log("I'm On");
         if (!isRockInstantiated)
         {
             Instantiate(rock, new(12, 2, 10), Quaternion.identity);
-            isRockInstantiated = true;
+            isRockInstantiated=true;
         }
-        promtText.SetActive(true);
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        promtText.SetActive(false);
     }
 }

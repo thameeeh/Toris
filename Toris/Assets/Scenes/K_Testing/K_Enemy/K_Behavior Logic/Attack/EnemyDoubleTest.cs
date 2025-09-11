@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Attack-Straight-Single Projectile", menuName = "Enemy Logic/Attack Logic/Straight Single Projectile")]
-public class EnemyAttackSingleStraightProjectile : EnemyAttackSOBase
+[CreateAssetMenu(fileName = "Attack-Straight-Single Projectile", menuName = "Enemy Logic/Attack Logic/Double Test")]
+public class EnemyDoubleTest : EnemyAttackSOBase
 {
     [SerializeField] private Rigidbody2D BulletPrefab;
 
@@ -38,11 +38,22 @@ public class EnemyAttackSingleStraightProjectile : EnemyAttackSOBase
             _timer = 0f;
 
             Vector2 dir = (playerTransform.position - enemy.transform.position).normalized;
+            Vector2 sideBullet = new Vector2(-dir.y, dir.x) * 0.05f;
 
-            Rigidbody2D bullet = GameObject.Instantiate(BulletPrefab, enemy.transform.position, Quaternion.identity);
-            bullet.linearVelocity = dir * _bulletSpeed;
+            // Left bullet
+            Rigidbody2D bullet1 = Instantiate(BulletPrefab,
+                enemy.transform.position + (Vector3)sideBullet,
+                Quaternion.identity);
+            bullet1.linearVelocity = dir * _bulletSpeed;
 
-            Destroy(bullet.gameObject, 3f);
+            // Right bullet
+            Rigidbody2D bullet2 = Instantiate(BulletPrefab,
+                enemy.transform.position - (Vector3)sideBullet,
+                Quaternion.identity);
+            bullet2.linearVelocity = dir * _bulletSpeed;
+
+            Destroy(bullet1.gameObject, 5f);
+            Destroy(bullet2.gameObject, 5f);
         }
 
         if (!enemy.IsWithinStrikingDistance)

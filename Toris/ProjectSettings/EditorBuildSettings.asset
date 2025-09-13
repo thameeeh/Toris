@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/K_Testing/K_TestHub.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/R_Tilemaps/Village.unity
+    guid: a6b9f5f3c67e04d4085042d1ae7b9aae
   - enabled: 1
-    path: Assets/Scenes/Level.unity
-    guid: 2d3e89f2f9fb3e949abe9e6b8772f6e3
+    path: Assets/Scenes/R_Tilemaps/Level1.unity
+    guid: 6958e05e8c0cd5642b084d02a7552fe6
   - enabled: 1
-    path: Assets/Scenes/Level2.unity
-    guid: 4e1eaea957f18904da947acf1136efbc
+    path: Assets/Scenes/R_Tilemaps/Level2.unity
+    guid: 9fcb402e52172aa438bd4f3a0fec18d1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

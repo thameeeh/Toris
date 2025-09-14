@@ -33,6 +33,11 @@ public class EnemyIdleRandomWander : EnemyIdleSOBase
 
         enemy.MoveEnemy(_direction * RandomMovementSpeed);
 
+        if (enemy.IsAggroed)
+        {
+            enemy.StateMachine.ChangeState(enemy.ChaseState);
+        }
+
         if ((enemy.transform.position - _targetPos).sqrMagnitude < 0.01f)
         {
             _targetPos = GetRandomPointInCircle();

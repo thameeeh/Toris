@@ -10,8 +10,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [SerializeField] private Transform playerTransform;
     public Transform PlayerTransform => playerTransform;
 
+    #region Aggro Check Variables
     public bool IsAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
+
+    #endregion
 
     #region State Machine Variables
 
@@ -19,6 +22,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public EnemyIdleState IdleState { get; set; }
     public EnemyChaseState ChaseState { get; set; }
     public EnemyAttackState AttackState { get; set; }
+
     #endregion
 
     #region ScriptableObject Variables

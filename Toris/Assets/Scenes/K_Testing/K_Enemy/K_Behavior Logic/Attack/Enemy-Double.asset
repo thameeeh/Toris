@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55ee32176bce062498a6f782dc1255ca, type: 3}
   m_Name: Enemy-Double
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDoubleTest
-  BulletPrefab: {fileID: 0}
-  _bulletSpeed: 10
+  BulletPrefab: {fileID: 5265752545143945008, guid: d6efb2d9b02ec3e4ca745485dc520ac3, type: 3}
+  _bulletSpeed: 1
   _timeBetweenShots: 2
   _timeTillExit: 3

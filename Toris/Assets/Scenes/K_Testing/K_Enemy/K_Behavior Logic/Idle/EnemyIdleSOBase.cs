@@ -25,10 +25,7 @@ public class EnemyIdleSOBase : ScriptableObject
     }
     public virtual void DoFrameUpdateLogic()
     {
-        if (enemy.IsAggroed)
-        {
-            enemy.StateMachine.ChangeState(enemy.ChaseState);
-        }
+
     }
     public virtual void DoPhysicsLogic()
     {

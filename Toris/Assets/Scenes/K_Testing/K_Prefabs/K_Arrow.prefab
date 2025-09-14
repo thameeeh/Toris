@@ -116,9 +116,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &5006878120370855935
 MonoBehaviour:
@@ -129,14 +129,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8790292985146486153}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83da0c3eed495dc49905711dc9b2f38d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f9d5d0321527e045ad49e48437d8c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::K_Arrow
-  speed: 12
-  lifeTime: 3
-  hitLayers:
-    serializedVersion: 2
-    m_Bits: 0
+  rotateOffsetDegrees: 90
+  destroyOnHit: 1
 --- !u!61 &5789916726286659116
 BoxCollider2D:
   m_ObjectHideFlags: 0

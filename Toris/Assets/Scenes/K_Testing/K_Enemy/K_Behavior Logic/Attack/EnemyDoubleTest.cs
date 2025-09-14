@@ -40,16 +40,12 @@ public class EnemyDoubleTest : EnemyAttackSOBase
             Vector2 dir = (playerTransform.position - enemy.transform.position).normalized;
             Vector2 sideBullet = new Vector2(-dir.y, dir.x) * 0.05f;
 
-            // Left bullet
-            Rigidbody2D bullet1 = Instantiate(BulletPrefab,
-                enemy.transform.position + (Vector3)sideBullet,
-                Quaternion.identity);
+            // first bullet
+            Rigidbody2D bullet1 = Instantiate(BulletPrefab, enemy.transform.position + (Vector3)sideBullet, Quaternion.identity);
             bullet1.linearVelocity = dir * _bulletSpeed;
 
-            // Right bullet
-            Rigidbody2D bullet2 = Instantiate(BulletPrefab,
-                enemy.transform.position - (Vector3)sideBullet,
-                Quaternion.identity);
+            // second bullet
+            Rigidbody2D bullet2 = Instantiate(BulletPrefab, enemy.transform.position - (Vector3)sideBullet, Quaternion.identity);
             bullet2.linearVelocity = dir * _bulletSpeed;
 
             Destroy(bullet1.gameObject, 5f);
@@ -84,5 +80,8 @@ public class EnemyDoubleTest : EnemyAttackSOBase
     public override void ResetValues()
     {
         base.ResetValues();
+
+        _timer = 0f;
+        _exitTimer = 0f;
     }
 }

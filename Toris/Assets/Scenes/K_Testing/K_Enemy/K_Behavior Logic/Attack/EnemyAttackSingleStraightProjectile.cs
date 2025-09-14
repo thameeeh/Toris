@@ -54,7 +54,7 @@ public class EnemyAttackSingleStraightProjectile : EnemyAttackSOBase
 
         else
         {
-            _exitTimer -= 0f;
+            _exitTimer = 0f;
         }
 
         _timer += Time.deltaTime;
@@ -73,5 +73,8 @@ public class EnemyAttackSingleStraightProjectile : EnemyAttackSOBase
     public override void ResetValues()
     {
         base.ResetValues();
+
+        _timer = 0f;
+        _exitTimer = 0f;
     }
 }

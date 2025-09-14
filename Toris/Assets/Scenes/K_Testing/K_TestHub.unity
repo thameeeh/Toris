@@ -564,9 +564,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 667172999}
-  - component: {fileID: 667173003}
   - component: {fileID: 667173002}
   - component: {fileID: 667173001}
+  - component: {fileID: 667173005}
+  - component: {fileID: 667173004}
+  - component: {fileID: 667173003}
+  - component: {fileID: 667173006}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -672,19 +675,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 667172998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a964eda72fe796140be0ddb793335fd8, type: 3}
+  m_Script: {fileID: 11500000, guid: f0ea20145b00e1d41a1bbca8746cfe98, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::K_PlayerController
-  moveSpeed: 1
-  moveAction: {fileID: -608311474596187084, guid: a6ab2d197500253419a2a5147dae2391, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMotor2D
+  rb: {fileID: 667173002}
+  config: {fileID: 11400000, guid: 24f30c4e31e982344b17ed2b3b3f3a49, type: 2}
+--- !u!114 &667173004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667172998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b19e48299728a548a777ac5282630ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
+  moveAction: {fileID: -2178390741145996709, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
+  shootMouseAction: {fileID: 3330035694635810871, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
+--- !u!114 &667173005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667172998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  inputReader: {fileID: 667173004}
+  motor: {fileID: 667173003}
   animView: {fileID: 1724215954}
-  fireAction: {fileID: -3522054155507047250, guid: a6ab2d197500253419a2a5147dae2391, type: 3}
-  lockMovementWhileShooting: 1
-  shootLockDuration: 0.2
-  moveWhileShootingMult: 0.4
-  arrowPrefab: {fileID: 5006878120370855935, guid: e0686c3027329514b82f730c234c65d5, type: 3}
-  firePoint: {fileID: 667172999}
-  fireCooldown: 0.12
+--- !u!114 &667173006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667172998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a3f9391a1f4c37488d25e9199994fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBowController
+  input: {fileID: 667173004}
+  anim: {fileID: 1724215954}
+  bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
+  muzzle: {fileID: 1724215951}
+  motor: {fileID: 667173003}
+  ownerCollider: {fileID: 667173001}
 --- !u!1 &813369461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,6 +1244,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationView
   animator: {fileID: 1724215952}
   sr: {fileID: 1724215953}
+  shootStateSuffix: Shoot
+  lockAtNormalized: 0.48
+  crossFade: 0.05
 --- !u!1 &1825870974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1797,7 +1842,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   EnemyIdleBase: {fileID: 11400000, guid: 35f6ac1c72cbf8c4481b02e323f7c3ad, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 77ea470add6fc284d82f98a9c16c8aea, type: 2}
-  EnemyAttackBase: {fileID: 11400000, guid: 56612c8607d80d743ba2227f35dd295e, type: 2}
+  EnemyAttackBase: {fileID: 11400000, guid: 3e447a25bc5d1514bb9688558b492f42, type: 2}
 --- !u!50 &3989888794051850136
 Rigidbody2D:
   serializedVersion: 5

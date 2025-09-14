@@ -14,7 +14,7 @@ public class EnemyStrikingDistanceCheck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger Strike entered by: " + collision.name);
+        Debug.Log("Striking Distance entered by: " + collision.name);
         if (collision.gameObject == PlayerTarget)
         {
             _enemy.SetStrikingDistanceBool(true);

@@ -25,10 +25,7 @@ public class EnemyChaseSOBase : ScriptableObject
     }
     public virtual void DoFrameUpdateLogic()
     {
-        if (enemy.IsWithinStrikingDistance)
-        {
-            enemy.StateMachine.ChangeState(enemy.AttackState);
-        }
+
     }
     public virtual void DoPhysicsLogic()
     {

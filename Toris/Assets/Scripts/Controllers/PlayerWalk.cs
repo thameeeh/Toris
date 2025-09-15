@@ -1,42 +1,64 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Scripting.APIUpdating;
+
 
 public class PlayerWalk : MonoBehaviour
 {
-    public InputActionAsset InputActions;
+    [SerializeField] private float speed = 5f;
 
-    private InputAction m_moveAction;
-    private Vector2 m_moveAmt;
-    private Rigidbody2D m_rigidbody;
-
-    public float speed = 5f;
+    private InputSystem_Actions _playerInputActions;
+    private Vector2 _input; 
+    private Rigidbody2D _rigidbody2D;
 
     private void OnEnable()
     {
-        InputActions.FindActionMap("Player").Enable();
+        _playerInputActions.Player.Enable();
     }
 
     private void OnDisable()
     {
-        InputActions.FindActionMap("Player").Disable();
+        _playerInputActions.Player.Disable();
     }
 
     private void Awake()
     {
-        // Correct way to find the action
-        m_moveAction = InputActions.FindActionMap("Player").FindAction("Move");
-        m_rigidbody = GetComponent<Rigidbody2D>();
+        _playerInputActions = new InputSystem_Actions();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        m_moveAmt = m_moveAction.ReadValue<Vector2>();
+        GatherInput();
+        Move();
     }
 
-    private void FixedUpdate()
+    private void Move()
     {
-        m_rigidbody.MovePosition(
-            m_rigidbody.position + m_moveAmt * speed * Time.fixedDeltaTime
-        );
+        Vector2 moveDirection = _input;
+        moveDirection = ConvertIntoIsometric(moveDirection) * speed * Time.deltaTime;
+        
+        Debug.Log(moveDirection / Time.deltaTime);
+
+        _rigidbody2D.MovePosition(_rigidbody2D.position + moveDirection);
+    }
+
+    private Vector2 ConvertIntoIsometric(Vector2 v2) 
+    {
+        /*
+         * multiply Moving Vector by [  1,  -1]
+         *                           [0.5, 0.5] 
+         * to convert it into isometric space, basicaly we are squishing the y axis by half
+        */
+
+        Vector2 result = new (v2.x * Mathf.Cos(0) - v2.y * Mathf.Sin(0),
+                             (v2.x * Mathf.Sin(0) + v2.y * Mathf.Cos(0)) * 0.5f);
+        return result;
+    }
+
+    private void GatherInput() 
+    {
+        _input = _playerInputActions.Player.Move.ReadValue<Vector2>();
     }
 }

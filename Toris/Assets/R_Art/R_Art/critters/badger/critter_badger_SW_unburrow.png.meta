@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: 3003313d860f0f74cb01c4b2ebeee923
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1002632037477586887
+    second: critter_badger_SW_unburrow_0
+  - first:
+      213: -2966106770182809195
+    second: critter_badger_SW_unburrow_1
+  - first:
+      213: 1761971259158373757
+    second: critter_badger_SW_unburrow_2
+  - first:
+      213: -8086660057755743884
+    second: critter_badger_SW_unburrow_3
+  - first:
+      213: 7374908941681161244
+    second: critter_badger_SW_unburrow_4
+  - first:
+      213: 8946571341844218566
+    second: critter_badger_SW_unburrow_5
+  - first:
+      213: 1293685242366632528
+    second: critter_badger_SW_unburrow_6
+  - first:
+      213: 7900708254618575041
+    second: critter_badger_SW_unburrow_7
+  - first:
+      213: 572195090565684166
+    second: critter_badger_SW_unburrow_8
+  - first:
+      213: 6389482148452040267
+    second: critter_badger_SW_unburrow_9
+  - first:
+      213: -7531796640892375568
+    second: critter_badger_SW_unburrow_10
+  - first:
+      213: 4762513447883999923
+    second: critter_badger_SW_unburrow_11
+  - first:
+      213: 5443727797415898692
+    second: critter_badger_SW_unburrow_12
+  - first:
+      213: -8680496995911917401
+    second: critter_badger_SW_unburrow_13
+  - first:
+      213: 7782360156119725397
+    second: critter_badger_SW_unburrow_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_0
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 7
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 938e8bd597fe512f0800000000000000
+      internalID: -1002632037477586887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 6
+        width: 29
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5995f5d8b9546d6d0800000000000000
+      internalID: -2966106770182809195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_2
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 5
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d75259e5687c37810800000000000000
+      internalID: 1761971259158373757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_3
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 5
+        width: 32
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 479012eb58966cf80800000000000000
+      internalID: -8086660057755743884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_4
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 4
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c14f1c7cb90f85660800000000000000
+      internalID: 7374908941681161244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_5
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 25
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c280540c3b982c70800000000000000
+      internalID: 8946571341844218566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_6
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 2
+        width: 31
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 052ad6aafd714f110800000000000000
+      internalID: 1293685242366632528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_7
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 2
+        width: 31
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c0698e3c44f4ad60800000000000000
+      internalID: 7900708254618575041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_8
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 2
+        width: 31
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cbd36b3768d0f700800000000000000
+      internalID: 572195090565684166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_9
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 2
+        width: 26
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4efe2d39200ca850800000000000000
+      internalID: 6389482148452040267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_10
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 7
+        width: 25
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fd212b3cdea97790800000000000000
+      internalID: -7531796640892375568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_11
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 8
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ba852b7fb8d71240800000000000000
+      internalID: 4762513447883999923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_12
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 8
+        width: 25
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44ee4e2f6910c8b40800000000000000
+      internalID: 5443727797415898692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_13
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 8
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a023d439fda88780800000000000000
+      internalID: -8680496995911917401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_unburrow_14
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 16
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5557bab445f700c60800000000000000
+      internalID: 7782360156119725397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      critter_badger_SW_unburrow_0: -1002632037477586887
+      critter_badger_SW_unburrow_1: -2966106770182809195
+      critter_badger_SW_unburrow_10: -7531796640892375568
+      critter_badger_SW_unburrow_11: 4762513447883999923
+      critter_badger_SW_unburrow_12: 5443727797415898692
+      critter_badger_SW_unburrow_13: -8680496995911917401
+      critter_badger_SW_unburrow_14: 7782360156119725397
+      critter_badger_SW_unburrow_2: 1761971259158373757
+      critter_badger_SW_unburrow_3: -8086660057755743884
+      critter_badger_SW_unburrow_4: 7374908941681161244
+      critter_badger_SW_unburrow_5: 8946571341844218566
+      critter_badger_SW_unburrow_6: 1293685242366632528
+      critter_badger_SW_unburrow_7: 7900708254618575041
+      critter_badger_SW_unburrow_8: 572195090565684166
+      critter_badger_SW_unburrow_9: 6389482148452040267
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

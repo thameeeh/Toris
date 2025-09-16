@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    public enum CollectibleType { Wood, Rock };
+    public enum CollectibleType { Wood, Rock, Iron };
     public int amount = 1;
     public CollectibleType type;
 
@@ -25,6 +25,9 @@ public class Collectible : MonoBehaviour
                     break;
                 case CollectibleType.Rock:
                     Inventory.InventoryInstance.AddRocks(amount);
+                    break;
+                case CollectibleType.Iron:
+                    Inventory.InventoryInstance.AddIron(amount);
                     break;
             }
             Destroy(gameObject);

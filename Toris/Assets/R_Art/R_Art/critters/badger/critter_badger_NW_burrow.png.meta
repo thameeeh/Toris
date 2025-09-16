@@ -1,0 +1,923 @@
+fileFormatVersion: 2
+guid: 79be1bd9e8cb79d4987c958c0941c553
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2101754263172027937
+    second: critter_badger_NW_burrow_0
+  - first:
+      213: -7843355189786011568
+    second: critter_badger_NW_burrow_1
+  - first:
+      213: -5351820113632641549
+    second: critter_badger_NW_burrow_2
+  - first:
+      213: -4920049534079597581
+    second: critter_badger_NW_burrow_3
+  - first:
+      213: 1470245054408453954
+    second: critter_badger_NW_burrow_4
+  - first:
+      213: -3997623484067011339
+    second: critter_badger_NW_burrow_5
+  - first:
+      213: 6585590639924020974
+    second: critter_badger_NW_burrow_6
+  - first:
+      213: 4698429041357231952
+    second: critter_badger_NW_burrow_7
+  - first:
+      213: 4112846327128155333
+    second: critter_badger_NW_burrow_8
+  - first:
+      213: 5413713001199911439
+    second: critter_badger_NW_burrow_9
+  - first:
+      213: -1074205270814961308
+    second: critter_badger_NW_burrow_10
+  - first:
+      213: 1687874906855130106
+    second: critter_badger_NW_burrow_11
+  - first:
+      213: -502849856515961925
+    second: critter_badger_NW_burrow_12
+  - first:
+      213: 8978896655033867497
+    second: critter_badger_NW_burrow_13
+  - first:
+      213: 5033910178811820776
+    second: critter_badger_NW_burrow_14
+  - first:
+      213: 3796267311482138454
+    second: critter_badger_NW_burrow_15
+  - first:
+      213: -2509388044178213604
+    second: critter_badger_NW_burrow_16
+  - first:
+      213: 972497414720719932
+    second: critter_badger_NW_burrow_17
+  - first:
+      213: 2136419752063921562
+    second: critter_badger_NW_burrow_18
+  - first:
+      213: -5439835983983329862
+    second: critter_badger_NW_burrow_19
+  - first:
+      213: 8060849152397189496
+    second: critter_badger_NW_burrow_20
+  - first:
+      213: -3440131711029113294
+    second: critter_badger_NW_burrow_21
+  - first:
+      213: 8618446677053203113
+    second: critter_badger_NW_burrow_22
+  - first:
+      213: -8381252149103332485
+    second: critter_badger_NW_burrow_23
+  - first:
+      213: 3278941097149458209
+    second: critter_badger_NW_burrow_24
+  - first:
+      213: 2663533713206090671
+    second: critter_badger_NW_burrow_25
+  - first:
+      213: 2371190496968977004
+    second: critter_badger_NW_burrow_26
+  - first:
+      213: 3790864210615011912
+    second: critter_badger_NW_burrow_27
+  - first:
+      213: -3908283364288149581
+    second: critter_badger_NW_burrow_28
+  - first:
+      213: 75533836758486351
+    second: critter_badger_NW_burrow_29
+  - first:
+      213: 5872123988243494596
+    second: critter_badger_NW_burrow_30
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_0
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 6
+        width: 27
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1261885ed5eea2d10800000000000000
+      internalID: 2101754263172027937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 6
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0589691c20ec62390800000000000000
+      internalID: -7843355189786011568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_2
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 6
+        width: 32
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fdb22936f38ab5b0800000000000000
+      internalID: -5351820113632641549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_3
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 6
+        width: 38
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f30cdb240978bbb0800000000000000
+      internalID: -4920049534079597581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_4
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 6
+        width: 38
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24f6ac8561c576410800000000000000
+      internalID: 1470245054408453954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_5
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 6
+        width: 29
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f42d6e1f969588c0800000000000000
+      internalID: -3997623484067011339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_6
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 5
+        width: 28
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee60fc88bc7b46b50800000000000000
+      internalID: 6585590639924020974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_7
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 5
+        width: 24
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0571a7cd15c243140800000000000000
+      internalID: 4698429041357231952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_8
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 6
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c46e3891f3c31930800000000000000
+      internalID: 4112846327128155333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_9
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 6
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f024f60aa4f512b40800000000000000
+      internalID: 5413713001199911439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_10
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 6
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 461d8316ff7a711f0800000000000000
+      internalID: -1074205270814961308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_11
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 6
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af34568f8498c6710800000000000000
+      internalID: 1687874906855130106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_12
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 6
+        width: 26
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbb820f38b48509f0800000000000000
+      internalID: -502849856515961925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_13
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 6
+        width: 20
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ec9c3e7fe27b9c70800000000000000
+      internalID: 8978896655033867497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_14
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 5
+        width: 22
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ea3d4703aa0cd540800000000000000
+      internalID: 5033910178811820776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_15
+      rect:
+        serializedVersion: 2
+        x: 637
+        y: 5
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65fe15d910d0fa430800000000000000
+      internalID: 3796267311482138454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_16
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 3
+        width: 26
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c15352f7edcdc2dd0800000000000000
+      internalID: -2509388044178213604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_17
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 15
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3c0a650f310f7d00800000000000000
+      internalID: 972497414720719932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_18
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 6
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9de5ecf17616ad10800000000000000
+      internalID: 2136419752063921562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_19
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 16
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abd394a7ef1d184b0800000000000000
+      internalID: -5439835983983329862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_20
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 9
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 871a4ac8893eddf60800000000000000
+      internalID: 8060849152397189496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_21
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 2
+        width: 28
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23e8d877f623240d0800000000000000
+      internalID: -3440131711029113294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_22
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 3
+        width: 25
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a2e66d179fda9770800000000000000
+      internalID: 8618446677053203113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_23
+      rect:
+        serializedVersion: 2
+        x: 827
+        y: 10
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7377bf739fcfab80800000000000000
+      internalID: -8381252149103332485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_24
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 4
+        width: 30
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 127e5072e83218d20800000000000000
+      internalID: 3278941097149458209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_25
+      rect:
+        serializedVersion: 2
+        x: 889
+        y: 5
+        width: 30
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fab1de6dcc5c6f420800000000000000
+      internalID: 2663533713206090671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_26
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 6
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6a2e92a13928e020800000000000000
+      internalID: 2371190496968977004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_27
+      rect:
+        serializedVersion: 2
+        x: 973
+        y: 5
+        width: 20
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84a03792aeadb9430800000000000000
+      internalID: 3790864210615011912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_28
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 6
+        width: 20
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b74906bcfcf2c9c0800000000000000
+      internalID: -3908283364288149581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_29
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 2
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4d0384df995c0100800000000000000
+      internalID: 75533836758486351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_NW_burrow_30
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 4
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c6bd4cc7a9fd7150800000000000000
+      internalID: 5872123988243494596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      critter_badger_NW_burrow_0: 2101754263172027937
+      critter_badger_NW_burrow_1: -7843355189786011568
+      critter_badger_NW_burrow_10: -1074205270814961308
+      critter_badger_NW_burrow_11: 1687874906855130106
+      critter_badger_NW_burrow_12: -502849856515961925
+      critter_badger_NW_burrow_13: 8978896655033867497
+      critter_badger_NW_burrow_14: 5033910178811820776
+      critter_badger_NW_burrow_15: 3796267311482138454
+      critter_badger_NW_burrow_16: -2509388044178213604
+      critter_badger_NW_burrow_17: 972497414720719932
+      critter_badger_NW_burrow_18: 2136419752063921562
+      critter_badger_NW_burrow_19: -5439835983983329862
+      critter_badger_NW_burrow_2: -5351820113632641549
+      critter_badger_NW_burrow_20: 8060849152397189496
+      critter_badger_NW_burrow_21: -3440131711029113294
+      critter_badger_NW_burrow_22: 8618446677053203113
+      critter_badger_NW_burrow_23: -8381252149103332485
+      critter_badger_NW_burrow_24: 3278941097149458209
+      critter_badger_NW_burrow_25: 2663533713206090671
+      critter_badger_NW_burrow_26: 2371190496968977004
+      critter_badger_NW_burrow_27: 3790864210615011912
+      critter_badger_NW_burrow_28: -3908283364288149581
+      critter_badger_NW_burrow_29: 75533836758486351
+      critter_badger_NW_burrow_3: -4920049534079597581
+      critter_badger_NW_burrow_30: 5872123988243494596
+      critter_badger_NW_burrow_4: 1470245054408453954
+      critter_badger_NW_burrow_5: -3997623484067011339
+      critter_badger_NW_burrow_6: 6585590639924020974
+      critter_badger_NW_burrow_7: 4698429041357231952
+      critter_badger_NW_burrow_8: 4112846327128155333
+      critter_badger_NW_burrow_9: 5413713001199911439
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

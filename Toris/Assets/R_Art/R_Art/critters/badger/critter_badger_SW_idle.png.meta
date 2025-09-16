@@ -1,0 +1,689 @@
+fileFormatVersion: 2
+guid: 3e8368af6b0cd8242bac145cf28e11a6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2795703792968060209
+    second: critter_badger_SW_idle_0
+  - first:
+      213: -6155288928893774410
+    second: critter_badger_SW_idle_1
+  - first:
+      213: -1152841758196877345
+    second: critter_badger_SW_idle_2
+  - first:
+      213: 5392878125154384548
+    second: critter_badger_SW_idle_3
+  - first:
+      213: 5122368390590854558
+    second: critter_badger_SW_idle_4
+  - first:
+      213: 3326824104739804087
+    second: critter_badger_SW_idle_5
+  - first:
+      213: -7831354518105111253
+    second: critter_badger_SW_idle_6
+  - first:
+      213: -6217221034650298419
+    second: critter_badger_SW_idle_7
+  - first:
+      213: 5224362295876403957
+    second: critter_badger_SW_idle_8
+  - first:
+      213: -6394280055320035614
+    second: critter_badger_SW_idle_9
+  - first:
+      213: -6459473224736120393
+    second: critter_badger_SW_idle_10
+  - first:
+      213: -8806843731862610351
+    second: critter_badger_SW_idle_11
+  - first:
+      213: 532664206175797487
+    second: critter_badger_SW_idle_12
+  - first:
+      213: -6630925625072052808
+    second: critter_badger_SW_idle_13
+  - first:
+      213: 4447628168434795757
+    second: critter_badger_SW_idle_14
+  - first:
+      213: -7035531556581033678
+    second: critter_badger_SW_idle_15
+  - first:
+      213: -8427652822843225981
+    second: critter_badger_SW_idle_16
+  - first:
+      213: -3861025705517723724
+    second: critter_badger_SW_idle_17
+  - first:
+      213: -2681583900546364024
+    second: critter_badger_SW_idle_18
+  - first:
+      213: 8738022747385191110
+    second: critter_badger_SW_idle_19
+  - first:
+      213: -2035824704061096624
+    second: critter_badger_SW_idle_20
+  - first:
+      213: -8958759659939345617
+    second: critter_badger_SW_idle_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_0
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 8
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13dc21599c55cc620800000000000000
+      internalID: 2795703792968060209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 8
+        width: 25
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5546fc455049aa0800000000000000
+      internalID: -6155288928893774410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_2
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 8
+        width: 26
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd7307867884000f0800000000000000
+      internalID: -1152841758196877345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_3
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 8
+        width: 25
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4aa3dc6051a57da40800000000000000
+      internalID: 5392878125154384548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_4
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 8
+        width: 25
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e957bd969ee461740800000000000000
+      internalID: 5122368390590854558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_5
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 8
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b31931a5e04b2e20800000000000000
+      internalID: 3326824104739804087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_6
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 8
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b25c13ede80715390800000000000000
+      internalID: -7831354518105111253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_7
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 8
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc71593c86ef7b9a0800000000000000
+      internalID: -6217221034650298419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_8
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 8
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f248a704d9a08840800000000000000
+      internalID: 5224362295876403957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_9
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 8
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eeb8440b24f247a0800000000000000
+      internalID: -6394280055320035614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_10
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 8
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b1e47b63575b56a0800000000000000
+      internalID: -6459473224736120393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_11
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 8
+        width: 23
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15e14f9594ec7c580800000000000000
+      internalID: -8806843731862610351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_12
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 7
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe08ca9f547646700800000000000000
+      internalID: 532664206175797487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_13
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 7
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b59b81b6483af3a0800000000000000
+      internalID: -6630925625072052808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_14
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 7
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de4c390314629bd30800000000000000
+      internalID: 4447628168434795757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_15
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 7
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 239bfeb3355cc5e90800000000000000
+      internalID: -7035531556581033678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_16
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 7
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3888c14c866fa0b80800000000000000
+      internalID: -8427652822843225981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_17
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 7
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bfc6f1d391ea6ac0800000000000000
+      internalID: -3861025705517723724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_18
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 7
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88d078c66a919cad0800000000000000
+      internalID: -2681583900546364024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_19
+      rect:
+        serializedVersion: 2
+        x: 811
+        y: 7
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ca5d298461b34970800000000000000
+      internalID: 8738022747385191110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_20
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 7
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05d3979c73c4fb3e0800000000000000
+      internalID: -2035824704061096624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_badger_SW_idle_21
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 7
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2b47390e871ca380800000000000000
+      internalID: -8958759659939345617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      critter_badger_SW_idle_0: 2795703792968060209
+      critter_badger_SW_idle_1: -6155288928893774410
+      critter_badger_SW_idle_10: -6459473224736120393
+      critter_badger_SW_idle_11: -8806843731862610351
+      critter_badger_SW_idle_12: 532664206175797487
+      critter_badger_SW_idle_13: -6630925625072052808
+      critter_badger_SW_idle_14: 4447628168434795757
+      critter_badger_SW_idle_15: -7035531556581033678
+      critter_badger_SW_idle_16: -8427652822843225981
+      critter_badger_SW_idle_17: -3861025705517723724
+      critter_badger_SW_idle_18: -2681583900546364024
+      critter_badger_SW_idle_19: 8738022747385191110
+      critter_badger_SW_idle_2: -1152841758196877345
+      critter_badger_SW_idle_20: -2035824704061096624
+      critter_badger_SW_idle_21: -8958759659939345617
+      critter_badger_SW_idle_3: 5392878125154384548
+      critter_badger_SW_idle_4: 5122368390590854558
+      critter_badger_SW_idle_5: 3326824104739804087
+      critter_badger_SW_idle_6: -7831354518105111253
+      critter_badger_SW_idle_7: -6217221034650298419
+      critter_badger_SW_idle_8: 5224362295876403957
+      critter_badger_SW_idle_9: -6394280055320035614
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

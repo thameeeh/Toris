@@ -1,0 +1,741 @@
+fileFormatVersion: 2
+guid: d93c0b16e094bf84db353cb044d90a68
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3660584849189703444
+    second: critter_stag_SE_idle_0
+  - first:
+      213: -5511385549787348949
+    second: critter_stag_SE_idle_1
+  - first:
+      213: 8946572160394169530
+    second: critter_stag_SE_idle_2
+  - first:
+      213: 5868381024936891902
+    second: critter_stag_SE_idle_3
+  - first:
+      213: -8852539331638042938
+    second: critter_stag_SE_idle_4
+  - first:
+      213: 5525092982707351188
+    second: critter_stag_SE_idle_5
+  - first:
+      213: 1347079921648919133
+    second: critter_stag_SE_idle_6
+  - first:
+      213: 5978188883658977538
+    second: critter_stag_SE_idle_7
+  - first:
+      213: 8113801000797124911
+    second: critter_stag_SE_idle_8
+  - first:
+      213: -2403351513935423645
+    second: critter_stag_SE_idle_9
+  - first:
+      213: -8704858988403898572
+    second: critter_stag_SE_idle_10
+  - first:
+      213: 387283826662111827
+    second: critter_stag_SE_idle_11
+  - first:
+      213: 678457412907642171
+    second: critter_stag_SE_idle_12
+  - first:
+      213: 6441037676780511919
+    second: critter_stag_SE_idle_13
+  - first:
+      213: -7819890528432276644
+    second: critter_stag_SE_idle_14
+  - first:
+      213: -8739014728040449138
+    second: critter_stag_SE_idle_15
+  - first:
+      213: -650676674185431585
+    second: critter_stag_SE_idle_16
+  - first:
+      213: -3091128968749377567
+    second: critter_stag_SE_idle_17
+  - first:
+      213: -1243700547065848542
+    second: critter_stag_SE_idle_18
+  - first:
+      213: 5880834544071688885
+    second: critter_stag_SE_idle_19
+  - first:
+      213: -1755594308391547417
+    second: critter_stag_SE_idle_20
+  - first:
+      213: -6964364226427653990
+    second: critter_stag_SE_idle_21
+  - first:
+      213: -4716365887643183562
+    second: critter_stag_SE_idle_22
+  - first:
+      213: -1358565310259197570
+    second: critter_stag_SE_idle_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 27
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41f012696820dc230800000000000000
+      internalID: 3660584849189703444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_1
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 0
+        width: 28
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2044b40b00a383b0800000000000000
+      internalID: -5511385549787348949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_2
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 0
+        width: 27
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abc81b99afb982c70800000000000000
+      internalID: 8946572160394169530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_3
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef5910e337da07150800000000000000
+      internalID: 5868381024936891902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_4
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 0
+        width: 28
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ce5a817166752580800000000000000
+      internalID: -8852539331638042938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_5
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 0
+        width: 27
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49e66496bc21dac40800000000000000
+      internalID: 5525092982707351188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_6
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 0
+        width: 27
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d52e1f53d0ac1b210800000000000000
+      internalID: 1347079921648919133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_7
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 201beaaad1bc6f250800000000000000
+      internalID: 5978188883658977538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_8
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f29b8be75030a9070800000000000000
+      internalID: 8113801000797124911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_9
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 0
+        width: 29
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3675b75188495aed0800000000000000
+      internalID: -2403351513935423645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_10
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 0
+        width: 29
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 437c150ded0223780800000000000000
+      internalID: -8704858988403898572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_11
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 1
+        width: 26
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35af273a698ef5500800000000000000
+      internalID: 387283826662111827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_12
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 0
+        width: 26
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3d27932c6d5a6900800000000000000
+      internalID: 678457412907642171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_13
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2e86514a9236950800000000000000
+      internalID: 6441037676780511919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_14
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b3a56fefa2a7390800000000000000
+      internalID: -7819890528432276644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_15
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8bfd38f768c8b680800000000000000
+      internalID: -8739014728040449138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_16
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd57b83230558f6f0800000000000000
+      internalID: -650676674185431585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_17
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 0
+        width: 28
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e716c6949a1a15d0800000000000000
+      internalID: -3091128968749377567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_18
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 0
+        width: 27
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22d5e2d11fc7dbee0800000000000000
+      internalID: -1243700547065848542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_19
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 0
+        width: 27
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b24d3e1cdbec9150800000000000000
+      internalID: 5880834544071688885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_20
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 0
+        width: 27
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7edcf9e2740e2a7e0800000000000000
+      internalID: -1755594308391547417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_21
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 0
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a90775582ab995f90800000000000000
+      internalID: -6964364226427653990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_22
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 0
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 636124ca63a1c8eb0800000000000000
+      internalID: -4716365887643183562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critter_stag_SE_idle_23
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 0
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7905dd5c08652de0800000000000000
+      internalID: -1358565310259197570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      critter_stag_SE_idle_0: 3660584849189703444
+      critter_stag_SE_idle_1: -5511385549787348949
+      critter_stag_SE_idle_10: -8704858988403898572
+      critter_stag_SE_idle_11: 387283826662111827
+      critter_stag_SE_idle_12: 678457412907642171
+      critter_stag_SE_idle_13: 6441037676780511919
+      critter_stag_SE_idle_14: -7819890528432276644
+      critter_stag_SE_idle_15: -8739014728040449138
+      critter_stag_SE_idle_16: -650676674185431585
+      critter_stag_SE_idle_17: -3091128968749377567
+      critter_stag_SE_idle_18: -1243700547065848542
+      critter_stag_SE_idle_19: 5880834544071688885
+      critter_stag_SE_idle_2: 8946572160394169530
+      critter_stag_SE_idle_20: -1755594308391547417
+      critter_stag_SE_idle_21: -6964364226427653990
+      critter_stag_SE_idle_22: -4716365887643183562
+      critter_stag_SE_idle_23: -1358565310259197570
+      critter_stag_SE_idle_3: 5868381024936891902
+      critter_stag_SE_idle_4: -8852539331638042938
+      critter_stag_SE_idle_5: 5525092982707351188
+      critter_stag_SE_idle_6: 1347079921648919133
+      critter_stag_SE_idle_7: 5978188883658977538
+      critter_stag_SE_idle_8: 8113801000797124911
+      critter_stag_SE_idle_9: -2403351513935423645
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

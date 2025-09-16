@@ -1,0 +1,1781 @@
+fileFormatVersion: 2
+guid: 71cc886bed9961346a67f95453438df1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7147488763437284556
+    second: wolf-bite_0
+  - first:
+      213: 2942816883170948976
+    second: wolf-bite_1
+  - first:
+      213: 2396923474212086979
+    second: wolf-bite_2
+  - first:
+      213: -5407421491045114268
+    second: wolf-bite_3
+  - first:
+      213: -2858367299466403079
+    second: wolf-bite_4
+  - first:
+      213: 420950652806947664
+    second: wolf-bite_5
+  - first:
+      213: -2499333513615049234
+    second: wolf-bite_6
+  - first:
+      213: 7087136119036459856
+    second: wolf-bite_7
+  - first:
+      213: -6653563362147734557
+    second: wolf-bite_8
+  - first:
+      213: 5824606907028861644
+    second: wolf-bite_9
+  - first:
+      213: -5162822695439299216
+    second: wolf-bite_10
+  - first:
+      213: -3374217981015317955
+    second: wolf-bite_11
+  - first:
+      213: -2975268095165467498
+    second: wolf-bite_12
+  - first:
+      213: -5981802831649625934
+    second: wolf-bite_13
+  - first:
+      213: -7265109126266409598
+    second: wolf-bite_14
+  - first:
+      213: 4881853263919535425
+    second: wolf-bite_15
+  - first:
+      213: -6923583657367443685
+    second: wolf-bite_16
+  - first:
+      213: -4432997139153315558
+    second: wolf-bite_17
+  - first:
+      213: -2103906753516407149
+    second: wolf-bite_18
+  - first:
+      213: -1738971437626906898
+    second: wolf-bite_19
+  - first:
+      213: 4119832621196888064
+    second: wolf-bite_20
+  - first:
+      213: 3338755747686839775
+    second: wolf-bite_21
+  - first:
+      213: -6447937407644469057
+    second: wolf-bite_22
+  - first:
+      213: -4272838665763545433
+    second: wolf-bite_23
+  - first:
+      213: -8955501666798456038
+    second: wolf-bite_24
+  - first:
+      213: 7382839456053287708
+    second: wolf-bite_25
+  - first:
+      213: 4481694868929460868
+    second: wolf-bite_26
+  - first:
+      213: -7207931182886697730
+    second: wolf-bite_27
+  - first:
+      213: 469588219991254756
+    second: wolf-bite_28
+  - first:
+      213: -7287404571808401760
+    second: wolf-bite_29
+  - first:
+      213: -2419872593370752250
+    second: wolf-bite_30
+  - first:
+      213: -6926872770912484674
+    second: wolf-bite_31
+  - first:
+      213: -5717711442748441049
+    second: wolf-bite_32
+  - first:
+      213: 8616622473142447090
+    second: wolf-bite_33
+  - first:
+      213: -7406085945059677880
+    second: wolf-bite_34
+  - first:
+      213: -1900844653016587052
+    second: wolf-bite_35
+  - first:
+      213: 3795114765717047076
+    second: wolf-bite_36
+  - first:
+      213: -7373767588236537936
+    second: wolf-bite_37
+  - first:
+      213: 1825564079137455040
+    second: wolf-bite_38
+  - first:
+      213: 6156408856365005450
+    second: wolf-bite_39
+  - first:
+      213: -1525893700106722245
+    second: wolf-bite_40
+  - first:
+      213: -4677700326366751674
+    second: wolf-bite_41
+  - first:
+      213: -438747762340184503
+    second: wolf-bite_42
+  - first:
+      213: -4351682758412854413
+    second: wolf-bite_43
+  - first:
+      213: -6308672029968365640
+    second: wolf-bite_44
+  - first:
+      213: -7385126616435978242
+    second: wolf-bite_45
+  - first:
+      213: -5771504500673190896
+    second: wolf-bite_46
+  - first:
+      213: 859698594572368136
+    second: wolf-bite_47
+  - first:
+      213: 353855352925329142
+    second: wolf-bite_48
+  - first:
+      213: 8586927300872790066
+    second: wolf-bite_49
+  - first:
+      213: -2453767756401456687
+    second: wolf-bite_50
+  - first:
+      213: 8804508833388671081
+    second: wolf-bite_51
+  - first:
+      213: -6517307298668776702
+    second: wolf-bite_52
+  - first:
+      213: 1724040979988752369
+    second: wolf-bite_53
+  - first:
+      213: 2397808305407327121
+    second: wolf-bite_54
+  - first:
+      213: 7877421379629502272
+    second: wolf-bite_55
+  - first:
+      213: 4817701821691187301
+    second: wolf-bite_56
+  - first:
+      213: 9010067984355337444
+    second: wolf-bite_57
+  - first:
+      213: 325910035355788185
+    second: wolf-bite_58
+  - first:
+      213: -7213095601371855362
+    second: wolf-bite_59
+  - first:
+      213: 2163608356773091186
+    second: wolf-bite_60
+  - first:
+      213: -2176591422776589069
+    second: wolf-bite_61
+  - first:
+      213: 7345993836579349748
+    second: wolf-bite_62
+  - first:
+      213: 6436234696491195075
+    second: wolf-bite_63
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: wolf-bite_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 208
+        width: 31
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4338933b6d40fcc90800000000000000
+      internalID: -7147488763437284556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_1
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 209
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0773d601d5cf6d820800000000000000
+      internalID: 2942816883170948976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_2
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 209
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c4e43a4335934120800000000000000
+      internalID: 2396923474212086979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_3
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 209
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46e517bbdcaf4f4b0800000000000000
+      internalID: -5407421491045114268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_4
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 209
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f266bdd51a0558d0800000000000000
+      internalID: -2858367299466403079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_5
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 209
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 053e680736487d500800000000000000
+      internalID: 420950652806947664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_6
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 209
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eedfeb15965905dd0800000000000000
+      internalID: -2499333513615049234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_7
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 209
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05b320240c09a5260800000000000000
+      internalID: 7087136119036459856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_8
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 209
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eb61accf5bc9a3a0800000000000000
+      internalID: -6653563362147734557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_9
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 209
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc2fdb13f1925d050800000000000000
+      internalID: 5824606907028861644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_10
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 208
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07d0400cc18f958b0800000000000000
+      internalID: -5162822695439299216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_11
+      rect:
+        serializedVersion: 2
+        x: 718
+        y: 208
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d32a8d6af9e5c21d0800000000000000
+      internalID: -3374217981015317955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_12
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 220
+        width: 12
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 694fb1c5e69b5b6d0800000000000000
+      internalID: -2975268095165467498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_13
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 208
+        width: 31
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b8291f740e5cfca0800000000000000
+      internalID: -5981802831649625934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_14
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 208
+        width: 35
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28d217aedb52d2b90800000000000000
+      internalID: -7265109126266409598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_15
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 210
+        width: 28
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1455189ada3dfb340800000000000000
+      internalID: 4881853263919535425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_16
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 144
+        width: 31
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b17e9e9a85d7aef90800000000000000
+      internalID: -6923583657367443685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_17
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 145
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a199176c694da72c0800000000000000
+      internalID: -4432997139153315558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_18
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 145
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 396fb1464fb6dc2e0800000000000000
+      internalID: -2103906753516407149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_19
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 145
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee6a2b1e0beedd7e0800000000000000
+      internalID: -1738971437626906898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_20
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 145
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 008c180f0f59c2930800000000000000
+      internalID: 4119832621196888064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_21
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 145
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd5faacb9a4a55e20800000000000000
+      internalID: 3338755747686839775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_22
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 145
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8f56327135486a0800000000000000
+      internalID: -6447937407644469057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_23
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 145
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ae1c983fd3d3b4c0800000000000000
+      internalID: -4272838665763545433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_24
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 145
+        width: 32
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a133f0daeaaa7b380800000000000000
+      internalID: -8955501666798456038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_25
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 145
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1b5bcb8e5d157660800000000000000
+      internalID: 7382839456053287708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_26
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 144
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48a3b3efcbd223e30800000000000000
+      internalID: 4481694868929460868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_27
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 144
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef4c39647c848fb90800000000000000
+      internalID: -7207931182886697730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_28
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 144
+        width: 31
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e669438fff448600800000000000000
+      internalID: 469588219991254756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_29
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 156
+        width: 12
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a67dcaf620fdda90800000000000000
+      internalID: -7287404571808401760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_30
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 144
+        width: 35
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60bde6682b2ea6ed0800000000000000
+      internalID: -2419872593370752250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_31
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 146
+        width: 28
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb28f6d3aedcedf90800000000000000
+      internalID: -6926872770912484674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_32
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 78
+        width: 37
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72eface8cbb96a0b0800000000000000
+      internalID: -5717711442748441049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_33
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 78
+        width: 33
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fbad4b8c74649770800000000000000
+      internalID: 8616622473142447090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_34
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 78
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84964b4721c483990800000000000000
+      internalID: -7406085945059677880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_35
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 78
+        width: 32
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d4eeb3fbd7de95e0800000000000000
+      internalID: -1900844653016587052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_36
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 78
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4278764a5c4faa430800000000000000
+      internalID: 3795114765717047076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_37
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 78
+        width: 33
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bf4fd6427d1ba990800000000000000
+      internalID: -7373767588236537936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_38
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 78
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cb73b39bd4b55910800000000000000
+      internalID: 1825564079137455040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_39
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 78
+        width: 30
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8a74bf9c35ff6550800000000000000
+      internalID: 6156408856365005450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_40
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 78
+        width: 33
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b34e128a3cfe2dae0800000000000000
+      internalID: -1525893700106722245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_41
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 79
+        width: 30
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6445e213658751fb0800000000000000
+      internalID: -4677700326366751674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_42
+      rect:
+        serializedVersion: 2
+        x: 655
+        y: 78
+        width: 31
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94e37b71c3149e9f0800000000000000
+      internalID: -438747762340184503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_43
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 78
+        width: 31
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37b1c916697bb93c0800000000000000
+      internalID: -4351682758412854413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_44
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 98
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b70b49a6381378a0800000000000000
+      internalID: -6308672029968365640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_45
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 79
+        width: 31
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eff0d0e6872c28990800000000000000
+      internalID: -7385126616435978242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_46
+      rect:
+        serializedVersion: 2
+        x: 843
+        y: 78
+        width: 35
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0146ec14c3f77efa0800000000000000
+      internalID: -5771504500673190896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_47
+      rect:
+        serializedVersion: 2
+        x: 913
+        y: 77
+        width: 32
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 809736f11534eeb00800000000000000
+      internalID: 859698594572368136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_48
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 14
+        width: 37
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f61cf4919529e400800000000000000
+      internalID: 353855352925329142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_49
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 14
+        width: 33
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23060a872e4ea2770800000000000000
+      internalID: 8586927300872790066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_50
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 14
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d94266e93772fdd0800000000000000
+      internalID: -2453767756401456687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_51
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 14
+        width: 32
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 960bbebb226ef2a70800000000000000
+      internalID: 8804508833388671081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_52
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 14
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20379c2ca8fdd85a0800000000000000
+      internalID: -6517307298668776702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_53
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 14
+        width: 33
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f7227e03260de710800000000000000
+      internalID: 1724040979988752369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_54
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 14
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19bf84b13f9b64120800000000000000
+      internalID: 2397808305407327121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_55
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 14
+        width: 30
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04f42e62209325d60800000000000000
+      internalID: 7877421379629502272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_56
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 14
+        width: 33
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 560d7a3184aebd240800000000000000
+      internalID: 4817701821691187301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_57
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 15
+        width: 30
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e4ae9928113a0d70800000000000000
+      internalID: 9010067984355337444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_58
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 14
+        width: 31
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 993ed1e437dd58400800000000000000
+      internalID: 325910035355788185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_59
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 14
+        width: 31
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef54c4564cfe5eb90800000000000000
+      internalID: -7213095601371855362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_60
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 15
+        width: 31
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 277d682565ea60e10800000000000000
+      internalID: 2163608356773091186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_61
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 34
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f44d3012a13bc1e0800000000000000
+      internalID: -2176591422776589069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_62
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 14
+        width: 35
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f4658f397632f560800000000000000
+      internalID: 7345993836579349748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf-bite_63
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 13
+        width: 32
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cad6671b59125950800000000000000
+      internalID: 6436234696491195075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      wolf-bite_0: -7147488763437284556
+      wolf-bite_1: 2942816883170948976
+      wolf-bite_10: -5162822695439299216
+      wolf-bite_11: -3374217981015317955
+      wolf-bite_12: -2975268095165467498
+      wolf-bite_13: -5981802831649625934
+      wolf-bite_14: -7265109126266409598
+      wolf-bite_15: 4881853263919535425
+      wolf-bite_16: -6923583657367443685
+      wolf-bite_17: -4432997139153315558
+      wolf-bite_18: -2103906753516407149
+      wolf-bite_19: -1738971437626906898
+      wolf-bite_2: 2396923474212086979
+      wolf-bite_20: 4119832621196888064
+      wolf-bite_21: 3338755747686839775
+      wolf-bite_22: -6447937407644469057
+      wolf-bite_23: -4272838665763545433
+      wolf-bite_24: -8955501666798456038
+      wolf-bite_25: 7382839456053287708
+      wolf-bite_26: 4481694868929460868
+      wolf-bite_27: -7207931182886697730
+      wolf-bite_28: 469588219991254756
+      wolf-bite_29: -7287404571808401760
+      wolf-bite_3: -5407421491045114268
+      wolf-bite_30: -2419872593370752250
+      wolf-bite_31: -6926872770912484674
+      wolf-bite_32: -5717711442748441049
+      wolf-bite_33: 8616622473142447090
+      wolf-bite_34: -7406085945059677880
+      wolf-bite_35: -1900844653016587052
+      wolf-bite_36: 3795114765717047076
+      wolf-bite_37: -7373767588236537936
+      wolf-bite_38: 1825564079137455040
+      wolf-bite_39: 6156408856365005450
+      wolf-bite_4: -2858367299466403079
+      wolf-bite_40: -1525893700106722245
+      wolf-bite_41: -4677700326366751674
+      wolf-bite_42: -438747762340184503
+      wolf-bite_43: -4351682758412854413
+      wolf-bite_44: -6308672029968365640
+      wolf-bite_45: -7385126616435978242
+      wolf-bite_46: -5771504500673190896
+      wolf-bite_47: 859698594572368136
+      wolf-bite_48: 353855352925329142
+      wolf-bite_49: 8586927300872790066
+      wolf-bite_5: 420950652806947664
+      wolf-bite_50: -2453767756401456687
+      wolf-bite_51: 8804508833388671081
+      wolf-bite_52: -6517307298668776702
+      wolf-bite_53: 1724040979988752369
+      wolf-bite_54: 2397808305407327121
+      wolf-bite_55: 7877421379629502272
+      wolf-bite_56: 4817701821691187301
+      wolf-bite_57: 9010067984355337444
+      wolf-bite_58: 325910035355788185
+      wolf-bite_59: -7213095601371855362
+      wolf-bite_6: -2499333513615049234
+      wolf-bite_60: 2163608356773091186
+      wolf-bite_61: -2176591422776589069
+      wolf-bite_62: 7345993836579349748
+      wolf-bite_63: 6436234696491195075
+      wolf-bite_7: 7087136119036459856
+      wolf-bite_8: -6653563362147734557
+      wolf-bite_9: 5824606907028861644
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

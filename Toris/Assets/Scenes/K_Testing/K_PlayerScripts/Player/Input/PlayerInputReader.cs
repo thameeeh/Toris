@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerInputReader : MonoBehaviour
 {
     [Header("Actions (drag from .inputactions asset)")]
-    [SerializeField] private InputActionReference moveAction;        // Value/Vector2
-    [SerializeField] private InputActionReference shootMouseAction;  // Button (Mouse Left, etc.)
+    [SerializeField] private InputActionReference moveAction;
+    [SerializeField] private InputActionReference shootMouseAction;
 
     public Vector2 Move { get; private set; }
 
@@ -14,7 +14,7 @@ public class PlayerInputReader : MonoBehaviour
     public event Action OnShootStarted;
     public event Action OnShootReleased;
 
-    // Optional polling helper (e.g., for charge UI)
+    //Optional polling helper
     public bool IsShootHeld =>
         shootMouseAction != null &&
         shootMouseAction.action != null &&

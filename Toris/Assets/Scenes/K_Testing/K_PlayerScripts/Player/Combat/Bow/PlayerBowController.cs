@@ -8,7 +8,7 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private PlayerAnimationView anim;
     [SerializeField] private BowSO bow;
     [SerializeField] private Transform muzzle;
-    [SerializeField] private PlayerMotor2D motor;       // NEW: to lock movement
+    [SerializeField] private PlayerMotor motor;
     [SerializeField] private Collider2D ownerCollider;
 
     private float drawStartTime = -999f;

@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerInputReader inputReader;
-    [SerializeField] private PlayerMotor2D motor;
+    [SerializeField] private PlayerMotor motor;
     [SerializeField] private PlayerAnimationView animView;
 
     void Update()

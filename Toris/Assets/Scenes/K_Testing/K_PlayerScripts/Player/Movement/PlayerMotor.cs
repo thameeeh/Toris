@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMotor2D : MonoBehaviour
+public class PlayerMotor : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerMoveConfig config;
@@ -16,11 +16,7 @@ public class PlayerMotor2D : MonoBehaviour
         _movementLocked = locked;
         if (locked && rb)
         {
-#if UNITY_6000_0_OR_NEWER
             rb.linearVelocity = Vector2.zero;
-#else
-            rb.velocity = Vector2.zero;
-#endif
         }
     }
 
@@ -41,10 +37,6 @@ public class PlayerMotor2D : MonoBehaviour
             dir = new Vector2(dir.x * s - dir.y * s, dir.x * s + dir.y * s);
         }
 
-#if UNITY_6000_0_OR_NEWER
         rb.linearVelocity = dir * config.speed;
-#else
-        rb.velocity = dir * config.speed;
-#endif
     }
 }

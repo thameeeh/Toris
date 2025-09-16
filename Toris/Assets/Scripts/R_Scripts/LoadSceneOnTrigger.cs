@@ -15,7 +15,7 @@ public class LoadSceneOnTrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SceneManager.UnloadSceneAsync("Level2");
+            //SceneManager.UnloadSceneAsync("Level2");
         }
     }
 

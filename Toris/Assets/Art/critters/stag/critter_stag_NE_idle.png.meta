@@ -172,19 +172,19 @@ TextureImporter:
       name: critter_stag_NE_idle_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 27
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c30f522a2731051f0800000000000000
+      spriteID: b9d0cb72831bec243992f990f186665f
       internalID: -1058324529364471748
       vertices: []
       indices: 
@@ -196,17 +196,17 @@ TextureImporter:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 28
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 687ca4764aeb50eb0800000000000000
+      spriteID: aae39a9577d8cd04c811901d06dd7b49
       internalID: -4754184218302822522
       vertices: []
       indices: 
@@ -216,19 +216,19 @@ TextureImporter:
       name: critter_stag_NE_idle_2
       rect:
         serializedVersion: 2
-        x: 65
+        x: 64
         y: 0
-        width: 27
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 359c764f65c3c0dc0800000000000000
+      spriteID: 29ec53cdaa71e3b499328fce2e74871c
       internalID: -3671493252048500397
       vertices: []
       indices: 
@@ -238,19 +238,19 @@ TextureImporter:
       name: critter_stag_NE_idle_3
       rect:
         serializedVersion: 2
-        x: 98
+        x: 96
         y: 0
-        width: 25
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 22d29d925546142d0800000000000000
+      spriteID: 233951aca0e6e1a469fcce75c0d3f5cf
       internalID: -3296243135321395934
       vertices: []
       indices: 
@@ -260,19 +260,19 @@ TextureImporter:
       name: critter_stag_NE_idle_4
       rect:
         serializedVersion: 2
-        x: 130
+        x: 128
         y: 0
-        width: 27
-        height: 37
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c12e53faaaa39b610800000000000000
+      spriteID: 3f6f057b5559bbd4daf4cf13d1bef388
       internalID: 1637404444284281372
       vertices: []
       indices: 
@@ -282,19 +282,19 @@ TextureImporter:
       name: critter_stag_NE_idle_5
       rect:
         serializedVersion: 2
-        x: 162
+        x: 160
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 32fef529bd85e4ec0800000000000000
+      spriteID: f1f2c829877215845919639d7bf9e07a
       internalID: -3580826953636122845
       vertices: []
       indices: 
@@ -304,19 +304,19 @@ TextureImporter:
       name: critter_stag_NE_idle_6
       rect:
         serializedVersion: 2
-        x: 194
+        x: 192
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: fb1eeb76a06520990800000000000000
+      spriteID: 58eb54cca1c97724fb8258466868d6c4
       internalID: -7421274633262931521
       vertices: []
       indices: 
@@ -326,19 +326,19 @@ TextureImporter:
       name: critter_stag_NE_idle_7
       rect:
         serializedVersion: 2
-        x: 226
+        x: 224
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 819885ea0cb214340800000000000000
+      spriteID: 7cdfc74f73462394aa392ea7a9546cb2
       internalID: 4846202780586117400
       vertices: []
       indices: 
@@ -348,19 +348,19 @@ TextureImporter:
       name: critter_stag_NE_idle_8
       rect:
         serializedVersion: 2
-        x: 258
+        x: 256
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4f272138c76394620800000000000000
+      spriteID: d77a75d43a9b2044e827070a95d012d4
       internalID: 2758796155144008436
       vertices: []
       indices: 
@@ -370,19 +370,19 @@ TextureImporter:
       name: critter_stag_NE_idle_9
       rect:
         serializedVersion: 2
-        x: 290
+        x: 288
         y: 0
-        width: 27
-        height: 37
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 59b758590b3e1fbf0800000000000000
+      spriteID: 288ca26e215e7ab4baf101ee683c4d5f
       internalID: -292202153240069227
       vertices: []
       indices: 
@@ -392,19 +392,19 @@ TextureImporter:
       name: critter_stag_NE_idle_10
       rect:
         serializedVersion: 2
-        x: 322
+        x: 320
         y: 0
-        width: 25
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ab67554b1a1b38680800000000000000
+      spriteID: 63c7bb45ef055a2489c208c03ffa4fa9
       internalID: -8753957942604761414
       vertices: []
       indices: 
@@ -414,19 +414,19 @@ TextureImporter:
       name: critter_stag_NE_idle_11
       rect:
         serializedVersion: 2
-        x: 354
+        x: 352
         y: 0
-        width: 24
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3bbe66a2346f56c10800000000000000
+      spriteID: bd20210a16f24bd47a7705b074e11f9d
       internalID: 2046312374044388275
       vertices: []
       indices: 
@@ -436,19 +436,19 @@ TextureImporter:
       name: critter_stag_NE_idle_12
       rect:
         serializedVersion: 2
-        x: 386
+        x: 384
         y: 0
-        width: 24
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 01a73f14e39c80fe0800000000000000
+      spriteID: 2eeaeb98b35a362419ecf75e9b03e7c8
       internalID: -1222506029599458800
       vertices: []
       indices: 
@@ -458,19 +458,19 @@ TextureImporter:
       name: critter_stag_NE_idle_13
       rect:
         serializedVersion: 2
-        x: 418
+        x: 416
         y: 0
-        width: 25
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 7d1a18b31791e1400800000000000000
+      spriteID: d5c5861cd85fb0446afafb86a470aaf4
       internalID: 296702599573381591
       vertices: []
       indices: 
@@ -480,19 +480,19 @@ TextureImporter:
       name: critter_stag_NE_idle_14
       rect:
         serializedVersion: 2
-        x: 449
+        x: 448
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f5f12dd09b40ce400800000000000000
+      spriteID: 9967d003eb27e4f49bf76680e7db0d0e
       internalID: 354663663502761823
       vertices: []
       indices: 
@@ -502,19 +502,19 @@ TextureImporter:
       name: critter_stag_NE_idle_15
       rect:
         serializedVersion: 2
-        x: 481
+        x: 480
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b34ea87f3f0ce0500800000000000000
+      spriteID: bfdd20a5ae6576047899943e61c203dd
       internalID: 364440773926249531
       vertices: []
       indices: 
@@ -524,19 +524,19 @@ TextureImporter:
       name: critter_stag_NE_idle_16
       rect:
         serializedVersion: 2
-        x: 513
+        x: 512
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 72a60724edca6ce90800000000000000
+      spriteID: 165d63fdad1624c42a701f0bee2b4c57
       internalID: -7005722099730847193
       vertices: []
       indices: 
@@ -548,17 +548,17 @@ TextureImporter:
         serializedVersion: 2
         x: 544
         y: 0
-        width: 27
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 72ecf918230ee5f80800000000000000
+      spriteID: bc1a6953249e1ab49a242ad064570f23
       internalID: -8115802970947334617
       vertices: []
       indices: 
@@ -568,19 +568,19 @@ TextureImporter:
       name: critter_stag_NE_idle_18
       rect:
         serializedVersion: 2
-        x: 577
+        x: 576
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 80eaa8457c21fcea0800000000000000
+      spriteID: 43dbedb6fbd838a479a51c06083234cb
       internalID: -5850436743604818424
       vertices: []
       indices: 
@@ -592,17 +592,17 @@ TextureImporter:
         serializedVersion: 2
         x: 608
         y: 0
-        width: 26
-        height: 39
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f91dd314a6969e0e0800000000000000
+      spriteID: 437cd92461e207247b2b3cd260881075
       internalID: -2240143434558090849
       vertices: []
       indices: 
@@ -612,19 +612,19 @@ TextureImporter:
       name: critter_stag_NE_idle_20
       rect:
         serializedVersion: 2
-        x: 641
+        x: 640
         y: 0
-        width: 27
-        height: 38
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c72639ebafa5d3c70800000000000000
+      spriteID: 6263e7244d349224e958ddab66ab76d0
       internalID: 8952411667268067964
       vertices: []
       indices: 
@@ -634,19 +634,19 @@ TextureImporter:
       name: critter_stag_NE_idle_21
       rect:
         serializedVersion: 2
-        x: 673
+        x: 672
         y: 0
-        width: 30
-        height: 32
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: dd6bc5d1400029c20800000000000000
+      spriteID: 64c6bb87119aeb7488d3682779adb915
       internalID: 3211629501941069533
       vertices: []
       indices: 
@@ -656,19 +656,19 @@ TextureImporter:
       name: critter_stag_NE_idle_22
       rect:
         serializedVersion: 2
-        x: 705
+        x: 704
         y: 0
         width: 32
-        height: 24
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c09be4670aefb9d40800000000000000
+      spriteID: 7fd13c163ff2f104db96678b5c8fff99
       internalID: 5592343327443695884
       vertices: []
       indices: 
@@ -678,19 +678,19 @@ TextureImporter:
       name: critter_stag_NE_idle_23
       rect:
         serializedVersion: 2
-        x: 737
+        x: 736
         y: 0
-        width: 28
-        height: 32
+        width: 32
+        height: 41
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2e9e588b828389980800000000000000
+      spriteID: 89d119053cefe0c4681e5b006cf14217
       internalID: -8532007746507773470
       vertices: []
       indices: 
@@ -700,7 +700,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 3ce76b709238f444aa49d4b196523587
     internalID: 0
     vertices: []
     indices: 
@@ -708,7 +708,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":41.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       critter_stag_NE_idle_0: -1058324529364471748
       critter_stag_NE_idle_1: -4754184218302822522

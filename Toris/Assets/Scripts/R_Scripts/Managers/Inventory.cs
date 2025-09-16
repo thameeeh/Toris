@@ -21,6 +21,7 @@ public class Inventory : MonoBehaviour
 
     public int Rocks { get; private set;} 
     public int Wood { get; private set; }
+    public int Iron { get; private set; }
 
     public void AddRocks(int amount)
     {
@@ -31,5 +32,10 @@ public class Inventory : MonoBehaviour
     {
         Wood += amount;
         Debug.Log($"Wood: {Wood}");
+    }
+    public void AddIron(int amount)
+    {
+        Iron += amount;
+        Debug.Log($"Iron: {Iron}");
     }
 }

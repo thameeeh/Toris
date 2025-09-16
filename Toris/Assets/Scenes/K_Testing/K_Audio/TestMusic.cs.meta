@@ -6,7 +6,7 @@ MonoImporter:
   defaultReferences:
   - clipGuitar: {fileID: 8300000, guid: b8773eedbdea8d94db72b3add3988cfd, type: 3}
   - clipOboe: {fileID: 8300000, guid: 26eb39e632e5db841b225fe58bbb1c8e, type: 3}
-  - clipGtr2: {fileID: 8300000, guid: e543b5aabf00273418327f21dca228f3, type: 3}
+  - clipGuitarTwo: {fileID: 8300000, guid: e543b5aabf00273418327f21dca228f3, type: 3}
   - clipPadA: {fileID: 8300000, guid: 645c4f0bc711f2649b31cf25f224daf2, type: 3}
   - clipPadB: {fileID: 8300000, guid: 34d54be354d395841b7e890242c45f4e, type: 3}
   executionOrder: 0

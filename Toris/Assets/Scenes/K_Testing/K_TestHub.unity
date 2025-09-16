@@ -145,7 +145,7 @@ Transform:
   m_GameObject: {fileID: 516675819}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45916, y: -0.31431, z: 0}
+  m_LocalPosition: {x: -0.79, y: 0.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuMusic
   clipGuitar: {fileID: 8300000, guid: b8773eedbdea8d94db72b3add3988cfd, type: 3}
   clipOboe: {fileID: 8300000, guid: 26eb39e632e5db841b225fe58bbb1c8e, type: 3}
-  clipGtr2: {fileID: 8300000, guid: e543b5aabf00273418327f21dca228f3, type: 3}
+  clipGuitarTwo: {fileID: 8300000, guid: e543b5aabf00273418327f21dca228f3, type: 3}
   clipPadA: {fileID: 8300000, guid: 645c4f0bc711f2649b31cf25f224daf2, type: 3}
   clipPadB: {fileID: 8300000, guid: 34d54be354d395841b7e890242c45f4e, type: 3}
   buildPerLoop: 1

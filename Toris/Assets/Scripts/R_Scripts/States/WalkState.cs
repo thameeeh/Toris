@@ -2,27 +2,32 @@ using UnityEngine;
 
 public class WalkState : State
 {
-
     public override void Enter()
     {
-        animator.Play("Walk_N");
-        animator.SetFloat("Speed", 1f);
-        input.speed = 1f;
+        isComplete = false;
+        current = _isSouth;
+
+        //play animation based on direction
+        if (_isSouth) animator.Play("Walk_S");
+        else          animator.Play("Walk_N");
     }
     public override void Do()
     {
-        if(input.isRunning)
+        if (input.IsRunning || input.MovementVector.magnitude == 0)
         {
             isComplete = true;
         }
-        else if (input._input.magnitude == 0)
+
+        //to avoid restarting the animation every frame
+        if (current != _isSouth)
         {
-            isComplete = true;
+            current = _isSouth;
+            if (_isSouth) animator.Play("Walk_S");
+            else          animator.Play("Walk_N");
         }
     }
     public override void FixedDo()
     {
-       
     }
     public override void Exit()
     {

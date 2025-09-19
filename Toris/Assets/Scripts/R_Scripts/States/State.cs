@@ -5,6 +5,8 @@ public abstract class State : MonoBehaviour
     protected Animator animator;
     protected PlayerMovement input;
 
+    protected bool _isSouth = false; //to change animation direction
+    protected bool current = false; //to track current direction and avoid restarting animation every frame
     public bool isComplete { get; protected set; }
 
     protected float startTime;
@@ -22,5 +24,13 @@ public abstract class State : MonoBehaviour
     {
         this.animator = animator;
         this.input = input;
+    }
+    public void AnimationDirection(Vector2 movementVector) 
+    {
+        if (movementVector.y <= 0) _isSouth = true;
+        else                      _isSouth = false;
+
+        if(movementVector.x != 0) //to stay on the same side until x was changed
+            input._spriteRenderer.flipX = movementVector.x < 0;
     }
 }

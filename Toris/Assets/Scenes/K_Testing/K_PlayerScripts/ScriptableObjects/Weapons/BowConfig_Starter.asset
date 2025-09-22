@@ -40,12 +40,12 @@ MonoBehaviour:
     m_RotationOrder: 4
   arrowPrefab: {fileID: 1384475356062311051, guid: e0686c3027329514b82f730c234c65d5, type: 3}
   minArrowSpeed: 2
-  maxArrowSpeed: 5
-  baseDamage: 5
-  maxDamage: 18
-  arrowLifetime: 0.2
-  maxSpreadDegreesAtMin: 14
-  maxSpreadDegreesAtMax: 4
+  maxArrowSpeed: 2
+  baseDamage: 50
+  maxDamage: 50
+  arrowLifetime: 5
+  maxSpreadDegreesAtMin: 0
+  maxSpreadDegreesAtMax: 0
   overHoldExtraSpreadPerSecond: 6
   nockTime: 0.2
   overHoldStartsAt: 1.2

@@ -10,6 +10,11 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private Transform muzzle;
     [SerializeField] private PlayerMotor motor;
     [SerializeField] private Collider2D ownerCollider;
+    [SerializeField] private ProjectilePoolRegistry pool; // NEW: pooled spawns
+
+    [Header("Spawn Fallback")]
+    [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
+    [SerializeField] private float spawnOffsetFromCenter = 0.35f;
 
     private float drawStartTime = -999f;
     private float lastShotTime = -999f;
@@ -31,24 +36,23 @@ public class PlayerBowController : MonoBehaviour
             input.OnShootStarted -= BeginDraw;
             input.OnShootReleased -= ReleaseShot;
         }
-        // Safety: never leave the player locked if this gets disabled
         motor?.SetMovementLocked(false);
         drawing = false;
     }
 
     void BeginDraw()
     {
+        if (bow == null) return;
         if (Time.time - lastShotTime < bow.cooldownAfterShot) return;
 
         drawing = true;
         drawStartTime = Time.time;
         motor?.SetMovementLocked(true);
 
-        // Face mouse immediately
         var aim = GetAimDirection();
-        if (aim.sqrMagnitude > 0.0001f) anim.UpdateShootFacing(aim);
+        if (aim.sqrMagnitude > 0.0001f) anim?.UpdateShootFacing(aim);
 
-        anim.BeginBowHold();
+        anim?.BeginBowHold();
     }
 
     void ReleaseShot()
@@ -60,13 +64,13 @@ public class PlayerBowController : MonoBehaviour
         }
 
         drawing = false;
+        motor?.SetMovementLocked(false);
+
+        if (bow == null) return;
 
         float held = Time.time - drawStartTime;
 
-        // Always unlock movement when the hold ends
-        motor?.SetMovementLocked(false);
-
-        // If released before nock, dry release (no arrow)
+        // Dry release
         if (held < bow.nockTime)
         {
             anim?.ReleaseBowAndFinish();
@@ -85,18 +89,39 @@ public class PlayerBowController : MonoBehaviour
 
     void FireArrow(BowSO.ShotStats stats)
     {
-        if (!bow.arrowPrefab || !muzzle) return;
+        if (bow == null) return;
+        if (bow.arrowPrefab == null) return;
 
         Vector2 dir = GetAimDirection();
         if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
 
+        // Apply random spread
         float spread = Random.Range(-stats.spreadDeg, stats.spreadDeg);
         dir = (Quaternion.Euler(0, 0, spread) * (Vector3)dir).normalized;
 
-        var rb = Instantiate(bow.arrowPrefab, muzzle.position, Quaternion.identity);
+        // Determine spawn position
+        Vector3 spawnPos;
+        if (muzzle != null)
+        {
+            spawnPos = muzzle.position;
+        }
+        else
+        {
+            // Spawn a bit in front of the player along aim
+            spawnPos = transform.position + (Vector3)(dir * spawnOffsetFromCenter);
+        }
 
-        var proj = rb.GetComponent<ArrowProjectile>();
-        if (proj == null) proj = rb.gameObject.AddComponent<ArrowProjectile>();
+        // Need an ArrowProjectile prefab to work with the pool
+        var prefabAP = bow.arrowPrefab.GetComponent<ArrowProjectile>();
+        if (prefabAP == null)
+        {
+            Debug.LogError("BowSO.arrowPrefab must have ArrowProjectile on it.");
+            return;
+        }
+
+        ArrowProjectile proj = pool
+            ? pool.Spawn(prefabAP, spawnPos, Quaternion.identity)
+            : Instantiate(prefabAP, spawnPos, Quaternion.identity);
 
         proj.Initialize(dir, stats.speed, stats.damage, bow.arrowLifetime, ownerCollider);
     }
@@ -104,30 +129,29 @@ public class PlayerBowController : MonoBehaviour
     private Vector2 GetAimDirection()
     {
         var cam = Camera.main;
-        if (!cam || muzzle == null)
-            return Vector2.right;
+        if (!cam) return Vector2.right;
 
-        // Read pointer position from the new Input System (mouse or touch/pen)
+        // New Input System
         Vector2 screen;
         if (Pointer.current != null)
             screen = Pointer.current.position.ReadValue();
         else if (Mouse.current != null)
             screen = Mouse.current.position.ReadValue();
         else
-            return Vector2.right; // no pointer available (e.g., only gamepad)
+            return Vector2.right; // no pointer device
 
-        // Convert to world. For perspective, use the muzzle depth so the ray lands on the same Z.
-        float depth = cam.orthographic
-            ? 0f
-            : Mathf.Abs(cam.WorldToScreenPoint(muzzle.position).z);
+        // Use muzzle (if present) as depth reference; else player position
+        Vector3 depthRef = muzzle ? muzzle.position : transform.position;
+        float depth = cam.orthographic ? 0f : Mathf.Abs(cam.WorldToScreenPoint(depthRef).z);
 
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
-        world.z = muzzle.position.z;
+        world.z = depthRef.z;
 
-        Vector2 dir = ((Vector2)(world - muzzle.position)).normalized;
-        if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
-        return dir;
+        Vector2 origin = muzzle ? (Vector2)muzzle.position : (Vector2)transform.position;
+        Vector2 v = (Vector2)(world - (Vector3)origin);
+        return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
+
     void Update()
     {
         if (drawing && anim != null)

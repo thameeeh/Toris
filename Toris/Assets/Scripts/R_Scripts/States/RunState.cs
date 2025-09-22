@@ -5,7 +5,7 @@ public class RunState : State
     public override void Enter()
     {
         isComplete = false;
-        current = _isSouth;
+        _currentDirection = _isSouth;
 
         //play animation based on direction
         if (_isSouth) animator.Play("Run_S");
@@ -13,15 +13,15 @@ public class RunState : State
     }
     public override void Do()
     {
-        if (!input.IsRunning || input.Speed != 3)
+        if (!input.IsRunning )
         {
             isComplete = true;
         }
 
         //to avoid restarting the animation every frame
-        if (current != _isSouth)
+        if (_currentDirection != _isSouth)
         {
-            current = _isSouth;
+            _currentDirection = _isSouth;
             if (_isSouth) animator.Play("Run_S");
             else          animator.Play("Run_N");
         }

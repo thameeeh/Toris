@@ -68,10 +68,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 moveDirection = MovementVector;
         moveDirection = ConvertIntoIsometric(moveDirection);
-        
-        Debug.Log(moveDirection);
 
-        moveDirection = moveDirection * Speed * Time.deltaTime;
+        moveDirection = Speed * Time.deltaTime * moveDirection;
 
         _rigidbody2D.MovePosition(_rigidbody2D.position + moveDirection);
     }
@@ -91,28 +89,35 @@ public class PlayerMovement : MonoBehaviour
     private void GatherInput() 
     {
         MovementVector = _playerInputActions.Player.Move.ReadValue<Vector2>();
-        if (MovementVector.magnitude == 0) Speed = 0;
-        IsRunning = _playerInputActions.Player.Sprint.IsPressed();
+        if(_playerInputActions.Player.Sprint.IsPressed()) IsRunning = true;
+        if (MovementVector.magnitude == 0)
+        {
+            Speed = 0;
+            IsRunning = false;
+        }
     }
 
     private void SelectState() 
     {
         float magnitude = MovementVector.magnitude;
 
-        if (magnitude == 0)
+        if (magnitude != 0)
         {
-            _state = idleState;
-            Speed = 0;
-        }
-        else if (!IsRunning && magnitude > 0)
-        {
-            _state = walkState;
-            Speed = 1;
+            if (IsRunning)
+            {
+                _state = runState;
+                Speed = 6;
+            }
+            else
+            {
+                _state = walkState;
+                Speed = 1;
+            }            
         }
         else
         {
-            _state = runState;
-            Speed = 6;
+            _state = idleState;
+            Speed = 0;
         }
         _state.Enter();
     }

@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerInputReader inputReader;
-    [SerializeField] private PlayerMotor motor;
-    [SerializeField] private PlayerAnimationView animView;
+    [SerializeField] private PlayerInputReader _inputReader;
+    [SerializeField] private PlayerMotor _motor;
+    [SerializeField] private PlayerAnimationController _animController;
 
     void Update()
     {
-        var move = inputReader ? inputReader.Move : Vector2.zero;
+        var move = _inputReader ? _inputReader.Move : Vector2.zero;
 
-        motor.SetMoveInput(move);
-        if (animView) animView.Tick(move);
+        _motor.SetMoveInput(move);
+        if (_animController) _animController.Tick(move);
     }
 }

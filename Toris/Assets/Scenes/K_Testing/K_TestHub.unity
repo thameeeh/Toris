@@ -564,7 +564,7 @@ Transform:
   m_GameObject: {fileID: 619394800}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.44312, y: 0.17806, z: 0}
+  m_LocalPosition: {x: 0.728, y: 0.221, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -634,7 +634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectilePoolRegistry
   poolsToCreate:
-  - prefab: {fileID: 5006878120370855935, guid: e0686c3027329514b82f730c234c65d5, type: 3}
+  - prefab: {fileID: -9110488972372575258, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
     initialAllocation: 32
     defaultCapacity: 64
     maxPoolSize: 256
@@ -838,9 +838,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  inputReader: {fileID: 667173004}
-  motor: {fileID: 667173003}
-  animView: {fileID: 1724215954}
+  _inputReader: {fileID: 667173004}
+  _motor: {fileID: 667173003}
+  _animController: {fileID: 1724215955}
 --- !u!114 &667173006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -853,13 +853,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3f9391a1f4c37488d25e9199994fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBowController
-  input: {fileID: 667173004}
-  anim: {fileID: 1724215954}
-  bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
-  muzzle: {fileID: 1724215951}
-  motor: {fileID: 667173003}
-  ownerCollider: {fileID: 667173001}
-  pool: {fileID: 646794885}
+  _input: {fileID: 667173004}
+  _animController: {fileID: 1724215955}
+  _bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
+  _muzzle: {fileID: 1724215951}
+  _motor: {fileID: 667173003}
+  _ownerCollider: {fileID: 667173001}
+  _pool: {fileID: 646794885}
   spawnOffsetFromCenter: 0.35
 --- !u!1 &813369461
 GameObject:
@@ -1259,9 +1259,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1724215951}
-  - component: {fileID: 1724215954}
   - component: {fileID: 1724215953}
   - component: {fileID: 1724215952}
+  - component: {fileID: 1724215954}
+  - component: {fileID: 1724215955}
   m_Layer: 0
   m_Name: K_Visual
   m_TagString: Untagged
@@ -1373,14 +1374,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1724215950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca28ec5f9a365644ba956473d31007c9, type: 3}
+  m_Script: {fileID: 11500000, guid: f73daf920877a0c42b867d006122ea96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationView
   animator: {fileID: 1724215952}
-  sr: {fileID: 1724215953}
-  shootStateSuffix: Shoot
-  lockAtNormalized: 0.48
-  crossFade: 0.05
+  sprite: {fileID: 1724215953}
+  character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
+--- !u!114 &1724215955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724215950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1e2c887e736ca4d860cdf440923229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
+  view: {fileID: 1724215954}
+  character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
+  weapon: {fileID: 11400000, guid: ef8138cce2675194c9de1b4d5c8c6dfe, type: 2}
+  resumeEpsilon: 0.02
 --- !u!1 &1825870974
 GameObject:
   m_ObjectHideFlags: 0

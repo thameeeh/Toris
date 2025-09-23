@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class PlayerBowController : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private PlayerInputReader input;
-    [SerializeField] private PlayerAnimationView anim;
-    [SerializeField] private BowSO bow;
-    [SerializeField] private Transform muzzle;
-    [SerializeField] private PlayerMotor motor;
-    [SerializeField] private Collider2D ownerCollider;
-    [SerializeField] private ProjectilePoolRegistry pool; // NEW: pooled spawns
+    [SerializeField] private PlayerInputReader _input;
+    [SerializeField] private PlayerAnimationController _animController;
+    [SerializeField] private BowSO _bow;
+    [SerializeField] private Transform _muzzle;
+    [SerializeField] private PlayerMotor _motor;
+    [SerializeField] private Collider2D _ownerCollider;
+    [SerializeField] private ProjectilePoolRegistry _pool;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
@@ -22,66 +23,66 @@ public class PlayerBowController : MonoBehaviour
 
     void OnEnable()
     {
-        if (input != null)
+        if (_input != null)
         {
-            input.OnShootStarted += BeginDraw;
-            input.OnShootReleased += ReleaseShot;
+            _input.OnShootStarted += BeginDraw;
+            _input.OnShootReleased += ReleaseShot;
         }
     }
 
     void OnDisable()
     {
-        if (input != null)
+        if (_input != null)
         {
-            input.OnShootStarted -= BeginDraw;
-            input.OnShootReleased -= ReleaseShot;
+            _input.OnShootStarted -= BeginDraw;
+            _input.OnShootReleased -= ReleaseShot;
         }
-        motor?.SetMovementLocked(false);
+        _motor?.SetMovementLocked(false);
         drawing = false;
     }
 
     void BeginDraw()
     {
-        if (bow == null) return;
-        if (Time.time - lastShotTime < bow.cooldownAfterShot) return;
+        if (_bow == null) return;
+        if (Time.time - lastShotTime < _bow.cooldownAfterShot) return;
 
         drawing = true;
         drawStartTime = Time.time;
-        motor?.SetMovementLocked(true);
+        _motor?.SetMovementLocked(true);
 
         var aim = GetAimDirection();
-        if (aim.sqrMagnitude > 0.0001f) anim?.UpdateShootFacing(aim);
+        if (aim.sqrMagnitude > 0.0001f) _animController?.UpdateAim(aim);
 
-        anim?.BeginBowHold();
+        _animController?.BeginHold();
     }
 
     void ReleaseShot()
     {
         if (!drawing)
         {
-            motor?.SetMovementLocked(false);
+            _motor?.SetMovementLocked(false);
             return;
         }
 
         drawing = false;
-        motor?.SetMovementLocked(false);
+        _motor?.SetMovementLocked(false);
 
-        if (bow == null) return;
+        if (_bow == null) return;
 
         float held = Time.time - drawStartTime;
 
         // Dry release
-        if (held < bow.nockTime)
+        if (held < _bow.nockTime)
         {
-            anim?.ReleaseBowAndFinish();
+            _animController?.ReleaseHold();
             lastShotTime = Time.time;
             return;
         }
 
-        float overHoldExtra = Mathf.Max(0f, held - bow.overHoldStartsAt);
-        var stats = bow.BuildShotStats(held, overHoldExtra);
+        float overHoldExtra = Mathf.Max(0f, held - _bow.overHoldStartsAt);
+        var stats = _bow.BuildShotStats(held, overHoldExtra);
 
-        anim?.ReleaseBowAndFinish();
+        _animController?.ReleaseHold();
         FireArrow(stats);
 
         lastShotTime = Time.time;
@@ -89,8 +90,8 @@ public class PlayerBowController : MonoBehaviour
 
     void FireArrow(BowSO.ShotStats stats)
     {
-        if (bow == null) return;
-        if (bow.arrowPrefab == null) return;
+        if (_bow == null) return;
+        if (_bow.arrowPrefab == null) return;
 
         Vector2 dir = GetAimDirection();
         if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
@@ -101,9 +102,9 @@ public class PlayerBowController : MonoBehaviour
 
         // Determine spawn position
         Vector3 spawnPos;
-        if (muzzle != null)
+        if (_muzzle != null)
         {
-            spawnPos = muzzle.position;
+            spawnPos = _muzzle.position;
         }
         else
         {
@@ -112,18 +113,18 @@ public class PlayerBowController : MonoBehaviour
         }
 
         // Need an ArrowProjectile prefab to work with the pool
-        var prefabAP = bow.arrowPrefab.GetComponent<ArrowProjectile>();
+        var prefabAP = _bow.arrowPrefab.GetComponent<ArrowProjectile>();
         if (prefabAP == null)
         {
             Debug.LogError("BowSO.arrowPrefab must have ArrowProjectile on it.");
             return;
         }
 
-        ArrowProjectile proj = pool
-            ? pool.Spawn(prefabAP, spawnPos, Quaternion.identity)
+        ArrowProjectile proj = _pool
+            ? _pool.Spawn(prefabAP, spawnPos, Quaternion.identity)
             : Instantiate(prefabAP, spawnPos, Quaternion.identity);
 
-        proj.Initialize(dir, stats.speed, stats.damage, bow.arrowLifetime, ownerCollider);
+        proj.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
     }
 
     private Vector2 GetAimDirection()
@@ -141,24 +142,24 @@ public class PlayerBowController : MonoBehaviour
             return Vector2.right; // no pointer device
 
         // Use muzzle (if present) as depth reference; else player position
-        Vector3 depthRef = muzzle ? muzzle.position : transform.position;
+        Vector3 depthRef = _muzzle ? _muzzle.position : transform.position;
         float depth = cam.orthographic ? 0f : Mathf.Abs(cam.WorldToScreenPoint(depthRef).z);
 
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
         world.z = depthRef.z;
 
-        Vector2 origin = muzzle ? (Vector2)muzzle.position : (Vector2)transform.position;
+        Vector2 origin = _muzzle ? (Vector2)_muzzle.position : (Vector2)transform.position;
         Vector2 v = (Vector2)(world - (Vector3)origin);
         return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
 
     void Update()
     {
-        if (drawing && anim != null)
+        if (drawing && _animController != null)
         {
             Vector2 aim = GetAimDirection();
             if (aim.sqrMagnitude > 0.0001f)
-                anim.UpdateShootFacing(aim);
+                _animController.UpdateAim(aim);
         }
     }
 }

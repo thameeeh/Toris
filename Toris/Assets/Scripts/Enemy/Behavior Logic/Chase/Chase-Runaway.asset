@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bafc3abea424749bcc629be677014d, type: 3}
   m_Name: Chase-Runaway
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRunAway
-  _runawaySpeed: 0.2
+  _runawaySpeed: 2

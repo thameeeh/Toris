@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b083e55d0ff3ff4abeefad18fd962d8, type: 3}
   m_Name: PlayerMoveConfig
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveConfig
-  speed: 1
+  speed: 3
   clampDiagonal: 1
   rotateInput45: 0

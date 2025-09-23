@@ -37,11 +37,7 @@ public class Spawner : MonoBehaviour
             if (animal == null) continue; // destroyed in scene
 
             var behaviour = animal.GetComponent<AnimalBehaviour>();
-            if (behaviour == null)
-            {
-                Debug.Log($"{animal.name} has no AnimalBehaviour attached!");
-                continue;
-            }
+            
             if (behaviour != null && behaviour.IsDead)
             {
                 Vector3 pos = animal.transform.position;

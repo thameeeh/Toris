@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Attack-Straight-Single Projectile
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackSingleStraightProjectile
   BulletPrefab: {fileID: 5265752545143945008, guid: d6efb2d9b02ec3e4ca745485dc520ac3, type: 3}
-  _bulletSpeed: 0.5
-  _timeBetweenShots: 5
-  _timeTillExit: 2
+  _bulletSpeed: 6
+  _timeBetweenShots: 2
+  _timeTillExit: 1

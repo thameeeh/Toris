@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacd8d981486d4d4b8204a3f11a9a5e4, type: 3}
   m_Name: Chase-Direct Chase
   m_EditorClassIdentifier: Assembly-CSharp::EnemyChaseDirectToPlayer
-  _movementSpeed: 0.2
+  _movementSpeed: 2

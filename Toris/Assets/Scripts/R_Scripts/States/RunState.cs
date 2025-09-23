@@ -4,19 +4,26 @@ public class RunState : State
 {
     public override void Enter()
     {
-        animator.Play("Run_S");
-        animator.SetFloat("Speed", 3f);
-        input.speed = 3f;
+        isComplete = false;
+        _currentDirection = _isSouth;
+
+        //play animation based on direction
+        if (_isSouth) animator.Play("Run_S");
+        else          animator.Play("Run_N");
     }
     public override void Do()
     {
-        if (!input.isRunning)
+        if (!input.IsRunning )
         {
             isComplete = true;
         }
-        else if (input._input.magnitude == 0)
+
+        //to avoid restarting the animation every frame
+        if (_currentDirection != _isSouth)
         {
-            isComplete = true;
+            _currentDirection = _isSouth;
+            if (_isSouth) animator.Play("Run_S");
+            else          animator.Play("Run_N");
         }
     }
     public override void FixedDo()

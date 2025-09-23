@@ -4,6 +4,7 @@ using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Scripting.APIUpdating;
+using UnityEngine.Windows;
 
 
 public class PlayerMovement : MonoBehaviour
@@ -14,17 +15,16 @@ public class PlayerMovement : MonoBehaviour
 
     State _state;
 
-    public float speed { get; set; }
+    public float Speed { get; private set; }            //for state logic
+    public bool IsRunning { get; private set; }         //
 
-    public bool isRunning { get; private set; }
+    public Vector2 MovementVector { get; private set; } 
+    private InputSystem_Actions _playerInputActions;    //input system
+    private Rigidbody2D _rigidbody2D;                   //for movement
+    private Animator _animator;                         //for animations
+    public SpriteRenderer _spriteRenderer { get; private set; }             //only used to flip sprite on y axis -> (east || west)
 
-    private InputSystem_Actions _playerInputActions;
-    public Vector2 _input { get; private set; } 
-    private Rigidbody2D _rigidbody2D;
-    [SerializeField]
-    private Animator _animator;
-    private SpriteRenderer _spriteRenderer;
-
+    #region eneabling and disabling input system
     private void OnEnable()
     {
         _playerInputActions.Player.Enable();
@@ -34,13 +34,12 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerInputActions.Player.Disable();
     }
-
+    #endregion
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        if (_animator == null)
-            _animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         idleState.Setup(_animator, this);
@@ -49,35 +48,28 @@ public class PlayerMovement : MonoBehaviour
         _state = idleState;
     }
 
-    private void FixedUpdate()
-    {
-        Move();
-        UpdateAnimator();
-    }
-
-    private void UpdateAnimator()
-    {
-        _spriteRenderer.flipX = _input.x < 0;
-    }
-
     private void Update()
     {
         GatherInput();
+
         if (_state.isComplete)
         {
             SelectState();
         }
-        _state.Do();
+        if(_playerInputActions.Player.Move.IsInProgress()) 
+            _state.AnimationDirection(MovementVector);              //update animation direction only when movement input is pressed
+
+        _state.Do(); //run state logic
+
+        Move();
     }
 
     private void Move()
     {
-        Vector2 moveDirection = _input;
+        Vector2 moveDirection = MovementVector;
         moveDirection = ConvertIntoIsometric(moveDirection);
-        
-        //Debug.Log(moveDirection);
 
-        moveDirection = moveDirection * speed * Time.deltaTime;
+        moveDirection = Speed * Time.deltaTime * moveDirection;
 
         _rigidbody2D.MovePosition(_rigidbody2D.position + moveDirection);
     }
@@ -96,25 +88,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void GatherInput() 
     {
-        _input = _playerInputActions.Player.Move.ReadValue<Vector2>();
-        isRunning = _playerInputActions.Player.Sprint.IsPressed();
+        MovementVector = _playerInputActions.Player.Move.ReadValue<Vector2>();
+        if(_playerInputActions.Player.Sprint.IsPressed()) IsRunning = true;
+        if (MovementVector.magnitude == 0)
+        {
+            Speed = 0;
+            IsRunning = false;
+        }
     }
 
     private void SelectState() 
     {
-        float magnitude = _input.magnitude;
+        float magnitude = MovementVector.magnitude;
 
-        if (magnitude <= 0)
+        if (magnitude != 0)
+        {
+            if (IsRunning)
+            {
+                _state = runState;
+                Speed = 6;
+            }
+            else
+            {
+                _state = walkState;
+                Speed = 1;
+            }            
+        }
+        else
         {
             _state = idleState;
-            isRunning = false;
+            Speed = 0;
         }
-        else if (!isRunning && magnitude > 0)
-        {
-            _state = walkState;
-        }
-        else _state = runState;
-
         _state.Enter();
     }
 }

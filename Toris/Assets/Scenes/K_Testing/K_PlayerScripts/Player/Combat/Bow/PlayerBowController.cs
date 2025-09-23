@@ -99,6 +99,7 @@ public class PlayerBowController : MonoBehaviour
         if (proj == null) proj = rb.gameObject.AddComponent<ArrowProjectile>();
 
         proj.Initialize(dir, stats.speed, stats.damage, bow.arrowLifetime, ownerCollider);
+        proj.gameObject.tag = "Weapon";
     }
 
     private Vector2 GetAimDirection()

@@ -55,6 +55,7 @@ public class ArrowProjectile : MonoBehaviour
     {
         PointAlongVelocity();
         if (Time.time >= despawnAt) Destroy(gameObject);
+
     }
 
     void PointAlongVelocity()

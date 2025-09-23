@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6838977630372606773}
   - component: {fileID: 8691478943779389839}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Run
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2403736795729549848}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Behaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5481682226737024893}
   - component: {fileID: 6650652833529343454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Walk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1796341276957201856}
   - component: {fileID: 2134132152870501149}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,8 @@ GameObject:
   - component: {fileID: 7993337531930762267}
   - component: {fileID: 9069619287934798960}
   - component: {fileID: 2288736137849227651}
-  m_Layer: 0
+  - component: {fileID: 33769087486536343}
+  m_Layer: 8
   m_Name: Stag NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,3 +362,40 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.17
+--- !u!70 &33769087486536343
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8207244824238072277}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.3}
+  m_Size: {x: 0.4, y: 1}
+  m_Direction: 0

@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Walls&Decorations_0
+      name: ElevatedWalls&Decorations_0
       rect:
         serializedVersion: 2
         x: 0
@@ -152,16 +152,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ec1891f2fbe4c8a30800000000000000
-      internalID: 4218833533975232974
+      spriteID: 58f0dd2c5665cdb46b6a199cabb58800
+      internalID: 1547739200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_1
+      name: ElevatedWalls&Decorations_1
       rect:
         serializedVersion: 2
         x: 32
@@ -174,16 +174,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c5f88e8b8cd7bcfa0800000000000000
-      internalID: -5779387395750719652
+      spriteID: f1ea07427569f054c9de51c743fe24f4
+      internalID: 1425687804
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_2
+      name: ElevatedWalls&Decorations_2
       rect:
         serializedVersion: 2
         x: 64
@@ -196,16 +196,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 552ca2398d7ffd8b0800000000000000
-      internalID: -5125105341370285483
+      spriteID: e7c28190708aae54d83dea9ee0811892
+      internalID: 9346414
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_3
+      name: ElevatedWalls&Decorations_3
       rect:
         serializedVersion: 2
         x: 96
@@ -218,16 +218,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a11f16558c0626ec0800000000000000
-      internalID: -3575188740636544742
+      spriteID: f4c75c702d46b9443bf7b8b1da3b8626
+      internalID: -1435706117
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_4
+      name: ElevatedWalls&Decorations_4
       rect:
         serializedVersion: 2
         x: 128
@@ -240,16 +240,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5790acd39d830c940800000000000000
-      internalID: 5314310065992894837
+      spriteID: 1681bde61cc99d349aa2434a95a54230
+      internalID: 1706294472
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_5
+      name: ElevatedWalls&Decorations_5
       rect:
         serializedVersion: 2
         x: 160
@@ -262,16 +262,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b67177483648331a0800000000000000
-      internalID: -6830970646831884437
+      spriteID: 7b454b216ccdb0f48af0097e1ece7381
+      internalID: -909410068
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_6
+      name: ElevatedWalls&Decorations_6
       rect:
         serializedVersion: 2
         x: 192
@@ -284,16 +284,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5ddd7ea9cc78ac5c0800000000000000
-      internalID: -4194390790100230699
+      spriteID: 5505e812eca93854bb1ccd53b6b84131
+      internalID: 1423512547
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_7
+      name: ElevatedWalls&Decorations_7
       rect:
         serializedVersion: 2
         x: 224
@@ -306,16 +306,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3aedbedfbf7525280800000000000000
-      internalID: -9056079160880144733
+      spriteID: bcc1d768d0481674c92d85053f50989b
+      internalID: -1054403203
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_8
+      name: ElevatedWalls&Decorations_8
       rect:
         serializedVersion: 2
         x: 256
@@ -328,16 +328,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: fa552489ead733400800000000000000
-      internalID: 302723788796220847
+      spriteID: f02187515b6e96941bd836e5d0cb0905
+      internalID: 1328205326
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_9
+      name: ElevatedWalls&Decorations_9
       rect:
         serializedVersion: 2
         x: 288
@@ -350,16 +350,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d7a5254b8ecd22620800000000000000
-      internalID: 2748001614665243261
+      spriteID: 86f8e9796b3f1ff419aaf891a1c15939
+      internalID: 563290769
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_10
+      name: ElevatedWalls&Decorations_10
       rect:
         serializedVersion: 2
         x: 320
@@ -372,16 +372,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 315a281b703a46ad0800000000000000
-      internalID: -2709861822331968237
+      spriteID: 68651e35b0709374285c073125286c1f
+      internalID: -401989387
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_11
+      name: ElevatedWalls&Decorations_11
       rect:
         serializedVersion: 2
         x: 0
@@ -394,16 +394,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: fd58a2a216f120cf0800000000000000
-      internalID: -287632924018571809
+      spriteID: 68d4af6060a569e43a65f228dfde440f
+      internalID: -1973032846
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_12
+      name: ElevatedWalls&Decorations_12
       rect:
         serializedVersion: 2
         x: 32
@@ -416,16 +416,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a2c48594d800b7f20800000000000000
-      internalID: 3421328948738935850
+      spriteID: 06dd317f000404f408768ed4a1d4dfef
+      internalID: -405459078
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_13
+      name: ElevatedWalls&Decorations_13
       rect:
         serializedVersion: 2
         x: 64
@@ -438,16 +438,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4c94d2549e9082f00800000000000000
-      internalID: 1092133807129971140
+      spriteID: be87ba6e9fb14fe439e6b2b8465a7c01
+      internalID: 1220083789
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_14
+      name: ElevatedWalls&Decorations_14
       rect:
         serializedVersion: 2
         x: 96
@@ -462,14 +462,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2dc2373f7acc2fc4b9be56f957e06dd3
-      internalID: 82295935
+      spriteID: d642a55e298514f49810994327f47e3e
+      internalID: -1117121364
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_15
+      name: ElevatedWalls&Decorations_15
       rect:
         serializedVersion: 2
         x: 128
@@ -484,14 +484,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: facd217881df2f04b92b1a2a21fe08a0
-      internalID: 2133816006
+      spriteID: 9fe5b0ae31ee67244b144527f67aa2df
+      internalID: -125228819
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_16
+      name: ElevatedWalls&Decorations_16
       rect:
         serializedVersion: 2
         x: 160
@@ -506,14 +506,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb924e7bd340dc944a611e34438d1837
-      internalID: -536227874
+      spriteID: 76b5799f58259aa4cabfa4127906b0e9
+      internalID: -65293931
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_17
+      name: ElevatedWalls&Decorations_17
       rect:
         serializedVersion: 2
         x: 192
@@ -528,14 +528,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 36c12e286a002fe4fb25a0d748c442e7
-      internalID: 15408366
+      spriteID: 269a31620b6c9614984380e3ef444d72
+      internalID: 279941297
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_18
+      name: ElevatedWalls&Decorations_18
       rect:
         serializedVersion: 2
         x: 224
@@ -550,14 +550,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a547cade86d710e4f8f3b68ac47fb408
-      internalID: -1590198315
+      spriteID: e326aff84dd04944c97804a87960e166
+      internalID: 679766601
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_19
+      name: ElevatedWalls&Decorations_19
       rect:
         serializedVersion: 2
         x: 256
@@ -572,14 +572,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98e5432669216274f8e139849cfeb82e
-      internalID: 1281023777
+      spriteID: 751933be1f1c93b4ebbc5cf3c5df384f
+      internalID: 1630764960
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_20
+      name: ElevatedWalls&Decorations_20
       rect:
         serializedVersion: 2
         x: 288
@@ -594,14 +594,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b60f35eca8cc3f429213d6eb69c87d1
-      internalID: 1796665058
+      spriteID: 32e993aadd7ca1344a29e47f796e2fce
+      internalID: -807268503
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_21
+      name: ElevatedWalls&Decorations_21
       rect:
         serializedVersion: 2
         x: 320
@@ -616,14 +616,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 82da203b760097a429266d281c258f20
-      internalID: -1836260932
+      spriteID: 1a9a2b59f53312d4d86541f978e25999
+      internalID: 133491740
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_22
+      name: ElevatedWalls&Decorations_22
       rect:
         serializedVersion: 2
         x: 0
@@ -638,14 +638,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6818da0b40fefda46a2c8e458f792c9b
-      internalID: -1208263572
+      spriteID: 0402d6a1191ca664bbf1129696ce7c4d
+      internalID: -2078055929
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_23
+      name: ElevatedWalls&Decorations_23
       rect:
         serializedVersion: 2
         x: 32
@@ -660,14 +660,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1faafb078e576a142aad70bcaafbada5
-      internalID: 2094404349
+      spriteID: 7b9650b80ae212444a72d25651094eb8
+      internalID: 1220821082
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_24
+      name: ElevatedWalls&Decorations_24
       rect:
         serializedVersion: 2
         x: 64
@@ -682,14 +682,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3bb9e0fd8f9cf944e99a8eff6ae9e938
-      internalID: -140034113
+      spriteID: 2aa1d59436db8884e9e835f01c944e90
+      internalID: 1408687518
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_25
+      name: ElevatedWalls&Decorations_25
       rect:
         serializedVersion: 2
         x: 96
@@ -704,14 +704,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7fb98b846c04f5946ada4c1326d23a1f
-      internalID: 1587723745
+      spriteID: 1d18a273130659846b1d4ba912eec5b9
+      internalID: 1215481891
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_26
+      name: ElevatedWalls&Decorations_26
       rect:
         serializedVersion: 2
         x: 128
@@ -726,14 +726,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84630127ca56beb41afb386dc5ef83f8
-      internalID: 132168269
+      spriteID: 95e8aa34afdb6cc4588794aae5931ad5
+      internalID: 1610076192
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_27
+      name: ElevatedWalls&Decorations_27
       rect:
         serializedVersion: 2
         x: 160
@@ -748,14 +748,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7336435f130e4c041892c496bfcc5ef1
-      internalID: 775403884
+      spriteID: 8d5652cf821c8b74f81124198ee58b39
+      internalID: 1122040827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_28
+      name: ElevatedWalls&Decorations_28
       rect:
         serializedVersion: 2
         x: 192
@@ -770,14 +770,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34f7de620d2c5534d8d80e4d149c65e3
-      internalID: 1881176655
+      spriteID: a542963d8fd28664ca435147ea4ade56
+      internalID: -1572178472
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_29
+      name: ElevatedWalls&Decorations_29
       rect:
         serializedVersion: 2
         x: 224
@@ -792,14 +792,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 072d9a7130cbab7419e1e9f46ba2897a
-      internalID: -1753550344
+      spriteID: 466b31bd69cf6874cb5f8cf68afb00b4
+      internalID: -232541626
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_30
+      name: ElevatedWalls&Decorations_30
       rect:
         serializedVersion: 2
         x: 256
@@ -814,14 +814,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d01a28ed08bf6884b96c9f815d12fe09
-      internalID: 212083683
+      spriteID: 7328022bc917d0844b56c08613981a28
+      internalID: 1392680674
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_31
+      name: ElevatedWalls&Decorations_31
       rect:
         serializedVersion: 2
         x: 288
@@ -836,14 +836,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2a1f0be8aa042c45a73169ec28d168e
-      internalID: -2090604982
+      spriteID: 267bfd678ad402748896ec151c7a4c50
+      internalID: -1888965125
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_32
+      name: ElevatedWalls&Decorations_32
       rect:
         serializedVersion: 2
         x: 320
@@ -858,14 +858,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd27e5c4395e62d4d898f3ebf806ef63
-      internalID: -115015214
+      spriteID: cc9754476de4b9b44a9d6c72ae3c0193
+      internalID: 958702212
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_33
+      name: ElevatedWalls&Decorations_33
       rect:
         serializedVersion: 2
         x: 0
@@ -880,14 +880,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a33dc2d40e29964d93cd9c8335988df
-      internalID: 1743911174
+      spriteID: d1327796682695842a4409875fc955c4
+      internalID: 550601320
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_34
+      name: ElevatedWalls&Decorations_34
       rect:
         serializedVersion: 2
         x: 32
@@ -902,14 +902,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f62968c74b1d64244a0994560a8cb3f5
-      internalID: 170763875
+      spriteID: 6759367b7882e0a4b9bd7f0891ed13ef
+      internalID: -636256449
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_35
+      name: ElevatedWalls&Decorations_35
       rect:
         serializedVersion: 2
         x: 64
@@ -924,14 +924,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b3871480e20b6ad408f1a2cc0553f3a9
-      internalID: 1392336553
+      spriteID: 9cee7578a1caf894c80530a74ce8460d
+      internalID: 774152295
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_36
+      name: ElevatedWalls&Decorations_36
       rect:
         serializedVersion: 2
         x: 96
@@ -946,14 +946,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c3d69e22de620984b8ede60292ce1c78
-      internalID: 1294668807
+      spriteID: 3f6defa3f2c06a949980097d5576bf7a
+      internalID: 1713714392
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_37
+      name: ElevatedWalls&Decorations_37
       rect:
         serializedVersion: 2
         x: 128
@@ -968,14 +968,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ee869781e4be2ec49ae221b8bff60eda
-      internalID: 1163747302
+      spriteID: 06557cf61920069418f9dbd3a55fce7a
+      internalID: -62922282
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_38
+      name: ElevatedWalls&Decorations_38
       rect:
         serializedVersion: 2
         x: 160
@@ -990,14 +990,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b64d6609abe0df448a3519fcdcbb94ea
-      internalID: 1065975656
+      spriteID: 54e5c83867e736346853ce0e7f14157f
+      internalID: -1532195874
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_39
+      name: ElevatedWalls&Decorations_39
       rect:
         serializedVersion: 2
         x: 192
@@ -1012,14 +1012,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 27532399d2f1f8b469c672aff6b3aaf1
-      internalID: -361130202
+      spriteID: 48608bdd95641ad48a2ab47381c1c93a
+      internalID: 892798005
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_40
+      name: ElevatedWalls&Decorations_40
       rect:
         serializedVersion: 2
         x: 224
@@ -1034,14 +1034,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8338115c85209cc469f11933d3fba4eb
-      internalID: -1023267037
+      spriteID: dceeabfae3379f045a22161f6f24ec36
+      internalID: 1741291648
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_41
+      name: ElevatedWalls&Decorations_41
       rect:
         serializedVersion: 2
         x: 256
@@ -1056,14 +1056,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93b5b9b772a381d4ab2523b49607a9d5
-      internalID: -1059871735
+      spriteID: ea624e7df0068a14e8494f8e0a0487db
+      internalID: -2002005841
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_42
+      name: ElevatedWalls&Decorations_42
       rect:
         serializedVersion: 2
         x: 288
@@ -1071,21 +1071,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d845d203798e31a49a8413acf3ee9894
-      internalID: -1235249668
+      spriteID: e0506b8ab3531bb4896a41f8838b5766
+      internalID: -208937275
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_43
+      name: ElevatedWalls&Decorations_43
       rect:
         serializedVersion: 2
         x: 320
@@ -1093,21 +1093,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c961b8f99a1badc4f89fd22a15c2bc67
-      internalID: -2029418393
+      spriteID: 82987a61a543eed4a997c7bf3766329b
+      internalID: -1212894845
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_44
+      name: ElevatedWalls&Decorations_44
       rect:
         serializedVersion: 2
         x: 0
@@ -1115,21 +1115,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da84b01ae02bb7141b75735f41dc1629
-      internalID: -1097942090
+      spriteID: 9460c7255df77924f95b67055aa66c1f
+      internalID: -1868559402
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_45
+      name: ElevatedWalls&Decorations_45
       rect:
         serializedVersion: 2
         x: 32
@@ -1137,21 +1137,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a85fb9fc623d014d986dbdbe58e092d
-      internalID: 770142036
+      spriteID: 1f0d4180cb0c0f64687a70db5011740e
+      internalID: -1859624182
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_46
+      name: ElevatedWalls&Decorations_46
       rect:
         serializedVersion: 2
         x: 64
@@ -1159,21 +1159,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 843bb81a27e575946a1e8bbabf994c4c
-      internalID: 2062966751
+      spriteID: dfa56c4933f5cf4419ecedb1139fe5a7
+      internalID: -2023645466
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_47
+      name: ElevatedWalls&Decorations_47
       rect:
         serializedVersion: 2
         x: 96
@@ -1181,21 +1181,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 63cdf283da8345b44856b8ad0727dfdf
-      internalID: -117193817
+      spriteID: 35c26eb787d132941bc4bbaa31af0ba4
+      internalID: 2114499609
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_48
+      name: ElevatedWalls&Decorations_48
       rect:
         serializedVersion: 2
         x: 128
@@ -1203,21 +1203,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 148ce604548ae5c4faa17825c1ad40e5
-      internalID: -1551884281
+      spriteID: 537d378d912821a478989bda858f66b6
+      internalID: -1228010085
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_49
+      name: ElevatedWalls&Decorations_49
       rect:
         serializedVersion: 2
         x: 160
@@ -1225,21 +1225,21 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7e118b8152b7704428f997991cd1e411
-      internalID: 1483790069
+      spriteID: a373218f5137dbf4cad12f5381152207
+      internalID: 1168971571
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_50
+      name: ElevatedWalls&Decorations_50
       rect:
         serializedVersion: 2
         x: 192
@@ -1254,14 +1254,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53b7d725d627f5949a33975621afacbf
-      internalID: 920391635
+      spriteID: 2268cca553d61404198c2caeaa90e505
+      internalID: -750473600
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls&Decorations_51
+      name: ElevatedWalls&Decorations_51
       rect:
         serializedVersion: 2
         x: 224
@@ -1269,15 +1269,81 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c03862e5f6d349f41b2dc12f7f955f21
-      internalID: -522887719
+      spriteID: 955de11bfe529344f95a3c6d90c253c1
+      internalID: -671703344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElevatedWalls&Decorations_52
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61d168e5a31c722408fd9a53f6007853
+      internalID: -2016206805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElevatedWalls&Decorations_53
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b258bee1f2b437428e23c87494dd265
+      internalID: -1847304541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ElevatedWalls&Decorations_54
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa5003088a3d7dc49a5e30f4e4286975
+      internalID: 272815073
       vertices: []
       indices: 
       edges: []
@@ -1298,58 +1364,61 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.30000001192092898},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":9,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Walls&Decorations_0: 4218833533975232974
-      Walls&Decorations_1: -5779387395750719652
-      Walls&Decorations_10: -2709861822331968237
-      Walls&Decorations_11: -287632924018571809
-      Walls&Decorations_12: 3421328948738935850
-      Walls&Decorations_13: 1092133807129971140
-      Walls&Decorations_14: 82295935
-      Walls&Decorations_15: 2133816006
-      Walls&Decorations_16: -536227874
-      Walls&Decorations_17: 15408366
-      Walls&Decorations_18: -1590198315
-      Walls&Decorations_19: 1281023777
-      Walls&Decorations_2: -5125105341370285483
-      Walls&Decorations_20: 1796665058
-      Walls&Decorations_21: -1836260932
-      Walls&Decorations_22: -1208263572
-      Walls&Decorations_23: 2094404349
-      Walls&Decorations_24: -140034113
-      Walls&Decorations_25: 1587723745
-      Walls&Decorations_26: 132168269
-      Walls&Decorations_27: 775403884
-      Walls&Decorations_28: 1881176655
-      Walls&Decorations_29: -1753550344
-      Walls&Decorations_3: -3575188740636544742
-      Walls&Decorations_30: 212083683
-      Walls&Decorations_31: -2090604982
-      Walls&Decorations_32: -115015214
-      Walls&Decorations_33: 1743911174
-      Walls&Decorations_34: 170763875
-      Walls&Decorations_35: 1392336553
-      Walls&Decorations_36: 1294668807
-      Walls&Decorations_37: 1163747302
-      Walls&Decorations_38: 1065975656
-      Walls&Decorations_39: -361130202
-      Walls&Decorations_4: 5314310065992894837
-      Walls&Decorations_40: -1023267037
-      Walls&Decorations_41: -1059871735
-      Walls&Decorations_42: -1235249668
-      Walls&Decorations_43: -2029418393
-      Walls&Decorations_44: -1097942090
-      Walls&Decorations_45: 770142036
-      Walls&Decorations_46: 2062966751
-      Walls&Decorations_47: -117193817
-      Walls&Decorations_48: -1551884281
-      Walls&Decorations_49: 1483790069
-      Walls&Decorations_5: -6830970646831884437
-      Walls&Decorations_50: 920391635
-      Walls&Decorations_51: -522887719
-      Walls&Decorations_6: -4194390790100230699
-      Walls&Decorations_7: -9056079160880144733
-      Walls&Decorations_8: 302723788796220847
-      Walls&Decorations_9: 2748001614665243261
+      ElevatedWalls&Decorations_0: 1547739200
+      ElevatedWalls&Decorations_1: 1425687804
+      ElevatedWalls&Decorations_10: -401989387
+      ElevatedWalls&Decorations_11: -1973032846
+      ElevatedWalls&Decorations_12: -405459078
+      ElevatedWalls&Decorations_13: 1220083789
+      ElevatedWalls&Decorations_14: -1117121364
+      ElevatedWalls&Decorations_15: -125228819
+      ElevatedWalls&Decorations_16: -65293931
+      ElevatedWalls&Decorations_17: 279941297
+      ElevatedWalls&Decorations_18: 679766601
+      ElevatedWalls&Decorations_19: 1630764960
+      ElevatedWalls&Decorations_2: 9346414
+      ElevatedWalls&Decorations_20: -807268503
+      ElevatedWalls&Decorations_21: 133491740
+      ElevatedWalls&Decorations_22: -2078055929
+      ElevatedWalls&Decorations_23: 1220821082
+      ElevatedWalls&Decorations_24: 1408687518
+      ElevatedWalls&Decorations_25: 1215481891
+      ElevatedWalls&Decorations_26: 1610076192
+      ElevatedWalls&Decorations_27: 1122040827
+      ElevatedWalls&Decorations_28: -1572178472
+      ElevatedWalls&Decorations_29: -232541626
+      ElevatedWalls&Decorations_3: -1435706117
+      ElevatedWalls&Decorations_30: 1392680674
+      ElevatedWalls&Decorations_31: -1888965125
+      ElevatedWalls&Decorations_32: 958702212
+      ElevatedWalls&Decorations_33: 550601320
+      ElevatedWalls&Decorations_34: -636256449
+      ElevatedWalls&Decorations_35: 774152295
+      ElevatedWalls&Decorations_36: 1713714392
+      ElevatedWalls&Decorations_37: -62922282
+      ElevatedWalls&Decorations_38: -1532195874
+      ElevatedWalls&Decorations_39: 892798005
+      ElevatedWalls&Decorations_4: 1706294472
+      ElevatedWalls&Decorations_40: 1741291648
+      ElevatedWalls&Decorations_41: -2002005841
+      ElevatedWalls&Decorations_42: -208937275
+      ElevatedWalls&Decorations_43: -1212894845
+      ElevatedWalls&Decorations_44: -1868559402
+      ElevatedWalls&Decorations_45: -1859624182
+      ElevatedWalls&Decorations_46: -2023645466
+      ElevatedWalls&Decorations_47: 2114499609
+      ElevatedWalls&Decorations_48: -1228010085
+      ElevatedWalls&Decorations_49: 1168971571
+      ElevatedWalls&Decorations_5: -909410068
+      ElevatedWalls&Decorations_50: -750473600
+      ElevatedWalls&Decorations_51: -671703344
+      ElevatedWalls&Decorations_52: -2016206805
+      ElevatedWalls&Decorations_53: -1847304541
+      ElevatedWalls&Decorations_54: 272815073
+      ElevatedWalls&Decorations_6: 1423512547
+      ElevatedWalls&Decorations_7: -1054403203
+      ElevatedWalls&Decorations_8: 1328205326
+      ElevatedWalls&Decorations_9: 563290769
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

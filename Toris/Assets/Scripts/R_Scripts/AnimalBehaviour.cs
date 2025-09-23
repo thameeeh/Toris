@@ -15,6 +15,11 @@ public class AnimalBehaviour : MonoBehaviour
     public SpriteRenderer _spriteRenderer { get; private set; }
 
     private GameObject _player = null;
+
+
+
+
+    public bool IsDead { get; set; }
     private void Start()
     {
         _animator = GetComponent<Animator>();
@@ -57,6 +62,15 @@ public class AnimalBehaviour : MonoBehaviour
             Move();
         }
         _state.AnimationDirection(MovementVector);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Weapon"))
+        {
+            IsDead = true;
+            Debug.Log("Animal is dead");
+        }
     }
 
     private void Move() 

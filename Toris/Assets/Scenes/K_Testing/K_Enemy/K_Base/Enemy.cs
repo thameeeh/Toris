@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void Damage(float damageAmount)
     {
         CurrentHealth -= damageAmount;
-
+        Debug.Log($"Health left: {CurrentHealth}");
         if (CurrentHealth <= 0f)
         {
             Die();
@@ -90,7 +90,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void Die()
     {
-
+        Debug.Log("Die() called");
+        Destroy(gameObject);
     }
 
     #endregion

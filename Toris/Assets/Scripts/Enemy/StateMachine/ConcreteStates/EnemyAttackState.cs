@@ -4,9 +4,10 @@ public class EnemyAttackState : EnemyState
 {
     public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
-
+        //Constructor
     }
 
+    //EachFunction calls the corresponding function in the ScriptableObject
     public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
     {
         base.AnimationTriggerEvent(triggerType);

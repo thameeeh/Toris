@@ -7,6 +7,7 @@ public class EnemyChaseDirectToPlayer : EnemyChaseSOBase
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
+        animator.Play("Howl_NW");
     }
 
     public override void DoEnterLogic()

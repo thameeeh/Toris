@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class EnemyChaseSOBase : ScriptableObject
+public class EnemyAttackSOBase : ScriptableObject
 {
     protected Enemy enemy;
     protected Transform transform;
     protected GameObject gameObject;
     protected Transform playerTransform;
+    protected Animator animator;
 
+    //Enemy Object, Enemy Script, "Player" Transform
     public virtual void Initialize(GameObject gameObject, Enemy enemy, Transform player)
     {
         this.gameObject = gameObject;
         transform = gameObject.transform;
         this.enemy = enemy;
         this.playerTransform = player;
+        animator = gameObject.GetComponentInChildren<Animator>();
     }
 
     public virtual void DoEnterLogic()

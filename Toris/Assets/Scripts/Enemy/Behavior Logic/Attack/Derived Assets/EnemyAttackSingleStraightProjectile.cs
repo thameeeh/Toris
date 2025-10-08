@@ -12,6 +12,8 @@ public class EnemyAttackSingleStraightProjectile : EnemyAttackSOBase
     private float _timer;
     private float _exitTimer;
 
+    //when writing base.DoSomething(), it calls the method in the base class (EnemyAttackSOBase)
+    //so basically it first does parent class logic, then child class logic
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);

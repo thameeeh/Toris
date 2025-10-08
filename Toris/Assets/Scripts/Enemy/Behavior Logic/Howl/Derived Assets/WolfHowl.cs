@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class WolfHowl : HowlSOBase
 {
+    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    {
+        base.Initialize(gameObject, enemy, player);
+    }
+
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
@@ -22,15 +27,11 @@ public class WolfHowl : HowlSOBase
         base.DoPhysicsLogic();
     }
 
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
-    {
-        base.Initialize(gameObject, enemy, player);
-    }
-
-        public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
+    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
 
+        animator.Play("Howl");
     }
 
     public override void ResetValues()

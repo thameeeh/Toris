@@ -5,3 +5,9 @@
 /// 
 /// 
 ///<summary>
+///
+
+
+///         Idle scrip
+/// Idle Logic needs to check if 
+/// wandering new target is not in collision area

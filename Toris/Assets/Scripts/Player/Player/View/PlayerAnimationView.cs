@@ -9,14 +9,14 @@ using UnityEngine;
 public class PlayerAnimationView : MonoBehaviour
 {
     [Header("Scene refs")]
-    [SerializeField] Animator animator;
-    [SerializeField] SpriteRenderer sprite;
+    [SerializeField] Animator _animator;
+    [SerializeField] SpriteRenderer _sprite;
 
     [Header("Optional: character profile for base layer")]
-    [SerializeField] CharacterAnimSO character; // used for baseLayer (and future dir mode)
+    [SerializeField] CharacterAnimSO _character; // used for baseLayer (and future dir mode)
 
     // Layer we query/play on (default 0 if no profile assigned)
-    int BaseLayer => character ? character.baseLayer : 0;
+    int BaseLayer => _character ? _character.baseLayer : 0;
 
     // Caches to avoid string lookups & clip iteration at runtime
     readonly Dictionary<string, int> _nameToHash = new();
@@ -24,10 +24,10 @@ public class PlayerAnimationView : MonoBehaviour
 
     void Awake()
     {
-        if (!animator) Debug.LogError("[AnimView] Missing Animator.", this);
-        if (!sprite) Debug.LogError("[AnimView] Missing SpriteRenderer.", this);
+        if (!_animator) Debug.LogError("[AnimView] Missing Animator.", this);
+        if (!_sprite) Debug.LogError("[AnimView] Missing SpriteRenderer.", this);
 
-        var rc = animator ? animator.runtimeAnimatorController : null;
+        var rc = _animator ? _animator.runtimeAnimatorController : null;
         if (!rc) { Debug.LogError("[AnimView] Missing RuntimeAnimatorController.", this); return; }
 
         _nameToHash.Clear();
@@ -63,7 +63,7 @@ public class PlayerAnimationView : MonoBehaviour
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
             // TODO: when using L_/R_ sprites, delete flip entirely
-            sprite.flipX = dir.x > 0f;
+            _sprite.flipX = dir.x > 0f;
         }
     }
 
@@ -85,25 +85,25 @@ public class PlayerAnimationView : MonoBehaviour
     public void CrossFadeIfChanged(int stateHash, float fadeSeconds)
     {
         if (!IsCurrent(stateHash))
-            animator.CrossFade(stateHash, fadeSeconds);
+            _animator.CrossFade(stateHash, fadeSeconds);
     }
     #endregion
 
     public float ClipLenByHash(int hash) =>
         _hashToLen.TryGetValue(hash, out var len) ? len : 0.18f; // tiny safe fallback
 
-    public AnimatorStateInfo Current() => animator.GetCurrentAnimatorStateInfo(BaseLayer);
+    public AnimatorStateInfo Current() => _animator.GetCurrentAnimatorStateInfo(BaseLayer);
 
-    public bool HasState(int hash) => animator.HasState(BaseLayer, hash);
+    public bool HasState(int hash) => _animator.HasState(BaseLayer, hash);
 
     /// Crossfade by hash (don’t pass names from controller)
     public void CrossFade(int stateHash, float fadeSeconds) =>
-        animator.CrossFade(stateHash, fadeSeconds);
+        _animator.CrossFade(stateHash, fadeSeconds);
 
     /// Play at a normalized time (useful for lock/resume)
     public void Play(int stateHash, float normalizedTime) =>
-        animator.Play(stateHash, BaseLayer, normalizedTime);
+        _animator.Play(stateHash, BaseLayer, normalizedTime);
 
     /// Centralized pause/resume so speed doesn’t drift
-    public void SetPaused(bool paused) => animator.speed = paused ? 0f : 1f;
+    public void SetPaused(bool paused) => _animator.speed = paused ? 0f : 1f;
 }

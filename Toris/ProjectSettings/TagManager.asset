@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stag
   - Weapon
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -13,12 +14,12 @@ TagManager:
   - 
   - Water
   - UI
-  - EnemySensors
+  - EnemyHitbox
   - EnemyHurtBox
   - Projectiles
-  - 
-  - 
-  - 
+  - PlayerHurtBox
+  - Player
+  - PlayerHitBox
   - 
   - 
   - 

@@ -8,9 +8,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        var move = _inputReader ? _inputReader.Move : Vector2.zero;
+        if (!_inputReader || !_motor || !_animController)
+            return;
 
+        // Read movement input
+        Vector2 move = _inputReader.Move;
+
+        // Ask animation FSM if movement is allowed
+        bool canMove = _animController.CanMove();
+        _motor.SetMovementLocked(!canMove);
+
+        // Always send the input to motor (it decides zero or not)
         _motor.SetMoveInput(move);
-        if (_animController) _animController.Tick(move);
+
+        // Drive animation FSM
+        _animController.Tick(move);
     }
 }

@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 /// Controller = brain that composes Character + Weapon profiles and drives the View.
 /// - Resolves state names (dir + suffix) from data assets
@@ -9,16 +7,27 @@ using UnityEngine.TextCore.Text;
 public class PlayerAnimationController : MonoBehaviour
 {
     [Header("Scene refs")]
-    [SerializeField] PlayerAnimationView view;
-    [SerializeField] CharacterAnimSO character;
-    [SerializeField] WeaponProfile weapon;
+    [SerializeField] PlayerAnimationView _view;
+    [SerializeField] CharacterAnimSO _character;
+    [SerializeField] WeaponProfile _weapon;
 
     [Header("General")]
     [Range(0f, 0.2f)] public float resumeEpsilon = 0.02f; // jump past lock when releasing
+    private float _hurtEndTime = 0f;
+    private float _deathEndTime = 0f;
+
+    public bool CanMove()
+    {
+        // The player can move freely only during locomotion and hold states
+        // Everything else (Hurt, OneShotBusy, Dead) locks movement
+        return _state == AnimState.Locomotion
+            || _state == AnimState.HoldUnlocked
+            || _state == AnimState.HoldLocked;
+    }
 
     #region FSM
-    
-    enum AnimState { Locomotion, HoldUnlocked, HoldLocked, OneShotBusy, Dead }
+
+    enum AnimState { Locomotion, HoldUnlocked, HoldLocked, OneShotBusy, Hurt, Dead }
     AnimState _state = AnimState.Locomotion;
     float _stateUntil;
 
@@ -40,15 +49,15 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Reset()
     {
-        if (!view) view = GetComponent<PlayerAnimationView>();
-        if (!character) Debug.LogError("[AnimCtrl] Missing CharacterAnimProfile.", this);
-        if (!weapon) Debug.LogError("[AnimCtrl] Missing WeaponProfile.", this);
+        if (!_view) _view = GetComponent<PlayerAnimationView>();
+        if (!_character) Debug.LogError("[AnimCtrl] Missing CharacterAnimProfile.", this);
+        if (!_weapon) Debug.LogError("[AnimCtrl] Missing WeaponProfile.", this);
         ValidateCoreStates();
     }
 
     private void Awake()
     {
-        if (!view) Debug.LogError("[AnimCtrl] Missing PlayerAnimationView.", this);
+        if (!_view) Debug.LogError("[AnimCtrl] Missing PlayerAnimationView.", this);
     }
 
     #region Public API
@@ -56,7 +65,26 @@ public class PlayerAnimationController : MonoBehaviour
     /// Call every frame with movement vector
     public void Tick(Vector2 move)
     {
-        if (_state == AnimState.Dead) return;
+        if (_state == AnimState.Dead)
+        {
+            // Wait until animation ends
+            if (Time.time >= _deathEndTime && _deathEndTime > 0f)
+            {
+                _deathEndTime = 0f;
+                OnDeathAnimationFinished();
+            }
+            return; // no updates while dead
+        }
+
+        if (_state == AnimState.Hurt)
+        {
+            // Wait until timer expires, then resume locomotion
+            if (Time.time >= _hurtEndTime)
+                _state = AnimState.Locomotion;
+            else
+                return; // still in hurt, skip update
+        }
+
 
         // State responses first
         if (_state == AnimState.HoldUnlocked || _state == AnimState.HoldLocked)
@@ -72,14 +100,14 @@ public class PlayerAnimationController : MonoBehaviour
 
         // Locomotion (Idle/Walk)
         if (move.sqrMagnitude > 0.0001f) _lastDir = move.normalized;
-        view.SetFacing(_lastDir); // TODO: remove flip when L/R art lands
+        _view.SetFacing(_lastDir); // TODO: remove flip when L/R art lands
 
-        string dir = view.DirPrefix(_lastDir); // "U" / "S" / "D"  // TODO: L/R later
-        string suffix = move.sqrMagnitude > 0.0001f ? character.locomotionWalkSuffix
-                                                    : character.locomotionIdleSuffix;
+        string dir = _view.DirPrefix(_lastDir); // "U" / "S" / "D"  // TODO: L/R later
+        string suffix = move.sqrMagnitude > 0.0001f ? _character.locomotionWalkSuffix
+                                                    : _character.locomotionIdleSuffix;
 
-        int hash = view.StateHash($"{dir}_{suffix}");
-        view.CrossFadeIfChanged(hash, 0f); // lightweight; Play on same state is safe
+        int hash = _view.StateHash($"{dir}_{suffix}");
+        _view.CrossFadeIfChanged(hash, 0f); // lightweight; Play on same state is safe
     }
 
 
@@ -87,9 +115,9 @@ public class PlayerAnimationController : MonoBehaviour
     public void BeginHold(string actionKey = "Shoot")
     {
         var res = Resolve(actionKey, _lastDir);
-        if (!view.HasState(res.hash))
+        if (!_view.HasState(res.hash))
         {
-            Debug.LogError($"[AnimCtrl] Missing state '{res.name}' on layer {character.baseLayer}", this);
+            Debug.LogError($"[AnimCtrl] Missing state '{res.name}' on layer {_character.baseLayer}", this);
             return;
         }
 
@@ -103,8 +131,8 @@ public class PlayerAnimationController : MonoBehaviour
         _holding = _activeUsesLock;
         _locked = false;
 
-        view.SetPaused(false);
-        view.CrossFade(_activeHash, _activeFade);
+        _view.SetPaused(false);
+        _view.CrossFade(_activeHash, _activeFade);
 
         if (_activeUsesLock)
         {
@@ -113,7 +141,7 @@ public class PlayerAnimationController : MonoBehaviour
         else
         {
             // one-shot without lock — estimate remaining by clip length
-            float dur = Mathf.Max(0.1f, view.ClipLenByHash(_activeHash));
+            float dur = Mathf.Max(0.1f, _view.ClipLenByHash(_activeHash));
             _state = AnimState.OneShotBusy;
             _stateUntil = Time.time + dur;
         }
@@ -125,12 +153,12 @@ public class PlayerAnimationController : MonoBehaviour
         if (!_holding) return;
 
         _holding = false;
-        view.SetPaused(false);
+        _view.SetPaused(false);
 
         float t = Mathf.Clamp01(_activeLockAt + resumeEpsilon);
-        view.Play(_activeHash, t);
+        _view.Play(_activeHash, t);
 
-        float len = view.ClipLenByHash(_activeHash);
+        float len = _view.ClipLenByHash(_activeHash);
         float remaining = Mathf.Max(0.1f, (1f - t) * (len > 0f ? len : 0.18f));
 
         _locked = false;
@@ -144,7 +172,7 @@ public class PlayerAnimationController : MonoBehaviour
         if (aim.sqrMagnitude > 0.0001f)
         {
             _lastDir = aim.normalized;
-            view.SetFacing(_lastDir); // TODO: remove flip when L/R art lands
+            _view.SetFacing(_lastDir); // TODO: remove flip when L/R art lands
         }
 
         if (_state != AnimState.HoldUnlocked && _state != AnimState.HoldLocked) return;
@@ -153,7 +181,7 @@ public class PlayerAnimationController : MonoBehaviour
         if (res.hash == _activeHash) return; // same directional state, nothing to do
 
         float t = _activeLockAt;
-        var st = view.Current();
+        var st = _view.Current();
         if (!_locked) t = st.normalizedTime % 1f; // preserve progress during hold
 
         _activeHash = res.hash;
@@ -161,72 +189,87 @@ public class PlayerAnimationController : MonoBehaviour
 
         if (_locked)
         {
-            view.Play(_activeHash, _activeLockAt);
-            view.SetPaused(true);
+            _view.Play(_activeHash, _activeLockAt);
+            _view.SetPaused(true);
         }
         else
         {
-            view.SetPaused(false);
-            view.Play(_activeHash, t);
+            _view.SetPaused(false);
+            _view.Play(_activeHash, t);
         }
     }
 
-    /// Optional one-shots
-    public void PlayHurt(float hold = 0.18f) => PlayOneShot("Hurt", hold);
+    /// One-Shots
+    public void PlayHurt(float hold = 0f)
+    {
+        if (_state == AnimState.Dead) return;
+
+        string dir = _view.DirPrefix(_lastDir);
+        int hash = _view.StateHash($"{dir}_{_character.DefaultSuffixFor("Hurt")}");
+
+        _view.CrossFade(hash, 0.05f);
+        _state = AnimState.Hurt;
+
+        float clipLen = _view.ClipLenByHash(hash);
+        _hurtEndTime = Time.time + (hold > 0f ? hold : clipLen);
+    }
+
 
     public void PlayDeath()
     {
-        string dir = view.DirPrefix(_lastDir);
-        int hash = view.StateHash($"{dir}_{character.DefaultSuffixFor("Death")}");
-        view.CrossFade(hash, 0.05f);
+        string dir = _view.DirPrefix(_lastDir);
+        int hash = _view.StateHash($"{dir}_{_character.DefaultSuffixFor("Death")}");
+        _view.CrossFade(hash, 0.05f);
+
         _state = AnimState.Dead;
+
+        float clipLen = _view.ClipLenByHash(hash);
+        _deathEndTime = Time.time + clipLen; // play full animation once
     }
+    private void OnDeathAnimationFinished()
+    {
+        _view.SetPaused(true); // freeze on last frame
+
+        // TODO: trigger post-death flow later
+        Debug.Log("[PlayerAnim] Death animation finished.");
+    }
+
+
     #endregion
 
     #region Internals
 
     void UpdateHoldLock()
     {
-        var st = view.Current();
+        var st = _view.Current();
         // Accept during crossfade or when fully in the state
         if (st.shortNameHash != _activeHash && !st.IsName(_activeName)) return;
 
         float nt = st.normalizedTime % 1f;
         if (!_locked && nt >= _activeLockAt)
         {
-            view.Play(_activeHash, _activeLockAt);
-            view.SetPaused(true);
+            _view.Play(_activeHash, _activeLockAt);
+            _view.SetPaused(true);
             _locked = true;
             _state = AnimState.HoldLocked;
         }
-    }
-
-    void PlayOneShot(string actionKey, float hold)
-    {
-        string dir = view.DirPrefix(_lastDir);
-        string suffix = character.DefaultSuffixFor(actionKey); // weapon can override via Resolve if preferred
-        int hash = view.StateHash($"{dir}_{suffix}");
-
-        view.CrossFade(hash, 0.05f);
-        _state = AnimState.OneShotBusy;
-        _stateUntil = Time.time + (hold > 0f ? hold : view.ClipLenByHash(hash));
     }
 
     // Compose Character + Weapon -> final state and behavior knobs
     (int hash, float lockAt, float fade, bool usesLock, string name) Resolve(string actionKey, Vector2 dir)
     {
         // 1) suffix from weapon override or character default
-        var w = weapon ? weapon.Get(actionKey) : null;
+        var w = _weapon ? _weapon.Get(actionKey) : null;
         string suffix = !string.IsNullOrEmpty(w?.animSuffixOverride)
             ? w.animSuffixOverride
-            : character.DefaultSuffixFor(actionKey);
+            : _character.DefaultSuffixFor(actionKey);
 
         // 2) direction prefix (U/S/D today) // TODO: L/R when art lands
-        string p = view.DirPrefix(dir);
+        string p = _view.DirPrefix(dir);
 
         // 3) final name & hash
         string name = $"{p}_{suffix}";
-        int hash = view.StateHash(name);
+        int hash = _view.StateHash(name);
 
         // 4) behavior knobs (defaults if weapon is null/missing)
         float lockAt = w?.lockAt ?? 0f;
@@ -238,30 +281,30 @@ public class PlayerAnimationController : MonoBehaviour
 
     void ValidateCoreStates()
     {
-        if (!character || !view) return;
+        if (!_character || !_view) return;
 
         // Locomotion U/S/D (we warn but don’t block)
         foreach (var dir in new[] { "U", "S", "D" }) // TODO: migrate to L/R later
         {
-            string idle = $"{dir}_{character.locomotionIdleSuffix}";
-            string walk = $"{dir}_{character.locomotionWalkSuffix}";
-            if (!view.HasState(view.StateHash(idle)))
+            string idle = $"{dir}_{_character.locomotionIdleSuffix}";
+            string walk = $"{dir}_{_character.locomotionWalkSuffix}";
+            if (!_view.HasState(_view.StateHash(idle)))
                 Debug.LogWarning($"[AnimCtrl] Missing state: {idle}", this);
-            if (!view.HasState(view.StateHash(walk)))
+            if (!_view.HasState(_view.StateHash(walk)))
                 Debug.LogWarning($"[AnimCtrl] Missing state: {walk}", this);
         }
 
         // Shoot U/S/D (common pitfall)
-        if (weapon != null && weapon.Get("Shoot") != null)
+        if (_weapon != null && _weapon.Get("Shoot") != null)
         {
-            string shootSuffix = string.IsNullOrEmpty(weapon.Get("Shoot").animSuffixOverride)
-                ? character.DefaultSuffixFor("Shoot")
-                : weapon.Get("Shoot").animSuffixOverride;
+            string shootSuffix = string.IsNullOrEmpty(_weapon.Get("Shoot").animSuffixOverride)
+                ? _character.DefaultSuffixFor("Shoot")
+                : _weapon.Get("Shoot").animSuffixOverride;
 
             foreach (var dir in new[] { "U", "S", "D" }) // TODO: migrate to L/R later
             {
                 string nm = $"{dir}_{shootSuffix}";
-                if (!view.HasState(view.StateHash(nm)))
+                if (!_view.HasState(_view.StateHash(nm)))
                     Debug.LogWarning($"[AnimCtrl] Missing state: {nm}", this);
             }
         }

@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public EnemyIdleState IdleState { get; set; }
     public EnemyChaseState ChaseState { get; set; }
     public EnemyAttackState AttackState { get; set; }
-    public HowlState HowlState { get; set; }
+    public EnemyHowlState HowlState { get; set; }
 
     #endregion
 
@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #endregion
 
     public AnimationTriggerType CurrentAnimationType { get; set; }
+    public Animator animator { get; set; }
 
     private void Awake()
     {
@@ -58,7 +59,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         IdleState = new EnemyIdleState(this, StateMachine);
         ChaseState = new EnemyChaseState(this, StateMachine);
         AttackState = new EnemyAttackState(this, StateMachine);
-        HowlState = new HowlState(this, StateMachine);
+        HowlState = new EnemyHowlState(this, StateMachine);
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -86,12 +89,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     private void FixedUpdate()
     {
         StateMachine.CurrentEnemyState.PhysicsUpdate();
-        AnimationUpdate();
-    }
-
-    private void AnimationUpdate() 
-    {
-        AnimationTriggerEvent(CurrentAnimationType);
+        AnimationDirectionUpdate();
     }
 
     #region Health / Die Functions
@@ -153,7 +151,21 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
     #endregion
 
-    #region Animation triggers
+    #region Animation
+    private void AnimationUpdate()
+    {
+        AnimationTriggerEvent(CurrentAnimationType);
+    }
+    private void AnimationDirectionUpdate()
+    {
+        if (PlayerTransform != null)
+        {
+            Vector2 direction = (PlayerTransform.position - transform.position).normalized;
+
+            animator.SetFloat("DirectionX", direction.x);
+            animator.SetFloat("DirectionY", direction.y);
+        }
+    }
 
     private void AnimationTriggerEvent(AnimationTriggerType triggerType)
     {

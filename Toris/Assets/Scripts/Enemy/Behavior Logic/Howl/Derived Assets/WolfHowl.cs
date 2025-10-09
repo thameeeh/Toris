@@ -1,7 +1,10 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "WolfHowl", menuName = "Enemy Logic/Howl Logic/Wolf Howl")]
 public class WolfHowl : HowlSOBase
 {
+    private bool _hasHowled = false;
+    public float HowlDuration = 1f;
     public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -10,6 +13,8 @@ public class WolfHowl : HowlSOBase
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+
+        enemy.animator.Play("Movement");
     }
 
     public override void DoExitLogic()
@@ -30,8 +35,6 @@ public class WolfHowl : HowlSOBase
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
-
-        animator.Play("Howl");
     }
 
     public override void ResetValues()

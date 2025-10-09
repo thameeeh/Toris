@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "WolfIdle", menuName = "Enemy Logic/Idle Logic/Wolf Idle")]
 public class WolfIdle : EnemyIdleSOBase
 {
     [SerializeField] private float WanderRange = 5f;
@@ -35,6 +36,7 @@ public class WolfIdle : EnemyIdleSOBase
         if (enemy.IsAggroed)
         {
             enemy.StateMachine.ChangeState(enemy.HowlState);
+
         }
 
         if ((enemy.transform.position - _targetPos).sqrMagnitude < 0.01f)

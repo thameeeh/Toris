@@ -6,14 +6,6 @@ public class EnemyIdleState : EnemyState
     {
 
     }
-
-    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
-    {
-        base.AnimationTriggerEvent(triggerType);
-
-        enemy.EnemyIdleBaseInstance.DoAnimationTriggerEventLogic(triggerType);
-    }
-
     public override void EnterState()
     {
         base.EnterState();
@@ -34,7 +26,12 @@ public class EnemyIdleState : EnemyState
 
         enemy.EnemyIdleBaseInstance.DoFrameUpdateLogic();
     }
+    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
+    {
+        base.AnimationTriggerEvent(triggerType);
 
+        enemy.EnemyIdleBaseInstance.DoAnimationTriggerEventLogic(triggerType);
+    }
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();

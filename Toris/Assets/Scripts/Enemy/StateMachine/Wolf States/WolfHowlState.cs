@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class EnemyHowlState : EnemyState
+public class HowlState : EnemyState<Wolf>
 {
     private float _howlStartTime;
     private WolfHowl _wolfHowl;
-    public EnemyHowlState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    public HowlState(Wolf enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
         _wolfHowl = enemy.EnemyHowlBaseInstance as WolfHowl;
     }

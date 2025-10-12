@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class EnemyChaseState : EnemyState
+public class ChaseState : EnemyState<Wolf>
 {
 
-    public EnemyChaseState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    public ChaseState(Wolf enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
 
     }

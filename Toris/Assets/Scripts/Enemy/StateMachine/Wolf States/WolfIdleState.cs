@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class EnemyIdleState : EnemyState
+public class IdleState : EnemyState<Wolf>
 {
-    public EnemyIdleState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    public IdleState(Wolf enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
 
     }

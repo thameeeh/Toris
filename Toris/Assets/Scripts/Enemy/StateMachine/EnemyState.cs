@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class EnemyState
+// Base class for enemy states, using generics to specify the type of enemy
+// As an example, EnemyState<Wolf> for a Wolf enemy
+// Since Enemy Types inherit from Enemy
+public class EnemyState<T> : IEnemyState where T : Enemy
 {
-    protected Enemy enemy;
+    protected T enemy;
     protected EnemyStateMachine enemyStateMachine;
 
-    public EnemyState(Enemy enemy, EnemyStateMachine enemyStateMachine)
+    public EnemyState(T enemy, EnemyStateMachine enemyStateMachine)
     {
         this.enemy = enemy;
         this.enemyStateMachine = enemyStateMachine;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
+public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
     //----  IDamageable  -------------
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
@@ -22,9 +22,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public EnemyStateMachine StateMachine { get; set; }
     public EnemyIdleState IdleState { get; set; }
-    public EnemyChaseState ChaseState { get; set; }
+    //public EnemyChaseState ChaseState { get; set; }
     public EnemyAttackState AttackState { get; set; }
-    public EnemyHowlState HowlState { get; set; }
 
     #endregion
 
@@ -33,38 +32,30 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [SerializeField] private EnemyIdleSOBase EnemyIdleBase;
     [SerializeField] private EnemyChaseSOBase EnemyChaseBase;
     [SerializeField] private EnemyAttackSOBase EnemyAttackBase;
-    [SerializeField] private HowlSOBase EnemyHowlBase;
 
     public EnemyIdleSOBase EnemyIdleBaseInstance { get; set; }
-    public EnemyChaseSOBase EnemyChaseBaseInstance { get; set; }
+    //public EnemyChaseSOBase EnemyChaseBaseInstance { get; set; }
     public EnemyAttackSOBase EnemyAttackBaseInstance { get; set; }
-    public HowlSOBase EnemyHowlBaseInstance { get; set; }
-
     #endregion
 
     public AnimationTriggerType CurrentAnimationType { get; set; }
     public Animator animator { get; set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //creates copies of the ScriptableObjects, so the same SO is not shared between enemies
         EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
-        EnemyChaseBaseInstance = Instantiate(EnemyChaseBase);
         EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
-        EnemyHowlBaseInstance = Instantiate(EnemyHowlBase);
         //---------------------------------
 
         StateMachine = new EnemyStateMachine();
 
         IdleState = new EnemyIdleState(this, StateMachine);
-        ChaseState = new EnemyChaseState(this, StateMachine);
         AttackState = new EnemyAttackState(this, StateMachine);
-        HowlState = new EnemyHowlState(this, StateMachine);
 
         animator = GetComponentInChildren<Animator>();
     }
-
-    private void Start()
+    protected virtual void Start()
     {
         CurrentHealth = MaxHealth;
 
@@ -74,7 +65,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
         EnemyIdleBaseInstance.Initialize(gameObject, this, playerTransform);
-        EnemyChaseBaseInstance.Initialize(gameObject, this, playerTransform);
         EnemyAttackBaseInstance.Initialize(gameObject, this, playerTransform);
         
         StateMachine.Initialize(IdleState);

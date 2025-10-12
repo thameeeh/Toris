@@ -5332,6 +5332,7 @@ MonoBehaviour:
   EnemyIdleBase: {fileID: 11400000, guid: 35f6ac1c72cbf8c4481b02e323f7c3ad, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 77ea470add6fc284d82f98a9c16c8aea, type: 2}
   EnemyAttackBase: {fileID: 11400000, guid: 56612c8607d80d743ba2227f35dd295e, type: 2}
+  EnemyHowlBase: {fileID: 0}
 --- !u!58 &433417205
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7720,6 +7721,7 @@ MonoBehaviour:
   EnemyIdleBase: {fileID: 11400000, guid: 35f6ac1c72cbf8c4481b02e323f7c3ad, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 77ea470add6fc284d82f98a9c16c8aea, type: 2}
   EnemyAttackBase: {fileID: 11400000, guid: f6c9ad4b3a0be3842951dfd217321474, type: 2}
+  EnemyHowlBase: {fileID: 11400000, guid: 796913c67b7e5134ab9873bb070e2b3a, type: 2}
 --- !u!1 &1522823562
 GameObject:
   m_ObjectHideFlags: 0

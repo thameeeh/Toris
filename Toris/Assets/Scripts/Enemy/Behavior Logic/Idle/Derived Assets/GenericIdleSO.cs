@@ -1,11 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WolfHowl", menuName = "Enemy Logic/Howl Logic/Wolf Howl")]
-public class WolfHowl : HowlSOBase
+[CreateAssetMenu(fileName = "Generic_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Generic Idle Wander")]
+public class GenericIdleSO : IdleSOBase<Generic>
 {
-    private bool _hasHowled = false;
-    public float HowlDuration = 1f;
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    public override void Initialize(GameObject gameObject, Generic enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
     }
@@ -13,8 +11,6 @@ public class WolfHowl : HowlSOBase
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
-
-        enemy.animator.Play("Movement");
     }
 
     public override void DoExitLogic()

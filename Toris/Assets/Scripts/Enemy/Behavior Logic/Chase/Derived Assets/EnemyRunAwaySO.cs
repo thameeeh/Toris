@@ -1,6 +1,6 @@
 using UnityEngine;
-[CreateAssetMenu(fileName = "Chase-Runaway", menuName = "Enemy Logic/Chase Logic/Runaway")]
-public class EnemyRunAway : EnemyChaseSOBase
+[CreateAssetMenu(fileName = "Generic_Chase_Runaway", menuName = "Enemy Logic/Chase Logic/Generic Chase Runaway")]
+public class EnemyRunAway : ChaseSOBase<Generic>
 {
     [SerializeField] private float _runawaySpeed = 0.2f;
 
@@ -28,7 +28,7 @@ public class EnemyRunAway : EnemyChaseSOBase
 
         if (enemy.IsWithinStrikingDistance)
         {
-            enemy.StateMachine.ChangeState(enemy.AttackState);
+            //enemy.StateMachine.ChangeState(enemy.AttackState);
         }
 
         if (!enemy.IsAggroed)
@@ -43,7 +43,7 @@ public class EnemyRunAway : EnemyChaseSOBase
         base.DoPhysicsLogic();
     }
 
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    public override void Initialize(GameObject gameObject, Generic enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
     }

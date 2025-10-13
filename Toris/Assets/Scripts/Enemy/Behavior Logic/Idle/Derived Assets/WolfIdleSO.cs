@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WolfIdle", menuName = "Enemy Logic/Idle Logic/Wolf Idle")]
-public class WolfIdle : EnemyIdleSOBase
+[CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Wolf Idle Wander")]
+public class WolfIdleSO : IdleSOBase<Wolf>
 {
     [SerializeField] private float WanderRange = 5f;
     [SerializeField] private float MoveSpeed = 1f;
 
     private Vector3 _targetPos;
     private Vector3 _direction;
-    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
+    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
     }

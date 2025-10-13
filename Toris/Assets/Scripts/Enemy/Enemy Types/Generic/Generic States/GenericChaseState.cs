@@ -1,19 +1,9 @@
 using UnityEngine;
 
-public class ChaseState : EnemyState<Wolf>
+public class GenericChaseState : EnemyState<Generic>
 {
-
-    public ChaseState(Wolf enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
-    {
-
-    }
-
-    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
-    {
-        base.AnimationTriggerEvent(triggerType);
-
-        enemy.EnemyChaseBaseInstance.DoAnimationTriggerEventLogic(triggerType);
-    }
+    public GenericChaseState(Generic enemy, EnemyStateMachine enemyStateMachine) 
+        : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
     {
@@ -35,10 +25,18 @@ public class ChaseState : EnemyState<Wolf>
 
         enemy.EnemyChaseBaseInstance.DoFrameUpdateLogic();
     }
+
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
         enemy.EnemyChaseBaseInstance.DoPhysicsLogic();
+    }
+
+    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
+    {
+        base.AnimationTriggerEvent(triggerType);
+
+        enemy.EnemyChaseBaseInstance.DoAnimationTriggerEventLogic(triggerType);
     }
 }

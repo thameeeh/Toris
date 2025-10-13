@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wolf Attack", menuName = "Enemy Logic/Attack Logic/Wolf Attack")]
-public class WolfAttack : EnemyAttackSOBase
+[CreateAssetMenu(fileName = "Wolf_Attack_QuickBite", menuName = "Enemy Logic/Attack Logic/Wolf Attack QuickBite")]
+public class WolfAttackSO : AttackSOBase<Wolf>
 {
     [SerializeField] private float _timeBetweenBites = 2f;
     [SerializeField] private float _timeTillExit = 1f;
 
     private float _timer;
     private float _exitTimer;
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
     }
@@ -51,9 +51,8 @@ public class WolfAttack : EnemyAttackSOBase
         _exitTimer = 0f;
     }
     
-    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
+    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
-        animator.Play("Attack_NW");
     }
 }

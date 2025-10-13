@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Idle", menuName = "Enemy Logic/Idle Logic/Random Wander")]
-public class EnemyIdleRandomWander : EnemyIdleSOBase
+[CreateAssetMenu(fileName = "Generic_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Generic Idle Wander")]
+public class EnemyIdleRandomWander : IdleSOBase<Generic>
 {
     [SerializeField] private float WanderRange = 5f;
     [SerializeField] private float MoveSpeed = 1f;
 
     private Vector3 _targetPos;
     private Vector3 _direction;
-    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
+    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
     }
@@ -49,7 +49,7 @@ public class EnemyIdleRandomWander : EnemyIdleSOBase
         base.DoPhysicsLogic();
     }
 
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    public override void Initialize(GameObject gameObject, Generic enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
     }

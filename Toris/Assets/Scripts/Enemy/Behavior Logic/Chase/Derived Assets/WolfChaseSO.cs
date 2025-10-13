@@ -1,12 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Chase-Direct Chase", menuName = "Enemy Logic/Chase Logic/Direct Chase")]
-public class EnemyChaseDirectToPlayer : EnemyChaseSOBase
+[CreateAssetMenu(fileName = "Wolf_Chase_Direct", menuName = "Enemy Logic/Chase Logic/Wolf Chase Direct")]
+public class WolfChaseSO : ChaseSOBase<Wolf>
 {
     [SerializeField] private float _movementSpeed = 0.2f;
-    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
+    public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
-        base.DoAnimationTriggerEventLogic(triggerType);
+        base.Initialize(gameObject, enemy, player);
     }
 
     public override void DoEnterLogic()
@@ -28,7 +28,7 @@ public class EnemyChaseDirectToPlayer : EnemyChaseSOBase
 
         if (enemy.IsWithinStrikingDistance)
         {
-            enemy.StateMachine.ChangeState(enemy.AttackState);
+            //enemy.StateMachine.ChangeState(enemy.AttackState);
         }
 
         if (!enemy.IsAggroed)
@@ -43,9 +43,9 @@ public class EnemyChaseDirectToPlayer : EnemyChaseSOBase
         base.DoPhysicsLogic();
     }
 
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
-        base.Initialize(gameObject, enemy, player);
+        base.DoAnimationTriggerEventLogic(triggerType);
     }
 
     public override void ResetValues()

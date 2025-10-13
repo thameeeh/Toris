@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Attack-Straight-Single Projectile", menuName = "Enemy Logic/Attack Logic/Double Test")]
-public class EnemyDoubleTest : EnemyAttackSOBase
+[CreateAssetMenu(fileName = "Generic_Attack_DoubleProjectile", menuName = "Enemy Logic/Attack Logic/Generic Attack DoubleProjectile")]
+public class EnemyDoubleTest : AttackSOBase<Generic>
 {
     [SerializeField] private Rigidbody2D BulletPrefab;
 
@@ -72,7 +72,7 @@ public class EnemyDoubleTest : EnemyAttackSOBase
         base.DoPhysicsLogic();
     }
 
-    public override void Initialize(GameObject gameObject, Enemy enemy, Transform player)
+    public override void Initialize(GameObject gameObject, Generic enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
     }

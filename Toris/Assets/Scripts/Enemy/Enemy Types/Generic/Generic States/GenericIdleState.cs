@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class IdleState : EnemyState<Wolf>
+public class GenericIdleState : EnemyState<Generic>
 {
-    public IdleState(Wolf enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
-    {
+    public GenericIdleState(Generic enemy, EnemyStateMachine enemyStateMachine) 
+        : base(enemy, enemyStateMachine) { }
 
-    }
     public override void EnterState()
     {
         base.EnterState();
@@ -26,16 +25,18 @@ public class IdleState : EnemyState<Wolf>
 
         enemy.EnemyIdleBaseInstance.DoFrameUpdateLogic();
     }
-    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
-    {
-        base.AnimationTriggerEvent(triggerType);
 
-        enemy.EnemyIdleBaseInstance.DoAnimationTriggerEventLogic(triggerType);
-    }
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
         enemy.EnemyIdleBaseInstance.DoPhysicsLogic();
+    }
+    
+    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
+    {
+        base.AnimationTriggerEvent(triggerType);
+
+        enemy.EnemyIdleBaseInstance.DoAnimationTriggerEventLogic(triggerType);
     }
 }

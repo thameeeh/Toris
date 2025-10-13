@@ -2,83 +2,45 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
-    //----  IDamageable  -------------
+    //---- Shared Interfaces -------------
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }
-
-    //----  IEnemyMoveable  ----------
     public bool IsFacingRight { get; set; } = true;
     [field: SerializeField] public Rigidbody2D rb { get; set; }
-
-    //----  ITriggerCheckable  ----------
     public bool IsAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
-    //--------------------------------
 
+    //--------------------------------
     [SerializeField] private Transform playerTransform;
     public Transform PlayerTransform => playerTransform;
 
-    #region State Machine Variables
-
-    public EnemyStateMachine StateMachine { get; set; }
-    public EnemyIdleState IdleState { get; set; }
-    //public EnemyChaseState ChaseState { get; set; }
-    public EnemyAttackState AttackState { get; set; }
-
-    #endregion
-
-    #region ScriptableObject Variables
-
-    [SerializeField] private EnemyIdleSOBase EnemyIdleBase;
-    [SerializeField] private EnemyChaseSOBase EnemyChaseBase;
-    [SerializeField] private EnemyAttackSOBase EnemyAttackBase;
-
-    public EnemyIdleSOBase EnemyIdleBaseInstance { get; set; }
-    //public EnemyChaseSOBase EnemyChaseBaseInstance { get; set; }
-    public EnemyAttackSOBase EnemyAttackBaseInstance { get; set; }
-    #endregion
-
-    public AnimationTriggerType CurrentAnimationType { get; set; }
     public Animator animator { get; set; }
+    public EnemyStateMachine StateMachine { get; set; }
 
     protected virtual void Awake()
     {
-        //creates copies of the ScriptableObjects, so the same SO is not shared between enemies
-        EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
-        EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
-        //---------------------------------
-
         StateMachine = new EnemyStateMachine();
-
-        IdleState = new EnemyIdleState(this, StateMachine);
-        AttackState = new EnemyAttackState(this, StateMachine);
-
         animator = GetComponentInChildren<Animator>();
     }
     protected virtual void Start()
     {
         CurrentHealth = MaxHealth;
-
-        rb.GetComponent<Rigidbody2D>();
-
+        if (rb == null)
+        {
+            rb.GetComponent<Rigidbody2D>();
+        }
         if (!playerTransform)
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-        EnemyIdleBaseInstance.Initialize(gameObject, this, playerTransform);
-        EnemyAttackBaseInstance.Initialize(gameObject, this, playerTransform);
-        
-        StateMachine.Initialize(IdleState);
-        CurrentAnimationType = AnimationTriggerType.Idle;
     }
 
     private void Update()
     {
-        StateMachine.CurrentEnemyState.FrameUpdate();
+        StateMachine.CurrentEnemyState?.FrameUpdate();
     }
 
     private void FixedUpdate()
     {
-        StateMachine.CurrentEnemyState.PhysicsUpdate();
+        StateMachine.CurrentEnemyState?.PhysicsUpdate();
         AnimationDirectionUpdate();
     }
 
@@ -142,10 +104,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     #endregion
 
     #region Animation
-    private void AnimationUpdate()
-    {
-        AnimationTriggerEvent(CurrentAnimationType);
-    }
     private void AnimationDirectionUpdate()
     {
         if (PlayerTransform != null)

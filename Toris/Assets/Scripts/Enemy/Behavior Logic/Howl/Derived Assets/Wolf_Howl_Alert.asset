@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9dd0e762da360740925fc47e9394260, type: 3}
-  m_Name: WolfHowl
-  m_EditorClassIdentifier: Assembly-CSharp::WolfHowl
+  m_Name: Wolf_Howl_Alert
+  m_EditorClassIdentifier: Assembly-CSharp::WolfHowlSO
   HowlDuration: 1

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdleState : State
+public class AnimalIdleState : State
 {
     public override void Enter()
     {

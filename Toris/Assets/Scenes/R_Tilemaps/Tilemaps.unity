@@ -7717,9 +7717,10 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 1509579130}
   playerTransform: {fileID: 881974379}
-  EnemyHowlBase: {fileID: 0}
-  EnemyChaseBase: {fileID: 0}
-  EnemyIdleBase: {fileID: 0}
+  EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
+  EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
+  EnemyIdleBase: {fileID: 11400000, guid: 82b81c892a8365441b1246466bcf4d86, type: 2}
+  EnemyAttackBase: {fileID: 11400000, guid: b1e35d958b037b149ab5d2eeb8d4d2f1, type: 2}
 --- !u!1 &1522823562
 GameObject:
   m_ObjectHideFlags: 0

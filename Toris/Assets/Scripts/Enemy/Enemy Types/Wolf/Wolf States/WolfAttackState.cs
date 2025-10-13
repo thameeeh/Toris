@@ -1,42 +1,42 @@
 using UnityEngine;
 
-public class WolfHowlState : EnemyState<Wolf>
+public class WolfAttackState : EnemyState<Wolf>
 {
-    public WolfHowlState(Wolf enemy, EnemyStateMachine enemyStateMachine) 
+    public WolfAttackState(Wolf enemy, EnemyStateMachine enemyStateMachine) 
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        enemy.EnemyHowlBaseInstance.DoEnterLogic();
+        enemy.EnemyAttackBaseInstance.DoEnterLogic();
     }
 
     public override void ExitState()
     {
         base.ExitState();
 
-        enemy.EnemyHowlBaseInstance.DoExitLogic();
+        enemy.EnemyAttackBaseInstance.DoExitLogic();
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
 
-        enemy.EnemyHowlBaseInstance.DoFrameUpdateLogic();
+        enemy.EnemyAttackBaseInstance.DoFrameUpdateLogic();
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
-        enemy.EnemyHowlBaseInstance.DoPhysicsLogic();
+        enemy.EnemyAttackBaseInstance.DoPhysicsLogic();
     }
 
     public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
     {
         base.AnimationTriggerEvent(triggerType);
 
-        enemy.EnemyHowlBaseInstance.DoAnimationTriggerEventLogic(triggerType);
+        enemy.EnemyAttackBaseInstance.DoAnimationTriggerEventLogic(triggerType);
     }
 }

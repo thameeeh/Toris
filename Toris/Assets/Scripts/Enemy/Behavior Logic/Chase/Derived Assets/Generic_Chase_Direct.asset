@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e381f8db761c3fb498fa18d3a92b9427, type: 3}
-  m_Name: Wolf Chase
-  m_EditorClassIdentifier: Assembly-CSharp::WolfChase
+  m_Script: {fileID: 11500000, guid: eacd8d981486d4d4b8204a3f11a9a5e4, type: 3}
+  m_Name: Generic_Chase_Direct
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChaseDirectToPlayer
+  _movementSpeed: 0.2

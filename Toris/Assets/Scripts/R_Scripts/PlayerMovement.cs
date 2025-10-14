@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         _playerInputActions.Player.Disable();
     }
     #endregion
+
     private void Awake()
     {
         _playerInputActions = new InputSystem_Actions();

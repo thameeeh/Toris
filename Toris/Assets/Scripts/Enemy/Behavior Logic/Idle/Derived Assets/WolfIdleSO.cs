@@ -3,21 +3,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Wolf Idle Wander")]
 public class WolfIdleSO : IdleSOBase<Wolf>
 {
-    [SerializeField] private float WanderRange = 5f;
-    [SerializeField] private float MoveSpeed = 1f;
+    [SerializeField] private float WanderRadius = 5f;
+    [SerializeField] private float WanderTimer = 2f;
+    [SerializeField] private float MovementSpeed = 3f;
 
-    private Vector3 _targetPos;
-    private Vector3 _direction;
-    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
+    private float _timer;
+    private Vector2 _wanderPoint;
+
+    public override void Initialize(GameObject gameObject, Wolf enemy, Transform player) 
     {
-        base.DoAnimationTriggerEventLogic(triggerType);
+        base.Initialize(gameObject, enemy, player);
+
+        _timer = WanderTimer;
+        _wanderPoint = GetRandomWanderPoint();
     }
 
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
-
-        _targetPos = GetRandomPointInCircle();
     }
 
     public override void DoExitLogic()
@@ -29,20 +32,19 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
-        _direction = (_targetPos - enemy.transform.position).normalized;
+        _timer += Time.deltaTime;
 
-        enemy.MoveEnemy(_direction * MoveSpeed);
-
-        if (enemy.IsAggroed)
+        if (_timer >= WanderTimer)
         {
-            enemy.StateMachine.ChangeState(enemy.HowlState);
-
+            _wanderPoint = GetRandomWanderPoint();
+            _timer = 0;
         }
 
-        if ((enemy.transform.position - _targetPos).sqrMagnitude < 0.01f)
-        {
-            _targetPos = GetRandomPointInCircle();
-        }
+        Vector2 moveDirection = (_wanderPoint - (Vector2)enemy.transform.position).normalized;
+        enemy.MoveEnemy(moveDirection * MovementSpeed);
+
+        enemy.animator.SetFloat("DirectionX", moveDirection.x);
+        enemy.animator.SetFloat("DirectionY", moveDirection.y);
     }
 
     public override void DoPhysicsLogic()
@@ -55,8 +57,13 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.ResetValues();
     }
-    private Vector3 GetRandomPointInCircle()
+    private Vector3 GetRandomWanderPoint()
     {
-        return enemy.transform.position + (Vector3)UnityEngine.Random.insideUnitCircle * WanderRange;
+        return (Vector2)enemy.transform.position + Random.insideUnitCircle * WanderRadius;
+    }
+
+    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
+    {
+        base.DoAnimationTriggerEventLogic(triggerType);
     }
 }

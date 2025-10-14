@@ -108,10 +108,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     {
         if (PlayerTransform != null)
         {
-            Vector2 direction = (PlayerTransform.position - transform.position).normalized;
-
-            animator.SetFloat("DirectionX", direction.x);
-            animator.SetFloat("DirectionY", direction.y);
+            
         }
     }
 

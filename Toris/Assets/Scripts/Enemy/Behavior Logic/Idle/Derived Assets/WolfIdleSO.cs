@@ -3,12 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Wolf Idle Wander")]
 public class WolfIdleSO : IdleSOBase<Wolf>
 {
-    [SerializeField] private float WanderRadius = 5f;
+    [SerializeField] private float WanderRadius = 20f;
     [SerializeField] private float WanderTimer = 2f;
     [SerializeField] private float MovementSpeed = 3f;
 
     private float _timer;
-    private Vector2 _wanderPoint;
+    private Vector3 _wanderPoint;
+    private Vector2 _moveDirection;
 
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player) 
     {
@@ -21,6 +22,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+        enemy.animator.Play("Idle");
     }
 
     public override void DoExitLogic()
@@ -38,13 +40,24 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         {
             _wanderPoint = GetRandomWanderPoint();
             _timer = 0;
+            _moveDirection = (_wanderPoint - enemy.transform.position).normalized;
         }
 
-        Vector2 moveDirection = (_wanderPoint - (Vector2)enemy.transform.position).normalized;
-        enemy.MoveEnemy(moveDirection * MovementSpeed);
+        
+        
 
-        enemy.animator.SetFloat("DirectionX", moveDirection.x);
-        enemy.animator.SetFloat("DirectionY", moveDirection.y);
+        if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.01)
+        {
+            enemy.animator.SetBool("IsMoving", false);
+            enemy.MoveEnemy(Vector2.zero);
+        }
+        else
+        {
+            enemy.animator.SetBool("IsMoving", true);
+            enemy.MoveEnemy(_moveDirection * MovementSpeed);
+            enemy.animator.SetFloat("DirectionX", _moveDirection.x);
+            enemy.animator.SetFloat("DirectionY", _moveDirection.y);
+        }
     }
 
     public override void DoPhysicsLogic()
@@ -57,9 +70,9 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.ResetValues();
     }
-    private Vector3 GetRandomWanderPoint()
+    private Vector2 GetRandomWanderPoint()
     {
-        return (Vector2)enemy.transform.position + Random.insideUnitCircle * WanderRadius;
+        return enemy.transform.position + Random.onUnitSphere * WanderRadius;
     }
 
     public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)

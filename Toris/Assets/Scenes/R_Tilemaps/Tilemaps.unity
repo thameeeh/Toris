@@ -169,6 +169,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: 9dabf747d4452d24c84b309775c00283, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 9dabf747d4452d24c84b309775c00283, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.08
@@ -262,7 +266,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &210733463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,9 +568,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73daf920877a0c42b867d006122ea96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationView
-  animator: {fileID: 213529636}
-  sprite: {fileID: 213529637}
-  character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
+  _animator: {fileID: 0}
+  _sprite: {fileID: 0}
+  _character: {fileID: 0}
 --- !u!114 &213529639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,9 +583,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1e2c887e736ca4d860cdf440923229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
-  view: {fileID: 213529638}
-  character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
-  weapon: {fileID: 11400000, guid: ef8138cce2675194c9de1b4d5c8c6dfe, type: 2}
+  _view: {fileID: 0}
+  _character: {fileID: 0}
+  _weapon: {fileID: 0}
   resumeEpsilon: 0.02
 --- !u!1 &247162363
 GameObject:
@@ -6677,7 +6681,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &881974373
 MonoBehaviour:
   m_ObjectHideFlags: 0

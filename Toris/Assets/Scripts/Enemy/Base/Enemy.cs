@@ -21,6 +21,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     {
         StateMachine = new EnemyStateMachine();
         animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+            Debug.LogError("Animator component is missing on the enemy.");
     }
     protected virtual void Start()
     {
@@ -33,7 +35,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         StateMachine.CurrentEnemyState?.FrameUpdate();
     }
@@ -59,7 +61,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public void Die()
     {
         Debug.Log("Die() called");
-        Destroy(gameObject);
     }
 
     #endregion
@@ -68,7 +69,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public void MoveEnemy(Vector2 velocity)
     {
         rb.linearVelocity = velocity;
-        CheckForLeftOrRightFacing(velocity);
+        //CheckForLeftOrRightFacing(velocity);
     }
 
     public void CheckForLeftOrRightFacing(Vector2 velocity)

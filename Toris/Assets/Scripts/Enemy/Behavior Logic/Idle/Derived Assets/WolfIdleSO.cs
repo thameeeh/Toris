@@ -28,6 +28,8 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     public override void DoExitLogic()
     {
         base.DoExitLogic();
+
+        enemy.animator.SetBool("IsMoving", false);
     }
 
     public override void DoFrameUpdateLogic()
@@ -43,20 +45,18 @@ public class WolfIdleSO : IdleSOBase<Wolf>
             _moveDirection = (_wanderPoint - enemy.transform.position).normalized;
         }
 
-        
-        
+
 
         if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.01)
         {
             enemy.animator.SetBool("IsMoving", false);
-            enemy.MoveEnemy(Vector2.zero);
+            enemy.MoveEnemy(Vector2.zero, false);
         }
         else
         {
             enemy.animator.SetBool("IsMoving", true);
             enemy.MoveEnemy(_moveDirection * MovementSpeed);
-            enemy.animator.SetFloat("DirectionX", _moveDirection.x);
-            enemy.animator.SetFloat("DirectionY", _moveDirection.y);
+            enemy.UpdateAnimationDirection(_moveDirection);
         }
     }
 

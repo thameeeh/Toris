@@ -1710,7 +1710,6 @@ MonoBehaviour:
   idleState: {fileID: 0}
   walkState: {fileID: 0}
   runState: {fileID: 0}
-  _animator: {fileID: 0}
 --- !u!50 &1093306923
 Rigidbody2D:
   serializedVersion: 5

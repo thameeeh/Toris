@@ -6,6 +6,8 @@ using UnityEngine;
 // 
 public class Wolf : Enemy
 {
+    public float AttackDamage = 20;
+
     #region Wolf-Specific States
     public WolfHowlState HowlState { get; set; }
     public WolfChaseState ChaseState { get; set; }
@@ -57,6 +59,7 @@ public class Wolf : Enemy
         EnemyDeadBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
         StateMachine.Initialize(IdleState);
+        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
     }
 
     protected override void Update()
@@ -65,7 +68,9 @@ public class Wolf : Enemy
 
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
+            Die();
             StateMachine.ChangeState(DeadState);
+            Destroy(gameObject);
         }
     }
 }

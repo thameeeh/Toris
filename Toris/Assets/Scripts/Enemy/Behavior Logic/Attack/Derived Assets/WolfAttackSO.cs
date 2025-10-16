@@ -8,6 +8,8 @@ public class WolfAttackSO : AttackSOBase<Wolf>
 
     private float _timer;
     private float _exitTimer;
+
+    private Vector2 _animationDirection = Vector2.zero;
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -28,6 +30,8 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
+        enemy.MoveEnemy(Vector2.zero, false);
+
         if (!enemy.IsWithinStrikingDistance) 
         {
             _exitTimer += Time.deltaTime;
@@ -39,6 +43,9 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     public override void DoPhysicsLogic()
     {
         base.DoPhysicsLogic();
+
+        _animationDirection = enemy.PlayerTransform.position - enemy.transform.position;
+        enemy.UpdateAnimationDirection(_animationDirection.normalized);
     }
 
     public override void ResetValues()

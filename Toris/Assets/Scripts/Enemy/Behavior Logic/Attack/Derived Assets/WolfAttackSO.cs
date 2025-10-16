@@ -3,13 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Attack_QuickBite", menuName = "Enemy Logic/Attack Logic/Wolf Attack QuickBite")]
 public class WolfAttackSO : AttackSOBase<Wolf>
 {
-    [SerializeField] private float _timeBetweenBites = 2f;
-    [SerializeField] private float _timeTillExit = 1f;
-
-    private float _timer;
-    private float _exitTimer;
-
     private Vector2 _animationDirection = Vector2.zero;
+    
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -30,14 +25,13 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
-        enemy.MoveEnemy(Vector2.zero, false);
+        Vector2 moveDirection = (playerTransform.position - enemy.transform.position).normalized * enemy.MovementSpeed;;
 
-        if (!enemy.IsWithinStrikingDistance) 
+        if (enemy.IsMovingWhileBiting)
         {
-            _exitTimer += Time.deltaTime;
-            if (_exitTimer > _timeTillExit)
-                enemy.StateMachine.ChangeState(enemy.ChaseState);
+            enemy.MoveEnemy(moveDirection);
         }
+        else enemy.MoveEnemy(Vector2.zero);
     }
 
     public override void DoPhysicsLogic()
@@ -53,9 +47,6 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         base.ResetValues();
 
         Debug.Log("Values have been reset");
-
-        _timer = 0f;
-        _exitTimer = 0f;
     }
     
     public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)

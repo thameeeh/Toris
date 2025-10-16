@@ -72,15 +72,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     #endregion
 
     #region Movement functions
-    //bool is for animation blend trres, when velocity is (0, 0)
-    //blend trees does not work correctly with 4 direction sprite animation
-    public void MoveEnemy(Vector2 velocity, bool t = true)
+    public void MoveEnemy(Vector2 velocity)
     {
         rb.linearVelocity = velocity;
-        if(t)UpdateAnimationDirection(velocity);
+        if(velocity != Vector2.zero)UpdateAnimationDirection(velocity);
     }
-    //direction is updated by default
-    //only in cases when explicitly told it will skip this step
     public void UpdateAnimationDirection(Vector2 direction)
     {
         direction = direction.normalized;
@@ -103,10 +99,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     }
     #endregion
 
-    public void DealDamageToPlayer(int amount) 
+    public void DealDamageToPlayer(float amount) 
     {
-        _hitData.damage = amount;
-        _playerDamageReceiver.ReceiveHit(_hitData);
+        if (IsWithinStrikingDistance)
+        {
+            _hitData.damage = amount;
+            _playerDamageReceiver.ReceiveHit(_hitData);
+        }
     }
 
     #region Animation

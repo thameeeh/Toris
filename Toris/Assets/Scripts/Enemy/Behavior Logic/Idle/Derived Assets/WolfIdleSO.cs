@@ -5,7 +5,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 {
     [SerializeField] private float WanderRadius = 20f;
     [SerializeField] private float WanderTimer = 2f;
-    [SerializeField] private float MovementSpeed = 3f;
+    private float MovementSpeed;
 
     private float _timer;
     private Vector3 _wanderPoint;
@@ -23,6 +23,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.DoEnterLogic();
         enemy.animator.Play("Idle");
+        MovementSpeed = enemy.MovementSpeed;
     }
 
     public override void DoExitLogic()
@@ -50,7 +51,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.01)
         {
             enemy.animator.SetBool("IsMoving", false);
-            enemy.MoveEnemy(Vector2.zero, false);
+            enemy.MoveEnemy(Vector2.zero);
         }
         else
         {

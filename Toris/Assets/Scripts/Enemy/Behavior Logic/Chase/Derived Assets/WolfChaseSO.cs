@@ -28,8 +28,6 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
 
         Vector2 moveDirection = (playerTransform.position - enemy.transform.position).normalized;
         enemy.MoveEnemy(moveDirection * _movementSpeed);
-
-
     }
 
     public override void DoPhysicsLogic()

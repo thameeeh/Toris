@@ -2,15 +2,20 @@ using UnityEngine;
 
 public class AnimationTriggerRelay : MonoBehaviour
 {
-    private Enemy _enemyTriggerEvent;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Wolf _wolf;
     void Start()
     {
-        _enemyTriggerEvent = GetComponentInParent<Enemy>();
+        _wolf = GetComponentInParent<Wolf>();
     }
 
     public void DealDamage() 
     {
-        _enemyTriggerEvent.DealDamageToPlayer(20);
+        _wolf.DealDamageToPlayer(_wolf.AttackDamage);
+    }
+
+    public void MoveWhileBite(int i) 
+    {
+        if(i == 1) _wolf.IsMovingWhileBiting = true;
+        else _wolf.IsMovingWhileBiting = false;
     }
 }

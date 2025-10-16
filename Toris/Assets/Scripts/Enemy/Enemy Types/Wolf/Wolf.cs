@@ -6,7 +6,18 @@ using UnityEngine;
 // 
 public class Wolf : Enemy
 {
+    
+    [Space][Space][Header("Stats")]
     public float AttackDamage = 20;
+    public float MovementSpeed = 2;
+
+    public bool IsMovingWhileBiting { get; set; } = false;
+    public bool IsAttackAnimationEnded { get; set; } = false;
+    public void PrintMessage(string msg) 
+    {
+        Debug.Log(msg);
+    }
+
 
     #region Wolf-Specific States
     public WolfHowlState HowlState { get; set; }
@@ -17,7 +28,7 @@ public class Wolf : Enemy
     #endregion
 
     #region Wolf-Specific ScriptableObjects
-    [Header("Wolf-Specific SOs")]
+    [Space][Space][Header("Wolf-Specific SOs")]
     [SerializeField] private WolfHowlSO EnemyHowlBase;
     [SerializeField] private WolfChaseSO EnemyChaseBase;
     [SerializeField] private WolfIdleSO EnemyIdleBase;

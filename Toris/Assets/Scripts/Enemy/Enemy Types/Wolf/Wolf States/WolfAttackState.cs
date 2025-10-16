@@ -26,9 +26,9 @@ public class WolfAttackState : EnemyState<Wolf>
 
         enemy.EnemyAttackBaseInstance.DoFrameUpdateLogic();
 
-        if (!enemy.IsWithinStrikingDistance) 
+        if (!enemy.IsWithinStrikingDistance && enemy.IsAttackAnimationEnded)
         {
-            enemyStateMachine.ChangeState(enemy.ChaseState);
+            enemy.StateMachine.ChangeState(enemy.ChaseState);
         }
     }
 

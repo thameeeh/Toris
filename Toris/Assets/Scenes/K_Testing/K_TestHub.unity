@@ -5647,6 +5647,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2158803767955066894, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2158803767955066894, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2641182866618561499, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
       propertyPath: m_Layer
       value: 12
@@ -5695,10 +5703,22 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 3523677756239145075, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6101252451839196625, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
       propertyPath: EnemyDeadBase
       value: 
       objectReference: {fileID: 11400000, guid: ab8f8e04fa3ddad4a9a7e8edf1aa51c0, type: 2}
+    - target: {fileID: 6101252451839196625, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
+      propertyPath: MovementSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101252451839196625, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 139181120}
     - target: {fileID: 8495004723452914566, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
       propertyPath: m_Radius
       value: 1

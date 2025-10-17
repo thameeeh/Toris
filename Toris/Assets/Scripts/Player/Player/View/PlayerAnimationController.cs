@@ -18,11 +18,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public bool CanMove()
     {
-        // The player can move freely only during locomotion and hold states
-        // Everything else (Hurt, OneShotBusy, Dead) locks movement
-        return _state == AnimState.Locomotion
-            || _state == AnimState.HoldUnlocked
-            || _state == AnimState.HoldLocked;
+        return _state == AnimState.Locomotion;
     }
 
     #region FSM

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class PlayerBowController : MonoBehaviour
 {

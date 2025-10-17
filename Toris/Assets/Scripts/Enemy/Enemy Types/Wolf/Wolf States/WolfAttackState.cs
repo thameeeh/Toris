@@ -10,7 +10,7 @@ public class WolfAttackState : EnemyState<Wolf>
         base.EnterState();
 
         enemy.EnemyAttackBaseInstance.DoEnterLogic();
-        enemy.animator.Play("Attack_SW");
+        enemy.animator.SetTrigger("Attack");
     }
 
     public override void ExitState()

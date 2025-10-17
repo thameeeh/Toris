@@ -48,8 +48,6 @@ AnimationClip:
       value: {fileID: -438747762340184503, guid: 71cc886bed9961346a67f95453438df1, type: 3}
     - time: 1.0833334
       value: {fileID: -4351682758412854413, guid: 71cc886bed9961346a67f95453438df1, type: 3}
-    - time: 1.1666666
-      value: {fileID: -6308672029968365640, guid: 71cc886bed9961346a67f95453438df1, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -86,13 +84,12 @@ AnimationClip:
     - {fileID: -4677700326366751674, guid: 71cc886bed9961346a67f95453438df1, type: 3}
     - {fileID: -438747762340184503, guid: 71cc886bed9961346a67f95453438df1, type: 3}
     - {fileID: -4351682758412854413, guid: 71cc886bed9961346a67f95453438df1, type: 3}
-    - {fileID: -6308672029968365640, guid: 71cc886bed9961346a67f95453438df1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.1833333
+    m_StopTime: 1.1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -111,25 +108,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.8333333
-    functionName: MoveWhileBite
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 1
-    messageOptions: 0
-  - time: 1
-    functionName: DealDamage
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.0833334
-    functionName: MoveWhileBite
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

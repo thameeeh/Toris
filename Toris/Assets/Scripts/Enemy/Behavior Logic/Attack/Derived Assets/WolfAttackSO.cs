@@ -40,6 +40,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
 
         _animationDirection = enemy.PlayerTransform.position - enemy.transform.position;
         enemy.UpdateAnimationDirection(_animationDirection.normalized);
+        enemy.animator.SetTrigger("Attack");
     }
 
     public override void ResetValues()
@@ -47,6 +48,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         base.ResetValues();
 
         Debug.Log("Values have been reset");
+        enemy.animator.ResetTrigger("Attack");
     }
     
     public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)

@@ -6,6 +6,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     private Vector2 _animationDirection = Vector2.zero;
     private int _attackTagHash = Animator.StringToHash("AttackAnimations");
     public bool _isAttackAnimationFinished { get; set; } = false;
+
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);

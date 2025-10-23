@@ -20,7 +20,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
-    protected HitData _hitData;
     protected virtual void Awake()
     {
         StateMachine = new EnemyStateMachine();

@@ -11,6 +11,9 @@ public class Wolf : Enemy
     public float AttackDamage = 20;
     public float MovementSpeed = 2;
 
+
+    private HitData _hitData;
+
     public bool IsMovingWhileBiting { get; set; } = false;
     public void PrintMessage(string msg) 
     {

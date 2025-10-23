@@ -4875,6 +4875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMotor2D
   rb: {fileID: 139181126}
   config: {fileID: 11400000, guid: 24f30c4e31e982344b17ed2b3b3f3a49, type: 2}
+  _dash: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
 --- !u!114 &139181123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4887,8 +4888,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b19e48299728a548a777ac5282630ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
-  moveAction: {fileID: -2178390741145996709, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
-  shootMouseAction: {fileID: 3330035694635810871, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
+  _moveAction: {fileID: -2178390741145996709, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
+  _shootMouseAction: {fileID: 3330035694635810871, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
+  _dashAction: {fileID: -7631820521237691973, guid: e9781c573fe7fe5499cf14aab706a76a, type: 3}
 --- !u!114 &139181124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4904,6 +4906,8 @@ MonoBehaviour:
   _inputReader: {fileID: 139181123}
   _motor: {fileID: 139181122}
   _animController: {fileID: 51265557}
+  _stats: {fileID: 139181128}
+  _dash: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
 --- !u!50 &139181126
 Rigidbody2D:
   serializedVersion: 5
@@ -4962,7 +4966,7 @@ MonoBehaviour:
   currentHP: 100
   maxStamina: 100
   currentStamina: 100
-  staminaRegenPerSec: 10
+  staminaRegenPerSec: 0
 --- !u!61 &139181129
 BoxCollider2D:
   m_ObjectHideFlags: 0

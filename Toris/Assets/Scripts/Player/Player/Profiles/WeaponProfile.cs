@@ -1,7 +1,4 @@
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using static WeaponProfile;
 
 [CreateAssetMenu(fileName = "Weapon Profile", menuName = "Game/Weapons/Weapon Profile")]
 public class WeaponProfile : ScriptableObject

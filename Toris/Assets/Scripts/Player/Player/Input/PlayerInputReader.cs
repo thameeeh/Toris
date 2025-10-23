@@ -5,54 +5,70 @@ using UnityEngine.InputSystem;
 public class PlayerInputReader : MonoBehaviour
 {
     [Header("Actions (drag from .inputactions asset)")]
-    [SerializeField] private InputActionReference moveAction;
-    [SerializeField] private InputActionReference shootMouseAction;
+    [SerializeField] private InputActionReference _moveAction;
+    [SerializeField] private InputActionReference _shootMouseAction;
+    [SerializeField] private InputActionReference _dashAction;
 
     public Vector2 Move { get; private set; }
 
-    // Fire when shoot starts (press) / releases (button up)
     public event Action OnShootStarted;
     public event Action OnShootReleased;
+    public event Action OnDashPressed;
 
-    //Optional polling helper
     public bool IsShootHeld =>
-        shootMouseAction != null &&
-        shootMouseAction.action != null &&
-        shootMouseAction.action.IsPressed();
+        _shootMouseAction != null &&
+        _shootMouseAction.action != null &&
+        _shootMouseAction.action.IsPressed();
 
     void OnEnable()
     {
-        moveAction?.action?.Enable();
-        if (shootMouseAction?.action != null)
+        if (_shootMouseAction?.action != null)
         {
-            shootMouseAction.action.Enable();
-            shootMouseAction.action.started += OnShootStartedCallback;
-            shootMouseAction.action.canceled += OnShootReleasedCallback;
+            _shootMouseAction.action.Enable();
+            _shootMouseAction.action.started += OnShootStartedCallback;
+            _shootMouseAction.action.canceled += OnShootReleasedCallback;
         }
+
+        if (_dashAction?.action != null)
+        {
+            _dashAction?.action.Enable();
+            _dashAction.action.performed += OnDashPerformed;
+        }
+
+        _moveAction?.action?.Enable();
     }
 
     void OnDisable()
     {
-        if (shootMouseAction?.action != null)
+        if (_shootMouseAction?.action != null)
         {
-            shootMouseAction.action.started -= OnShootStartedCallback;
-            shootMouseAction.action.canceled -= OnShootReleasedCallback;
-            shootMouseAction.action.Disable();
+            _shootMouseAction.action.started -= OnShootStartedCallback;
+            _shootMouseAction.action.canceled -= OnShootReleasedCallback;
+            _shootMouseAction.action.Disable();
         }
 
-        moveAction?.action?.Disable();
+        if (_dashAction?.action != null)
+        {
+            _dashAction?.action.Disable();
+            _dashAction.action.performed -= OnDashPerformed;
+        }
+
+        _moveAction?.action?.Disable();
     }
 
     void Update()
     {
-        var act = moveAction?.action;
+        var act = _moveAction?.action;
         Move = act != null ? act.ReadValue<Vector2>() : Vector2.zero;
     }
 
-    // --- private wrappers so we can cleanly unsubscribe ---
+
+    // private wrappers so we can cleanly unsubscribe
     void OnShootStartedCallback(InputAction.CallbackContext _)
         => OnShootStarted?.Invoke();
 
     void OnShootReleasedCallback(InputAction.CallbackContext _)
         => OnShootReleased?.Invoke();
+    void OnDashPerformed(InputAction.CallbackContext _) 
+        => OnDashPressed?.Invoke();
 }

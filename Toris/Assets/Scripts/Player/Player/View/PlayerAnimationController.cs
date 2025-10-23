@@ -12,7 +12,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] WeaponProfile _weapon;
 
     [Header("General")]
-    [Range(0f, 0.2f)] public float resumeEpsilon = 0.02f; // jump past lock when releasing
+    [Range(0f, 0.2f)] public float resumeEpsilon = 0.02f;
     private float _hurtEndTime = 0f;
     private float _deathEndTime = 0f;
 
@@ -57,7 +57,6 @@ public class PlayerAnimationController : MonoBehaviour
     }
 
     #region Public API
-
     /// Call every frame with movement vector
     public void Tick(Vector2 move)
     {
@@ -106,6 +105,7 @@ public class PlayerAnimationController : MonoBehaviour
         _view.CrossFadeIfChanged(hash, 0f); // lightweight; Play on same state is safe
     }
 
+    public Vector2 CurrentFacing => _lastDir;
 
     /// Begin a hold action (defaults to "Shoot").
     public void BeginHold(string actionKey = "Shoot")

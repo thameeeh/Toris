@@ -8,9 +8,10 @@ public class AnimationTriggerRelay : MonoBehaviour
         _wolf = GetComponentInParent<Wolf>();
     }
 
+    //method path this -> wolf -> enemy -> player
     public void DealDamage() 
     {
-        _wolf.DealDamageToPlayer(_wolf.AttackDamage);
+        _wolf.DamagePlayer(_wolf.AttackDamage);
     }
 
     public void MoveWhileBite(int i) 

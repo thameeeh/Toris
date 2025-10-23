@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Badger_Idle", menuName = "Enemy Logic/Idle Logic/Badger Idle")]
-public class BadgerIdleSO : IdleSOBase<Badger>
+[CreateAssetMenu(fileName = "Badger_Dead", menuName = "Enemy Logic/Dead Logic/Badger Death")]
+public class BadgerDeadSO : DeadSOBase<Badger>
 {
 
     public override void Initialize(GameObject gameObject, Badger enemy, Transform player)

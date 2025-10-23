@@ -5896,6 +5896,7 @@ GameObject:
   - component: {fileID: 868007736}
   - component: {fileID: 868007738}
   - component: {fileID: 868007737}
+  - component: {fileID: 868007739}
   m_Layer: 0
   m_Name: Badger
   m_TagString: Untagged
@@ -5936,7 +5937,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -5947,7 +5948,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &868007738
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5984,6 +5985,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.3
+--- !u!114 &868007739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868007735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e4f57084f45954ca542742cdb540d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Badger
+  <MaxHealth>k__BackingField: 100
+  <rb>k__BackingField: {fileID: 868007737}
+  playerTransform: {fileID: 139181120}
+  AttackDamage: 20
+  WalkingSpeed: 1
+  BurrowSpeed: 3
+  BadgerIdleBase: {fileID: 11400000, guid: 676b25a4e45ecd044a236619325bb6b5, type: 2}
+  BadgerTunnelBase: {fileID: 11400000, guid: 5bfc48f681a3db24fbba9e87a6c25c1a, type: 2}
+  BadgerBurrowBase: {fileID: 11400000, guid: e0ed72cc1a669af428baf1c6d295972c, type: 2}
+  BadgerDeadBase: {fileID: 11400000, guid: 9aaa24715cbf2d942b127dcb26b31906, type: 2}
 --- !u!1 &975698888
 GameObject:
   m_ObjectHideFlags: 0
@@ -6124,6 +6147,10 @@ PrefabInstance:
     - target: {fileID: 8667529937978999198, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
       propertyPath: m_Name
       value: Wolf
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667529937978999198, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8495004723452914566, guid: a62fbe3197804e24faaa0c080b3280b8, type: 3}

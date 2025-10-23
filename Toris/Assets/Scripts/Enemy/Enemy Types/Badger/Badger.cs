@@ -1,7 +1,9 @@
+using System.Xml;
 using UnityEngine;
 
 public class Badger : Enemy
 {
+
     [Space][Header("Stats")]
     public float AttackDamage = 20;
     public float WalkingSpeed = 1;
@@ -19,17 +21,20 @@ public class Badger : Enemy
     public BadgerTunnelState TunnelState { get; set; }
     public BadgerIdleState IdleState { get; set; }
     public BadgerBurrowState AttackState { get; set; }
+    public BadgerDeadState DeadState { get; set; }
     #endregion
 
     #region Badger-Specific ScriptableObjects
-    [Space][Space][Header("Wolf-Specific SOs")]
+    [Space][Space][Header("Badger-Specific SOs")]
     [SerializeField] private BadgerIdleSO BadgerIdleBase;
     [SerializeField] private BadgerTunnelSO BadgerTunnelBase;
     [SerializeField] private BadgerBurrowSO BadgerBurrowBase;
+    [SerializeField] private BadgerDeadSO BadgerDeadBase;
 
     public BadgerIdleSO BadgerIdleBaseInstance { get; set; }
     public BadgerTunnelSO BadgerTunnelBaseInstance { get; set; }
     public BadgerBurrowSO BadgerBurrowBaseInstance { get; set; }
+    public BadgerDeadSO BadgerDeadBaseInstance { get; set; }
     #endregion
 
     protected override void Awake()
@@ -39,10 +44,12 @@ public class Badger : Enemy
         BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
         BadgerTunnelBaseInstance = Instantiate(BadgerTunnelBase);
         BadgerBurrowBaseInstance = Instantiate(BadgerBurrowBase);
+        BadgerDeadBaseInstance = Instantiate(BadgerDeadBase);
 
         IdleState = new BadgerIdleState(this, StateMachine);
         TunnelState = new BadgerTunnelState(this, StateMachine);
         AttackState = new BadgerBurrowState(this, StateMachine);
+        DeadState = new BadgerDeadState(this, StateMachine);
     }
 
     protected override void Start()
@@ -54,6 +61,23 @@ public class Badger : Enemy
         BadgerBurrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
         StateMachine.Initialize(IdleState);
+
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+    }
+    protected override void Update()
+    {
+        base.Update();
+
+        if (CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
+        {
+            Die();
+            StateMachine.ChangeState(DeadState);
+            Destroy(gameObject);
+        }
+    }
+
+    private void DealDamageToPlayer(float damage, HitData hitData)
+    {
+        base.DamagePlayer(damage, hitData);
     }
 }

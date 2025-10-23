@@ -98,12 +98,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     }
     #endregion
 
-    public void DealDamageToPlayer(float amount) 
+    public void DamagePlayer(float amount, HitData hitData) 
     {
         if (IsWithinStrikingDistance)
         {
-            _hitData.damage = amount;
-            _playerDamageReceiver.ReceiveHit(_hitData);
+            hitData.damage = amount;
+            _playerDamageReceiver.ReceiveHit(hitData);
         }
     }
 

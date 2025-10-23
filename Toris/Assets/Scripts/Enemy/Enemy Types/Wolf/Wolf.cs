@@ -86,4 +86,8 @@ public class Wolf : Enemy
             Destroy(gameObject);
         }
     }
+
+    public void DamagePlayer(float damage) {
+        base.DamagePlayer(damage, _hitData);
+    }
 }

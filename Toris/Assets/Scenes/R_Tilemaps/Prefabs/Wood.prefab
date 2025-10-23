@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3484337100866478492}
   - component: {fileID: 7641757758861605435}
   - component: {fileID: 4785839145970826760}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Wood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5108641033362759833}
   - component: {fileID: 5620761019770280978}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Tiles2_50
   m_TagString: Untagged
   m_Icon: {fileID: 0}

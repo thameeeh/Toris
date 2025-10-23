@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b14b542f1d6a997428b0b3152da74214, type: 3}
   m_Name: DashConfig
   m_EditorClassIdentifier: Assembly-CSharp::DashConfig
-  initialSpeed: 10
+  initialSpeed: 15
   duration: 0.5
-  cooldown: 0.3
+  cooldown: 0
   blendToRun: 1
   speedCurve:
     serializedVersion: 2
@@ -40,5 +40,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  staminaCost: 50
+  staminaCost: 10
   lockFacingDuringDash: 1

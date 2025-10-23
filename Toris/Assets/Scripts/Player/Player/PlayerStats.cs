@@ -15,7 +15,6 @@ public class PlayerStats : MonoBehaviour
 
     void Update()
     {
-        // Passive stamina regen (clamped to max) for now useless, possibly to be removed in the future
         if (currentStamina < maxStamina)
         {
             currentStamina = Mathf.Min(maxStamina, currentStamina + staminaRegenPerSec * Time.deltaTime);
@@ -25,17 +24,14 @@ public class PlayerStats : MonoBehaviour
 
     public void ApplyDamage(float amount)
     {
-        // Reduce HP and notify listeners
         currentHP = Mathf.Max(0, currentHP - amount);
         OnHealthChanged?.Invoke(currentHP, maxHP);
 
-        // If depleted, emit death event (consumers: LifeGate, UI, etc.)
         if (currentHP <= 0) OnPlayerDied?.Invoke();
     }
 
     public bool TryConsumeStamina(float cost)
     {
-        // Spend stamina if available; notify listeners on change
         if (currentStamina < cost) return false;
         currentStamina -= cost;
         OnStaminaChanged?.Invoke(currentStamina, maxStamina);

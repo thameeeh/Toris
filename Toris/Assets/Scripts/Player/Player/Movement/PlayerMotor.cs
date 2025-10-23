@@ -5,19 +5,46 @@ public class PlayerMotor : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerMoveConfig config;
+    [SerializeField] private DashAbility _dashAbility = new DashAbility();
 
     private Vector2 _moveInput;
     private bool _movementLocked;
+
+    public DashAbility DashAbility => _dashAbility;
+    public bool isDashing => _dashAbility != null && _dashAbility.isActive;
+
+    void Awake()
+    {
+        if (!rb)
+            rb = GetComponent<Rigidbody2D>();
+        _dashAbility?.Initialize(rb, config, ApplyVelocity);
+    }
+
+    void OnValidate()
+    {
+        if (!rb)
+            rb = GetComponent<Rigidbody2D>();
+        _dashAbility?.Initialize(rb, config, ApplyVelocity);
+    }
 
     public void SetMoveInput(Vector2 v) => _moveInput = v;
 
     public void SetMovementLocked(bool locked)
     {
         _movementLocked = locked;
-        if (locked && rb)
+        if (locked && rb && !isDashing)
         {
-            rb.linearVelocity = Vector2.zero;
+            ApplyVelocity(Vector2.zero);
         }
+    }
+
+    public bool TryStartDash(Vector2 direction)
+    {
+        if (_dashAbility == null)
+        { 
+            return false; 
+        }
+        return _dashAbility.TryActivate(direction);
     }
 
     void Reset() => rb = GetComponent<Rigidbody2D>();
@@ -25,6 +52,13 @@ public class PlayerMotor : MonoBehaviour
     void FixedUpdate()
     {
         if (!rb || !config) return;
+
+        if (_dashAbility != null)
+        {
+            _dashAbility.FixedTick(Time.fixedDeltaTime);
+            if (_dashAbility.isActive)
+                return;
+        }
 
         Vector2 dir = _movementLocked ? Vector2.zero : _moveInput;
 
@@ -37,6 +71,14 @@ public class PlayerMotor : MonoBehaviour
             dir = new Vector2(dir.x * s - dir.y * s, dir.x * s + dir.y * s);
         }
 
-        rb.linearVelocity = dir * config.speed;
+        ApplyVelocity(dir * config.speed);
+    }
+    private void ApplyVelocity(Vector2 velocity)
+    {
+#if UNITY_2022_1_OR_NEWER
+        rb.linearVelocity = velocity;
+#else
+        rb.velocity = velocity;
+#endif
     }
 }

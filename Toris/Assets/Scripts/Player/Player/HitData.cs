@@ -13,7 +13,6 @@ public struct HitData
     public HitData(Vector2 origin, Vector2 dir, float dmg, float kb, GameObject src, bool bypass = false)
     {
         this.origin = origin;
-        // Normalize once so receivers can trust it without re-normalizing
         this.direction = dir.sqrMagnitude > 0.0001f ? dir.normalized : Vector2.zero;
         this.damage = dmg;
         this.knockback = kb;

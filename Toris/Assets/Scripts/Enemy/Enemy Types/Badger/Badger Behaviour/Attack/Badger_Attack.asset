@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b551206371f4b54e9caa89e918b8af6, type: 3}
-  m_Name: Badger_Tunnel
-  m_EditorClassIdentifier: Assembly-CSharp::BadgerTunnelSO
+  m_Name: Badger_Attack
+  m_EditorClassIdentifier: Assembly-CSharp::BadgerAttackSO

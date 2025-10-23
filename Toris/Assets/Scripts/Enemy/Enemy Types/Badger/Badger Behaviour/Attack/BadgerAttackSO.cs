@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Badger_Tunnel", menuName = "Enemy Logic/Tunnel Logic/Badger Tunnel")]
-public class BadgerTunnelSO : TunnelSOBase<Badger>
+[CreateAssetMenu(fileName = "Badger_Attack", menuName = "Enemy Logic/Attack Logic/Badger Attack")]
+public class BadgerAttackSO : TunnelSOBase<Badger>
 {
 
     public override void Initialize(GameObject gameObject, Badger enemy, Transform player)
@@ -12,6 +12,8 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+
+        enemy.animator.Play("Unburrow");
     }
 
     public override void DoExitLogic()

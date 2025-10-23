@@ -22,7 +22,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
-        enemy.animator.Play("Idle Blend Tree");
+        //enemy.animator.Play("Idle Blend Tree");
         MovementSpeed = enemy.MovementSpeed;
     }
 

@@ -121,12 +121,12 @@ TextureImporter:
       name: critter_badger_NW_tunnel_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 0
         y: 0
-        width: 32
-        height: 25
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -143,12 +143,12 @@ TextureImporter:
       name: critter_badger_NW_tunnel_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 42
         y: 0
-        width: 33
-        height: 24
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -165,12 +165,12 @@ TextureImporter:
       name: critter_badger_NW_tunnel_2
       rect:
         serializedVersion: 2
-        x: 90
+        x: 84
         y: 0
-        width: 34
-        height: 24
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -187,12 +187,12 @@ TextureImporter:
       name: critter_badger_NW_tunnel_3
       rect:
         serializedVersion: 2
-        x: 131
-        y: 4
-        width: 27
-        height: 21
+        x: 126
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -209,12 +209,12 @@ TextureImporter:
       name: critter_badger_NW_tunnel_4
       rect:
         serializedVersion: 2
-        x: 151
+        x: 168
         y: 0
-        width: 15
-        height: 8
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -227,55 +227,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: critter_badger_NW_tunnel_5
-      rect:
-        serializedVersion: 2
-        x: 173
-        y: 3
-        width: 29
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 84c67953613f67050800000000000000
-      internalID: 5798088847000038472
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: critter_badger_NW_tunnel_6
-      rect:
-        serializedVersion: 2
-        x: 196
-        y: 0
-        width: 13
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b8b89f3cbaf00c010800000000000000
-      internalID: 1206981930537028491
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0496fa443bca711408531fdb4f774131
     internalID: 0
     vertices: []
     indices: 
@@ -283,15 +239,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":42.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       critter_badger_NW_tunnel_0: 877940135350799332
       critter_badger_NW_tunnel_1: -2184424139344008578
       critter_badger_NW_tunnel_2: 26026061572003676
       critter_badger_NW_tunnel_3: 8206035168751063308
       critter_badger_NW_tunnel_4: 4006601305773575816
-      critter_badger_NW_tunnel_5: 5798088847000038472
-      critter_badger_NW_tunnel_6: 1206981930537028491
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

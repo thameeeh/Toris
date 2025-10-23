@@ -10,6 +10,7 @@ public class WolfAttackState : EnemyState<Wolf>
         base.EnterState();
 
         enemy.EnemyAttackBaseInstance.DoEnterLogic();
+        enemy.animator.SetTrigger("Attack");
     }
 
     public override void ExitState()
@@ -17,6 +18,7 @@ public class WolfAttackState : EnemyState<Wolf>
         base.ExitState();
 
         enemy.EnemyAttackBaseInstance.DoExitLogic();
+        enemy.animator.ResetTrigger("Attack");
     }
 
     public override void FrameUpdate()
@@ -24,6 +26,13 @@ public class WolfAttackState : EnemyState<Wolf>
         base.FrameUpdate();
 
         enemy.EnemyAttackBaseInstance.DoFrameUpdateLogic();
+
+        if (!enemy.IsWithinStrikingDistance && enemy.EnemyAttackBaseInstance._isAttackAnimationFinished)
+        {
+            enemy.StateMachine.ChangeState(enemy.ChaseState);
+        }
+        
+
     }
 
     public override void PhysicsUpdate()

@@ -14,13 +14,13 @@ TagManager:
   - 
   - Water
   - UI
-  - EnemyHitbox
+  - EnemyStrikingbox
   - EnemyHurtBox
   - Projectiles
   - PlayerHurtBox
   - Player
   - PlayerHitBox
-  - 
+  - EnemyAggro
   - 
   - 
   - 

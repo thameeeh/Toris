@@ -14,6 +14,7 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     {
         base.DoEnterLogic();
 
+        _hasHowled = true;
         enemy.animator.Play("Movement");
     }
 

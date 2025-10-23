@@ -6,6 +6,18 @@ using UnityEngine;
 // 
 public class Wolf : Enemy
 {
+    
+    [Space][Space][Header("Stats")]
+    public float AttackDamage = 20;
+    public float MovementSpeed = 2;
+
+    public bool IsMovingWhileBiting { get; set; } = false;
+    public void PrintMessage(string msg) 
+    {
+        Debug.Log(msg);
+    }
+
+
     #region Wolf-Specific States
     public WolfHowlState HowlState { get; set; }
     public WolfChaseState ChaseState { get; set; }
@@ -15,7 +27,7 @@ public class Wolf : Enemy
     #endregion
 
     #region Wolf-Specific ScriptableObjects
-    [Header("Wolf-Specific SOs")]
+    [Space][Space][Header("Wolf-Specific SOs")]
     [SerializeField] private WolfHowlSO EnemyHowlBase;
     [SerializeField] private WolfChaseSO EnemyChaseBase;
     [SerializeField] private WolfIdleSO EnemyIdleBase;
@@ -57,6 +69,7 @@ public class Wolf : Enemy
         EnemyDeadBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
         StateMachine.Initialize(IdleState);
+        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
     }
 
     protected override void Update()
@@ -65,7 +78,9 @@ public class Wolf : Enemy
 
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
+            Die();
             StateMachine.ChangeState(DeadState);
+            Destroy(gameObject);
         }
     }
 }

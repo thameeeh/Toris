@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Chase_Direct", menuName = "Enemy Logic/Chase Logic/Wolf Chase Direct")]
 public class WolfChaseSO : ChaseSOBase<Wolf>
 {
-    [SerializeField] private float _movementSpeed = 0.2f;
+    [SerializeField] private float _movementSpeed = 2f;
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -12,6 +12,9 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+
+        enemy.animator.SetBool("IsMoving", true);
+        enemy.animator.Play("Run");
     }
 
     public override void DoExitLogic()
@@ -25,17 +28,6 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
 
         Vector2 moveDirection = (playerTransform.position - enemy.transform.position).normalized;
         enemy.MoveEnemy(moveDirection * _movementSpeed);
-
-        if (enemy.IsWithinStrikingDistance)
-        {
-            //enemy.StateMachine.ChangeState(enemy.AttackState);
-        }
-
-        if (!enemy.IsAggroed)
-        {
-            enemy.StateMachine.ChangeState(enemy.IdleState);
-            return;
-        }
     }
 
     public override void DoPhysicsLogic()

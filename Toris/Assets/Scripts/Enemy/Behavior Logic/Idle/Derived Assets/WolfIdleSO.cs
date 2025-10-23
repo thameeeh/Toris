@@ -5,7 +5,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 {
     [SerializeField] private float WanderRadius = 20f;
     [SerializeField] private float WanderTimer = 2f;
-    [SerializeField] private float MovementSpeed = 3f;
+    private float MovementSpeed;
 
     private float _timer;
     private Vector3 _wanderPoint;
@@ -22,12 +22,15 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
-        enemy.animator.Play("Idle");
+        enemy.animator.Play("Idle Blend Tree");
+        MovementSpeed = enemy.MovementSpeed;
     }
 
     public override void DoExitLogic()
     {
         base.DoExitLogic();
+
+        enemy.animator.SetBool("IsMoving", false);
     }
 
     public override void DoFrameUpdateLogic()
@@ -43,10 +46,9 @@ public class WolfIdleSO : IdleSOBase<Wolf>
             _moveDirection = (_wanderPoint - enemy.transform.position).normalized;
         }
 
-        
-        
 
-        if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.01)
+
+        if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.1)
         {
             enemy.animator.SetBool("IsMoving", false);
             enemy.MoveEnemy(Vector2.zero);
@@ -55,8 +57,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         {
             enemy.animator.SetBool("IsMoving", true);
             enemy.MoveEnemy(_moveDirection * MovementSpeed);
-            enemy.animator.SetFloat("DirectionX", _moveDirection.x);
-            enemy.animator.SetFloat("DirectionY", _moveDirection.y);
+            enemy.UpdateAnimationDirection(_moveDirection);
         }
     }
 

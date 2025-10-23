@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
@@ -17,6 +18,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public Animator animator { get; set; }
     public EnemyStateMachine StateMachine { get; set; }
 
+    private GameObject _player;
+    private PlayerDamageReceiver _playerDamageReceiver;
+    protected HitData _hitData;
     protected virtual void Awake()
     {
         StateMachine = new EnemyStateMachine();
@@ -31,8 +35,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         {
             rb.GetComponent<Rigidbody2D>();
         }
+        _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null) Debug.Log("_player Null");
+        _playerDamageReceiver = _player.GetComponent<PlayerDamageReceiver>();
         if (!playerTransform)
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            playerTransform = _player.transform;
     }
 
     protected virtual void Update()
@@ -43,7 +50,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private void FixedUpdate()
     {
         StateMachine.CurrentEnemyState?.PhysicsUpdate();
-        AnimationDirectionUpdate();
     }
 
     #region Health / Die Functions
@@ -60,7 +66,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     public void Die()
     {
-        Debug.Log("Die() called");
+        Debug.Log("Dead");
     }
 
     #endregion
@@ -69,24 +75,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public void MoveEnemy(Vector2 velocity)
     {
         rb.linearVelocity = velocity;
-        //CheckForLeftOrRightFacing(velocity);
+        if(velocity != Vector2.zero)UpdateAnimationDirection(velocity);
     }
-
-    public void CheckForLeftOrRightFacing(Vector2 velocity)
+    public void UpdateAnimationDirection(Vector2 direction)
     {
-        if (IsFacingRight && velocity.x < 0f)
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            IsFacingRight = !IsFacingRight;
-        }
-
-        else if (!IsFacingRight && velocity.x > 0f)
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            IsFacingRight = !IsFacingRight;
-        }
+        direction = direction.normalized;
+        animator.SetFloat("DirectionX", direction.x);
+        animator.SetFloat("DirectionY", direction.y);
     }
 
     #endregion
@@ -104,16 +99,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     }
     #endregion
 
-    #region Animation
-    private void AnimationDirectionUpdate()
+    public void DealDamageToPlayer(float amount) 
     {
-        if (PlayerTransform != null)
+        if (IsWithinStrikingDistance)
         {
-            
+            _hitData.damage = amount;
+            _playerDamageReceiver.ReceiveHit(_hitData);
         }
     }
 
-    private void AnimationTriggerEvent(AnimationTriggerType triggerType)
+    #region Animation
+    public void AnimationTriggerEvent(AnimationTriggerType triggerType)
     {
         StateMachine.CurrentEnemyState.AnimationTriggerEvent(triggerType);
     }

@@ -24,6 +24,10 @@ public class WolfIdleState : EnemyState<Wolf>
         base.FrameUpdate();
 
         enemy.EnemyIdleBaseInstance.DoFrameUpdateLogic();
+        if (enemy.IsAggroed) 
+        {
+            enemyStateMachine.ChangeState(enemy.ChaseState);
+        }
     }
 
     public override void PhysicsUpdate()

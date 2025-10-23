@@ -22,7 +22,7 @@ TagManager:
   - PlayerHitBox
   - EnemyAggro
   - Collectibles
-  - 
+  - WorldCollision
   - 
   - 
   - 

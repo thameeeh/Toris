@@ -5,37 +5,46 @@ public class PlayerMotor : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerMoveConfig config;
-    [SerializeField] private DashConfig _dash;
+    [SerializeField] private DashAbility _dashAbility = new DashAbility();
 
     private Vector2 _moveInput;
     private bool _movementLocked;
 
-    private float _dashCooldownTimer;
-    private float _dashTimer;
-    private Vector2 _dashDirection;
+    public DashAbility DashAbility => _dashAbility;
+    public bool isDashing => _dashAbility != null && _dashAbility.isActive;
 
-    public bool IsDashing => _dashTimer > 0f;
+    void Awake()
+    {
+        if (!rb)
+            rb = GetComponent<Rigidbody2D>();
+        _dashAbility?.Initialize(rb, config, ApplyVelocity);
+    }
+
+    void OnValidate()
+    {
+        if (!rb)
+            rb = GetComponent<Rigidbody2D>();
+        _dashAbility?.Initialize(rb, config, ApplyVelocity);
+    }
 
     public void SetMoveInput(Vector2 v) => _moveInput = v;
 
     public void SetMovementLocked(bool locked)
     {
         _movementLocked = locked;
-        if (locked && rb && _dashTimer <= 0f)
+        if (locked && rb && !isDashing)
         {
-            rb.linearVelocity = Vector2.zero;
+            ApplyVelocity(Vector2.zero);
         }
     }
 
     public bool TryStartDash(Vector2 direction)
     {
-        if (_dashTimer > 0f) return false;
-        if (_dashCooldownTimer > 0f) return false;
-        if (direction.sqrMagnitude < 0.01f) return false;
-
-        _dashDirection = direction.normalized;
-        _dashTimer = _dash.duration;
-        return true;
+        if (_dashAbility == null)
+        { 
+            return false; 
+        }
+        return _dashAbility.TryActivate(direction);
     }
 
     void Reset() => rb = GetComponent<Rigidbody2D>();
@@ -44,26 +53,11 @@ public class PlayerMotor : MonoBehaviour
     {
         if (!rb || !config) return;
 
-        if (_dashTimer > 0f)
+        if (_dashAbility != null)
         {
-            float temp = 1f - (_dashTimer / _dash.duration);
-
-            float speedBlend = Mathf.Lerp(_dash.initialSpeed, config.speed, temp);
-
-            float shaped = speedBlend * _dash.speedCurve.Evaluate(temp);
-
-            rb.linearVelocity = _dashDirection * shaped;
-            _dashTimer = Mathf.Max(0f, _dashTimer - Time.fixedDeltaTime);
-
-            if (_dashTimer == 0f)
-                _dashCooldownTimer = _dash.cooldown;
-
-            return;
-        }
-
-        if (_dashCooldownTimer > 0f)
-        {
-            _dashCooldownTimer = Mathf.Max(0f, _dashCooldownTimer - Time.fixedDeltaTime);
+            _dashAbility.FixedTick(Time.fixedDeltaTime);
+            if (_dashAbility.isActive)
+                return;
         }
 
         Vector2 dir = _movementLocked ? Vector2.zero : _moveInput;
@@ -77,7 +71,14 @@ public class PlayerMotor : MonoBehaviour
             dir = new Vector2(dir.x * s - dir.y * s, dir.x * s + dir.y * s);
         }
 
-        rb.linearVelocity = dir * config.speed;
+        ApplyVelocity(dir * config.speed);
     }
-
+    private void ApplyVelocity(Vector2 velocity)
+    {
+#if UNITY_2022_1_OR_NEWER
+        rb.linearVelocity = velocity;
+#else
+        rb.velocity = velocity;
+#endif
+    }
 }

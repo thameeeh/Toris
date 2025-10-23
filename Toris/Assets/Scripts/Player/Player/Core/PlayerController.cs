@@ -17,17 +17,14 @@ public class PlayerController : MonoBehaviour
         if (!_inputReader || !_motor || !_animController)
             return;
 
-        // Read movement input
         Vector2 move = _inputReader.Move;
 
-        // Ask animation FSM if movement is allowed
         bool canMove = _animController.CanMove();
         _motor.SetMovementLocked(!canMove);
 
-        // Always send the input to motor (it decides zero or not)
         _motor.SetMoveInput(move);
 
-        var animVec = _motor.IsDashing ? Vector2.zero : move;
+        var animVec = _motor.isDashing ? Vector2.zero : move;
         _animController.Tick(animVec);
     }
 
@@ -35,20 +32,25 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDashRequested()
     {
-        if (!_motor || !_stats || !_dash) return;
+        if (!_motor || !_stats || !_animController) return;
 
-        // Determine facing
-        Vector2 input = _inputReader.Move;
+        DashAbility dashAbility = _motor.DashAbility;
+        DashConfig dashConfig = dashAbility?.Config;
+        if (dashConfig == null)
+            return;
+
+        Vector2 input = _inputReader ? _inputReader.Move : Vector2.zero;
         Vector2 facing = input.sqrMagnitude > 0.01f ? input : _animController.CurrentFacing;
         if (facing.sqrMagnitude < 0.0001f)
             facing = _dashFacing == Vector2.zero ? Vector2.right : _dashFacing;
 
-        // Only pay stamina if the dash will start
-        if (_stats.currentStamina < _dash.staminaCost) return;        // quick precheck
+        if (_stats.currentStamina < dashConfig.staminaCost)
+            return;
+
         if (_motor.TryStartDash(facing.normalized))
         {
             _dashFacing = facing.normalized;
-            _stats.TryConsumeStamina(_dash.staminaCost);              // now spend it
+            _stats.TryConsumeStamina(dashConfig.staminaCost);
         }
     }
 }

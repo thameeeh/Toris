@@ -22,7 +22,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
-        enemy.animator.Play("Idle");
+        enemy.animator.Play("Idle Blend Tree");
         MovementSpeed = enemy.MovementSpeed;
     }
 
@@ -48,7 +48,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 
 
 
-        if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.01)
+        if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.1)
         {
             enemy.animator.SetBool("IsMoving", false);
             enemy.MoveEnemy(Vector2.zero);

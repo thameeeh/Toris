@@ -10,6 +10,7 @@ public class WolfChaseState : EnemyState<Wolf>
         base.EnterState();
 
         enemy.EnemyChaseBaseInstance.DoEnterLogic();
+        enemy.animator.Play("Run");
     }
 
     public override void ExitState()

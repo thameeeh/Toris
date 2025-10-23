@@ -12,7 +12,6 @@ public class Wolf : Enemy
     public float MovementSpeed = 2;
 
     public bool IsMovingWhileBiting { get; set; } = false;
-    public bool IsAttackAnimationEnded { get; set; } = false;
     public void PrintMessage(string msg) 
     {
         Debug.Log(msg);

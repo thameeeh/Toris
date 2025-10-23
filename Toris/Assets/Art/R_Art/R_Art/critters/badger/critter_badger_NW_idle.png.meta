@@ -166,12 +166,12 @@ TextureImporter:
       name: critter_badger_NW_idle_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 6
-        width: 25
-        height: 18
+        x: 0
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,12 +188,12 @@ TextureImporter:
       name: critter_badger_NW_idle_1
       rect:
         serializedVersion: 2
-        x: 57
-        y: 6
-        width: 24
-        height: 18
+        x: 42
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -210,12 +210,12 @@ TextureImporter:
       name: critter_badger_NW_idle_2
       rect:
         serializedVersion: 2
-        x: 99
-        y: 6
-        width: 24
-        height: 18
+        x: 84
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -232,12 +232,12 @@ TextureImporter:
       name: critter_badger_NW_idle_3
       rect:
         serializedVersion: 2
-        x: 141
-        y: 6
-        width: 24
-        height: 17
+        x: 126
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -254,12 +254,12 @@ TextureImporter:
       name: critter_badger_NW_idle_4
       rect:
         serializedVersion: 2
-        x: 183
-        y: 6
-        width: 24
-        height: 18
+        x: 168
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -276,12 +276,12 @@ TextureImporter:
       name: critter_badger_NW_idle_5
       rect:
         serializedVersion: 2
-        x: 225
-        y: 6
-        width: 24
-        height: 17
+        x: 210
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -298,12 +298,12 @@ TextureImporter:
       name: critter_badger_NW_idle_6
       rect:
         serializedVersion: 2
-        x: 267
-        y: 6
-        width: 24
-        height: 18
+        x: 252
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -320,12 +320,12 @@ TextureImporter:
       name: critter_badger_NW_idle_7
       rect:
         serializedVersion: 2
-        x: 309
-        y: 6
-        width: 24
-        height: 17
+        x: 294
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -342,12 +342,12 @@ TextureImporter:
       name: critter_badger_NW_idle_8
       rect:
         serializedVersion: 2
-        x: 351
-        y: 6
-        width: 24
-        height: 18
+        x: 336
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -364,12 +364,12 @@ TextureImporter:
       name: critter_badger_NW_idle_9
       rect:
         serializedVersion: 2
-        x: 391
-        y: 6
-        width: 26
-        height: 18
+        x: 378
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -386,12 +386,12 @@ TextureImporter:
       name: critter_badger_NW_idle_10
       rect:
         serializedVersion: 2
-        x: 432
-        y: 6
-        width: 28
-        height: 17
+        x: 420
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -408,12 +408,12 @@ TextureImporter:
       name: critter_badger_NW_idle_11
       rect:
         serializedVersion: 2
-        x: 474
-        y: 6
-        width: 28
-        height: 17
+        x: 462
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -430,12 +430,12 @@ TextureImporter:
       name: critter_badger_NW_idle_12
       rect:
         serializedVersion: 2
-        x: 516
-        y: 6
-        width: 28
-        height: 17
+        x: 504
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -452,12 +452,12 @@ TextureImporter:
       name: critter_badger_NW_idle_13
       rect:
         serializedVersion: 2
-        x: 558
-        y: 6
-        width: 28
-        height: 17
+        x: 546
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -474,12 +474,12 @@ TextureImporter:
       name: critter_badger_NW_idle_14
       rect:
         serializedVersion: 2
-        x: 600
-        y: 6
-        width: 28
-        height: 17
+        x: 588
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -496,12 +496,12 @@ TextureImporter:
       name: critter_badger_NW_idle_15
       rect:
         serializedVersion: 2
-        x: 643
-        y: 6
-        width: 27
-        height: 16
+        x: 630
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -518,12 +518,12 @@ TextureImporter:
       name: critter_badger_NW_idle_16
       rect:
         serializedVersion: 2
-        x: 685
-        y: 6
-        width: 27
-        height: 16
+        x: 672
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -540,12 +540,12 @@ TextureImporter:
       name: critter_badger_NW_idle_17
       rect:
         serializedVersion: 2
-        x: 727
-        y: 6
-        width: 27
-        height: 16
+        x: 714
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -562,12 +562,12 @@ TextureImporter:
       name: critter_badger_NW_idle_18
       rect:
         serializedVersion: 2
-        x: 769
-        y: 6
-        width: 27
-        height: 16
+        x: 756
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -584,12 +584,12 @@ TextureImporter:
       name: critter_badger_NW_idle_19
       rect:
         serializedVersion: 2
-        x: 811
-        y: 6
-        width: 28
-        height: 16
+        x: 798
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -606,12 +606,12 @@ TextureImporter:
       name: critter_badger_NW_idle_20
       rect:
         serializedVersion: 2
-        x: 853
-        y: 6
-        width: 28
-        height: 16
+        x: 840
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -628,12 +628,12 @@ TextureImporter:
       name: critter_badger_NW_idle_21
       rect:
         serializedVersion: 2
-        x: 895
-        y: 6
-        width: 28
-        height: 16
+        x: 882
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -650,7 +650,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 178e044c25ffa77479ab11ee1e0f45ea
     internalID: 0
     vertices: []
     indices: 
@@ -658,7 +658,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":42.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       critter_badger_NW_idle_0: -8414220169610709114
       critter_badger_NW_idle_1: 6468033846238714981

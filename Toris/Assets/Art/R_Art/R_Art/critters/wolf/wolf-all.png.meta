@@ -736,12 +736,12 @@ TextureImporter:
       name: wolf-all_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 976
-        width: 31
-        height: 29
+        x: 0
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -758,12 +758,12 @@ TextureImporter:
       name: wolf-all_1
       rect:
         serializedVersion: 2
-        x: 81
-        y: 977
-        width: 32
-        height: 26
+        x: 64
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -780,12 +780,12 @@ TextureImporter:
       name: wolf-all_2
       rect:
         serializedVersion: 2
-        x: 145
-        y: 977
-        width: 32
-        height: 26
+        x: 128
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -802,12 +802,12 @@ TextureImporter:
       name: wolf-all_3
       rect:
         serializedVersion: 2
-        x: 209
-        y: 977
-        width: 32
-        height: 23
+        x: 192
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -824,12 +824,12 @@ TextureImporter:
       name: wolf-all_4
       rect:
         serializedVersion: 2
-        x: 273
-        y: 977
-        width: 32
-        height: 23
+        x: 256
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -846,12 +846,12 @@ TextureImporter:
       name: wolf-all_5
       rect:
         serializedVersion: 2
-        x: 337
-        y: 977
-        width: 32
-        height: 23
+        x: 320
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -868,12 +868,12 @@ TextureImporter:
       name: wolf-all_6
       rect:
         serializedVersion: 2
-        x: 401
-        y: 977
-        width: 32
-        height: 22
+        x: 384
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -890,12 +890,12 @@ TextureImporter:
       name: wolf-all_7
       rect:
         serializedVersion: 2
-        x: 465
-        y: 977
-        width: 32
-        height: 23
+        x: 448
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -912,12 +912,12 @@ TextureImporter:
       name: wolf-all_8
       rect:
         serializedVersion: 2
-        x: 529
-        y: 977
-        width: 32
-        height: 23
+        x: 512
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -934,12 +934,12 @@ TextureImporter:
       name: wolf-all_9
       rect:
         serializedVersion: 2
-        x: 596
-        y: 977
-        width: 30
-        height: 27
+        x: 576
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -956,12 +956,12 @@ TextureImporter:
       name: wolf-all_10
       rect:
         serializedVersion: 2
-        x: 654
-        y: 976
-        width: 41
-        height: 35
+        x: 640
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -978,12 +978,12 @@ TextureImporter:
       name: wolf-all_11
       rect:
         serializedVersion: 2
-        x: 718
-        y: 976
-        width: 37
-        height: 36
+        x: 704
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1000,12 +1000,12 @@ TextureImporter:
       name: wolf-all_12
       rect:
         serializedVersion: 2
-        x: 777
-        y: 988
-        width: 12
-        height: 19
+        x: 768
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1022,12 +1022,12 @@ TextureImporter:
       name: wolf-all_13
       rect:
         serializedVersion: 2
-        x: 784
-        y: 976
-        width: 31
-        height: 28
+        x: 832
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1044,12 +1044,12 @@ TextureImporter:
       name: wolf-all_14
       rect:
         serializedVersion: 2
-        x: 844
-        y: 976
-        width: 35
-        height: 28
+        x: 896
+        y: 960
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1066,12 +1066,12 @@ TextureImporter:
       name: wolf-all_15
       rect:
         serializedVersion: 2
-        x: 920
-        y: 978
-        width: 28
-        height: 27
+        x: 0
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1088,12 +1088,12 @@ TextureImporter:
       name: wolf-all_16
       rect:
         serializedVersion: 2
-        x: 16
-        y: 912
-        width: 31
-        height: 29
+        x: 64
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1110,12 +1110,12 @@ TextureImporter:
       name: wolf-all_17
       rect:
         serializedVersion: 2
-        x: 78
-        y: 913
-        width: 32
-        height: 26
+        x: 128
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1132,12 +1132,12 @@ TextureImporter:
       name: wolf-all_18
       rect:
         serializedVersion: 2
-        x: 142
-        y: 913
-        width: 32
-        height: 26
+        x: 192
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1154,12 +1154,12 @@ TextureImporter:
       name: wolf-all_19
       rect:
         serializedVersion: 2
-        x: 206
-        y: 913
-        width: 32
-        height: 23
+        x: 256
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1176,12 +1176,12 @@ TextureImporter:
       name: wolf-all_20
       rect:
         serializedVersion: 2
-        x: 270
-        y: 913
-        width: 32
-        height: 23
+        x: 320
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1198,12 +1198,12 @@ TextureImporter:
       name: wolf-all_21
       rect:
         serializedVersion: 2
-        x: 334
-        y: 913
-        width: 32
-        height: 23
+        x: 384
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1220,12 +1220,12 @@ TextureImporter:
       name: wolf-all_22
       rect:
         serializedVersion: 2
-        x: 398
-        y: 913
-        width: 32
-        height: 22
+        x: 448
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1242,12 +1242,12 @@ TextureImporter:
       name: wolf-all_23
       rect:
         serializedVersion: 2
-        x: 462
-        y: 913
-        width: 32
-        height: 23
+        x: 512
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1264,12 +1264,12 @@ TextureImporter:
       name: wolf-all_24
       rect:
         serializedVersion: 2
-        x: 526
-        y: 913
-        width: 32
-        height: 23
+        x: 576
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1286,12 +1286,12 @@ TextureImporter:
       name: wolf-all_25
       rect:
         serializedVersion: 2
-        x: 589
-        y: 913
-        width: 30
-        height: 27
+        x: 640
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1308,12 +1308,12 @@ TextureImporter:
       name: wolf-all_26
       rect:
         serializedVersion: 2
-        x: 648
-        y: 912
-        width: 41
-        height: 35
+        x: 704
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1330,12 +1330,12 @@ TextureImporter:
       name: wolf-all_27
       rect:
         serializedVersion: 2
-        x: 716
-        y: 912
-        width: 37
-        height: 36
+        x: 768
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1352,12 +1352,12 @@ TextureImporter:
       name: wolf-all_28
       rect:
         serializedVersion: 2
-        x: 784
-        y: 912
-        width: 31
-        height: 28
+        x: 832
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1374,12 +1374,12 @@ TextureImporter:
       name: wolf-all_29
       rect:
         serializedVersion: 2
-        x: 810
-        y: 924
-        width: 12
-        height: 19
+        x: 896
+        y: 896
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1396,12 +1396,12 @@ TextureImporter:
       name: wolf-all_30
       rect:
         serializedVersion: 2
-        x: 848
-        y: 912
-        width: 35
-        height: 28
+        x: 0
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1418,12 +1418,12 @@ TextureImporter:
       name: wolf-all_31
       rect:
         serializedVersion: 2
-        x: 907
-        y: 914
-        width: 28
-        height: 27
+        x: 64
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1440,12 +1440,12 @@ TextureImporter:
       name: wolf-all_32
       rect:
         serializedVersion: 2
-        x: 14
-        y: 846
-        width: 37
-        height: 29
+        x: 128
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1462,12 +1462,12 @@ TextureImporter:
       name: wolf-all_33
       rect:
         serializedVersion: 2
-        x: 80
-        y: 846
-        width: 33
-        height: 27
+        x: 192
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1484,12 +1484,12 @@ TextureImporter:
       name: wolf-all_34
       rect:
         serializedVersion: 2
-        x: 145
-        y: 846
-        width: 32
-        height: 26
+        x: 256
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1506,12 +1506,12 @@ TextureImporter:
       name: wolf-all_35
       rect:
         serializedVersion: 2
-        x: 209
-        y: 846
-        width: 32
-        height: 27
+        x: 320
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1528,12 +1528,12 @@ TextureImporter:
       name: wolf-all_36
       rect:
         serializedVersion: 2
-        x: 273
-        y: 846
-        width: 33
-        height: 26
+        x: 384
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1550,12 +1550,12 @@ TextureImporter:
       name: wolf-all_37
       rect:
         serializedVersion: 2
-        x: 337
-        y: 846
-        width: 33
-        height: 27
+        x: 448
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1572,12 +1572,12 @@ TextureImporter:
       name: wolf-all_38
       rect:
         serializedVersion: 2
-        x: 401
-        y: 846
-        width: 32
-        height: 26
+        x: 512
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1594,12 +1594,12 @@ TextureImporter:
       name: wolf-all_39
       rect:
         serializedVersion: 2
-        x: 465
-        y: 846
-        width: 30
-        height: 26
+        x: 576
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1616,12 +1616,12 @@ TextureImporter:
       name: wolf-all_40
       rect:
         serializedVersion: 2
-        x: 529
-        y: 846
-        width: 33
-        height: 27
+        x: 640
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1638,12 +1638,12 @@ TextureImporter:
       name: wolf-all_41
       rect:
         serializedVersion: 2
-        x: 593
-        y: 847
-        width: 30
-        height: 22
+        x: 704
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1660,12 +1660,12 @@ TextureImporter:
       name: wolf-all_42
       rect:
         serializedVersion: 2
-        x: 655
-        y: 846
-        width: 31
-        height: 41
+        x: 768
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1682,12 +1682,12 @@ TextureImporter:
       name: wolf-all_43
       rect:
         serializedVersion: 2
-        x: 720
-        y: 846
-        width: 31
-        height: 41
+        x: 832
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1704,12 +1704,12 @@ TextureImporter:
       name: wolf-all_44
       rect:
         serializedVersion: 2
-        x: 779
-        y: 866
-        width: 8
-        height: 22
+        x: 896
+        y: 832
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1726,12 +1726,12 @@ TextureImporter:
       name: wolf-all_45
       rect:
         serializedVersion: 2
-        x: 785
-        y: 847
-        width: 31
-        height: 25
+        x: 0
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1748,12 +1748,12 @@ TextureImporter:
       name: wolf-all_46
       rect:
         serializedVersion: 2
-        x: 843
-        y: 846
-        width: 35
-        height: 29
+        x: 64
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1770,12 +1770,12 @@ TextureImporter:
       name: wolf-all_47
       rect:
         serializedVersion: 2
-        x: 913
-        y: 845
-        width: 32
-        height: 29
+        x: 128
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1792,12 +1792,12 @@ TextureImporter:
       name: wolf-all_48
       rect:
         serializedVersion: 2
-        x: 13
-        y: 782
-        width: 37
-        height: 29
+        x: 192
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1814,12 +1814,12 @@ TextureImporter:
       name: wolf-all_49
       rect:
         serializedVersion: 2
-        x: 79
-        y: 782
-        width: 33
-        height: 27
+        x: 256
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1836,12 +1836,12 @@ TextureImporter:
       name: wolf-all_50
       rect:
         serializedVersion: 2
-        x: 143
-        y: 782
-        width: 32
-        height: 26
+        x: 320
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1858,12 +1858,12 @@ TextureImporter:
       name: wolf-all_51
       rect:
         serializedVersion: 2
-        x: 207
-        y: 782
-        width: 32
-        height: 27
+        x: 384
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1880,12 +1880,12 @@ TextureImporter:
       name: wolf-all_52
       rect:
         serializedVersion: 2
-        x: 270
-        y: 782
-        width: 33
-        height: 26
+        x: 448
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1902,12 +1902,12 @@ TextureImporter:
       name: wolf-all_53
       rect:
         serializedVersion: 2
-        x: 334
-        y: 782
-        width: 33
-        height: 27
+        x: 512
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1924,12 +1924,12 @@ TextureImporter:
       name: wolf-all_54
       rect:
         serializedVersion: 2
-        x: 399
-        y: 782
-        width: 32
-        height: 26
+        x: 576
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1946,12 +1946,12 @@ TextureImporter:
       name: wolf-all_55
       rect:
         serializedVersion: 2
-        x: 465
-        y: 782
-        width: 30
-        height: 26
+        x: 640
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1968,12 +1968,12 @@ TextureImporter:
       name: wolf-all_56
       rect:
         serializedVersion: 2
-        x: 526
-        y: 782
-        width: 33
-        height: 27
+        x: 704
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1990,12 +1990,12 @@ TextureImporter:
       name: wolf-all_57
       rect:
         serializedVersion: 2
-        x: 593
-        y: 783
-        width: 30
-        height: 22
+        x: 768
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2012,12 +2012,12 @@ TextureImporter:
       name: wolf-all_58
       rect:
         serializedVersion: 2
-        x: 658
-        y: 782
-        width: 31
-        height: 41
+        x: 832
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2034,12 +2034,12 @@ TextureImporter:
       name: wolf-all_59
       rect:
         serializedVersion: 2
-        x: 721
-        y: 782
-        width: 31
-        height: 41
+        x: 896
+        y: 768
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2056,12 +2056,12 @@ TextureImporter:
       name: wolf-all_60
       rect:
         serializedVersion: 2
-        x: 784
-        y: 783
-        width: 31
-        height: 25
+        x: 0
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2078,12 +2078,12 @@ TextureImporter:
       name: wolf-all_61
       rect:
         serializedVersion: 2
-        x: 813
-        y: 802
-        width: 8
-        height: 22
+        x: 64
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2100,12 +2100,12 @@ TextureImporter:
       name: wolf-all_62
       rect:
         serializedVersion: 2
-        x: 850
-        y: 782
-        width: 35
-        height: 29
+        x: 128
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2122,12 +2122,12 @@ TextureImporter:
       name: wolf-all_63
       rect:
         serializedVersion: 2
-        x: 911
-        y: 781
-        width: 32
-        height: 29
+        x: 192
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2144,12 +2144,12 @@ TextureImporter:
       name: wolf-all_64
       rect:
         serializedVersion: 2
-        x: 15
-        y: 721
-        width: 31
-        height: 27
+        x: 256
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2166,12 +2166,12 @@ TextureImporter:
       name: wolf-all_65
       rect:
         serializedVersion: 2
-        x: 79
-        y: 721
-        width: 30
-        height: 27
+        x: 320
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2188,12 +2188,12 @@ TextureImporter:
       name: wolf-all_66
       rect:
         serializedVersion: 2
-        x: 145
-        y: 719
-        width: 28
-        height: 34
+        x: 384
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2210,12 +2210,12 @@ TextureImporter:
       name: wolf-all_67
       rect:
         serializedVersion: 2
-        x: 210
-        y: 722
-        width: 29
-        height: 30
+        x: 448
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2232,12 +2232,12 @@ TextureImporter:
       name: wolf-all_68
       rect:
         serializedVersion: 2
-        x: 273
-        y: 723
-        width: 31
-        height: 28
+        x: 512
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2254,12 +2254,12 @@ TextureImporter:
       name: wolf-all_69
       rect:
         serializedVersion: 2
-        x: 333
-        y: 721
-        width: 36
-        height: 28
+        x: 576
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2276,12 +2276,12 @@ TextureImporter:
       name: wolf-all_70
       rect:
         serializedVersion: 2
-        x: 397
-        y: 720
-        width: 37
-        height: 24
+        x: 640
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2298,12 +2298,12 @@ TextureImporter:
       name: wolf-all_71
       rect:
         serializedVersion: 2
-        x: 408
-        y: 741
-        width: 6
-        height: 9
+        x: 704
+        y: 704
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2320,12 +2320,12 @@ TextureImporter:
       name: wolf-all_72
       rect:
         serializedVersion: 2
-        x: 434
-        y: 736
-        width: 11
-        height: 8
+        x: 0
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2342,12 +2342,12 @@ TextureImporter:
       name: wolf-all_73
       rect:
         serializedVersion: 2
-        x: 461
-        y: 721
-        width: 48
-        height: 31
+        x: 64
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2364,12 +2364,12 @@ TextureImporter:
       name: wolf-all_74
       rect:
         serializedVersion: 2
-        x: 525
-        y: 719
-        width: 49
-        height: 34
+        x: 128
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2386,12 +2386,12 @@ TextureImporter:
       name: wolf-all_75
       rect:
         serializedVersion: 2
-        x: 589
-        y: 719
-        width: 45
-        height: 34
+        x: 192
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2408,12 +2408,12 @@ TextureImporter:
       name: wolf-all_76
       rect:
         serializedVersion: 2
-        x: 653
-        y: 719
-        width: 45
-        height: 26
+        x: 256
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2430,12 +2430,12 @@ TextureImporter:
       name: wolf-all_77
       rect:
         serializedVersion: 2
-        x: 717
-        y: 719
-        width: 36
-        height: 26
+        x: 320
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2452,12 +2452,12 @@ TextureImporter:
       name: wolf-all_78
       rect:
         serializedVersion: 2
-        x: 428
-        y: 720
-        width: 15
-        height: 10
+        x: 384
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2474,12 +2474,12 @@ TextureImporter:
       name: wolf-all_79
       rect:
         serializedVersion: 2
-        x: 497
-        y: 720
-        width: 7
-        height: 6
+        x: 448
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2496,12 +2496,12 @@ TextureImporter:
       name: wolf-all_80
       rect:
         serializedVersion: 2
-        x: 17
-        y: 657
-        width: 31
-        height: 27
+        x: 512
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2518,12 +2518,12 @@ TextureImporter:
       name: wolf-all_81
       rect:
         serializedVersion: 2
-        x: 82
-        y: 657
-        width: 30
-        height: 27
+        x: 576
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2540,12 +2540,12 @@ TextureImporter:
       name: wolf-all_82
       rect:
         serializedVersion: 2
-        x: 146
-        y: 655
-        width: 28
-        height: 34
+        x: 640
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2562,12 +2562,12 @@ TextureImporter:
       name: wolf-all_83
       rect:
         serializedVersion: 2
-        x: 208
-        y: 658
-        width: 29
-        height: 30
+        x: 704
+        y: 640
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2584,12 +2584,12 @@ TextureImporter:
       name: wolf-all_84
       rect:
         serializedVersion: 2
-        x: 271
-        y: 659
-        width: 31
-        height: 28
+        x: 0
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2606,12 +2606,12 @@ TextureImporter:
       name: wolf-all_85
       rect:
         serializedVersion: 2
-        x: 334
-        y: 657
-        width: 36
-        height: 28
+        x: 64
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2628,12 +2628,12 @@ TextureImporter:
       name: wolf-all_86
       rect:
         serializedVersion: 2
-        x: 386
-        y: 672
-        width: 11
-        height: 8
+        x: 128
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2650,12 +2650,12 @@ TextureImporter:
       name: wolf-all_87
       rect:
         serializedVersion: 2
-        x: 397
-        y: 656
-        width: 37
-        height: 24
+        x: 192
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2672,12 +2672,12 @@ TextureImporter:
       name: wolf-all_88
       rect:
         serializedVersion: 2
-        x: 417
-        y: 677
-        width: 6
-        height: 9
+        x: 256
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2694,12 +2694,12 @@ TextureImporter:
       name: wolf-all_89
       rect:
         serializedVersion: 2
-        x: 450
-        y: 657
-        width: 48
-        height: 31
+        x: 320
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2716,12 +2716,12 @@ TextureImporter:
       name: wolf-all_90
       rect:
         serializedVersion: 2
-        x: 513
-        y: 655
-        width: 49
-        height: 34
+        x: 384
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2738,12 +2738,12 @@ TextureImporter:
       name: wolf-all_91
       rect:
         serializedVersion: 2
-        x: 581
-        y: 655
-        width: 45
-        height: 34
+        x: 448
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2760,12 +2760,12 @@ TextureImporter:
       name: wolf-all_92
       rect:
         serializedVersion: 2
-        x: 645
-        y: 655
-        width: 45
-        height: 26
+        x: 512
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2782,12 +2782,12 @@ TextureImporter:
       name: wolf-all_93
       rect:
         serializedVersion: 2
-        x: 718
-        y: 655
-        width: 36
-        height: 26
+        x: 576
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2804,12 +2804,12 @@ TextureImporter:
       name: wolf-all_94
       rect:
         serializedVersion: 2
-        x: 388
-        y: 656
-        width: 15
-        height: 10
+        x: 640
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2826,12 +2826,12 @@ TextureImporter:
       name: wolf-all_95
       rect:
         serializedVersion: 2
-        x: 455
-        y: 656
-        width: 7
-        height: 6
+        x: 704
+        y: 576
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2848,12 +2848,12 @@ TextureImporter:
       name: wolf-all_96
       rect:
         serializedVersion: 2
-        x: 16
-        y: 592
-        width: 28
-        height: 27
+        x: 0
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2870,12 +2870,12 @@ TextureImporter:
       name: wolf-all_97
       rect:
         serializedVersion: 2
-        x: 80
-        y: 593
-        width: 28
-        height: 25
+        x: 64
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2892,12 +2892,12 @@ TextureImporter:
       name: wolf-all_98
       rect:
         serializedVersion: 2
-        x: 147
-        y: 589
-        width: 27
-        height: 35
+        x: 128
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2914,12 +2914,12 @@ TextureImporter:
       name: wolf-all_99
       rect:
         serializedVersion: 2
-        x: 209
-        y: 591
-        width: 30
-        height: 32
+        x: 192
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2936,12 +2936,12 @@ TextureImporter:
       name: wolf-all_100
       rect:
         serializedVersion: 2
-        x: 270
-        y: 591
-        width: 34
-        height: 31
+        x: 256
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2958,12 +2958,12 @@ TextureImporter:
       name: wolf-all_101
       rect:
         serializedVersion: 2
-        x: 335
-        y: 590
-        width: 34
-        height: 29
+        x: 320
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2980,12 +2980,12 @@ TextureImporter:
       name: wolf-all_102
       rect:
         serializedVersion: 2
-        x: 394
-        y: 591
-        width: 40
-        height: 25
+        x: 384
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3002,12 +3002,12 @@ TextureImporter:
       name: wolf-all_103
       rect:
         serializedVersion: 2
-        x: 421
-        y: 607
-        width: 13
-        height: 13
+        x: 448
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3024,12 +3024,12 @@ TextureImporter:
       name: wolf-all_104
       rect:
         serializedVersion: 2
-        x: 457
-        y: 592
-        width: 50
-        height: 24
+        x: 512
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3046,12 +3046,12 @@ TextureImporter:
       name: wolf-all_105
       rect:
         serializedVersion: 2
-        x: 485
-        y: 614
-        width: 8
-        height: 6
+        x: 576
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3068,12 +3068,12 @@ TextureImporter:
       name: wolf-all_106
       rect:
         serializedVersion: 2
-        x: 492
-        y: 612
-        width: 7
-        height: 6
+        x: 640
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3090,12 +3090,12 @@ TextureImporter:
       name: wolf-all_107
       rect:
         serializedVersion: 2
-        x: 521
-        y: 592
-        width: 45
-        height: 29
+        x: 704
+        y: 512
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3112,12 +3112,12 @@ TextureImporter:
       name: wolf-all_108
       rect:
         serializedVersion: 2
-        x: 588
-        y: 592
-        width: 37
-        height: 29
+        x: 0
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3134,12 +3134,12 @@ TextureImporter:
       name: wolf-all_109
       rect:
         serializedVersion: 2
-        x: 654
-        y: 592
-        width: 35
-        height: 23
+        x: 64
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3156,12 +3156,12 @@ TextureImporter:
       name: wolf-all_110
       rect:
         serializedVersion: 2
-        x: 718
-        y: 592
-        width: 35
-        height: 23
+        x: 128
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3178,12 +3178,12 @@ TextureImporter:
       name: wolf-all_111
       rect:
         serializedVersion: 2
-        x: 433
-        y: 594
-        width: 9
-        height: 10
+        x: 192
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3200,12 +3200,12 @@ TextureImporter:
       name: wolf-all_112
       rect:
         serializedVersion: 2
-        x: 20
-        y: 528
-        width: 28
-        height: 27
+        x: 256
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3222,12 +3222,12 @@ TextureImporter:
       name: wolf-all_113
       rect:
         serializedVersion: 2
-        x: 84
-        y: 529
-        width: 28
-        height: 25
+        x: 320
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3244,12 +3244,12 @@ TextureImporter:
       name: wolf-all_114
       rect:
         serializedVersion: 2
-        x: 146
-        y: 525
-        width: 27
-        height: 35
+        x: 384
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3266,12 +3266,12 @@ TextureImporter:
       name: wolf-all_115
       rect:
         serializedVersion: 2
-        x: 209
-        y: 527
-        width: 30
-        height: 32
+        x: 448
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3288,12 +3288,12 @@ TextureImporter:
       name: wolf-all_116
       rect:
         serializedVersion: 2
-        x: 272
-        y: 527
-        width: 34
-        height: 31
+        x: 512
+        y: 448
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3310,12 +3310,12 @@ TextureImporter:
       name: wolf-all_117
       rect:
         serializedVersion: 2
-        x: 335
-        y: 526
-        width: 34
-        height: 29
+        x: 0
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3332,12 +3332,12 @@ TextureImporter:
       name: wolf-all_118
       rect:
         serializedVersion: 2
-        x: 398
-        y: 543
-        width: 13
-        height: 13
+        x: 64
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3354,12 +3354,12 @@ TextureImporter:
       name: wolf-all_119
       rect:
         serializedVersion: 2
-        x: 398
-        y: 527
-        width: 40
-        height: 25
+        x: 128
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3376,12 +3376,12 @@ TextureImporter:
       name: wolf-all_120
       rect:
         serializedVersion: 2
-        x: 453
-        y: 528
-        width: 50
-        height: 24
+        x: 192
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3398,12 +3398,12 @@ TextureImporter:
       name: wolf-all_121
       rect:
         serializedVersion: 2
-        x: 461
-        y: 548
-        width: 7
-        height: 6
+        x: 256
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3420,12 +3420,12 @@ TextureImporter:
       name: wolf-all_122
       rect:
         serializedVersion: 2
-        x: 467
-        y: 550
-        width: 8
-        height: 6
+        x: 320
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3442,12 +3442,12 @@ TextureImporter:
       name: wolf-all_123
       rect:
         serializedVersion: 2
-        x: 522
-        y: 528
-        width: 45
-        height: 29
+        x: 384
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3464,12 +3464,12 @@ TextureImporter:
       name: wolf-all_124
       rect:
         serializedVersion: 2
-        x: 591
-        y: 528
-        width: 37
-        height: 29
+        x: 448
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3486,12 +3486,12 @@ TextureImporter:
       name: wolf-all_125
       rect:
         serializedVersion: 2
-        x: 655
-        y: 528
-        width: 35
-        height: 23
+        x: 512
+        y: 384
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3508,12 +3508,12 @@ TextureImporter:
       name: wolf-all_126
       rect:
         serializedVersion: 2
-        x: 719
-        y: 528
-        width: 35
-        height: 23
+        x: 0
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3530,12 +3530,12 @@ TextureImporter:
       name: wolf-all_127
       rect:
         serializedVersion: 2
-        x: 390
-        y: 530
-        width: 9
-        height: 10
+        x: 64
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3552,12 +3552,12 @@ TextureImporter:
       name: wolf-all_128
       rect:
         serializedVersion: 2
-        x: 18
-        y: 466
-        width: 28
-        height: 27
+        x: 128
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3574,12 +3574,12 @@ TextureImporter:
       name: wolf-all_129
       rect:
         serializedVersion: 2
-        x: 81
-        y: 466
-        width: 29
-        height: 25
+        x: 192
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3596,12 +3596,12 @@ TextureImporter:
       name: wolf-all_130
       rect:
         serializedVersion: 2
-        x: 144
-        y: 466
-        width: 31
-        height: 25
+        x: 256
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3618,12 +3618,12 @@ TextureImporter:
       name: wolf-all_131
       rect:
         serializedVersion: 2
-        x: 209
-        y: 466
-        width: 31
-        height: 26
+        x: 320
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3640,12 +3640,12 @@ TextureImporter:
       name: wolf-all_132
       rect:
         serializedVersion: 2
-        x: 274
-        y: 466
-        width: 29
-        height: 26
+        x: 384
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3662,12 +3662,12 @@ TextureImporter:
       name: wolf-all_133
       rect:
         serializedVersion: 2
-        x: 335
-        y: 466
-        width: 32
-        height: 27
+        x: 448
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3684,12 +3684,12 @@ TextureImporter:
       name: wolf-all_134
       rect:
         serializedVersion: 2
-        x: 400
-        y: 466
-        width: 31
-        height: 28
+        x: 512
+        y: 320
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3706,12 +3706,12 @@ TextureImporter:
       name: wolf-all_135
       rect:
         serializedVersion: 2
-        x: 463
-        y: 466
-        width: 32
-        height: 27
+        x: 0
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3728,12 +3728,12 @@ TextureImporter:
       name: wolf-all_136
       rect:
         serializedVersion: 2
-        x: 528
-        y: 466
-        width: 31
-        height: 25
+        x: 64
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3750,12 +3750,12 @@ TextureImporter:
       name: wolf-all_137
       rect:
         serializedVersion: 2
-        x: 17
-        y: 402
-        width: 28
-        height: 27
+        x: 128
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3772,12 +3772,12 @@ TextureImporter:
       name: wolf-all_138
       rect:
         serializedVersion: 2
-        x: 81
-        y: 402
-        width: 29
-        height: 25
+        x: 192
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3794,12 +3794,12 @@ TextureImporter:
       name: wolf-all_139
       rect:
         serializedVersion: 2
-        x: 144
-        y: 402
-        width: 31
-        height: 25
+        x: 256
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3816,12 +3816,12 @@ TextureImporter:
       name: wolf-all_140
       rect:
         serializedVersion: 2
-        x: 207
-        y: 402
-        width: 31
-        height: 26
+        x: 320
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3838,12 +3838,12 @@ TextureImporter:
       name: wolf-all_141
       rect:
         serializedVersion: 2
-        x: 272
-        y: 402
-        width: 29
-        height: 26
+        x: 384
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3860,12 +3860,12 @@ TextureImporter:
       name: wolf-all_142
       rect:
         serializedVersion: 2
-        x: 336
-        y: 402
-        width: 32
-        height: 27
+        x: 448
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3882,12 +3882,12 @@ TextureImporter:
       name: wolf-all_143
       rect:
         serializedVersion: 2
-        x: 400
-        y: 402
-        width: 31
-        height: 28
+        x: 512
+        y: 256
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3904,12 +3904,12 @@ TextureImporter:
       name: wolf-all_144
       rect:
         serializedVersion: 2
-        x: 464
-        y: 402
-        width: 32
-        height: 27
+        x: 0
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3926,12 +3926,12 @@ TextureImporter:
       name: wolf-all_145
       rect:
         serializedVersion: 2
-        x: 528
-        y: 402
-        width: 31
-        height: 25
+        x: 64
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3948,12 +3948,12 @@ TextureImporter:
       name: wolf-all_146
       rect:
         serializedVersion: 2
-        x: 17
-        y: 333
-        width: 31
-        height: 33
+        x: 128
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3970,12 +3970,12 @@ TextureImporter:
       name: wolf-all_147
       rect:
         serializedVersion: 2
-        x: 80
-        y: 333
-        width: 32
-        height: 32
+        x: 192
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3992,12 +3992,12 @@ TextureImporter:
       name: wolf-all_148
       rect:
         serializedVersion: 2
-        x: 145
-        y: 335
-        width: 30
-        height: 29
+        x: 256
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4014,12 +4014,12 @@ TextureImporter:
       name: wolf-all_149
       rect:
         serializedVersion: 2
-        x: 209
-        y: 335
-        width: 30
-        height: 30
+        x: 320
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4036,12 +4036,12 @@ TextureImporter:
       name: wolf-all_150
       rect:
         serializedVersion: 2
-        x: 272
-        y: 335
-        width: 32
-        height: 33
+        x: 384
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4058,12 +4058,12 @@ TextureImporter:
       name: wolf-all_151
       rect:
         serializedVersion: 2
-        x: 334
-        y: 335
-        width: 34
-        height: 33
+        x: 448
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4080,12 +4080,12 @@ TextureImporter:
       name: wolf-all_152
       rect:
         serializedVersion: 2
-        x: 399
-        y: 335
-        width: 33
-        height: 33
+        x: 704
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4102,12 +4102,12 @@ TextureImporter:
       name: wolf-all_153
       rect:
         serializedVersion: 2
-        x: 463
-        y: 335
-        width: 32
-        height: 34
+        x: 768
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4124,12 +4124,12 @@ TextureImporter:
       name: wolf-all_154
       rect:
         serializedVersion: 2
-        x: 529
-        y: 333
-        width: 30
-        height: 32
+        x: 832
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4146,12 +4146,12 @@ TextureImporter:
       name: wolf-all_155
       rect:
         serializedVersion: 2
-        x: 16
-        y: 269
-        width: 31
-        height: 33
+        x: 896
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4168,12 +4168,12 @@ TextureImporter:
       name: wolf-all_156
       rect:
         serializedVersion: 2
-        x: 80
-        y: 269
-        width: 32
-        height: 32
+        x: 0
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4190,12 +4190,12 @@ TextureImporter:
       name: wolf-all_157
       rect:
         serializedVersion: 2
-        x: 145
-        y: 271
-        width: 30
-        height: 29
+        x: 64
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4212,12 +4212,12 @@ TextureImporter:
       name: wolf-all_158
       rect:
         serializedVersion: 2
-        x: 209
-        y: 271
-        width: 30
-        height: 30
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4234,12 +4234,12 @@ TextureImporter:
       name: wolf-all_159
       rect:
         serializedVersion: 2
-        x: 272
-        y: 271
-        width: 32
-        height: 33
+        x: 192
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4256,12 +4256,12 @@ TextureImporter:
       name: wolf-all_160
       rect:
         serializedVersion: 2
-        x: 336
-        y: 271
-        width: 34
-        height: 33
+        x: 256
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4278,12 +4278,12 @@ TextureImporter:
       name: wolf-all_161
       rect:
         serializedVersion: 2
-        x: 400
-        y: 271
-        width: 33
-        height: 33
+        x: 320
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4300,12 +4300,12 @@ TextureImporter:
       name: wolf-all_162
       rect:
         serializedVersion: 2
-        x: 465
-        y: 271
-        width: 32
-        height: 34
+        x: 384
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4322,12 +4322,12 @@ TextureImporter:
       name: wolf-all_163
       rect:
         serializedVersion: 2
-        x: 529
-        y: 269
-        width: 30
-        height: 32
+        x: 448
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4344,12 +4344,12 @@ TextureImporter:
       name: wolf-all_164
       rect:
         serializedVersion: 2
-        x: 16
-        y: 210
-        width: 35
-        height: 33
+        x: 704
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4366,12 +4366,12 @@ TextureImporter:
       name: wolf-all_165
       rect:
         serializedVersion: 2
-        x: 80
-        y: 210
-        width: 35
-        height: 31
+        x: 768
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4388,12 +4388,12 @@ TextureImporter:
       name: wolf-all_166
       rect:
         serializedVersion: 2
-        x: 145
-        y: 210
-        width: 32
-        height: 31
+        x: 832
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4410,12 +4410,12 @@ TextureImporter:
       name: wolf-all_167
       rect:
         serializedVersion: 2
-        x: 210
-        y: 210
-        width: 32
-        height: 27
+        x: 896
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4432,12 +4432,12 @@ TextureImporter:
       name: wolf-all_168
       rect:
         serializedVersion: 2
-        x: 272
-        y: 210
-        width: 35
-        height: 28
+        x: 0
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4454,12 +4454,12 @@ TextureImporter:
       name: wolf-all_169
       rect:
         serializedVersion: 2
-        x: 335
-        y: 210
-        width: 35
-        height: 29
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4476,12 +4476,12 @@ TextureImporter:
       name: wolf-all_170
       rect:
         serializedVersion: 2
-        x: 396
-        y: 210
-        width: 37
-        height: 27
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4498,12 +4498,12 @@ TextureImporter:
       name: wolf-all_171
       rect:
         serializedVersion: 2
-        x: 460
-        y: 210
-        width: 38
-        height: 30
+        x: 192
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4520,12 +4520,12 @@ TextureImporter:
       name: wolf-all_172
       rect:
         serializedVersion: 2
-        x: 722
-        y: 207
-        width: 28
-        height: 30
+        x: 256
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4542,12 +4542,12 @@ TextureImporter:
       name: wolf-all_173
       rect:
         serializedVersion: 2
-        x: 786
-        y: 207
-        width: 29
-        height: 29
+        x: 320
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4564,12 +4564,12 @@ TextureImporter:
       name: wolf-all_174
       rect:
         serializedVersion: 2
-        x: 850
-        y: 207
-        width: 28
-        height: 28
+        x: 384
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4586,12 +4586,12 @@ TextureImporter:
       name: wolf-all_175
       rect:
         serializedVersion: 2
-        x: 914
-        y: 207
-        width: 28
-        height: 29
+        x: 448
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4608,12 +4608,12 @@ TextureImporter:
       name: wolf-all_176
       rect:
         serializedVersion: 2
-        x: 12
-        y: 146
-        width: 35
-        height: 33
+        x: 704
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4630,12 +4630,12 @@ TextureImporter:
       name: wolf-all_177
       rect:
         serializedVersion: 2
-        x: 76
-        y: 146
-        width: 35
-        height: 31
+        x: 768
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4652,12 +4652,12 @@ TextureImporter:
       name: wolf-all_178
       rect:
         serializedVersion: 2
-        x: 142
-        y: 146
-        width: 32
-        height: 31
+        x: 832
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4674,12 +4674,12 @@ TextureImporter:
       name: wolf-all_179
       rect:
         serializedVersion: 2
-        x: 205
-        y: 146
-        width: 32
-        height: 27
+        x: 896
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4696,12 +4696,12 @@ TextureImporter:
       name: wolf-all_180
       rect:
         serializedVersion: 2
-        x: 268
-        y: 146
-        width: 35
-        height: 28
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4718,12 +4718,12 @@ TextureImporter:
       name: wolf-all_181
       rect:
         serializedVersion: 2
-        x: 333
-        y: 146
-        width: 35
-        height: 29
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4740,12 +4740,12 @@ TextureImporter:
       name: wolf-all_182
       rect:
         serializedVersion: 2
-        x: 398
-        y: 146
-        width: 37
-        height: 27
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4762,12 +4762,12 @@ TextureImporter:
       name: wolf-all_183
       rect:
         serializedVersion: 2
-        x: 461
-        y: 146
-        width: 38
-        height: 30
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4784,12 +4784,12 @@ TextureImporter:
       name: wolf-all_184
       rect:
         serializedVersion: 2
-        x: 721
-        y: 143
-        width: 28
-        height: 30
+        x: 256
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4806,12 +4806,12 @@ TextureImporter:
       name: wolf-all_185
       rect:
         serializedVersion: 2
-        x: 784
-        y: 143
-        width: 29
-        height: 29
+        x: 320
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4828,12 +4828,12 @@ TextureImporter:
       name: wolf-all_186
       rect:
         serializedVersion: 2
-        x: 849
-        y: 143
-        width: 28
-        height: 28
+        x: 384
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4850,12 +4850,12 @@ TextureImporter:
       name: wolf-all_187
       rect:
         serializedVersion: 2
-        x: 913
-        y: 143
-        width: 28
-        height: 29
+        x: 448
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4872,12 +4872,12 @@ TextureImporter:
       name: wolf-all_188
       rect:
         serializedVersion: 2
-        x: 15
-        y: 79
-        width: 36
-        height: 26
+        x: 704
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4894,12 +4894,12 @@ TextureImporter:
       name: wolf-all_189
       rect:
         serializedVersion: 2
-        x: 82
-        y: 78
-        width: 32
-        height: 27
+        x: 768
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4916,12 +4916,12 @@ TextureImporter:
       name: wolf-all_190
       rect:
         serializedVersion: 2
-        x: 146
-        y: 78
-        width: 34
-        height: 29
+        x: 832
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4938,12 +4938,12 @@ TextureImporter:
       name: wolf-all_191
       rect:
         serializedVersion: 2
-        x: 211
-        y: 78
-        width: 33
-        height: 33
+        x: 896
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4956,451 +4956,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: wolf-all_192
-      rect:
-        serializedVersion: 2
-        x: 273
-        y: 77
-        width: 33
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 46eb507830defddb0800000000000000
-      internalID: -4764829281328710044
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_193
-      rect:
-        serializedVersion: 2
-        x: 337
-        y: 78
-        width: 33
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 80713dc3abbe0f350800000000000000
-      internalID: 6048593484675487496
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_194
-      rect:
-        serializedVersion: 2
-        x: 400
-        y: 78
-        width: 35
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b15c93988e8d59690800000000000000
-      internalID: -7595926703244196581
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_195
-      rect:
-        serializedVersion: 2
-        x: 462
-        y: 79
-        width: 37
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 595fe6c03bab8bca0800000000000000
-      internalID: -6000841225300675179
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_196
-      rect:
-        serializedVersion: 2
-        x: 720
-        y: 77
-        width: 32
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c977ce35ab86cc5d0800000000000000
-      internalID: -3040940498900715620
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_197
-      rect:
-        serializedVersion: 2
-        x: 784
-        y: 77
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8baef47bafa5c4820800000000000000
-      internalID: 2903795892610919096
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_198
-      rect:
-        serializedVersion: 2
-        x: 848
-        y: 77
-        width: 31
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8610210f39f4340e0800000000000000
-      internalID: -2286896688967581336
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_199
-      rect:
-        serializedVersion: 2
-        x: 912
-        y: 77
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 916c4084a8e054470800000000000000
-      internalID: 8378118668869223961
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_200
-      rect:
-        serializedVersion: 2
-        x: 13
-        y: 15
-        width: 36
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b15fe7463b2d77a40800000000000000
-      internalID: 5365989148962256155
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_201
-      rect:
-        serializedVersion: 2
-        x: 78
-        y: 14
-        width: 32
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d8edd1138bf425ca0800000000000000
-      internalID: -6029669298579054963
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_202
-      rect:
-        serializedVersion: 2
-        x: 140
-        y: 14
-        width: 34
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a97b74579e23037d0800000000000000
-      internalID: -2940794578396530790
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_203
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 14
-        width: 33
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ca26747dfd7bc0310800000000000000
-      internalID: 1372674158458528428
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_204
-      rect:
-        serializedVersion: 2
-        x: 270
-        y: 13
-        width: 33
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bc944696c0de8b630800000000000000
-      internalID: 3943162111326439883
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_205
-      rect:
-        serializedVersion: 2
-        x: 334
-        y: 14
-        width: 33
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a2954e19af4e84580800000000000000
-      internalID: -8842566103501350614
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_206
-      rect:
-        serializedVersion: 2
-        x: 397
-        y: 14
-        width: 35
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f12335384ee6625e0800000000000000
-      internalID: -1934737062174182881
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_207
-      rect:
-        serializedVersion: 2
-        x: 461
-        y: 15
-        width: 37
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e7445924d887aca70800000000000000
-      internalID: 8848016966025561214
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_208
-      rect:
-        serializedVersion: 2
-        x: 720
-        y: 13
-        width: 32
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 04f97fdb183751230800000000000000
-      internalID: 3608917677482417984
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_209
-      rect:
-        serializedVersion: 2
-        x: 785
-        y: 13
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 860d59cc1e267d5e0800000000000000
-      internalID: -1884929197091729304
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_210
-      rect:
-        serializedVersion: 2
-        x: 849
-        y: 13
-        width: 31
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5ce87bc4c5fa1b1d0800000000000000
-      internalID: -3336693037945876795
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-all_211
-      rect:
-        serializedVersion: 2
-        x: 913
-        y: 13
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a0b8b776837714850800000000000000
-      internalID: 6359495232961874698
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e4cd34da4efb36f48b5547ad59637490
     internalID: 0
     vertices: []
     indices: 
@@ -5408,7 +4968,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       wolf-all_0: 9038641558441596822
       wolf-all_1: 5996199143704156153
@@ -5514,29 +5076,9 @@ TextureImporter:
       wolf-all_19: 383908659289896556
       wolf-all_190: -661549211301296167
       wolf-all_191: -1323507601499001105
-      wolf-all_192: -4764829281328710044
-      wolf-all_193: 6048593484675487496
-      wolf-all_194: -7595926703244196581
-      wolf-all_195: -6000841225300675179
-      wolf-all_196: -3040940498900715620
-      wolf-all_197: 2903795892610919096
-      wolf-all_198: -2286896688967581336
-      wolf-all_199: 8378118668869223961
       wolf-all_2: -618124231029597586
       wolf-all_20: -4190581584504821027
-      wolf-all_200: 5365989148962256155
-      wolf-all_201: -6029669298579054963
-      wolf-all_202: -2940794578396530790
-      wolf-all_203: 1372674158458528428
-      wolf-all_204: 3943162111326439883
-      wolf-all_205: -8842566103501350614
-      wolf-all_206: -1934737062174182881
-      wolf-all_207: 8848016966025561214
-      wolf-all_208: 3608917677482417984
-      wolf-all_209: -1884929197091729304
       wolf-all_21: -5611977998746401681
-      wolf-all_210: -3336693037945876795
-      wolf-all_211: 6359495232961874698
       wolf-all_22: 4465896802247149481
       wolf-all_23: 1573893024572098574
       wolf-all_24: -5839438074757004841

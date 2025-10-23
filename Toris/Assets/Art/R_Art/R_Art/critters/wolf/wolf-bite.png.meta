@@ -292,12 +292,12 @@ TextureImporter:
       name: wolf-bite_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 208
-        width: 31
-        height: 29
+        x: 0
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -314,12 +314,12 @@ TextureImporter:
       name: wolf-bite_1
       rect:
         serializedVersion: 2
-        x: 81
-        y: 209
-        width: 32
-        height: 26
+        x: 64
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -336,12 +336,12 @@ TextureImporter:
       name: wolf-bite_2
       rect:
         serializedVersion: 2
-        x: 145
-        y: 209
-        width: 32
-        height: 26
+        x: 128
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -358,12 +358,12 @@ TextureImporter:
       name: wolf-bite_3
       rect:
         serializedVersion: 2
-        x: 209
-        y: 209
-        width: 32
-        height: 23
+        x: 192
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -380,12 +380,12 @@ TextureImporter:
       name: wolf-bite_4
       rect:
         serializedVersion: 2
-        x: 273
-        y: 209
-        width: 32
-        height: 23
+        x: 256
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -402,12 +402,12 @@ TextureImporter:
       name: wolf-bite_5
       rect:
         serializedVersion: 2
-        x: 337
-        y: 209
-        width: 32
-        height: 23
+        x: 320
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -424,12 +424,12 @@ TextureImporter:
       name: wolf-bite_6
       rect:
         serializedVersion: 2
-        x: 401
-        y: 209
-        width: 32
-        height: 22
+        x: 384
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -446,12 +446,12 @@ TextureImporter:
       name: wolf-bite_7
       rect:
         serializedVersion: 2
-        x: 465
-        y: 209
-        width: 32
-        height: 23
+        x: 448
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -468,12 +468,12 @@ TextureImporter:
       name: wolf-bite_8
       rect:
         serializedVersion: 2
-        x: 529
-        y: 209
-        width: 32
-        height: 23
+        x: 512
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -490,12 +490,12 @@ TextureImporter:
       name: wolf-bite_9
       rect:
         serializedVersion: 2
-        x: 596
-        y: 209
-        width: 30
-        height: 27
+        x: 576
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -512,12 +512,12 @@ TextureImporter:
       name: wolf-bite_10
       rect:
         serializedVersion: 2
-        x: 654
-        y: 208
-        width: 41
-        height: 35
+        x: 640
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -534,12 +534,12 @@ TextureImporter:
       name: wolf-bite_11
       rect:
         serializedVersion: 2
-        x: 718
-        y: 208
-        width: 37
-        height: 36
+        x: 704
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -556,12 +556,12 @@ TextureImporter:
       name: wolf-bite_12
       rect:
         serializedVersion: 2
-        x: 777
-        y: 220
-        width: 12
-        height: 19
+        x: 768
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -578,12 +578,12 @@ TextureImporter:
       name: wolf-bite_13
       rect:
         serializedVersion: 2
-        x: 784
-        y: 208
-        width: 31
-        height: 28
+        x: 832
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -600,12 +600,12 @@ TextureImporter:
       name: wolf-bite_14
       rect:
         serializedVersion: 2
-        x: 844
-        y: 208
-        width: 35
-        height: 28
+        x: 896
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -622,12 +622,12 @@ TextureImporter:
       name: wolf-bite_15
       rect:
         serializedVersion: 2
-        x: 920
-        y: 210
-        width: 28
-        height: 27
+        x: 0
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -644,12 +644,12 @@ TextureImporter:
       name: wolf-bite_16
       rect:
         serializedVersion: 2
-        x: 16
-        y: 144
-        width: 31
-        height: 29
+        x: 64
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -666,12 +666,12 @@ TextureImporter:
       name: wolf-bite_17
       rect:
         serializedVersion: 2
-        x: 78
-        y: 145
-        width: 32
-        height: 26
+        x: 128
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -688,12 +688,12 @@ TextureImporter:
       name: wolf-bite_18
       rect:
         serializedVersion: 2
-        x: 142
-        y: 145
-        width: 32
-        height: 26
+        x: 192
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -710,12 +710,12 @@ TextureImporter:
       name: wolf-bite_19
       rect:
         serializedVersion: 2
-        x: 206
-        y: 145
-        width: 32
-        height: 23
+        x: 256
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -732,12 +732,12 @@ TextureImporter:
       name: wolf-bite_20
       rect:
         serializedVersion: 2
-        x: 270
-        y: 145
-        width: 32
-        height: 23
+        x: 320
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -754,12 +754,12 @@ TextureImporter:
       name: wolf-bite_21
       rect:
         serializedVersion: 2
-        x: 334
-        y: 145
-        width: 32
-        height: 23
+        x: 384
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -776,12 +776,12 @@ TextureImporter:
       name: wolf-bite_22
       rect:
         serializedVersion: 2
-        x: 398
-        y: 145
-        width: 32
-        height: 22
+        x: 448
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -798,12 +798,12 @@ TextureImporter:
       name: wolf-bite_23
       rect:
         serializedVersion: 2
-        x: 462
-        y: 145
-        width: 32
-        height: 23
+        x: 512
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -820,12 +820,12 @@ TextureImporter:
       name: wolf-bite_24
       rect:
         serializedVersion: 2
-        x: 526
-        y: 145
-        width: 32
-        height: 23
+        x: 576
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -842,12 +842,12 @@ TextureImporter:
       name: wolf-bite_25
       rect:
         serializedVersion: 2
-        x: 589
-        y: 145
-        width: 30
-        height: 27
+        x: 640
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -864,12 +864,12 @@ TextureImporter:
       name: wolf-bite_26
       rect:
         serializedVersion: 2
-        x: 648
-        y: 144
-        width: 41
-        height: 35
+        x: 704
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -886,12 +886,12 @@ TextureImporter:
       name: wolf-bite_27
       rect:
         serializedVersion: 2
-        x: 716
-        y: 144
-        width: 37
-        height: 36
+        x: 768
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -908,12 +908,12 @@ TextureImporter:
       name: wolf-bite_28
       rect:
         serializedVersion: 2
-        x: 784
-        y: 144
-        width: 31
-        height: 28
+        x: 832
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -930,12 +930,12 @@ TextureImporter:
       name: wolf-bite_29
       rect:
         serializedVersion: 2
-        x: 810
-        y: 156
-        width: 12
-        height: 19
+        x: 896
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -952,12 +952,12 @@ TextureImporter:
       name: wolf-bite_30
       rect:
         serializedVersion: 2
-        x: 848
-        y: 144
-        width: 35
-        height: 28
+        x: 0
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -974,12 +974,12 @@ TextureImporter:
       name: wolf-bite_31
       rect:
         serializedVersion: 2
-        x: 907
-        y: 146
-        width: 28
-        height: 27
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -996,12 +996,12 @@ TextureImporter:
       name: wolf-bite_32
       rect:
         serializedVersion: 2
-        x: 14
-        y: 78
-        width: 37
-        height: 29
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1018,12 +1018,12 @@ TextureImporter:
       name: wolf-bite_33
       rect:
         serializedVersion: 2
-        x: 80
-        y: 78
-        width: 33
-        height: 27
+        x: 192
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1040,12 +1040,12 @@ TextureImporter:
       name: wolf-bite_34
       rect:
         serializedVersion: 2
-        x: 145
-        y: 78
-        width: 32
-        height: 26
+        x: 256
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1062,12 +1062,12 @@ TextureImporter:
       name: wolf-bite_35
       rect:
         serializedVersion: 2
-        x: 209
-        y: 78
-        width: 32
-        height: 27
+        x: 320
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1084,12 +1084,12 @@ TextureImporter:
       name: wolf-bite_36
       rect:
         serializedVersion: 2
-        x: 273
-        y: 78
-        width: 33
-        height: 26
+        x: 384
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1106,12 +1106,12 @@ TextureImporter:
       name: wolf-bite_37
       rect:
         serializedVersion: 2
-        x: 337
-        y: 78
-        width: 33
-        height: 27
+        x: 448
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1128,12 +1128,12 @@ TextureImporter:
       name: wolf-bite_38
       rect:
         serializedVersion: 2
-        x: 401
-        y: 78
-        width: 32
-        height: 26
+        x: 512
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1150,12 +1150,12 @@ TextureImporter:
       name: wolf-bite_39
       rect:
         serializedVersion: 2
-        x: 465
-        y: 78
-        width: 30
-        height: 26
+        x: 576
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1172,12 +1172,12 @@ TextureImporter:
       name: wolf-bite_40
       rect:
         serializedVersion: 2
-        x: 529
-        y: 78
-        width: 33
-        height: 27
+        x: 640
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1194,12 +1194,12 @@ TextureImporter:
       name: wolf-bite_41
       rect:
         serializedVersion: 2
-        x: 593
-        y: 79
-        width: 30
-        height: 22
+        x: 704
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1216,12 +1216,12 @@ TextureImporter:
       name: wolf-bite_42
       rect:
         serializedVersion: 2
-        x: 655
-        y: 78
-        width: 31
-        height: 41
+        x: 768
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1238,12 +1238,12 @@ TextureImporter:
       name: wolf-bite_43
       rect:
         serializedVersion: 2
-        x: 720
-        y: 78
-        width: 31
-        height: 41
+        x: 832
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1260,12 +1260,12 @@ TextureImporter:
       name: wolf-bite_44
       rect:
         serializedVersion: 2
-        x: 779
-        y: 98
-        width: 8
-        height: 22
+        x: 896
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1282,12 +1282,12 @@ TextureImporter:
       name: wolf-bite_45
       rect:
         serializedVersion: 2
-        x: 785
-        y: 79
-        width: 31
-        height: 25
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1304,12 +1304,12 @@ TextureImporter:
       name: wolf-bite_46
       rect:
         serializedVersion: 2
-        x: 843
-        y: 78
-        width: 35
-        height: 29
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1326,12 +1326,12 @@ TextureImporter:
       name: wolf-bite_47
       rect:
         serializedVersion: 2
-        x: 913
-        y: 77
-        width: 32
-        height: 29
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1348,12 +1348,12 @@ TextureImporter:
       name: wolf-bite_48
       rect:
         serializedVersion: 2
-        x: 13
-        y: 14
-        width: 37
-        height: 29
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1370,12 +1370,12 @@ TextureImporter:
       name: wolf-bite_49
       rect:
         serializedVersion: 2
-        x: 79
-        y: 14
-        width: 33
-        height: 27
+        x: 256
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1392,12 +1392,12 @@ TextureImporter:
       name: wolf-bite_50
       rect:
         serializedVersion: 2
-        x: 143
-        y: 14
-        width: 32
-        height: 26
+        x: 320
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1414,12 +1414,12 @@ TextureImporter:
       name: wolf-bite_51
       rect:
         serializedVersion: 2
-        x: 207
-        y: 14
-        width: 32
-        height: 27
+        x: 384
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1436,12 +1436,12 @@ TextureImporter:
       name: wolf-bite_52
       rect:
         serializedVersion: 2
-        x: 270
-        y: 14
-        width: 33
-        height: 26
+        x: 448
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1458,12 +1458,12 @@ TextureImporter:
       name: wolf-bite_53
       rect:
         serializedVersion: 2
-        x: 334
-        y: 14
-        width: 33
-        height: 27
+        x: 512
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1480,12 +1480,12 @@ TextureImporter:
       name: wolf-bite_54
       rect:
         serializedVersion: 2
-        x: 399
-        y: 14
-        width: 32
-        height: 26
+        x: 576
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1502,12 +1502,12 @@ TextureImporter:
       name: wolf-bite_55
       rect:
         serializedVersion: 2
-        x: 465
-        y: 14
-        width: 30
-        height: 26
+        x: 640
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1524,12 +1524,12 @@ TextureImporter:
       name: wolf-bite_56
       rect:
         serializedVersion: 2
-        x: 526
-        y: 14
-        width: 33
-        height: 27
+        x: 704
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1546,12 +1546,12 @@ TextureImporter:
       name: wolf-bite_57
       rect:
         serializedVersion: 2
-        x: 593
-        y: 15
-        width: 30
-        height: 22
+        x: 768
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1568,12 +1568,12 @@ TextureImporter:
       name: wolf-bite_58
       rect:
         serializedVersion: 2
-        x: 658
-        y: 14
-        width: 31
-        height: 41
+        x: 832
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1590,12 +1590,12 @@ TextureImporter:
       name: wolf-bite_59
       rect:
         serializedVersion: 2
-        x: 721
-        y: 14
-        width: 31
-        height: 41
+        x: 896
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1608,99 +1608,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: wolf-bite_60
-      rect:
-        serializedVersion: 2
-        x: 784
-        y: 15
-        width: 31
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 277d682565ea60e10800000000000000
-      internalID: 2163608356773091186
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-bite_61
-      rect:
-        serializedVersion: 2
-        x: 813
-        y: 34
-        width: 8
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3f44d3012a13bc1e0800000000000000
-      internalID: -2176591422776589069
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-bite_62
-      rect:
-        serializedVersion: 2
-        x: 850
-        y: 14
-        width: 35
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4f4658f397632f560800000000000000
-      internalID: 7345993836579349748
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wolf-bite_63
-      rect:
-        serializedVersion: 2
-        x: 911
-        y: 13
-        width: 32
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3cad6671b59125950800000000000000
-      internalID: 6436234696491195075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4d694e00e4cc28d45b0fc15e01485eeb
     internalID: 0
     vertices: []
     indices: 
@@ -1708,7 +1620,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       wolf-bite_0: -7147488763437284556
       wolf-bite_1: 2942816883170948976
@@ -1767,10 +1681,6 @@ TextureImporter:
       wolf-bite_58: 325910035355788185
       wolf-bite_59: -7213095601371855362
       wolf-bite_6: -2499333513615049234
-      wolf-bite_60: 2163608356773091186
-      wolf-bite_61: -2176591422776589069
-      wolf-bite_62: 7345993836579349748
-      wolf-bite_63: 6436234696491195075
       wolf-bite_7: 7087136119036459856
       wolf-bite_8: -6653563362147734557
       wolf-bite_9: 5824606907028861644

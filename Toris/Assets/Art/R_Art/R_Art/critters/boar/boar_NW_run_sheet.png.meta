@@ -112,12 +112,12 @@ TextureImporter:
       name: boar_NW_run_sheet_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 29
-        width: 34
-        height: 31
+        x: 0
+        y: 30
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: boar_NW_run_sheet_1
       rect:
         serializedVersion: 2
-        x: 43
+        x: 40
         y: 30
-        width: 37
-        height: 26
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: boar_NW_run_sheet_2
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1
-        width: 34
-        height: 26
+        x: 0
+        y: 0
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: boar_NW_run_sheet_3
       rect:
         serializedVersion: 2
-        x: 38
+        x: 40
         y: 0
-        width: 36
-        height: 28
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6d03e3fc1eb522f478ef82bd18764c23
     internalID: 0
     vertices: []
     indices: 
@@ -208,7 +208,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":40.0,"y":30.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       boar_NW_run_sheet_0: -8909208040747778775
       boar_NW_run_sheet_1: -9134857668308886276

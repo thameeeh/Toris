@@ -121,12 +121,12 @@ TextureImporter:
       name: boar_NE_idle_strip_0
       rect:
         serializedVersion: 2
-        x: 4
+        x: 0
         y: 0
-        width: 38
-        height: 29
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -143,12 +143,12 @@ TextureImporter:
       name: boar_NE_idle_strip_1
       rect:
         serializedVersion: 2
-        x: 45
+        x: 41
         y: 0
-        width: 32
-        height: 29
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -165,12 +165,12 @@ TextureImporter:
       name: boar_NE_idle_strip_2
       rect:
         serializedVersion: 2
-        x: 86
+        x: 82
         y: 0
-        width: 32
-        height: 29
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -187,12 +187,12 @@ TextureImporter:
       name: boar_NE_idle_strip_3
       rect:
         serializedVersion: 2
-        x: 127
+        x: 123
         y: 0
-        width: 32
-        height: 29
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -209,12 +209,12 @@ TextureImporter:
       name: boar_NE_idle_strip_4
       rect:
         serializedVersion: 2
-        x: 169
+        x: 164
         y: 0
-        width: 35
-        height: 28
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -231,12 +231,12 @@ TextureImporter:
       name: boar_NE_idle_strip_5
       rect:
         serializedVersion: 2
-        x: 209
+        x: 205
         y: 0
-        width: 36
-        height: 28
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -253,12 +253,12 @@ TextureImporter:
       name: boar_NE_idle_strip_6
       rect:
         serializedVersion: 2
-        x: 250
+        x: 246
         y: 0
-        width: 37
-        height: 29
+        width: 41
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -275,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0aa64521f13cd3246a153aa815e77110
     internalID: 0
     vertices: []
     indices: 
@@ -283,7 +283,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":41.0,"y":30.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       boar_NE_idle_strip_0: -3655518807851807323
       boar_NE_idle_strip_1: -1020159842686883925

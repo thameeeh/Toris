@@ -148,12 +148,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_0
       rect:
         serializedVersion: 2
-        x: 17
-        y: 8
-        width: 19
-        height: 16
+        x: 0
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -170,12 +170,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_1
       rect:
         serializedVersion: 2
-        x: 54
-        y: 8
-        width: 25
-        height: 19
+        x: 42
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -192,12 +192,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_2
       rect:
         serializedVersion: 2
-        x: 94
-        y: 7
-        width: 28
-        height: 23
+        x: 84
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -214,12 +214,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_3
       rect:
         serializedVersion: 2
-        x: 135
-        y: 13
-        width: 10
-        height: 13
+        x: 126
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -236,12 +236,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_4
       rect:
         serializedVersion: 2
-        x: 137
-        y: 4
-        width: 24
-        height: 23
+        x: 168
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -258,12 +258,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_5
       rect:
         serializedVersion: 2
-        x: 157
-        y: 6
-        width: 7
-        height: 7
+        x: 210
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -280,12 +280,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_6
       rect:
         serializedVersion: 2
-        x: 159
-        y: 16
-        width: 6
-        height: 8
+        x: 252
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -302,12 +302,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_7
       rect:
         serializedVersion: 2
-        x: 176
-        y: 3
-        width: 32
-        height: 24
+        x: 294
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -324,12 +324,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_8
       rect:
         serializedVersion: 2
-        x: 218
-        y: 3
-        width: 32
-        height: 25
+        x: 336
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -346,12 +346,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_9
       rect:
         serializedVersion: 2
-        x: 264
-        y: 7
-        width: 27
-        height: 17
+        x: 378
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -368,12 +368,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_10
       rect:
         serializedVersion: 2
-        x: 307
-        y: 6
-        width: 25
-        height: 19
+        x: 420
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -390,12 +390,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_11
       rect:
         serializedVersion: 2
-        x: 348
-        y: 5
-        width: 27
-        height: 18
+        x: 462
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -412,12 +412,12 @@ TextureImporter:
       name: critter_badger_NW_unburrow_12
       rect:
         serializedVersion: 2
-        x: 390
-        y: 6
-        width: 27
-        height: 17
+        x: 504
+        y: 0
+        width: 42
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -430,77 +430,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: critter_badger_NW_unburrow_13
-      rect:
-        serializedVersion: 2
-        x: 433
-        y: 5
-        width: 26
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c4e0186f389a430e0800000000000000
-      internalID: -2291019926183276980
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: critter_badger_NW_unburrow_14
-      rect:
-        serializedVersion: 2
-        x: 477
-        y: 6
-        width: 24
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1f6a946503ff2f490800000000000000
-      internalID: -7713822628661057807
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: critter_badger_NW_unburrow_15
-      rect:
-        serializedVersion: 2
-        x: 517
-        y: 5
-        width: 26
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 63817f3486be3dd20800000000000000
-      internalID: 3302241784842098742
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 99f42c921b0798f48a1b3da931875105
     internalID: 0
     vertices: []
     indices: 
@@ -508,16 +442,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":42.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       critter_badger_NW_unburrow_0: 5355389870712586079
       critter_badger_NW_unburrow_1: -1630396881699736843
       critter_badger_NW_unburrow_10: 2283848984882835239
       critter_badger_NW_unburrow_11: 4583852849975599589
       critter_badger_NW_unburrow_12: 5807587139823183683
-      critter_badger_NW_unburrow_13: -2291019926183276980
-      critter_badger_NW_unburrow_14: -7713822628661057807
-      critter_badger_NW_unburrow_15: 3302241784842098742
       critter_badger_NW_unburrow_2: 336240290178380758
       critter_badger_NW_unburrow_3: -8046248854819656392
       critter_badger_NW_unburrow_4: 3002712121305386417

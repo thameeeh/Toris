@@ -1,79 +1,55 @@
+using System;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
+public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
+    //---- Shared Interfaces -------------
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }
     public bool IsFacingRight { get; set; } = true;
     [field: SerializeField] public Rigidbody2D rb { get; set; }
-
-    [SerializeField] private Transform playerTransform;
-    public Transform PlayerTransform => playerTransform;
-
-    #region Aggro Check Variables
     public bool IsAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
 
-    #endregion
+    //--------------------------------
+    [SerializeField] private Transform playerTransform;
+    public Transform PlayerTransform => playerTransform;
 
-    #region State Machine Variables
-
+    public Animator animator { get; set; }
     public EnemyStateMachine StateMachine { get; set; }
-    public EnemyIdleState IdleState { get; set; }
-    public EnemyChaseState ChaseState { get; set; }
-    public EnemyAttackState AttackState { get; set; }
 
-    #endregion
-
-    #region ScriptableObject Variables
-
-    [SerializeField] private EnemyIdleSOBase EnemyIdleBase;
-    [SerializeField] private EnemyChaseSOBase EnemyChaseBase;
-    [SerializeField] private EnemyAttackSOBase EnemyAttackBase;
-
-    public EnemyIdleSOBase EnemyIdleBaseInstance { get; set; }
-    public EnemyChaseSOBase EnemyChaseBaseInstance { get; set; }
-    public EnemyAttackSOBase EnemyAttackBaseInstance { get; set; }
-
-    #endregion
-
-    private void Awake()
+    private GameObject _player;
+    private PlayerDamageReceiver _playerDamageReceiver;
+    protected HitData _hitData;
+    protected virtual void Awake()
     {
-        EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
-        EnemyChaseBaseInstance = Instantiate(EnemyChaseBase);
-        EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
-
         StateMachine = new EnemyStateMachine();
-
-        IdleState = new EnemyIdleState(this, StateMachine);
-        ChaseState = new EnemyChaseState(this, StateMachine);
-        AttackState = new EnemyAttackState(this, StateMachine);
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+            Debug.LogError("Animator component is missing on the enemy.");
     }
-
-    private void Start()
+    protected virtual void Start()
     {
         CurrentHealth = MaxHealth;
-
-        rb.GetComponent<Rigidbody2D>();
-
+        if (rb == null)
+        {
+            rb.GetComponent<Rigidbody2D>();
+        }
+        _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null) Debug.Log("_player Null");
+        _playerDamageReceiver = _player.GetComponent<PlayerDamageReceiver>();
         if (!playerTransform)
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-        EnemyIdleBaseInstance.Initialize(gameObject, this, playerTransform);
-        EnemyChaseBaseInstance.Initialize(gameObject, this, playerTransform);
-        EnemyAttackBaseInstance.Initialize(gameObject, this, playerTransform);
-        
-        StateMachine.Initialize(IdleState);
+            playerTransform = _player.transform;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        StateMachine.CurrentEnemyState.FrameUpdate();
+        StateMachine.CurrentEnemyState?.FrameUpdate();
     }
 
     private void FixedUpdate()
     {
-        StateMachine.CurrentEnemyState.PhysicsUpdate();
+        StateMachine.CurrentEnemyState?.PhysicsUpdate();
     }
 
     #region Health / Die Functions
@@ -90,8 +66,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void Die()
     {
-        Debug.Log("Die() called");
-        Destroy(gameObject);
+        Debug.Log("Dead");
     }
 
     #endregion
@@ -100,29 +75,20 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void MoveEnemy(Vector2 velocity)
     {
         rb.linearVelocity = velocity;
-        CheckForLeftOrRightFacing(velocity);
+        if(velocity != Vector2.zero)UpdateAnimationDirection(velocity);
     }
-
-    public void CheckForLeftOrRightFacing(Vector2 velocity)
+    public void UpdateAnimationDirection(Vector2 direction)
     {
-        if (IsFacingRight && velocity.x < 0f)
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            IsFacingRight = !IsFacingRight;
-        }
-
-        else if (!IsFacingRight && velocity.x > 0f)
-        {
-            Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
-            transform.rotation = Quaternion.Euler(rotator);
-            IsFacingRight = !IsFacingRight;
-        }
+        direction = direction.normalized;
+        animator.SetFloat("DirectionX", direction.x);
+        animator.SetFloat("DirectionY", direction.y);
     }
 
     #endregion
 
     #region Distance Checks
+    //those two are set by enemy children trigger_check scripts
+    //also children have colliders set as triggers for those checks
     public void SetAggroStatus(bool isAggroed)
     {
         IsAggroed = isAggroed;
@@ -133,9 +99,17 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
     #endregion
 
-    #region Animation triggers
+    public void DealDamageToPlayer(float amount) 
+    {
+        if (IsWithinStrikingDistance)
+        {
+            _hitData.damage = amount;
+            _playerDamageReceiver.ReceiveHit(_hitData);
+        }
+    }
 
-    private void AnimationTriggerEvent(AnimationTriggerType triggerType)
+    #region Animation
+    public void AnimationTriggerEvent(AnimationTriggerType triggerType)
     {
         StateMachine.CurrentEnemyState.AnimationTriggerEvent(triggerType);
     }
@@ -143,7 +117,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public enum AnimationTriggerType //test
     {
         EnemyDamaged,
-        PlayFootstepSound
+        PlayFootstepSound,
+        Attack,
+        Chase,
+        Idle,
+        Howl
     }
 
     #endregion

@@ -95,7 +95,7 @@ public class PlayerAnimationController : MonoBehaviour
 
         // Locomotion (Idle/Walk)
         if (move.sqrMagnitude > 0.0001f) _lastDir = move.normalized;
-        _view.SetFacing(_lastDir); // TODO: remove flip when L/R art lands
+        _view.SetFacing(_lastDir); // TODO: remove flip when L/R art lands :D
 
         string dir = _view.DirPrefix(_lastDir); // "U" / "S" / "D"  // TODO: L/R later
         string suffix = move.sqrMagnitude > 0.0001f ? _character.locomotionWalkSuffix

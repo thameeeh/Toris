@@ -123,10 +123,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 60
-        width: 37
-        height: 29
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -143,12 +143,12 @@ TextureImporter:
       name: boar_NW_idle_sheet_1
       rect:
         serializedVersion: 2
-        x: 45
+        x: 40
         y: 60
-        width: 32
-        height: 29
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -165,12 +165,12 @@ TextureImporter:
       name: boar_NW_idle_sheet_2
       rect:
         serializedVersion: 2
-        x: 85
+        x: 80
         y: 60
-        width: 32
-        height: 29
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -187,12 +187,12 @@ TextureImporter:
       name: boar_NW_idle_sheet_3
       rect:
         serializedVersion: 2
-        x: 5
+        x: 0
         y: 30
-        width: 32
-        height: 29
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -209,12 +209,12 @@ TextureImporter:
       name: boar_NW_idle_sheet_4
       rect:
         serializedVersion: 2
-        x: 41
+        x: 40
         y: 30
-        width: 35
-        height: 28
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -231,19 +231,19 @@ TextureImporter:
       name: boar_NW_idle_sheet_5
       rect:
         serializedVersion: 2
-        x: 81
+        x: 80
         y: 30
-        width: 36
-        height: 28
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 23ae5992a41aef620800000000000000
+      spriteID: 3d77d63b38626d047b91f210aa55824f
       internalID: 2809860557423110706
       vertices: []
       indices: 
@@ -255,17 +255,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 37
-        height: 29
+        width: 40
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 661729500fe98e860800000000000000
+      spriteID: a94829d1593f87344a60f718e8902dfd
       internalID: 7559466728264200550
       vertices: []
       indices: 
@@ -275,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 05476bfc3af11b1448e0bae54aef54a0
     internalID: 0
     vertices: []
     indices: 
@@ -283,7 +283,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":40.0,"y":30.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       boar_NW_idle_sheet_0: -8179546753945797162
       boar_NW_idle_sheet_1: 594925584102914624

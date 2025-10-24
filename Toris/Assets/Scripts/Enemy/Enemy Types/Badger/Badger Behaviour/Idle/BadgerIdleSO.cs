@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class BadgerIdleSO : IdleSOBase<Badger>
 {
     [SerializeField] private float WanderRadius = 20f;
-    [SerializeField] private float WanderTimer = 2f;
+    [SerializeField] public float WanderTimer = 2f;
     private float MovementSpeed;
 
     private float _timer;
@@ -21,15 +21,15 @@ public class BadgerIdleSO : IdleSOBase<Badger>
     {
         base.DoEnterLogic();
 
-        enemy.IsCurrentlyWondering(true);
+        enemy.animator.Play("Idle Sub State");
+        enemy.animator.SetBool("Wonder", true);
+
         MovementSpeed = enemy.WalkingSpeed;
     }
 
     public override void DoExitLogic()
     {
         base.DoExitLogic();
-
-        enemy.IsCurrentlyWondering(false);
     }
 
     public override void DoFrameUpdateLogic()
@@ -46,7 +46,6 @@ public class BadgerIdleSO : IdleSOBase<Badger>
         }
 
 
-
         if ((_wanderPoint - enemy.transform.position).sqrMagnitude < 0.1)
         {
             enemy.animator.SetBool("IsMoving", false);
@@ -58,6 +57,8 @@ public class BadgerIdleSO : IdleSOBase<Badger>
             enemy.MoveEnemy(_moveDirection * MovementSpeed);
             enemy.UpdateAnimationDirection(_moveDirection);
         }
+
+        enemy.animator.SetBool("Wonder", false);
     }
 
     public override void DoPhysicsLogic()

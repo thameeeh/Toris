@@ -83,8 +83,12 @@ public class Wolf : Enemy
         {
             Die();
             StateMachine.ChangeState(DeadState);
-            Destroy(gameObject);
         }
+    }
+
+    public void DestroyGameObject() 
+    {
+        Destroy(gameObject);
     }
 
     public void DamagePlayer(float damage) {

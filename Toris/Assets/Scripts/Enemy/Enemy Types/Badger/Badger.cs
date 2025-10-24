@@ -12,8 +12,7 @@ public class Badger : Enemy
 
     public Vector2 TargetPlayerPosition { get; set; }
     public bool IsBurrowing { get; private set; } = false;
-    public bool IsWondering { get; private set; } = false;
-
+    public bool IsWondering { get; set; } = false;
     public void PrintMessage(string msg)
     {
         Debug.Log(msg);
@@ -77,11 +76,6 @@ public class Badger : Enemy
             Destroy(gameObject);
         }
 
-        if (IsWondering)
-        {
-            StateMachine.ChangeState(IdleState);
-            animator.SetBool("IsWondering", true);
-        }
     }
     public void IsCurrentlyBurrowing(bool t) 
     {
@@ -95,10 +89,15 @@ public class Badger : Enemy
         }
     }
 
-    public void IsCurrentlyWondering(bool t) 
+    public void Wonder() 
     {
-        IsWondering = t;
+        IdleState.IdleWanderTimer = 5f;
+        animator.SetBool("Wonder", true);
+        animator.SetBool("IsTunneling", false);
+        IsWondering = true;
+        StateMachine.ChangeState(IdleState);
     }
+
     public void DamagePlayer(float damage)
     {
         base.DamagePlayer(damage, _hitData);

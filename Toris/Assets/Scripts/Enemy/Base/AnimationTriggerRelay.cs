@@ -11,20 +11,30 @@ public class AnimationTriggerRelay : MonoBehaviour
     }
 
     //method path this -> wolf -> enemy -> player
-    public void DealDamage() 
+    public void DealDamage()
     {
         _wolf.DamagePlayer(_wolf.AttackDamage);
         _badger.DamagePlayer(_badger.AttackDamage);
     }
 
-    public void MoveWhileBite(int i) 
+    public void DestroyWolf()
     {
-        if(i == 1) _wolf.IsMovingWhileBiting = true;
+        _wolf.DestroyGameObject();
+    }
+
+    public void MoveWhileBite(int i)
+    {
+        if (i == 1) _wolf.IsMovingWhileBiting = true;
         else _wolf.IsMovingWhileBiting = false;
     }
 
-    public void IsBurrowing() 
+    public void IsBurrowing()
     {
         _badger.IsCurrentlyBurrowing(false);
+    }
+
+    public void Wonder()
+    {
+        _badger.Wonder();
     }
 }

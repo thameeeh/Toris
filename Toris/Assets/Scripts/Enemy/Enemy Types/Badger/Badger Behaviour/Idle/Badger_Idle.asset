@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c8ef1139e615c24ab7da2fb2bce65de, type: 3}
   m_Name: Badger_Idle
   m_EditorClassIdentifier: Assembly-CSharp::BadgerIdleSO
+  WanderRadius: 1
+  WanderTimer: 2

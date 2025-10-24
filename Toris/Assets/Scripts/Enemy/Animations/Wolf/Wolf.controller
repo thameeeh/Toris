@@ -156,7 +156,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Blend Tree
+  m_Name: Idle Sub State
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -5632405006039715443}
@@ -293,20 +293,19 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -8822931147915534987}
-    m_Position: {x: 270, y: -440, z: 0}
+    m_Position: {x: 250, y: -330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5607034428705934757}
-    m_Position: {x: 490, y: -440, z: 0}
+    m_Position: {x: 530, y: -240, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -3123280128712581772}
-    m_Position: {x: 250, y: -270, z: 0}
+    m_Position: {x: -110, y: -330, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -5640475504524098658}
     m_Position: {x: 240, y: -120, z: 0}
   m_AnyStateTransitions:
   - {fileID: -6937888787434167725}
-  - {fileID: 9145038371147097149}
   m_EntryTransitions: []
   m_StateMachineTransitions:
   - first: {fileID: -3123280128712581772}
@@ -394,12 +393,6 @@ AnimatorController:
     m_DefaultBool: 1
     m_Controller: {fileID: 9100000}
   - m_Name: Attack
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
-  - m_Name: Howl
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -590,28 +583,3 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1101 &9145038371147097149
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Howl
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -8822931147915534987}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0.75
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1

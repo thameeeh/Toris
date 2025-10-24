@@ -12,6 +12,8 @@ public class WolfDeadSO : DeadSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+
+        enemy.animator.SetTrigger("Dead");
     }
 
     public override void DoExitLogic()
@@ -22,6 +24,8 @@ public class WolfDeadSO : DeadSOBase<Wolf>
     public override void DoFrameUpdateLogic()
     {
         base.DoFrameUpdateLogic();
+
+        enemy.MoveEnemy(Vector2.zero);
     }
 
     public override void DoPhysicsLogic()

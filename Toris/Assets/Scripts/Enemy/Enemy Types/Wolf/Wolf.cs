@@ -11,6 +11,9 @@ public class Wolf : Enemy
     public float AttackDamage = 20;
     public float MovementSpeed = 2;
 
+
+    private HitData _hitData;
+
     public bool IsMovingWhileBiting { get; set; } = false;
     public void PrintMessage(string msg) 
     {
@@ -80,7 +83,15 @@ public class Wolf : Enemy
         {
             Die();
             StateMachine.ChangeState(DeadState);
-            Destroy(gameObject);
         }
+    }
+
+    public void DestroyGameObject() 
+    {
+        Destroy(gameObject);
+    }
+
+    public void DamagePlayer(float damage) {
+        base.DamagePlayer(damage, _hitData);
     }
 }

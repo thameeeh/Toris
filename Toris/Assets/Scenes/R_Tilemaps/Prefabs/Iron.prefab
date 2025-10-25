@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3453078304927277012}
   - component: {fileID: 4300810798344178853}
   - component: {fileID: 1765733529343486833}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Iron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6269092972351974181}
   - component: {fileID: 8807205957641751339}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Tiles2_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

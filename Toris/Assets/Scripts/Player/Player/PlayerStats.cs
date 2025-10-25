@@ -35,6 +35,7 @@ public class PlayerStats : MonoBehaviour
         if (currentStamina < cost) return false;
         currentStamina -= cost;
         OnStaminaChanged?.Invoke(currentStamina, maxStamina);
+        Debug.Log($"Stamina: {currentStamina}");
         return true;
     }
 }

@@ -30,6 +30,9 @@
 # Visual Studio cache directory
 .vs/
 
+# Google
+Google*
+
 # Gradle cache directory
 .gradle/
 

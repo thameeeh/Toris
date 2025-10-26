@@ -612,14 +612,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39faa74882fd4d3408327d337290e63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  waterLevel: 0.3
+  sandLevel: 0.5
+  grassLevel: 0.8
   GroundTiles: {fileID: 1583650508}
+  DecorationTiles: {fileID: 0}
   GrassTile: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
   WaterTile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
   SandTile: {fileID: 11400000, guid: 3b15acf6226e5ce4f9d33809ac75671a, type: 2}
   RockTile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
+  FlowerTile: {fileID: 0}
+  SeashellTile: {fileID: 0}
+  PebbleTile: {fileID: 0}
   MapWidth: 100
   MapHeight: 100
   NoiseScale: 0.1
+  DecorationNoiseScale: 0.2
+  DecorationThreshold: 0.7
 --- !u!4 &1743458541
 Transform:
   m_ObjectHideFlags: 0

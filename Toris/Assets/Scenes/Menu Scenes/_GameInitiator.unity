@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1799703597}
   - component: {fileID: 1799703598}
   m_Layer: 0
-  m_Name: _GameInitiator
+  m_Name: GameInitiator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,6 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ce0d000bc7a4848a8a2212ed14be6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _mainMenuScene: MainMenu
+  _pausedScene: UIMenu
+  _townScene: MainArea
+  _dungeonScene: ProceduralTiles
+  pauseAction: {fileID: 7727032971491509709, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ public class MapGenerator : MonoBehaviour
     [Tooltip("The Tilemap to draw ground tiles onto.")]
     public Tilemap GroundTiles;
     [Tooltip("A second Tilemap (on top) for decorations like flowers.")]
-    public Tilemap DecorationTiles; // --- NEW ---
+    public Tilemap WaterTiles; // --- NEW ---
     [Tooltip("The player GameObject. Must have the 'Player' tag.")]
     Transform Player;
 
@@ -33,15 +33,6 @@ public class MapGenerator : MonoBehaviour
     public TileBase SandTile;
     [Tooltip("Tile for rock/mountain terrain.")]
     public TileBase RockTile;
-
-    // --- NEW: Decoration Tiles ---
-    [Header("Decoration Tile Assets")]
-    [Tooltip("Decoration for Grass tiles (e.g., flowers).")]
-    public TileBase FlowerTile;
-    [Tooltip("Decoration for Sand tiles (e.g., shells).")]
-    public TileBase SeashellTile;
-    [Tooltip("Decoration for Rock tiles (e.g., pebbles).")]
-    public TileBase PebbleTile;
 
     [Header("Map & Noise Settings")]
     [Tooltip("The width of the generation box around the player (in tiles).")]
@@ -61,8 +52,6 @@ public class MapGenerator : MonoBehaviour
 
     private float offsetX;
     private float offsetY;
-    private float decorationOffsetX; // --- NEW ---
-    private float decorationOffsetY; // --- NEW ---
 
     // --- NEW: Variables to track previous slider values ---
     private float prevWaterLevel;
@@ -87,10 +76,6 @@ public class MapGenerator : MonoBehaviour
         // Terrain noise offsets
         offsetX = Random.Range(0f, 999f);
         offsetY = Random.Range(0f, 999f);
-
-        // --- NEW: Decoration noise offsets (must be different!) ---
-        decorationOffsetX = Random.Range(0f, 999f);
-        decorationOffsetY = Random.Range(0f, 999f);
 
         // --- CHANGED ---
         // Get the player's starting cell position
@@ -166,7 +151,7 @@ public class MapGenerator : MonoBehaviour
     {
         // Clear all tiles from the tilemap
         GroundTiles.ClearAllTiles();
-        DecorationTiles.ClearAllTiles(); // --- NEW ---
+        WaterTiles.ClearAllTiles(); // --- ADDED ---
         // Clear our memory of which tiles we've generated
         generatedTiles.Clear();
         // Regenerate the area around the player
@@ -206,74 +191,40 @@ public class MapGenerator : MonoBehaviour
                 float yCoord = (float)tilePos.y * NoiseScale + offsetY;
                 float sample = Mathf.PerlinNoise(xCoord, yCoord);
 
-                TileBase selectedTile;
-                // --- CHANGED: Using variables instead of hard-coded numbers ---
+                // --- CHANGED: Logic to split tiles between two maps ---
                 if (sample < waterLevel)
                 {
-                    selectedTile = WaterTile;
-                }
-                else if (sample < sandLevel)
-                {
-                    selectedTile = SandTile;
-                }
-                else if (sample < grassLevel)
-                {
-                    selectedTile = GrassTile;
+                    // Place water on the WaterTiles map
+                    WaterTiles.SetTile(tilePos, WaterTile);
+                    // Clear any ground tile that might be there (e.g., from previous generation)
+                    GroundTiles.SetTile(tilePos, null);
                 }
                 else
                 {
-                    selectedTile = RockTile;
+                    // Not water, so place a ground tile
+                    TileBase selectedTile;
+                    if (sample < sandLevel)
+                    {
+                        selectedTile = SandTile;
+                    }
+                    else if (sample < grassLevel)
+                    {
+                        selectedTile = GrassTile;
+                    }
+                    else
+                    {
+                        selectedTile = RockTile;
+                    }
+
+                    // Place the ground tile
+                    GroundTiles.SetTile(tilePos, selectedTile);
+                    // Clear any water tile that might be there (e.g., from previous generation)
+                    WaterTiles.SetTile(tilePos, null);
                 }
 
                 // --- KEY CHANGE 3: Set tile and *remember* it ---
-                GroundTiles.SetTile(tilePos, selectedTile);
+                // We just need to remember we've processed this position
                 generatedTiles.Add(tilePos);
-
-                // --- NEW: Decoration Generation ---
-                // We pass in the ground tile we just placed and its position
-                GenerateDecoration(tilePos, selectedTile);
-            }
-        }
-    }
-
-    // --- NEW FUNCTION ---
-    // Decides if a decoration should be placed on a given tile
-    void GenerateDecoration(Vector3Int tilePos, TileBase groundTile)
-    {
-        // Don't put decorations on water
-        if (groundTile == WaterTile)
-        {
-            return;
-        }
-
-        // Calculate the decoration noise (using different offsets/scale)
-        float xCoord = (float)tilePos.x * DecorationNoiseScale + decorationOffsetX;
-        float yCoord = (float)tilePos.y * DecorationNoiseScale + decorationOffsetY;
-        float decorationSample = Mathf.PerlinNoise(xCoord, yCoord);
-
-        // Only place a decoration if the noise is above our threshold
-        if (decorationSample > DecorationThreshold)
-        {
-            TileBase decorationTile = null;
-
-            // Pick the right decoration for the ground type
-            if (groundTile == GrassTile)
-            {
-                decorationTile = FlowerTile;
-            }
-            else if (groundTile == SandTile)
-            {
-                decorationTile = SeashellTile;
-            }
-            else if (groundTile == RockTile)
-            {
-                decorationTile = PebbleTile;
-            }
-
-            // Place the chosen decoration on the second tilemap
-            if (decorationTile != null)
-            {
-                DecorationTiles.SetTile(tilePos, decorationTile);
             }
         }
     }

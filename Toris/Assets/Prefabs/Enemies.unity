@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.59
@@ -187,6 +191,10 @@ PrefabInstance:
     - target: {fileID: 1010378387720233342, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_Name
       value: Wolf (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
@@ -245,6 +253,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.78
@@ -301,6 +313,10 @@ PrefabInstance:
     - target: {fileID: 1010378387720233342, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_Name
       value: Wolf (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
@@ -359,6 +375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf
       objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -415,6 +435,10 @@ PrefabInstance:
     - target: {fileID: 1010378387720233342, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_Name
       value: Wolf (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
@@ -473,6 +497,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.59
@@ -529,6 +557,10 @@ PrefabInstance:
     - target: {fileID: 1010378387720233342, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_Name
       value: Wolf (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958152321079871401, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6011107412874838861, guid: 91af7b0b9a4bdbd41906101d0864f382, type: 3}
       propertyPath: m_LocalPosition.x

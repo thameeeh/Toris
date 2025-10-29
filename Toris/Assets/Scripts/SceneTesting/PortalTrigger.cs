@@ -15,7 +15,7 @@ public class ScenePortal : MonoBehaviour
 
         _used = true;
         if (portalCollider) portalCollider.enabled = false;
-
-        SceneLoader.I.GoTo(nextScene);
+        GameInitiator.Instance.ChangeState(GameInitiator.GameState.InDungeon);
+        //SceneLoader.I.GoTo(nextScene);
     }
 }

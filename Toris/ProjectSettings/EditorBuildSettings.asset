@@ -5,24 +5,27 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/R_Tilemaps/Village.unity
-    guid: a6b9f5f3c67e04d4085042d1ae7b9aae
-  - enabled: 0
-    path: Assets/Scenes/R_Tilemaps/Level1.unity
-    guid: 6958e05e8c0cd5642b084d02a7552fe6
-  - enabled: 0
-    path: Assets/Scenes/R_Tilemaps/Level2.unity
-    guid: 9fcb402e52172aa438bd4f3a0fec18d1
-  - enabled: 0
-    path: Assets/Scenes/R_Tilemaps/StressTest.unity
-    guid: d09c0d0e9956a7f499ec3293e185b911
+  - enabled: 1
+    path: Assets/Scenes/Menu Scenes/_GameInitiator.unity
+    guid: 9addb92a7172a4942b350f53e261e435
   - enabled: 1
     path: Assets/Scenes/MainArea.unity
     guid: 876f372170924524caea4f07114b4b41
   - enabled: 1
     path: Assets/Scenes/K_Testing/K_TestHub.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Menu Scenes/MainMenu.unity
+    guid: 265eccf9950f7634fa4ac504657dcb08
+  - enabled: 1
+    path: Assets/Scenes/ProceduralTiles.unity
+    guid: 7dd0601ab3f044343b8a89c14cf1f1e9
+  - enabled: 1
+    path: Assets/Scenes/Menu Scenes/UIMenu.unity
+    guid: d5910e62dbbb9d543a0174520cbe11a5
+  - enabled: 1
+    path: Assets/Prefabs/Enemies.unity
+    guid: ddef44bba1001264796688fd5106bcfa
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -19,6 +19,7 @@ public class PlayerBowController : MonoBehaviour
     private float drawStartTime = -999f;
     private float lastShotTime = -999f;
     private bool drawing;
+    public bool IsAutoaiming { get; set; } = false;
 
     void OnEnable()
     {
@@ -151,6 +152,8 @@ public class PlayerBowController : MonoBehaviour
         Vector2 v = (Vector2)(world - (Vector3)origin);
         return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
+
+
 
     void Update()
     {

@@ -32,6 +32,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "toggleInventory",
+                    "type": "Button",
+                    "id": "aae52b41-27f5-4cda-8150-1eea76c44b6a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -164,6 +173,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a561c7aa-cb28-4fbd-a547-be566ad31979",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "toggleInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

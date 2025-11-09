@@ -216,7 +216,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5002732143117717161}
-  - component: {fileID: 8495004723452914566}
   - component: {fileID: 3881013219604181089}
   m_Layer: 6
   m_Name: StrikingDist
@@ -240,42 +239,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2677226271541945261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &8495004723452914566
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5006611838758275761}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1
 --- !u!114 &3881013219604181089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +366,8 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 2158803767955066894}
   playerTransform: {fileID: 0}
+  AttackDamage: 20
+  MovementSpeed: 2
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
   EnemyIdleBase: {fileID: 11400000, guid: 82b81c892a8365441b1246466bcf4d86, type: 2}

@@ -234,11 +234,11 @@ PrefabInstance:
       objectReference: {fileID: 1555781530}
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.3
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.7
+      value: 4.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -598,7 +598,7 @@ Transform:
   m_GameObject: {fileID: 506412729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.3, y: 6.7, z: -10}
+  m_LocalPosition: {x: 3.5, y: 4.2000003, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1555,8 +1555,8 @@ MonoBehaviour:
   WaterTile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
   SandTile: {fileID: 11400000, guid: 3b15acf6226e5ce4f9d33809ac75671a, type: 2}
   RockTile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
-  MapWidth: 50
-  MapHeight: 50
+  MapWidth: 25
+  MapHeight: 25
   NoiseScale: 0.1
   DecorationNoiseScale: 0.2
   DecorationThreshold: 0.7
@@ -1601,11 +1601,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7797051015022828889, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.3
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 7797051015022828889, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.7
+      value: 4.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 7797051015022828889, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: m_LocalPosition.z

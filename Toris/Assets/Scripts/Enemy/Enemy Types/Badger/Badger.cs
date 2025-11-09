@@ -19,7 +19,7 @@ public class Badger : Enemy
     }
 
     #region Badger-Specific States
-    public BadgerAttackState AttackState { get; set; }
+    public BadgerUnburrowState AttackState { get; set; }
     public BadgerIdleState IdleState { get; set; }
     public BadgerBurrowState BurrowState { get; set; }
     public BadgerDeadState DeadState { get; set; }
@@ -28,12 +28,12 @@ public class Badger : Enemy
     #region Badger-Specific ScriptableObjects
     [Space][Space][Header("Badger-Specific SOs")]
     [SerializeField] private BadgerIdleSO BadgerIdleBase;
-    [SerializeField] private BadgerAttackSO BadgerAttackBase;
+    [SerializeField] private BadgerUnburrowSO BadgerAttackBase;
     [SerializeField] private BadgerBurrowSO BadgerBurrowBase;
     [SerializeField] private BadgerDeadSO BadgerDeadBase;
 
     public BadgerIdleSO BadgerIdleBaseInstance { get; set; }
-    public BadgerAttackSO BadgerAttackBaseInstance { get; set; }
+    public BadgerUnburrowSO BadgerAttackBaseInstance { get; set; }
     public BadgerBurrowSO BadgerBurrowBaseInstance { get; set; }
     public BadgerDeadSO BadgerDeadBaseInstance { get; set; }
     #endregion
@@ -48,7 +48,7 @@ public class Badger : Enemy
         BadgerDeadBaseInstance = Instantiate(BadgerDeadBase);
 
         IdleState = new BadgerIdleState(this, StateMachine);
-        AttackState = new BadgerAttackState(this, StateMachine);
+        AttackState = new BadgerUnburrowState(this, StateMachine);
         BurrowState = new BadgerBurrowState(this, StateMachine);
         DeadState = new BadgerDeadState(this, StateMachine);
     }

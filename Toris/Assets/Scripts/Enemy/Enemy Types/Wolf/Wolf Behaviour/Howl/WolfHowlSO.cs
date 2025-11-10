@@ -3,8 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Howl_Alert", menuName = "Enemy Logic/Howl Logic/Wolf Howl Alert")]
 public class WolfHowlSO : HowlSOBase<Wolf>
 {
-    private bool _hasHowled = false;
-    public float HowlDuration = 1f;
+    private bool _isRunning = false;
+    private float _timer;
+
+    public float howlDuration = 1f;
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -14,8 +16,18 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     {
         base.DoEnterLogic();
 
-        _hasHowled = true;
-        enemy.animator.Play("Movement");
+        if (!enemy.CanHowl || enemy.pack == null || !enemy.pack.CanLeaderHowl())
+        {
+            enemy.StateMachine.ChangeState(enemy.ChaseState);
+            return;
+        }
+
+        _isRunning = true;
+        _timer = 0f;
+        enemy.animator.ResetTrigger("Attack");
+        enemy.animator.ResetTrigger("Dead");
+        enemy.animator.SetTrigger("Howl");
+        enemy.MoveEnemy(Vector2.zero);
     }
 
     public override void DoExitLogic()
@@ -26,6 +38,17 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     public override void DoFrameUpdateLogic()
     {
         base.DoFrameUpdateLogic();
+
+        if (!_isRunning) return;
+
+        _timer += Time.deltaTime;
+        if (_timer >= howlDuration)
+        {
+            enemy.pack.HandleLeaderHowl();
+            _isRunning = false;
+
+            enemy.StateMachine.ChangeState(enemy.ChaseState);
+        }
     }
 
     public override void DoPhysicsLogic()

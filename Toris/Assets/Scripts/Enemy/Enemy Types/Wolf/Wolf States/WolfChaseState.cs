@@ -11,6 +11,12 @@ public class WolfChaseState : EnemyState<Wolf>
 
         enemy.EnemyChaseBaseInstance.DoEnterLogic();
         enemy.animator.Play("Run");
+
+        if (enemy.CanHowl && enemy.pack != null && enemy.pack.CanLeaderHowl())
+        {
+            enemy.StateMachine.ChangeState(enemy.HowlState);
+            return;
+        }
     }
 
     public override void ExitState()

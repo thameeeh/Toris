@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3484337100866478492}
-  - component: {fileID: 7641757758861605435}
   - component: {fileID: 4785839145970826760}
   m_Layer: 13
   m_Name: Wood
@@ -34,22 +33,6 @@ Transform:
   - {fileID: 5108641033362759833}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7641757758861605435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126579823991934979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b786553899ca26e459c9a702af2b7b90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Collectible
-  amount: 1
-  type: 0
-  magnetDistance: 2
-  magnetSpeed: 6
 --- !u!58 &4785839145970826760
 CircleCollider2D:
   m_ObjectHideFlags: 0

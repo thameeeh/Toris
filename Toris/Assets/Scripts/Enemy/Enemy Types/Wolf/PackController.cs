@@ -15,18 +15,36 @@ public class PackController : MonoBehaviour
     public List<Wolf> activeMinions = new List<Wolf>();
     private float _lastHowlTimestamp = -999f;
 
-    public bool CanLeaderHowl()
+    private void Awake()
     {
+        if (leaderWolf != null)
+        {
+            leaderWolf = GetComponent<Wolf>();
+        }
+
+        if (leaderWolf != null)
+        {
+            RegisterLeader(leaderWolf);
+        }
+    }
+
+    public bool CanLeaderHowl(Wolf requester = null)
+    {
+        Wolf leader = ResolveLeader(requester);
+        if (leader == null || !leader.CanHowl) return false;
         if (leaderWolf == null || !leaderWolf.CanHowl) return false;
         if (Time.time < _lastHowlTimestamp + howlCooldownDuration) return false;
         if (GetActiveMinionCount() >= maxPackSize) return false;
         return true;
     }
 
-    public void HandleLeaderHowl()
+    public void HandleLeaderHowl(Wolf howlingWolf = null)
     {
+        Wolf leader = ResolveLeader(howlingWolf);
+        if (leader == null) return;
+
         _lastHowlTimestamp = Time.time;
-        SpawnMinions(minionsPerHowl);
+        SpawnMinions(minionsPerHowl, leader.transform.position);
     }
 
     public int GetActiveMinionCount()
@@ -35,7 +53,7 @@ public class PackController : MonoBehaviour
         return activeMinions.Count;
     }
 
-    public void SpawnMinions(int requestedCount)
+    public void SpawnMinions(int requestedCount, Vector2 spawnCenter)
     {
         if (minionWolfPrefab == null) return;
 
@@ -44,30 +62,69 @@ public class PackController : MonoBehaviour
 
         for (int i = 0; i < spawnAmount; i++)
         {
-            Vector2 spawnPoint = GetRandomSpawnPoint();
+            Vector2 spawnPoint = GetRandomSpawnPoint(spawnCenter);
             Wolf newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
             newMinion.role = WolfRole.Minion;
             newMinion.healthMultiplier = 1f;
 
-            if (newMinion.EnemyHowlBaseInstance != null)
-                newMinion.EnemyHowlBaseInstance = null;
+            newMinion.pack = this;
 
             activeMinions.Add(newMinion);
         }
     }
 
-    private Vector2 GetRandomSpawnPoint()
+    private Vector2 GetRandomSpawnPoint(Vector2 spawnCenter)
     {
         for (int attempt = 0; attempt < 8; attempt++)
         {
             Vector2 direction = Random.insideUnitCircle.normalized;
-            Vector2 candidatePos = (Vector2)leaderWolf.transform.position + direction * spawnDistance;
+            if (direction == Vector2.zero)
+            {
+                continue;
+            }
+
+            Vector2 candidatePos = spawnCenter + direction * spawnDistance;
             Collider2D hit = Physics2D.OverlapCircle(candidatePos, 0.3f, LayerMask.GetMask("Default", "Ground", "Walls"));
             if (hit == null) return candidatePos;
         }
-        return (Vector2)leaderWolf.transform.position + Random.insideUnitCircle * spawnDistance * 0.5f;
+        return spawnCenter + Random.insideUnitCircle * spawnDistance * 0.5f;
     }
 
+    public void EnsureLeader(Wolf candidate)
+    {
+        if (candidate == null) return;
+
+        if (leaderWolf == null || leaderWolf == candidate)
+        {
+            RegisterLeader(candidate);
+        }
+    }
+
+    private void RegisterLeader(Wolf leader)
+    {
+        if (leader== null) return;
+
+        leaderWolf = leader;
+        leaderWolf.role = WolfRole.Leader;
+        leaderWolf.pack = this;
+    }
+
+    private  Wolf ResolveLeader(Wolf requester)
+    {
+        if (requester != null)
+        {
+            EnsureLeader(requester);
+
+            return leaderWolf;
+        }
+
+        if (leaderWolf != null)
+        {
+            EnsureLeader(leaderWolf);
+        }
+
+        return leaderWolf;
+    }
     public void DespawnAllMinions()
     {
         foreach (var minion in activeMinions)

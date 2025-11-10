@@ -16,6 +16,11 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     {
         base.DoEnterLogic();
 
+        if (enemy.pack != null)
+        {
+            enemy.pack.EnsureLeader(enemy);
+        }
+
         if (!enemy.CanHowl || enemy.pack == null || !enemy.pack.CanLeaderHowl())
         {
             enemy.StateMachine.ChangeState(enemy.ChaseState);
@@ -44,7 +49,7 @@ public class WolfHowlSO : HowlSOBase<Wolf>
         _timer += Time.deltaTime;
         if (_timer >= howlDuration)
         {
-            enemy.pack.HandleLeaderHowl();
+            enemy.pack.HandleLeaderHowl(enemy);
             _isRunning = false;
 
             enemy.StateMachine.ChangeState(enemy.ChaseState);

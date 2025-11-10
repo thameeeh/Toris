@@ -17,7 +17,7 @@ public class PackController : MonoBehaviour
 
     private void Awake()
     {
-        if (leaderWolf != null)
+        if (leaderWolf == null)
         {
             leaderWolf = GetComponent<Wolf>();
         }
@@ -31,8 +31,8 @@ public class PackController : MonoBehaviour
     public bool CanLeaderHowl(Wolf requester = null)
     {
         Wolf leader = ResolveLeader(requester);
-        if (leader == null || !leader.CanHowl) return false;
-        if (leaderWolf == null || !leaderWolf.CanHowl) return false;
+        if (leader == null) return false;
+        if (!leader.CanHowl) return false;
         if (Time.time < _lastHowlTimestamp + howlCooldownDuration) return false;
         if (GetActiveMinionCount() >= maxPackSize) return false;
         return true;
@@ -40,11 +40,10 @@ public class PackController : MonoBehaviour
 
     public void HandleLeaderHowl(Wolf howlingWolf = null)
     {
-        Wolf leader = ResolveLeader(howlingWolf);
-        if (leader == null) return;
+        if (!CanLeaderHowl(howlingWolf)) return;
 
         _lastHowlTimestamp = Time.time;
-        SpawnMinions(minionsPerHowl, leader.transform.position);
+        SpawnMinions(minionsPerHowl, leaderWolf.transform.position);
     }
 
     public int GetActiveMinionCount()
@@ -65,7 +64,6 @@ public class PackController : MonoBehaviour
             Vector2 spawnPoint = GetRandomSpawnPoint(spawnCenter);
             Wolf newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
             newMinion.role = WolfRole.Minion;
-            newMinion.healthMultiplier = 1f;
 
             newMinion.pack = this;
 
@@ -90,19 +88,28 @@ public class PackController : MonoBehaviour
         return spawnCenter + Random.insideUnitCircle * spawnDistance * 0.5f;
     }
 
-    public void EnsureLeader(Wolf candidate)
+    public bool EnsureLeader(Wolf candidate)
     {
-        if (candidate == null) return;
+        if (candidate == null) return false;
 
-        if (leaderWolf == null || leaderWolf == candidate)
+        if (leaderWolf == null)
         {
             RegisterLeader(candidate);
+            return true;
         }
+
+        return leaderWolf == candidate;
     }
 
     private void RegisterLeader(Wolf leader)
     {
         if (leader== null) return;
+
+        if (leaderWolf != null && leaderWolf != leader)
+        {
+            leaderWolf.role = WolfRole.Minion;
+            leaderWolf.pack = null;
+        }
 
         leaderWolf = leader;
         leaderWolf.role = WolfRole.Leader;
@@ -111,17 +118,8 @@ public class PackController : MonoBehaviour
 
     private  Wolf ResolveLeader(Wolf requester)
     {
-        if (requester != null)
-        {
-            EnsureLeader(requester);
-
-            return leaderWolf;
-        }
-
-        if (leaderWolf != null)
-        {
-            EnsureLeader(leaderWolf);
-        }
+        if (leaderWolf == null) return null;
+        if (requester != null && requester != leaderWolf) return null;
 
         return leaderWolf;
     }
@@ -130,5 +128,9 @@ public class PackController : MonoBehaviour
         foreach (var minion in activeMinions)
             if (minion != null) Destroy(minion.gameObject);
         activeMinions.Clear();
+    }
+    private void OnDisable()
+    {
+        DespawnAllMinions();
     }
 }

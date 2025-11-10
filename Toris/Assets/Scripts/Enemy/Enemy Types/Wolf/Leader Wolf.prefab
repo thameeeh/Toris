@@ -345,10 +345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42342339e7dc1f94bb366a2eaa0c7651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PackController
-  leaderWolf: {fileID: 0}
-  minionWolfPrefab: {fileID: 0}
-  maxPackSize: 4
-  minionsPerHowl: 2
+  leaderWolf: {fileID: 7255815159274722986}
+  minionWolfPrefab: {fileID: 7255815159274722986, guid: 68112641f8cb2f54c894da2c8fe35c71, type: 3}
+  maxPackSize: 16
+  minionsPerHowl: 8
   spawnDistance: 2.5
   howlCooldownDuration: 12
   activeMinions:

@@ -16,13 +16,14 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     {
         base.DoEnterLogic();
 
-        if (enemy.pack != null)
-        {
-            enemy.pack.EnsureLeader(enemy);
-        }
+        bool hasPack = enemy.pack != null;
+        bool isLeader = hasPack && enemy.pack.EnsureLeader(enemy);
 
-        if (!enemy.CanHowl || enemy.pack == null || !enemy.pack.CanLeaderHowl())
+        if (!enemy.CanHowl || !hasPack || !isLeader || !enemy.pack.CanLeaderHowl(enemy))
         {
+            enemy.animator.ResetTrigger("Howl");
+            enemy.animator.ResetTrigger("Attack");
+            enemy.animator.ResetTrigger("Dead");
             enemy.StateMachine.ChangeState(enemy.ChaseState);
             return;
         }

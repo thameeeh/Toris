@@ -9,34 +9,34 @@ public class BadgerUnburrowState : EnemyState<Badger>
     {
         base.EnterState();
 
-        enemy.BadgerAttackBaseInstance.DoEnterLogic();
+        enemy.BadgerUnburrowBaseInstance.DoEnterLogic();
     }
 
     public override void ExitState()
     {
         base.ExitState();
         
-        enemy.BadgerAttackBaseInstance.DoExitLogic();
+        enemy.BadgerUnburrowBaseInstance.DoExitLogic();
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
 
-        enemy.BadgerAttackBaseInstance.DoFrameUpdateLogic();
+        enemy.BadgerUnburrowBaseInstance.DoFrameUpdateLogic();
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
-        enemy.BadgerAttackBaseInstance.DoPhysicsLogic();
+        enemy.BadgerUnburrowBaseInstance.DoPhysicsLogic();
     }
 
     public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
     {
         base.AnimationTriggerEvent(triggerType);
 
-        enemy.BadgerAttackBaseInstance.DoAnimationTriggerEventLogic(triggerType);
+        enemy.BadgerUnburrowBaseInstance.DoAnimationTriggerEventLogic(triggerType);
     }
 }

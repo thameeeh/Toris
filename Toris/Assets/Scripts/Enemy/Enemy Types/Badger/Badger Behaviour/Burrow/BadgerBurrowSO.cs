@@ -40,7 +40,7 @@ public class BadgerBurrowSO : BurrowSO<Badger>
         {
             enemy.MoveEnemy(Vector2.zero);
 
-            if(!enemy.IsWondering) enemy.StateMachine.ChangeState(enemy.AttackState);
+            if(!enemy.IsWondering) enemy.StateMachine.ChangeState(enemy.UnburrowState);
         }
 
         if(enemy.IsBurrowing) {

@@ -19,7 +19,7 @@ public class Badger : Enemy
     }
 
     #region Badger-Specific States
-    public BadgerUnburrowState AttackState { get; set; }
+    public BadgerUnburrowState UnburrowState { get; set; }
     public BadgerIdleState IdleState { get; set; }
     public BadgerBurrowState BurrowState { get; set; }
     public BadgerDeadState DeadState { get; set; }
@@ -28,14 +28,12 @@ public class Badger : Enemy
     #region Badger-Specific ScriptableObjects
     [Space][Space][Header("Badger-Specific SOs")]
     [SerializeField] private BadgerIdleSO BadgerIdleBase;
-    [SerializeField] private BadgerUnburrowSO BadgerAttackBase;
+    [SerializeField] private BadgerUnburrowSO BadgerUnburrowBase;
     [SerializeField] private BadgerBurrowSO BadgerBurrowBase;
-    [SerializeField] private BadgerDeadSO BadgerDeadBase;
 
     public BadgerIdleSO BadgerIdleBaseInstance { get; set; }
-    public BadgerUnburrowSO BadgerAttackBaseInstance { get; set; }
+    public BadgerUnburrowSO BadgerUnburrowBaseInstance { get; set; }
     public BadgerBurrowSO BadgerBurrowBaseInstance { get; set; }
-    public BadgerDeadSO BadgerDeadBaseInstance { get; set; }
     #endregion
 
     protected override void Awake()
@@ -43,12 +41,11 @@ public class Badger : Enemy
         base.Awake();
 
         BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
-        BadgerAttackBaseInstance = Instantiate(BadgerAttackBase);
+        BadgerUnburrowBaseInstance = Instantiate(BadgerUnburrowBase);
         BadgerBurrowBaseInstance = Instantiate(BadgerBurrowBase);
-        BadgerDeadBaseInstance = Instantiate(BadgerDeadBase);
 
         IdleState = new BadgerIdleState(this, StateMachine);
-        AttackState = new BadgerUnburrowState(this, StateMachine);
+        UnburrowState = new BadgerUnburrowState(this, StateMachine);
         BurrowState = new BadgerBurrowState(this, StateMachine);
         DeadState = new BadgerDeadState(this, StateMachine);
     }
@@ -58,7 +55,7 @@ public class Badger : Enemy
         base.Start();
         
         BadgerIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
-        BadgerAttackBaseInstance.Initialize(gameObject, this, PlayerTransform);
+        BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerBurrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
         StateMachine.Initialize(IdleState);

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 980026272952353549}
-  - component: {fileID: 6989303226419719058}
   - component: {fileID: 2693983527853581428}
   m_Layer: 13
   m_Name: Rock
@@ -34,22 +33,6 @@ Transform:
   - {fileID: 7120095068046238804}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6989303226419719058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5912068534101542081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b786553899ca26e459c9a702af2b7b90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Collectible
-  amount: 1
-  type: 1
-  magnetDistance: 2
-  magnetSpeed: 6
 --- !u!58 &2693983527853581428
 CircleCollider2D:
   m_ObjectHideFlags: 0

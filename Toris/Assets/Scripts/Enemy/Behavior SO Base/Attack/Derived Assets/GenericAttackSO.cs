@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Generic_Attack_Pew", menuName = "Enemy/Generic/Generic Attack Pew")]
+[CreateAssetMenu(fileName = "Generic_Attack_Pew", menuName = "Enemy Logic/Generic/Generic Attack Pew")]
 public class GenericAttackSO : AttackSOBase<Generic>
 {
 

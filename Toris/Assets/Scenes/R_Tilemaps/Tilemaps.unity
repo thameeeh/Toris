@@ -153,6 +153,17 @@ Transform:
   - {fileID: 479925800}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &125168242 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1532533030171064556, guid: 0d0208f4659de304e8a851d6eb2c5aa2, type: 3}
+  m_PrefabInstance: {fileID: 1710327559}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &206627261 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3387653458196934760, guid: 0d0208f4659de304e8a851d6eb2c5aa2, type: 3}
@@ -6336,9 +6347,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: WalkSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: BadgerWalkBase
+      value: 
+      objectReference: {fileID: 11400000, guid: ec9c908425b4b614daf03e063def3bb7, type: 2}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1583374188}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: BadgerUnburrowBase
+      value: 
+      objectReference: {fileID: 11400000, guid: d9394f8fde0720b4a845dcc1b1dc18d9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6942,7 +6965,7 @@ PrefabInstance:
     - target: {fileID: 1505738214443871189, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: healthBar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 125168242}
     - target: {fileID: 1505738214443871189, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: staminaBar
       value: 

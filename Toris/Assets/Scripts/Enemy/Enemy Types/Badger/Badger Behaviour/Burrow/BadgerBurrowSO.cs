@@ -17,7 +17,6 @@ public class BadgerBurrowSO : BurrowSO<Badger>
 
         enemy.animator.Play("Burrow");
 
-        enemy.IsCurrentlyBurrowing(true);
         _burrowSpeed = enemy.BurrowSpeed;
         _burrowDirection = (enemy.TargetPlayerPosition - (Vector2)enemy.transform.position).normalized;
     }
@@ -31,25 +30,6 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     {
         base.DoFrameUpdateLogic();
 
-        float distanceToTarget = Vector2.Distance(enemy.transform.position, enemy.TargetPlayerPosition);
-        if (distanceToTarget > 0.1f)
-        {
-            enemy.MoveEnemy(_burrowDirection * enemy.BurrowSpeed);
-        }
-        else
-        {
-            enemy.MoveEnemy(Vector2.zero);
-
-            if(!enemy.IsWondering) enemy.StateMachine.ChangeState(enemy.UnburrowState);
-        }
-
-        if(enemy.IsBurrowing) {
-            enemy.MoveEnemy(Vector2.zero);
-        }
-        if (!enemy.IsBurrowing)
-        {
-            enemy.animator.SetBool("IsTunneling", true);
-        }
     }
 
     public override void DoPhysicsLogic()

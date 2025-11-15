@@ -5,13 +5,12 @@ public class Badger : Enemy
 
     [Space][Header("Stats")]
     public float AttackDamage = 20f;
-    public float WalkingSpeed = 1f;
-    public float BurrowSpeed = 3f;
+    public float WalkSpeed;
+    public float BurrowSpeed;
 
-    private HitData _hitData;
+    private HitData _hitData; //struct for damaging player 
 
     public Vector2 TargetPlayerPosition { get; set; }
-    public bool IsBurrowing { get; private set; } = false;
     public bool IsWondering { get; set; } = false;
     public void PrintMessage(string msg)
     {
@@ -20,6 +19,7 @@ public class Badger : Enemy
 
     #region Badger-Specific States
     public BadgerUnburrowState UnburrowState { get; set; }
+    public BadgerWalkState WalkState { get; set; }
     public BadgerIdleState IdleState { get; set; }
     public BadgerBurrowState BurrowState { get; set; }
     public BadgerDeadState DeadState { get; set; }
@@ -30,10 +30,12 @@ public class Badger : Enemy
     [SerializeField] private BadgerIdleSO BadgerIdleBase;
     [SerializeField] private BadgerUnburrowSO BadgerUnburrowBase;
     [SerializeField] private BadgerBurrowSO BadgerBurrowBase;
+    [SerializeField] private BadgerWalkSO BadgerWalkBase;
 
     public BadgerIdleSO BadgerIdleBaseInstance { get; set; }
     public BadgerUnburrowSO BadgerUnburrowBaseInstance { get; set; }
     public BadgerBurrowSO BadgerBurrowBaseInstance { get; set; }
+    public BadgerWalkSO BadgerWalkBaseInstance { get; set; }
     #endregion
 
     protected override void Awake()
@@ -43,10 +45,13 @@ public class Badger : Enemy
         BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
         BadgerUnburrowBaseInstance = Instantiate(BadgerUnburrowBase);
         BadgerBurrowBaseInstance = Instantiate(BadgerBurrowBase);
+        BadgerWalkBaseInstance = Instantiate(BadgerWalkBase);
 
         IdleState = new BadgerIdleState(this, StateMachine);
         UnburrowState = new BadgerUnburrowState(this, StateMachine);
         BurrowState = new BadgerBurrowState(this, StateMachine);
+        WalkState = new BadgerWalkState(this, StateMachine);
+
         DeadState = new BadgerDeadState(this, StateMachine);
     }
 
@@ -57,6 +62,7 @@ public class Badger : Enemy
         BadgerIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerBurrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
+        BadgerWalkBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
         StateMachine.Initialize(IdleState);
 
@@ -73,26 +79,6 @@ public class Badger : Enemy
             Destroy(gameObject);
         }
 
-    }
-    public void IsCurrentlyBurrowing(bool t) 
-    {
-        if(t) 
-        {
-            IsBurrowing = true;
-        }
-        else 
-        {
-            IsBurrowing = false;
-        }
-    }
-
-    public void Wonder() 
-    {
-        IdleState.IdleWanderTimer = 5f;
-        animator.SetBool("Wonder", true);
-        animator.SetBool("IsTunneling", false);
-        IsWondering = true;
-        StateMachine.ChangeState(IdleState);
     }
 
     public void DamagePlayer(float damage)

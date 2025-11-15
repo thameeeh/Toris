@@ -9,7 +9,7 @@ public class AnimationTriggerRelay : MonoBehaviour
         _wolf = GetComponentInParent<Wolf>();
         _badger = GetComponentInParent<Badger>();
     }
-
+    #region wolf methods
     //method path this -> wolf -> enemy -> player
     public void DealDamage()
     {
@@ -27,14 +27,8 @@ public class AnimationTriggerRelay : MonoBehaviour
         if (i == 1) _wolf.IsMovingWhileBiting = true;
         else _wolf.IsMovingWhileBiting = false;
     }
+    #endregion
+    #region badger methods
 
-    public void IsBurrowing()
-    {
-        _badger.IsCurrentlyBurrowing(false);
-    }
-
-    public void Wonder()
-    {
-        _badger.Wonder();
-    }
+    #endregion
 }

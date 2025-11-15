@@ -1,44 +1,43 @@
 using UnityEngine;
 
-public class BadgerIdleState : EnemyState<Badger>
+public class BadgerWalkState : EnemyState<Badger>
 {
-    public BadgerIdleState(Badger enemy, EnemyStateMachine enemyStateMachine) 
+    public BadgerWalkState(Badger enemy, EnemyStateMachine enemyStateMachine) 
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        enemy.BadgerIdleBaseInstance.DoEnterLogic();
+        enemy.BadgerWalkBaseInstance.DoEnterLogic();
     }
 
     public override void ExitState()
     {
         base.ExitState();
 
-        enemy.BadgerIdleBaseInstance.DoExitLogic();
+        enemy.BadgerWalkBaseInstance.DoExitLogic();
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-        
-        if(enemy.IsWondering) enemy.StateMachine.ChangeState(enemy.WalkState);
 
-        enemy.BadgerIdleBaseInstance.DoFrameUpdateLogic();
+        if(!enemy.IsWondering) enemy.StateMachine.ChangeState(enemy.IdleState);
+
+        enemy.BadgerWalkBaseInstance.DoFrameUpdateLogic();
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
-        enemy.BadgerIdleBaseInstance.DoPhysicsLogic();
+        enemy.BadgerWalkBaseInstance.DoPhysicsLogic();
     }
-
     public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
     {
         base.AnimationTriggerEvent(triggerType);
 
-        enemy.BadgerIdleBaseInstance.DoAnimationTriggerEventLogic(triggerType);
+        enemy.BadgerWalkBaseInstance.DoAnimationTriggerEventLogic(triggerType);
     }
 }

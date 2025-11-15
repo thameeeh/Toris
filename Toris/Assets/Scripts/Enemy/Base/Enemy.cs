@@ -74,7 +74,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public void MoveEnemy(Vector2 velocity)
     {
         rb.linearVelocity = velocity;
-        if(velocity != Vector2.zero)UpdateAnimationDirection(velocity);
+        if(velocity != Vector2.zero) UpdateAnimationDirection(velocity);
     }
     public void UpdateAnimationDirection(Vector2 direction)
     {

@@ -41,6 +41,8 @@ public class BadgerIdleSO : IdleSOBase<Badger>
                 enemy.IsWondering = true;
             }
         }
+
+        enemy.ForcedIdleCalclulation(Time.fixedDeltaTime);
     }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {

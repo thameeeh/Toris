@@ -8,6 +8,10 @@ public class Badger : Enemy
     public float WalkSpeed = 1;
     public float TunnelingSpeed = 3;
 
+    [Tooltip("How long until it attacks again")]
+    public float ForcedIdelDuration = 0f;
+    //after unburrowing, how long the badger idles before attacking again
+
     private HitData _hitData; //struct for damaging player 
 
     public Vector2 TargetPlayerPosition { get; set; }
@@ -91,5 +95,13 @@ public class Badger : Enemy
     public void DamagePlayer(float damage)
     {
         base.DamagePlayer(damage, _hitData);
+    }
+
+    public void ForcedIdleCalclulation(in float deltaTime)
+    {
+        if (ForcedIdelDuration > 0)
+        {
+            ForcedIdelDuration -= deltaTime;
+        }
     }
 }

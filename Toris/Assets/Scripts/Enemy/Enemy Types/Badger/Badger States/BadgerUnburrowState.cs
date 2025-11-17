@@ -15,7 +15,7 @@ public class BadgerUnburrowState : EnemyState<Badger>
     public override void ExitState()
     {
         base.ExitState();
-        
+
         enemy.BadgerUnburrowBaseInstance.DoExitLogic();
     }
 

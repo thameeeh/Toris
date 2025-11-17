@@ -23,6 +23,11 @@ public class BadgerTunnelState : EnemyState<Badger>
     {
         base.FrameUpdate();
 
+        if(enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .1f)
+        {
+            enemy.StateMachine.ChangeState(enemy.UnburrowState);
+        }
+
         enemy.BadgerTunnelBaseInstance.DoFrameUpdateLogic();
     }
 

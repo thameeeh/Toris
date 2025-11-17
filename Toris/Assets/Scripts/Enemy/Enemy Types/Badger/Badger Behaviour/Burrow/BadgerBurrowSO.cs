@@ -17,7 +17,7 @@ public class BadgerBurrowSO : BurrowSO<Badger>
         enemy.animator.Play("Burrow BT");
 
         _burrowDirection = (enemy.TargetPlayerPosition - (Vector2)enemy.transform.position).normalized;
-        enemy.MoveEnemy(_burrowDirection);
+        enemy.MoveEnemy(_burrowDirection); //to play animation in right direction
         enemy.MoveEnemy(Vector2.zero);
     }
 

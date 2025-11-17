@@ -13,12 +13,15 @@ public class BadgerUnburrowSO : TunnelSOBase<Badger>
     {
         base.DoEnterLogic();
 
-        if(!enemy.IsWondering) enemy.animator.Play("Unburrow");
+        enemy.animator.Play("Unburrow BT");
+        enemy.MoveEnemy(Vector2.zero);
     }
 
     public override void DoExitLogic()
     {
         base.DoExitLogic();
+
+        enemy.ForcedIdelDuration = 2f;
     }
 
     public override void DoFrameUpdateLogic()

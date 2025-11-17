@@ -4,6 +4,7 @@ using UnityEngine;
 public class BadgerTunnelSO : TunnelSOBase<Badger>
 {
     Vector2 _tunnelDirection;
+    public float DistanceFromTargetPlayerPosition { get; set; }
 
     public override void Initialize(GameObject gameObject, Badger enemy, Transform player)
     {
@@ -34,6 +35,7 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
         base.DoPhysicsLogic();
 
         enemy.MoveEnemy(_tunnelDirection * enemy.TunnelingSpeed);
+        DistanceFromTargetPlayerPosition = Vector2.Distance(enemy.TargetPlayerPosition, enemy.transform.position);
     }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {

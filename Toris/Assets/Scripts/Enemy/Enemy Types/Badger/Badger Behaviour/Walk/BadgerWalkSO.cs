@@ -54,6 +54,7 @@ public class BadgerWalkSO : WalkSOBase<Badger>
             enemy.IsWondering = false;
         }
 
+        enemy.ForcedIdleCalclulation(Time.fixedDeltaTime);
     }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {

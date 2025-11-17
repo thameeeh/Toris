@@ -9,14 +9,14 @@ public class AnimationTriggerRelay : MonoBehaviour
         _wolf = GetComponentInParent<Wolf>();
         _badger = GetComponentInParent<Badger>();
     }
-    #region wolf methods
+
     //method path this -> wolf -> enemy -> player
     public void DealDamage()
     {
         _wolf.DamagePlayer(_wolf.AttackDamage);
         _badger.DamagePlayer(_badger.AttackDamage);
     }
-
+    #region wolf methods
     public void DestroyWolf()
     {
         _wolf.DestroyGameObject();
@@ -32,6 +32,11 @@ public class AnimationTriggerRelay : MonoBehaviour
     public void StartTunneling() 
     {
         _badger.IsTunneling = true;
+    }
+
+    public void ChangeStateToIdle() 
+    {
+        _badger.StateMachine.ChangeState(_badger.IdleState);
     }
     #endregion
 }

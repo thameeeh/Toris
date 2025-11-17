@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1001047879979192130}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.09, y: -6.43, z: 0}
+  m_LocalPosition: {x: 22.481405, y: 0.19028416, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -116,12 +116,14 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 4508843636919014498}
   playerTransform: {fileID: 0}
   AttackDamage: 20
-  WalkingSpeed: 1
-  BurrowSpeed: 3
+  WalkSpeed: 1
+  TunnelingSpeed: 3
+  ForcedIdelDuration: 2
   BadgerIdleBase: {fileID: 11400000, guid: 676b25a4e45ecd044a236619325bb6b5, type: 2}
-  BadgerAttackBase: {fileID: 11400000, guid: d9394f8fde0720b4a845dcc1b1dc18d9, type: 2}
+  BadgerWalkBase: {fileID: 11400000, guid: ec9c908425b4b614daf03e063def3bb7, type: 2}
   BadgerBurrowBase: {fileID: 11400000, guid: e0ed72cc1a669af428baf1c6d295972c, type: 2}
-  BadgerDeadBase: {fileID: 11400000, guid: 9aaa24715cbf2d942b127dcb26b31906, type: 2}
+  BadgerTunnelBase: {fileID: 11400000, guid: c54211de13f16274eba4ed73f359c9e4, type: 2}
+  BadgerUnburrowBase: {fileID: 11400000, guid: d9394f8fde0720b4a845dcc1b1dc18d9, type: 2}
 --- !u!1 &1542764315742055245
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +152,7 @@ Transform:
   m_GameObject: {fileID: 1542764315742055245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.67, y: 5.72, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

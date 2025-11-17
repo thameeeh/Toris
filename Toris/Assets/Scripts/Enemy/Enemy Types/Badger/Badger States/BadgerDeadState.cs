@@ -8,6 +8,7 @@ public class BadgerDeadState : EnemyState<Badger>
     public override void EnterState()
     {
         base.EnterState();
+        enemy.MoveEnemy(Vector2.zero);
         enemy.animator.Play("Dead");
     }
 

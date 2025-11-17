@@ -10,7 +10,6 @@ public class BadgerBurrowState : EnemyState<Badger>
         base.EnterState();
         
         enemy.BadgerBurrowBaseInstance.DoEnterLogic();
-        enemy.TargetPlayerPosition = enemy.PlayerTransform.position;
     }
 
     public override void ExitState()

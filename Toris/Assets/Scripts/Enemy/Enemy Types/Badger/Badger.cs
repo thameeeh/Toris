@@ -87,11 +87,13 @@ public class Badger : Enemy
         {
             Die();
             StateMachine.ChangeState(DeadState);
-            Destroy(gameObject);
         }
 
     }
-
+    public void DestroyBadger()
+    { 
+        Destroy(gameObject);
+    }
     public void DamagePlayer(float damage)
     {
         base.DamagePlayer(damage, _hitData);

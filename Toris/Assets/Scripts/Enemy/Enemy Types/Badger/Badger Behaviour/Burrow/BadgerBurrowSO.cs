@@ -13,7 +13,7 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
-
+        enemy.TargetPlayerPosition = enemy.PlayerTransform.position;
         enemy.animator.Play("Burrow BT");
 
         _burrowDirection = (enemy.TargetPlayerPosition - (Vector2)enemy.transform.position).normalized;

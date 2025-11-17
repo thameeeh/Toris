@@ -10,6 +10,7 @@ public class BadgerBurrowState : EnemyState<Badger>
         base.EnterState();
         
         enemy.BadgerBurrowBaseInstance.DoEnterLogic();
+        enemy.TargetPlayerPosition = enemy.PlayerTransform.position;
     }
 
     public override void ExitState()
@@ -24,6 +25,9 @@ public class BadgerBurrowState : EnemyState<Badger>
         base.FrameUpdate();
 
         enemy.BadgerBurrowBaseInstance.DoFrameUpdateLogic();
+
+        //--------  Start Tunneling  --------//
+        if (enemy.IsTunneling) enemy.StateMachine.ChangeState(enemy.TunnelState);
     }
 
     public override void PhysicsUpdate()

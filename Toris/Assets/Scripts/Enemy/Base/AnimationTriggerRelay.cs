@@ -29,6 +29,9 @@ public class AnimationTriggerRelay : MonoBehaviour
     }
     #endregion
     #region badger methods
-
+    public void StartTunneling() 
+    {
+        _badger.IsTunneling = true;
+    }
     #endregion
 }

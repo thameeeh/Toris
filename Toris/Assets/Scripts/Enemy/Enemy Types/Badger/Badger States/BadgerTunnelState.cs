@@ -9,26 +9,34 @@ public class BadgerTunnelState : EnemyState<Badger>
     {
         base.EnterState();
 
-
+        enemy.BadgerTunnelBaseInstance.DoEnterLogic();
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        enemy.BadgerTunnelBaseInstance.DoExitLogic();
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
+
+        enemy.BadgerTunnelBaseInstance.DoFrameUpdateLogic();
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        enemy.BadgerTunnelBaseInstance.DoPhysicsLogic();
     }
 
     public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
     {
         base.AnimationTriggerEvent(triggerType);
+
+        enemy.BadgerTunnelBaseInstance.DoAnimationTriggerEventLogic(triggerType);
     }
 }

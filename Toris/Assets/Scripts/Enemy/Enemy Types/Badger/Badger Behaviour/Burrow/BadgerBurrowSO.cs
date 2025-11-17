@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Badger_Burrow", menuName = "Enemy Logic/Burrow Logic/Badger Burrow")]
 public class BadgerBurrowSO : BurrowSO<Badger>
 {
-    private float _burrowSpeed;
     private Vector2 _burrowDirection;
 
     public override void Initialize(GameObject gameObject, Badger enemy, Transform player)
@@ -15,10 +14,11 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     {
         base.DoEnterLogic();
 
-        enemy.animator.Play("Burrow");
+        enemy.animator.Play("Burrow BT");
 
-        _burrowSpeed = enemy.BurrowSpeed;
         _burrowDirection = (enemy.TargetPlayerPosition - (Vector2)enemy.transform.position).normalized;
+        enemy.MoveEnemy(_burrowDirection);
+        enemy.MoveEnemy(Vector2.zero);
     }
 
     public override void DoExitLogic()
@@ -29,7 +29,6 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     public override void DoFrameUpdateLogic()
     {
         base.DoFrameUpdateLogic();
-
     }
 
     public override void DoPhysicsLogic()

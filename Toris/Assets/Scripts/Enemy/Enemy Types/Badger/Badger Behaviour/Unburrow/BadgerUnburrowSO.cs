@@ -15,6 +15,7 @@ public class BadgerUnburrowSO : TunnelSOBase<Badger>
 
         enemy.animator.Play("Unburrow BT");
         enemy.MoveEnemy(Vector2.zero);
+        enemy.IsTunneling = false;
     }
 
     public override void DoExitLogic()

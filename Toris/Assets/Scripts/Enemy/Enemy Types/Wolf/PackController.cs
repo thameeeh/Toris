@@ -129,8 +129,4 @@ public class PackController : MonoBehaviour
             if (minion != null) Destroy(minion.gameObject);
         activeMinions.Clear();
     }
-    private void OnDisable()
-    {
-        DespawnAllMinions();
-    }
 }

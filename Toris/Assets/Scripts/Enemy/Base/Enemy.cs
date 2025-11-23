@@ -3,12 +3,27 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
+    //temporary for testing
+    private bool _isAggroed;
+    public bool IsAggroed
+    {
+        get => _isAggroed;
+        set
+        {
+            if (_isAggroed == value) return;
+            _isAggroed = value;
+            AggroStatusChanged?.Invoke(_isAggroed);
+        }
+    }
+    public event Action<bool> AggroStatusChanged;
+
     //---- Shared Interfaces -------------
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }
     public bool IsFacingRight { get; set; } = true;
     [field: SerializeField] public Rigidbody2D rb { get; set; }
-    public bool IsAggroed { get; set; }
+    //public bool IsAggroed { get; set; }
+    public bool AlwaysAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
 
     //--------------------------------
@@ -88,10 +103,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     #region Distance Checks
     //those two are set by enemy children trigger_check scripts
     //also children have colliders set as triggers for those checks
-    public void SetAggroStatus(bool isAggroed)
-    {
-        IsAggroed = isAggroed;
-    }
+    //public void SetAggroStatus(bool isAggroed)
+    //{
+    //    IsAggroed = isAggroed;
+
+    //    if (AlwaysAggroed)
+    //    {
+    //        IsAggroed = true;
+    //        return;
+    //    }
+    //}
+    public void SetAggroStatus(bool isAggroed) => IsAggroed = isAggroed;
     public void SetStrikingDistanceBool(bool isWithinStrikingDistance)
     {
         IsWithinStrikingDistance = isWithinStrikingDistance;

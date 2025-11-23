@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 70733742095303432}
   - component: {fileID: 3307974329703168885}
   - component: {fileID: 7255815159274722986}
+  - component: {fileID: 4289152371050889959}
   m_Layer: 7
   m_Name: Minion Wolf
   m_TagString: Enemy
@@ -326,12 +327,31 @@ MonoBehaviour:
   MovementSpeed: 2
   role: 1
   healthMultiplier: 1
-  pack: {fileID: -5893707655985498577, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
+  pack: {fileID: -2298867679096013564, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
   EnemyIdleBase: {fileID: 11400000, guid: 82b81c892a8365441b1246466bcf4d86, type: 2}
   EnemyAttackBase: {fileID: 11400000, guid: b1e35d958b037b149ab5d2eeb8d4d2f1, type: 2}
   EnemyDeadBase: {fileID: 11400000, guid: ab8f8e04fa3ddad4a9a7e8edf1aa51c0, type: 2}
+--- !u!114 &4289152371050889959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211954740449028837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1505b050a147d241bdb3f3f2ca60b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
+  indicatorOffset: {x: 0, y: 1.25, z: 0}
+  displayDuration: 1.25
+  indicatorColor: {r: 0.94, g: 0.29, b: 0.12, a: 1}
+  indicatorText: '!'
+  baseFontSize: 4
+  minFontSize: 2
+  maxFontSize: 6
 --- !u!1 &8459690044861325770
 GameObject:
   m_ObjectHideFlags: 0

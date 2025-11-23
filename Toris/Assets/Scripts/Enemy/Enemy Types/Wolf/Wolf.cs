@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using System.Collections;
+using TMPro;
 
 // All States and ScriptableObjects specific to the Wolf enemy
 // are defined and instantiated here
@@ -8,7 +11,6 @@ public enum WolfRole { Leader, Minion }
 
 public class Wolf : Enemy
 {
-    
     [Space][Space][Header("Stats")]
     public float AttackDamage = 20;
     public float MovementSpeed = 2;
@@ -87,6 +89,13 @@ public class Wolf : Enemy
 
         StateMachine.Initialize(IdleState);
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+        if (role == WolfRole.Minion)
+        {
+            AlwaysAggroed = true;
+            SetAggroStatus(true);
+            StateMachine.ChangeState(ChaseState);
+        }
     }
 
     protected override void Update()

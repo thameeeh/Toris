@@ -51,7 +51,7 @@ public class BadgerWalkSO : WalkSOBase<Badger>
 
         if (_distance <= .1f || _timer >= WanderTimer)
         {
-            enemy.IsWondering = false;
+            enemy.isWondering = false;
         }
 
         enemy.ForcedIdleCalclulation(Time.fixedDeltaTime);

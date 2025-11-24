@@ -35,7 +35,7 @@ public class AnimationTriggerRelay : MonoBehaviour
     }
     public void StartTunneling() 
     {
-        _badger.IsTunneling = true;
+        _badger.isTunneling = true;
     }
 
     public void ChangeStateToIdle() 

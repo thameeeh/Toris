@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Badger : Enemy
@@ -7,20 +8,33 @@ public class Badger : Enemy
     public float AttackDamage = 20f;
     public float WalkSpeed = 1;
     public float TunnelingSpeed = 3;
+    public float LineTunnelingSpeed = 6f;
+    [Range(0f, 1f)] public float RunAwayChance = 0.3f;
+    public float RunAwayDistance = 8f;
+    public float BurrowRoamSpeedMultiplier = 0.65f;
+    public float PostAttackIdleDuration = 0.35f;
+    public float DeathBurrowAcceleration = 2f;
 
     [Tooltip("How long until it attacks again")]
-    public float ForcedIdelDuration = 0f;
+    public float ForcedIdleDuration = 0f;
     //after unburrowing, how long the badger idles before attacking again
 
     private HitData _hitData; //struct for damaging player 
 
     public Vector2 TargetPlayerPosition { get; set; }
-    public bool IsWondering { get; set; } = false;
-    public bool IsTunneling { get; set; } = false;
+    public Vector2 TunnelLineTarget { get; set; }
+    public Vector2 RunAwayTargetPosition { get; set; }
+    public bool isWondering { get; set; } = false;
+    public bool isTunneling { get; set; } = false;
+    public bool isBurrowed { get; set; } = false;
+    public bool isRetreating { get; set; } = false;
+    public bool ShouldRunAwayOnNextBurrow { get; set; } = false;
     public void PrintMessage(string msg)
     {
         Debug.Log(msg);
     }
+
+    private Renderer[] _renderers;
 
     #region Badger-Specific States
     public BadgerWalkState WalkState { get; set; }
@@ -49,6 +63,8 @@ public class Badger : Enemy
     protected override void Awake()
     {
         base.Awake();
+
+        _renderers = GetComponentsInChildren<Renderer>();
 
         BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
         BadgerWalkBaseInstance = Instantiate(BadgerWalkBase);
@@ -79,6 +95,11 @@ public class Badger : Enemy
 
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
     }
+    protected override bool CanTakeDamage()
+    {
+        return !isBurrowed && base.CanTakeDamage();
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -101,9 +122,13 @@ public class Badger : Enemy
 
     public void ForcedIdleCalclulation(in float deltaTime)
     {
-        if (ForcedIdelDuration > 0)
+        if (ForcedIdleDuration > 0)
         {
-            ForcedIdelDuration -= deltaTime;
+            ForcedIdleDuration -= deltaTime;
         }
+    }
+    public bool IsVisibleOnScreen()
+    {
+        return _renderers != null && _renderers.Any(r => r != null && r.isVisible);
     }
 }

@@ -15,7 +15,8 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
     {
         base.DoEnterLogic();
 
-        _tunnelDirection = (enemy.TargetPlayerPosition - (Vector2)enemy.transform.position).normalized;
+        DistanceFromTargetPlayerPosition = Vector2.Distance(enemy.TunnelLineTarget, enemy.transform.position);
+        _tunnelDirection = (enemy.TunnelLineTarget - (Vector2)enemy.transform.position).normalized;
         enemy.MoveEnemy(_tunnelDirection);
         enemy.animator.Play("Tunnel BT");
     }
@@ -34,8 +35,13 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
     {
         base.DoPhysicsLogic();
 
-        enemy.MoveEnemy(_tunnelDirection * enemy.TunnelingSpeed);
-        DistanceFromTargetPlayerPosition = Vector2.Distance(enemy.TargetPlayerPosition, enemy.transform.position);
+        Vector2 targetPosition = enemy.isRetreating ? enemy.RunAwayTargetPosition : (Vector2)enemy.PlayerTransform.position;
+
+        _tunnelDirection = (enemy.TunnelLineTarget - (Vector2)enemy.transform.position).normalized;
+        float currentSpeed = enemy.isRetreating ? enemy.TunnelingSpeed : enemy.LineTunnelingSpeed;
+
+        enemy.MoveEnemy(_tunnelDirection * currentSpeed);
+        DistanceFromTargetPlayerPosition = Vector2.Distance(enemy.TunnelLineTarget, enemy.transform.position);
     }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {

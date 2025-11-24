@@ -70,6 +70,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     public void Damage(float damageAmount)
     {
+        if (!CanTakeDamage()) return;
+
         CurrentHealth -= damageAmount;
         Debug.Log($"Health left: {CurrentHealth}");
         if (CurrentHealth <= 0f)
@@ -77,6 +79,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
             Die();
         }
     }
+
+    protected virtual bool CanTakeDamage() => true;
 
     public void Die()
     {

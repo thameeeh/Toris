@@ -15,14 +15,17 @@ public class BadgerUnburrowSO : TunnelSOBase<Badger>
 
         enemy.animator.Play("Unburrow BT");
         enemy.MoveEnemy(Vector2.zero);
-        enemy.IsTunneling = false;
+        enemy.isTunneling = false;
+        enemy.isBurrowed = false;
+        enemy.isRetreating = false;
     }
 
     public override void DoExitLogic()
     {
         base.DoExitLogic();
 
-        enemy.ForcedIdelDuration = 2f;
+        enemy.ForcedIdleDuration = enemy.PostAttackIdleDuration;
+        enemy.ShouldRunAwayOnNextBurrow = Random.value < enemy.RunAwayChance;
     }
 
     public override void DoFrameUpdateLogic()

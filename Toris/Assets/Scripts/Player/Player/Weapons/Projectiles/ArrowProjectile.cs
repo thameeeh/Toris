@@ -21,6 +21,10 @@ public class ArrowProjectile : MonoBehaviour
     private ProjectilePoolRegistry pool;
     private ArrowProjectile originalPrefab;
 
+
+    //Effect spawning attempt
+    private const string ArrowHitEffectId = "hit_arrow_square";
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -143,6 +147,8 @@ public class ArrowProjectile : MonoBehaviour
         if (target.TryGetComponent<IDamageable>(out var dmgTarget))
         {
             dmgTarget.Damage(damage);
+
+            SpawnHitEffect(transform.position);
         }
     }
 
@@ -150,5 +156,21 @@ public class ArrowProjectile : MonoBehaviour
     {
         if (ownerCollider != null && myCollider != null)
             Physics2D.IgnoreCollision(myCollider, ownerCollider, ignore);
+    }
+
+    // effect spawn
+    private void SpawnHitEffect(Vector3 position)
+    {
+        var request = new EffectRequest
+        {
+            EffectId = ArrowHitEffectId,
+            Position = position,
+            Rotation = Quaternion.identity,
+            Parent = null,
+            Variant = default,
+            Magnitude = 1f
+        };
+
+        EffectManagerBehavior.Instance.Play(request);
     }
 }

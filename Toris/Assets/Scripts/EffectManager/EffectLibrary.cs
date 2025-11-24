@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// ScriptableObject-backed catalog that exposes effect definitions to the runtime.
-/// </summary>
 [CreateAssetMenu(menuName = "Effects/Effect Library", fileName = "EffectLibrary")]
 public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
 {

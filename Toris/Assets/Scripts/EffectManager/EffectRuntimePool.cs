@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// IEffectRuntime implementation that uses simple GameObject pooling
-/// for all effect prefabs referenced by EffectDefinition.
-/// </summary>
 public sealed class EffectRuntimePool : IEffectRuntime
 {
     private readonly Transform _root;
@@ -68,6 +64,8 @@ public sealed class EffectRuntimePool : IEffectRuntime
         var inst = GetOrAddInstanceComponent(go);
         bool isOneShot = definition.Category == EffectCategory.OneShot;
         inst.Initialize(this, handle, isOneShot);
+
+        NotifySpawned(go);
     }
 
     public EffectHandle PlayPersistent(EffectDefinition definition, PersistentEffectRequest request)
@@ -89,6 +87,8 @@ public sealed class EffectRuntimePool : IEffectRuntime
         var inst = GetOrAddInstanceComponent(go);
         inst.Initialize(this, handle, isOneShot: false);
 
+        NotifySpawned(go);
+
         return handle;
     }
 
@@ -107,8 +107,10 @@ public sealed class EffectRuntimePool : IEffectRuntime
             return;
 
         var pool = GetOrCreatePool(def);
-
         var go = instance.GameObject;
+
+        NotifyReleased(go);
+
         var t = go.transform;
 
         t.SetParent(pool.PoolRoot, false);
@@ -249,5 +251,26 @@ public sealed class EffectRuntimePool : IEffectRuntime
             inst = go.AddComponent<EffectInstancePool>();
 
         return inst;
+    }
+
+    private static readonly List<IEffectPoolListener> _listenerBuffer = new();
+    private static void NotifySpawned(GameObject go)
+    {
+        go.GetComponentsInChildren(true, _listenerBuffer);
+        for (int i = 0; i < _listenerBuffer.Count; i++)
+        {
+            _listenerBuffer[i].OnEffectSpawned();
+        }
+        _listenerBuffer.Clear();
+    }
+
+    private static void NotifyReleased(GameObject go)
+    {
+        go.GetComponentsInChildren(true, _listenerBuffer);
+        for (int i = 0; i < _listenerBuffer.Count; i++)
+        {
+            _listenerBuffer[i].OnEffectReleased();
+        }
+        _listenerBuffer.Clear();
     }
 }

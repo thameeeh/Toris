@@ -1,10 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Component added to pooled effect instances.
-/// Handles auto-release for one-shot effects or manual release for persistent ones.
-/// </summary>
 public sealed class EffectInstancePool : MonoBehaviour
 {
     [Tooltip("Lifetime in seconds for one-shot effects before auto-release.")]
@@ -35,10 +31,22 @@ public sealed class EffectInstancePool : MonoBehaviour
             _runtime.Release(_handle);
     }
 
-    // For animation events ("OnFinish" for example)
     public void OnEffectFinished()
     {
         if (_runtime != null && _handle.IsValid)
             _runtime.Release(_handle);
+    }
+
+    public void OnEffectSpawned()
+    {
+        // Can add extra per-spawn reset if needed.
+    }
+
+    public void OnEffectReleased()
+    {
+        StopAllCoroutines();
+
+        _runtime = null;
+        _handle = EffectHandle.Invalid;
     }
 }

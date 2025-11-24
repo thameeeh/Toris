@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9683d3eda17bd2448016ef0297b625d, type: 3}
+  m_Name: EffectLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::EffectLibrary
+  definitions:
+  - id: hit_arrow_square
+    prefab: {fileID: 4545754873237622012, guid: 960ed728ac574aa4694e377e3cfbc1c4, type: 3}
+    category: 0
+    prewarmPool: 1
+    prewarmCount: 4

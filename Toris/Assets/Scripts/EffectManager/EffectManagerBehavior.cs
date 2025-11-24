@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Unity binding that wires serialized assets into the plain C# <see cref="EffectManager"/>.
-/// Consumers interact with this behaviour through the <see cref="IEffectManager"/> interface.
-/// </summary>
 [DisallowMultipleComponent]
 public sealed class EffectManagerBehavior : MonoBehaviour, IEffectManager
 {
@@ -20,24 +16,16 @@ public sealed class EffectManagerBehavior : MonoBehaviour, IEffectManager
     private IEffectRuntime runtimeOverride = NullEffectRuntime.Instance;
     private EffectManager manager;
 
-    /// <summary>
-    /// Global entry point for gameplay code. Will be a NullEffectManager until this behaviour
-    /// successfully awakens.
-    /// </summary>
     public static IEffectManager Instance { get; private set; } = NullEffectManager.Instance;
 
-    /// <summary>
-    /// Allows tests or bootstrap code to inject a custom catalog at runtime.
-    /// </summary>
+    public static EffectManagerBehavior BehaviorInstance => activeInstance;
+
     public void ConfigureCatalog(IEffectCatalog catalog)
     {
         catalogOverride = catalog;
         RebuildManager();
     }
 
-    /// <summary>
-    /// Allows tests or bootstrap code to inject a custom runtime implementation.
-    /// </summary>
     public void ConfigureRuntime(IEffectRuntime runtime)
     {
         runtimeOverride = runtime ?? NullEffectRuntime.Instance;
@@ -92,7 +80,6 @@ public sealed class EffectManagerBehavior : MonoBehaviour, IEffectManager
 
         manager = new EffectManager(catalog, runtime);
 
-        // Prewarm pools based on definitions.
         foreach (var def in catalog.Definitions)
         {
             if (def == null)

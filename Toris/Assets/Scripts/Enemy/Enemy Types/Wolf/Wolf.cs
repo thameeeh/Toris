@@ -1,16 +1,29 @@
+using System;
 using UnityEngine;
+using System.Collections;
+using TMPro;
 
 // All States and ScriptableObjects specific to the Wolf enemy
 // are defined and instantiated here
 
-// 
+// enum for wolf roles
+public enum WolfRole { Leader, Minion }
+
 public class Wolf : Enemy
 {
-    
     [Space][Space][Header("Stats")]
     public float AttackDamage = 20;
     public float MovementSpeed = 2;
 
+
+    // leader/minion implement
+    [Header("Role")]
+    public WolfRole role = WolfRole.Minion;
+    [Range(0.5f, 3f)] public float healthMultiplier = 1f;
+    public bool CanHowl => role == WolfRole.Leader;
+
+    [Header("Leader Pack")]
+    public PackController pack;
 
     private HitData _hitData;
 
@@ -71,8 +84,18 @@ public class Wolf : Enemy
         EnemyAttackBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyDeadBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
+        MaxHealth = Mathf.RoundToInt(MaxHealth * healthMultiplier);
+        CurrentHealth = MaxHealth;
+
         StateMachine.Initialize(IdleState);
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+        if (role == WolfRole.Minion)
+        {
+            AlwaysAggroed = true;
+            SetAggroStatus(true);
+            StateMachine.ChangeState(ChaseState);
+        }
     }
 
     protected override void Update()

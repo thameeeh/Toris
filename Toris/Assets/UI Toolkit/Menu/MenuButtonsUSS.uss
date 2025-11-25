@@ -1,0 +1,33 @@
+:root {
+}
+
+.MenuButtons {
+    background-color: rgb(32, 190, 120);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-left-color: rgb(36, 213, 135);
+    border-right-color: rgb(36, 213, 135);
+    border-top-color: rgb(39, 233, 147);
+    border-bottom-color: rgb(25, 146, 92);
+    width: 150px;
+    min-width: 50px;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    -unity-font-definition: resource('FlatSkin/Font/Roboto-Medium');
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    -unity-text-outline-color: rgb(0, 180, 100);
+    -unity-text-outline-width: 0;
+}

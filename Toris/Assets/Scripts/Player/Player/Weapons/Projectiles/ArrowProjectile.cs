@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ArrowProjectile : MonoBehaviour
+public class ArrowProjectile : Projectile
 {
     [Header("Visual")]
     [SerializeField] private float rotateOffsetDegrees = 0f;    // rotate so it points along velocity
@@ -17,11 +17,6 @@ public class ArrowProjectile : MonoBehaviour
     private float despawnAtTime;
     private Collider2D ownerCollider; // ignore self-collision
 
-    // pooling
-    private ProjectilePoolRegistry pool;
-    private ArrowProjectile originalPrefab;
-
-
     //Effect spawning attempt
     private const string ArrowHitEffectId = "hit_arrow_square";
 
@@ -30,7 +25,7 @@ public class ArrowProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
 
-        // projectiles setup (optional)
+        // projectiles setup
         if (rb != null)
         {
             rb.gravityScale = 0f;
@@ -67,20 +62,8 @@ public class ArrowProjectile : MonoBehaviour
             Despawn();
     }
 
-    // public API (pool contract)
-
-    /// <summary>ProjectilePoolRegistry calls this once when creating or lazy-creating an instance.</summary>
-    public void SetPool(ProjectilePoolRegistry registry, ArrowProjectile prefabRef)
-    {
-        pool = registry;
-        originalPrefab = prefabRef;
-    }
-
-    /// <summary>Original prefab used as the pool key.</summary>
-    public ArrowProjectile OriginalPrefab => originalPrefab;
-
     /// <summary>Called by the pool when the projectile is fetched (before your Initialize).</summary>
-    public void OnSpawned()
+    public override void OnSpawned()
     {
         // reset physics state
         if (rb != null)
@@ -91,13 +74,30 @@ public class ArrowProjectile : MonoBehaviour
         // ensure collider is active
         if (myCollider != null)
             myCollider.enabled = true;
+
+        // reset runtime state
+        ownerCollider = null;
+        despawnAtTime = float.PositiveInfinity;
+        damage = 0f;
     }
 
     /// <summary>Called by the pool right before the projectile is returned to the pool.</summary>
-    public void OnDespawned()
+    public override void OnDespawned()
     {
         SetOwnerIgnore(false);
         ownerCollider = null;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        if (myCollider == null)
+            myCollider.enabled = false;
+
+        despawnAtTime = float.PositiveInfinity;
+        damage = 0f;
     }
 
     /// <summary>
@@ -121,14 +121,9 @@ public class ArrowProjectile : MonoBehaviour
     }
 
     /// <summary>Return to pool (or disable/destroy if no pool available).</summary>
-    public void Despawn()
-    {
-        if (pool != null) pool.Release(this);
-        else gameObject.SetActive(false);
-    }
+    public override void Despawn() => base.Despawn();
 
     // internals
-
     private void RotateTowardVelocity()
     {
         if (rb == null) return;

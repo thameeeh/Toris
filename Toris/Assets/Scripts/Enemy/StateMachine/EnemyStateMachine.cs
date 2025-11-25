@@ -15,4 +15,13 @@ public class EnemyStateMachine
         CurrentEnemyState = newState;
         CurrentEnemyState.EnterState();
     }
+    
+    public void Reset()
+    {
+        if (CurrentEnemyState != null)
+        {
+            CurrentEnemyState.ExitState();
+            CurrentEnemyState = null;
+        }
+    }
 }

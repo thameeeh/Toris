@@ -38952,6 +38952,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &546764945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 546764947}
+  - component: {fileID: 546764946}
+  m_Layer: 0
+  m_Name: ArrowPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &546764946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546764945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46e54ebaf80f6e14cb72f39f698d27ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectilePoolRegistry
+  poolsToCreate:
+  - prefab: {fileID: -9110488972372575258, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
+    initialAllocation: 4
+    defaultCapacity: 8
+    maxPoolSize: 16
+--- !u!4 &546764947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546764945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.87775, y: -15.25975, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &561981091
 GameObject:
   m_ObjectHideFlags: 0
@@ -40975,6 +41024,66 @@ PolygonCollider2D:
       - {x: 0.125, y: -0.46283197}
       - {x: 0.875, y: -0.087831974}
   m_UseDelaunayMesh: 0
+--- !u!1 &1175842289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175842292}
+  - component: {fileID: 1175842291}
+  - component: {fileID: 1175842290}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1175842290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175842289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fece11a0a3ac74285bcfa6d2f213a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectsBootstrap
+  effectsRoot: {fileID: 0}
+--- !u!114 &1175842291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175842289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65136c296a1e80a4e8200a2831631e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManagerBehavior
+  library: {fileID: 11400000, guid: 05f309c9d9e5e9945b2fffdb0ceadaa9, type: 2}
+  persistAcrossScenes: 1
+--- !u!4 &1175842292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175842289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.87775, y: -15.25975, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1229864476
 GameObject:
   m_ObjectHideFlags: 0
@@ -61217,3 +61326,5 @@ SceneRoots:
   - {fileID: 1562014316}
   - {fileID: 1041730274}
   - {fileID: 294523881}
+  - {fileID: 1175842292}
+  - {fileID: 546764947}

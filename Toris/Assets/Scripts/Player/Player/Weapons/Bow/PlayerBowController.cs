@@ -10,7 +10,7 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private Transform _muzzle;
     [SerializeField] private PlayerMotor _motor;
     [SerializeField] private Collider2D _ownerCollider;
-    [SerializeField] private ProjectilePoolRegistry _pool;
+    [SerializeField] private GameplayPoolManager _poolManager;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
@@ -120,8 +120,10 @@ public class PlayerBowController : MonoBehaviour
             return;
         }
 
-        ArrowProjectile proj = _pool
-            ? _pool.Spawn(prefabAP, spawnPos, Quaternion.identity)
+        var manager = _poolManager != null ? _poolManager : GameplayPoolManager.Instance;
+
+        ArrowProjectile proj = manager
+            ? manager.SpawnProjectile(prefabAP, spawnPos, Quaternion.identity)
             : Instantiate(prefabAP, spawnPos, Quaternion.identity);
 
         proj.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);

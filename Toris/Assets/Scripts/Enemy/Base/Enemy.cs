@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
@@ -33,12 +35,31 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public Animator animator { get; set; }
     public EnemyStateMachine StateMachine { get; set; }
 
+    // pooling
+    public Enemy OriginalPrefab { get; private set; }
+    public EnemyPool OwningPool { get; private set; }
+
+    public EnemyLoadout ActiveLoadout { get; private set; }
+    public Transform SpawnPoint { get; private set; }
+    public string FactionId { get; private set; } = string.Empty;
+    public int DifficultyTier { get; private set; }
+
+    private readonly List<IStatusEffect> _statusEffects = new List<IStatusEffect>();
+    private bool _isReleasing;
+    private float _baseMaxHealth;
+
+    public event Action<Enemy> Died;
+    public event Action<Enemy> Despawned;
+
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
     protected virtual void Awake()
     {
         StateMachine = new EnemyStateMachine();
         animator = GetComponentInChildren<Animator>();
+
+        _baseMaxHealth = MaxHealth;
+        
         if (animator == null)
             Debug.LogError("Animator component is missing on the enemy.");
     }
@@ -47,7 +68,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         CurrentHealth = MaxHealth;
         if (rb == null)
         {
-            rb.GetComponent<Rigidbody2D>();
+            rb = GetComponent<Rigidbody2D>();
         }
         _player = GameObject.FindGameObjectWithTag("Player");
         if (_player == null) Debug.Log("_player Null");
@@ -82,9 +103,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     protected virtual bool CanTakeDamage() => true;
 
-    public void Die()
+    public virtual void Die()
     {
-        Debug.Log("Dead");
+        //Debug.Log("Dead");
+        if (!_isReleasing) return;
+
+        Died?.Invoke(this);
+        RequestDespawn();
     }
 
     #endregion
@@ -147,6 +172,102 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         Chase,
         Idle,
         Howl
+    }
+
+    #endregion
+
+    #region Pooling
+    public virtual void SetPool(EnemyPool pool, Enemy prefabRef)
+    {
+        OwningPool = pool;
+        OriginalPrefab = prefabRef;
+    }
+
+    public virtual void PrepareSpawn(EnemySpawnRequest request)
+    {
+        SpawnPoint = request.SpawnPoint;
+        FactionId = string.IsNullOrEmpty(request.FactionId) ? string.Empty : request.FactionId;
+        DifficultyTier = Mathf.Max(0, request.DifficultyTier);
+        ActiveLoadout = request.Loadout;
+
+        MaxHealth = _baseMaxHealth;
+
+        if (ActiveLoadout != null)
+        {
+            ActiveLoadout.Apply(this);
+        }
+    }
+
+    public virtual void OnSpawned()
+    {
+        _isReleasing = false;
+        CurrentHealth = MaxHealth;
+        IsAggroed = false;
+        IsWithinStrikingDistance = false;
+        AlwaysAggroed = false;
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+        StateMachine.Reset();
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+        }
+        ClearStatusEffects();
+    }
+
+    public virtual void OnDespawned()
+    {
+        ClearStatusEffects();
+        AggroStatusChanged = null;
+        Despawned?.Invoke(this);
+        Despawned = null;
+        Died = null;
+        _isReleasing = false;
+        StateMachine.Reset();
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+        }
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+        IsAggroed = false;
+        IsWithinStrikingDistance = false;
+        AlwaysAggroed = false;
+        CurrentHealth = MaxHealth;
+        ActiveLoadout = null;
+    }
+
+    public void RegisterStatusEffect(IStatusEffect effect)
+    {
+        if (effect == null || _statusEffects.Contains(effect)) return;
+        _statusEffects.Add(effect);
+    }
+
+    protected void ClearStatusEffects()
+    {
+        for (int i = 0; i < _statusEffects.Count; i++)
+        {
+            _statusEffects[i]?.OnRemoved();
+        }
+        _statusEffects.Clear();
+    }
+
+    public void RequestDespawn()
+    {
+        if (_isReleasing) return;
+
+        _isReleasing = true;
+
+        if (OwningPool != null)
+        {
+            OwningPool.Release(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     #endregion

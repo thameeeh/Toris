@@ -20,6 +20,7 @@ public class Badger : Enemy
     //after unburrowing, how long the badger idles before attacking again
 
     private HitData _hitData; //struct for damaging player 
+    private float _baseAttackDamage;
 
     public Vector2 TargetPlayerPosition { get; set; }
     public Vector2 TunnelLineTarget { get; set; }
@@ -66,6 +67,8 @@ public class Badger : Enemy
 
         _renderers = GetComponentsInChildren<Renderer>();
 
+        _baseAttackDamage = AttackDamage;
+
         BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
         BadgerWalkBaseInstance = Instantiate(BadgerWalkBase);
         BadgerBurrowBaseInstance = Instantiate(BadgerBurrowBase);
@@ -91,6 +94,7 @@ public class Badger : Enemy
         BadgerTunnelBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
+        ApplyScaling();
         StateMachine.Initialize(IdleState);
 
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
@@ -111,9 +115,39 @@ public class Badger : Enemy
         }
 
     }
+    public override void OnSpawned()
+    {
+        ApplyScaling();
+        base.OnSpawned();
+
+        CurrentHealth = MaxHealth;
+        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+        StateMachine.Reset();
+        StateMachine.Initialize(IdleState);
+        ResetFlags();
+    }
+    private float GetDifficultyMultiplier()
+    {
+        return 1f + (0.2f * DifficultyTier);
+    }
+
+    private void ApplyScaling()
+    {
+        AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
+    }
+
+    private void ResetFlags()
+    {
+        isWondering = false;
+        isTunneling = false;
+        isBurrowed = false;
+        isRetreating = false;
+        ShouldRunAwayOnNextBurrow = false;
+    }
     public void DestroyBadger()
     { 
-        Destroy(gameObject);
+        RequestDespawn();
     }
     public void DamagePlayer(float damage)
     {

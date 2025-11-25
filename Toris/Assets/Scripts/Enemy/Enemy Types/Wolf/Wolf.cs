@@ -27,6 +27,7 @@ public class Wolf : Enemy
 
     private HitData _hitData;
     private float _baseAttackDamage;
+    private bool _hasStarted;
 
     public bool IsMovingWhileBiting { get; set; } = false;
     public void PrintMessage(string msg) 
@@ -89,6 +90,8 @@ public class Wolf : Enemy
 
         ApplyScaling();
         InitializeRuntimeState();
+
+        _hasStarted = true;   
     }
 
     protected override void Update()
@@ -106,6 +109,9 @@ public class Wolf : Enemy
         ApplyScaling();
         base.OnSpawned();
 
+        if (!_hasStarted)
+            return;
+
         InitializeRuntimeState();
     }
 
@@ -120,7 +126,7 @@ public class Wolf : Enemy
         AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
     }
 
-    private void InitializeRuntimeState()
+    public void InitializeRuntimeState()
     {
         CurrentHealth = MaxHealth;
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);

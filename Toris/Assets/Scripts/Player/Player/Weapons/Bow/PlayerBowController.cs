@@ -112,21 +112,30 @@ public class PlayerBowController : MonoBehaviour
             spawnPos = transform.position + (Vector3)(dir * spawnOffsetFromCenter);
         }
 
-        // Need an ArrowProjectile prefab to work with the pool
-        var prefabAP = _bow.arrowPrefab.GetComponent<ArrowProjectile>();
-        if (prefabAP == null)
+        // Get a Projectile prefab from the Bow (ArrowProjectile derives from Projectile)
+        var prefabProj = _bow.arrowPrefab.GetComponent<Projectile>();
+        if (prefabProj == null)
         {
-            Debug.LogError("BowSO.arrowPrefab must have ArrowProjectile on it.");
+            Debug.LogError("BowSO.arrowPrefab must have a Projectile-derived component on it.");
             return;
         }
 
         var manager = _poolManager != null ? _poolManager : GameplayPoolManager.Instance;
 
-        ArrowProjectile proj = manager
-            ? manager.SpawnProjectile(prefabAP, spawnPos, Quaternion.identity)
-            : Instantiate(prefabAP, spawnPos, Quaternion.identity);
+        // Use the generalized projectile spawn API
+        Projectile projBase = manager
+            ? manager.SpawnProjectile(prefabProj, spawnPos, Quaternion.identity)
+            : Instantiate(prefabProj, spawnPos, Quaternion.identity);
 
-        proj.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
+        // We still expect this particular bow to fire ArrowProjectiles
+        var arrow = projBase as ArrowProjectile;
+        if (arrow == null)
+        {
+            Debug.LogError("Spawned projectile is not an ArrowProjectile; cannot Initialize arrow-specific data.");
+            return;
+        }
+
+        arrow.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
     }
 
     private Vector2 GetAimDirection()
@@ -154,9 +163,6 @@ public class PlayerBowController : MonoBehaviour
         Vector2 v = (Vector2)(world - (Vector3)origin);
         return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
-
-
-
     void Update()
     {
         if (drawing && _animController != null)

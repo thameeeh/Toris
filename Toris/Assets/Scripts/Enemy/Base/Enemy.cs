@@ -106,10 +106,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public virtual void Die()
     {
         //Debug.Log("Dead");
-        if (!_isReleasing) return;
-
+        if (CurrentHealth > 0f) return;
         Died?.Invoke(this);
-        RequestDespawn();
     }
 
     #endregion

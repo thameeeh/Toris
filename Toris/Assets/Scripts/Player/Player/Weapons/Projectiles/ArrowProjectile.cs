@@ -93,7 +93,7 @@ public class ArrowProjectile : Projectile
             rb.angularVelocity = 0f;
         }
 
-        if (myCollider == null)
+        if (myCollider != null)
             myCollider.enabled = false;
 
         despawnAtTime = float.PositiveInfinity;

@@ -17,7 +17,7 @@ public class GameplayPoolConfiguration : ScriptableObject
 [Serializable]
 public sealed class ProjectilePoolSettings
 {
-    public ArrowProjectile prefab;
+    public Projectile prefab;
     [Min(0)] public int prewarmCount = 8;
     [Min(1)] public int defaultCapacity = 32;
     [Min(1)] public int maxSize = 256;

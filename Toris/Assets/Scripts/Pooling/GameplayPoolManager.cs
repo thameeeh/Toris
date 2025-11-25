@@ -23,12 +23,14 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
     [SerializeField] private int defaultEnemyCapacity = 8;
     [SerializeField] private int defaultEnemyMaxSize = 32;
 
-    private readonly Dictionary<ArrowProjectile, ObjectPool<ArrowProjectile>> projectilePools = new();
-    private readonly Dictionary<ArrowProjectile, PoolCounters> projectileCounters = new();
+    private readonly Dictionary<Projectile, ObjectPool<Projectile>> projectilePools = new();
+    private readonly Dictionary<Projectile, PoolCounters> projectileCounters = new();
     private readonly Dictionary<Enemy, ObjectPool<Enemy>> enemyPools = new();
     private readonly Dictionary<Enemy, PoolCounters> enemyCounters = new();
-    private readonly Dictionary<ArrowProjectile, ProjectilePoolSettings> projectileSettings = new();
+    private readonly Dictionary<Projectile, ProjectilePoolSettings> projectileSettings = new();
     private readonly Dictionary<Enemy, EnemyPoolSettings> enemySettings = new();
+
+    private bool _isPrewarmingEnemies = false;
 
     private void Awake()
     {
@@ -97,6 +99,8 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
                 if (cfg?.prefab == null)
                     continue;
 
+                Debug.Log($"[Pool] Config enemy pool for {cfg.prefab.name}, prewarm={cfg.prewarmCount}");
+
                 enemySettings[cfg.prefab] = cfg;
                 var pool = EnsureEnemyPool(cfg.prefab, cfg);
                 PrewarmEnemyPool(pool, cfg.prewarmCount);
@@ -106,7 +110,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
     // --- Projectile API ---
 
-    public ArrowProjectile SpawnProjectile(ArrowProjectile prefab, Vector3 position, Quaternion rotation)
+    public Projectile SpawnProjectile(Projectile prefab, Vector3 position, Quaternion rotation)
     {
         var pool = EnsureProjectilePool(prefab);
         if (pool == null)
@@ -121,25 +125,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         if (instance == null)
             return;
 
-        // Our projectile pools manage ArrowProjectile instances
-        if (instance is ArrowProjectile arrow)
-        {
-            Release(arrow);
-            return;
-        }
-
-        // Fallback: unsupported projectile type
-        Debug.LogWarning(
-            $"GameplayPoolManager.Release received unsupported projectile type {instance.GetType().Name}, destroying.");
-            Destroy(instance.gameObject);
-    }
-
-    public void Release(ArrowProjectile instance)
-    {
-        if (instance == null)
-            return;
-
-        var key = instance.OriginalPrefab as ArrowProjectile ?? instance;
+        var key = instance.OriginalPrefab ? instance.OriginalPrefab : instance;
 
         if (projectilePools.TryGetValue(key, out var pool))
         {
@@ -151,7 +137,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         }
     }
 
-    public PoolReport GetProjectileReport(ArrowProjectile prefab)
+    public PoolReport GetProjectileReport(Projectile prefab)
     {
         if (prefab == null)
             return PoolReport.Empty;
@@ -171,9 +157,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
     public IEnumerable<PoolReport> EnumerateProjectileReports()
     {
         foreach (var kvp in projectilePools)
-        {
             yield return GetProjectileReport(kvp.Key);
-        }
     }
 
     // --- Enemy API ---
@@ -238,7 +222,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
     // --- Internal: pool construction ---
 
-    private ObjectPool<ArrowProjectile> EnsureProjectilePool(ArrowProjectile prefab, ProjectilePoolSettings settings = null)
+    private ObjectPool<Projectile> EnsureProjectilePool(Projectile prefab, ProjectilePoolSettings settings = null)
     {
         if (prefab == null)
             return null;
@@ -278,7 +262,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         return pool;
     }
 
-    private ProjectilePoolSettings TryGetProjectileSettings(ArrowProjectile prefab)
+    private ProjectilePoolSettings TryGetProjectileSettings(Projectile prefab)
     {
         if (prefab == null)
             return null;
@@ -296,7 +280,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         return settings;
     }
 
-    private ProjectilePoolSettings CreateDefaultProjectileSettings(ArrowProjectile prefab)
+    private ProjectilePoolSettings CreateDefaultProjectileSettings(Projectile prefab)
     {
         return new ProjectilePoolSettings
         {
@@ -320,12 +304,12 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         };
     }
 
-    private ObjectPool<ArrowProjectile> CreateProjectilePool(ArrowProjectile prefab, ProjectilePoolSettings settings)
+    private ObjectPool<Projectile> CreateProjectilePool(Projectile prefab, ProjectilePoolSettings settings)
     {
         var counters = GetOrCreateCounters(projectileCounters, prefab);
         var parent = ResolveParent(settings?.parentOverride, projectileRoot, "ProjectilePools");
 
-        return new ObjectPool<ArrowProjectile>(
+        return new ObjectPool<Projectile>(
             () => CreateProjectileInstance(prefab, parent, counters),
             obj =>
             {
@@ -344,9 +328,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             obj =>
             {
                 if (obj)
-                {
                     Destroy(obj.gameObject);
-                }
             },
             collectionCheck: false,
             defaultCapacity: Mathf.Max(1, settings?.defaultCapacity ?? defaultProjectileCapacity),
@@ -366,7 +348,10 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
                 counters.ActiveCount++;
                 counters.PeakActive = Mathf.Max(counters.PeakActive, counters.ActiveCount);
                 obj.gameObject.SetActive(true);
-                obj.OnSpawned();
+                if (!_isPrewarmingEnemies)
+                {
+                    obj.OnSpawned();
+                }
             },
             obj =>
             {
@@ -388,7 +373,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         );
     }
 
-    private ArrowProjectile CreateProjectileInstance(ArrowProjectile prefab, Transform parent, PoolCounters counters)
+    private Projectile CreateProjectileInstance(Projectile prefab, Transform parent, PoolCounters counters)
     {
         var inst = Instantiate(prefab, parent);
         inst.gameObject.SetActive(false);
@@ -403,17 +388,18 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         inst.gameObject.SetActive(false);
         inst.SetPool(this, prefab);
         counters.TotalCreated++;
+        Debug.Log($"[Pool] Created pooled enemy instance of {prefab.name}");
         return inst;
     }
 
     // --- Internal: prewarm & helpers ---
 
-    private void PrewarmProjectilePool(ObjectPool<ArrowProjectile> pool, int count)
+    private void PrewarmProjectilePool(ObjectPool<Projectile> pool, int count)
     {
         if (pool == null || count <= 0)
             return;
 
-        var temp = new List<ArrowProjectile>(count);
+        var temp = new List<Projectile>(count);
         for (int i = 0; i < count; i++) temp.Add(pool.Get());
         for (int i = 0; i < count; i++) pool.Release(temp[i]);
     }
@@ -423,9 +409,16 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         if (pool == null || count <= 0)
             return;
 
+        _isPrewarmingEnemies = true;
+
         var temp = new List<Enemy>(count);
-        for (int i = 0; i < count; i++) temp.Add(pool.Get());
-        for (int i = 0; i < count; i++) pool.Release(temp[i]);
+        for (int i = 0; i < count; i++)
+            temp.Add(pool.Get());   // OnSpawned is NOT called now
+
+        _isPrewarmingEnemies = false;
+
+        for (int i = 0; i < count; i++)
+            pool.Release(temp[i]);  // goes back into pool inactive
     }
 
     private Transform ResolveParent(Transform overrideParent, Transform categoryRoot, string categoryName)

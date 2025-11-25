@@ -87,17 +87,26 @@ public class Badger : Enemy
     protected override void Start()
     {
         base.Start();
-        
+
         BadgerIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerWalkBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerBurrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerTunnelBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
+        // Apply base scaling (uses DifficultyTier if you ever set it)
         ApplyScaling();
-        StateMachine.Initialize(IdleState);
 
-        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+        // If this badger is NOT managed by a pool (e.g. placed directly in scene),
+        // start its runtime state machine immediately.
+        if (OwningPool == null)
+        {
+            CurrentHealth = MaxHealth;
+            _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+            StateMachine.Initialize(IdleState);
+            ResetFlags();
+        }
     }
     protected override bool CanTakeDamage()
     {
@@ -117,15 +126,17 @@ public class Badger : Enemy
     }
     public override void OnSpawned()
     {
-        ApplyScaling();
         base.OnSpawned();
+
+        ApplyScaling();
 
         CurrentHealth = MaxHealth;
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
 
+        ResetFlags();
+
         StateMachine.Reset();
         StateMachine.Initialize(IdleState);
-        ResetFlags();
     }
     private float GetDifficultyMultiplier()
     {

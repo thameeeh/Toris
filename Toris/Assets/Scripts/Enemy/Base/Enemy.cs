@@ -37,7 +37,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     // pooling
     public Enemy OriginalPrefab { get; private set; }
-    public EnemyPool OwningPool { get; private set; }
+    public IEnemyPool OwningPool { get; private set; }
 
     public EnemyLoadout ActiveLoadout { get; private set; }
     public Transform SpawnPoint { get; private set; }
@@ -177,7 +177,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     #endregion
 
     #region Pooling
-    public virtual void SetPool(EnemyPool pool, Enemy prefabRef)
+    public virtual void SetPool(IEnemyPool pool, Enemy prefabRef)
     {
         OwningPool = pool;
         OriginalPrefab = prefabRef;

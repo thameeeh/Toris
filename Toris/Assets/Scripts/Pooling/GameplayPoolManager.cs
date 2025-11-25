@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 [DisallowMultipleComponent]
-public class GameplayPoolManager : MonoBehaviour, IProjectilePool
+public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 {
     public static GameplayPoolManager Instance { get; private set; }
 
@@ -131,7 +131,24 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool
         // Fallback: unsupported projectile type
         Debug.LogWarning(
             $"GameplayPoolManager.Release received unsupported projectile type {instance.GetType().Name}, destroying.");
-        Destroy(instance.gameObject);
+            Destroy(instance.gameObject);
+    }
+
+    public void Release(ArrowProjectile instance)
+    {
+        if (instance == null)
+            return;
+
+        var key = instance.OriginalPrefab as ArrowProjectile ?? instance;
+
+        if (projectilePools.TryGetValue(key, out var pool))
+        {
+            pool.Release(instance);
+        }
+        else
+        {
+            Destroy(instance.gameObject);
+        }
     }
 
     public PoolReport GetProjectileReport(ArrowProjectile prefab)
@@ -178,6 +195,11 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool
             return;
 
         var key = instance;
+
+        if (instance.OriginalPrefab)
+        {
+            key = instance.OriginalPrefab;
+        }
 
         if (enemyPools.TryGetValue(key, out var pool))
         {
@@ -344,10 +366,12 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool
                 counters.ActiveCount++;
                 counters.PeakActive = Mathf.Max(counters.PeakActive, counters.ActiveCount);
                 obj.gameObject.SetActive(true);
+                obj.OnSpawned();
             },
             obj =>
             {
                 counters.ActiveCount = Mathf.Max(0, counters.ActiveCount - 1);
+                obj.OnDespawned();
                 obj.gameObject.SetActive(false);
                 obj.transform.SetParent(parent, false);
             },
@@ -377,6 +401,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool
     {
         var inst = Instantiate(prefab, parent);
         inst.gameObject.SetActive(false);
+        inst.SetPool(this, prefab);
         counters.TotalCreated++;
         return inst;
     }

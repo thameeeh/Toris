@@ -33,14 +33,20 @@ public class BadgerIdleSO : IdleSOBase<Badger>
     public override void DoPhysicsLogic()
     {
         base.DoPhysicsLogic();
+        enemy.ForcedIdleCalclulation(Time.fixedDeltaTime);
+
         _timer += Time.fixedDeltaTime;
 
-        if (!enemy.isWondering)
+        if (enemy.IsAggroed && enemy.ForcedIdleDuration <= 0f)
         {
-            if (_timer >= IdleTimer)
-            {
-                enemy.isWondering = true;
-            }
+            enemy.StateMachine.ChangeState(enemy.BurrowState);
+            return;
+        }
+
+        if (!enemy.IsAggroed && _timer >= IdleTimer)
+        {
+            enemy.StateMachine.ChangeState(enemy.WalkState);
+            return;
         }
 
         enemy.ForcedIdleCalclulation(Time.fixedDeltaTime);

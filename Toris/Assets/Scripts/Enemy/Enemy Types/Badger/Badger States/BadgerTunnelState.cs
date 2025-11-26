@@ -23,14 +23,19 @@ public class BadgerTunnelState : EnemyState<Badger>
     {
         base.FrameUpdate();
 
+        enemy.BadgerTunnelBaseInstance.DoFrameUpdateLogic();
+
         if (enemy.isRetreating)
         {
-            if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .25f)
+            if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= 0.25f)
             {
-                Vector2 escapeDirection = ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
+                Vector2 escapeDirection =
+                    ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
+
                 if (escapeDirection != Vector2.zero)
                 {
-                    enemy.TunnelLineTarget = (Vector2)enemy.transform.position + escapeDirection * enemy.RunAwayDistance;
+                    enemy.TunnelLineTarget =
+                        (Vector2)enemy.transform.position + escapeDirection * enemy.RunAwayDistance;
                 }
             }
 
@@ -38,17 +43,14 @@ public class BadgerTunnelState : EnemyState<Badger>
             {
                 enemy.DestroyBadger();
             }
-        }
-        else if (enemy.IsWithinStrikingDistance)
-        {
-            enemy.StateMachine.ChangeState(enemy.UnburrowState);
-        }
-        else if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .1f)
-        {
-            enemy.StateMachine.ChangeState(enemy.UnburrowState);
+
+            return;
         }
 
-        enemy.BadgerTunnelBaseInstance.DoFrameUpdateLogic();
+        if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= 0.1f)
+        {
+            enemy.StateMachine.ChangeState(enemy.UnburrowState);
+        }
     }
 
     public override void PhysicsUpdate()

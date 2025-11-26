@@ -9,17 +9,27 @@ public class Badger : Enemy
     public float WalkSpeed = 1;
     public float TunnelingSpeed = 3;
     public float LineTunnelingSpeed = 6f;
-    [Range(0f, 1f)] public float RunAwayChance = 0.3f;
     public float RunAwayDistance = 8f;
     public float BurrowRoamSpeedMultiplier = 0.65f;
     public float PostAttackIdleDuration = 0.35f;
     public float DeathBurrowAcceleration = 2f;
+    [Space, Header("Badger Burrow Attack Settings")]
+    [Tooltip("How far beyond the player the badger will unburrow.")]
+    public float TunnelLineLength = 4f;
+    [Tooltip("Damage dealt at the moment of diving underground.")]
+    public float BurrowDamage = 20f;
+    [Tooltip("Radius around the burrow point used for the entry hit check.")]
+    public float BurrowDamageRadius = 1.0f;
+    [Tooltip("Damage dealt at the unburrow point.")]
+    public float UnburrowDamage = 20f;
+    [Tooltip("Radius around the unburrow point used for the exit hit check.")]
+    public float UnburrowDamageRadius = 1.0f;
+
 
     [Tooltip("How long until it attacks again")]
     public float ForcedIdleDuration = 0f;
-    //after unburrowing, how long the badger idles before attacking again
 
-    private HitData _hitData; //struct for damaging player 
+    private HitData _hitData;
     private float _baseAttackDamage;
 
     public Vector2 TargetPlayerPosition { get; set; }

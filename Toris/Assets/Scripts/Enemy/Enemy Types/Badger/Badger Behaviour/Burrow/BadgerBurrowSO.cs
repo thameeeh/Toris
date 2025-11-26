@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Badger_Burrow", menuName = "Enemy Logic/Burrow Logic/Badger Burrow")]
 public class BadgerBurrowSO : BurrowSO<Badger>
 {
-    private Vector2 _burrowDirection;
-
+    [SerializeField] private float burrowIdleTime = 0.5f;
+    private float _burrowTimer;
     public override void Initialize(GameObject gameObject, Badger enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -13,33 +13,29 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+
         enemy.isBurrowed = true;
         enemy.isTunneling = false;
-
-        enemy.isRetreating = enemy.ShouldRunAwayOnNextBurrow;
-        enemy.ShouldRunAwayOnNextBurrow = false;
-
-        if (enemy.isRetreating)
-        {
-            Vector2 awayDirection = ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
-            if (awayDirection == Vector2.zero)
-            {
-                awayDirection = Random.insideUnitCircle.normalized;
-            }
-            enemy.RunAwayTargetPosition = (Vector2)enemy.transform.position + awayDirection * enemy.RunAwayDistance;
-        }
-        enemy.TargetPlayerPosition = enemy.PlayerTransform.position;
-        enemy.TunnelLineTarget = enemy.isRetreating ? enemy.RunAwayTargetPosition : enemy.TargetPlayerPosition;
-        enemy.animator.Play("Burrow BT");
-
-        _burrowDirection = (enemy.TunnelLineTarget - (Vector2)enemy.transform.position).normalized;
-        enemy.MoveEnemy(_burrowDirection);
         enemy.MoveEnemy(Vector2.zero);
 
-        if (enemy.isRetreating)
+        // set up the line through the player
+        Vector2 startPos = enemy.transform.position;
+        Vector2 playerPos = enemy.PlayerTransform.position;
+
+        Vector2 direction = (playerPos - startPos).normalized;
+        if (direction == Vector2.zero)
         {
-            enemy.isTunneling = true;
+            direction = Vector2.right;
         }
+
+        enemy.TargetPlayerPosition = playerPos;
+        Vector2 endPos = playerPos + direction * enemy.TunnelLineLength;
+        enemy.TunnelLineTarget = endPos;
+
+        enemy.animator.Play("Burrow BT");
+
+        // start the underground idle timer
+        _burrowTimer = burrowIdleTime;
     }
 
     public override void DoExitLogic()
@@ -50,6 +46,15 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     public override void DoFrameUpdateLogic()
     {
         base.DoFrameUpdateLogic();
+
+        if (_burrowTimer > 0f)
+        {
+            _burrowTimer -= Time.deltaTime;
+            if (_burrowTimer <= 0f)
+            {
+                enemy.isTunneling = true;
+            }
+        }
     }
 
     public override void DoPhysicsLogic()
@@ -64,5 +69,6 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     public override void ResetValues()
     {
         base.ResetValues();
+        _burrowTimer = 0f;
     }
 }

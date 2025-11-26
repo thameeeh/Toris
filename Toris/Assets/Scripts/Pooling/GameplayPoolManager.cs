@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 [DisallowMultipleComponent]
 public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
@@ -23,10 +22,14 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
     [SerializeField] private int defaultEnemyCapacity = 8;
     [SerializeField] private int defaultEnemyMaxSize = 32;
 
-    private readonly Dictionary<Projectile, ObjectPool<Projectile>> projectilePools = new();
+    // Projectiles now use SafeRuntimePool (custom) so we never get destroyed refs back.
+    private readonly Dictionary<Projectile, SafeRuntimePool<Projectile>> projectilePools = new();
     private readonly Dictionary<Projectile, PoolCounters> projectileCounters = new();
-    private readonly Dictionary<Enemy, ObjectPool<Enemy>> enemyPools = new();
+
+    // Enemies still use UnityEngine.Pool.ObjectPool<T>
+    private readonly Dictionary<Enemy, SafeRuntimePool<Enemy>> enemyPools = new();
     private readonly Dictionary<Enemy, PoolCounters> enemyCounters = new();
+
     private readonly Dictionary<Projectile, ProjectilePoolSettings> projectileSettings = new();
     private readonly Dictionary<Enemy, EnemyPoolSettings> enemySettings = new();
 
@@ -84,6 +87,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
         if (configuration != null)
         {
+            // Projectiles
             foreach (var cfg in configuration.ProjectilePools)
             {
                 if (cfg?.prefab == null)
@@ -94,12 +98,13 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
                 PrewarmProjectilePool(pool, cfg.prewarmCount);
             }
 
+            // Enemies
             foreach (var cfg in configuration.EnemyPools)
             {
                 if (cfg?.prefab == null)
                     continue;
 
-                Debug.Log($"[Pool] Config enemy pool for {cfg.prefab.name}, prewarm={cfg.prewarmCount}");
+                //Debug.Log($"[Pool] Config enemy pool for {cfg.prefab.name}, prewarm={cfg.prewarmCount}");
 
                 enemySettings[cfg.prefab] = cfg;
                 var pool = EnsureEnemyPool(cfg.prefab, cfg);
@@ -117,9 +122,16 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             return null;
 
         var proj = pool.Get();
+        if (!proj)
+        {
+            // Should not normally happen with SafeRuntimePool, but guard anyway.
+            return null;
+        }
+
         proj.transform.SetPositionAndRotation(position, rotation);
         return proj;
     }
+
     public void Release(Projectile instance)
     {
         if (instance == null)
@@ -169,21 +181,20 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             return null;
 
         var enemy = pool.Get();
+        if (!enemy)
+            return null;
+
         enemy.transform.SetPositionAndRotation(position, rotation);
         return enemy;
     }
+
 
     public void Release(Enemy instance)
     {
         if (instance == null)
             return;
 
-        var key = instance;
-
-        if (instance.OriginalPrefab)
-        {
-            key = instance.OriginalPrefab;
-        }
+        var key = instance.OriginalPrefab ? instance.OriginalPrefab : instance;
 
         if (enemyPools.TryGetValue(key, out var pool))
         {
@@ -194,6 +205,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             Destroy(instance.gameObject);
         }
     }
+
 
     public PoolReport GetEnemyReport(Enemy prefab)
     {
@@ -222,7 +234,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
     // --- Internal: pool construction ---
 
-    private ObjectPool<Projectile> EnsureProjectilePool(Projectile prefab, ProjectilePoolSettings settings = null)
+    private SafeRuntimePool<Projectile> EnsureProjectilePool(Projectile prefab, ProjectilePoolSettings settings = null)
     {
         if (prefab == null)
             return null;
@@ -242,25 +254,29 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         return pool;
     }
 
-    private ObjectPool<Enemy> EnsureEnemyPool(Enemy prefab, EnemyPoolSettings settings = null)
+    private SafeRuntimePool<Enemy> EnsureEnemyPool(Enemy prefab, EnemyPoolSettings settings = null)
     {
         if (prefab == null)
             return null;
 
-        if (!enemyPools.TryGetValue(prefab, out var pool))
-        {
-            var effectiveSettings = settings ?? TryGetEnemySettings(prefab) ?? CreateDefaultEnemySettings(prefab);
-            pool = CreateEnemyPool(prefab, effectiveSettings);
-            enemyPools[prefab] = pool;
+        if (enemyPools.TryGetValue(prefab, out var existing))
+            return existing;
 
-            if (settings == null)
-            {
-                PrewarmEnemyPool(pool, effectiveSettings.prewarmCount);
-            }
+        var effectiveSettings = settings
+                                ?? TryGetEnemySettings(prefab)
+                                ?? CreateDefaultEnemySettings(prefab);
+
+        var pool = CreateEnemyPool(prefab, effectiveSettings);
+        enemyPools[prefab] = pool;
+
+        if (settings == null)
+        {
+            PrewarmEnemyPool(pool, effectiveSettings.prewarmCount);
         }
 
         return pool;
     }
+
 
     private ProjectilePoolSettings TryGetProjectileSettings(Projectile prefab)
     {
@@ -304,13 +320,15 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         };
     }
 
-    private ObjectPool<Projectile> CreateProjectilePool(Projectile prefab, ProjectilePoolSettings settings)
+    private SafeRuntimePool<Projectile> CreateProjectilePool(Projectile prefab, ProjectilePoolSettings settings)
     {
         var counters = GetOrCreateCounters(projectileCounters, prefab);
         var parent = ResolveParent(settings?.parentOverride, projectileRoot, "ProjectilePools");
 
-        return new ObjectPool<Projectile>(
+        return new SafeRuntimePool<Projectile>(
+            // Factory
             () => CreateProjectileInstance(prefab, parent, counters),
+            // OnGet
             obj =>
             {
                 counters.ActiveCount++;
@@ -318,6 +336,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
                 obj.gameObject.SetActive(true);
                 obj.OnSpawned();
             },
+            // OnRelease
             obj =>
             {
                 counters.ActiveCount = Mathf.Max(0, counters.ActiveCount - 1);
@@ -329,49 +348,54 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             {
                 if (obj)
                     Destroy(obj.gameObject);
-            },
-            collectionCheck: false,
-            defaultCapacity: Mathf.Max(1, settings?.defaultCapacity ?? defaultProjectileCapacity),
-            maxSize: Mathf.Max(1, settings?.maxSize ?? defaultProjectileMaxSize)
+            }
         );
     }
 
-    private ObjectPool<Enemy> CreateEnemyPool(Enemy prefab, EnemyPoolSettings settings)
+    private SafeRuntimePool<Enemy> CreateEnemyPool(Enemy prefab, EnemyPoolSettings settings)
     {
         var counters = GetOrCreateCounters(enemyCounters, prefab);
         var parent = ResolveParent(settings?.parentOverride, enemyRoot, "EnemyPools");
 
-        return new ObjectPool<Enemy>(
+        var pool = new SafeRuntimePool<Enemy>(
+            // Factory
             () => CreateEnemyInstance(prefab, parent, counters),
+
+            // OnGet
             obj =>
             {
                 counters.ActiveCount++;
                 counters.PeakActive = Mathf.Max(counters.PeakActive, counters.ActiveCount);
+
                 obj.gameObject.SetActive(true);
+
                 if (!_isPrewarmingEnemies)
                 {
                     obj.OnSpawned();
                 }
             },
+
+            // OnRelease
             obj =>
             {
                 counters.ActiveCount = Mathf.Max(0, counters.ActiveCount - 1);
+
                 obj.OnDespawned();
                 obj.gameObject.SetActive(false);
                 obj.transform.SetParent(parent, false);
             },
+
             obj =>
             {
                 if (obj)
                 {
                     Destroy(obj.gameObject);
                 }
-            },
-            collectionCheck: false,
-            defaultCapacity: Mathf.Max(1, settings?.defaultCapacity ?? defaultEnemyCapacity),
-            maxSize: Mathf.Max(1, settings?.maxSize ?? defaultEnemyMaxSize)
-        );
+            });
+
+        return pool;
     }
+
 
     private Projectile CreateProjectileInstance(Projectile prefab, Transform parent, PoolCounters counters)
     {
@@ -388,23 +412,26 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         inst.gameObject.SetActive(false);
         inst.SetPool(this, prefab);
         counters.TotalCreated++;
-        Debug.Log($"[Pool] Created pooled enemy instance of {prefab.name}");
+        //Debug.Log($"[Pool] Created pooled enemy instance of {prefab.name}");
         return inst;
     }
 
     // --- Internal: prewarm & helpers ---
 
-    private void PrewarmProjectilePool(ObjectPool<Projectile> pool, int count)
+    private void PrewarmProjectilePool(SafeRuntimePool<Projectile> pool, int count)
     {
         if (pool == null || count <= 0)
             return;
 
         var temp = new List<Projectile>(count);
-        for (int i = 0; i < count; i++) temp.Add(pool.Get());
-        for (int i = 0; i < count; i++) pool.Release(temp[i]);
+        for (int i = 0; i < count; i++)
+            temp.Add(pool.Get());
+
+        for (int i = 0; i < count; i++)
+            pool.Release(temp[i]);
     }
 
-    private void PrewarmEnemyPool(ObjectPool<Enemy> pool, int count)
+    private void PrewarmEnemyPool(SafeRuntimePool<Enemy> pool, int count)
     {
         if (pool == null || count <= 0)
             return;
@@ -413,12 +440,12 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
         var temp = new List<Enemy>(count);
         for (int i = 0; i < count; i++)
-            temp.Add(pool.Get());   // OnSpawned is NOT called now
+            temp.Add(pool.Get());
 
         _isPrewarmingEnemies = false;
 
         for (int i = 0; i < count; i++)
-            pool.Release(temp[i]);  // goes back into pool inactive
+            pool.Release(temp[i]);
     }
 
     private Transform ResolveParent(Transform overrideParent, Transform categoryRoot, string categoryName)
@@ -479,5 +506,80 @@ public readonly struct PoolReport
         Inactive = inactive;
         TotalCreated = totalCreated;
         PeakActive = peakActive;
+    }
+}
+
+/// <summary>
+/// Very small custom pool for MonoBehaviours used for projectiles.
+/// - Never auto-destroys on Release
+/// - Filters out destroyed instances before reuse
+/// - You can destroy everything explicitly via Clear() if needed
+/// </summary>
+public sealed class SafeRuntimePool<T> where T : Component
+{
+    private readonly Stack<T> _inactive = new Stack<T>();
+
+    private readonly System.Func<T> _factory;
+    private readonly System.Action<T> _onGet;
+    private readonly System.Action<T> _onRelease;
+    private readonly System.Action<T> _onDestroy;
+
+    public int CountInactive => _inactive.Count;
+
+    public SafeRuntimePool(
+        System.Func<T> factory,
+        System.Action<T> onGet,
+        System.Action<T> onRelease,
+        System.Action<T> onDestroy)
+    {
+        _factory = factory;
+        _onGet = onGet;
+        _onRelease = onRelease;
+        _onDestroy = onDestroy;
+    }
+
+    public T Get()
+    {
+        T instance = null;
+
+        while (_inactive.Count > 0 && instance == null)
+        {
+            var candidate = _inactive.Pop();
+            if (candidate)
+                instance = candidate;
+        }
+
+        if (instance == null)
+        {
+            instance = _factory();
+        }
+
+        _onGet?.Invoke(instance);
+        return instance;
+    }
+
+    public void Release(T instance)
+    {
+        if (instance == null)
+            return;
+
+        if (!instance)
+            return;
+
+        _onRelease?.Invoke(instance);
+        _inactive.Push(instance);
+    }
+
+    public void Clear()
+    {
+        foreach (var inst in _inactive)
+        {
+            if (inst)
+            {
+                _onDestroy?.Invoke(inst);
+            }
+        }
+
+        _inactive.Clear();
     }
 }

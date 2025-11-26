@@ -63,7 +63,7 @@ public class TestMusic : MonoBehaviour
         // length/rate check for same length and rate
         if (!AllSameLenRate(clipGuitar, clipOboe, clipGuitarTwo, clipPadA, clipPadB))
         {
-            Debug.LogError("Stems are different in length or sample-rate. Please ensure they match.");
+            //Debug.LogError("Stems are different in length or sample-rate. Please ensure they match.");
             mGtr.Play();
             enabled = false;
             return;
@@ -123,19 +123,19 @@ public class TestMusic : MonoBehaviour
             {
                 if (loopIndex == 1 && mOboe.volume < 1f)
                 {
-                    Debug.Log("fadeOboe starts");
+                    //Debug.Log("fadeOboe starts");
                     BeginFadeOboe(now);
                 }
 
                 if (loopIndex == 2 && mGtr2.volume < 1f)
                 {
-                    Debug.Log("fadeGtr2 starts");
+                    //Debug.Log("fadeGtr2 starts");
                     BeginFadeGtr2(now);
                 }
 
                 if (loopIndex == 3 && !padsEnabled)
                 {
-                    Debug.Log("fadePads starts");
+                    //Debug.Log("fadePads starts");
                     padsEnabled = true;
                     BeginFadePads(now);
                 }

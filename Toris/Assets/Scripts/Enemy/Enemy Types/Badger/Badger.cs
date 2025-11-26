@@ -1,9 +1,9 @@
+using System.Data;
 using System.Linq;
 using UnityEngine;
 
 public class Badger : Enemy
 {
-
     [Space]
     [Header("Stats")]
     public float AttackDamage = 20f;
@@ -18,10 +18,10 @@ public class Badger : Enemy
 
     [Tooltip("How long until it attacks again")]
     public float ForcedIdleDuration = 0f;
-    //after unburrowing, how long the badger idles before attacking again
 
-    private HitData _hitData; //struct for damaging player 
+    private HitData _hitData;
     private float _baseAttackDamage;
+    private bool _hasStarted;
 
     public Vector2 TargetPlayerPosition { get; set; }
     public Vector2 TunnelLineTarget { get; set; }
@@ -97,19 +97,9 @@ public class Badger : Enemy
         BadgerTunnelBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
-        // Apply base scaling (uses DifficultyTier if you ever set it)
         ApplyScaling();
-
-        // If this badger is NOT managed by a pool (e.g. placed directly in scene),
-        // start its runtime state machine immediately.
-        if (OwningPool == null)
-        {
-            CurrentHealth = MaxHealth;
-            _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
-
-            StateMachine.Initialize(IdleState);
-            ResetFlags();
-        }
+        InitializeRuntimeState();
+        _hasStarted = true;
     }
     protected override bool CanTakeDamage()
     {
@@ -129,17 +119,13 @@ public class Badger : Enemy
     }
     public override void OnSpawned()
     {
+        ApplyScaling();
         base.OnSpawned();
 
-        ApplyScaling();
+        if (!_hasStarted)
+            return;
 
-        CurrentHealth = MaxHealth;
-        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
-
-        ResetFlags();
-
-        StateMachine.Reset();
-        StateMachine.Initialize(IdleState);
+        InitializeRuntimeState();
     }
     private float GetDifficultyMultiplier()
     {
@@ -150,7 +136,15 @@ public class Badger : Enemy
     {
         AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
     }
+    public void InitializeRuntimeState()
+    {
+        CurrentHealth = MaxHealth;
+        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
 
+        StateMachine.Reset();
+        StateMachine.Initialize(IdleState);
+        ResetFlags();
+    }
     private void ResetFlags()
     {
         isWondering = false;

@@ -19,7 +19,7 @@ public class TileInteractor : MonoBehaviour
 
     private void HandleClick()
     {
-        Debug.Log("TileInteractor: Click detected!");
+        //Debug.Log("TileInteractor: Click detected!");
 
         // 2. Get Mouse Position
         Vector2 mousePos = Mouse.current.position.ReadValue();
@@ -47,6 +47,6 @@ public class TileInteractor : MonoBehaviour
         // Remove the tile
         _interactableTilemap.SetTile(cellPos, null);
 
-        Debug.Log($"Collected {tile.ResourceAmount} {tile.ResourceToGive.name}");
+        //Debug.Log($"Collected {tile.ResourceAmount} {tile.ResourceToGive.name}");
     }
 }

@@ -321,11 +321,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e896dc43e4f8241acd884888f03862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wolf
-  <MaxHealth>k__BackingField: 125
+  <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   AttackDamage: 40
-  MovementSpeed: 2
+  MovementSpeed: 2.5
   role: 0
   healthMultiplier: 2.5
   pack: {fileID: -2298867679096013564}
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
   indicatorOffset: {x: 0, y: 1.25, z: 0}
   displayDuration: 1.25
-  indicatorColor: {r: 0.94, g: 0.29, b: 0.12, a: 1}
+  indicatorColor: {r: 0.9622642, g: 0.057493582, b: 0.09701543, a: 1}
   indicatorText: '!'
   baseFontSize: 4
   minFontSize: 2

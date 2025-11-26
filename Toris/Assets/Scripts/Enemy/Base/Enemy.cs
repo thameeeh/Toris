@@ -94,7 +94,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (!CanTakeDamage()) return;
 
         CurrentHealth -= damageAmount;
-        Debug.Log($"Health left: {CurrentHealth}");
+        //Debug.Log($"Health left: {CurrentHealth}");
         if (CurrentHealth <= 0f)
         {
             Die();

@@ -75,7 +75,7 @@ public class PackController : MonoBehaviour
 
                 if (newMinion == null)
                 {
-                    Debug.LogError("Minion prefab is not a Wolf or pooled enemy is not a Wolf.");
+                    //Debug.LogError("Minion prefab is not a Wolf or pooled enemy is not a Wolf.");
                     continue;
                 }
             }

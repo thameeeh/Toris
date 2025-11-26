@@ -15,21 +15,9 @@ public class BadgerUnburrowSO : TunnelSOBase<Badger>
 
         enemy.animator.Play("Unburrow BT");
         enemy.MoveEnemy(Vector2.zero);
-
         enemy.isTunneling = false;
         enemy.isBurrowed = false;
         enemy.isRetreating = false;
-
-        Vector2 playerPos = enemy.PlayerTransform.position;
-        Vector2 unburrowPos = enemy.transform.position;
-
-        float sqrDist = (playerPos - unburrowPos).sqrMagnitude;
-        float sqrRadius = enemy.UnburrowDamageRadius * enemy.UnburrowDamageRadius;
-
-        if (sqrDist <= sqrRadius)
-        {
-            enemy.DamagePlayer(enemy.UnburrowDamage);
-        }
     }
 
     public override void DoExitLogic()
@@ -37,6 +25,7 @@ public class BadgerUnburrowSO : TunnelSOBase<Badger>
         base.DoExitLogic();
 
         enemy.ForcedIdleDuration = enemy.PostAttackIdleDuration;
+        enemy.ShouldRunAwayOnNextBurrow = Random.value < enemy.RunAwayChance;
     }
 
     public override void DoFrameUpdateLogic()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BadgerTunnelState : EnemyState<Badger>
 {
-    public BadgerTunnelState(Badger enemy, EnemyStateMachine enemyStateMachine) 
+    public BadgerTunnelState(Badger enemy, EnemyStateMachine enemyStateMachine)
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
@@ -23,19 +23,14 @@ public class BadgerTunnelState : EnemyState<Badger>
     {
         base.FrameUpdate();
 
-        enemy.BadgerTunnelBaseInstance.DoFrameUpdateLogic();
-
         if (enemy.isRetreating)
         {
-            if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= 0.25f)
+            if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .25f)
             {
-                Vector2 escapeDirection =
-                    ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
-
+                Vector2 escapeDirection = ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
                 if (escapeDirection != Vector2.zero)
                 {
-                    enemy.TunnelLineTarget =
-                        (Vector2)enemy.transform.position + escapeDirection * enemy.RunAwayDistance;
+                    enemy.TunnelLineTarget = (Vector2)enemy.transform.position + escapeDirection * enemy.RunAwayDistance;
                 }
             }
 
@@ -43,14 +38,17 @@ public class BadgerTunnelState : EnemyState<Badger>
             {
                 enemy.DestroyBadger();
             }
-
-            return;
         }
-
-        if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= 0.1f)
+        else if (enemy.IsWithinStrikingDistance)
         {
             enemy.StateMachine.ChangeState(enemy.UnburrowState);
         }
+        else if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .1f)
+        {
+            enemy.StateMachine.ChangeState(enemy.UnburrowState);
+        }
+
+        enemy.BadgerTunnelBaseInstance.DoFrameUpdateLogic();
     }
 
     public override void PhysicsUpdate()

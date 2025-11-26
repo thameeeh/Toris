@@ -3,9 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Badger_Tunnel", menuName = "Enemy Logic/Tunnel Logic/Badger Tunnel")]
 public class BadgerTunnelSO : TunnelSOBase<Badger>
 {
-    private Vector2 _tunnelDirection;
-    public float DistanceFromTargetPlayerPosition { get; private set; }
-    [SerializeField] private float stopDistance = 0.25f;
+    Vector2 _tunnelDirection;
+    public float DistanceFromTargetPlayerPosition { get; set; }
 
     public override void Initialize(GameObject gameObject, Badger enemy, Transform player)
     {
@@ -16,12 +15,9 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
     {
         base.DoEnterLogic();
 
+        DistanceFromTargetPlayerPosition = Vector2.Distance(enemy.TunnelLineTarget, enemy.transform.position);
         _tunnelDirection = (enemy.TunnelLineTarget - (Vector2)enemy.transform.position).normalized;
-        if (_tunnelDirection == Vector2.zero)
-        {
-            _tunnelDirection = Vector2.right;
-        }
-
+        enemy.MoveEnemy(_tunnelDirection);
         enemy.animator.Play("Tunnel BT");
     }
 
@@ -39,17 +35,13 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
     {
         base.DoPhysicsLogic();
 
+        Vector2 targetPosition = enemy.isRetreating ? enemy.RunAwayTargetPosition : (Vector2)enemy.PlayerTransform.position;
+
         _tunnelDirection = (enemy.TunnelLineTarget - (Vector2)enemy.transform.position).normalized;
-        if (_tunnelDirection == Vector2.zero)
-        {
-            _tunnelDirection = Vector2.right;
-        }
+        float currentSpeed = enemy.isRetreating ? enemy.TunnelingSpeed : enemy.LineTunnelingSpeed;
 
-        float speed = enemy.LineTunnelingSpeed;
-        enemy.MoveEnemy(_tunnelDirection * speed);
-
-        DistanceFromTargetPlayerPosition =
-            Vector2.Distance(enemy.TunnelLineTarget, enemy.transform.position);
+        enemy.MoveEnemy(_tunnelDirection * currentSpeed);
+        DistanceFromTargetPlayerPosition = Vector2.Distance(enemy.TunnelLineTarget, enemy.transform.position);
     }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
@@ -59,6 +51,5 @@ public class BadgerTunnelSO : TunnelSOBase<Badger>
     public override void ResetValues()
     {
         base.ResetValues();
-        DistanceFromTargetPlayerPosition = 0f;
     }
 }

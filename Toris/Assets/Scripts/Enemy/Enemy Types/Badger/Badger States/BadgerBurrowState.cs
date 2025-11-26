@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BadgerBurrowState : EnemyState<Badger>
 {
-    public BadgerBurrowState(Badger enemy, EnemyStateMachine enemyStateMachine) 
+    public BadgerBurrowState(Badger enemy, EnemyStateMachine enemyStateMachine)
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
     {
         base.EnterState();
-        
+
         enemy.BadgerBurrowBaseInstance.DoEnterLogic();
     }
 

@@ -13,9 +13,9 @@ public class ResourceNode : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     GameObject player;
     SpriteRenderer spriteRenderer;
     private Color originalColor;
-    void Start() 
+    void Start()
     {
-        player =  GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("Player");
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -23,9 +23,9 @@ public class ResourceNode : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         }
     }
 
-    void Update() 
+    void Update()
     {
-        if(Vector3.Distance(transform.position, player.transform.position) < .5f)
+        if (Vector3.Distance(transform.position, player.transform.position) < .5f)
         {
             Inventory.InventoryInstance.AddResource(ResourceToGive, ResourceAmount);
             Destroy(gameObject);
@@ -33,7 +33,7 @@ public class ResourceNode : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
 
     public void OnPointerClick(PointerEventData eventData)
-    { 
+    {
         Inventory.InventoryInstance.AddResource(ResourceToGive, ResourceAmount);
         Destroy(gameObject);
     }

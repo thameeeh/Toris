@@ -1,232 +1,153 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic; // Added for the HashSet
+using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour
 {
-    [Header("Generation Levels (0 to 1)")]
-    [Range(0, 1)]
-    [Tooltip("Any noise value below this will be water.")]
-    public float waterLevel = 0.3f;
-    [Range(0, 1)]
-    [Tooltip("Any noise value below this (and above water) will be sand.")]
-    public float sandLevel = 0.5f;
-    [Range(0, 1)]
-    [Tooltip("Any noise value below this (and above sand) will be grass.")]
-    public float grassLevel = 0.8f;
-    // Anything above grassLevel will be Rock
+    [Header("Map References")]
+    [SerializeField] private Tilemap _baseMap;        // The ground (Sand, Grass, Rock)
+    [SerializeField] private Tilemap _interactibleMap; // The objects (Trees, Ores)
+    [SerializeField] private Transform _player;
 
-    [Header("References")]
-    [Tooltip("The Tilemap to draw ground tiles onto.")]
-    public Tilemap GroundTiles;
-    [Tooltip("A second Tilemap (on top) for decorations like flowers.")]
-    public Tilemap WaterTiles; // --- NEW ---
-    [Tooltip("The player GameObject. Must have the 'Player' tag.")]
-    Transform Player;
+    [Header("Base Terrain Tiles")]
+    [SerializeField] private TileBase _sandTile;      // Lowest layer
+    [SerializeField] private TileBase _grassTile;     // Middle layer
+    [SerializeField] private TileBase _rockFloorTile; // Highest layer
 
-    [Header("Tile Assets")]
-    [Tooltip("Tile for grass terrain.")]
-    public TileBase GrassTile;
-    [Tooltip("Tile for water terrain.")]
-    public TileBase WaterTile;
-    [Tooltip("Tile for sand/beach terrain.")]
-    public TileBase SandTile;
-    [Tooltip("Tile for rock/mountain terrain.")]
-    public TileBase RockTile;
+    [Header("Interactible Tiles")]
+    [Tooltip("Assign your Custom ResourceTiles here")]
+    [SerializeField] private TileBase _treeTile;   // Spawns on Grass
+    [SerializeField] private TileBase _oreTile;    // Spawns on Rock
 
-    [Header("Map & Noise Settings")]
-    [Tooltip("The width of the generation box around the player (in tiles).")]
-    public int MapWidth = 15;
-    [Tooltip("The height of the generation box around the player (in tiles).")]
-    public int MapHeight = 15;
-    [Tooltip("Controls the 'zoom' of the Perlin noise. Smaller values = larger continents.")]
-    public float NoiseScale = 0.1f;
+    [Header("Generation Settings")]
+    [SerializeField] private int _mapWidth = 20;
+    [SerializeField] private int _mapHeight = 20;
+    [SerializeField] private float _noiseScale = 0.1f;
+    [SerializeField] private float _interactibleDensity = 0.1f; // 10% chance to spawn item
 
-    // --- NEW: Decoration Noise Settings ---
-    [Header("Decoration Noise Settings")]
-    [Tooltip("Controls the 'zoom' of the decoration noise. Try a different value than base noise.")]
-    public float DecorationNoiseScale = 0.2f;
-    [Range(0, 1)]
-    [Tooltip("How likely decorations are to spawn. Higher = fewer decorations.")]
-    public float DecorationThreshold = 0.7f;
+    [Header("Terrain Thresholds")]
+    [Range(0, 1)] public float SandLevel = 0.3f;  // Anything below this is Sand
+    [Range(0, 1)] public float GrassLevel = 0.7f; // Anything between Sand and this is Grass
+    // Anything above GrassLevel is Rock
 
-    private float offsetX;
-    private float offsetY;
+    // Internal State
+    private float _seedX, _seedY;
+    private Vector3Int _lastPlayerPos;
+    private HashSet<Vector3Int> _generatedTiles = new HashSet<Vector3Int>();
 
-    // --- NEW: Variables to track previous slider values ---
-    private float prevWaterLevel;
-    private float prevSandLevel;
-    private float prevGrassLevel;
-    private int prevMapWidth;
-    private int prevMapHeight;
-    private float prevNoiseScale;
-    // --- NEW ---
-    private float prevDecorationNoiseScale;
-    private float prevDecorationThreshold;
-
-    // This will store the player's last position in grid cells
-    private Vector3Int previousPlayerCellPos;
-    // This will store all the positions we've already created a tile at
-    private HashSet<Vector3Int> generatedTiles = new HashSet<Vector3Int>();
+    // Tracking for Inspector changes (Hot Reload)
+    private float _lastSandLevel, _lastGrassLevel;
 
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (_player == null)
+            _player = GameObject.FindWithTag("Player").transform;
 
-        // Terrain noise offsets
-        offsetX = Random.Range(0f, 999f);
-        offsetY = Random.Range(0f, 999f);
+        _seedX = Random.Range(0f, 9999f);
+        _seedY = Random.Range(0f, 9999f);
 
-        // --- CHANGED ---
-        // Get the player's starting cell position
-        previousPlayerCellPos = GroundTiles.WorldToCell(Player.position);
-
-        // --- NEW: Store the initial values ---
-        StoreCurrentSettings();
-
-        // Generate the first set of tiles around the start position
-        GenerateTilesAroundPlayer();
+        GenerateMap();
     }
 
-    // --- CHANGED ---
-    // We check for setting changes first, then for player movement
     void Update()
     {
-        // Check if any sliders have changed
-        if (SettingsHaveChanged())
+        // 1. Check if Player moved to a new cell
+        Vector3Int playerPos = _baseMap.WorldToCell(_player.position);
+        if (playerPos != _lastPlayerPos)
         {
-            // If they have, clear everything and regenerate
-            RegenerateAllTiles();
-            // Store the new values as the "previous" values
-            StoreCurrentSettings();
+            GenerateMap();
+            _lastPlayerPos = playerPos;
         }
-        // If settings haven't changed, just check for player movement
+
+        // 2. Check if Settings changed (Hot-Reload)
+        if (SandLevel != _lastSandLevel || GrassLevel != _lastGrassLevel)
+        {
+            // If sliders moved, clear everything and redraw
+            _baseMap.ClearAllTiles();
+            _interactibleMap.ClearAllTiles();
+            _generatedTiles.Clear();
+            GenerateMap();
+
+            _lastSandLevel = SandLevel;
+            _lastGrassLevel = GrassLevel;
+        }
+    }
+
+    void GenerateMap()
+    {
+        Vector3Int center = _baseMap.WorldToCell(_player.position);
+        int halfW = _mapWidth / 2;
+        int halfH = _mapHeight / 2;
+
+        for (int x = -halfW; x <= halfW; x++)
+        {
+            for (int y = -halfH; y <= halfH; y++)
+            {
+                Vector3Int pos = new Vector3Int(center.x + x, center.y + y, 0);
+
+                if (_generatedTiles.Contains(pos)) continue;
+
+                GenerateTileAt(pos);
+                _generatedTiles.Add(pos);
+            }
+        }
+    }
+
+    void GenerateTileAt(Vector3Int pos)
+    {
+        // 1. Calculate Perlin Noise (0.0 to 1.0)
+        float xCoord = (pos.x * _noiseScale) + _seedX;
+        float yCoord = (pos.y * _noiseScale) + _seedY;
+        float noise = Mathf.PerlinNoise(xCoord, yCoord);
+
+        TileBase groundToPlace = null;
+        TileBase interactibleToPlace = null;
+
+        // 2. Determine Terrain Type
+        if (noise < SandLevel)
+        {
+            // Bottom Layer: Sand
+            groundToPlace = _sandTile;
+            // Usually no interactibles on sand, but you can add cacti here if you want
+        }
+        else if (noise < GrassLevel)
+        {
+            // Middle Layer: Grass
+            groundToPlace = _grassTile;
+
+            // Check for Trees
+            if (ShouldSpawnInteractible(xCoord, yCoord))
+            {
+                interactibleToPlace = _treeTile;
+            }
+        }
         else
         {
-            Vector3Int currentPlayerCellPos = GroundTiles.WorldToCell(Player.position);
-            if (currentPlayerCellPos != previousPlayerCellPos)
-            {
-                // Player moved! Generate new tiles at the edges
-                GenerateTilesAroundPlayer();
+            // Top Layer: Rock Floor
+            groundToPlace = _rockFloorTile;
 
-                // Update the player's last known position
-                previousPlayerCellPos = currentPlayerCellPos;
+            // Check for Ores
+            if (ShouldSpawnInteractible(xCoord, yCoord))
+            {
+                interactibleToPlace = _oreTile;
             }
         }
-    }
 
-    // --- NEW FUNCTION ---
-    // Checks if any public setting has changed since the last frame
-    bool SettingsHaveChanged()
-    {
-        return waterLevel != prevWaterLevel ||
-               sandLevel != prevSandLevel ||
-               grassLevel != prevGrassLevel ||
-               MapWidth != prevMapWidth ||
-               MapHeight != prevMapHeight ||
-               NoiseScale != prevNoiseScale ||
-               // --- NEW ---
-               DecorationNoiseScale != prevDecorationNoiseScale ||
-               DecorationThreshold != prevDecorationThreshold;
-    }
+        // 3. Set the tiles
+        _baseMap.SetTile(pos, groundToPlace);
 
-    // --- NEW FUNCTION ---
-    // Stores the current settings into the "prev" variables
-    void StoreCurrentSettings()
-    {
-        prevWaterLevel = waterLevel;
-        prevSandLevel = sandLevel;
-        prevGrassLevel = grassLevel;
-        prevMapWidth = MapWidth;
-        prevMapHeight = MapHeight;
-        prevNoiseScale = NoiseScale;
-        // --- NEW ---
-        prevDecorationNoiseScale = DecorationNoiseScale;
-        prevDecorationThreshold = DecorationThreshold;
-    }
-
-    // --- NEW FUNCTION ---
-    // Clears the entire map and regenerates tiles around the player
-    void RegenerateAllTiles()
-    {
-        // Clear all tiles from the tilemap
-        GroundTiles.ClearAllTiles();
-        WaterTiles.ClearAllTiles(); // --- ADDED ---
-        // Clear our memory of which tiles we've generated
-        generatedTiles.Clear();
-        // Regenerate the area around the player
-        GenerateTilesAroundPlayer();
-    }
-
-
-    // --- RENAMED & HEAVILY CHANGED ---
-    void GenerateTilesAroundPlayer()
-    {
-        // Get the player's current cell position
-        Vector3Int playerCell = GroundTiles.WorldToCell(Player.position);
-
-        // Calculate the bottom-left corner of the 15x15 generation box
-        int halfWidth = MapWidth / 2;
-        int halfHeight = MapHeight / 2;
-
-        for (int x = 0; x < MapWidth; x++)
+        if (interactibleToPlace != null)
         {
-            for (int y = 0; y < MapHeight; y++)
-            {
-                // This is the actual grid cell we want to check and (maybe) draw in
-                Vector3Int tilePos = new Vector3Int(playerCell.x - halfWidth + x,
-                                                playerCell.y - halfHeight + y,
-                                                0);
-
-                // --- KEY CHANGE 1: Check if tile is already generated ---
-                // If the set already contains this position, skip it
-                if (generatedTiles.Contains(tilePos))
-                {
-                    continue;
-                }
-
-                // --- KEY CHANGE 2: Use the *world* position for noise ---
-                // This makes the noise consistent across the entire world
-                float xCoord = (float)tilePos.x * NoiseScale + offsetX;
-                float yCoord = (float)tilePos.y * NoiseScale + offsetY;
-                float sample = Mathf.PerlinNoise(xCoord, yCoord);
-
-                // --- CHANGED: Logic to split tiles between two maps ---
-                if (sample < waterLevel)
-                {
-                    // Place water on the WaterTiles map
-                    WaterTiles.SetTile(tilePos, WaterTile);
-                    // Clear any ground tile that might be there (e.g., from previous generation)
-                    GroundTiles.SetTile(tilePos, null);
-                }
-                else
-                {
-                    // Not water, so place a ground tile
-                    TileBase selectedTile;
-                    if (sample < sandLevel)
-                    {
-                        selectedTile = SandTile;
-                    }
-                    else if (sample < grassLevel)
-                    {
-                        selectedTile = GrassTile;
-                    }
-                    else
-                    {
-                        selectedTile = RockTile;
-                    }
-
-                    // Place the ground tile
-                    GroundTiles.SetTile(tilePos, selectedTile);
-                    // Clear any water tile that might be there (e.g., from previous generation)
-                    WaterTiles.SetTile(tilePos, null);
-                }
-
-                // --- KEY CHANGE 3: Set tile and *remember* it ---
-                // We just need to remember we've processed this position
-                generatedTiles.Add(tilePos);
-            }
+            _interactibleMap.SetTile(pos, interactibleToPlace);
         }
+    }
+
+    // Helper function to calculate random chance for items
+    private bool ShouldSpawnInteractible(float x, float y)
+    {
+        // We multiply coords by 5 to make the "item noise" more random/scattered 
+        // compared to the smooth terrain noise.
+        float itemNoise = Mathf.PerlinNoise(x * 5f, y * 5f);
+        return itemNoise > (1f - _interactibleDensity);
     }
 }
-

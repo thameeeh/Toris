@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   _mainMenuScene: MainMenu
-  _pausedScene: UIMenu
+  _pausedScene: PauseMenu
   _townScene: MainArea
   _dungeonScene: ProceduralTiles
   pauseAction: {fileID: 7727032971491509709, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

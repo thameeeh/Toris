@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6410183038601468207}
   - component: {fileID: 6396975576403067017}
-  - component: {fileID: 1155153630678243157}
   m_Layer: 0
   m_Name: Flower
   m_TagString: Untagged
@@ -47,15 +46,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceNode
   ResourceToGive: {fileID: 11400000, guid: c2c2055359c6bae4c80a3367bdd7ddf0, type: 2}
   ResourceAmount: 1
---- !u!114 &1155153630678243157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7033787166278839313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5c1e94053daec349bbad8490a93fe00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemPickMagnet

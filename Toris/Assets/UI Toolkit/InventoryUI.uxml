@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/InventorySlots/Slots.uss?fileID=7433441132597879392&amp;guid=e964bb32c8bddc344988477f5b3279a4&amp;type=3#Slots" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: auto; justify-content: center; align-items: flex-end;">
+        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" />
+        <ui:Button text="0" class="btn_slot" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -58,6 +58,7 @@ public class GameInitiator : MonoBehaviour
 
     private void OnPausePress(InputAction.CallbackContext context)
     {
+        Debug.Log("Pause Button Pressed");
         if (currentState == GameState.Paused)
         {
             currentState = prevState;

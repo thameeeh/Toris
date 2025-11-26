@@ -3,31 +3,51 @@
 
 .MenuButtons {
     background-color: rgb(32, 190, 120);
-    border-top-width: 4px;
-    border-right-width: 4px;
-    border-bottom-width: 4px;
-    border-left-width: 4px;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-    border-bottom-right-radius: 7px;
-    border-bottom-left-radius: 7px;
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     border-left-color: rgb(36, 213, 135);
     border-right-color: rgb(36, 213, 135);
     border-top-color: rgb(39, 233, 147);
     border-bottom-color: rgb(25, 146, 92);
-    width: 150px;
+    width: 450px;
     min-width: 50px;
-    margin-top: 4px;
-    margin-right: 4px;
-    margin-bottom: 4px;
-    margin-left: 4px;
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    -unity-font-definition: resource('FlatSkin/Font/Roboto-Medium');
-    font-size: 16px;
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Electronic%20Highway%20Sign.TTF?fileID=12800000&guid=8a2b9e2a607dd2143b58c44bc32410b4&type=3#Electronic Highway Sign");
+    font-size: 34px;
     color: rgb(255, 255, 255);
     -unity-text-outline-color: rgb(0, 180, 100);
     -unity-text-outline-width: 0;
+    height: 75px;
+}
+
+.unity-button:hover {
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
+    transition-delay: 0s;
+    border-left-color: rgb(32, 190, 120);
+    border-right-color: rgb(32, 190, 120);
+    border-top-color: rgb(32, 190, 120);
+    border-bottom-color: rgb(32, 190, 120);
+}
+
+.unity-button:active {
+    scale: 1 1;
+    transition-duration: 0s;
+    border-top-color: rgb(39, 233, 147);
+    border-right-color: rgb(36, 213, 135);
+    border-bottom-color: rgb(25, 146, 92);
+    border-left-color: rgb(36, 213, 135);
 }

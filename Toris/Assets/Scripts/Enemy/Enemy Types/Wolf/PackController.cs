@@ -59,12 +59,33 @@ public class PackController : MonoBehaviour
         int availableSlots = Mathf.Max(0, maxPackSize - GetActiveMinionCount());
         int spawnAmount = Mathf.Min(requestedCount, availableSlots);
 
+        var poolManager = GameplayPoolManager.Instance;
+
         for (int i = 0; i < spawnAmount; i++)
         {
             Vector2 spawnPoint = GetRandomSpawnPoint(spawnCenter);
-            Wolf newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
-            newMinion.role = WolfRole.Minion;
 
+            Wolf newMinion;
+
+            if (poolManager != null)
+            {
+                // Spawn via enemy pool
+                Enemy enemy = poolManager.SpawnEnemy(minionWolfPrefab, spawnPoint, Quaternion.identity);
+                newMinion = enemy as Wolf;
+
+                if (newMinion == null)
+                {
+                    Debug.LogError("Minion prefab is not a Wolf or pooled enemy is not a Wolf.");
+                    continue;
+                }
+            }
+            else
+            {
+                // Fallback, in case no pool manager exists
+                newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
+            }
+
+            newMinion.role = WolfRole.Minion;
             newMinion.pack = this;
 
             activeMinions.Add(newMinion);
@@ -126,7 +147,12 @@ public class PackController : MonoBehaviour
     public void DespawnAllMinions()
     {
         foreach (var minion in activeMinions)
-            if (minion != null) Destroy(minion.gameObject);
+        {
+            if (minion == null) continue;
+
+            minion.RequestDespawn();
+        }
+
         activeMinions.Clear();
     }
 }

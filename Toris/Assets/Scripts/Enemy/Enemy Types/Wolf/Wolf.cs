@@ -26,6 +26,8 @@ public class Wolf : Enemy
     public PackController pack;
 
     private HitData _hitData;
+    private float _baseAttackDamage;
+    private bool _hasStarted;
 
     public bool IsMovingWhileBiting { get; set; } = false;
     public void PrintMessage(string msg) 
@@ -61,6 +63,8 @@ public class Wolf : Enemy
     {
         base.Awake();
 
+        _baseAttackDamage = AttackDamage;
+
         EnemyHowlBaseInstance = Instantiate(EnemyHowlBase);
         EnemyChaseBaseInstance = Instantiate(EnemyChaseBase);
         EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
@@ -84,18 +88,10 @@ public class Wolf : Enemy
         EnemyAttackBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyDeadBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
-        MaxHealth = Mathf.RoundToInt(MaxHealth * healthMultiplier);
-        CurrentHealth = MaxHealth;
+        ApplyScaling();
+        InitializeRuntimeState();
 
-        StateMachine.Initialize(IdleState);
-        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
-
-        if (role == WolfRole.Minion)
-        {
-            AlwaysAggroed = true;
-            SetAggroStatus(true);
-            StateMachine.ChangeState(ChaseState);
-        }
+        _hasStarted = true;   
     }
 
     protected override void Update()
@@ -108,10 +104,46 @@ public class Wolf : Enemy
             StateMachine.ChangeState(DeadState);
         }
     }
-
-    public void DestroyGameObject() 
+    public override void OnSpawned()
     {
-        Destroy(gameObject);
+        ApplyScaling();
+        base.OnSpawned();
+
+        if (!_hasStarted)
+            return;
+
+        InitializeRuntimeState();
+    }
+
+    private float GetDifficultyMultiplier()
+    {
+        return 1f + (0.2f * DifficultyTier);
+    }
+
+    private void ApplyScaling()
+    {
+        MaxHealth = Mathf.RoundToInt(Mathf.Max(1f, MaxHealth) * healthMultiplier);
+        AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
+    }
+
+    public void InitializeRuntimeState()
+    {
+        CurrentHealth = MaxHealth;
+        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+        StateMachine.Reset();
+        StateMachine.Initialize(IdleState);
+
+        if (role == WolfRole.Minion)
+        {
+            AlwaysAggroed = true;
+            SetAggroStatus(true);
+            StateMachine.ChangeState(ChaseState);
+        }
+    }
+    public void DestroyGameObject()
+    {
+        RequestDespawn();
     }
 
     public void DamagePlayer(float damage) {

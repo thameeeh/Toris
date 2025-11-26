@@ -13,12 +13,33 @@ public class BadgerBurrowSO : BurrowSO<Badger>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+        enemy.isBurrowed = true;
+        enemy.isTunneling = false;
+
+        enemy.isRetreating = enemy.ShouldRunAwayOnNextBurrow;
+        enemy.ShouldRunAwayOnNextBurrow = false;
+
+        if (enemy.isRetreating)
+        {
+            Vector2 awayDirection = ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
+            if (awayDirection == Vector2.zero)
+            {
+                awayDirection = Random.insideUnitCircle.normalized;
+            }
+            enemy.RunAwayTargetPosition = (Vector2)enemy.transform.position + awayDirection * enemy.RunAwayDistance;
+        }
         enemy.TargetPlayerPosition = enemy.PlayerTransform.position;
+        enemy.TunnelLineTarget = enemy.isRetreating ? enemy.RunAwayTargetPosition : enemy.TargetPlayerPosition;
         enemy.animator.Play("Burrow BT");
 
-        _burrowDirection = (enemy.TargetPlayerPosition - (Vector2)enemy.transform.position).normalized;
-        enemy.MoveEnemy(_burrowDirection); //to play animation in right direction
+        _burrowDirection = (enemy.TunnelLineTarget - (Vector2)enemy.transform.position).normalized;
+        enemy.MoveEnemy(_burrowDirection);
         enemy.MoveEnemy(Vector2.zero);
+
+        if (enemy.isRetreating)
+        {
+            enemy.isTunneling = true;
+        }
     }
 
     public override void DoExitLogic()

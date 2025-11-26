@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee75e2f3e2f62154d968fb228606bf4e, type: 3}
+  m_Name: GameplayPoolConfiguration
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayPoolConfiguration
+  projectilePools:
+  - prefab: {fileID: -9110488972372575258, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
+    prewarmCount: 4
+    defaultCapacity: 4
+    maxSize: 8
+    parentOverride: {fileID: 0}
+  enemyPools:
+  - prefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
+    prewarmCount: 4
+    defaultCapacity: 8
+    maxSize: 12
+    parentOverride: {fileID: 0}
+  - prefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+    prewarmCount: 4
+    defaultCapacity: 8
+    maxSize: 12
+    parentOverride: {fileID: 0}

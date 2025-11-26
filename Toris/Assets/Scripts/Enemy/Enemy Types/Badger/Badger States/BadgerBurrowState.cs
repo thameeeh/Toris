@@ -26,7 +26,7 @@ public class BadgerBurrowState : EnemyState<Badger>
         enemy.BadgerBurrowBaseInstance.DoFrameUpdateLogic();
 
         //--------  Start Tunneling  --------//
-        if (enemy.IsTunneling) enemy.StateMachine.ChangeState(enemy.TunnelState);
+        if (enemy.isTunneling) enemy.StateMachine.ChangeState(enemy.TunnelState);
     }
 
     public override void PhysicsUpdate()

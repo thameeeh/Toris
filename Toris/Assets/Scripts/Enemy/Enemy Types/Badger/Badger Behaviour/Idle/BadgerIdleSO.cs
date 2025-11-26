@@ -17,6 +17,7 @@ public class BadgerIdleSO : IdleSOBase<Badger>
         base.DoEnterLogic();
 
         enemy.MoveEnemy(Vector2.zero);
+        enemy.isBurrowed = false;
     }
 
     public override void DoExitLogic()
@@ -34,11 +35,11 @@ public class BadgerIdleSO : IdleSOBase<Badger>
         base.DoPhysicsLogic();
         _timer += Time.fixedDeltaTime;
 
-        if (!enemy.IsWondering)
+        if (!enemy.isWondering)
         {
             if (_timer >= IdleTimer)
             {
-                enemy.IsWondering = true;
+                enemy.isWondering = true;
             }
         }
 

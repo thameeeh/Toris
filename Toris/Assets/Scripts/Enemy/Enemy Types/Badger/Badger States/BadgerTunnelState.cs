@@ -23,7 +23,27 @@ public class BadgerTunnelState : EnemyState<Badger>
     {
         base.FrameUpdate();
 
-        if(enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .1f)
+        if (enemy.isRetreating)
+        {
+            if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .25f)
+            {
+                Vector2 escapeDirection = ((Vector2)enemy.transform.position - (Vector2)enemy.PlayerTransform.position).normalized;
+                if (escapeDirection != Vector2.zero)
+                {
+                    enemy.TunnelLineTarget = (Vector2)enemy.transform.position + escapeDirection * enemy.RunAwayDistance;
+                }
+            }
+
+            if (!enemy.IsVisibleOnScreen())
+            {
+                enemy.DestroyBadger();
+            }
+        }
+        else if (enemy.IsWithinStrikingDistance)
+        {
+            enemy.StateMachine.ChangeState(enemy.UnburrowState);
+        }
+        else if (enemy.BadgerTunnelBaseInstance.DistanceFromTargetPlayerPosition <= .1f)
         {
             enemy.StateMachine.ChangeState(enemy.UnburrowState);
         }

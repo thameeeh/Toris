@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Badger : Enemy
@@ -7,20 +8,34 @@ public class Badger : Enemy
     public float AttackDamage = 20f;
     public float WalkSpeed = 1;
     public float TunnelingSpeed = 3;
+    public float LineTunnelingSpeed = 6f;
+    [Range(0f, 1f)] public float RunAwayChance = 0.3f;
+    public float RunAwayDistance = 8f;
+    public float BurrowRoamSpeedMultiplier = 0.65f;
+    public float PostAttackIdleDuration = 0.35f;
+    public float DeathBurrowAcceleration = 2f;
 
     [Tooltip("How long until it attacks again")]
-    public float ForcedIdelDuration = 0f;
+    public float ForcedIdleDuration = 0f;
     //after unburrowing, how long the badger idles before attacking again
 
     private HitData _hitData; //struct for damaging player 
+    private float _baseAttackDamage;
 
     public Vector2 TargetPlayerPosition { get; set; }
-    public bool IsWondering { get; set; } = false;
-    public bool IsTunneling { get; set; } = false;
+    public Vector2 TunnelLineTarget { get; set; }
+    public Vector2 RunAwayTargetPosition { get; set; }
+    public bool isWondering { get; set; } = false;
+    public bool isTunneling { get; set; } = false;
+    public bool isBurrowed { get; set; } = false;
+    public bool isRetreating { get; set; } = false;
+    public bool ShouldRunAwayOnNextBurrow { get; set; } = false;
     public void PrintMessage(string msg)
     {
         Debug.Log(msg);
     }
+
+    private Renderer[] _renderers;
 
     #region Badger-Specific States
     public BadgerWalkState WalkState { get; set; }
@@ -50,6 +65,10 @@ public class Badger : Enemy
     {
         base.Awake();
 
+        _renderers = GetComponentsInChildren<Renderer>();
+
+        _baseAttackDamage = AttackDamage;
+
         BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
         BadgerWalkBaseInstance = Instantiate(BadgerWalkBase);
         BadgerBurrowBaseInstance = Instantiate(BadgerBurrowBase);
@@ -68,17 +87,32 @@ public class Badger : Enemy
     protected override void Start()
     {
         base.Start();
-        
+
         BadgerIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerWalkBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerBurrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerTunnelBaseInstance.Initialize(gameObject, this, PlayerTransform);
         BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
-        StateMachine.Initialize(IdleState);
+        // Apply base scaling (uses DifficultyTier if you ever set it)
+        ApplyScaling();
 
-        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+        // If this badger is NOT managed by a pool (e.g. placed directly in scene),
+        // start its runtime state machine immediately.
+        if (OwningPool == null)
+        {
+            CurrentHealth = MaxHealth;
+            _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+            StateMachine.Initialize(IdleState);
+            ResetFlags();
+        }
     }
+    protected override bool CanTakeDamage()
+    {
+        return !isBurrowed && base.CanTakeDamage();
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -90,9 +124,41 @@ public class Badger : Enemy
         }
 
     }
+    public override void OnSpawned()
+    {
+        base.OnSpawned();
+
+        ApplyScaling();
+
+        CurrentHealth = MaxHealth;
+        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
+
+        ResetFlags();
+
+        StateMachine.Reset();
+        StateMachine.Initialize(IdleState);
+    }
+    private float GetDifficultyMultiplier()
+    {
+        return 1f + (0.2f * DifficultyTier);
+    }
+
+    private void ApplyScaling()
+    {
+        AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
+    }
+
+    private void ResetFlags()
+    {
+        isWondering = false;
+        isTunneling = false;
+        isBurrowed = false;
+        isRetreating = false;
+        ShouldRunAwayOnNextBurrow = false;
+    }
     public void DestroyBadger()
     { 
-        Destroy(gameObject);
+        RequestDespawn();
     }
     public void DamagePlayer(float damage)
     {
@@ -101,9 +167,13 @@ public class Badger : Enemy
 
     public void ForcedIdleCalclulation(in float deltaTime)
     {
-        if (ForcedIdelDuration > 0)
+        if (ForcedIdleDuration > 0)
         {
-            ForcedIdelDuration -= deltaTime;
+            ForcedIdleDuration -= deltaTime;
         }
+    }
+    public bool IsVisibleOnScreen()
+    {
+        return _renderers != null && _renderers.Any(r => r != null && r.isVisible);
     }
 }

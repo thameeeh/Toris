@@ -23,10 +23,10 @@ public class BadgerIdleState : EnemyState<Badger>
     {
         base.FrameUpdate();
         
-        if(enemy.IsWondering) enemy.StateMachine.ChangeState(enemy.WalkState);
+        if(enemy.isWondering) enemy.StateMachine.ChangeState(enemy.WalkState);
 
         //--------  Is Aggroed Starts burrowing  --------//
-        if (enemy.IsAggroed && enemy.ForcedIdelDuration <= 0)
+        if (enemy.IsAggroed && enemy.ForcedIdleDuration <= 0)
         {
             enemy.StateMachine.ChangeState(enemy.BurrowState);
         }

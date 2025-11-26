@@ -1367,7 +1367,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 1.0825
+  orthographic size: 1.0683334
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1692,7 +1692,10 @@ MonoBehaviour:
   MapHeight: 25
   NoiseScale: 0.1
   DecorationNoiseScale: 0.2
-  DecorationThreshold: 0.7
+  DecorationThreshold: 1
+  wolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
+  wolfSpawnChance: 0.01
+  enemiesRoot: {fileID: 0}
 --- !u!4 &1743458541
 Transform:
   m_ObjectHideFlags: 0

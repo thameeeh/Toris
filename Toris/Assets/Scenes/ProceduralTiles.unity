@@ -1314,7 +1314,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 1.0683334
+  orthographic size: 0.9
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1634,10 +1634,10 @@ MonoBehaviour:
   _rockFloorTile: {fileID: 11400000, guid: 9982c037e777ceb43b05dff6ed1e408c, type: 2}
   _treeTile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
   _oreTile: {fileID: 11400000, guid: b0ce1c7155c17134191757279f5bcb83, type: 2}
-  _mapWidth: 20
-  _mapHeight: 20
+  _mapWidth: 62
+  _mapHeight: 62
   _noiseScale: 0.1
-  _interactibleDensity: 0.1
+  _interactibleDensity: 0.3
   SandLevel: 0.4
   GrassLevel: 0.8
 --- !u!4 &1743458541
@@ -1834,6 +1834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TileInteractor
   _interactableTilemap: {fileID: 875006850}
   _mainCamera: {fileID: 506412731}
+  interactAction: {fileID: 1781555164194001046, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!1 &1849731110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2011,7 +2012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8367290416969148318, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
       propertyPath: m_PreviewTimeScale
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8367290416969148318, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
@@ -2037,6 +2038,7 @@ SceneRoots:
   - {fileID: 1781431045}
   - {fileID: 1872617157}
   - {fileID: 36881753}
+  - {fileID: 1999912410}
   - {fileID: 1128101026}
   - {fileID: 323554490}
   - {fileID: 1793267839}

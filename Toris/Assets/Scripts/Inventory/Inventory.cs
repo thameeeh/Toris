@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,7 +6,9 @@ public class Inventory : MonoBehaviour
 {
     private static Inventory _Inventory;
 
-    Dictionary<ResourceData, int> ResourcesCount = new Dictionary<ResourceData, int>();
+    private Dictionary<ResourceData, int> ResourcesCount = new Dictionary<ResourceData, int>();
+    
+    public event Action OnInventoryChanged;
     public static Inventory InventoryInstance
     {
         get
@@ -22,6 +25,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public Dictionary<ResourceData, int> GetAllResources()
+    {
+        return ResourcesCount;
+    }
+
     public void AddResource(ResourceData resource, int amount)
     {
         //TryGetValue returns bool, 'out' returns value of coresponding key
@@ -35,6 +43,8 @@ public class Inventory : MonoBehaviour
             ResourcesCount.Add(resource, amount);
             Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesCount[resource]}");
         }
+        // The "?" checks if there are any subscribers before invoking the event
+        OnInventoryChanged?.Invoke();
     }
 
     public bool RemoveResource(ResourceData resource, int amount)
@@ -44,6 +54,8 @@ public class Inventory : MonoBehaviour
             if(currentAmount - amount >= 0)
             {
                 ResourcesCount[resource] = currentAmount - amount;
+                // The "?" checks if there are any subscribers before invoking the event
+                OnInventoryChanged?.Invoke();
                 return true;
             }
             else

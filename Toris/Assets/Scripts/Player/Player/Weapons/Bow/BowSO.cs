@@ -9,7 +9,7 @@ public class BowSO : ScriptableObject
     public AnimationCurve drawToPower = AnimationCurve.Linear(0, 0, 1, 1);
 
     [Header("Projectile")]
-    public Rigidbody2D arrowPrefab;
+    public Projectile arrowPrefab;
     public float minArrowSpeed = 6f;
     public float maxArrowSpeed = 14f;
     public float baseDamage = 5f;

@@ -34,6 +34,9 @@ public class MapGenerator : MonoBehaviour
     [Header("Enemy Spawning (laikinas)")]
     [SerializeField] private Enemy _leaderWolfPrefab;
     [SerializeField] private Enemy _badgerPrefab;
+    [SerializeField] private int _maxLeaderWolves = 4;
+    [SerializeField] private int _maxBadgers = 8;
+    private bool _poolReady;
 
     // Chance a rock tile will spawn a leader wolf nearby
     [Range(0f, 1f)]
@@ -67,6 +70,13 @@ public class MapGenerator : MonoBehaviour
 
     void Update()
     {
+        if (!_poolReady)
+        {
+            TryResolvePool();
+            if (!_poolReady)
+                return;
+        }
+
         // 1. Check if Player moved to a new cell
         Vector3Int playerPos = _baseMap.WorldToCell(_player.position);
         if (playerPos != _lastPlayerPos)
@@ -184,34 +194,61 @@ public class MapGenerator : MonoBehaviour
         if (_leaderWolfPrefab == null) return;
         if (Random.value > _leaderWolfChance) return;
 
-        // Tile center in world space
-        Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
+        var manager = GameplayPoolManager.Instance;
+        if (manager == null)
+        {
+            return;
+        }
 
-        // Small random offset around the rock
+        var report = manager.GetEnemyReport(_leaderWolfPrefab);
+        if (report.Active >= _maxLeaderWolves)
+        {
+            return;
+        }
+
+        Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
         Vector2 offset = Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPos = center + (Vector3)offset;
 
-        var manager = GameplayPoolManager.Instance;
-        Enemy wolf = manager
-            ? manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity)
-            : Instantiate(_leaderWolfPrefab, spawnPos, Quaternion.identity);
-
+        manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity);
     }
+
 
     private void TrySpawnBadgerNearTree(Vector3Int tilePos)
     {
         if (_badgerPrefab == null) return;
         if (Random.value > _badgerChance) return;
 
+        var manager = GameplayPoolManager.Instance;
+        if (manager == null)
+        {
+            return;
+        }
+
+        var report = manager.GetEnemyReport(_badgerPrefab);
+        if (report.Active >= _maxBadgers)
+        {
+            return;
+        }
+
         Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
         Vector2 offset = Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPos = center + (Vector3)offset;
 
-        var manager = GameplayPoolManager.Instance;
-        Enemy badger = manager
-            ? manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity)
-            : Instantiate(_badgerPrefab, spawnPos, Quaternion.identity);
+        manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity);
+    }
 
-        // Optional parent same as above
+    private void TryResolvePool()
+    {
+        if (_poolReady) return;
+
+        if (GameplayPoolManager.Instance != null)
+        {
+            _poolReady = true;
+            return;
+        }
+
+        var found = FindFirstObjectByType<GameplayPoolManager>();
+        if (found != null) _poolReady = true;
     }
 }

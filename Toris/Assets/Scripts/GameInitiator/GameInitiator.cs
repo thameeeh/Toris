@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 public class GameInitiator : MonoBehaviour
 {
@@ -56,6 +57,11 @@ public class GameInitiator : MonoBehaviour
         ChangeState(GameState.MainMenu);
     }
 
+    public GameState GetState() 
+    {
+        return currentState;
+    }
+
     private void OnPausePress(InputAction.CallbackContext context)
     {
         Debug.Log("Pause Button Pressed");
@@ -102,6 +108,7 @@ public class GameInitiator : MonoBehaviour
                 // Handle UI Overlay state
                 break;
         }
+
     }
     public void BackToPrevScene() 
     {

@@ -15,11 +15,12 @@ public class WolfDeadSO : DeadSOBase<Wolf>
         base.DoEnterLogic();
 
 
-
+        //Mini Wolf
         if (Inventory.InventoryInstance != null)
         {
+            int coinAmount = enemy.role == WolfRole.Minion ? 3 : 5;
             Inventory.InventoryInstance.AddResourceStat(enemy._kill, 1);
-            Inventory.InventoryInstance.AddResourceStat(enemy._coin, 1);
+            Inventory.InventoryInstance.AddResourceStat(enemy._coin, coinAmount);
         }
 
         enemy.animator.SetTrigger("Dead");

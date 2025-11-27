@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
 
 public class SlotBinder : MonoBehaviour
 {
@@ -10,7 +11,12 @@ public class SlotBinder : MonoBehaviour
     VisualElement _root;
     List<Button> _buttons = new();
 
+    private Label _time;
+    private Label _coins;
+    private Label _kills;
 
+    [SerializeField] ResourceData _coinSO;
+    [SerializeField] ResourceData _killsSO;
 
     private void OnEnable()
     {
@@ -28,8 +34,17 @@ public class SlotBinder : MonoBehaviour
         _root = _uiDocument.rootVisualElement;
 
         _buttons = _root.Query<Button>().ToList();
+        _time = _root.Q<Label>("Time");
+        _coins = _root.Q<Label>("Coins");
+        _kills = _root.Q<Label>("Kills");
     }
-    
+
+    private void FixedUpdate()
+    {
+        DateTime currentTime = DateTime.Now;
+        _time.text = currentTime.ToString("HH:mm");
+    }
+
     void UpdateVisuals()
     {
         var resourceDict = Inventory.InventoryInstance.GetAllResources();
@@ -55,5 +70,8 @@ public class SlotBinder : MonoBehaviour
                 curremtBtn.style.backgroundImage = null;
             }
         }
+        _coins.text = Inventory.InventoryInstance.GetResourceAmount(_coinSO).ToString();
+        _kills.text = Inventory.InventoryInstance.GetResourceAmount(_killsSO).ToString();
+
     }
 }

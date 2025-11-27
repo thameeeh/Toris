@@ -89,9 +89,12 @@ public class Inventory : MonoBehaviour
         {
             return currentAmount;
         }
+        else if (ResourcesStats.TryGetValue(resource, out currentAmount))
+        {
+            return currentAmount;
+        }
         else
         {
-            Debug.Log($"{resource.name}: was not found in dictionary!");
             return 0;
         }
     }

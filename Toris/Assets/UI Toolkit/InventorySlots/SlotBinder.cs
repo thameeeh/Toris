@@ -26,6 +26,7 @@ public class SlotBinder : MonoBehaviour
     VisualElement _skillOverlay;
     bool _isOnCooldown = false;
     float _timer;
+    float _currentTime = 0f;
     private void OnEnable()
     {
         if(Inventory.InventoryInstance != null)
@@ -61,8 +62,9 @@ public class SlotBinder : MonoBehaviour
 
     private void FixedUpdate()
     {
-        DateTime currentTime = DateTime.Now;
-        _time.text = currentTime.ToString("mm:ss");
+        _currentTime += Time.deltaTime;
+        TimeSpan timeSpan = TimeSpan.FromSeconds(_currentTime);
+        _time.text = timeSpan.ToString(@"mm\:ss");
 
         if (_isOnCooldown)
         {

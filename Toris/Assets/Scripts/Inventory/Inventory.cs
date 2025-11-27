@@ -6,8 +6,11 @@ public class Inventory : MonoBehaviour
 {
     private static Inventory _Inventory;
 
+    //for resources like wood, stone, flowers
     private Dictionary<ResourceData, int> ResourcesCount = new Dictionary<ResourceData, int>();
-    
+    //for stats like kills, coins collected
+    private Dictionary<ResourceData, int> ResourcesStats = new Dictionary<ResourceData, int>();
+
     public event Action OnInventoryChanged;
     public static Inventory InventoryInstance
     {
@@ -42,6 +45,22 @@ public class Inventory : MonoBehaviour
         {
             ResourcesCount.Add(resource, amount);
             Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesCount[resource]}");
+        }
+        // The "?" checks if there are any subscribers before invoking the event
+        OnInventoryChanged?.Invoke();
+    }
+    public void AddResourceStat(ResourceData resource, int amount)
+    {
+        //TryGetValue returns bool, 'out' returns value of coresponding key
+        if (ResourcesStats.TryGetValue(resource, out int currentAmount))
+        {
+            ResourcesStats[resource] = currentAmount + amount;
+            Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesStats[resource]}");
+        }
+        else
+        {
+            ResourcesStats.Add(resource, amount);
+            Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesStats[resource]}");
         }
         // The "?" checks if there are any subscribers before invoking the event
         OnInventoryChanged?.Invoke();

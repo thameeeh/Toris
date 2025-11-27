@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Wolf_Dead_Final", menuName = "Enemy Logic/Dead Logic/Wolf Dead Final")]
@@ -12,6 +13,14 @@ public class WolfDeadSO : DeadSOBase<Wolf>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+
+
+
+        if (Inventory.InventoryInstance != null)
+        {
+            Inventory.InventoryInstance.AddResourceStat(enemy._kill, 1);
+            Inventory.InventoryInstance.AddResourceStat(enemy._coin, 1);
+        }
 
         enemy.animator.SetTrigger("Dead");
     }

@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e4f57084f45954ca542742cdb540d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Badger
+  _kill: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
+  _coin: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 4508843636919014498}
   playerTransform: {fileID: 0}

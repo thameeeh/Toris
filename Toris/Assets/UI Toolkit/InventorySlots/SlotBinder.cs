@@ -9,6 +9,9 @@ public class SlotBinder : MonoBehaviour
     UIDocument _uiDocument;
     VisualElement _root;
     List<Button> _buttons = new();
+
+
+
     private void OnEnable()
     {
         if(Inventory.InventoryInstance != null)

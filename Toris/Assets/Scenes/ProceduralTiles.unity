@@ -1405,7 +1405,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 1.07
+  orthographic size: 0.9
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1764,7 +1764,9 @@ MonoBehaviour:
   GrassLevel: 0.8
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   _badgerPrefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
-  _leaderWolfChance: 0
+  _maxLeaderWolves: 64
+  _maxBadgers: 64
+  _leaderWolfChance: 1
   _badgerChance: 1
   _spawnRadius: 1.5
 --- !u!4 &1743458541

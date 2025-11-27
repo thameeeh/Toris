@@ -1748,8 +1748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39faa74882fd4d3408327d337290e63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _groundMap: {fileID: 0}
-  _decorationMap: {fileID: 0}
+  _groundMap: {fileID: 1583650508}
+  _decorationMap: {fileID: 875006850}
   _player: {fileID: 1555781530}
   _useRandomSeed: 1
   _seed: 12345
@@ -1766,14 +1766,38 @@ MonoBehaviour:
   _pathCenter: 0.5
   _pathHalfWidth: 0.035
   _wildernessStartDistance: 0.14
-  _grassTiles: []
-  _rockTiles: []
-  _roadTiles: []
+  _grassTiles:
+  - tile: {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
+    weight: 0.746
+  - tile: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    weight: 0.31
+  - tile: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    weight: 0.289
+  _rockTiles:
+  - tile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
+    weight: 0.254
+  _roadTiles:
+  - tile: {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
+    weight: 0.325
+  - tile: {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
+    weight: 0.325
+  - tile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
+    weight: 0.325
   _decorNoiseScale: 0.35
-  _flowerDecorTiles: []
-  _flowerBaseDensity: 0.13
+  _flowerDecorTiles:
+  - tile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
+    weight: 0.264
+  - tile: {fileID: 11400000, guid: 8b9553300961c6e41ac34f25e2727bf6, type: 2}
+    weight: 0.127
+  - tile: {fileID: 11400000, guid: 4aa6d02f6c9e3d54da211d1dbf0c94d6, type: 2}
+    weight: 0.64
+  - tile: {fileID: 11400000, guid: efb9f6dfd11426b458f05f4009bb8854, type: 2}
+    weight: 0.822
+  _flowerBaseDensity: 0.217
   _flowerWildernessBonus: 0.35
-  _rockDecorTiles: []
+  _rockDecorTiles:
+  - tile: {fileID: 11400000, guid: b0ce1c7155c17134191757279f5bcb83, type: 2}
+    weight: 0.234
   _rockDecorBaseDensity: 0.07
   _rockDecorWildernessBonus: 0.25
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}

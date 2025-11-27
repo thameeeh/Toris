@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dba4c0c8751e1f4cb8c17e85a403351, type: 3}
+  m_Name: RambowConfig
+  m_EditorClassIdentifier: Assembly-CSharp::RamboBowConfig
+  killsStat: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
+  killsRequired: 5
+  shotsPerSecond: 8
+  spreadDegrees: 6
+  damagePerShot: 8
+  speedPerShot: 12
+  initialStaminaCost: 5
+  staminaPerShot: 2
+  maxDuration: 10

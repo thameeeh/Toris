@@ -20,6 +20,14 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
     public event Action OnDashPressed;
     public event Action OnAbility1Pressed;
 
+
+    public event System.Action OnAbility2Started;
+    public event System.Action OnAbility2Released;
+
+    public bool isAbility2Held => 
+        _actions != null && 
+        _actions.Player.Ability2.IsPressed();
+
     public bool IsShootHeld =>
         _actions != null &&
         _actions.Player.Attack.IsPressed();
@@ -111,6 +119,20 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
         {
             if (_debugInput) Debug.Log("[Input] Ability1 pressed", this);
             OnAbility1Pressed?.Invoke();
+        }
+    }
+
+    public void OnAbility2(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (_debugInput) Debug.Log("[Input] Ability2 started (Rambo)", this);
+            OnAbility2Started?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            if (_debugInput) Debug.Log("[Input] Ability2 released (Rambo)", this);
+            OnAbility2Released?.Invoke();
         }
     }
 }

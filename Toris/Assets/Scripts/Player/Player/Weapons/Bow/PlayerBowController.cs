@@ -92,7 +92,7 @@ public class PlayerBowController : MonoBehaviour
         lastShotTime = Time.time;
     }
 
-    void FireArrow(BowSO.ShotStats stats)
+    public void FireArrow(BowSO.ShotStats stats)
     {
         if (_bow == null) return;
         if (_bow.arrowPrefab == null)

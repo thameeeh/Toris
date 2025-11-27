@@ -39,9 +39,9 @@ public class MapGenerator : MonoBehaviour
     private float _rockPatchThreshold = 0.68f; // higher = fewer rock patches
 
     [Header("Rock Biome (Large Rock Regions)")]
-    [SerializeField] private float _rockBiomeScale = 0.02f;
+    [SerializeField] private float _rockBiomeScale = 0.045f;
     [SerializeField, Range(0f, 1f)]
-    private float _rockBiomeThreshold = 0.6f;
+    private float _rockBiomeThreshold = 0.82f;
 
     [Header("Path Noise (Road Network)")]
     [SerializeField] private float _pathNoiseScale = 0.06f;
@@ -52,7 +52,7 @@ public class MapGenerator : MonoBehaviour
     private float _pathHalfWidth = 0.035f;
 
     [Header("Wilderness Settings")]
-    [Tooltip("How far from path (in noise distance, 0–0.5) wilderness starts.")]
+    [Tooltip("How far from path (in noise distance, ~0–0.5) wilderness starts.")]
     [SerializeField, Range(0f, 0.5f)]
     private float _wildernessStartDistance = 0.14f;
 
@@ -114,6 +114,28 @@ public class MapGenerator : MonoBehaviour
     private Vector2 _decorOffset;
     private Vector2 _rockBiomeOffset;
 
+    // ---------------- LIVE TUNING CACHE ----------------
+
+    float _lastGroundNoiseScale;
+    float _lastRockPatchThreshold;
+    float _lastRockBiomeScale;
+    float _lastRockBiomeThreshold;
+
+    float _lastPathNoiseScale;
+    float _lastPathVerticalScaleMultiplier;
+    float _lastPathHalfWidth;
+
+    float _lastWildernessStartDistance;
+
+    float _lastDecorNoiseScale;
+    float _lastFlowerBaseDensity;
+    float _lastFlowerWildernessBonus;
+    float _lastRockDecorBaseDensity;
+    float _lastRockDecorWildernessBonus;
+
+    float _lastLeaderWolfChance;
+    float _lastBadgerChance;
+
     // --------------------------------------------------------------------
     // Unity lifecycle
     // --------------------------------------------------------------------
@@ -129,6 +151,7 @@ public class MapGenerator : MonoBehaviour
             _player = GameObject.FindWithTag("Player")?.transform;
 
         EnqueueVisibleChunks();
+        CacheCurrentSettings();
     }
 
     private void Update()
@@ -139,6 +162,13 @@ public class MapGenerator : MonoBehaviour
         EnqueueVisibleChunks();
         ProcessChunkQueue();
         UnloadFarChunks();
+
+        // Live tuning: if any key setting changed in Inspector, rebuild world
+        if (HasSettingsChanged())
+        {
+            RegenerateAll();
+            CacheCurrentSettings();
+        }
     }
 
     // --------------------------------------------------------------------
@@ -182,8 +212,61 @@ public class MapGenerator : MonoBehaviour
         _chunksToGenerate.Clear();
         _chunkEnemies.Clear();
 
-        InitializeSeed();
+        // IMPORTANT: we DO NOT reseed here, so you can tweak live
+        // If you want a whole new world, change _seed or toggle _useRandomSeed once.
+
         EnqueueVisibleChunks();
+    }
+
+    // --------------------------------------------------------------------
+    // Live tuning helpers
+    // --------------------------------------------------------------------
+
+    private void CacheCurrentSettings()
+    {
+        _lastGroundNoiseScale = _groundNoiseScale;
+        _lastRockPatchThreshold = _rockPatchThreshold;
+        _lastRockBiomeScale = _rockBiomeScale;
+        _lastRockBiomeThreshold = _rockBiomeThreshold;
+
+        _lastPathNoiseScale = _pathNoiseScale;
+        _lastPathVerticalScaleMultiplier = _pathVerticalScaleMultiplier;
+        _lastPathHalfWidth = _pathHalfWidth;
+
+        _lastWildernessStartDistance = _wildernessStartDistance;
+
+        _lastDecorNoiseScale = _decorNoiseScale;
+        _lastFlowerBaseDensity = _flowerBaseDensity;
+        _lastFlowerWildernessBonus = _flowerWildernessBonus;
+        _lastRockDecorBaseDensity = _rockDecorBaseDensity;
+        _lastRockDecorWildernessBonus = _rockDecorWildernessBonus;
+
+        _lastLeaderWolfChance = _leaderWolfChance;
+        _lastBadgerChance = _badgerChance;
+    }
+
+    private bool HasSettingsChanged()
+    {
+        return
+            !Mathf.Approximately(_groundNoiseScale, _lastGroundNoiseScale) ||
+            !Mathf.Approximately(_rockPatchThreshold, _lastRockPatchThreshold) ||
+            !Mathf.Approximately(_rockBiomeScale, _lastRockBiomeScale) ||
+            !Mathf.Approximately(_rockBiomeThreshold, _lastRockBiomeThreshold) ||
+
+            !Mathf.Approximately(_pathNoiseScale, _lastPathNoiseScale) ||
+            !Mathf.Approximately(_pathVerticalScaleMultiplier, _lastPathVerticalScaleMultiplier) ||
+            !Mathf.Approximately(_pathHalfWidth, _lastPathHalfWidth) ||
+
+            !Mathf.Approximately(_wildernessStartDistance, _lastWildernessStartDistance) ||
+
+            !Mathf.Approximately(_decorNoiseScale, _lastDecorNoiseScale) ||
+            !Mathf.Approximately(_flowerBaseDensity, _lastFlowerBaseDensity) ||
+            !Mathf.Approximately(_flowerWildernessBonus, _lastFlowerWildernessBonus) ||
+            !Mathf.Approximately(_rockDecorBaseDensity, _lastRockDecorBaseDensity) ||
+            !Mathf.Approximately(_rockDecorWildernessBonus, _lastRockDecorWildernessBonus) ||
+
+            !Mathf.Approximately(_leaderWolfChance, _lastLeaderWolfChance) ||
+            !Mathf.Approximately(_badgerChance, _lastBadgerChance);
     }
 
     // --------------------------------------------------------------------
@@ -276,7 +359,7 @@ public class MapGenerator : MonoBehaviour
 
                 if (manager != null)
                 {
-                    // If you have a specific despawn method, use it here instead.
+                    // If you have a specific despawn method in your pool, use it instead.
                     enemy.gameObject.SetActive(false);
                 }
                 else
@@ -339,19 +422,17 @@ public class MapGenerator : MonoBehaviour
         float px = pos.x * _pathNoiseScale + _pathOffset.x;
         float py = pos.y * _pathNoiseScale * _pathVerticalScaleMultiplier + _pathOffset.y;
 
-        float groundNoise = Mathf.PerlinNoise(gx, gy); // patches / variation
-        float pathNoise = Mathf.PerlinNoise(px, py);   // roads
+        float groundNoise = Mathf.PerlinNoise(gx, gy); 
+        float pathNoise = Mathf.PerlinNoise(px, py);
 
         float distFromPath = Mathf.Abs(pathNoise - _pathCenter);
 
-        // wilderness factor: 0 near roads, 1 far from roads
         float wildernessFactor = 0f;
         if (distFromPath > _wildernessStartDistance)
         {
             wildernessFactor = Mathf.InverseLerp(_wildernessStartDistance, 0.5f, distFromPath);
         }
 
-        // large-scale rock biome mask
         float rbx = pos.x * _rockBiomeScale + _rockBiomeOffset.x;
         float rby = pos.y * _rockBiomeScale + _rockBiomeOffset.y;
         float rockBiomeNoise = Mathf.PerlinNoise(rbx, rby);
@@ -363,35 +444,31 @@ public class MapGenerator : MonoBehaviour
 
         if (isRoad && _roadTiles != null && _roadTiles.Length > 0)
         {
-            // roads override biome
             groundTile = PickWeightedTile(_roadTiles, variantNoise);
         }
         else
         {
             if (inRockBiome)
             {
-                // ROCK BIOME: mostly rock, with occasional grass
                 if (_rockTiles != null && _rockTiles.Length > 0)
                 {
-                    // 80% rock, 20% grass based on groundNoise
-                    if (groundNoise > 0.2f || _grassTiles == null || _grassTiles.Length == 0)
-                    {
+                    float biomeStrength = Mathf.InverseLerp(_rockBiomeThreshold, 1f, rockBiomeNoise);
+
+                    float rockChance = Mathf.Lerp(0.2f, 0.8f, biomeStrength);
+                    float roll = groundNoise;
+
+                    if (roll < rockChance && _rockTiles.Length > 0)
                         groundTile = PickWeightedTile(_rockTiles, variantNoise);
-                    }
                     else
-                    {
                         groundTile = PickWeightedTile(_grassTiles, variantNoise);
-                    }
                 }
                 else
                 {
-                    // no rock tiles? fall back to grass
                     groundTile = PickWeightedTile(_grassTiles, variantNoise);
                 }
             }
             else
             {
-                // NORMAL BIOME: mostly grass, rare rock patches using _rockPatchThreshold
                 if (_grassTiles != null && _grassTiles.Length > 0)
                 {
                     if (groundNoise > _rockPatchThreshold && _rockTiles != null && _rockTiles.Length > 0)
@@ -405,7 +482,6 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    // no grass tiles? fall back to rock
                     groundTile = PickWeightedTile(_rockTiles, variantNoise);
                 }
             }
@@ -413,7 +489,6 @@ public class MapGenerator : MonoBehaviour
 
         _groundMap.SetTile(pos, groundTile);
 
-        // decorations + enemy spawn hooks
         if (_decorationMap != null)
         {
             SpawnDecoration(pos, groundTile, wildernessFactor);
@@ -471,7 +546,6 @@ public class MapGenerator : MonoBehaviour
         bool isGrass = ContainsTile(_grassTiles, groundTile);
         bool isRock = ContainsTile(_rockTiles, groundTile);
 
-        // FLOWERS ON GRASS (+ badger spawn)
         if (isGrass && _flowerDecorTiles != null && _flowerDecorTiles.Length > 0)
         {
             float density = _flowerBaseDensity + wildernessFactor * _flowerWildernessBonus;
@@ -482,11 +556,10 @@ public class MapGenerator : MonoBehaviour
 
                 TrySpawnBadgerNearDecoration(pos);
 
-                return; // only one decor per tile
+                return;
             }
         }
 
-        // ROCKS ON ROCK TILES (+ wolf spawn)
         if (isRock && _rockDecorTiles != null && _rockDecorTiles.Length > 0)
         {
             float density = _rockDecorBaseDensity + wildernessFactor * _rockDecorWildernessBonus;

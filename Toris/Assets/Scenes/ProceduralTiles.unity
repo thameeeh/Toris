@@ -1757,14 +1757,14 @@ MonoBehaviour:
   _viewDistanceInChunks: 2
   _maxChunksPerFrame: 1
   _unloadBuffer: 1
-  _groundNoiseScale: 0.07
+  _groundNoiseScale: 0.1
   _rockPatchThreshold: 0.68
   _rockBiomeScale: 0.02
   _rockBiomeThreshold: 0.6
   _pathNoiseScale: 0.06
   _pathVerticalScaleMultiplier: 0.5
   _pathCenter: 0.5
-  _pathHalfWidth: 0.035
+  _pathHalfWidth: 0.071
   _wildernessStartDistance: 0.14
   _grassTiles:
   - tile: {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
@@ -1783,18 +1783,18 @@ MonoBehaviour:
     weight: 0.325
   - tile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
     weight: 0.325
-  _decorNoiseScale: 0.35
+  _decorNoiseScale: 0.2
   _flowerDecorTiles:
   - tile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
-    weight: 0.264
+    weight: 0.142
   - tile: {fileID: 11400000, guid: 8b9553300961c6e41ac34f25e2727bf6, type: 2}
-    weight: 0.127
+    weight: 0.183
   - tile: {fileID: 11400000, guid: 4aa6d02f6c9e3d54da211d1dbf0c94d6, type: 2}
-    weight: 0.64
+    weight: 0.178
   - tile: {fileID: 11400000, guid: efb9f6dfd11426b458f05f4009bb8854, type: 2}
-    weight: 0.822
-  _flowerBaseDensity: 0.217
-  _flowerWildernessBonus: 0.35
+    weight: 0.168
+  _flowerBaseDensity: 0.079
+  _flowerWildernessBonus: 0.409
   _rockDecorTiles:
   - tile: {fileID: 11400000, guid: b0ce1c7155c17134191757279f5bcb83, type: 2}
     weight: 0.234

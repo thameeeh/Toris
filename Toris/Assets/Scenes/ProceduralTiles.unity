@@ -1748,8 +1748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39faa74882fd4d3408327d337290e63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _groundMap: {fileID: 1583650508}
-  _decorationMap: {fileID: 875006850}
+  _groundMap: {fileID: 0}
+  _decorationMap: {fileID: 0}
   _player: {fileID: 1555781530}
   _useRandomSeed: 1
   _seed: 12345
@@ -1757,50 +1757,32 @@ MonoBehaviour:
   _viewDistanceInChunks: 2
   _maxChunksPerFrame: 1
   _unloadBuffer: 1
-  _groundNoiseScale: 0.8
-  _rockPatchThreshold: 0.9
-  _rockBiomeScale: 0.045
-  _rockBiomeThreshold: 0.688
-  _pathNoiseScale: 0.04
-  _pathVerticalScaleMultiplier: 1
+  _groundNoiseScale: 0.07
+  _rockPatchThreshold: 0.68
+  _rockBiomeScale: 0.02
+  _rockBiomeThreshold: 0.6
+  _pathNoiseScale: 0.06
+  _pathVerticalScaleMultiplier: 0.5
   _pathCenter: 0.5
-  _pathHalfWidth: 0.05
-  _wildernessStartDistance: 0.051
-  _grassTiles:
-  - tile: {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
-    weight: 0.627
-  - tile: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
-    weight: 0.204
-  - tile: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
-    weight: 0.208
-  _rockTiles:
-  - tile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
-    weight: 0.728
-  _roadTiles:
-  - tile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
-    weight: 0.252
-  - tile: {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
-    weight: 0.264
-  - tile: {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
-    weight: 0.268
+  _pathHalfWidth: 0.035
+  _wildernessStartDistance: 0.14
+  _grassTiles: []
+  _rockTiles: []
+  _roadTiles: []
   _decorNoiseScale: 0.35
-  _flowerDecorTiles:
-  - tile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
-    weight: 0.296
+  _flowerDecorTiles: []
   _flowerBaseDensity: 0.13
   _flowerWildernessBonus: 0.35
-  _rockDecorTiles:
-  - tile: {fileID: 11400000, guid: b0ce1c7155c17134191757279f5bcb83, type: 2}
-    weight: 0.523
-  _rockDecorBaseDensity: 0.138
-  _rockDecorWildernessBonus: 0.072
+  _rockDecorTiles: []
+  _rockDecorBaseDensity: 0.07
+  _rockDecorWildernessBonus: 0.25
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   _badgerPrefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
-  _maxLeaderWolves: 128
-  _maxBadgers: 128
-  _leaderWolfChance: 0.2
-  _badgerChance: 0.1
-  _spawnRadius: 1.6
+  _maxLeaderWolves: 64
+  _maxBadgers: 64
+  _leaderWolfChance: 0.128
+  _badgerChance: 0.138
+  _spawnRadius: 1.5
 --- !u!4 &1743458541
 Transform:
   m_ObjectHideFlags: 0
@@ -1825,16 +1807,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 522736349567969758, guid: d911d097315abc1489843b39734ee96b, type: 3}
-      propertyPath: m_SortingLayer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 522736349567969758, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: m_SortingOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 522736349567969758, guid: d911d097315abc1489843b39734ee96b, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1287189023
       objectReference: {fileID: 0}
     - target: {fileID: 1505738214443871189, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: healthBar
@@ -2019,7 +1993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569fce6bb4561df45803084653c64da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  CooldownTime: 3
+  CooldownTime: 2
   _coinSO: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
   _killsSO: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
 --- !u!1 &1805136555 stripped
@@ -2040,7 +2014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileInteractor
   _interactableTilemap: {fileID: 875006850}
-  PickRange: 5
+  PickRange: 2
 --- !u!114 &1805136570 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4643167284405693672, guid: d911d097315abc1489843b39734ee96b, type: 3}
@@ -2091,7 +2065,7 @@ MonoBehaviour:
   _bow: {fileID: 1805136572}
   _multiShot: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   _debugMultiShot: 0
-  _ramboConfig: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
+  _ramboConfig: {fileID: 0}
   _debugRambow: 0
 --- !u!1 &1849731110
 GameObject:

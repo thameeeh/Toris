@@ -1,5 +1,21 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/InventorySlots/Slots.uss?fileID=7433441132597879392&amp;guid=e964bb32c8bddc344988477f5b3279a4&amp;type=3#Slots" />
+    <ui:VisualElement name="UpperElements" style="flex-grow: 1; flex-direction: column-reverse; align-self: flex-end; justify-content: flex-end;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.45); width: 562px; height: 0; max-height: 65px; flex-direction: row-reverse; align-items: center; justify-content: space-between;">
+            <ui:VisualElement name="Time" class="TopRIghtIcons" style="border-right-width: 13px;">
+                <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/R_Art/Icons/clock.png?fileID=2800000&amp;guid=040e1c57c4b2ad94186d4d4e15b966fa&amp;type=3#clock&quot;); width: 40px; height: 40px; flex-shrink: 1;" />
+                <ui:Label text="77:77" emoji-fallback-support="false" name="Time" style="-unity-font-style: bold; color: rgb(255, 255, 255); font-size: 24px; border-left-width: 10px; width: 90px; min-width: 90px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Coins" class="TopRIghtIcons">
+                <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/R_Art/Icons/coins.png?fileID=2800000&amp;guid=343c90be4652d974c8b43b11159e4680&amp;type=3#coins&quot;); width: 60px; height: 60px;" />
+                <ui:Label text="0" name="Coins" style="border-left-width: 5px; font-size: 24px; -unity-font-style: bold; color: rgb(255, 255, 255); min-width: 80px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Kills" class="TopRIghtIcons" style="border-left-width: 19px;">
+                <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/R_Art/Icons/skull.png?fileID=2800000&amp;guid=4fd7265eae47dfd449ebe01c5b74a84b&amp;type=3#skull&quot;); width: 60px; height: 60px;" />
+                <ui:Label text="0" name="Kills" style="border-left-width: 5px; font-size: 24px; -unity-font-style: bold; color: rgb(255, 255, 255); width: 80px; min-width: 80px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: auto; justify-content: center; align-items: flex-end;">
         <ui:Button class="btn_slot" />
         <ui:Button class="btn_slot" />
@@ -8,6 +24,6 @@
         <ui:Button class="btn_slot" />
         <ui:Button class="btn_slot" />
         <ui:Button class="btn_slot" />
-        <ui:Button text="0" class="btn_slot" />
+        <ui:Button class="btn_slot" />
     </ui:VisualElement>
 </ui:UXML>

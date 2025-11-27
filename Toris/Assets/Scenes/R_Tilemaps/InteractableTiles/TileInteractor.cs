@@ -32,7 +32,6 @@ public class TileInteractor : MonoBehaviour
         {
             //HandleClick();
         }
-        Debug.Log("Player: Interact detected!");
 
         // 1. Get Player Position (World & Cell)
         Vector3 playerPos = transform.position;
@@ -77,12 +76,7 @@ public class TileInteractor : MonoBehaviour
         // 4. Action
         if (closestResource != null)
         {
-            Debug.Log($"Found closest resource at: {targetCell}");
             CollectTileResource(closestResource, targetCell);
-        }
-        else
-        {
-            Debug.Log("No interactable tile nearby.");
         }
         closestResource = null;
     }

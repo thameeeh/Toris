@@ -12,3 +12,11 @@
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
 }
+
+.TopRIghtIcons {
+    flex-grow: 0;
+    width: auto;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: row;
+    align-items: center;
+}

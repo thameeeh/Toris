@@ -6,7 +6,7 @@ public class MouseSelector : MonoBehaviour
 {
     private void Start()
     {
-        SceneManager.LoadSceneAsync("Enemies", LoadSceneMode.Additive);
+        //SceneManager.LoadSceneAsync("Enemies", LoadSceneMode.Additive);
     }
 
     // Update is called once per frame

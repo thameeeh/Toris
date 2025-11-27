@@ -8,6 +8,7 @@ public class TileInteractor : MonoBehaviour
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private InputActionReference interactAction;
 
+    [SerializeField] private int PickRange;
 
     ResourceTile closestResource = null;
     Vector3Int targetCell = Vector3Int.zero;
@@ -38,7 +39,7 @@ public class TileInteractor : MonoBehaviour
         Vector3Int playerCell = _interactableTilemap.WorldToCell(playerPos);
 
         // 2. Define search range (e.g., 1 tile in every direction)
-        int range = 5;
+        int range = PickRange;
 
         float closestDistSqr = float.MaxValue;
 

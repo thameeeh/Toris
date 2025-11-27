@@ -97,7 +97,7 @@ public class PlayerBowController : MonoBehaviour
         if (_bow == null) return;
         if (_bow.arrowPrefab == null)
         {
-            Debug.LogError("[Bow] arrowPrefab is null on BowSO", this);
+            //Debug.LogError("[Bow] arrowPrefab is null on BowSO", this);
             return;
         }
 
@@ -108,12 +108,12 @@ public class PlayerBowController : MonoBehaviour
         // Decide between single shot vs multishot
         if (_queuedMultiShot == null)
         {
-            Debug.Log("[Bow] Firing SINGLE arrow", this);
+            //Debug.Log("[Bow] Firing SINGLE arrow", this);
             SpawnArrow(stats, baseDir);
         }
         else
         {
-            Debug.Log($"[Bow] Firing MULTISHOT volley: count={_queuedMultiShot.arrowCount}, spread={_queuedMultiShot.totalSpreadDegrees}", this);
+            //Debug.Log($"[Bow] Firing MULTISHOT volley: count={_queuedMultiShot.arrowCount}, spread={_queuedMultiShot.totalSpreadDegrees}", this);
             SpawnMultiShotVolley(stats, baseDir, _queuedMultiShot);
             _queuedMultiShot = null; // consume it
         }
@@ -137,7 +137,7 @@ public class PlayerBowController : MonoBehaviour
         var prefabProj = _bow.arrowPrefab.GetComponent<Projectile>();
         if (prefabProj == null)
         {
-            Debug.LogError("[Bow] BowSO.arrowPrefab must have a Projectile-derived component on it.", _bow.arrowPrefab);
+            //Debug.LogError("[Bow] BowSO.arrowPrefab must have a Projectile-derived component on it.", _bow.arrowPrefab);
             return;
         }
 
@@ -150,11 +150,11 @@ public class PlayerBowController : MonoBehaviour
         var arrow = projBase as ArrowProjectile;
         if (arrow == null)
         {
-            Debug.LogError("[Bow] Spawned projectile is not an ArrowProjectile; cannot Initialize arrow-specific data.", projBase);
+            //Debug.LogError("[Bow] Spawned projectile is not an ArrowProjectile; cannot Initialize arrow-specific data.", projBase);
             return;
         }
 
-        Debug.Log($"[Bow] SpawnArrow at {spawnPos}, dir={dir}, speed={stats.speed}, dmg={stats.damage}", arrow);
+        //Debug.Log($"[Bow] SpawnArrow at {spawnPos}, dir={dir}, speed={stats.speed}, dmg={stats.damage}", arrow);
         arrow.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
     }
 
@@ -175,7 +175,7 @@ public class PlayerBowController : MonoBehaviour
             float random = Random.Range(-stats.spreadDeg, stats.spreadDeg);
             dir = (Quaternion.Euler(0, 0, random) * (Vector3)dir).normalized;
 
-            Debug.Log($"[Bow] MultiShot arrow {i + 1}/{count}, angleOffset={angleOffset}, dir={dir}", this);
+            //Debug.Log($"[Bow] MultiShot arrow {i + 1}/{count}, angleOffset={angleOffset}, dir={dir}", this);
             SpawnArrow(stats, dir);
         }
     }
@@ -218,6 +218,6 @@ public class PlayerBowController : MonoBehaviour
     public void QueueMultiShot(MultiShotConfig config)
     {
         _queuedMultiShot = config;
-        Debug.Log("[Bow] MultiShot QUEUED for next shot", this);
+        //Debug.Log("[Bow] MultiShot QUEUED for next shot", this);
     }
 }

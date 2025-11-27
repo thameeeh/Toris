@@ -1,242 +1,440 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
+
+[Serializable]
+public class WeightedTile
+{
+    public TileBase tile;
+    [Range(0f, 1f)] public float weight = 1f;
+}
 
 public class MapGenerator : MonoBehaviour
 {
-    [Header("Map References")]
-    [SerializeField] private Tilemap _baseMap;        // The ground (Sand, Grass, Rock)
-    [SerializeField] private Tilemap _interactibleMap; // The objects (Trees, Ores)
+    [Header("Tilemaps")]
+    [SerializeField] private Tilemap _groundMap;      // Grass / Rock / Road
+    [SerializeField] private Tilemap _decorationMap;  // Flowers / small rocks on top
+
+    [Header("Player / Focus")]
     [SerializeField] private Transform _player;
 
-    [Header("Base Terrain Tiles")]
-    [SerializeField] private TileBase _sandTile;      // Lowest layer
-    [SerializeField] private TileBase _grassTile;     // Middle layer
-    [SerializeField] private TileBase _rockFloorTile; // Highest layer
+    // ---------------- SEED & CHUNK SETTINGS ----------------
 
-    [Header("Interactible Tiles")]
-    [Tooltip("Assign your Custom ResourceTiles here")]
-    [SerializeField] private TileBase _treeTile;   // Spawns on Grass
-    [SerializeField] private TileBase _oreTile;    // Spawns on Rock
+    [Header("Seed Settings")]
+    [SerializeField] private bool _useRandomSeed = true;
+    [SerializeField] private int _seed = 12345;
 
-    [Header("Generation Settings")]
-    [SerializeField] private int _mapWidth = 20;
-    [SerializeField] private int _mapHeight = 20;
-    [SerializeField] private float _noiseScale = 0.1f;
-    [SerializeField] private float _interactibleDensity = 0.1f; // 10% chance to spawn item
+    [Header("Chunk Settings")]
+    [SerializeField] private int _chunkSize = 32;
+    [SerializeField] private int _viewDistanceInChunks = 2;
+    [SerializeField] private int _maxChunksPerFrame = 1;
+    [SerializeField] private int _unloadBuffer = 1; // how many chunks beyond view to keep
 
-    [Header("Terrain Thresholds")]
-    [Range(0, 1)] public float SandLevel = 0.3f;  // Anything below this is Sand
-    [Range(0, 1)] public float GrassLevel = 0.7f; // Anything between Sand and this is Grass
-    // Anything above GrassLevel is Rock
+    // ---------------- NOISE SETTINGS ----------------
 
-    // testing
-    [Header("Enemy Spawning (laikinas)")]
-    [SerializeField] private Enemy _leaderWolfPrefab;
-    [SerializeField] private Enemy _badgerPrefab;
+    [Header("Ground Noise (Fields / Patches)")]
+    [SerializeField] private float _groundNoiseScale = 0.05f;
+    [SerializeField, Range(0f, 1f)]
+    private float _rockPatchThreshold = 0.7f; // higher = fewer rock patches
+
+    [Header("Path Noise (Road Network)")]
+    [SerializeField] private float _pathNoiseScale = 0.04f;
+    [SerializeField] private float _pathVerticalScaleMultiplier = 0.5f;
+    [SerializeField, Range(0f, 1f)]
+    private float _pathCenter = 0.5f;
+    [SerializeField, Range(0f, 0.5f)]
+    private float _pathHalfWidth = 0.04f;
+
+    [Header("Wilderness Settings")]
+    [Tooltip("How far from path (in noise distance, 0–0.5) wilderness starts.")]
+    [SerializeField, Range(0f, 0.5f)]
+    private float _wildernessStartDistance = 0.12f;
+
+    // ---------------- TILE VARIANTS ----------------
+
+    [Header("Grass Tiles (Fields)")]
+    [SerializeField] private WeightedTile[] _grassTiles;
+
+    [Header("Rock Tiles (Patches)")]
+    [SerializeField] private WeightedTile[] _rockTiles;
+
+    [Header("Road Tiles (Dirt / Rock Roads)")]
+    [SerializeField] private WeightedTile[] _roadTiles;
+
+    // ---------------- DECORATIONS ----------------
+
+    [Header("Decoration Noise")]
+    [SerializeField] private float _decorNoiseScale = 0.3f;
+
+    [Header("Flowers on Grass")]
+    [SerializeField] private WeightedTile[] _flowerDecorTiles;
+    [SerializeField, Range(0f, 1f)] private float _flowerBaseDensity = 0.15f;
+    [SerializeField, Range(0f, 1f)] private float _flowerWildernessBonus = 0.25f;
+
+    [Header("Rocks on Rock Tiles")]
+    [SerializeField] private WeightedTile[] _rockDecorTiles;
+    [SerializeField, Range(0f, 1f)] private float _rockDecorBaseDensity = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float _rockDecorWildernessBonus = 0.25f;
+
+    // ---------------- ENEMIES ----------------
+
+    [Header("Enemy Spawning")]
+    [SerializeField] private Enemy _leaderWolfPrefab; // spawns around rock decorations
+    [SerializeField] private Enemy _badgerPrefab;     // spawns around flower decorations
     [SerializeField] private int _maxLeaderWolves = 4;
     [SerializeField] private int _maxBadgers = 8;
-    private bool _poolReady;
 
-    // Chance a rock tile will spawn a leader wolf nearby
+    // Chance a rock decoration will spawn a leader wolf nearby
     [Range(0f, 1f)]
     [SerializeField] private float _leaderWolfChance = 0.02f;
 
-    // Chance a tree tile will spawn a badger nearby
+    // Chance a flower decoration will spawn a badger nearby
     [Range(0f, 1f)]
     [SerializeField] private float _badgerChance = 0.05f;
 
     // How far from the tile center to drop the enemy
     [SerializeField] private float _spawnRadius = 1.5f;
 
-    // Internal State
-    private float _seedX, _seedY;
-    private Vector3Int _lastPlayerPos;
-    private HashSet<Vector3Int> _generatedTiles = new HashSet<Vector3Int>();
+    private bool _poolReady;
 
-    // Tracking for Inspector changes (Hot Reload)
-    private float _lastSandLevel, _lastGrassLevel;
+    // ---------------- INTERNAL STATE ----------------
 
-    void Start()
+    private HashSet<Vector2Int> _generatedChunks = new HashSet<Vector2Int>();
+    private Queue<Vector2Int> _chunksToGenerate = new Queue<Vector2Int>();
+
+    // noise offsets so same seed = same world
+    private Vector2 _groundOffset;
+    private Vector2 _pathOffset;
+    private Vector2 _decorOffset;
+
+    // --------------------------------------------------------------------
+    // Unity lifecycle
+    // --------------------------------------------------------------------
+
+    private void Awake()
+    {
+        InitializeSeed();
+    }
+
+    private void Start()
     {
         if (_player == null)
-            _player = GameObject.FindWithTag("Player").transform;
+            _player = GameObject.FindWithTag("Player")?.transform;
 
-        _seedX = Random.Range(0f, 9999f);
-        _seedY = Random.Range(0f, 9999f);
-
-        GenerateMap();
+        EnqueueVisibleChunks();
     }
 
-    void Update()
+    private void Update()
     {
-        if (!_poolReady)
-        {
-            TryResolvePool();
-            if (!_poolReady)
-                return;
-        }
+        if (_player == null || _groundMap == null)
+            return;
 
-        // 1. Check if Player moved to a new cell
-        Vector3Int playerPos = _baseMap.WorldToCell(_player.position);
-        if (playerPos != _lastPlayerPos)
-        {
-            GenerateMap();
-            _lastPlayerPos = playerPos;
-        }
-
-        // 2. Check if Settings changed (Hot-Reload)
-        if (SandLevel != _lastSandLevel || GrassLevel != _lastGrassLevel)
-        {
-            // If sliders moved, clear everything and redraw
-            _baseMap.ClearAllTiles();
-            _interactibleMap.ClearAllTiles();
-            _generatedTiles.Clear();
-            GenerateMap();
-
-            _lastSandLevel = SandLevel;
-            _lastGrassLevel = GrassLevel;
-        }
+        EnqueueVisibleChunks();
+        ProcessChunkQueue();
+        UnloadFarChunks();
     }
 
-    void GenerateMap()
-    {
-        Vector3Int center = _baseMap.WorldToCell(_player.position);
-        int halfW = _mapWidth / 2;
-        int halfH = _mapHeight / 2;
+    // --------------------------------------------------------------------
+    // Seed / noise init
+    // --------------------------------------------------------------------
 
-        for (int x = -halfW; x <= halfW; x++)
+    private void InitializeSeed()
+    {
+        if (_useRandomSeed)
         {
-            for (int y = -halfH; y <= halfH; y++)
+            _seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        }
+
+        var rng = new System.Random(_seed);
+
+        _groundOffset = new Vector2(
+            rng.Next(-100000, 100000),
+            rng.Next(-100000, 100000));
+
+        _pathOffset = new Vector2(
+            rng.Next(-100000, 100000),
+            rng.Next(-100000, 100000));
+
+        _decorOffset = new Vector2(
+            rng.Next(-100000, 100000),
+            rng.Next(-100000, 100000));
+    }
+
+    [ContextMenu("Regenerate All")]
+    private void RegenerateAll()
+    {
+        _groundMap.ClearAllTiles();
+        if (_decorationMap != null)
+            _decorationMap.ClearAllTiles();
+
+        _generatedChunks.Clear();
+        _chunksToGenerate.Clear();
+
+        InitializeSeed();
+        EnqueueVisibleChunks();
+    }
+
+    // --------------------------------------------------------------------
+    // Chunk management
+    // --------------------------------------------------------------------
+
+    private Vector2Int WorldTileToChunk(Vector3Int tilePos)
+    {
+        int cx = Mathf.FloorToInt((float)tilePos.x / _chunkSize);
+        int cy = Mathf.FloorToInt((float)tilePos.y / _chunkSize);
+        return new Vector2Int(cx, cy);
+    }
+
+    private void EnqueueVisibleChunks()
+    {
+        if (_player == null) return;
+
+        var playerTile = _groundMap.WorldToCell(_player.position);
+        var centerChunk = WorldTileToChunk(playerTile);
+
+        for (int dx = -_viewDistanceInChunks; dx <= _viewDistanceInChunks; dx++)
+        {
+            for (int dy = -_viewDistanceInChunks; dy <= _viewDistanceInChunks; dy++)
             {
-                Vector3Int pos = new Vector3Int(center.x + x, center.y + y, 0);
+                var chunk = new Vector2Int(centerChunk.x + dx, centerChunk.y + dy);
+                if (_generatedChunks.Contains(chunk))
+                    continue;
 
-                if (_generatedTiles.Contains(pos)) continue;
-
-                GenerateTileAt(pos);
-                _generatedTiles.Add(pos);
+                if (!_chunksToGenerate.Contains(chunk))
+                    _chunksToGenerate.Enqueue(chunk);
             }
         }
     }
 
-    void GenerateTileAt(Vector3Int pos)
+    private void ProcessChunkQueue()
     {
-        // 1. Calculate Perlin Noise (0.0 to 1.0)
-        float xCoord = (pos.x * _noiseScale) + _seedX;
-        float yCoord = (pos.y * _noiseScale) + _seedY;
-        float noise = Mathf.PerlinNoise(xCoord, yCoord);
+        int generatedThisFrame = 0;
 
-        TileBase groundToPlace = null;
-        TileBase interactibleToPlace = null;
-
-        // 2. Determine Terrain Type
-        if (noise < SandLevel)
+        while (_chunksToGenerate.Count > 0 && generatedThisFrame < _maxChunksPerFrame)
         {
-            // Bottom Layer: Sand
-            groundToPlace = _sandTile;
-            // Usually no interactibles on sand, but you can add cacti here if you want
+            var chunk = _chunksToGenerate.Dequeue();
+            GenerateChunk(chunk);
+            _generatedChunks.Add(chunk);
+            generatedThisFrame++;
         }
-        else if (noise < GrassLevel)
-        {
-            // Middle Layer: Grass
-            groundToPlace = _grassTile;
+    }
 
-            // Check for Trees
-            if (ShouldSpawnInteractible(xCoord, yCoord))
+    private void UnloadFarChunks()
+    {
+        if (_player == null) return;
+
+        var playerTile = _groundMap.WorldToCell(_player.position);
+        var centerChunk = WorldTileToChunk(playerTile);
+
+        var toRemove = new List<Vector2Int>();
+
+        foreach (var chunk in _generatedChunks)
+        {
+            int distX = Mathf.Abs(chunk.x - centerChunk.x);
+            int distY = Mathf.Abs(chunk.y - centerChunk.y);
+            int maxDist = Mathf.Max(distX, distY);
+
+            if (maxDist > _viewDistanceInChunks + _unloadBuffer)
             {
-                interactibleToPlace = _treeTile;
+                ClearChunk(chunk);
+                toRemove.Add(chunk);
             }
+        }
+
+        foreach (var c in toRemove)
+            _generatedChunks.Remove(c);
+    }
+
+    private void ClearChunk(Vector2Int chunk)
+    {
+        int startX = chunk.x * _chunkSize;
+        int startY = chunk.y * _chunkSize;
+
+        for (int lx = 0; lx < _chunkSize; lx++)
+        {
+            for (int ly = 0; ly < _chunkSize; ly++)
+            {
+                var tilePos = new Vector3Int(startX + lx, startY + ly, 0);
+                _groundMap.SetTile(tilePos, null);
+                if (_decorationMap != null)
+                    _decorationMap.SetTile(tilePos, null);
+            }
+        }
+    }
+
+    // --------------------------------------------------------------------
+    // Chunk generation
+    // --------------------------------------------------------------------
+
+    private void GenerateChunk(Vector2Int chunk)
+    {
+        int startX = chunk.x * _chunkSize;
+        int startY = chunk.y * _chunkSize;
+
+        for (int lx = 0; lx < _chunkSize; lx++)
+        {
+            for (int ly = 0; ly < _chunkSize; ly++)
+            {
+                var tilePos = new Vector3Int(startX + lx, startY + ly, 0);
+                GenerateTileAt(tilePos);
+            }
+        }
+    }
+
+    private void GenerateTileAt(Vector3Int pos)
+    {
+        // world -> noise coords
+        float gx = pos.x * _groundNoiseScale + _groundOffset.x;
+        float gy = pos.y * _groundNoiseScale + _groundOffset.y;
+
+        float px = pos.x * _pathNoiseScale + _pathOffset.x;
+        float py = pos.y * _pathNoiseScale * _pathVerticalScaleMultiplier + _pathOffset.y;
+
+        // base noises
+        float groundNoise = Mathf.PerlinNoise(gx, gy); // patches / variation
+        float pathNoise = Mathf.PerlinNoise(px, py);   // roads
+
+        // distance from road center line in noise space
+        float distFromPath = Mathf.Abs(pathNoise - _pathCenter);
+
+        // wilderness factor: 0 near roads, 1 far from roads
+        float wildernessFactor = 0f;
+        if (distFromPath > _wildernessStartDistance)
+        {
+            // remap [startDistance .. 0.5] -> [0 .. 1]
+            wildernessFactor = Mathf.InverseLerp(_wildernessStartDistance, 0.5f, distFromPath);
+        }
+
+        // ---- base ground: grass vs rock patches ----
+        bool isRockPatch = groundNoise > _rockPatchThreshold;
+        bool isRoad = distFromPath < _pathHalfWidth;
+
+        TileBase groundTile;
+
+        if (isRoad && _roadTiles != null && _roadTiles.Length > 0)
+        {
+            groundTile = PickWeightedTile(_roadTiles, groundNoise);
+        }
+        else if (isRockPatch && _rockTiles != null && _rockTiles.Length > 0)
+        {
+            groundTile = PickWeightedTile(_rockTiles, groundNoise);
         }
         else
         {
-            // Top Layer: Rock Floor
-            groundToPlace = _rockFloorTile;
+            groundTile = PickWeightedTile(_grassTiles, groundNoise);
+        }
 
-            // Check for Ores
-            if (ShouldSpawnInteractible(xCoord, yCoord))
+        _groundMap.SetTile(pos, groundTile);
+
+        // ---- decorations on top (and enemy spawn hooks) ----
+        if (_decorationMap != null)
+        {
+            SpawnDecoration(pos, groundTile, wildernessFactor);
+        }
+    }
+
+    // --------------------------------------------------------------------
+    // Tile / decoration helpers
+    // --------------------------------------------------------------------
+
+    private TileBase PickWeightedTile(WeightedTile[] tiles, float sample)
+    {
+        if (tiles == null || tiles.Length == 0)
+            return null;
+
+        float totalWeight = 0f;
+        foreach (var wt in tiles)
+        {
+            if (wt == null || wt.tile == null) continue;
+            totalWeight += Mathf.Max(0f, wt.weight);
+        }
+
+        if (totalWeight <= 0f)
+            return null;
+
+        float v = (sample % 1f) * totalWeight;
+
+        foreach (var wt in tiles)
+        {
+            if (wt == null || wt.tile == null) continue;
+            float w = Mathf.Max(0f, wt.weight);
+            if (v <= w)
+                return wt.tile;
+
+            v -= w;
+        }
+
+        // fallback
+        for (int i = tiles.Length - 1; i >= 0; i--)
+        {
+            if (tiles[i] != null && tiles[i].tile != null)
+                return tiles[i].tile;
+        }
+
+        return null;
+    }
+
+    private void SpawnDecoration(Vector3Int pos, TileBase groundTile, float wildernessFactor)
+    {
+        if (groundTile == null) return;
+
+        // decor noise
+        float dx = pos.x * _decorNoiseScale + _decorOffset.x;
+        float dy = pos.y * _decorNoiseScale + _decorOffset.y;
+        float decorNoise = Mathf.PerlinNoise(dx, dy);
+
+        // simple helpers
+        bool isGrass = ContainsTile(_grassTiles, groundTile);
+        bool isRock = ContainsTile(_rockTiles, groundTile);
+
+        // FLOWERS ON GRASS (+ badger spawn)
+        if (isGrass && _flowerDecorTiles != null && _flowerDecorTiles.Length > 0)
+        {
+            float density = _flowerBaseDensity + wildernessFactor * _flowerWildernessBonus;
+            if (decorNoise < density)
             {
-                interactibleToPlace = _oreTile;
+                var flowerTile = PickWeightedTile(_flowerDecorTiles, decorNoise);
+                _decorationMap.SetTile(pos, flowerTile);
+
+                // badger spawn around flower decorations
+                TrySpawnBadgerNearDecoration(pos);
+
+                return; // only one decor per tile
             }
         }
 
-        // 3. Set the tiles
-        _baseMap.SetTile(pos, groundToPlace);
-
-        if (interactibleToPlace != null)
+        // ROCKS ON ROCK TILES (+ wolf spawn)
+        if (isRock && _rockDecorTiles != null && _rockDecorTiles.Length > 0)
         {
-            _interactibleMap.SetTile(pos, interactibleToPlace);
-        }
+            float density = _rockDecorBaseDensity + wildernessFactor * _rockDecorWildernessBonus;
+            if (decorNoise < density)
+            {
+                var rockTile = PickWeightedTile(_rockDecorTiles, decorNoise);
+                _decorationMap.SetTile(pos, rockTile);
 
-        // If this was a rock floor tile, maybe spawn a leader wolf nearby
-        if (groundToPlace == _rockFloorTile)
-        {
-            TrySpawnLeaderNearRock(pos);
-        }
+                // wolf spawn around rock decorations
+                TrySpawnLeaderWolfNearDecoration(pos);
 
-        // If we placed a tree on this tile, maybe spawn a badger nearby
-        if (interactibleToPlace == _treeTile)
-        {
-            TrySpawnBadgerNearTree(pos);
+                return;
+            }
         }
     }
 
-    // Helper function to calculate random chance for items
-    private bool ShouldSpawnInteractible(float x, float y)
+    private bool ContainsTile(WeightedTile[] tiles, TileBase tile)
     {
-        // We multiply coords by 5 to make the "item noise" more random/scattered 
-        // compared to the smooth terrain noise.
-        float itemNoise = Mathf.PerlinNoise(x * 5f, y * 5f);
-        return itemNoise > (1f - _interactibleDensity);
+        if (tiles == null || tile == null) return false;
+        foreach (var wt in tiles)
+        {
+            if (wt != null && wt.tile == tile)
+                return true;
+        }
+        return false;
     }
 
-    private void TrySpawnLeaderNearRock(Vector3Int tilePos)
-    {
-        if (_leaderWolfPrefab == null) return;
-        if (Random.value > _leaderWolfChance) return;
-
-        var manager = GameplayPoolManager.Instance;
-        if (manager == null)
-        {
-            return;
-        }
-
-        var report = manager.GetEnemyReport(_leaderWolfPrefab);
-        if (report.Active >= _maxLeaderWolves)
-        {
-            return;
-        }
-
-        Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
-        Vector2 offset = Random.insideUnitCircle * _spawnRadius;
-        Vector3 spawnPos = center + (Vector3)offset;
-
-        manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity);
-    }
-
-
-    private void TrySpawnBadgerNearTree(Vector3Int tilePos)
-    {
-        if (_badgerPrefab == null) return;
-        if (Random.value > _badgerChance) return;
-
-        var manager = GameplayPoolManager.Instance;
-        if (manager == null)
-        {
-            return;
-        }
-
-        var report = manager.GetEnemyReport(_badgerPrefab);
-        if (report.Active >= _maxBadgers)
-        {
-            return;
-        }
-
-        Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
-        Vector2 offset = Random.insideUnitCircle * _spawnRadius;
-        Vector3 spawnPos = center + (Vector3)offset;
-
-        manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity);
-    }
+    // --------------------------------------------------------------------
+    // Enemy spawning (using pool)
+    // --------------------------------------------------------------------
 
     private void TryResolvePool()
     {
@@ -249,6 +447,88 @@ public class MapGenerator : MonoBehaviour
         }
 
         var found = FindFirstObjectByType<GameplayPoolManager>();
-        if (found != null) _poolReady = true;
+        if (found != null)
+        {
+            _poolReady = true;
+        }
+    }
+
+    private void TrySpawnLeaderWolfNearDecoration(Vector3Int tilePos)
+    {
+        if (_leaderWolfPrefab == null) return;
+        if (UnityEngine.Random.value > _leaderWolfChance) return;
+
+        TryResolvePool();
+        if (!_poolReady) return;
+
+        var manager = GameplayPoolManager.Instance;
+        if (manager == null) return;
+
+        var report = manager.GetEnemyReport(_leaderWolfPrefab);
+        if (report.Active >= _maxLeaderWolves)
+        {
+            return;
+        }
+
+        Vector3 center = _groundMap.GetCellCenterWorld(tilePos);
+        Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
+        Vector3 spawnPos = center + (Vector3)offset;
+
+        manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity);
+    }
+
+    private void TrySpawnBadgerNearDecoration(Vector3Int tilePos)
+    {
+        if (_badgerPrefab == null) return;
+        if (UnityEngine.Random.value > _badgerChance) return;
+
+        TryResolvePool();
+        if (!_poolReady) return;
+
+        var manager = GameplayPoolManager.Instance;
+        if (manager == null) return;
+
+        var report = manager.GetEnemyReport(_badgerPrefab);
+        if (report.Active >= _maxBadgers)
+        {
+            return;
+        }
+
+        Vector3 center = _groundMap.GetCellCenterWorld(tilePos);
+        Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
+        Vector3 spawnPos = center + (Vector3)offset;
+
+        manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity);
+    }
+
+    // --------------------------------------------------------------------
+    // Gizmos (optional – shows chunk grid in editor)
+    // --------------------------------------------------------------------
+
+    private void OnDrawGizmosSelected()
+    {
+        if (_player == null || _groundMap == null) return;
+
+        var playerTile = _groundMap.WorldToCell(_player.position);
+        var centerChunk = WorldTileToChunk(playerTile);
+
+        Gizmos.color = Color.yellow;
+
+        for (int dx = -_viewDistanceInChunks; dx <= _viewDistanceInChunks; dx++)
+        {
+            for (int dy = -_viewDistanceInChunks; dy <= _viewDistanceInChunks; dy++)
+            {
+                var chunk = new Vector2Int(centerChunk.x + dx, centerChunk.y + dy);
+                int startX = chunk.x * _chunkSize;
+                int startY = chunk.y * _chunkSize;
+
+                Vector3 worldMin = _groundMap.CellToWorld(new Vector3Int(startX, startY, 0));
+                Vector3 worldMax = _groundMap.CellToWorld(new Vector3Int(startX + _chunkSize, startY + _chunkSize, 0));
+
+                Vector3 size = worldMax - worldMin;
+                Vector3 center = worldMin + size * 0.5f;
+                Gizmos.DrawWireCube(center, size);
+            }
+        }
     }
 }

@@ -19,6 +19,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     }
     public event Action<bool> AggroStatusChanged;
 
+    //---- Invenoty resoource data for enemy kill reward -----
+
+    public ResourceData _kill;
+    public ResourceData _coin;
+
     //---- Shared Interfaces -------------
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }

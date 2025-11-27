@@ -12,7 +12,7 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
 
     [Header("Debug")]
     [SerializeField] private bool _debugInput = false;
-
+    [SerializeField] private TileInteractor _tileInteractor;
     public Vector2 Move { get; private set; }
 
     public event Action OnShootStarted;
@@ -73,7 +73,7 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        // Not used yet
+        if (context.started) _tileInteractor.HandleInteract();
     }
 
     public void OnCrouch(InputAction.CallbackContext context)

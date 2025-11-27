@@ -112,11 +112,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e896dc43e4f8241acd884888f03862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wolf
+  _kill: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
+  _coin: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 7762316602551972078}
   playerTransform: {fileID: 0}
   AttackDamage: 20
   MovementSpeed: 2
+  role: 1
+  healthMultiplier: 1
+  pack: {fileID: 0}
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
   EnemyIdleBase: {fileID: 11400000, guid: 82b81c892a8365441b1246466bcf4d86, type: 2}

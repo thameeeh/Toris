@@ -1950,9 +1950,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2533174694954105459, guid: d911d097315abc1489843b39734ee96b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1805136577}
-    - targetCorrespondingSourceObject: {fileID: 2533174694954105459, guid: d911d097315abc1489843b39734ee96b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1805136585}
   m_SourcePrefab: {fileID: 100100000, guid: d911d097315abc1489843b39734ee96b, type: 3}
 --- !u!1 &1793267837
 GameObject:
@@ -2022,6 +2019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569fce6bb4561df45803084653c64da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  CooldownTime: 3
   _coinSO: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
   _killsSO: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
 --- !u!1 &1805136555 stripped
@@ -2092,23 +2090,9 @@ MonoBehaviour:
   _stats: {fileID: 1805136570}
   _bow: {fileID: 1805136572}
   _multiShot: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
---- !u!114 &1805136585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805136555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bc6345af7081c845b59201b18361cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RamboBowAbilityController
-  _input: {fileID: 1805136574}
-  _bow: {fileID: 1805136572}
-  _stats: {fileID: 1805136570}
-  _config: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
-  _debug: 0
+  _debugMultiShot: 0
+  _ramboConfig: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
+  _debugRambow: 0
 --- !u!1 &1849731110
 GameObject:
   m_ObjectHideFlags: 0

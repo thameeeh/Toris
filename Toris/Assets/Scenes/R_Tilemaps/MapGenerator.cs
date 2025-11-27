@@ -34,22 +34,27 @@ public class MapGenerator : MonoBehaviour
     // ---------------- NOISE SETTINGS ----------------
 
     [Header("Ground Noise (Fields / Patches)")]
-    [SerializeField] private float _groundNoiseScale = 0.05f;
+    [SerializeField] private float _groundNoiseScale = 0.07f;
     [SerializeField, Range(0f, 1f)]
-    private float _rockPatchThreshold = 0.7f; // higher = fewer rock patches
+    private float _rockPatchThreshold = 0.68f; // higher = fewer rock patches
+
+    [Header("Rock Biome (Large Rock Regions)")]
+    [SerializeField] private float _rockBiomeScale = 0.02f;
+    [SerializeField, Range(0f, 1f)]
+    private float _rockBiomeThreshold = 0.6f;
 
     [Header("Path Noise (Road Network)")]
-    [SerializeField] private float _pathNoiseScale = 0.04f;
+    [SerializeField] private float _pathNoiseScale = 0.06f;
     [SerializeField] private float _pathVerticalScaleMultiplier = 0.5f;
     [SerializeField, Range(0f, 1f)]
     private float _pathCenter = 0.5f;
     [SerializeField, Range(0f, 0.5f)]
-    private float _pathHalfWidth = 0.04f;
+    private float _pathHalfWidth = 0.035f;
 
     [Header("Wilderness Settings")]
     [Tooltip("How far from path (in noise distance, 0–0.5) wilderness starts.")]
     [SerializeField, Range(0f, 0.5f)]
-    private float _wildernessStartDistance = 0.12f;
+    private float _wildernessStartDistance = 0.14f;
 
     // ---------------- TILE VARIANTS ----------------
 
@@ -65,16 +70,16 @@ public class MapGenerator : MonoBehaviour
     // ---------------- DECORATIONS ----------------
 
     [Header("Decoration Noise")]
-    [SerializeField] private float _decorNoiseScale = 0.3f;
+    [SerializeField] private float _decorNoiseScale = 0.35f;
 
     [Header("Flowers on Grass")]
     [SerializeField] private WeightedTile[] _flowerDecorTiles;
-    [SerializeField, Range(0f, 1f)] private float _flowerBaseDensity = 0.15f;
-    [SerializeField, Range(0f, 1f)] private float _flowerWildernessBonus = 0.25f;
+    [SerializeField, Range(0f, 1f)] private float _flowerBaseDensity = 0.13f;
+    [SerializeField, Range(0f, 1f)] private float _flowerWildernessBonus = 0.35f;
 
     [Header("Rocks on Rock Tiles")]
     [SerializeField] private WeightedTile[] _rockDecorTiles;
-    [SerializeField, Range(0f, 1f)] private float _rockDecorBaseDensity = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float _rockDecorBaseDensity = 0.07f;
     [SerializeField, Range(0f, 1f)] private float _rockDecorWildernessBonus = 0.25f;
 
     // ---------------- ENEMIES ----------------
@@ -85,16 +90,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int _maxLeaderWolves = 4;
     [SerializeField] private int _maxBadgers = 8;
 
-    // Chance a rock decoration will spawn a leader wolf nearby
     [Range(0f, 1f)]
-    [SerializeField] private float _leaderWolfChance = 0.02f;
+    [SerializeField] private float _leaderWolfChance = 0.015f;
 
-    // Chance a flower decoration will spawn a badger nearby
     [Range(0f, 1f)]
-    [SerializeField] private float _badgerChance = 0.05f;
+    [SerializeField] private float _badgerChance = 0.04f;
 
-    // How far from the tile center to drop the enemy
-    [SerializeField] private float _spawnRadius = 1.5f;
+    [SerializeField] private float _spawnRadius = 1.6f;
 
     private bool _poolReady;
 
@@ -103,10 +105,14 @@ public class MapGenerator : MonoBehaviour
     private HashSet<Vector2Int> _generatedChunks = new HashSet<Vector2Int>();
     private Queue<Vector2Int> _chunksToGenerate = new Queue<Vector2Int>();
 
+    // enemies per chunk (for unloading)
+    private Dictionary<Vector2Int, List<Enemy>> _chunkEnemies = new Dictionary<Vector2Int, List<Enemy>>();
+
     // noise offsets so same seed = same world
     private Vector2 _groundOffset;
     private Vector2 _pathOffset;
     private Vector2 _decorOffset;
+    private Vector2 _rockBiomeOffset;
 
     // --------------------------------------------------------------------
     // Unity lifecycle
@@ -159,6 +165,10 @@ public class MapGenerator : MonoBehaviour
         _decorOffset = new Vector2(
             rng.Next(-100000, 100000),
             rng.Next(-100000, 100000));
+
+        _rockBiomeOffset = new Vector2(
+            rng.Next(-100000, 100000),
+            rng.Next(-100000, 100000));
     }
 
     [ContextMenu("Regenerate All")]
@@ -170,13 +180,14 @@ public class MapGenerator : MonoBehaviour
 
         _generatedChunks.Clear();
         _chunksToGenerate.Clear();
+        _chunkEnemies.Clear();
 
         InitializeSeed();
         EnqueueVisibleChunks();
     }
 
     // --------------------------------------------------------------------
-    // Chunk management
+    // Chunk helpers
     // --------------------------------------------------------------------
 
     private Vector2Int WorldTileToChunk(Vector3Int tilePos)
@@ -184,6 +195,12 @@ public class MapGenerator : MonoBehaviour
         int cx = Mathf.FloorToInt((float)tilePos.x / _chunkSize);
         int cy = Mathf.FloorToInt((float)tilePos.y / _chunkSize);
         return new Vector2Int(cx, cy);
+    }
+
+    private Vector2Int WorldPosToChunk(Vector3 worldPos)
+    {
+        var tilePos = _groundMap.WorldToCell(worldPos);
+        return WorldTileToChunk(tilePos);
     }
 
     private void EnqueueVisibleChunks()
@@ -248,6 +265,31 @@ public class MapGenerator : MonoBehaviour
 
     private void ClearChunk(Vector2Int chunk)
     {
+        // 1. Despawn enemies belonging to this chunk
+        if (_chunkEnemies.TryGetValue(chunk, out var enemies))
+        {
+            var manager = GameplayPoolManager.Instance;
+
+            foreach (var enemy in enemies)
+            {
+                if (enemy == null) continue;
+
+                if (manager != null)
+                {
+                    // If you have a specific despawn method, use it here instead.
+                    enemy.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Destroy(enemy.gameObject);
+                }
+            }
+
+            enemies.Clear();
+            _chunkEnemies.Remove(chunk);
+        }
+
+        // 2. Clear tiles
         int startX = chunk.x * _chunkSize;
         int startY = chunk.y * _chunkSize;
 
@@ -284,50 +326,94 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateTileAt(Vector3Int pos)
     {
-        // world -> noise coords
+        // world -> noise coords for ground
         float gx = pos.x * _groundNoiseScale + _groundOffset.x;
         float gy = pos.y * _groundNoiseScale + _groundOffset.y;
 
+        // separate noise for tile variants (micro-variation)
+        float variantX = pos.x * 0.25f + 12345f;
+        float variantY = pos.y * 0.25f + 54321f;
+        float variantNoise = Mathf.PerlinNoise(variantX, variantY);
+
+        // path noise
         float px = pos.x * _pathNoiseScale + _pathOffset.x;
         float py = pos.y * _pathNoiseScale * _pathVerticalScaleMultiplier + _pathOffset.y;
 
-        // base noises
         float groundNoise = Mathf.PerlinNoise(gx, gy); // patches / variation
         float pathNoise = Mathf.PerlinNoise(px, py);   // roads
 
-        // distance from road center line in noise space
         float distFromPath = Mathf.Abs(pathNoise - _pathCenter);
 
         // wilderness factor: 0 near roads, 1 far from roads
         float wildernessFactor = 0f;
         if (distFromPath > _wildernessStartDistance)
         {
-            // remap [startDistance .. 0.5] -> [0 .. 1]
             wildernessFactor = Mathf.InverseLerp(_wildernessStartDistance, 0.5f, distFromPath);
         }
 
-        // ---- base ground: grass vs rock patches ----
-        bool isRockPatch = groundNoise > _rockPatchThreshold;
+        // large-scale rock biome mask
+        float rbx = pos.x * _rockBiomeScale + _rockBiomeOffset.x;
+        float rby = pos.y * _rockBiomeScale + _rockBiomeOffset.y;
+        float rockBiomeNoise = Mathf.PerlinNoise(rbx, rby);
+        bool inRockBiome = rockBiomeNoise > _rockBiomeThreshold;
+
         bool isRoad = distFromPath < _pathHalfWidth;
 
         TileBase groundTile;
 
         if (isRoad && _roadTiles != null && _roadTiles.Length > 0)
         {
-            groundTile = PickWeightedTile(_roadTiles, groundNoise);
-        }
-        else if (isRockPatch && _rockTiles != null && _rockTiles.Length > 0)
-        {
-            groundTile = PickWeightedTile(_rockTiles, groundNoise);
+            // roads override biome
+            groundTile = PickWeightedTile(_roadTiles, variantNoise);
         }
         else
         {
-            groundTile = PickWeightedTile(_grassTiles, groundNoise);
+            if (inRockBiome)
+            {
+                // ROCK BIOME: mostly rock, with occasional grass
+                if (_rockTiles != null && _rockTiles.Length > 0)
+                {
+                    // 80% rock, 20% grass based on groundNoise
+                    if (groundNoise > 0.2f || _grassTiles == null || _grassTiles.Length == 0)
+                    {
+                        groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                    }
+                    else
+                    {
+                        groundTile = PickWeightedTile(_grassTiles, variantNoise);
+                    }
+                }
+                else
+                {
+                    // no rock tiles? fall back to grass
+                    groundTile = PickWeightedTile(_grassTiles, variantNoise);
+                }
+            }
+            else
+            {
+                // NORMAL BIOME: mostly grass, rare rock patches using _rockPatchThreshold
+                if (_grassTiles != null && _grassTiles.Length > 0)
+                {
+                    if (groundNoise > _rockPatchThreshold && _rockTiles != null && _rockTiles.Length > 0)
+                    {
+                        groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                    }
+                    else
+                    {
+                        groundTile = PickWeightedTile(_grassTiles, variantNoise);
+                    }
+                }
+                else
+                {
+                    // no grass tiles? fall back to rock
+                    groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                }
+            }
         }
 
         _groundMap.SetTile(pos, groundTile);
 
-        // ---- decorations on top (and enemy spawn hooks) ----
+        // decorations + enemy spawn hooks
         if (_decorationMap != null)
         {
             SpawnDecoration(pos, groundTile, wildernessFactor);
@@ -365,7 +451,6 @@ public class MapGenerator : MonoBehaviour
             v -= w;
         }
 
-        // fallback
         for (int i = tiles.Length - 1; i >= 0; i--)
         {
             if (tiles[i] != null && tiles[i].tile != null)
@@ -379,12 +464,10 @@ public class MapGenerator : MonoBehaviour
     {
         if (groundTile == null) return;
 
-        // decor noise
         float dx = pos.x * _decorNoiseScale + _decorOffset.x;
         float dy = pos.y * _decorNoiseScale + _decorOffset.y;
         float decorNoise = Mathf.PerlinNoise(dx, dy);
 
-        // simple helpers
         bool isGrass = ContainsTile(_grassTiles, groundTile);
         bool isRock = ContainsTile(_rockTiles, groundTile);
 
@@ -397,7 +480,6 @@ public class MapGenerator : MonoBehaviour
                 var flowerTile = PickWeightedTile(_flowerDecorTiles, decorNoise);
                 _decorationMap.SetTile(pos, flowerTile);
 
-                // badger spawn around flower decorations
                 TrySpawnBadgerNearDecoration(pos);
 
                 return; // only one decor per tile
@@ -413,7 +495,6 @@ public class MapGenerator : MonoBehaviour
                 var rockTile = PickWeightedTile(_rockDecorTiles, decorNoise);
                 _decorationMap.SetTile(pos, rockTile);
 
-                // wolf spawn around rock decorations
                 TrySpawnLeaderWolfNearDecoration(pos);
 
                 return;
@@ -433,7 +514,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     // --------------------------------------------------------------------
-    // Enemy spawning (using pool)
+    // Enemy spawning (using pool, registered per chunk)
     // --------------------------------------------------------------------
 
     private void TryResolvePool()
@@ -453,6 +534,21 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    private void RegisterEnemyInChunk(Enemy enemy, Vector3 worldPos)
+    {
+        if (enemy == null) return;
+
+        var chunk = WorldPosToChunk(worldPos);
+
+        if (!_chunkEnemies.TryGetValue(chunk, out var list))
+        {
+            list = new List<Enemy>();
+            _chunkEnemies[chunk] = list;
+        }
+
+        list.Add(enemy);
+    }
+
     private void TrySpawnLeaderWolfNearDecoration(Vector3Int tilePos)
     {
         if (_leaderWolfPrefab == null) return;
@@ -466,15 +562,17 @@ public class MapGenerator : MonoBehaviour
 
         var report = manager.GetEnemyReport(_leaderWolfPrefab);
         if (report.Active >= _maxLeaderWolves)
-        {
             return;
-        }
 
         Vector3 center = _groundMap.GetCellCenterWorld(tilePos);
         Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPos = center + (Vector3)offset;
 
-        manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity);
+        Enemy wolf = manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity);
+        if (wolf != null)
+        {
+            RegisterEnemyInChunk(wolf, spawnPos);
+        }
     }
 
     private void TrySpawnBadgerNearDecoration(Vector3Int tilePos)
@@ -490,15 +588,17 @@ public class MapGenerator : MonoBehaviour
 
         var report = manager.GetEnemyReport(_badgerPrefab);
         if (report.Active >= _maxBadgers)
-        {
             return;
-        }
 
         Vector3 center = _groundMap.GetCellCenterWorld(tilePos);
         Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPos = center + (Vector3)offset;
 
-        manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity);
+        Enemy badger = manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity);
+        if (badger != null)
+        {
+            RegisterEnemyInChunk(badger, spawnPos);
+        }
     }
 
     // --------------------------------------------------------------------

@@ -1753,58 +1753,54 @@ MonoBehaviour:
   _player: {fileID: 1555781530}
   _useRandomSeed: 1
   _seed: 12345
-  _chunkSize: 4
+  _chunkSize: 32
   _viewDistanceInChunks: 2
   _maxChunksPerFrame: 1
   _unloadBuffer: 1
-  _groundNoiseScale: 0.05
-  _rockPatchThreshold: 0.7
+  _groundNoiseScale: 0.8
+  _rockPatchThreshold: 0.521
+  _rockBiomeScale: 0.02
+  _rockBiomeThreshold: 0.6
   _pathNoiseScale: 0.04
-  _pathVerticalScaleMultiplier: 0.5
+  _pathVerticalScaleMultiplier: 1
   _pathCenter: 0.5
-  _pathHalfWidth: 0.04
-  _wildernessStartDistance: 0.12
+  _pathHalfWidth: 0.05
+  _wildernessStartDistance: 0.051
   _grassTiles:
   - tile: {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
-    weight: 0.579
+    weight: 0.627
   - tile: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
-    weight: 0.61
+    weight: 0.204
   - tile: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
-    weight: 0.673
+    weight: 0.208
   _rockTiles:
-  - tile: {fileID: 11400000, guid: 1c40cc4626fd17c47ad058b83f216236, type: 2}
-    weight: 0.264
-  - tile: {fileID: 11400000, guid: 50c742e8b7bae4b4a8e23b06e1187ebf, type: 2}
-    weight: 0.289
+  - tile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
+    weight: 0.728
   _roadTiles:
   - tile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
-    weight: 0.296
-  - tile: {fileID: 11400000, guid: f8799341eb698ff4f830e16285acba20, type: 2}
-    weight: 0.302
-  - tile: {fileID: 11400000, guid: 9982c037e777ceb43b05dff6ed1e408c, type: 2}
-    weight: 0.283
-  - tile: {fileID: 11400000, guid: 9982c037e777ceb43b05dff6ed1e408c, type: 2}
-    weight: 0.314
-  - tile: {fileID: 11400000, guid: 233d8bd87a2f4f844ad403f6b01b69af, type: 2}
-    weight: 0.314
-  _decorNoiseScale: 0.3
+    weight: 0.252
+  - tile: {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
+    weight: 0.264
+  - tile: {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
+    weight: 0.268
+  _decorNoiseScale: 0.35
   _flowerDecorTiles:
   - tile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
     weight: 0.296
-  _flowerBaseDensity: 0.15
-  _flowerWildernessBonus: 0.25
+  _flowerBaseDensity: 0.13
+  _flowerWildernessBonus: 0.35
   _rockDecorTiles:
   - tile: {fileID: 11400000, guid: b0ce1c7155c17134191757279f5bcb83, type: 2}
-    weight: 0.208
-  _rockDecorBaseDensity: 0.1
-  _rockDecorWildernessBonus: 0.25
+    weight: 0.523
+  _rockDecorBaseDensity: 0.138
+  _rockDecorWildernessBonus: 0.072
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   _badgerPrefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
-  _maxLeaderWolves: 64
-  _maxBadgers: 64
-  _leaderWolfChance: 0.133
-  _badgerChance: 0.115
-  _spawnRadius: 1.5
+  _maxLeaderWolves: 128
+  _maxBadgers: 128
+  _leaderWolfChance: 0.2
+  _badgerChance: 0.1
+  _spawnRadius: 1.6
 --- !u!4 &1743458541
 Transform:
   m_ObjectHideFlags: 0
@@ -1829,8 +1825,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 522736349567969758, guid: d911d097315abc1489843b39734ee96b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 522736349567969758, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: m_SortingOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 522736349567969758, guid: d911d097315abc1489843b39734ee96b, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1287189023
       objectReference: {fileID: 0}
     - target: {fileID: 1505738214443871189, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: healthBar
@@ -1844,6 +1848,10 @@ PrefabInstance:
       propertyPath: _debugInput
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1907169862378078153, guid: d911d097315abc1489843b39734ee96b, type: 3}
+      propertyPath: _tileInteractor
+      value: 
+      objectReference: {fileID: 1805136566}
     - target: {fileID: 2533174694954105459, guid: d911d097315abc1489843b39734ee96b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2011,6 +2019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569fce6bb4561df45803084653c64da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _coinSO: {fileID: 0}
+  _killsSO: {fileID: 0}
 --- !u!1 &1805136555 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2533174694954105459, guid: d911d097315abc1489843b39734ee96b, type: 3}
@@ -2029,7 +2039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileInteractor
   _interactableTilemap: {fileID: 875006850}
-  _mainCamera: {fileID: 506412731}
+  PickRange: 5
 --- !u!114 &1805136570 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4643167284405693672, guid: d911d097315abc1489843b39734ee96b, type: 3}

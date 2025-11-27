@@ -17,7 +17,9 @@ public class SlotBinder : MonoBehaviour
 
     [SerializeField] ResourceData _coinSO;
     [SerializeField] ResourceData _killsSO;
+    VisualElement _arrowSkill;
 
+    float _timer = 0;
     private void OnEnable()
     {
         if(Inventory.InventoryInstance != null)
@@ -34,15 +36,27 @@ public class SlotBinder : MonoBehaviour
         _root = _uiDocument.rootVisualElement;
 
         _buttons = _root.Query<Button>().ToList();
+        _arrowSkill = _root.Q<VisualElement>("ArrowSkill");
+
         _time = _root.Q<Label>("Time");
         _coins = _root.Q<Label>("Coins");
         _kills = _root.Q<Label>("Kills");
+
+        
     }
 
     private void FixedUpdate()
     {
         DateTime currentTime = DateTime.Now;
-        _time.text = currentTime.ToString("HH:mm");
+        _time.text = currentTime.ToString("mm:ss");
+
+        _timer -= Time.fixedDeltaTime;
+
+        if(_timer <= 0) 
+        {
+            _timer = 3;
+        }
+        _arrowSkill.Q<Label>().text = _timer.ToString("F2") + "s";
     }
 
     void UpdateVisuals()

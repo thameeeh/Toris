@@ -30,7 +30,7 @@ public class Inventory : MonoBehaviour
 
     public Dictionary<ResourceData, int> GetAllResources()
     {
-        return ResourcesCount;
+        return new Dictionary<ResourceData, int>(ResourcesCount);
     }
 
     public void AddResource(ResourceData resource, int amount)
@@ -85,13 +85,18 @@ public class Inventory : MonoBehaviour
 
     public int GetResourceAmount(ResourceData resource)
     {
+        if (resource == null)
+        {
+            return 0;
+        }
+
         if (ResourcesCount.TryGetValue(resource, out int currentAmount))
         {
             return currentAmount;
         }
-        else if (ResourcesStats.TryGetValue(resource, out currentAmount))
+        else if (ResourcesStats.TryGetValue(resource, out int currentAmount1))
         {
-            return currentAmount;
+            return currentAmount1;
         }
         else
         {

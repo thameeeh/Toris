@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BadgerWalkState : EnemyState<Badger>
 {
-    public BadgerWalkState(Badger enemy, EnemyStateMachine enemyStateMachine) 
+    public BadgerWalkState(Badger enemy, EnemyStateMachine enemyStateMachine)
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()

@@ -90,7 +90,7 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
         if (duplicateIds.Count > 0)
         {
             Debug.LogWarning(
-                $"EffectLibrary '{name}' has duplicate effect IDs: {string.Join(", ", duplicateIds)}",
+                //$"EffectLibrary '{name}' has duplicate effect IDs: {string.Join(", ", duplicateIds)}",
                 this);
         }
 #endif

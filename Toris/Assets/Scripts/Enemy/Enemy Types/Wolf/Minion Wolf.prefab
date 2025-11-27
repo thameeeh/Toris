@@ -323,7 +323,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
-  AttackDamage: 10
+  AttackDamage: 15
   MovementSpeed: 2
   role: 1
   healthMultiplier: 1
@@ -347,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
   indicatorOffset: {x: 0, y: 1.25, z: 0}
   displayDuration: 1.25
-  indicatorColor: {r: 0.94, g: 0.29, b: 0.12, a: 1}
+  indicatorColor: {r: 0.9607843, g: 0.05882353, b: 0.09803922, a: 1}
   indicatorText: '!'
   baseFontSize: 4
   minFontSize: 2

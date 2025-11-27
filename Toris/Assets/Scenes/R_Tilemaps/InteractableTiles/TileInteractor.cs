@@ -100,6 +100,6 @@ public class TileInteractor : MonoBehaviour
         // Remove the tile
         _interactableTilemap.SetTile(cellPos, null);
 
-        Debug.Log($"Collected {tile.ResourceAmount} {tile.ResourceToGive.name}");
+        //Debug.Log($"Collected {tile.ResourceAmount} {tile.ResourceToGive.name}");
     }
 }

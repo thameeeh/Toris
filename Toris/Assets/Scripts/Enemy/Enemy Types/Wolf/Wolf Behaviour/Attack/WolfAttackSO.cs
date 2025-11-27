@@ -51,7 +51,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
             enemy.animator.ResetTrigger("Attack");
         }
 
-        Debug.Log(stateInfo.normalizedTime);
+        //Debug.Log(stateInfo.normalizedTime);
 
         _animationDirection = enemy.PlayerTransform.position - enemy.transform.position;
         enemy.UpdateAnimationDirection(_animationDirection.normalized);
@@ -61,7 +61,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     {
         base.ResetValues();
 
-        Debug.Log("Values have been reset");
+        //Debug.Log("Values have been reset");
     }
     
     public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)

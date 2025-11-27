@@ -30,6 +30,22 @@ public class MapGenerator : MonoBehaviour
     [Range(0, 1)] public float GrassLevel = 0.7f; // Anything between Sand and this is Grass
     // Anything above GrassLevel is Rock
 
+    // testing
+    [Header("Enemy Spawning (laikinas)")]
+    [SerializeField] private Enemy _leaderWolfPrefab;
+    [SerializeField] private Enemy _badgerPrefab;
+
+    // Chance a rock tile will spawn a leader wolf nearby
+    [Range(0f, 1f)]
+    [SerializeField] private float _leaderWolfChance = 0.02f;
+
+    // Chance a tree tile will spawn a badger nearby
+    [Range(0f, 1f)]
+    [SerializeField] private float _badgerChance = 0.05f;
+
+    // How far from the tile center to drop the enemy
+    [SerializeField] private float _spawnRadius = 1.5f;
+
     // Internal State
     private float _seedX, _seedY;
     private Vector3Int _lastPlayerPos;
@@ -140,6 +156,18 @@ public class MapGenerator : MonoBehaviour
         {
             _interactibleMap.SetTile(pos, interactibleToPlace);
         }
+
+        // If this was a rock floor tile, maybe spawn a leader wolf nearby
+        if (groundToPlace == _rockFloorTile)
+        {
+            TrySpawnLeaderNearRock(pos);
+        }
+
+        // If we placed a tree on this tile, maybe spawn a badger nearby
+        if (interactibleToPlace == _treeTile)
+        {
+            TrySpawnBadgerNearTree(pos);
+        }
     }
 
     // Helper function to calculate random chance for items
@@ -149,5 +177,41 @@ public class MapGenerator : MonoBehaviour
         // compared to the smooth terrain noise.
         float itemNoise = Mathf.PerlinNoise(x * 5f, y * 5f);
         return itemNoise > (1f - _interactibleDensity);
+    }
+
+    private void TrySpawnLeaderNearRock(Vector3Int tilePos)
+    {
+        if (_leaderWolfPrefab == null) return;
+        if (Random.value > _leaderWolfChance) return;
+
+        // Tile center in world space
+        Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
+
+        // Small random offset around the rock
+        Vector2 offset = Random.insideUnitCircle * _spawnRadius;
+        Vector3 spawnPos = center + (Vector3)offset;
+
+        var manager = GameplayPoolManager.Instance;
+        Enemy wolf = manager
+            ? manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity)
+            : Instantiate(_leaderWolfPrefab, spawnPos, Quaternion.identity);
+
+    }
+
+    private void TrySpawnBadgerNearTree(Vector3Int tilePos)
+    {
+        if (_badgerPrefab == null) return;
+        if (Random.value > _badgerChance) return;
+
+        Vector3 center = _baseMap.GetCellCenterWorld(tilePos);
+        Vector2 offset = Random.insideUnitCircle * _spawnRadius;
+        Vector3 spawnPos = center + (Vector3)offset;
+
+        var manager = GameplayPoolManager.Instance;
+        Enemy badger = manager
+            ? manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity)
+            : Instantiate(_badgerPrefab, spawnPos, Quaternion.identity);
+
+        // Optional parent same as above
     }
 }

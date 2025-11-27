@@ -297,6 +297,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Badger
       objectReference: {fileID: 0}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: WalkSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: RunAwayChance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: TunnelingSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: RunAwayDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
+      propertyPath: LineTunnelingSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

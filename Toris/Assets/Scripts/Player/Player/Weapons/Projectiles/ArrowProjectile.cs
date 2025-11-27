@@ -168,4 +168,8 @@ public class ArrowProjectile : Projectile
 
         EffectManagerBehavior.Instance.Play(request);
     }
+    //private void OnDestroy()
+    //{
+    //    Debug.LogWarning($"[ArrowProjectile] {name} was destroyed. If this is a pooled projectile, that's probably a bug.");
+    //}
 }

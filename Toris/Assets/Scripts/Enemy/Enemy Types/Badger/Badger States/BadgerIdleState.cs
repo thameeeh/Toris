@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BadgerIdleState : EnemyState<Badger>
 {
-    public BadgerIdleState(Badger enemy, EnemyStateMachine enemyStateMachine) 
+    public BadgerIdleState(Badger enemy, EnemyStateMachine enemyStateMachine)
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()
@@ -22,8 +22,8 @@ public class BadgerIdleState : EnemyState<Badger>
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-        
-        if(enemy.isWondering) enemy.StateMachine.ChangeState(enemy.WalkState);
+
+        if (enemy.isWondering) enemy.StateMachine.ChangeState(enemy.WalkState);
 
         //--------  Is Aggroed Starts burrowing  --------//
         if (enemy.IsAggroed && enemy.ForcedIdleDuration <= 0)

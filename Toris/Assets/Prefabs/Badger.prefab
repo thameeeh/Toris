@@ -117,8 +117,14 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   AttackDamage: 20
   WalkSpeed: 1
-  TunnelingSpeed: 3
-  ForcedIdelDuration: 2
+  TunnelingSpeed: 10
+  LineTunnelingSpeed: 6
+  RunAwayChance: 0.012
+  RunAwayDistance: 0
+  BurrowRoamSpeedMultiplier: 0.65
+  PostAttackIdleDuration: 0.35
+  DeathBurrowAcceleration: 1.5
+  ForcedIdleDuration: 0
   BadgerIdleBase: {fileID: 11400000, guid: 676b25a4e45ecd044a236619325bb6b5, type: 2}
   BadgerWalkBase: {fileID: 11400000, guid: ec9c908425b4b614daf03e063def3bb7, type: 2}
   BadgerBurrowBase: {fileID: 11400000, guid: e0ed72cc1a669af428baf1c6d295972c, type: 2}

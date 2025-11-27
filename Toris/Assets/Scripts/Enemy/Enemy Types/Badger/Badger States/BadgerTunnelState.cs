@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BadgerTunnelState : EnemyState<Badger>
 {
-    public BadgerTunnelState(Badger enemy, EnemyStateMachine enemyStateMachine) 
+    public BadgerTunnelState(Badger enemy, EnemyStateMachine enemyStateMachine)
         : base(enemy, enemyStateMachine) { }
 
     public override void EnterState()

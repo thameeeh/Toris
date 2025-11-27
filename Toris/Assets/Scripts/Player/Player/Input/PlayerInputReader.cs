@@ -2,73 +2,115 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputReader : MonoBehaviour
+/// <summary>
+/// Adapts the Unity Input System (InputSystem_Actions.inputactions)
+/// into a simple API for the rest of the player code.
+/// </summary>
+public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
-    [Header("Actions (drag from .inputactions asset)")]
-    [SerializeField] private InputActionReference _moveAction;
-    [SerializeField] private InputActionReference _shootMouseAction;
-    [SerializeField] private InputActionReference _dashAction;
+    private InputSystem_Actions _actions;
+
+    [Header("Debug")]
+    [SerializeField] private bool _debugInput = false;
 
     public Vector2 Move { get; private set; }
 
     public event Action OnShootStarted;
     public event Action OnShootReleased;
     public event Action OnDashPressed;
+    public event Action OnAbility1Pressed;
 
     public bool IsShootHeld =>
-        _shootMouseAction != null &&
-        _shootMouseAction.action != null &&
-        _shootMouseAction.action.IsPressed();
+        _actions != null &&
+        _actions.Player.Attack.IsPressed();
 
-    void OnEnable()
+    private void OnEnable()
     {
-        if (_shootMouseAction?.action != null)
-        {
-            _shootMouseAction.action.Enable();
-            _shootMouseAction.action.started += OnShootStartedCallback;
-            _shootMouseAction.action.canceled += OnShootReleasedCallback;
-        }
+        if (_actions == null)
+            _actions = new InputSystem_Actions();
 
-        if (_dashAction?.action != null)
-        {
-            _dashAction?.action.Enable();
-            _dashAction.action.performed += OnDashPerformed;
-        }
+        _actions.Player.SetCallbacks(this);
 
-        _moveAction?.action?.Enable();
+        _actions.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        if (_shootMouseAction?.action != null)
+        if (_actions != null)
         {
-            _shootMouseAction.action.started -= OnShootStartedCallback;
-            _shootMouseAction.action.canceled -= OnShootReleasedCallback;
-            _shootMouseAction.action.Disable();
+            _actions.Disable();
+            _actions.Player.SetCallbacks(null);
         }
-
-        if (_dashAction?.action != null)
-        {
-            _dashAction?.action.Disable();
-            _dashAction.action.performed -= OnDashPerformed;
-        }
-
-        _moveAction?.action?.Disable();
     }
 
-    void Update()
+    // -------- IPlayerActions implementation --------
+
+    public void OnMove(InputAction.CallbackContext context)
     {
-        var act = _moveAction?.action;
-        Move = act != null ? act.ReadValue<Vector2>() : Vector2.zero;
+        Move = context.ReadValue<Vector2>();
+        if (_debugInput && context.performed)
+            Debug.Log($"[Input] Move performed: {Move}", this);
     }
 
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        // Ignored for now
+    }
 
-    // private wrappers so we can cleanly unsubscribe
-    void OnShootStartedCallback(InputAction.CallbackContext _)
-        => OnShootStarted?.Invoke();
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (_debugInput) Debug.Log("[Input] Attack started", this);
+            OnShootStarted?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            if (_debugInput) Debug.Log("[Input] Attack canceled", this);
+            OnShootReleased?.Invoke();
+        }
+    }
 
-    void OnShootReleasedCallback(InputAction.CallbackContext _)
-        => OnShootReleased?.Invoke();
-    void OnDashPerformed(InputAction.CallbackContext _) 
-        => OnDashPressed?.Invoke();
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        // Not used yet
+    }
+
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        // Not used yet
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        // Not used yet
+    }
+
+    public void OnPrevious(InputAction.CallbackContext context)
+    {
+        // Not used yet
+    }
+
+    public void OnNext(InputAction.CallbackContext context)
+    {
+        // Not used yet
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (_debugInput) Debug.Log("[Input] Sprint performed (Dash)", this);
+            OnDashPressed?.Invoke();
+        }
+    }
+
+    public void OnAbility1(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (_debugInput) Debug.Log("[Input] Ability1 pressed", this);
+            OnAbility1Pressed?.Invoke();
+        }
+    }
 }

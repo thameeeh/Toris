@@ -38,7 +38,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  arrowPrefab: {fileID: -2659523903795797121, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
+  arrowPrefab: {fileID: -9110488972372575258, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
   minArrowSpeed: 10
   maxArrowSpeed: 15
   baseDamage: 50

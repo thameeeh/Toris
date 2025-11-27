@@ -13,7 +13,6 @@ public class TileInteractor : MonoBehaviour
 
     public void HandleInteract()
     {
-        Debug.Log("Interacting with Tilemap...");
         // 1. Get Player Position (World & Cell)
         Vector3 playerPos = transform.position;
         Vector3Int playerCell = _interactableTilemap.WorldToCell(playerPos);
@@ -64,6 +63,13 @@ public class TileInteractor : MonoBehaviour
 
     private void CollectTileResource(ResourceTile tile, Vector3Int cellPos)
     {
+
+        if(tile.ResourceToGive == null || tile.ResourceAmount <= 0)
+        {
+            Debug.LogWarning("Tile has no resource to give!");
+            return;
+        }
+
         Inventory.InventoryInstance.AddResource(tile.ResourceToGive, tile.ResourceAmount);
 
         // Remove the tile

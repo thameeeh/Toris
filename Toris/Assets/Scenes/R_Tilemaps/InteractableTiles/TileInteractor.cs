@@ -5,34 +5,15 @@ using UnityEngine.InputSystem; // Required
 public class TileInteractor : MonoBehaviour
 {
     [SerializeField] private Tilemap _interactableTilemap;
-    [SerializeField] private Camera _mainCamera;
-    [SerializeField] private InputActionReference interactAction;
 
     [SerializeField] private int PickRange;
 
     ResourceTile closestResource = null;
     Vector3Int targetCell = Vector3Int.zero;
-    private void OnEnable()
-    {
-        interactAction.action.Enable();
-        interactAction.action.performed += HandleInteract;
-    }
 
-    private void OnDisable()
+    public void HandleInteract()
     {
-        interactAction.action.performed -= HandleInteract;
-        interactAction.action.Disable();
-    }
-
-    // We use Update instead of OnPointerClick for global mouse detection
-    private void Update()
-    {
-        // 1. Check if Left Mouse Button was clicked this frame
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            //HandleClick();
-        }
-
+        Debug.Log("Interacting with Tilemap...");
         // 1. Get Player Position (World & Cell)
         Vector3 playerPos = transform.position;
         Vector3Int playerCell = _interactableTilemap.WorldToCell(playerPos);
@@ -79,13 +60,6 @@ public class TileInteractor : MonoBehaviour
             CollectTileResource(closestResource, targetCell);
         }
         closestResource = null;
-    }
-
-    private void HandleInteract(InputAction.CallbackContext context)
-    {
-        
-
-       
     }
 
     private void CollectTileResource(ResourceTile tile, Vector3Int cellPos)

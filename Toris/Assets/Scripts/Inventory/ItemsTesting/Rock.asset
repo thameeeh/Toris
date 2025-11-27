@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
   resourceID: e18f5017-9ca7-4e63-b7e4-d8c58c4b24ca
   resourceName: Rock
-  resourceIcon: {fileID: -2200252834671627533, guid: 4139900baaf3a0042a72763ade8fa7b0, type: 3}
+  resourceIcon: {fileID: 252161442191513478, guid: 4139900baaf3a0042a72763ade8fa7b0, type: 3}
   Description: Rock I guess

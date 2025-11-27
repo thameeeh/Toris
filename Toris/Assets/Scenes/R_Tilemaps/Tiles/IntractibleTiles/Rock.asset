@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef32c125ae35ca42b9703e92974eee4, type: 3}
   m_Name: Rock
   m_EditorClassIdentifier: Assembly-CSharp::ResourceTile
-  m_Sprite: {fileID: -2200252834671627533, guid: 4139900baaf3a0042a72763ade8fa7b0, type: 3}
+  m_Sprite: {fileID: 252161442191513478, guid: 4139900baaf3a0042a72763ade8fa7b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

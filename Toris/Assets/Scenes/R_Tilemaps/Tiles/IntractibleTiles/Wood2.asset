@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef32c125ae35ca42b9703e92974eee4, type: 3}
   m_Name: Wood2
   m_EditorClassIdentifier: Assembly-CSharp::ResourceTile
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 6787200095303531231, guid: 4f2da5685c48c2c4b965e9959e12077f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -34,5 +34,5 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
   m_ColliderType: 1
-  ResourceToGive: {fileID: 0}
+  ResourceToGive: {fileID: 11400000, guid: cea297cc9e9e1ab428ca088146216c2d, type: 2}
   ResourceAmount: 1

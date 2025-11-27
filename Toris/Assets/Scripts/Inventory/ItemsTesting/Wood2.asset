@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Wood2
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
   resourceID: 083e1746-9435-4075-a833-d78cc1935653
-  resourceName: DoubleWood
+  resourceName: Wood2
   resourceIcon: {fileID: 6787200095303531231, guid: 4f2da5685c48c2c4b965e9959e12077f, type: 3}
   Description: 

@@ -1758,9 +1758,9 @@ MonoBehaviour:
   _maxChunksPerFrame: 1
   _unloadBuffer: 1
   _groundNoiseScale: 0.8
-  _rockPatchThreshold: 0.521
-  _rockBiomeScale: 0.02
-  _rockBiomeThreshold: 0.6
+  _rockPatchThreshold: 0.9
+  _rockBiomeScale: 0.045
+  _rockBiomeThreshold: 0.688
   _pathNoiseScale: 0.04
   _pathVerticalScaleMultiplier: 1
   _pathCenter: 0.5

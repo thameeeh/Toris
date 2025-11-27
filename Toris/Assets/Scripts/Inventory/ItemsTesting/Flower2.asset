@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b4eb4e68100d66409908bb9d0997b8e, type: 3}
   m_Name: Flower2
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
-  resourceID: aeeebbe8-5fd0-49b2-823c-3c34fb1f0ac7
-  resourceName: Flower2
+  resourceID: 3b7c2a97-faf2-4db8-abfe-dd6007081fb7
+  resourceName: flower2
   resourceIcon: {fileID: 2977761442387407660, guid: 4f2da5685c48c2c4b965e9959e12077f, type: 3}
   Description: 

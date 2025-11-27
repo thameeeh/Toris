@@ -1768,38 +1768,38 @@ MonoBehaviour:
   _wildernessStartDistance: 0.14
   _grassTiles:
   - tile: {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
-    weight: 0.608
+    weight: 0.746
   - tile: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
-    weight: 0.205
+    weight: 0.31
   - tile: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
-    weight: 0.216
+    weight: 0.289
   _rockTiles:
   - tile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
-    weight: 0.722
+    weight: 0.254
   _roadTiles:
-  - tile: {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
-    weight: 0.284
   - tile: {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
-    weight: 0.267
+    weight: 0.325
+  - tile: {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
+    weight: 0.325
   - tile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
-    weight: 0.25
+    weight: 0.325
   _decorNoiseScale: 0.35
   _flowerDecorTiles:
   - tile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
-    weight: 0.102
-  - tile: {fileID: 11400000, guid: 4aa6d02f6c9e3d54da211d1dbf0c94d6, type: 2}
-    weight: 0.386
-  - tile: {fileID: 11400000, guid: efb9f6dfd11426b458f05f4009bb8854, type: 2}
-    weight: 0.676
+    weight: 0.264
   - tile: {fileID: 11400000, guid: 8b9553300961c6e41ac34f25e2727bf6, type: 2}
-    weight: 1
-  _flowerBaseDensity: 0.115
-  _flowerWildernessBonus: 0.17
+    weight: 0.127
+  - tile: {fileID: 11400000, guid: 4aa6d02f6c9e3d54da211d1dbf0c94d6, type: 2}
+    weight: 0.64
+  - tile: {fileID: 11400000, guid: efb9f6dfd11426b458f05f4009bb8854, type: 2}
+    weight: 0.822
+  _flowerBaseDensity: 0.217
+  _flowerWildernessBonus: 0.35
   _rockDecorTiles:
   - tile: {fileID: 11400000, guid: b0ce1c7155c17134191757279f5bcb83, type: 2}
-    weight: 0.563
-  _rockDecorBaseDensity: 0.093
-  _rockDecorWildernessBonus: 0.165
+    weight: 0.234
+  _rockDecorBaseDensity: 0.07
+  _rockDecorWildernessBonus: 0.25
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   _badgerPrefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
   _maxLeaderWolves: 64
@@ -2089,7 +2089,7 @@ MonoBehaviour:
   _bow: {fileID: 1805136572}
   _multiShot: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   _debugMultiShot: 0
-  _ramboConfig: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
+  _ramboConfig: {fileID: 0}
   _debugRambow: 0
 --- !u!1 &1849731110
 GameObject:

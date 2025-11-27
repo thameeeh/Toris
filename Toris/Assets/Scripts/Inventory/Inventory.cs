@@ -35,32 +35,26 @@ public class Inventory : MonoBehaviour
 
     public void AddResource(ResourceData resource, int amount)
     {
-        //TryGetValue returns bool, 'out' returns value of coresponding key
-        if (ResourcesCount.TryGetValue(resource, out int currentAmount))
-        {
-            ResourcesCount[resource] = currentAmount + amount;
-            Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesCount[resource]}");
-        }
-        else
-        {
-            ResourcesCount.Add(resource, amount);
-            Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesCount[resource]}");
-        }
-        // The "?" checks if there are any subscribers before invoking the event
-        OnInventoryChanged?.Invoke();
+
+        AddToDictionary(ResourcesCount, resource, amount);
     }
     public void AddResourceStat(ResourceData resource, int amount)
     {
+        AddToDictionary(ResourcesStats, resource, amount);
+    }
+
+    private void AddToDictionary(in Dictionary<ResourceData, int> dic, ResourceData resource, int amount) 
+    {
         //TryGetValue returns bool, 'out' returns value of coresponding key
-        if (ResourcesStats.TryGetValue(resource, out int currentAmount))
+        if (dic.TryGetValue(resource, out int currentAmount))
         {
-            ResourcesStats[resource] = currentAmount + amount;
-            Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesStats[resource]}");
+            dic[resource] = currentAmount + amount;
+            Debug.Log($"{resource.name}: added {amount}, new amount: {dic[resource]}");
         }
         else
         {
-            ResourcesStats.Add(resource, amount);
-            Debug.Log($"{resource.name}: added {amount}, new amount: {ResourcesStats[resource]}");
+            dic.Add(resource, amount);
+            Debug.Log($"{resource.name}: added {amount}, new amount: {dic[resource]}");
         }
         // The "?" checks if there are any subscribers before invoking the event
         OnInventoryChanged?.Invoke();

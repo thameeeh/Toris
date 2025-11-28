@@ -1,10 +1,4 @@
-using System;
-using System.Data;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Scripting.APIUpdating;
-using UnityEngine.Windows;
 
 
 public class PlayerMovement : MonoBehaviour

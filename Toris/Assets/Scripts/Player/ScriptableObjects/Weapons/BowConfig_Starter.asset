@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BowConfig_Starter
   m_EditorClassIdentifier: Assembly-CSharp::BowSO
   minDrawTime: 0
-  maxDrawTime: 0.9
+  maxDrawTime: 1
   drawToPower:
     serializedVersion: 2
     m_Curve:
@@ -39,14 +39,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   arrowPrefab: {fileID: -9110488972372575258, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
-  minArrowSpeed: 10
+  minArrowSpeed: 5
   maxArrowSpeed: 15
   baseDamage: 50
   maxDamage: 120
-  arrowLifetime: 3
-  maxSpreadDegreesAtMin: 4
-  maxSpreadDegreesAtMax: 0
-  overHoldExtraSpreadPerSecond: 0
+  arrowLifetime: 2
+  maxSpreadDegreesAtMin: 1
+  maxSpreadDegreesAtMax: 2
+  overHoldExtraSpreadPerSecond: 8
   nockTime: 0.2
   overHoldStartsAt: 1.2
   cooldownAfterShot: 0

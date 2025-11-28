@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RamboBowConfig
   killsStat: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
   killsRequired: 5
-  shotsPerSecond: 8
-  spreadDegrees: 6
-  damagePerShot: 8
+  shotsPerSecond: 12
+  spreadDegrees: 3
+  damagePerShot: 25
   speedPerShot: 12
-  initialStaminaCost: 5
-  staminaPerShot: 2
+  initialStaminaCost: 25
+  staminaPerShot: 8
   maxDuration: 10

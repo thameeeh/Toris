@@ -21,18 +21,29 @@ public class SlotBinder : MonoBehaviour
 
     GameObject _player;
     PlayerInputReader _pInputReader;
-
+    PlayerAbilityController abilityController;
     VisualElement _arrowSkill;
     VisualElement _skillOverlay;
+
+    VisualElement _arrowSkill2;
+    VisualElement _skillOverlay2;
+
     bool _isOnCooldown = false;
     float _timer;
     float _currentTime = 0f;
+
+    bool _isOnCooldown2 = false;
+    float _timer2;
+    float _currentTime2 = 10f;
+
+
     private void OnEnable()
     {
         if(Inventory.InventoryInstance != null)
             Inventory.InventoryInstance.OnInventoryChanged += UpdateVisuals;
 
         _pInputReader.OnAbility1Pressed += StartSkillCooldown;
+
     }
     private void OnDisable()
     {
@@ -44,6 +55,8 @@ public class SlotBinder : MonoBehaviour
     void Awake()
     {
         _player = GameObject.FindWithTag("Player");
+        abilityController = _player.GetComponent<PlayerAbilityController>();
+
         _pInputReader = _player.GetComponent<PlayerInputReader>();
 
         _uiDocument = GetComponent<UIDocument>();
@@ -52,6 +65,9 @@ public class SlotBinder : MonoBehaviour
         _buttons = _root.Query<Button>().ToList();
         _arrowSkill = _root.Q<VisualElement>("ArrowSkill");
         _skillOverlay = _arrowSkill.Q<VisualElement>("Skill");
+
+        _arrowSkill2 = _root.Q<VisualElement>("ArrowSkill2");
+        _skillOverlay2 = _arrowSkill2.Q<VisualElement>("Skill2");
 
         _time = _root.Q<Label>("Time");
         _coins = _root.Q<Label>("Coins");
@@ -74,7 +90,7 @@ public class SlotBinder : MonoBehaviour
 
             _skillOverlay.style.height = Length.Percent(percentage * 100);
 
-            if (_timer <= 0)
+            if (_timer <= 0f)
             { 
                 _isOnCooldown = false;
                 _skillOverlay.style.height = Length.Percent(0);
@@ -83,6 +99,12 @@ public class SlotBinder : MonoBehaviour
         }else
             _arrowSkill.Q<Label>("ArrowSkillLabel").text = "";
 
+        if (abilityController.CanEnterRambow())
+        {
+            _timer2 -= Time.fixedDeltaTime;
+            _arrowSkill2.Q<Label>().text = "Hold R";
+            _skillOverlay2.style.height = Length.Percent(0);
+        }
     }
 
     void UpdateVisuals()

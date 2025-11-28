@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class GameInitiator : MonoBehaviour
 {
@@ -26,30 +27,33 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private string _dungeonScene;
 
     [SerializeField] private InputActionReference pauseAction;
+    [SerializeField] private EventSystem _eventSystem;
 
     private void Awake()
     {
         if(Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            pauseAction.action.performed += OnPausePress;
+            DontDestroyOnLoad(Instance.gameObject);
+            //DontDestroyOnLoad(_eventSystem);
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
     }
 
     private void OnEnable()
     {
+        pauseAction.action.started += OnPausePress;
         pauseAction.action.Enable();
     }
 
     private void OnDisable()
     {
         pauseAction.action.Disable();
+        pauseAction.action.started -= OnPausePress;
     }
 
     void Start()

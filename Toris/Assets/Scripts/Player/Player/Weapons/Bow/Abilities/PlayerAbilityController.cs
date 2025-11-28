@@ -132,7 +132,7 @@ public class PlayerAbilityController : MonoBehaviour
         _ramboActive = false;
     }
 
-    private bool CanEnterRambow()
+    public bool CanEnterRambow()
     {
         if (_ramboConfig == null || _bow == null || _stats == null || _input == null)
             return false;

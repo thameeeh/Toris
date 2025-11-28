@@ -168,6 +168,7 @@ MonoBehaviour:
   _townScene: MainArea
   _dungeonScene: ProceduralTiles
   pauseAction: {fileID: 7727032971491509709, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  _eventSystem: {fileID: 2752603505954241407, guid: 0c4ad4a83539fe34a97d08b5d2853252, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

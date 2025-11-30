@@ -64,7 +64,7 @@ public class TileInteractor : MonoBehaviour
     private void CollectTileResource(ResourceTile tile, Vector3Int cellPos)
     {
 
-        if(tile.ResourceToGive == null || tile.ResourceAmount <= 0)
+        if (tile.ResourceToGive == null || tile.ResourceAmount <= 0)
         {
             Debug.LogWarning("Tile has no resource to give!");
             return;

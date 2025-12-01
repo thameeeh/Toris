@@ -7,9 +7,7 @@ public class Inventory : MonoBehaviour
     private static Inventory _Inventory;
 
     //for resources like wood, stone, flowers
-    private Dictionary<ResourceData, int> ResourcesCount = new Dictionary<ResourceData, int>();
-    //for stats like kills, coins collected
-    private Dictionary<ResourceData, int> ResourcesStats = new Dictionary<ResourceData, int>();
+    private Dictionary<ResourceData, ResourceAmount> ResourcesCount = new Dictionary<ResourceData, ResourceAmount>();
 
     public event Action OnInventoryChanged;
     public static Inventory InventoryInstance
@@ -28,33 +26,24 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public Dictionary<ResourceData, int> GetAllResources()
+    public Dictionary<ResourceData, ResourceAmount> GetAllResources()
     {
-        return new Dictionary<ResourceData, int>(ResourcesCount);
+        return new Dictionary<ResourceData, ResourceAmount>(ResourcesCount);
     }
 
-    public void AddResource(ResourceData resource, int amount)
-    {
-
-        AddToDictionary(ResourcesCount, resource, amount);
-    }
-    public void AddResourceStat(ResourceData resource, int amount)
-    {
-        AddToDictionary(ResourcesStats, resource, amount);
-    }
-
-    private void AddToDictionary(in Dictionary<ResourceData, int> dic, ResourceData resource, int amount) 
+    private void AddToDictionary(ResourceData resource, int amount) 
     {
         //TryGetValue returns bool, 'out' returns value of coresponding key
-        if (dic.TryGetValue(resource, out int currentAmount))
+        if (ResourcesCount.TryGetValue(resource, out ResourceAmount currentAmount))
         {
-            dic[resource] = currentAmount + amount;
-            Debug.Log($"{resource.name}: added {amount}, new amount: {dic[resource]}");
+            currentAmount.amount += amount;
+            ResourcesCount[resource] = currentAmount;
         }
         else
         {
-            dic.Add(resource, amount);
-            Debug.Log($"{resource.name}: added {amount}, new amount: {dic[resource]}");
+            ResourceAmount newResourcesCount = new ResourceAmount();
+            newResourcesCount.amount = amount;
+            ResourcesCount.Add(resource, newResourcesCount);
         }
         // The "?" checks if there are any subscribers before invoking the event
         OnInventoryChanged?.Invoke();
@@ -62,11 +51,12 @@ public class Inventory : MonoBehaviour
 
     public bool RemoveResource(ResourceData resource, int amount)
     {
-        if (ResourcesCount.TryGetValue(resource, out int currentAmount))
+        if (ResourcesCount.TryGetValue(resource, out ResourceAmount currentAmount))
         {
-            if(currentAmount - amount >= 0)
+            if(currentAmount.amount - amount >= 0)
             {
-                ResourcesCount[resource] = currentAmount - amount;
+                currentAmount.amount = currentAmount.amount - amount;
+                ResourcesCount[resource] = currentAmount;
                 // The "?" checks if there are any subscribers before invoking the event
                 OnInventoryChanged?.Invoke();
                 return true;
@@ -90,17 +80,18 @@ public class Inventory : MonoBehaviour
             return 0;
         }
 
-        if (ResourcesCount.TryGetValue(resource, out int currentAmount))
+        if (ResourcesCount.TryGetValue(resource, out ResourceAmount currentAmount))
         {
-            return currentAmount;
-        }
-        else if (ResourcesStats.TryGetValue(resource, out int currentAmount1))
-        {
-            return currentAmount1;
+            return currentAmount.amount;
         }
         else
         {
             return 0;
         }
     }
+    public struct ResourceAmount
+    {
+        public int amount;
+    }
 }
+

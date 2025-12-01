@@ -70,7 +70,7 @@ public class TileInteractor : MonoBehaviour
             return;
         }
 
-        Inventory.InventoryInstance.AddResource(tile.ResourceToGive, tile.ResourceAmount);
+        Inventory.InventoryInstance.AddToDictionary(tile.ResourceToGive, tile.ResourceAmount);
 
         // Remove the tile
         _interactableTilemap.SetTile(cellPos, null);

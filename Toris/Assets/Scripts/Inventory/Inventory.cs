@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
         return new Dictionary<ResourceData, ResourceAmount>(ResourcesCount);
     }
 
-    private void AddToDictionary(ResourceData resource, int amount) 
+    public void AddToDictionary(ResourceData resource, int amount) 
     {
         //TryGetValue returns bool, 'out' returns value of coresponding key
         if (ResourcesCount.TryGetValue(resource, out ResourceAmount currentAmount))

@@ -5,7 +5,7 @@ public class ItemDatabase : MonoBehaviour
 {
     public static ItemDatabase Instance;
 
-    [SerializeField] private List<ResourceData> itemLookup;
+    public List<ResourceData> itemLookup;
     
     private Dictionary<string, ResourceData> itemDictionary = new Dictionary<string, ResourceData>();
     private void Awake()

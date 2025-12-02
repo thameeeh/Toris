@@ -131,15 +131,11 @@ public class Wolf : Enemy
         CurrentHealth = MaxHealth;
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
 
+        AlwaysAggroed = false;
+        SetAggroStatus(false);
+
         StateMachine.Reset();
         StateMachine.Initialize(IdleState);
-
-        if (role == WolfRole.Minion)
-        {
-            AlwaysAggroed = true;
-            SetAggroStatus(true);
-            StateMachine.ChangeState(ChaseState);
-        }
     }
     public void DestroyGameObject()
     {

@@ -3,6 +3,8 @@ using UnityEngine.EventSystems;
 
 public class TestMusic : MonoBehaviour
 {
+    public static TestMusic Instance {  get; private set; }
+
     [Header("Assign .ogg clips here")]
     public AudioClip clipGuitar;
     public AudioClip clipOboe;
@@ -36,6 +38,11 @@ public class TestMusic : MonoBehaviour
     #endregion
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(Instance.gameObject);
+        }
         mGtr = gameObject.AddComponent<AudioSource>();
         mOboe = gameObject.AddComponent<AudioSource>();
         mGtr2 = gameObject.AddComponent<AudioSource>();

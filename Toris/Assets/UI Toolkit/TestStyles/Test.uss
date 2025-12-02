@@ -1,0 +1,17 @@
+:root {
+}
+
+.midIcon {
+    flex-grow: 0;
+    width: 10px;
+    height: 10px;
+    align-items: auto;
+    background-color: rgba(111, 0, 0, 0);
+    color: rgb(27, 27, 27);
+}
+
+.Mid {
+    flex-grow: 0.2;
+    align-items: center;
+    justify-content: center;
+}

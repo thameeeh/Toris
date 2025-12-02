@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Wolf_Chase_Direct
   m_EditorClassIdentifier: Assembly-CSharp::WolfChaseSO
   _movementSpeed: 2
-  _slotRadius: 1.25
+  _pathChaseDistance: 1
+  _stopDistance: 1

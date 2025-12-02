@@ -1,24 +1,37 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wolf_Chase_Direct", menuName = "Enemy Logic/Chase Logic/Wolf Chase Direct")]
 public class WolfChaseSO : ChaseSOBase<Wolf>
 {
     [Header("Movement")]
     [SerializeField] private float _movementSpeed = 2f;
 
-    [Tooltip("Radius of the circle/arc around the player where wolves should stand.")]
-    [SerializeField] private float _slotRadius = 1.75f;
+    [Header("Ranges")]
+    [Tooltip("Beyond this distance, use pathfinding. Closer than this, use direct movement.")]
+    [SerializeField] private float _pathChaseDistance = 4f;
 
-    [Tooltip("How close to the desired slot is 'good enough' to stop (prevents jitter).")]
-    [SerializeField] private float _arrivalDistance = 0.2f;
+    [Tooltip("Stop moving closer when within this distance to the player (prevents micro jitter in melee).")]
+    [SerializeField] private float _stopDistance = 1.0f;
 
-    [Header("Formation")]
-    [Tooltip("How wide the pack arc is in degrees (<= 180 to keep them on one side).")]
-    [SerializeField] private float _arcAngle = 120f;
+    [Header("Path Smoothing")]
+    [Tooltip("Extra buffer so we don't keep flipping between path + direct every frame.")]
+    [SerializeField] private float _pathHysteresis = 1.0f;
+
+    private GridPathAgent _pathAgent;
+
+    // remember whether we're currently in 'path mode'
+    private bool _usingPath;
 
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
+
+        _pathAgent = enemy.GetComponent<GridPathAgent>();
+        if (_pathAgent == null)
+        {
+            Debug.LogWarning($"[WolfChaseSO] No GridPathAgent on {enemy.name}. Chase will not use pathfinding.");
+        }
+
+        _usingPath = false;
     }
 
     public override void DoEnterLogic()
@@ -27,150 +40,70 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
 
         enemy.animator.SetBool("IsMoving", true);
         enemy.animator.Play("Run");
-    }
 
-    public override void DoExitLogic()
-    {
-        base.DoExitLogic();
+        // reset mode when entering chase
+        _usingPath = false;
     }
 
     public override void DoFrameUpdateLogic()
     {
         base.DoFrameUpdateLogic();
 
-        Vector2 moveDirection = GetMoveDirection();
-
-        // If MoveEnemy already uses Time.deltaTime internally, keep this.
-        // Otherwise, change to: enemy.MoveEnemy(moveDirection * _movementSpeed * Time.deltaTime);
-        enemy.MoveEnemy(moveDirection * _movementSpeed);
-    }
-
-    public override void DoPhysicsLogic()
-    {
-        base.DoPhysicsLogic();
-    }
-
-    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
-    {
-        base.DoAnimationTriggerEventLogic(triggerType);
-    }
-
-    public override void ResetValues()
-    {
-        base.ResetValues();
-    }
-
-    private Vector2 GetMoveDirection()
-    {
-        Vector2 playerPos = playerTransform.position;
         Vector2 wolfPos = enemy.transform.position;
-
-        Vector2 slotOffset = GetSlotOffsetArc();
-        Vector2 desiredPosition = playerPos + slotOffset;
-
-        Vector2 toTarget = desiredPosition - wolfPos;
-
-        if (toTarget.sqrMagnitude <= _arrivalDistance * _arrivalDistance)
-            return Vector2.zero;
-
-        if (toTarget == Vector2.zero)
-            return Vector2.zero;
-
-        return toTarget.normalized;
-    }
-
-    /// <summary>
-    /// Returns the offset for this wolf's slot,
-    /// distributed in an arc on ONE SIDE of the player,
-    /// centered on direction from player -> pack leader.
-    /// </summary>
-    private Vector2 GetSlotOffsetArc()
-    {
-        Wolf[] packMembers = GetPackMembers();
-        if (packMembers.Length == 0) return Vector2.zero;
-
-        int slotIndex = GetSlotIndex(packMembers);
-
-        Transform anchorTransform = enemy.transform;
-
-        if (enemy.pack != null && enemy.pack.leaderWolf != null)
-        {
-            anchorTransform = enemy.pack.leaderWolf.transform;
-        }
-
         Vector2 playerPos = playerTransform.position;
-        Vector2 anchorPos = anchorTransform.position;
+        Vector2 toPlayer = playerPos - wolfPos;
 
-        Vector2 baseDir = anchorPos - playerPos;
-        if (baseDir.sqrMagnitude < 0.0001f)
+        float distToPlayer = toPlayer.magnitude;
+
+        // 1. If we're in melee radius, stop to avoid tiny jitter in bite range
+        if (distToPlayer <= _stopDistance)
         {
-            baseDir = Vector2.right;
+            enemy.MoveEnemy(Vector2.zero);
+            return;
         }
 
-        float baseAngle = Mathf.Atan2(baseDir.y, baseDir.x) * Mathf.Rad2Deg;
-
-        float clampedArc = Mathf.Clamp(_arcAngle, 0f, 180f);
-        int count = Mathf.Max(1, packMembers.Length);
-
-        float angleStep = (count > 1) ? clampedArc / (count - 1) : 0f;
-        float startAngle = baseAngle - clampedArc * 0.5f;
-        float angle = startAngle + angleStep * slotIndex;
-
-        Vector2 offsetDirection = new Vector2(
-            Mathf.Cos(angle * Mathf.Deg2Rad),
-            Mathf.Sin(angle * Mathf.Deg2Rad)
-        );
-
-        return offsetDirection * _slotRadius;
-    }
-
-    private int GetSlotIndex(Wolf[] packMembers)
-    {
-        for (int i = 0; i < packMembers.Length; i++)
+        // 2. Decide whether we should be in PATH mode or DIRECT mode (with hysteresis)
+        if (_usingPath)
         {
-            if (packMembers[i] == enemy)
-                return i;
-        }
-
-        int fallbackIndex = Mathf.Abs(enemy.GetInstanceID());
-        return fallbackIndex % Mathf.Max(1, packMembers.Length);
-    }
-
-    private Wolf[] GetPackMembers()
-    {
-        if (enemy.pack == null)
-        {
-            return new[] { enemy };
-        }
-
-        var members = enemy.pack.activeMinions;
-
-        int capacity = 1 + members.Count;
-        Wolf[] packMembers = new Wolf[capacity];
-        int count = 0;
-
-        if (enemy.pack.leaderWolf != null)
-        {
-            packMembers[count++] = enemy.pack.leaderWolf;
-        }
-
-        for (int i = 0; i < members.Count; i++)
-        {
-            Wolf minion = members[i];
-            if (minion != null)
+            if (distToPlayer < _pathChaseDistance - _pathHysteresis)
             {
-                packMembers[count++] = minion;
+                _usingPath = false;
+            }
+        }
+        else
+        {
+            if (distToPlayer > _pathChaseDistance + _pathHysteresis)
+            {
+                _usingPath = true;
             }
         }
 
-        if (count == packMembers.Length) return packMembers;
+        // 3. Compute movement
+        Vector2 moveDir = Vector2.zero;
 
-        Wolf[] trimmed = new Wolf[count];
-        for (int i = 0; i < count; i++)
+        if (_usingPath && _pathAgent != null)
         {
-            trimmed[i] = packMembers[i];
+            moveDir = _pathAgent.GetMoveDirection(playerPos);
+
+            if (moveDir.sqrMagnitude < 0.0001f)
+            {
+                moveDir = distToPlayer > 0.0001f ? (toPlayer / distToPlayer) : Vector2.zero;
+            }
+        }
+        else
+        {
+            moveDir = distToPlayer > 0.0001f ? (toPlayer / distToPlayer) : Vector2.zero;
         }
 
-        return trimmed;
+        // 4. Apply movement
+        if (moveDir.sqrMagnitude > 0.0001f)
+            enemy.MoveEnemy(moveDir * _movementSpeed);
+        else
+            enemy.MoveEnemy(Vector2.zero);
     }
+
+    public override void DoExitLogic() { base.DoExitLogic(); }
+    public override void DoPhysicsLogic() { base.DoPhysicsLogic(); }
+    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType) { base.DoAnimationTriggerEventLogic(triggerType); }
+    public override void ResetValues() { base.ResetValues(); }
 }

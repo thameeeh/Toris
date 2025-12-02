@@ -867,6 +867,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572305840}
   m_CullTransparentMesh: 1
+--- !u!1 &632992830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 632992832}
+  - component: {fileID: 632992831}
+  m_Layer: 0
+  m_Name: WorldSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &632992831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632992830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7914ffc808a7b54a88d5e52daa5e0fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileNavWorld
+  groundMap: {fileID: 1583650508}
+  walkableTiles:
+  - {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
+  - {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+  - {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+  - {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
+  - {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
+  - {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
+  blockingTiles:
+  - {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
+  - {fileID: 11400000, guid: 8b9553300961c6e41ac34f25e2727bf6, type: 2}
+  - {fileID: 11400000, guid: 4aa6d02f6c9e3d54da211d1dbf0c94d6, type: 2}
+  - {fileID: 11400000, guid: efb9f6dfd11426b458f05f4009bb8854, type: 2}
+--- !u!4 &632992832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632992830}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.15039, y: 3.10497, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &875006846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,9 +1866,9 @@ MonoBehaviour:
   _rockDecorWildernessBonus: 0.25
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   _badgerPrefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
-  _maxLeaderWolves: 12
-  _maxBadgers: 12
-  _leaderWolfChance: 0.5
+  _maxLeaderWolves: 4
+  _maxBadgers: 0
+  _leaderWolfChance: 1
   _badgerChance: 0.3
   _spawnRadius: 1.5
 --- !u!4 &1743458541
@@ -2150,6 +2207,7 @@ SceneRoots:
   - {fileID: 289700196}
   - {fileID: 328926126}
   - {fileID: 1743458541}
+  - {fileID: 632992832}
   - {fileID: 424703103185275433}
   - {fileID: 1872617157}
   - {fileID: 36881753}

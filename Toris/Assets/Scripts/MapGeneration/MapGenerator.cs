@@ -359,8 +359,7 @@ public class MapGenerator : MonoBehaviour
 
                 if (manager != null)
                 {
-                    // If you have a specific despawn method in your pool, use it instead.
-                    enemy.gameObject.SetActive(false);
+                    GameplayPoolManager.Instance.Release(enemy);
                 }
                 else
                 {
@@ -386,6 +385,11 @@ public class MapGenerator : MonoBehaviour
                     _decorationMap.SetTile(tilePos, null);
             }
         }
+
+        if (TileNavWorld.Instance != null)
+        {
+            TileNavWorld.Instance.ClearNavChunk(chunk);
+        }
     }
 
     // --------------------------------------------------------------------
@@ -405,7 +409,14 @@ public class MapGenerator : MonoBehaviour
                 GenerateTileAt(tilePos);
             }
         }
+
+        // After all tiles for this chunk are placed, build nav for it
+        if (TileNavWorld.Instance != null)
+        {
+            TileNavWorld.Instance.BuildNavChunk(chunk, _chunkSize);
+        }
     }
+
 
     private void GenerateTileAt(Vector3Int pos)
     {

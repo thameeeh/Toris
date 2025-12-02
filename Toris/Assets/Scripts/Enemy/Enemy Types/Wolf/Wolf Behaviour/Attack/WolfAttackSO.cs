@@ -7,9 +7,17 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     private int _attackTagHash = Animator.StringToHash("AttackAnimations");
     public bool _isAttackAnimationFinished { get; set; } = false;
 
+    private GridPathAgent _pathAgent;
+
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
+
+        _pathAgent = enemy.GetComponent<GridPathAgent>();
+        if (_pathAgent == null)
+        {
+            Debug.LogWarning($"[WolfAttackSO] No GridPathAgent on {enemy.name}. Attack lunge will not use pathfinding.");
+        }
     }
 
     public override void DoEnterLogic()
@@ -28,13 +36,27 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
-        Vector2 moveDirection = (playerTransform.position - enemy.transform.position).normalized * enemy.MovementSpeed;;
-
-        if (enemy.IsMovingWhileBiting)
+        if (!enemy.IsMovingWhileBiting)
         {
-            enemy.MoveEnemy(moveDirection);
+            enemy.MoveEnemy(Vector2.zero);
+            return;
         }
-        else enemy.MoveEnemy(Vector2.zero);
+
+        Vector2 moveDirection = Vector2.zero;
+
+        if (_pathAgent != null && TileNavWorld.Instance != null)
+        {
+            moveDirection = _pathAgent.GetMoveDirection(playerTransform.position);
+        }
+
+        if (moveDirection.sqrMagnitude > 0.0001f)
+        {
+            enemy.MoveEnemy(moveDirection * enemy.MovementSpeed);
+        }
+        else
+        {
+            enemy.MoveEnemy(Vector2.zero);
+        }
     }
 
     public override void DoPhysicsLogic()
@@ -51,10 +73,11 @@ public class WolfAttackSO : AttackSOBase<Wolf>
             enemy.animator.ResetTrigger("Attack");
         }
 
-        //Debug.Log(stateInfo.normalizedTime);
-
         _animationDirection = enemy.PlayerTransform.position - enemy.transform.position;
-        enemy.UpdateAnimationDirection(_animationDirection.normalized);
+        if (_animationDirection.sqrMagnitude > 0.0001f)
+        {
+            enemy.UpdateAnimationDirection(_animationDirection.normalized);
+        }
     }
 
     public override void ResetValues()
@@ -63,7 +86,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
 
         //Debug.Log("Values have been reset");
     }
-    
+
     public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);

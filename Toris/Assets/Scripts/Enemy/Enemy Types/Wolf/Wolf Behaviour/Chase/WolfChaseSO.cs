@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class WolfChaseSO : ChaseSOBase<Wolf>
 {
-    [Header("Movement")]
-    [SerializeField] private float _movementSpeed = 2f;
-
     [Header("Ranges")]
     [Tooltip("Beyond this distance, use pathfinding. Closer than this, use direct movement.")]
     [SerializeField] private float _pathChaseDistance = 4f;
@@ -96,8 +93,10 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
         }
 
         // 4. Apply movement
+        float speed = enemy.MovementSpeed;
+
         if (moveDir.sqrMagnitude > 0.0001f)
-            enemy.MoveEnemy(moveDir * _movementSpeed);
+            enemy.MoveEnemy(moveDir * speed);
         else
             enemy.MoveEnemy(Vector2.zero);
     }

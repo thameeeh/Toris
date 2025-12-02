@@ -15,8 +15,17 @@ public class PackController : MonoBehaviour
     public List<Wolf> activeMinions = new List<Wolf>();
     private float _lastHowlTimestamp = -999f;
 
+    [Header("World / Chunk")]
+    [SerializeField] private MapGenerator _mapGenerator; // NEW: to register minions in chunks
+
     private void Awake()
     {
+        // Resolve MapGenerator so we can register minions into its chunk map
+        if (_mapGenerator == null)
+        {
+            _mapGenerator = FindFirstObjectByType<MapGenerator>();
+        }
+
         if (leaderWolf == null)
         {
             leaderWolf = GetComponent<Wolf>();
@@ -48,6 +57,7 @@ public class PackController : MonoBehaviour
 
     public int GetActiveMinionCount()
     {
+        // Clean out destroyed entries
         activeMinions.RemoveAll(m => m == null);
         return activeMinions.Count;
     }
@@ -69,7 +79,6 @@ public class PackController : MonoBehaviour
 
             if (poolManager != null)
             {
-                // Spawn via enemy pool
                 Enemy enemy = poolManager.SpawnEnemy(minionWolfPrefab, spawnPoint, Quaternion.identity);
                 newMinion = enemy as Wolf;
 
@@ -81,14 +90,25 @@ public class PackController : MonoBehaviour
             }
             else
             {
-                // Fallback, in case no pool manager exists
                 newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
             }
 
             newMinion.role = WolfRole.Minion;
             newMinion.pack = this;
 
+            newMinion.Despawned += OnMinionDespawned;
+
             activeMinions.Add(newMinion);
+
+            if (_mapGenerator == null)
+            {
+                _mapGenerator = FindFirstObjectByType<MapGenerator>();
+            }
+
+            if (_mapGenerator != null)
+            {
+                _mapGenerator.RegisterEnemyInChunk(newMinion, newMinion.transform.position);
+            }
         }
     }
 
@@ -103,7 +123,8 @@ public class PackController : MonoBehaviour
             }
 
             Vector2 candidatePos = spawnCenter + direction * spawnDistance;
-            Collider2D hit = Physics2D.OverlapCircle(candidatePos, 0.3f, LayerMask.GetMask("Default", "Ground", "Walls"));
+            Collider2D hit = Physics2D.OverlapCircle(candidatePos, 0.3f,
+                LayerMask.GetMask("Default", "Ground", "Walls"));
             if (hit == null) return candidatePos;
         }
         return spawnCenter + Random.insideUnitCircle * spawnDistance * 0.5f;
@@ -124,7 +145,7 @@ public class PackController : MonoBehaviour
 
     private void RegisterLeader(Wolf leader)
     {
-        if (leader== null) return;
+        if (leader == null) return;
 
         if (leaderWolf != null && leaderWolf != leader)
         {
@@ -137,22 +158,40 @@ public class PackController : MonoBehaviour
         leaderWolf.pack = this;
     }
 
-    private  Wolf ResolveLeader(Wolf requester)
+    private Wolf ResolveLeader(Wolf requester)
     {
         if (leaderWolf == null) return null;
         if (requester != null && requester != leaderWolf) return null;
 
         return leaderWolf;
     }
+
     public void DespawnAllMinions()
     {
         foreach (var minion in activeMinions)
         {
             if (minion == null) continue;
 
+            minion.Despawned -= OnMinionDespawned;
             minion.RequestDespawn();
         }
 
         activeMinions.Clear();
+    }
+
+    public void NotifyMinionDespawned(Wolf minion)
+    {
+        if (minion == null) return;
+
+        minion.Despawned -= OnMinionDespawned;
+        activeMinions.Remove(minion);
+    }
+
+    private void OnMinionDespawned(Enemy enemy)
+    {
+        var wolf = enemy as Wolf;
+        if (wolf == null) return;
+
+        activeMinions.Remove(wolf);
     }
 }

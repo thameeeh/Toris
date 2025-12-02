@@ -15,6 +15,7 @@ public class MapGenerator : MonoBehaviour
     [Header("Tilemaps")]
     [SerializeField] private Tilemap _groundMap;      // Grass / Rock / Road
     [SerializeField] private Tilemap _decorationMap;  // Flowers / small rocks on top
+    [SerializeField] private Tilemap _waterMap;
 
     [Header("Player / Focus")]
     [SerializeField] private Transform _player;
@@ -43,6 +44,12 @@ public class MapGenerator : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     private float _rockBiomeThreshold = 0.82f;
 
+    [Header("Water Noise (Lakes / Ponds)")]
+    [SerializeField] private float _waterNoiseScale = 0.05f;
+    [SerializeField, Range(0f, 1f)]
+    private float _waterThreshold = 0.7f;
+    [SerializeField] private TileBase _waterGroundTile;
+
     [Header("Path Noise (Road Network)")]
     [SerializeField] private float _pathNoiseScale = 0.06f;
     [SerializeField] private float _pathVerticalScaleMultiplier = 0.5f;
@@ -66,6 +73,9 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Road Tiles (Dirt / Rock Roads)")]
     [SerializeField] private WeightedTile[] _roadTiles;
+
+    [Header("Water Tiles (Lakes / Ponds)")]
+    [SerializeField] private WeightedTile[] _waterTiles;
 
     // ---------------- DECORATIONS ----------------
 
@@ -113,6 +123,7 @@ public class MapGenerator : MonoBehaviour
     private Vector2 _pathOffset;
     private Vector2 _decorOffset;
     private Vector2 _rockBiomeOffset;
+    private Vector2 _waterOffset;
 
     // ---------------- LIVE TUNING CACHE ----------------
 
@@ -199,14 +210,23 @@ public class MapGenerator : MonoBehaviour
         _rockBiomeOffset = new Vector2(
             rng.Next(-100000, 100000),
             rng.Next(-100000, 100000));
+
+        _waterOffset = new Vector2(
+            rng.Next(-100000, 100000),
+            rng.Next(-100000, 100000));
     }
 
     [ContextMenu("Regenerate All")]
     private void RegenerateAll()
     {
-        _groundMap.ClearAllTiles();
+        if (_groundMap != null) 
+            _groundMap.ClearAllTiles();
+
         if (_decorationMap != null)
             _decorationMap.ClearAllTiles();
+
+        if (_waterMap != null)
+            _waterMap.ClearAllTiles();
 
         _generatedChunks.Clear();
         _chunksToGenerate.Clear();
@@ -381,8 +401,8 @@ public class MapGenerator : MonoBehaviour
             {
                 var tilePos = new Vector3Int(startX + lx, startY + ly, 0);
                 _groundMap.SetTile(tilePos, null);
-                if (_decorationMap != null)
-                    _decorationMap.SetTile(tilePos, null);
+                _decorationMap.SetTile(tilePos, null);
+                _waterMap.SetTile(tilePos, null);
             }
         }
 
@@ -416,10 +436,10 @@ public class MapGenerator : MonoBehaviour
             TileNavWorld.Instance.BuildNavChunk(chunk, _chunkSize);
         }
     }
-
-
     private void GenerateTileAt(Vector3Int pos)
     {
+        // --- NOISE SETUP ---
+
         // world -> noise coords for ground
         float gx = pos.x * _groundNoiseScale + _groundOffset.x;
         float gy = pos.y * _groundNoiseScale + _groundOffset.y;
@@ -433,58 +453,76 @@ public class MapGenerator : MonoBehaviour
         float px = pos.x * _pathNoiseScale + _pathOffset.x;
         float py = pos.y * _pathNoiseScale * _pathVerticalScaleMultiplier + _pathOffset.y;
 
-        float groundNoise = Mathf.PerlinNoise(gx, gy); 
+        // water noise (independent pattern from ground)
+        float wx = pos.x * _waterNoiseScale + _waterOffset.x;
+        float wy = pos.y * _waterNoiseScale + _waterOffset.y;
+
+        float groundNoise = Mathf.PerlinNoise(gx, gy);
         float pathNoise = Mathf.PerlinNoise(px, py);
+        float waterNoise = Mathf.PerlinNoise(wx, wy);
 
         float distFromPath = Mathf.Abs(pathNoise - _pathCenter);
 
+        // wilderness factor (for decorations etc.)
         float wildernessFactor = 0f;
         if (distFromPath > _wildernessStartDistance)
         {
             wildernessFactor = Mathf.InverseLerp(_wildernessStartDistance, 0.5f, distFromPath);
         }
 
+        // rock biome noise
         float rbx = pos.x * _rockBiomeScale + _rockBiomeOffset.x;
         float rby = pos.y * _rockBiomeScale + _rockBiomeOffset.y;
         float rockBiomeNoise = Mathf.PerlinNoise(rbx, rby);
         bool inRockBiome = rockBiomeNoise > _rockBiomeThreshold;
 
         bool isRoad = distFromPath < _pathHalfWidth;
+        bool isWater = !isRoad && waterNoise > _waterThreshold;
 
-        TileBase groundTile;
+        TileBase groundTile = null;
 
-        if (isRoad && _roadTiles != null && _roadTiles.Length > 0)
+        // --- GROUND SELECTION ---
+
+        if (isWater)
         {
-            groundTile = PickWeightedTile(_roadTiles, variantNoise);
+            // Special ground under water so it looks like a lakebed instead of random grass/rock.
+            // Add this field to your class if you want a distinct tile:
+            // [SerializeField] private TileBase _waterGroundTile;
+            if (_waterGroundTile != null)
+            {
+                groundTile = _waterGroundTile;
+            }
+            else if (_grassTiles != null && _grassTiles.Length > 0)
+            {
+                // Fallback: use grass as the lakebed if no dedicated tile is assigned.
+                groundTile = PickWeightedTile(_grassTiles, variantNoise);
+            }
+            else if (_rockTiles != null && _rockTiles.Length > 0)
+            {
+                groundTile = PickWeightedTile(_rockTiles, variantNoise);
+            }
         }
         else
         {
-            if (inRockBiome)
+            // Normal land logic (roads + biomes)
+            if (isRoad && _roadTiles != null && _roadTiles.Length > 0)
             {
-                if (_rockTiles != null && _rockTiles.Length > 0)
-                {
-                    float biomeStrength = Mathf.InverseLerp(_rockBiomeThreshold, 1f, rockBiomeNoise);
-
-                    float rockChance = Mathf.Lerp(0.2f, 0.8f, biomeStrength);
-                    float roll = groundNoise;
-
-                    if (roll < rockChance && _rockTiles.Length > 0)
-                        groundTile = PickWeightedTile(_rockTiles, variantNoise);
-                    else
-                        groundTile = PickWeightedTile(_grassTiles, variantNoise);
-                }
-                else
-                {
-                    groundTile = PickWeightedTile(_grassTiles, variantNoise);
-                }
+                groundTile = PickWeightedTile(_roadTiles, variantNoise);
             }
             else
             {
-                if (_grassTiles != null && _grassTiles.Length > 0)
+                if (inRockBiome)
                 {
-                    if (groundNoise > _rockPatchThreshold && _rockTiles != null && _rockTiles.Length > 0)
+                    if (_rockTiles != null && _rockTiles.Length > 0)
                     {
-                        groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                        float biomeStrength = Mathf.InverseLerp(_rockBiomeThreshold, 1f, rockBiomeNoise);
+                        float rockChance = Mathf.Lerp(0.2f, 0.8f, biomeStrength);
+                        float roll = groundNoise;
+
+                        if (roll < rockChance && _rockTiles.Length > 0)
+                            groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                        else
+                            groundTile = PickWeightedTile(_grassTiles, variantNoise);
                     }
                     else
                     {
@@ -493,14 +531,54 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                    if (_grassTiles != null && _grassTiles.Length > 0)
+                    {
+                        if (groundNoise > _rockPatchThreshold && _rockTiles != null && _rockTiles.Length > 0)
+                        {
+                            groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                        }
+                        else
+                        {
+                            groundTile = PickWeightedTile(_grassTiles, variantNoise);
+                        }
+                    }
+                    else
+                    {
+                        groundTile = PickWeightedTile(_rockTiles, variantNoise);
+                    }
                 }
             }
+        }
+
+        // Safety fallback, just in case everything above fails
+        if (groundTile == null)
+        {
+            if (_grassTiles != null && _grassTiles.Length > 0)
+                groundTile = PickWeightedTile(_grassTiles, variantNoise);
+            else if (_rockTiles != null && _rockTiles.Length > 0)
+                groundTile = PickWeightedTile(_rockTiles, variantNoise);
         }
 
         _groundMap.SetTile(pos, groundTile);
 
-        if (_decorationMap != null)
+        // --- WATER LAYER ---
+
+        if (_waterMap != null)
+        {
+            if (isWater && _waterTiles != null && _waterTiles.Length > 0)
+            {
+                var waterTile = PickWeightedTile(_waterTiles, variantNoise);
+                _waterMap.SetTile(pos, waterTile);
+            }
+            else
+            {
+                _waterMap.SetTile(pos, null);
+            }
+        }
+
+        // --- DECORATIONS ONLY ON LAND ---
+
+        if (!isWater && _decorationMap != null)
         {
             SpawnDecoration(pos, groundTile, wildernessFactor);
         }
@@ -618,7 +696,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void RegisterEnemyInChunk(Enemy enemy, Vector3 worldPos)
+    public void RegisterEnemyInChunk(Enemy enemy, Vector3 worldPos)
     {
         if (enemy == null) return;
 

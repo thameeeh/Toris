@@ -510,7 +510,6 @@ public readonly struct PoolReport
 }
 
 /// <summary>
-/// Very small custom pool for MonoBehaviours used for projectiles.
 /// - Never auto-destroys on Release
 /// - Filters out destroyed instances before reuse
 /// - You can destroy everything explicitly via Clear() if needed

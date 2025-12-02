@@ -8,6 +8,7 @@ public class TileNavWorld : MonoBehaviour
 
     [Header("Tilemap used for navigation")]
     [SerializeField] private Tilemap groundMap;
+    [SerializeField] private Tilemap waterMap;
 
     [Header("Walkable tiles (whitelist)")]
     [SerializeField] private TileBase[] walkableTiles;
@@ -67,8 +68,19 @@ public class TileNavWorld : MonoBehaviour
             for (int ly = 0; ly < chunkSize; ly++)
             {
                 var cell = new Vector3Int(startX + lx, startY + ly, 0);
+
                 TileBase tile = groundMap.GetTile(cell);
                 bool walkable = IsTileWalkable(tile);
+                
+                if (waterMap != null)
+                {
+                    TileBase waterTile = waterMap.GetTile(cell);
+                    if (waterTile != null)
+                    {
+                        walkable = false;
+                    }
+                }
+                
                 navChunk.SetWalkable(lx, ly, walkable);
             }
         }

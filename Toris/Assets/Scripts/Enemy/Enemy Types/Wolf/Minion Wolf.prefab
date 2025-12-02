@@ -292,7 +292,7 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   AttackDamage: 15
-  MovementSpeed: 2
+  MovementSpeed: 1.8
   role: 1
   healthMultiplier: 1
   pack: {fileID: -2298867679096013564, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
   repathInterval: 0.6
   maxPathRange: 50
-  waypointReachThreshold: 0.2
+  waypointReachThreshold: 0.4
   targetChangeThreshold: 1
   allowDirectFallbackWhenNoPath: 0
 --- !u!58 &866309426480149356

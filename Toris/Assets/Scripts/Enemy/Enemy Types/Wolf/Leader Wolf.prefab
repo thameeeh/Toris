@@ -78,7 +78,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1287189023
+  m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 9038641558441596822, guid: 236368b4cb36b894990c48bf76c163fb, type: 3}
@@ -293,9 +293,9 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   AttackDamage: 35
-  MovementSpeed: 3
+  MovementSpeed: 2
   role: 0
-  healthMultiplier: 2
+  healthMultiplier: 1
   pack: {fileID: -2298867679096013564}
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
@@ -321,6 +321,7 @@ MonoBehaviour:
   spawnDistance: 2.5
   howlCooldownDuration: 10
   activeMinions: []
+  _mapGenerator: {fileID: 0}
 --- !u!114 &-4774567673522461205
 MonoBehaviour:
   m_ObjectHideFlags: 0

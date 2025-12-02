@@ -44,7 +44,6 @@ public class GridPathAgent : MonoBehaviour
     /// </summary>
     public Vector2 GetMoveDirection(Vector3 desiredTargetWorld)
     {
-        // If nav world doesn't exist at all, decide what to do.
         if (TileNavWorld.Instance == null)
         {
             if (allowDirectFallbackWhenNoPath)
@@ -53,7 +52,7 @@ public class GridPathAgent : MonoBehaviour
                 return dirFallback.sqrMagnitude > 0.0001f ? dirFallback.normalized : Vector2.zero;
             }
 
-            return Vector2.zero; // No nav => stay put
+            return Vector2.zero;
         }
 
         _repathTimer -= Time.deltaTime;
@@ -84,24 +83,19 @@ public class GridPathAgent : MonoBehaviour
             _hasLastTarget = true;
         }
 
-        // If we have no valid path, decide what to do.
         if (!_hasValidPath || _currentPath.Count == 0)
         {
             if (allowDirectFallbackWhenNoPath)
             {
-                // Old behavior (walk straight through everything) – now OPTIONAL
                 Vector2 direct = desiredTargetWorld - transform.position;
                 return direct.sqrMagnitude > 0.0001f ? direct.normalized : Vector2.zero;
             }
 
-            // New behavior: no path => don't move
             return Vector2.zero;
         }
 
-        // Follow current path
         if (_pathIndex < 0 || _pathIndex >= _currentPath.Count)
         {
-            // Path index out of range; treat as no path.
             _hasValidPath = false;
             return Vector2.zero;
         }
@@ -109,7 +103,6 @@ public class GridPathAgent : MonoBehaviour
         Vector3 waypoint = _currentPath[_pathIndex];
         Vector2 toWaypoint = waypoint - transform.position;
 
-        // If close enough to this waypoint, move to the next one
         if (toWaypoint.sqrMagnitude < waypointReachThreshold * waypointReachThreshold)
         {
             if (_pathIndex < _currentPath.Count - 1)
@@ -120,7 +113,6 @@ public class GridPathAgent : MonoBehaviour
             }
             else
             {
-                // Last waypoint reached; consider path consumed
                 _hasValidPath = false;
                 return Vector2.zero;
             }
@@ -150,13 +142,12 @@ public class GridPathAgent : MonoBehaviour
             _pathIndex = 0;
             _hasValidPath = false;
 
-            Debug.Log($"[GridPathAgent] No path found for {_enemy?.name ?? gameObject.name} to target at {desiredTargetWorld}.");
+            //Debug.Log($"[GridPathAgent] No path found for {_enemy?.name ?? gameObject.name} to target at {desiredTargetWorld}.");
         }
         else
         {
             _hasValidPath = true;
 
-            // Optional debug: draw the path for a short time
             for (int i = 0; i < _currentPath.Count - 1; i++)
             {
                 Debug.DrawLine(_currentPath[i], _currentPath[i + 1], Color.cyan, 0.5f);

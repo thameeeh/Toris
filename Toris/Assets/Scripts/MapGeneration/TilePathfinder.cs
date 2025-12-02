@@ -106,12 +106,12 @@ public static class TilePathfinder
         open.Add(startIdx);
 
         List<Vector2Int> neighborOffsets = new List<Vector2Int>
-        {
-            new Vector2Int( 1,  0),
-            new Vector2Int(-1,  0),
-            new Vector2Int( 0,  1),
-            new Vector2Int( 0, -1)
-        };
+    {
+        new Vector2Int( 1,  0),
+        new Vector2Int(-1,  0),
+        new Vector2Int( 0,  1),
+        new Vector2Int( 0, -1)
+    };
         if (allowDiagonal)
         {
             neighborOffsets.Add(new Vector2Int(1, 1));
@@ -155,6 +155,18 @@ public static class TilePathfinder
                 if (nIdx < 0) continue;
                 if (closed[nIdx] || !walkable[nIdx]) continue;
 
+                // --- NEW: prevent diagonal corner-cutting ---
+                if (offset.x != 0 && offset.y != 0)
+                {
+                    int adj1Idx = IndexOf(cx + offset.x, cy, minX, minY, width, height);
+                    int adj2Idx = IndexOf(cx, cy + offset.y, minX, minY, width, height);
+
+                    if (adj1Idx < 0 || adj2Idx < 0) continue;
+                    if (!walkable[adj1Idx] || !walkable[adj2Idx])
+                        continue;
+                }
+                // -------------------------------------------
+
                 float stepCost = (offset.x == 0 || offset.y == 0) ? 1f : 1.4142f;
                 float tentativeG = gCost[currentIdx] + stepCost;
                 if (tentativeG >= gCost[nIdx]) continue;
@@ -172,6 +184,7 @@ public static class TilePathfinder
 
         return false;
     }
+
 
     private static float Heuristic(Vector2Int a, Vector2Int b)
     {

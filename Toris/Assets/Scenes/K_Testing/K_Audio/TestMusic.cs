@@ -38,11 +38,14 @@ public class TestMusic : MonoBehaviour
     #endregion
     void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(Instance.gameObject);
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+
         mGtr = gameObject.AddComponent<AudioSource>();
         mOboe = gameObject.AddComponent<AudioSource>();
         mGtr2 = gameObject.AddComponent<AudioSource>();
@@ -63,6 +66,14 @@ public class TestMusic : MonoBehaviour
         mGtr2.volume = 0f;
         mPadA.volume = 0f;
         mPadB.volume = 0f;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     void Start()

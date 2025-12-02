@@ -52,6 +52,12 @@ public class MainMenuUI : MonoBehaviour
     //This function is called when the "Quit Game" button is pressed
     public void QuitGame()
     {
-        GameInitiator.Instance.ChangeState(GameInitiator.GameState.MainMenu);
+        // If running in the Unity Editor
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    // If running in a build
+    Application.Quit();
+#endif
     }
 }

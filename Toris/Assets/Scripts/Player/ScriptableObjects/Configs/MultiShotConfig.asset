@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ead9af0262bb744192e0cd47d68934e, type: 3}
   m_Name: MultiShotConfig
   m_EditorClassIdentifier: Assembly-CSharp::MultiShotConfig
-  arrowCount: 5
-  totalSpreadDegrees: 30
-  staminaCost: 50
-  cooldown: 2
+  abilityName: MultiShot
+  icon: {fileID: 0}
+  cooldownSeconds: 5
+  arrowCount: 7
+  totalSpreadDegrees: 10
+  staminaCost: 10

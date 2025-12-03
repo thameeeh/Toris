@@ -1,0 +1,691 @@
+fileFormatVersion: 2
+guid: ff0cef878d9d3d14b9c870bc16ea02ba
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4284006831793443900
+    second: Druid_Attack_01_0
+  - first:
+      213: -7395711969401022272
+    second: Druid_Attack_01_1
+  - first:
+      213: -1660709898435360930
+    second: Druid_Attack_01_2
+  - first:
+      213: -3732377877739523868
+    second: Druid_Attack_01_3
+  - first:
+      213: 1964934848046316021
+    second: Druid_Attack_01_4
+  - first:
+      213: 5653119260460670812
+    second: Druid_Attack_01_5
+  - first:
+      213: -2909776508907081063
+    second: Druid_Attack_01_6
+  - first:
+      213: 2221908988384014185
+    second: Druid_Attack_01_7
+  - first:
+      213: -2404213304478008570
+    second: Druid_Attack_01_8
+  - first:
+      213: -4850165141503983890
+    second: Druid_Attack_01_9
+  - first:
+      213: 663982796374838785
+    second: Druid_Attack_01_10
+  - first:
+      213: 134677856847210701
+    second: Druid_Attack_01_11
+  - first:
+      213: 4804287439226271609
+    second: Druid_Attack_01_12
+  - first:
+      213: -4128733995860500106
+    second: Druid_Attack_01_13
+  - first:
+      213: 6331768394219153682
+    second: Druid_Attack_01_14
+  - first:
+      213: 1604002679510985068
+    second: Druid_Attack_01_15
+  - first:
+      213: 8942933162956706927
+    second: Druid_Attack_01_16
+  - first:
+      213: -6525461737896248628
+    second: Druid_Attack_01_17
+  - first:
+      213: -6596492733512863168
+    second: Druid_Attack_01_18
+  - first:
+      213: -7512535532851038317
+    second: Druid_Attack_01_19
+  - first:
+      213: -4084768521006604912
+    second: Druid_Attack_01_20
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Druid_Attack_01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1301
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cbea9feb762c84c0800000000000000
+      internalID: -4284006831793443900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1237
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c85fb2e5272d5990800000000000000
+      internalID: -7395711969401022272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1173
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5709cc6529f3f8e0800000000000000
+      internalID: -1660709898435360930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1109
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e03fcd581ee33cc0800000000000000
+      internalID: -3732377877739523868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1045
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f9369865d9d44b10800000000000000
+      internalID: 1964934848046316021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 981
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5f5da0140ae37e40800000000000000
+      internalID: 5653119260460670812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 917
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99231da8ea56e97d0800000000000000
+      internalID: -2909776508907081063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 853
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96f60e7e37ec5de10800000000000000
+      internalID: 2221908988384014185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 789
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60bf156dcb482aed0800000000000000
+      internalID: -2404213304478008570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 725
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eee3ca64080c0bcb0800000000000000
+      internalID: -4850165141503983890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 661
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10e84ead5d0f63900800000000000000
+      internalID: 663982796374838785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 597
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc82d781cc87ed100800000000000000
+      internalID: 134677856847210701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 533
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 977f3f5c8f14ca240800000000000000
+      internalID: 4804287439226271609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 469
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 671e7a44e4ac3b6c0800000000000000
+      internalID: -4128733995860500106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 405
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2196a71bec5fed750800000000000000
+      internalID: 6331768394219153682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 341
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c69e60b40ff824610800000000000000
+      internalID: 1604002679510985068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 277
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f64581c745eab1c70800000000000000
+      internalID: 8942933162956706927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 213
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cca7a4d6f17e075a0800000000000000
+      internalID: -6525461737896248628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 149
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 042358ffecc8474a0800000000000000
+      internalID: -6596492733512863168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 85
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 397f9e96cbc1eb790800000000000000
+      internalID: -7512535532851038317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Druid_Attack_01_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 21
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09d14b31cacff47c0800000000000000
+      internalID: -4084768521006604912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Druid_Attack_01_0: -4284006831793443900
+      Druid_Attack_01_3: -3732377877739523868
+      Druid_Attack_01_2: -1660709898435360930
+      Druid_Attack_01_6: -2909776508907081063
+      Druid_Attack_01_9: -4850165141503983890
+      Druid_Attack_01_18: -6596492733512863168
+      Druid_Attack_01_19: -7512535532851038317
+      Druid_Attack_01_17: -6525461737896248628
+      Druid_Attack_01_1: -7395711969401022272
+      Druid_Attack_01_14: 6331768394219153682
+      Druid_Attack_01_20: -4084768521006604912
+      Druid_Attack_01_4: 1964934848046316021
+      Druid_Attack_01_7: 2221908988384014185
+      Druid_Attack_01_16: 8942933162956706927
+      Druid_Attack_01_10: 663982796374838785
+      Druid_Attack_01_15: 1604002679510985068
+      Druid_Attack_01_5: 5653119260460670812
+      Druid_Attack_01_13: -4128733995860500106
+      Druid_Attack_01_8: -2404213304478008570
+      Druid_Attack_01_12: 4804287439226271609
+      Druid_Attack_01_11: 134677856847210701
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Textures/Character/Druid/Druid_Attack_01.png
+  uploadId: 691532

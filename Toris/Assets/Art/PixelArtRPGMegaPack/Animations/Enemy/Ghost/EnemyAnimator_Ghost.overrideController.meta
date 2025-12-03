@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 06831ae6e482bcd4386c980170aa70ae
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Enemy/Ghost/EnemyAnimator_Ghost.overrideController
+  uploadId: 691532

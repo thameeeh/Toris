@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1a1ff120641ca844aec273502559e77
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/VFX/VFX_Screen_Controller.controller
+  uploadId: 691532

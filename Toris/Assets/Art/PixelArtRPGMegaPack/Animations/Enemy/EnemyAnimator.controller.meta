@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2aac52c1b55cbe4448f44d937745cf99
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Enemy/EnemyAnimator.controller
+  uploadId: 691532

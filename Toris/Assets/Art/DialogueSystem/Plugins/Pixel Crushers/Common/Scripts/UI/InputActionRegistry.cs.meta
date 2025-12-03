@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 772769b2082b46c4daab6fe1e81aed61
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 11672
+  packageName: Dialogue System for Unity
+  packageVersion: 2.2.62.2
+  assetPath: Assets/Plugins/Pixel Crushers/Common/Scripts/UI/InputActionRegistry.cs
+  uploadId: 828106

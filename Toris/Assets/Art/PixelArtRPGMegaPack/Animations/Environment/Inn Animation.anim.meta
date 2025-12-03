@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 51328e62be88b5b40b3da997ab646129
+timeCreated: 1531049918
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Environment/Inn Animation.anim
+  uploadId: 691532

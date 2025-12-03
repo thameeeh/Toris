@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a6f9670a88bc4064a8b3c057ad1fdbe1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Character/Druid/DruidAnimator.overrideController
+  uploadId: 691532

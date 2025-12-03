@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3bf3c4915314bd24d8dfa02e4ed7223e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Enemy/Mage/EnemyAnimator_Mage.overrideController
+  uploadId: 691532

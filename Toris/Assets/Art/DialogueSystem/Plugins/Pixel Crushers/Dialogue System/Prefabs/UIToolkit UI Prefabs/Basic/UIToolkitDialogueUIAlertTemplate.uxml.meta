@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 08f1e51840a47fb47bd5f3d0ab0e045b
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 13804, guid: 0000000000000000e000000000000000, type: 0}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 11672
+  packageName: Dialogue System for Unity
+  packageVersion: 2.2.62.2
+  assetPath: Assets/Plugins/Pixel Crushers/Dialogue System/Prefabs/UIToolkit UI Prefabs/Basic/UIToolkitDialogueUIAlertTemplate.uxml
+  uploadId: 828106

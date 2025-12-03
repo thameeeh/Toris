@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 159126663a0e5024885f8df93a0e6252
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Character/Viking/VikingAnimator.overrideController
+  uploadId: 691532

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 40711b3c307a6ec46a9721fae8ea0eb3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/Enemy/Ghost/Ghost_Walk.anim
+  uploadId: 691532

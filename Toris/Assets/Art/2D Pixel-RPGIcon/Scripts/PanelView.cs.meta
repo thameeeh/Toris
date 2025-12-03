@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 99cf42140c3104393ba145bec6abebb6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174213
+  packageName: 2D Pixel - RPG Icon
+  packageVersion: 1.0.0
+  assetPath: Assets/Layer Lab/Scripts/PanelView.cs
+  uploadId: 711653

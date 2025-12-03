@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f1c2f8fdcde1cdd4381a83347846c856
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 11672
+  packageName: Dialogue System for Unity
+  packageVersion: 2.2.62.2
+  assetPath: Assets/Plugins/Pixel Crushers/Dialogue System/Scripts/UI/UIToolkit/Dialogue/UIToolkitAlertElements.cs
+  uploadId: 828106

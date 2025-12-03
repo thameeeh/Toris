@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NPCAnimator_Barman
+  m_Controller: {fileID: 9100000, guid: 478c86d7587381f40842f6bd1f9d5ff7, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 4a9e22deaaafa014a8bf684262c4d824, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 233018062db739c4baaa7797a2389ae8, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a147b6892c31d284ea5f4dbe27d6c72a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a3829ef41683a7c4999e6da8b4bb77e1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b988216df706b2842a558ec85ed524a9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: aa0575a7b69f2584c9660c1343d1106b, type: 2}

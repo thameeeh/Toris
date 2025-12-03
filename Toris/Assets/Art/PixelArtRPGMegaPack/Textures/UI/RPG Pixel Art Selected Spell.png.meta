@@ -1,0 +1,766 @@
+fileFormatVersion: 2
+guid: ce9fb9f9ba4f72d4f9676f33f8f615b0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7027833290824955158
+    second: RPG Pixel Art Selected Spell_0
+  - first:
+      213: 6898380546914889256
+    second: RPG Pixel Art Selected Spell_1
+  - first:
+      213: -5131818240698311422
+    second: RPG Pixel Art Selected Spell_2
+  - first:
+      213: -3336520730092559651
+    second: RPG Pixel Art Selected Spell_3
+  - first:
+      213: -8286722271504329892
+    second: RPG Pixel Art Selected Spell_4
+  - first:
+      213: 8787008285459871563
+    second: RPG Pixel Art Selected Spell_5
+  - first:
+      213: -7937149065817977359
+    second: RPG Pixel Art Selected Spell_6
+  - first:
+      213: -4530244288502810410
+    second: RPG Pixel Art Selected Spell_7
+  - first:
+      213: 1759173036165795730
+    second: RPG Pixel Art Selected Spell_8
+  - first:
+      213: -8081803558687646287
+    second: RPG Pixel Art Selected Spell_9
+  - first:
+      213: 5169240511458392564
+    second: RPG Pixel Art Selected Spell_10
+  - first:
+      213: -9092839231948526335
+    second: RPG Pixel Art Selected Spell_11
+  - first:
+      213: 623627632767897699
+    second: RPG Pixel Art Selected Spell_12
+  - first:
+      213: -5130999841464851793
+    second: RPG Pixel Art Selected Spell_13
+  - first:
+      213: -6267788470308340328
+    second: RPG Pixel Art Selected Spell_14
+  - first:
+      213: -3932160824297401194
+    second: RPG Pixel Art Selected Spell_15
+  - first:
+      213: -8701093774480730755
+    second: RPG Pixel Art Selected Spell_16
+  - first:
+      213: -7233159186671860108
+    second: RPG Pixel Art Selected Spell_17
+  - first:
+      213: -8206029451199049901
+    second: RPG Pixel Art Selected Spell_18
+  - first:
+      213: -4490210817591462261
+    second: RPG Pixel Art Selected Spell_19
+  - first:
+      213: -5528284523840710088
+    second: RPG Pixel Art Selected Spell_20
+  - first:
+      213: 7710092200953837581
+    second: RPG Pixel Art Selected Spell_21
+  - first:
+      213: 4416023406781568550
+    second: RPG Pixel Art Selected Spell_22
+  - first:
+      213: 5893152276266256966
+    second: RPG Pixel Art Selected Spell_23
+  - first:
+      213: 8087594891347888257
+    second: RPG Pixel Art Selected Spell_0
+  - first:
+      213: -6763956581461296192
+    second: RPG Pixel Art Selected Spell_1
+  - first:
+      213: -8257348939955216605
+    second: RPG Pixel Art Selected Spell_2
+  - first:
+      213: 396051421505657046
+    second: RPG Pixel Art Selected Spell_3
+  - first:
+      213: 502869455566787031
+    second: RPG Pixel Art Selected Spell_4
+  - first:
+      213: -7974630447962896605
+    second: RPG Pixel Art Selected Spell_5
+  - first:
+      213: -8040650028511901011
+    second: RPG Pixel Art Selected Spell_6
+  - first:
+      213: -3035661591431281888
+    second: RPG Pixel Art Selected Spell_7
+  - first:
+      213: 8107189369417909997
+    second: RPG Pixel Art Selected Spell_8
+  - first:
+      213: 987569928916068901
+    second: RPG Pixel Art Selected Spell_9
+  - first:
+      213: -8485733624303923986
+    second: RPG Pixel Art Selected Spell_10
+  - first:
+      213: -5538005625502343847
+    second: RPG Pixel Art Selected Spell_11
+  - first:
+      213: -7770712810110582319
+    second: RPG Pixel Art Selected Spell_12
+  - first:
+      213: 3507735521588353195
+    second: RPG Pixel Art Selected Spell_13
+  - first:
+      213: 4620386786554752599
+    second: RPG Pixel Art Selected Spell_14
+  - first:
+      213: 4149723058381707316
+    second: RPG Pixel Art Selected Spell_15
+  - first:
+      213: 7463250106208276713
+    second: RPG Pixel Art Selected Spell_16
+  - first:
+      213: -7228009710508150123
+    second: RPG Pixel Art Selected Spell_17
+  - first:
+      213: -8762387574554084631
+    second: RPG Pixel Art Selected Spell_18
+  - first:
+      213: -1059420682165038537
+    second: RPG Pixel Art Selected Spell_19
+  - first:
+      213: 4490216645164669862
+    second: RPG Pixel Art Selected Spell_20
+  - first:
+      213: 6271788613087655585
+    second: RPG Pixel Art Selected Spell_21
+  - first:
+      213: 5717143461688390308
+    second: RPG Pixel Art Selected Spell_22
+  - first:
+      213: 8368471023374760998
+    second: RPG Pixel Art Selected Spell_23
+  - first:
+      213: -4154556193098262444
+    second: RPG Pixel Art Selected Spell_24
+  - first:
+      213: -2696241499778572141
+    second: RPG Pixel Art Selected Spell_25
+  - first:
+      213: 8723448795821826426
+    second: RPG Pixel Art Selected Spell_26
+  - first:
+      213: 1882921483146606027
+    second: RPG Pixel Art Selected Spell_27
+  - first:
+      213: -6805851368058958873
+    second: RPG Pixel Art Selected Spell_28
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 240
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1880e0a24b8ec3070800000000000000
+      internalID: -7027833290824955158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_1
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 240
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cb75dd73599122a0800000000000000
+      internalID: 6898380546914889256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_2
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 240
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32f558f63e0086d80800000000000000
+      internalID: -5131818240698311422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_3
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 240
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d812a36bae0f7500800000000000000
+      internalID: -3336520730092559651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_4
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 240
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d1d3730b1d8af600800000000000000
+      internalID: -8286722271504329892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_5
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 240
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3274826ebdb645190800000000000000
+      internalID: 8787008285459871563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daa4057766fd96090800000000000000
+      internalID: -7937149065817977359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_7
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0230170cdd92fd5d0800000000000000
+      internalID: -4530244288502810410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_8
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de64afa17c5828070800000000000000
+      internalID: 1759173036165795730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_9
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52a66e33e9d84bd00800000000000000
+      internalID: -8081803558687646287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_10
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eecc6c06a3e9c3a80800000000000000
+      internalID: 5169240511458392564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_11
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95d51d7a93d0523b0800000000000000
+      internalID: -9092839231948526335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d108c5ced1e82490800000000000000
+      internalID: 623627632767897699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_13
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba81b424fdafda030800000000000000
+      internalID: -5130999841464851793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_14
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 80
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75e21817d49ee1040800000000000000
+      internalID: -6267788470308340328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_15
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 80
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 438d61ba227c69930800000000000000
+      internalID: -3932160824297401194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_16
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 80
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e0d07afd6ac29760800000000000000
+      internalID: -8701093774480730755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_17
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 80
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5927614c673f0bb90800000000000000
+      internalID: -7233159186671860108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ea38621deeb56680800000000000000
+      internalID: -8206029451199049901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RPG Pixel Art Selected Spell_19
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 732d9dba08e2c41f0800000000000000
+      internalID: -4490210817591462261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      RPG Pixel Art Selected Spell_14: -6267788470308340328
+      RPG Pixel Art Selected Spell_17: -7233159186671860108
+      RPG Pixel Art Selected Spell_7: -4530244288502810410
+      RPG Pixel Art Selected Spell_1: 6898380546914889256
+      RPG Pixel Art Selected Spell_16: -8701093774480730755
+      RPG Pixel Art Selected Spell_19: -4490210817591462261
+      RPG Pixel Art Selected Spell_18: -8206029451199049901
+      RPG Pixel Art Selected Spell_0: -7027833290824955158
+      RPG Pixel Art Selected Spell_4: -8286722271504329892
+      RPG Pixel Art Selected Spell_13: -5130999841464851793
+      RPG Pixel Art Selected Spell_15: -3932160824297401194
+      RPG Pixel Art Selected Spell_10: 5169240511458392564
+      RPG Pixel Art Selected Spell_8: 1759173036165795730
+      RPG Pixel Art Selected Spell_12: 623627632767897699
+      RPG Pixel Art Selected Spell_2: -5131818240698311422
+      RPG Pixel Art Selected Spell_11: -9092839231948526335
+      RPG Pixel Art Selected Spell_3: -3336520730092559651
+      RPG Pixel Art Selected Spell_9: -8081803558687646287
+      RPG Pixel Art Selected Spell_6: -7937149065817977359
+      RPG Pixel Art Selected Spell_5: 8787008285459871563
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Textures/UI/RPG Pixel Art Selected
+    Spell.png
+  uploadId: 691532

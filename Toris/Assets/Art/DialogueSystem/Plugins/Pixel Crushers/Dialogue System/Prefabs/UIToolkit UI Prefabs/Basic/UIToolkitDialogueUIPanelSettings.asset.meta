@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 354d3ceb169652343b4d5165d106bca7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 11672
+  packageName: Dialogue System for Unity
+  packageVersion: 2.2.62.2
+  assetPath: Assets/Plugins/Pixel Crushers/Dialogue System/Prefabs/UIToolkit UI Prefabs/Basic/UIToolkitDialogueUIPanelSettings.asset
+  uploadId: 828106

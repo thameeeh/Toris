@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bd73b64f8b75591409b8c661643bb841
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/NPC/Librarian/NPCAnimator_Librarian.overrideController
+  uploadId: 691532

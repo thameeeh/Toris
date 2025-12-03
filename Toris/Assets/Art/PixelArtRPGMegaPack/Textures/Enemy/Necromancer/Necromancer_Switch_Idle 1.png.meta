@@ -1,0 +1,642 @@
+fileFormatVersion: 2
+guid: 5dd8faebb8418524998e1e0cdbb6b9cf
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6660545961296595731
+    second: Necromancer_Switch_Idle_0
+  - first:
+      213: -9076412745557782865
+    second: Necromancer_Switch_Idle_1
+  - first:
+      213: 2837009568947029185
+    second: Necromancer_Switch_Idle_2
+  - first:
+      213: 5073288366082373148
+    second: Necromancer_Switch_Idle_3
+  - first:
+      213: 4798390144371285780
+    second: Necromancer_Switch_Idle_4
+  - first:
+      213: -8403992493520522592
+    second: Necromancer_Switch_Idle_5
+  - first:
+      213: -8715637865579739685
+    second: Necromancer_Switch_Idle_6
+  - first:
+      213: 7590246614369637255
+    second: Necromancer_Switch_Idle_7
+  - first:
+      213: -3268343989020831451
+    second: Necromancer_Switch_Idle_8
+  - first:
+      213: -7591280498436084953
+    second: Necromancer_Switch_Idle_9
+  - first:
+      213: -7588117532984222145
+    second: Necromancer_Switch_Idle_10
+  - first:
+      213: 4442490877665794958
+    second: Necromancer_Switch_Idle_11
+  - first:
+      213: 6147231791825537870
+    second: Necromancer_Switch_Idle_12
+  - first:
+      213: -6187726784833836508
+    second: Necromancer_Switch_Idle_13
+  - first:
+      213: -6799655807203549832
+    second: Necromancer_Switch_Idle_14
+  - first:
+      213: 8271160765462513346
+    second: Necromancer_Switch_Idle_15
+  - first:
+      213: 6176810595957471517
+    second: Necromancer_Switch_Idle_16
+  - first:
+      213: -9020175950243192307
+    second: Necromancer_Switch_Idle_17
+  - first:
+      213: 5617045790294544602
+    second: Necromancer_Switch_Idle_18
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1183
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31b0f3143430f6c50800000000000000
+      internalID: 6660545961296595731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1119
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fae433262ba1a0280800000000000000
+      internalID: -9076412745557782865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1055
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c4c87dfb251f5720800000000000000
+      internalID: 2837009568947029185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 991
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c163677b3e0f76640800000000000000
+      internalID: 5073288366082373148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 927
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41f5cf0d96e479240800000000000000
+      internalID: 4798390144371285780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 863
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a2f8a87a550f5b80800000000000000
+      internalID: -8403992493520522592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 799
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd50d27e985db0780800000000000000
+      internalID: -8715637865579739685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 735
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7831d17b419f55960800000000000000
+      internalID: 7590246614369637255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 671
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52151aa557284a2d0800000000000000
+      internalID: -3268343989020831451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 607
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72bed546b9a56a690800000000000000
+      internalID: -7591280498436084953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 543
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3edf8cae4791b690800000000000000
+      internalID: -7588117532984222145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 479
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8bde297ae5e6ad30800000000000000
+      internalID: 4442490877665794958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 415
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4bcfb7ceba5f4550800000000000000
+      internalID: 6147231791825537870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 351
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42a2fcee547c02aa0800000000000000
+      internalID: -6187726784833836508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 287
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87dd5b8c115c2a1a0800000000000000
+      internalID: -6799655807203549832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 223
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c68a89c4e019c270800000000000000
+      internalID: 8271160765462513346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 159
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d19f9e8c28078b550800000000000000
+      internalID: 6176810595957471517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 95
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d02ab32a3c5e1d280800000000000000
+      internalID: -9020175950243192307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Necromancer_Switch_Idle_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 31
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad01c99c261c3fd40800000000000000
+      internalID: 5617045790294544602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 35b81b4534b863a49a60bce9b224b1ae
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Necromancer_Switch_Idle_2: 2837009568947029185
+      Necromancer_Switch_Idle_5: -8403992493520522592
+      Necromancer_Switch_Idle_10: -7588117532984222145
+      Necromancer_Switch_Idle_8: -3268343989020831451
+      Necromancer_Switch_Idle_6: -8715637865579739685
+      Necromancer_Switch_Idle_1: -9076412745557782865
+      Necromancer_Switch_Idle_7: 7590246614369637255
+      Necromancer_Switch_Idle_16: 6176810595957471517
+      Necromancer_Switch_Idle_4: 4798390144371285780
+      Necromancer_Switch_Idle_11: 4442490877665794958
+      Necromancer_Switch_Idle_13: -6187726784833836508
+      Necromancer_Switch_Idle_9: -7591280498436084953
+      Necromancer_Switch_Idle_15: 8271160765462513346
+      Necromancer_Switch_Idle_18: 5617045790294544602
+      Necromancer_Switch_Idle_0: 6660545961296595731
+      Necromancer_Switch_Idle_17: -9020175950243192307
+      Necromancer_Switch_Idle_3: 5073288366082373148
+      Necromancer_Switch_Idle_14: -6799655807203549832
+      Necromancer_Switch_Idle_12: 6147231791825537870
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Textures/Enemy/Necromancer/Necromancer_Switch_Idle
+    1.png
+  uploadId: 691532

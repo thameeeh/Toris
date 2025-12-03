@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NPCAnimator_Monk
+  m_Controller: {fileID: 9100000, guid: 478c86d7587381f40842f6bd1f9d5ff7, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 4a9e22deaaafa014a8bf684262c4d824, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 22505f8c32e47c14a9b8ed256a39e167, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b988216df706b2842a558ec85ed524a9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c4d8683ec6659e940b212807f579a8c7, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a147b6892c31d284ea5f4dbe27d6c72a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9b8d5242ae24fa04ca7ba2b89c2f1fc8, type: 2}

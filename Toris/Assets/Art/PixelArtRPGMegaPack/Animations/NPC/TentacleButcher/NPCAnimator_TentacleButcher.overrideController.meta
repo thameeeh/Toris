@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 232c90b0cc81b844b956ffeb007d6f6a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295472
+  packageName: Pixel Art RPG Mega Pack
+  packageVersion: 1.0
+  assetPath: Assets/PixelArt/PixelArtRPGMegaPack/Animations/NPC/TentacleButcher/NPCAnimator_TentacleButcher.overrideController
+  uploadId: 691532

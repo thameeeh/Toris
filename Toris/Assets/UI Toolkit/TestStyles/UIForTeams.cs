@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,9 +20,9 @@ public class UIForTeams : MonoBehaviour
 
         m_listView.dataSource = Teams;
 
-        m_listView.SetBinding("itemSource", new DataBinding 
+        m_listView.SetBinding("itemsSource", new DataBinding 
         {
-            dataSourcePath = new PropertyPath(nameof(Teams.teams))
+            dataSourcePath = new PropertyPath("teams")
         });
     }
 }

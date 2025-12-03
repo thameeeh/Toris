@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6347bb5d80d0e384583b58fbda7d8a3b, type: 3}
   m_Name: Team2
   m_EditorClassIdentifier: Assembly-CSharp::TeamSo
-  TeamName: 
-  ClassName: 
-  PlayerIcon: {fileID: 0}
-  ClassIcon: {fileID: 0}
+  TeamName: Ninja
+  ClassName: Alchemic
+  PlayerIcon: {fileID: 2800000, guid: 065b8e71d6185fc49b453e4fa2201cd2, type: 3}
+  ClassIcon: {fileID: 2800000, guid: 4fd7265eae47dfd449ebe01c5b74a84b, type: 3}

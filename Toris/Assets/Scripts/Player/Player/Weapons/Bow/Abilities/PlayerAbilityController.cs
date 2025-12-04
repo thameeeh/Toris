@@ -7,206 +7,84 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private PlayerBowController _bow;
 
-    [Header("MultiShot")]
-    [SerializeField] private MultiShotConfig _multiShot;
-    [SerializeField] private bool _debugMultiShot = false;
+    [System.Serializable]
+    public class AbilitySlot
+    {
+        public PlayerAbilitySO ability;
+    }
 
-    [Header("Rambow (Rambo Bow)")]
-    [SerializeField] private RamboBowConfig _ramboConfig;
-    [SerializeField] private bool _debugRambow = false;
+    [Header("Ability Slots")]
+    [SerializeField] private AbilitySlot _ability1;
+    [SerializeField] private AbilitySlot _ability2;
 
-    private float _multiShotReadyAt = 0f;
+    public PlayerAbilitySO Ability1 => _ability1.ability;
+    public PlayerAbilitySO Ability2 => _ability2.ability;
+    public PlayerAbilityContext AbilityContext => _context;
 
-    private bool _ramboHeld;
-    private bool _ramboActive;
-    private float _ramboNextShotTime;
-    private float _ramboStartTime;
+    PlayerAbilityContext _context;
+
+    private void Awake()
+    {
+        _context = new PlayerAbilityContext
+        {
+            controller = this,
+            input = _input,
+            stats = _stats,
+            bow = _bow
+        };
+
+        if (_ability1.ability != null)
+            _ability1.ability.ResetCooldown();
+
+        if (_ability2.ability != null)
+            _ability2.ability.ResetCooldown();
+    }
 
     private void OnEnable()
     {
-        if (_input != null)
-        {
-            _input.OnAbility1Pressed += HandleMultiShotPressed;
-
-            _input.OnAbility2Started += HandleRamboPressed;
-            _input.OnAbility2Released += HandleRamboReleased;
-        }
-        else
+        if (_input == null)
         {
             Debug.LogWarning("[Ability] PlayerInputReader is not assigned on PlayerAbilityController", this);
+            return;
         }
+
+        _input.OnAbility1Pressed += OnAbility1Pressed;
+
+        _input.OnAbility2Started += OnAbility2Pressed;
+        _input.OnAbility2Released += OnAbility2Released;
     }
 
     private void OnDisable()
     {
-        if (_input != null)
-        {
-            _input.OnAbility1Pressed -= HandleMultiShotPressed;
+        if (_input == null)
+            return;
 
-            _input.OnAbility2Started -= HandleRamboPressed;
-            _input.OnAbility2Released -= HandleRamboReleased;
-        }
+        _input.OnAbility1Pressed -= OnAbility1Pressed;
+        _input.OnAbility2Started -= OnAbility2Pressed;
+        _input.OnAbility2Released -= OnAbility2Released;
     }
 
     private void Update()
     {
-        TickRambow();
+        if (_ability1.ability != null)
+            _ability1.ability.Tick(_context);
+
+        if (_ability2.ability != null)
+            _ability2.ability.Tick(_context);
     }
 
-    // -----------------------------------------------------------
-    //  MULTISHOT  (Ability1 pressed once => next shot is volley)
-    // -----------------------------------------------------------
-    private void HandleMultiShotPressed()
+    void OnAbility1Pressed()
     {
-        if (_debugMultiShot)
-            Debug.Log("[Ability] HandleMultiShotPressed called", this);
-
-        if (_multiShot == null || _bow == null || _stats == null)
-        {
-            if (_debugMultiShot)
-                Debug.Log("[Ability] MultiShot missing refs (config/bow/stats)", this);
-            return;
-        }
-
-        if (Time.time < _multiShotReadyAt)
-        {
-            if (_debugMultiShot)
-                Debug.Log($"[Ability] MultiShot on cooldown. Ready at {_multiShotReadyAt}, now {Time.time}", this);
-            return;
-        }
-
-        if (!_stats.TryConsumeStamina(_multiShot.staminaCost))
-        {
-            if (_debugMultiShot)
-                Debug.Log("[Ability] Not enough stamina for MultiShot", this);
-            return;
-        }
-
-        _bow.QueueMultiShot(_multiShot);
-        _multiShotReadyAt = Time.time + _multiShot.cooldown;
-
-        if (_debugMultiShot)
-            Debug.Log("[Ability] MultiShot armed for next shot!", this);
+        _ability1.ability?.OnButtonDown(_context);
     }
 
-    // -----------------------------------------------------------
-    //  RAMBOW (Ability2 hold + Attack hold => minigun arrows)
-    // -----------------------------------------------------------
-    private void HandleRamboPressed()
+    private void OnAbility2Pressed()
     {
-        _ramboHeld = true;
-
-        if (!CanEnterRambow())
-        {
-            if (_debugRambow)
-                Debug.Log("[Rambow] Cannot enter Rambow mode (locked / missing refs)", this);
-            return;
-        }
-
-        // Initial stamina cost for entering Rambow, if configured
-        if (_ramboConfig.initialStaminaCost > 0f)
-        {
-            if (!_stats.TryConsumeStamina(_ramboConfig.initialStaminaCost))
-            {
-                if (_debugRambow)
-                    Debug.Log("[Rambow] Not enough stamina for initial activation", this);
-                return;
-            }
-        }
-
-        _ramboActive = true;
-        _ramboStartTime = Time.time;
-        _ramboNextShotTime = Time.time;
-
-        if (_debugRambow)
-            Debug.Log("[Rambow] Rambow mode ACTIVATED", this);
+        _ability2.ability?.OnButtonDown(_context);
     }
 
-    private void HandleRamboReleased()
+    private void OnAbility2Released()
     {
-        _ramboHeld = false;
-
-        if (_ramboActive && _debugRambow)
-            Debug.Log("[Rambow] Rambow mode DEACTIVATED (Ability2 released)", this);
-
-        _ramboActive = false;
-    }
-
-    public bool CanEnterRambow()
-    {
-        if (_ramboConfig == null || _bow == null || _stats == null || _input == null)
-            return false;
-
-        // Kill gating via Inventory stats
-        if (_ramboConfig.killsStat != null)
-        {
-            int kills = Inventory.InventoryInstance.GetResourceAmount(_ramboConfig.killsStat);
-            if (kills < _ramboConfig.killsRequired)
-            {
-                if (_debugRambow)
-                    Debug.Log($"[Rambow] Locked: {kills}/{_ramboConfig.killsRequired} kills", this);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private void TickRambow()
-    {
-        if (!_ramboActive)
-            return;
-
-        if (_ramboConfig != null && _ramboConfig.maxDuration > 0f)
-        {
-            if (Time.time - _ramboStartTime >= _ramboConfig.maxDuration)
-            {
-                if (_debugRambow)
-                    Debug.Log("[Rambow] Rambow mode ended (duration limit)", this);
-                _ramboActive = false;
-                return;
-            }
-        }
-
-        if (!_input.IsShootHeld)
-            return;
-
-        if (Time.time < _ramboNextShotTime)
-            return;
-
-        if (_ramboConfig == null || _bow == null || _stats == null)
-            return;
-
-        if (_ramboConfig.staminaPerShot > 0f)
-        {
-            if (!_stats.TryConsumeStamina(_ramboConfig.staminaPerShot))
-            {
-                if (_debugRambow)
-                    Debug.Log("[Rambow] Exiting Rambow mode (no stamina)", this);
-                _ramboActive = false;
-                return;
-            }
-        }
-
-        FireRambowShot();
-
-        float interval = 1f / Mathf.Max(0.01f, _ramboConfig.shotsPerSecond);
-        _ramboNextShotTime = Time.time + interval;
-    }
-
-    private void FireRambowShot()
-    {
-        BowSO.ShotStats stats = new BowSO.ShotStats
-        {
-            power = 1f,
-            speed = _ramboConfig.speedPerShot,
-            damage = _ramboConfig.damagePerShot,
-            spreadDeg = _ramboConfig.spreadDegrees
-        };
-
-        if (_debugRambow)
-            Debug.Log("[Rambow] Firing Rambow arrow", this);
-
-        _bow.FireArrow(stats);
+        _ability2.ability?.OnButtonUp(_context);
     }
 }

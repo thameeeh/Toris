@@ -730,6 +730,12 @@ public class MapGenerator : MonoBehaviour
         Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPos = center + (Vector3)offset;
 
+        if (TileNavWorld.Instance != null &&
+            !TileNavWorld.Instance.IsWalkableWorldPos(spawnPos))
+        {
+            return;
+        }
+
         Enemy wolf = manager.SpawnEnemy(_leaderWolfPrefab, spawnPos, Quaternion.identity);
         if (wolf != null)
         {
@@ -755,6 +761,12 @@ public class MapGenerator : MonoBehaviour
         Vector3 center = _groundMap.GetCellCenterWorld(tilePos);
         Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
         Vector3 spawnPos = center + (Vector3)offset;
+
+        if (TileNavWorld.Instance != null &&
+            !TileNavWorld.Instance.IsWalkableWorldPos(spawnPos))
+        {
+            return;
+        }
 
         Enemy badger = manager.SpawnEnemy(_badgerPrefab, spawnPos, Quaternion.identity);
         if (badger != null)

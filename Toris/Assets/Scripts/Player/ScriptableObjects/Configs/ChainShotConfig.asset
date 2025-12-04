@@ -9,18 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dba4c0c8751e1f4cb8c17e85a403351, type: 3}
-  m_Name: RambowConfig
-  m_EditorClassIdentifier: Assembly-CSharp::RamboBowConfig
-  abilityName: Rambow
+  m_Script: {fileID: 11500000, guid: 76cae1fafe6f11c47983350a7af6aee9, type: 3}
+  m_Name: ChainShotConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ChainShotConfig
+  abilityName: Chain Shot
   icon: {fileID: 0}
   cooldownSeconds: 0
   killsStat: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
-  killsRequired: 10
-  shotsPerSecond: 12
-  spreadDegrees: 3
-  damagePerShot: 25
-  speedPerShot: 12
-  initialStaminaCost: 30
-  staminaPerShot: 8
-  maxDuration: 10
+  killsRequired: 1
+  maxBounces: 2
+  bounceRadius: 4
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 4294967295

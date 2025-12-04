@@ -16,7 +16,6 @@ public class SlotBinder : MonoBehaviour
     private Label _coins;
     private Label _kills;
 
-    [SerializeField] float CooldownTime = 3f;
     [SerializeField] ResourceData _coinSO;
     [SerializeField] ResourceData _killsSO;
 
@@ -28,6 +27,7 @@ public class SlotBinder : MonoBehaviour
 
     VisualElement _arrowSkill2;
     VisualElement _skillOverlay2;
+    VisualElement _arrowSkill2Lock;
 
     bool _isOnCooldown = false;
     float _timer;
@@ -40,19 +40,22 @@ public class SlotBinder : MonoBehaviour
 
     private void OnEnable()
     {
-        if(Inventory.InventoryInstance != null)
+        if (Inventory.InventoryInstance != null)
             Inventory.InventoryInstance.OnInventoryChanged += UpdateVisuals;
 
-        _pInputReader.OnAbility1Pressed += StartSkillCooldown;
-
+        if (_pInputReader != null)
+            _pInputReader.OnAbility1Pressed += StartSkillCooldown;
     }
+
     private void OnDisable()
     {
-        if(Inventory.InventoryInstance != null)
+        if (Inventory.InventoryInstance != null)
             Inventory.InventoryInstance.OnInventoryChanged -= UpdateVisuals;
-        
-        _pInputReader.OnAbility1Pressed -= StartSkillCooldown;
+
+        if (_pInputReader != null)
+            _pInputReader.OnAbility1Pressed -= StartSkillCooldown;
     }
+
     void Awake()
     {
         _player = GameObject.FindWithTag("Player");
@@ -82,13 +85,15 @@ public class SlotBinder : MonoBehaviour
         _skillOverlay = _arrowSkill.Q<VisualElement>("Skill");
 
         _arrowSkill2 = _root.Q<VisualElement>("ArrowSkill2");
+        _arrowSkill2Lock = _arrowSkill2.Q<VisualElement>("LockIcon2");
         _skillOverlay2 = _arrowSkill2.Q<VisualElement>("Skill2");
 
         _time = _root.Q<Label>("Time");
         _coins = _root.Q<Label>("Coins");
         _kills = _root.Q<Label>("Kills");
 
-        StartSkillCooldown();
+
+        //StartSkillCooldown();
     }
 
     private void FixedUpdate()
@@ -97,30 +102,51 @@ public class SlotBinder : MonoBehaviour
         TimeSpan timeSpan = TimeSpan.FromSeconds(_currentTime);
         _time.text = timeSpan.ToString(@"mm\:ss");
 
-        if (_isOnCooldown)
+        var ability1 = abilityController != null ? abilityController.Ability1 : null;
+
+        if (_isOnCooldown && ability1 != null && ability1.cooldownSeconds > 0f)
         {
             _timer -= Time.fixedDeltaTime;
 
-            float percentage = _timer / CooldownTime;
+            float cooldownTime = ability1.cooldownSeconds;
+            float percentage = Mathf.Clamp01(_timer / cooldownTime);
 
-            _skillOverlay.style.height = Length.Percent(percentage * 100);
+            _skillOverlay.style.height = Length.Percent(percentage * 100f);
 
             if (_timer <= 0f)
-            { 
+            {
                 _isOnCooldown = false;
                 _skillOverlay.style.height = Length.Percent(0);
+                _timer = 0f;
             }
-            _arrowSkill.Q<Label>("ArrowSkillLabel").text = _timer.ToString("F2") + "s";
-        }else
-            _arrowSkill.Q<Label>("ArrowSkillLabel").text = "";
 
-        if (abilityController.CanEnterRambow())
+            _arrowSkill.Q<Label>("ArrowSkillLabel").text = _timer.ToString("F2") + "s";
+        }
+        else
         {
-            _timer2 -= Time.fixedDeltaTime;
+            _arrowSkill.Q<Label>("ArrowSkillLabel").text = "";
+        }
+
+        var ability2 = abilityController != null ? abilityController.Ability2 : null;
+
+        if (ability2 != null && ability2.IsUnlocked(abilityController.AbilityContext))
+        {
             _arrowSkill2.Q<Label>().text = "Hold R";
             _skillOverlay2.style.height = Length.Percent(0);
+
+            if (_arrowSkill2Lock != null)
+                _arrowSkill2Lock.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            _arrowSkill2.Q<Label>().text = "";
+            _skillOverlay2.style.height = Length.Percent(100);
+
+            if (_arrowSkill2Lock != null)
+                _arrowSkill2Lock.style.display = DisplayStyle.Flex;
         }
     }
+
 
     void UpdateVisuals()
     {
@@ -151,14 +177,24 @@ public class SlotBinder : MonoBehaviour
 
         _coins.text = Inventory.InventoryInstance.GetResourceAmount(_coinSO).ToString();
         _kills.text = Inventory.InventoryInstance.GetResourceAmount(_killsSO).ToString();
-
     }
 
-    void StartSkillCooldown() 
+    void StartSkillCooldown()
     {
-        if (_timer <= 0)
+        if (abilityController == null)
+            return;
+
+        var ability1 = abilityController.Ability1;
+        if (ability1 == null)
+            return;
+
+        float cooldown = ability1.cooldownSeconds;
+        if (cooldown <= 0f)
+            return;
+
+        if (_timer <= 0f)
         {
-            _timer = CooldownTime;
+            _timer = cooldown;
             _isOnCooldown = true;
             _skillOverlay.style.height = Length.Percent(100);
         }

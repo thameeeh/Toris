@@ -319,7 +319,7 @@ MonoBehaviour:
   maxPackSize: 4
   minionsPerHowl: 2
   spawnDistance: 2.5
-  howlCooldownDuration: 10
+  howlCooldownDuration: 6
   activeMinions: []
   _mapGenerator: {fileID: 0}
 --- !u!114 &-4774567673522461205

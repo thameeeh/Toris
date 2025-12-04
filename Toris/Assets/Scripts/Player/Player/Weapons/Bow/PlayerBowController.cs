@@ -16,13 +16,12 @@ public class PlayerBowController : MonoBehaviour
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
     [SerializeField] private float spawnOffsetFromCenter = 0.35f;
 
+    public BowSO BowConfig => _bow;
+
     private float drawStartTime = -999f;
     private float lastShotTime  = -999f;
     private bool  drawing;
     public bool IsAutoaiming { get; set; } = false;
-
-    // ---- MULTISHOT ----
-    private MultiShotConfig _queuedMultiShot;
 
     void OnEnable()
     {
@@ -42,6 +41,16 @@ public class PlayerBowController : MonoBehaviour
         }
         _motor?.SetMovementLocked(false);
         drawing = false;
+    }
+
+    void Update()
+    {
+        if (drawing && _animController != null)
+        {
+            Vector2 aim = GetAimDirection();
+            if (aim.sqrMagnitude > 0.0001f)
+                _animController.UpdateAim(aim);
+        }
     }
 
     void BeginDraw()
@@ -96,29 +105,14 @@ public class PlayerBowController : MonoBehaviour
     {
         if (_bow == null) return;
         if (_bow.arrowPrefab == null)
-        {
-            //Debug.LogError("[Bow] arrowPrefab is null on BowSO", this);
             return;
-        }
 
         Vector2 baseDir = GetAimDirection();
         if (baseDir.sqrMagnitude < 0.0001f)
             baseDir = Vector2.right;
 
-        // Decide between single shot vs multishot
-        if (_queuedMultiShot == null)
-        {
-            //Debug.Log("[Bow] Firing SINGLE arrow", this);
-            SpawnArrow(stats, baseDir);
-        }
-        else
-        {
-            //Debug.Log($"[Bow] Firing MULTISHOT volley: count={_queuedMultiShot.arrowCount}, spread={_queuedMultiShot.totalSpreadDegrees}", this);
-            SpawnMultiShotVolley(stats, baseDir, _queuedMultiShot);
-            _queuedMultiShot = null; // consume it
-        }
+        SpawnArrow(stats, baseDir);
     }
-
     /// <summary>Spawns a single arrow using your original logic.</summary>
     void SpawnArrow(BowSO.ShotStats stats, Vector2 dir)
     {
@@ -157,29 +151,6 @@ public class PlayerBowController : MonoBehaviour
         //Debug.Log($"[Bow] SpawnArrow at {spawnPos}, dir={dir}, speed={stats.speed}, dmg={stats.damage}", arrow);
         arrow.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
     }
-
-    /// <summary>Spawns multiple arrows in a spread pattern around the base direction.</summary>
-    void SpawnMultiShotVolley(BowSO.ShotStats stats, Vector2 baseDir, MultiShotConfig config)
-    {
-        int   count       = Mathf.Max(1, config.arrowCount);
-        float totalSpread = config.totalSpreadDegrees;
-
-        for (int i = 0; i < count; i++)
-        {
-            float t           = (count == 1) ? 0f : (i / (float)(count - 1));
-            float angleOffset = Mathf.Lerp(-totalSpread * 0.5f, totalSpread * 0.5f, t);
-
-            Vector2 dir = (Quaternion.Euler(0, 0, angleOffset) * (Vector3)baseDir).normalized;
-
-            // Optional extra randomness from stats
-            float random = Random.Range(-stats.spreadDeg, stats.spreadDeg);
-            dir = (Quaternion.Euler(0, 0, random) * (Vector3)dir).normalized;
-
-            //Debug.Log($"[Bow] MultiShot arrow {i + 1}/{count}, angleOffset={angleOffset}, dir={dir}", this);
-            SpawnArrow(stats, dir);
-        }
-    }
-
     private Vector2 GetAimDirection()
     {
         var cam = Camera.main;
@@ -203,21 +174,35 @@ public class PlayerBowController : MonoBehaviour
         Vector2 v      = (Vector2)(world - (Vector3)origin);
         return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
-
-    void Update()
+    /// <summary>
+    /// Public entry point for abilities: fire a multishot volley
+    /// in the current aim direction.
+    /// </summary>
+    public void FireMultiShotVolley(BowSO.ShotStats stats, int arrowCount, float totalSpreadDegrees)
     {
-        if (drawing && _animController != null)
-        {
-            Vector2 aim = GetAimDirection();
-            if (aim.sqrMagnitude > 0.0001f)
-                _animController.UpdateAim(aim);
-        }
+        Vector2 baseDir = GetAimDirection();
+        if (baseDir.sqrMagnitude < 0.0001f)
+            baseDir = Vector2.right;
+
+        SpawnMultiShotVolley(stats, baseDir, arrowCount, totalSpreadDegrees);
     }
 
-    // Called by PlayerAbilityController
-    public void QueueMultiShot(MultiShotConfig config)
+    /// <summary>Spawns multiple arrows in a spread pattern around the base direction.</summary>
+    void SpawnMultiShotVolley(BowSO.ShotStats stats, Vector2 baseDir, int arrowCount, float totalSpread)
     {
-        _queuedMultiShot = config;
-        //Debug.Log("[Bow] MultiShot QUEUED for next shot", this);
+        int count = Mathf.Max(1, arrowCount);
+
+        for (int i = 0; i < count; i++)
+        {
+            float t = (count == 1) ? 0f : (i / (float)(count - 1));
+            float angleOffset = Mathf.Lerp(-totalSpread * 0.5f, totalSpread * 0.5f, t);
+
+            Vector2 dir = (Quaternion.Euler(0, 0, angleOffset) * (Vector3)baseDir).normalized;
+
+            float random = Random.Range(-stats.spreadDeg, stats.spreadDeg);
+            dir = (Quaternion.Euler(0, 0, random) * (Vector3)dir).normalized;
+
+            SpawnArrow(stats, dir);
+        }
     }
 }

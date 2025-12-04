@@ -42,8 +42,8 @@ MonoBehaviour:
   minArrowSpeed: 5
   maxArrowSpeed: 15
   baseDamage: 50
-  maxDamage: 120
-  arrowLifetime: 2
+  maxDamage: 100
+  arrowLifetime: 1
   maxSpreadDegreesAtMin: 1
   maxSpreadDegreesAtMax: 2
   overHoldExtraSpreadPerSecond: 8

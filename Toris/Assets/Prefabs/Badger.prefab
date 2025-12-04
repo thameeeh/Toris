@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2946410697241371114}
   - component: {fileID: 4508843636919014498}
   - component: {fileID: 2883688989111778240}
+  - component: {fileID: 2011064594154251638}
   m_Layer: 0
   m_Name: Badger
   m_TagString: Untagged
@@ -119,9 +120,9 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   AttackDamage: 20
   WalkSpeed: 1
-  TunnelingSpeed: 10
+  TunnelingSpeed: 4
   LineTunnelingSpeed: 6
-  RunAwayChance: 0.012
+  RunAwayChance: 0.01
   RunAwayDistance: 0
   BurrowRoamSpeedMultiplier: 0.65
   PostAttackIdleDuration: 0.35
@@ -132,6 +133,23 @@ MonoBehaviour:
   BadgerBurrowBase: {fileID: 11400000, guid: e0ed72cc1a669af428baf1c6d295972c, type: 2}
   BadgerTunnelBase: {fileID: 11400000, guid: c54211de13f16274eba4ed73f359c9e4, type: 2}
   BadgerUnburrowBase: {fileID: 11400000, guid: d9394f8fde0720b4a845dcc1b1dc18d9, type: 2}
+--- !u!114 &2011064594154251638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001047879979192130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 212262b305fcc1147b68daac4f5e757d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
+  repathInterval: 0.6
+  maxPathRange: 20
+  waypointReachThreshold: 0.2
+  targetChangeThreshold: 1
+  allowDirectFallbackWhenNoPath: 0
 --- !u!1 &1542764315742055245
 GameObject:
   m_ObjectHideFlags: 0

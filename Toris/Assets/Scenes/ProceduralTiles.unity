@@ -306,11 +306,11 @@ PrefabInstance:
       objectReference: {fileID: 7797051013246395996}
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2000003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -711,7 +711,7 @@ Transform:
   m_GameObject: {fileID: 506412729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 4.2000003, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2062,9 +2062,9 @@ MonoBehaviour:
   _leaderWolfPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
   _badgerPrefab: {fileID: 2883688989111778240, guid: a0e2be74364d90e4180a249d6129a878, type: 3}
   _maxLeaderWolves: 16
-  _maxBadgers: 0
-  _leaderWolfChance: 0.5
-  _badgerChance: 0
+  _maxBadgers: 16
+  _leaderWolfChance: 1
+  _badgerChance: 0.2
   _spawnRadius: 1.5
 --- !u!4 &1743458541
 Transform:
@@ -2341,11 +2341,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 738d00bb63795d04bbdb2414a28a778b, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2000003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.z

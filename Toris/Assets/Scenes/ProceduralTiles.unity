@@ -793,6 +793,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &538588407 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 424703103185275433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &572305840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,7 +2036,7 @@ MonoBehaviour:
     weight: 0.334
   _rockTiles:
   - tile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
-    weight: 0.297
+    weight: 0.666
   _roadTiles:
   - tile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
     weight: 0.535
@@ -2041,7 +2046,7 @@ MonoBehaviour:
     weight: 0.301
   _waterTiles:
   - tile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
-    weight: 0.207
+    weight: 0.334
   _decorNoiseScale: 0.8
   _flowerDecorTiles:
   - tile: {fileID: 11400000, guid: 14128737699a7d04c925f584064489ee, type: 2}
@@ -2075,7 +2080,7 @@ Transform:
   m_GameObject: {fileID: 1743458539}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.21493, y: 1.23446, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2398,13 +2403,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7797051013246396009}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &7797051013246395996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   m_PrefabInstance: {fileID: 424703103185275433}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7797051013246396009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538588407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c890bc83bdee34195e677926873c4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavSafeSpawn
+  groundMap: {fileID: 1583650508}
+  searchRadius: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

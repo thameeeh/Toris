@@ -17,21 +17,32 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: auto; justify-content: center; align-items: flex-end;">
-        <ui:Button class="btn_slot" />
-        <ui:Button class="btn_slot" />
-        <ui:Button class="btn_slot" />
-        <ui:Button class="btn_slot" />
-        <ui:Button class="btn_slot" />
-        <ui:Button class="btn_slot" />
-        <ui:Button class="btn_slot" />
+        <ui:Button class="btn_slot" style="align-items: flex-end; justify-content: flex-end; padding-right: 4px; padding-bottom: 2px;">
+            <ui:Label name="lb1" style="margin-bottom: 0; margin-right: 0;" />
+        </ui:Button>
+        <ui:Button class="btn_slot" style="align-items: flex-end; justify-content: flex-end; padding-right: 4px; padding-bottom: 2px;">
+            <ui:Label name="lb2" style="margin-bottom: 0; margin-right: 0;" />
+        </ui:Button>
+        <ui:Button class="btn_slot" style="align-items: flex-end; justify-content: flex-end; padding-right: 4px; padding-bottom: 2px;">
+            <ui:Label name="lb3" style="margin-bottom: 0; margin-right: 0;" />
+        </ui:Button>
+        <ui:Button class="btn_slot" style="align-items: flex-end; justify-content: flex-end; padding-right: 4px; padding-bottom: 2px;">
+            <ui:Label name="lb4" style="margin-bottom: 0; margin-right: 0;" />
+        </ui:Button>
+        <ui:Button class="btn_slot" style="align-items: flex-end; justify-content: flex-end; padding-right: 4px; padding-bottom: 2px;">
+            <ui:Label name="lb5" style="margin-bottom: 0; margin-right: 0;" />
+        </ui:Button>
+        <ui:Button class="btn_slot" style="align-items: flex-end; justify-content: flex-end; padding-right: 4px; padding-bottom: 2px;">
+            <ui:Label name="lb6" style="margin-bottom: 0; margin-right: 0;" />
+        </ui:Button>
         <ui:VisualElement name="ArrowSkill" style="flex-grow: 1; width: 120px; height: 120px; max-height: 120px; max-width: 120px; border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; background-image: url(&quot;project://database/Assets/Art/R_Art/Icons/arrows.png?fileID=2800000&amp;guid=9490ec2411ce60245a5ecbdcf8c22492&amp;type=3#arrows&quot;); margin-left: 80px; align-self: auto; align-items: flex-start; justify-content: flex-start; bottom: 0; -unity-font-style: bold; color: rgb(255, 255, 255); font-size: 26px;">
-            <ui:Label text="Q" style="margin-left: 5px; margin-top: 2px; margin-right: 0; margin-bottom: 0;" />
+            <ui:Label text="Q" name="Q_Skill" style="margin-left: 5px; margin-top: 2px; margin-right: 0; margin-bottom: 0;" />
             <ui:VisualElement name="Skill" style="flex-grow: 0; min-width: 0; min-height: 0; justify-content: flex-end; align-items: flex-end; background-color: rgba(96, 45, 45, 0.51); transition-timing-function: ease; transition-duration: 0s; border-top-left-radius: 26px; border-top-right-radius: 26px; border-bottom-right-radius: 26px; border-bottom-left-radius: 26px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; position: absolute; bottom: 0; width: 120px; height: 120px; max-width: 120px; max-height: 120px; overflow: hidden;">
                 <ui:Label name="ArrowSkillLabel" text="0&#10;" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); font-size: 24px; transition-duration: 0s;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="ArrowSkill2" style="flex-grow: 1; width: 120px; height: 120px; max-height: 120px; max-width: 120px; border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; background-image: url(&quot;project://database/Assets/Art/R_Art/Icons/MultiShot.png?fileID=2800000&amp;guid=81ae95701c89fa0428c77daba147d639&amp;type=3#MultiShot&quot;); margin-left: 80px; align-self: auto; align-items: flex-start; justify-content: flex-start; bottom: 0; -unity-font-style: bold; color: rgb(255, 255, 255); font-size: 26px; -unity-background-image-tint-color: rgb(164, 164, 164); background-color: rgb(255, 255, 255);">
-            <ui:Label text="Hold R" style="margin-left: 5px; margin-top: 2px; margin-right: 0; margin-bottom: 0;" />
+            <ui:Label text="Hold R" name="R_Skill" style="margin-left: 5px; margin-top: 2px; margin-right: 0; margin-bottom: 0;" />
             <ui:VisualElement name="Skill2" style="flex-grow: 0; min-width: 0; min-height: 0; justify-content: flex-end; align-items: flex-end; background-color: rgba(87, 87, 87, 0.69); transition-timing-function: ease; transition-duration: 0s; border-top-left-radius: 26px; border-top-right-radius: 26px; border-bottom-right-radius: 26px; border-bottom-left-radius: 26px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; position: absolute; bottom: 0; width: 120px; height: 120px; max-width: 120px; max-height: 120px; overflow: hidden; -unity-background-image-tint-color: rgba(255, 255, 255, 0);" />
         </ui:VisualElement>
     </ui:VisualElement>

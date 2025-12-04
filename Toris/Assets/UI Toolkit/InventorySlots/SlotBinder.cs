@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System;
 
 public class SlotBinder : MonoBehaviour
 {
     UIDocument _uiDocument;
     VisualElement _root;
     List<Button> _buttons = new();
+    List<Label> _amountLabels = new();
 
     private Label _time;
     private Label _coins;
@@ -63,6 +64,20 @@ public class SlotBinder : MonoBehaviour
         _root = _uiDocument.rootVisualElement;
 
         _buttons = _root.Query<Button>().ToList();
+
+        for (int i = 0; i < _buttons.Count; i++)
+        {
+            var label = _root.Q<Label>($"lb{i + 1}");
+            if (label != null)
+            {
+                _amountLabels.Add(label);
+            }
+            else
+            {
+                Debug.LogWarning($"Could not find Label named 'lb{i + 1}'");
+            }
+        }
+
         _arrowSkill = _root.Q<VisualElement>("ArrowSkill");
         _skillOverlay = _arrowSkill.Q<VisualElement>("Skill");
 
@@ -110,12 +125,14 @@ public class SlotBinder : MonoBehaviour
     void UpdateVisuals()
     {
         var resourceDict = Inventory.InventoryInstance.GetAllResources();
-
         List<ResourceData> inventoryItems = resourceDict.Keys.ToList();
 
         for (int i = 0; i < _buttons.Count; i++)
         {
-            Button curremtBtn = _buttons[i];
+            Button curremtBtn = _buttons[i]; 
+            
+            if (i >= _amountLabels.Count) break;
+            Label currentLabel = _amountLabels[i];
 
             if (i < inventoryItems.Count)
             {
@@ -123,12 +140,11 @@ public class SlotBinder : MonoBehaviour
                 int amount = resourceDict[data];
 
                 curremtBtn.style.backgroundImage = new StyleBackground(data.resourceIcon);
-
-                curremtBtn.text = amount.ToString();
+                currentLabel.text = amount.ToString();
             }
             else
             {
-                curremtBtn.text = "";
+                currentLabel.text = "";
                 curremtBtn.style.backgroundImage = null;
             }
         }

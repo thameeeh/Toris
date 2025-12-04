@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
   repathInterval: 0.6
-  maxPathRange: 20
+  maxPathRange: 10
   waypointReachThreshold: 0.2
   targetChangeThreshold: 1
   allowDirectFallbackWhenNoPath: 0

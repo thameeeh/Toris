@@ -15,4 +15,4 @@ MonoBehaviour:
   TeamName: 8BitHero
   ClassName: Tank
   PlayerIcon: {fileID: 2800000, guid: 0519a00cc8921904f8f3b97f9a07db56, type: 3}
-  ClassIcon: {fileID: 4154780841294389669, guid: 1bb7e18d97dc25043a4aa3d1dd817303, type: 3}
+  ClassIcon: {fileID: 2800000, guid: 065b8e71d6185fc49b453e4fa2201cd2, type: 3}

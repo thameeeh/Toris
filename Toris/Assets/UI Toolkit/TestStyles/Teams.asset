@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Teams
   m_EditorClassIdentifier: Assembly-CSharp::Teams
   teams:
-  - {fileID: 11400000, guid: 5fae64f75cf00644193d8473aade7013, type: 2}
   - {fileID: 11400000, guid: 78d8ff9bc50b53c44906258bc98372c1, type: 2}
+  - {fileID: 11400000, guid: 5fae64f75cf00644193d8473aade7013, type: 2}

@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Teams", menuName = "Scriptable Objects/Teams")]
 public class Teams : ScriptableObject
 {
-    [CreateProperty]
-    public List<TeamSo> teams = new();
+    [SerializeField, CreateProperty]
+    public List<TeamSo> teams = new List<TeamSo>();
 }

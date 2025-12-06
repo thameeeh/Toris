@@ -1,0 +1,4 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 0; height: 20px; background-color: rgb(24, 173, 126);"/>
+    <ui:ListView name="MyListView" fixed-item-height="60" item-template="project://database/Assets/UI%20Toolkit/example_2/Template.uxml?fileID=9197481963319205126&amp;guid=8e9e20565e8f29344a78c54a734f8929&amp;type=3#Template" reorderable="true" style="flex-grow: 1;"/>
+</ui:UXML>

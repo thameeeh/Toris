@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ui="UnityEngine.UIElements"
+    xmlns:uie="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+>
+    <!-- Link the stylesheet -->
+    <ui:Style src="inventory.uss" />
+
+    <!-- This VisualElement is the "Row" -->
+    <ui:VisualElement name="RowContainer" class="inventory-item-row">
+        <!-- Icon -->
+        <ui:VisualElement name="Icon" class="item-icon" />
+        <!-- Name -->
+        <ui:Label name="ItemName" text="Item Name" class="item-name" />
+    </ui:VisualElement>
+</ui:UXML>

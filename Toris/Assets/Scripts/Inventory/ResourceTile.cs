@@ -8,7 +8,4 @@ public class ResourceTile : Tile
     [Header("Resource Data")]
     public ResourceData ResourceToGive;
     public int ResourceAmount = 1;
-
-    // Optional: Tooltip or specific logic usually goes here, 
-    // but for simple data storage, this is all you need.
 }

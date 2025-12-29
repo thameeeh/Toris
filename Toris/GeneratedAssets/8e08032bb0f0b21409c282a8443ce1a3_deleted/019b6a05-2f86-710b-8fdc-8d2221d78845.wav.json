@@ -1,0 +1,12 @@
+{
+    "asset": "8e08032bb0f0b21409c282a8443ce1a3",
+    "fileName": "019b6a05-2f86-710b-8fdc-8d2221d78845.wav",
+    "prompt": "Generate an audio clip where a bow string gets stretched right before a shot",
+    "negativePrompt": "",
+    "model": "5de0686a-fb27-40e5-9df0-28ae810d70ca",
+    "customSeed": -1,
+    "w3CTraceId": "1bb430a70bbdf42bacf0fd908b7cf2e7",
+    "duration": 10.0,
+    "autoTrim": false,
+    "hasReference": false
+}

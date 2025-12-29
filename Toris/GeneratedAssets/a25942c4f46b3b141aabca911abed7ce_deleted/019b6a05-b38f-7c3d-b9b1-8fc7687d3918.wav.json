@@ -1,0 +1,12 @@
+{
+    "asset": "a25942c4f46b3b141aabca911abed7ce",
+    "fileName": "019b6a05-b38f-7c3d-b9b1-8fc7687d3918.wav",
+    "prompt": "Generate a sound effect for an arrow shot, like a zooming through air",
+    "negativePrompt": "",
+    "model": "5de0686a-fb27-40e5-9df0-28ae810d70ca",
+    "customSeed": -1,
+    "w3CTraceId": "ecf909a4010b280c4997dbc31aa5a94b",
+    "duration": 3.0,
+    "autoTrim": true,
+    "hasReference": false
+}

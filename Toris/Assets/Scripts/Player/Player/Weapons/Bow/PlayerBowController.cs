@@ -18,6 +18,11 @@ public class PlayerBowController : MonoBehaviour
 
     public BowSO BowConfig => _bow;
 
+    public event System.Action DrawStarted;
+    public event System.Action ShotReleased;
+    public event System.Action DryReleased;
+    public event System.Action ShotFired;
+
     private float drawStartTime = -999f;
     private float lastShotTime  = -999f;
     private bool  drawing;
@@ -61,6 +66,7 @@ public class PlayerBowController : MonoBehaviour
         drawing       = true;
         drawStartTime = Time.time;
         _motor?.SetMovementLocked(true);
+        DrawStarted?.Invoke();
 
         var aim = GetAimDirection();
         if (aim.sqrMagnitude > 0.0001f)
@@ -89,6 +95,9 @@ public class PlayerBowController : MonoBehaviour
         {
             _animController?.ReleaseHold();
             lastShotTime = Time.time;
+
+            DryReleased?.Invoke();
+            ShotReleased?.Invoke();
             return;
         }
 
@@ -99,6 +108,9 @@ public class PlayerBowController : MonoBehaviour
         FireArrow(stats);
 
         lastShotTime = Time.time;
+
+        ShotFired?.Invoke();
+        ShotReleased?.Invoke();
     }
 
     public void FireArrow(BowSO.ShotStats stats)

@@ -1,0 +1,12 @@
+{
+    "asset": "a25942c4f46b3b141aabca911abed7ce",
+    "fileName": "019b6a03-ee2f-7f24-9454-73b0ed29ed39.wav",
+    "prompt": "Generate a sound effect for an arrow shot",
+    "negativePrompt": "",
+    "model": "5de0686a-fb27-40e5-9df0-28ae810d70ca",
+    "customSeed": -1,
+    "w3CTraceId": "2b442c9b59116c9e9717216b5725ce52",
+    "duration": 3.0,
+    "autoTrim": true,
+    "hasReference": false
+}

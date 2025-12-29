@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     void OnEnable() { if (_inputReader) _inputReader.OnDashPressed += HandleDashRequested; }
     void OnDisable() { if (_inputReader) _inputReader.OnDashPressed -= HandleDashRequested; }
 
-
+    public DashAbility DashAbility => _motor != null ? _motor.DashAbility : null;
     void Update()
     {
         if (!_inputReader || !_motor || !_animController)

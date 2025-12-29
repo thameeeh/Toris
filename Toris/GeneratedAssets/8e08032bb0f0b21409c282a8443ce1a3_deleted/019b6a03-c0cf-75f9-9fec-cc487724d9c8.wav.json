@@ -1,0 +1,12 @@
+{
+    "asset": "8e08032bb0f0b21409c282a8443ce1a3",
+    "fileName": "019b6a03-c0cf-75f9-9fec-cc487724d9c8.wav",
+    "prompt": "Generate a sound for a bow nocking.",
+    "negativePrompt": "",
+    "model": "5de0686a-fb27-40e5-9df0-28ae810d70ca",
+    "customSeed": -1,
+    "w3CTraceId": "958c1e2a51ec73fa8a3a38c705cbddd1",
+    "duration": 3.0,
+    "autoTrim": true,
+    "hasReference": false
+}

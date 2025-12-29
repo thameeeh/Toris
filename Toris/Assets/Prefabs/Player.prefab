@@ -167,6 +167,8 @@ GameObject:
   - component: {fileID: 4773480451423900946}
   - component: {fileID: 3149346686833117398}
   - component: {fileID: 2003589166597666773}
+  - component: {fileID: 503972616382245057}
+  - component: {fileID: 6478609135783926460}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -429,10 +431,45 @@ MonoBehaviour:
   _input: {fileID: 5077778647754622771}
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
-  _multiShot: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
-  _debugMultiShot: 0
-  _ramboConfig: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
-  _debugRambow: 0
+  _ability1:
+    ability: {fileID: 0}
+  _ability2:
+    ability: {fileID: 0}
+--- !u!114 &503972616382245057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c4cb29378184a489269998929517b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSfx
+  bow: {fileID: 1738574752484829038}
+  playerController: {fileID: 7577956846138625648}
+  motor: {fileID: 6347703112388059557}
+  rb: {fileID: 4313767850351379256}
+  modules:
+  - {fileID: 11400000, guid: c3499cca59d0d2a469a97d013ed6de67, type: 2}
+  - {fileID: 11400000, guid: ce6563ef3412d8c4095aea9496ef8e90, type: 2}
+  - {fileID: 11400000, guid: 3ea2e61512cc04d46aa784e990b8f510, type: 2}
+--- !u!114 &6478609135783926460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b2dfeac57f37840849ad39a19a19d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaminaChargingSquareEffect
+  playerStats: {fileID: 8137892244548921797}
+  effectId: test_effect
+  localOffset: {x: 0, y: 0.75, z: 0}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

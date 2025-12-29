@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b65f422b55f8b049b0034295a3fa496, type: 3}
+  m_Name: SFX_PlayerFootstep
+  m_EditorClassIdentifier: Assembly-CSharp::SfxDefinition
+  id: player_footstep
+  clips:
+  - {fileID: 8300000, guid: c032faf0c44b2a147b2aafdf5e6cbf38, type: 3}
+  outputMixerGroup: {fileID: 0}
+  volumeMin: 0.1
+  volumeMax: 0.1
+  pitchMin: 1
+  pitchMax: 1
+  spatialBlend: 0
+  minDistance: 1
+  maxDistance: 25
+  maxSimultaneousInstances: 8
+  stealMode: 1
+  cooldownSeconds: 0

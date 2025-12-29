@@ -1,0 +1,12 @@
+{
+    "asset": "c032faf0c44b2a147b2aafdf5e6cbf38",
+    "fileName": "019b69ee-6dab-72e2-a2dd-da4c54710494.wav",
+    "prompt": "Generate a footstep sound on grass",
+    "negativePrompt": "",
+    "model": "5de0686a-fb27-40e5-9df0-28ae810d70ca",
+    "customSeed": -1,
+    "w3CTraceId": "2db3303f53ba236ccc63a0e3d216e0e0",
+    "duration": 10.0,
+    "autoTrim": false,
+    "hasReference": false
+}

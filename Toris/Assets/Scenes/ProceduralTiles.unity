@@ -2407,6 +2407,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7797051013246396009}
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7797051013246396022}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &7797051013246395996 stripped
 Transform:
@@ -2427,6 +2430,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NavSafeSpawn
   groundMap: {fileID: 1583650508}
   searchRadius: 10
+--- !u!114 &7797051013246396015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8137892244548921797, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 424703103185275433}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538588407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a70ec0f9d536a245bec6c1651a16320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+--- !u!114 &7797051013246396022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538588407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b2dfeac57f37840849ad39a19a19d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaminaChargingSquareEffect
+  playerStats: {fileID: 7797051013246396015}
+  effectId: test_effect
+  localOffset: {x: 0, y: 1.5, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

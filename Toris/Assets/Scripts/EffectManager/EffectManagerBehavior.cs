@@ -28,6 +28,9 @@ public sealed class EffectManagerBehavior : MonoBehaviour, IEffectManager
 
     public void ConfigureRuntime(IEffectRuntime runtime)
     {
+        if (persistAcrossScenes && runtimeOverride != null && runtimeOverride != NullEffectRuntime.Instance)
+            return;
+
         runtimeOverride = runtime ?? NullEffectRuntime.Instance;
         RebuildManager();
     }
@@ -50,7 +53,13 @@ public sealed class EffectManagerBehavior : MonoBehaviour, IEffectManager
         RebuildManager();
         Instance = this;
     }
-
+    private void Update()
+    {
+        if (runtimeOverride is IEffectRuntimeTick tickableRuntime)
+        {
+            tickableRuntime.Tick(Time.unscaledDeltaTime);
+        }
+    }
     private void OnDestroy()
     {
         if (activeInstance == this)
@@ -109,6 +118,10 @@ public sealed class EffectManagerBehavior : MonoBehaviour, IEffectManager
     {
         EnsureManager();
         manager.Play(request);
+    }
+    public void PlayAttached(AttachedEffectRequest request)
+    {
+        manager.PlayAttached(request);
     }
 
     public EffectHandle PlayPersistent(PersistentEffectRequest request)

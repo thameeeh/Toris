@@ -18,3 +18,14 @@ MonoBehaviour:
     category: 0
     prewarmPool: 1
     prewarmCount: 4
+    maxPoolSize: 64
+    maxInactive: 32
+    oneShotLifetimeSeconds: 0.2
+  - id: test_effect
+    prefab: {fileID: 1652984238946569154, guid: 9f77a0430a557ab46beccaa7323c5470, type: 3}
+    category: 1
+    prewarmPool: 1
+    prewarmCount: 4
+    maxPoolSize: 64
+    maxInactive: 32
+    oneShotLifetimeSeconds: 0.2

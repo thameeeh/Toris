@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IEffectManager
 {
     void Play(EffectRequest request);
+    void PlayAttached(AttachedEffectRequest request);
     EffectHandle PlayPersistent(PersistentEffectRequest request);
     void Release(EffectHandle handle);
     void ReleaseAll();
@@ -22,11 +23,20 @@ public interface IEffectCatalog
 public interface IEffectRuntime
 {
     void Play(EffectDefinition definition, EffectRequest request);
+    void PlayAttached(EffectDefinition definition, AttachedEffectRequest request);
     EffectHandle PlayPersistent(EffectDefinition definition, PersistentEffectRequest request);
     void Release(EffectHandle handle);
     void ReleaseAll();
     void ReleaseAll(Transform anchor);
     void Prewarm(EffectDefinition definition, int count);
+}
+public interface IEffectRuntimeTick
+{
+    void Tick(float deltaTimeSeconds);
+}
+public interface IEffectParametersReceiver
+{
+    void ApplyEffectParameters(EffectVariant variant, float magnitude);
 }
 
 public sealed class EffectManager : IEffectManager
@@ -55,6 +65,16 @@ public sealed class EffectManager : IEffectManager
         }
 
         runtime.Play(definition, request);
+    }
+    public void PlayAttached(AttachedEffectRequest request)
+    {
+        if (string.IsNullOrEmpty(request.EffectId))
+            return;
+
+        if (!catalog.TryGetDefinition(request.EffectId, out var definition))
+            return;
+
+        runtime.PlayAttached(definition, request);
     }
 
     public EffectHandle PlayPersistent(PersistentEffectRequest request)
@@ -125,6 +145,11 @@ public sealed class NullEffectManager : IEffectManager
     {
         // Intentionally blank
     }
+    public void PlayAttached(AttachedEffectRequest request)
+    {
+        // Intentionally blank
+    }
+
 
     public EffectHandle PlayPersistent(PersistentEffectRequest request)
     {
@@ -164,6 +189,11 @@ public sealed class NullEffectRuntime : IEffectRuntime
     {
         // Intentionally blank
     }
+    public void PlayAttached(EffectDefinition definition, AttachedEffectRequest request)
+    {
+        // Intentionally blank
+    }
+
 
     public EffectHandle PlayPersistent(EffectDefinition definition, PersistentEffectRequest request)
     {
@@ -254,6 +284,20 @@ public class EffectDefinition
     [SerializeField]
     private int prewarmCount = 1;
 
+    [Tooltip("Hard cap on total instances (active + inactive) for this effect.\n0 = no cap (not recommended).")]
+    [SerializeField]
+    private int maxPoolSize = 64;
+
+    [Tooltip("Hard cap on inactive instances kept in the pool.\nInactive overflow instances are destroyed on release.\n0 = no cap (not recommended).")]
+    [SerializeField]
+    private int maxInactive = 32;
+
+    [SerializeField]
+    private float oneShotLifetimeSeconds = 1.0f;
+
+    public float OneShotLifetimeSeconds => Mathf.Max(0f, oneShotLifetimeSeconds);
+    public int MaxPoolSize => Mathf.Max(0, maxPoolSize);
+    public int MaxInactive => Mathf.Max(0, maxInactive);
     public string Id => id;
     public GameObject Prefab => prefab;
     public EffectCategory Category => category;
@@ -287,6 +331,18 @@ public struct PersistentEffectRequest
     public Vector3 LocalPosition;
     public Quaternion LocalRotation;
     public EffectVariant Variant;
+    public float Magnitude;
+}
+
+[Serializable]
+public struct AttachedEffectRequest
+{
+    public string EffectId;
+    public Transform Anchor;
+    public Vector3 LocalPosition;
+    public Quaternion LocalRotation;
+    public EffectVariant Variant;
+    public float Magnitude;
 }
 
 [Serializable]

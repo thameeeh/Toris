@@ -4,9 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Audio/SFX Library", fileName = "SfxLibrary")]
 public sealed class SfxLibrary : ScriptableObject
 {
-    [SerializeField] private SfxDefinition[] definitions;
+    [SerializeField] private SfxCategory[] categories;
 
-    private readonly Dictionary<string, SfxDefinition> idToDefinition = new Dictionary<string, SfxDefinition>();
+    private readonly Dictionary<string, SfxDefinition> idToDefinition = new();
+
     private void OnEnable()
     {
         RebuildCache();
@@ -23,37 +24,41 @@ public sealed class SfxLibrary : ScriptableObject
     {
         idToDefinition.Clear();
 
-        if (definitions == null) return;
+        if (categories == null) return;
 
-        for (int i = 0; i < definitions.Length; i++)
+        for (int c = 0; c < categories.Length; c++)
         {
-            SfxDefinition definition = definitions[i];
-            if (definition == null) continue;
-            if (string.IsNullOrWhiteSpace(definition.Id)) continue;
+            var category = categories[c];
+            if (category == null || category.definitions == null) continue;
 
-            if (idToDefinition.ContainsKey(definition.Id))
+            for (int i = 0; i < category.definitions.Length; i++)
             {
-                Debug.LogError($"SfxLibrary has duplicate id: '{definition.Id}'.", this);
-                continue;
-            }
+                var def = category.definitions[i];
+                if (def == null) continue;
+                if (string.IsNullOrWhiteSpace(def.Id)) continue;
 
-            idToDefinition.Add(definition.Id, definition);
+                if (idToDefinition.ContainsKey(def.Id))
+                {
+                    Debug.LogError($"Duplicate SFX id '{def.Id}' in category '{category.categoryName}'", this);
+                    continue;
+                }
+
+                idToDefinition.Add(def.Id, def);
+            }
         }
     }
 
     public bool TryGet(string id, out SfxDefinition definition)
     {
-        definition = null;
-        if (string.IsNullOrWhiteSpace(id)) return false;
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            definition = null;
+            return false;
+        }
 
         if (idToDefinition.Count == 0)
             RebuildCache();
 
-        if (idToDefinition.TryGetValue(id, out definition))
-            return true;
-
-        RebuildCache();
         return idToDefinition.TryGetValue(id, out definition);
     }
-
 }

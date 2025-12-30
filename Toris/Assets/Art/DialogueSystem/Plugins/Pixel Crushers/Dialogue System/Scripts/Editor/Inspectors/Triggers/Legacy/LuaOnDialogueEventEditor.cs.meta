@@ -12,6 +12,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 11672
   packageName: Dialogue System for Unity
-  packageVersion: 2.2.62.2
-  assetPath: Assets/Plugins/Pixel Crushers/Dialogue System/Scripts/Editor/Inspectors/Triggers/Legacy/LuaOnDialogueEventEditor.cs
-  uploadId: 828106
+  packageVersion: 2.2.63.1
+  assetPath: Assets/Art/DialogueSystem/Plugins/Pixel Crushers/Dialogue System/Scripts/Editor/Inspectors/Triggers/Legacy/LuaOnDialogueEventEditor.cs
+  uploadId: 835918

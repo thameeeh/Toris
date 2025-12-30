@@ -2528,6 +2528,7 @@ namespace PixelCrushers.DialogueSystem
                     if (DialogueLua.DoesVariableExist(picValue))
                     {
                         picNumber = DialogueLua.GetVariable(picValue).asInt;
+                        textureName = $"pic={picNumber}";
                     }
                     else
                     {

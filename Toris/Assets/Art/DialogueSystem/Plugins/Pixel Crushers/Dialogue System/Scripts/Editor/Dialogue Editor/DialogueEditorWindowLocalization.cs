@@ -610,8 +610,18 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             var start = entries.Find(x => x.id == 0);
             if (start == null) return unprocessed;
             SortDepthFirstRecursive(start, sorted, unprocessed);
-            sorted.AddRange(unprocessed);
+            DepthFirstSortOrphans(entries, sorted, unprocessed);
             return sorted;
+        }
+
+        private void DepthFirstSortOrphans(List<DialogueEntry> allEntries, List<DialogueEntry> sorted, List<DialogueEntry> unprocessed)
+        {
+            var orphanRootNodes = GetOrphanRootNodes(allEntries, unprocessed);
+            foreach (var orphanRootNode in orphanRootNodes)
+            {
+                SortDepthFirstRecursive(orphanRootNode, sorted, unprocessed);
+            }
+            sorted.AddRange(unprocessed);
         }
 
         private void SortDepthFirstRecursive(DialogueEntry entry, List<DialogueEntry> sorted, List<DialogueEntry> unprocessed)
@@ -622,7 +632,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             foreach (var link in entry.outgoingLinks)
             {
                 if (link.destinationConversationID != entry.conversationID) continue;
-                var child = unprocessed.Find(x => x.id == link.destinationDialogueID); 
+                var child = unprocessed.Find(x => x.id == link.destinationDialogueID);
                 if (child == null) continue;
                 SortDepthFirstRecursive(child, sorted, unprocessed);
             }
@@ -630,11 +640,28 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private List<DialogueEntry> BreadthFirstSortEntries(List<DialogueEntry> entries)
         {
-            var sorted= new List<DialogueEntry>();
+            var sorted = new List<DialogueEntry>();
             var unprocessed = new List<DialogueEntry>(entries);
-            var queued = new Queue<DialogueEntry>();
             var start = entries.Find(x => x.id == 0);
             if (start == null) return unprocessed;
+            BreadthFirstSortTree(start, sorted, unprocessed);
+            BreadthFirstSortOrphans(entries, sorted, unprocessed);
+            return sorted;
+        }
+
+        private void BreadthFirstSortOrphans(List<DialogueEntry> allEntries, List<DialogueEntry> sorted, List<DialogueEntry> unprocessed)
+        {
+            var orphanRootNodes = GetOrphanRootNodes(allEntries, unprocessed);
+            foreach (var orphanRootNode in orphanRootNodes)
+            {
+                BreadthFirstSortTree(orphanRootNode, sorted, unprocessed);
+            }
+            sorted.AddRange(unprocessed);
+        }
+
+        private void BreadthFirstSortTree(DialogueEntry start, List<DialogueEntry> sorted, List<DialogueEntry> unprocessed)
+        {
+            var queued = new Queue<DialogueEntry>();
             queued.Enqueue(start);
             while (queued.Count > 0)
             {
@@ -649,8 +676,39 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     queued.Enqueue(child);
                 }
             }
-            sorted.AddRange(unprocessed);
-            return sorted;
+        }
+
+        // Find unprocessed nodes that aren't in the <START> node's conversation tree but
+        // are at the root of their own "orphan" tree. Return a list of these nodes sorted
+        // by their horizontal canvas position.
+        private List<DialogueEntry> GetOrphanRootNodes(List<DialogueEntry> allEntries, List<DialogueEntry> unprocessed)
+        {
+            var orphanRootNodes = new List<DialogueEntry>();
+            foreach (var entry in unprocessed)
+            {
+                if (!DoesAnythingLinkToThisEntry(entry, allEntries))
+                {
+                    orphanRootNodes.Add(entry);
+                }
+            }
+            orphanRootNodes.Sort((a, b) => a.canvasRect.x.CompareTo(b.canvasRect.x));
+            return orphanRootNodes;
+        }
+
+        private bool DoesAnythingLinkToThisEntry(DialogueEntry entry, List<DialogueEntry> allEntries)
+        {
+            foreach (var potentialParent in allEntries)
+            {
+                foreach (var link in potentialParent.outgoingLinks)
+                {
+                    if (link.destinationConversationID == entry.conversationID &&
+                        link.destinationDialogueID == entry.id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private string GetNewKeyFieldValue()

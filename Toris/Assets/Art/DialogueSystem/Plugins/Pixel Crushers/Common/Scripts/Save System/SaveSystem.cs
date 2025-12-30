@@ -77,6 +77,8 @@ namespace PixelCrushers
 
         private static int m_framesToWaitBeforeSaveDataAppliedEvent = 0;
 
+        private static bool m_isOnlyChangingScene = false;
+
         private static bool m_isQuitting = false;
 
 #if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
@@ -812,6 +814,8 @@ namespace PixelCrushers
         /// <summary>
         /// Records the current scene's savers' data into the SaveSystem's
         /// internal saved game data cache.
+        /// Note: If saver's skipSaveWhenChangingScenes is true, it won't
+        /// record saved game data.
         /// </summary>
         /// <returns></returns>
         public static SavedGameData RecordSavedGameData()
@@ -823,6 +827,7 @@ namespace PixelCrushers
             {
                 try
                 {
+                    if (m_isOnlyChangingScene && saver.skipSaveWhenChangingScenes) continue;
                     m_savedGameData.SetData(saver.key, GetSaverSceneIndex(saver), saver.RecordData());
                 }
                 catch (System.Exception e)
@@ -851,6 +856,8 @@ namespace PixelCrushers
 
         /// <summary>
         /// Applies the saved game data to the savers in the current scene.
+        /// Note: If saver's skipSaveWhenChangingScenes is true, it won't
+        /// apply saved game data.
         /// </summary>
         /// <param name="savedGameData">Saved game data.</param>
         public static void ApplySavedGameData(SavedGameData savedGameData)
@@ -868,7 +875,13 @@ namespace PixelCrushers
                             if (0 <= i && i < m_tmpSavers.Count)
                             {
                                 var saver = m_tmpSavers[i];
-                                if (saver != null) saver.ApplyData(savedGameData.GetData(saver.key));
+                                if (saver != null)
+                                {
+                                    if (!(m_isOnlyChangingScene && saver.skipSaveWhenChangingScenes))
+                                    {
+                                        saver.ApplyData(savedGameData.GetData(saver.key));
+                                    }
+                                }
                             }
                         }
                         catch (System.Exception e)
@@ -991,6 +1004,7 @@ namespace PixelCrushers
                 sceneName = strings[0];
                 spawnpointName = (strings.Length > 1) ? strings[1] : null;
             }
+            m_isOnlyChangingScene = true;
             var savedGameData = RecordSavedGameData();
             savedGameData.sceneName = sceneName;
             instance.StartCoroutine(LoadSceneCoroutine(savedGameData, spawnpointName, SceneValidationMode.LoadingScene));
@@ -1015,6 +1029,7 @@ namespace PixelCrushers
             m_playerSpawnpoint = !string.IsNullOrEmpty(spawnpointName) ? GameObject.Find(spawnpointName) : null;
             if (!string.IsNullOrEmpty(spawnpointName) && m_playerSpawnpoint == null) Debug.LogWarning("Save System: Can't find spawnpoint '" + spawnpointName + "'. Is spelling and capitalization correct?");
             ApplySavedGameData(savedGameData);
+            m_isOnlyChangingScene = false;
         }
 
         // Calls ApplyDataImmediate on all savers.

@@ -20,7 +20,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private readonly string[] LanguageFieldPrefixes = new string[] {
             "Dialogue Text ", "Menu Text ", "Sequence ", "Response Menu Sequence ",
-            "Description ", "Success Description ", "Failure Description "
+            "Description ", "Success Description ", "Failure Description ", "Title "
         };
 
         private void ResetLanguageList()
@@ -37,7 +37,6 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     // Don't add Dialogue Text:
                     if (field.title.Equals("Dialogue Text")) continue;
-                    if (field.title.StartsWith("Title ")) continue;
 
                     // Assume it's Chat Mapper-style localized dialogue text, in which case
                     // the language is the entire field title:
@@ -61,7 +60,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                             }
                         }
                     }
-                    if (!string.IsNullOrEmpty(language)) languages.Add(language);
+                    if (!(string.IsNullOrWhiteSpace(language) || languages.Contains(language)))
+                    {
+                        languages.Add(language);
+                    }
                 }
             }
         }

@@ -54,6 +54,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     public event Action<Enemy> Died;
     public event Action<Enemy> Despawned;
+    public event Action<float> Damaged; // for sfx
 
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
@@ -98,6 +99,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (!CanTakeDamage()) return;
 
         CurrentHealth -= damageAmount;
+
+        Damaged?.Invoke(damageAmount);
         //Debug.Log($"Health left: {CurrentHealth}");
         if (CurrentHealth <= 0f)
         {

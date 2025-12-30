@@ -24,6 +24,10 @@ namespace PixelCrushers
         [SerializeField]
         private bool m_saveAcrossSceneChanges = true;
 
+        [Tooltip("Record & apply save data when saving/load games but not when just changing scenes. Typically used only for savers on DontDestroyOnLoad GamObjects.")]
+        [SerializeField]
+        private bool m_skipSaveWhenChangingScenes = false;
+
         [Tooltip("When starting, restore this saver's state from current saved game data. Normally the save system restores state when loading games or changing scenes without this checkbox.")]
         [SerializeField]
         private bool m_restoreStateOnStart = false;
@@ -86,6 +90,16 @@ namespace PixelCrushers
         {
             get { return m_saveAcrossSceneChanges; }
             set { m_saveAcrossSceneChanges = value; }
+        }
+
+        /// <summary>
+        /// Record & apply save data when saving/load games but not when just changing 
+        /// scenes. Typically used only for savers on DontDestroyOnLoad GamObjects.
+        /// </summary>
+        public virtual bool skipSaveWhenChangingScenes
+        {
+            get { return m_skipSaveWhenChangingScenes; }
+            set { m_skipSaveWhenChangingScenes = value; }
         }
 
         /// <summary>

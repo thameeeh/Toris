@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: -4774567673522461205}
   - component: {fileID: 4137995065482030071}
   - component: {fileID: 2695960224398103068}
+  - component: {fileID: -512811958546087626}
   m_Layer: 7
   m_Name: Leader Wolf
   m_TagString: Enemy
@@ -394,6 +395,21 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.25
+--- !u!114 &-512811958546087626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211954740449028837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e00a7bc10623934b82a94eafb442afc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySfx
+  enemy: {fileID: 7255815159274722986}
+  modules:
+  - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
 --- !u!1 &7414158134763573296
 GameObject:
   m_ObjectHideFlags: 0

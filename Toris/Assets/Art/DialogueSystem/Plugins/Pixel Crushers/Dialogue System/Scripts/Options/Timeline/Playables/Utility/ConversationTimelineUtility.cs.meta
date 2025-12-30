@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8d59ff45d1a3419478414ead6d9e66ea
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 11672
+  packageName: Dialogue System for Unity
+  packageVersion: 2.2.63.1
+  assetPath: Assets/Art/DialogueSystem/Plugins/Pixel Crushers/Dialogue System/Scripts/Options/Timeline/Playables/Utility/ConversationTimelineUtility.cs
+  uploadId: 835918

@@ -712,7 +712,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
                 var sequenceField = Field.Lookup(entry.fields, "Sequence");
                 EditorGUI.BeginChangeCheck();
-                sequenceField.value = SequenceEditorTools.DrawLayout(new GUIContent("Sequence", "Cutscene played when speaking this entry. If set, overrides Dialogue Manager's Default Sequence. Drag audio clips to add AudioWait() commands."), sequenceField.value, ref sequenceRect, ref sequenceSyntaxState, entry, sequenceField);
+                sequenceField.value = SequenceEditorTools.DrawLayout(
+                    new GUIContent("Sequence", "Cutscene played when speaking this entry. If set, overrides Dialogue Manager's Default Sequence. Drag audio clips to add AudioWait() commands."), 
+                    sequenceField.value, ref sequenceRect, ref sequenceSyntaxState, entry, sequenceField, 
+                    showDefaultShortcutButton: true);
                 if (EditorGUI.EndChangeCheck())
                 {
                     changed = true;
@@ -860,7 +863,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 // Sequence (including localized if defined):
                 var sequence = GetMultinodeSelectionFieldValue(DialogueSystemFields.Sequence);
                 EditorGUI.BeginChangeCheck();
-                sequence = SequenceEditorTools.DrawLayout(new GUIContent("Sequence", "Cutscene played when speaking these entries. If set, overrides Dialogue Manager's Default Sequence. Drag audio clips to add AudioWait() commands."), sequence, ref sequenceRect, ref sequenceSyntaxState);
+                sequence = SequenceEditorTools.DrawLayout(new GUIContent("Sequence", "Cutscene played when speaking these entries. If set, overrides Dialogue Manager's Default Sequence. Drag audio clips to add AudioWait() commands."), 
+                    sequence, ref sequenceRect, ref sequenceSyntaxState, 
+                    showDefaultShortcutButton: true);
                 if (EditorGUI.EndChangeCheck())
                 {
                     changed = true;

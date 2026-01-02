@@ -121,7 +121,6 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
 #if UNITY_EDITOR
     private void ValidateSingleDefinitionInEditor(EffectDefinition definition)
     {
-        // ID sanity
         if (string.IsNullOrWhiteSpace(definition.Id))
         {
             Debug.LogWarning(
@@ -130,7 +129,6 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
             );
         }
 
-        // Prefab sanity
         GameObject prefab = definition.Prefab;
         if (prefab == null)
         {
@@ -141,7 +139,6 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
             return;
         }
 
-        // Prefab should be a project asset, not a scene object
         PrefabAssetType prefabAssetType = PrefabUtility.GetPrefabAssetType(prefab);
         if (prefabAssetType == PrefabAssetType.NotAPrefab)
         {
@@ -151,7 +148,6 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
             );
         }
 
-        // Pool listener sanity
         bool hasAnyPoolListener = prefab.GetComponentInChildren<IEffectPoolListener>(true) != null;
         if (!hasAnyPoolListener)
         {
@@ -162,12 +158,10 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
             );
         }
 
-        // Category mismatch: OneShot with no release path
         if (definition.Category == EffectCategory.OneShot)
         {
             float oneShotLifetimeSeconds = definition.OneShotLifetimeSeconds;
 
-            // If lifetime is 0 and there is no listener, it has no deterministic release trigger.
             if (oneShotLifetimeSeconds <= 0f && !hasAnyPoolListener)
             {
                 Debug.LogWarning(
@@ -178,7 +172,6 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
             }
         }
 
-        // Pool bounds sanity (Step 2)
         int maxPoolSize = definition.MaxPoolSize;
         int maxInactive = definition.MaxInactive;
 
@@ -191,7 +184,6 @@ public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
             );
         }
 
-        // Prewarm sanity
         if (definition.PrewarmPool)
         {
             int prewarmCount = definition.PrewarmCount;

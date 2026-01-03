@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/NEW/PlayerStatSelectors/StatLabel.uss?fileID=7433441132597879392&amp;guid=9887faebe91d67d499f14301975359eb&amp;type=3#StatLabel"/>
     <ui:VisualElement data-source-type="OutlandHaven.UIToolkit.PlayerDataSO, Assembly-CSharp" style="flex-grow: 1; align-self: auto; flex-direction: column; align-items: flex-end;">
-        <ui:Label text="Label" name="PlayerName" selectable="false" focusable="false" data-source-type="OutlandHaven.UIToolkit.PlayerDataSO, Assembly-CSharp" data-source-path="NameDisplay" class="StatLabel">
+        <ui:Label text="Label" name="PlayerName" selectable="false" focusable="false" data-source-type="OutlandHaven.UIToolkit.PlayerDataSO, Assembly-CSharp" data-source-path="" class="StatLabel">
             <Bindings>
                 <ui:DataBinding property="text" data-source-path="NameDisplay" data-source="project://database/Assets/Resources/GameData/Characters/Player1.asset?fileID=11400000&amp;guid=02a9a16839c28d2498fbd9c86be3278c&amp;type=2#Player1" binding-mode="ToTarget"/>
             </Bindings>

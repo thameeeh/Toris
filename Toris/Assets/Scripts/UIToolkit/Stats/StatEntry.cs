@@ -1,7 +1,10 @@
 using Unity.Properties;
 using UnityEngine;
 
-[System.Serializable]
+namespace OutlandHaven.UIToolkit
+{
+
+    [System.Serializable]
     public class StatEntry
     {
         [SerializeField] private string m_statName;
@@ -15,3 +18,4 @@ using UnityEngine;
             m_value = value;
         }
     }
+}

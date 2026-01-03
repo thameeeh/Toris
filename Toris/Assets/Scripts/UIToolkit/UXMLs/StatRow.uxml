@@ -1,7 +1,15 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/NEW/PlayerStatSelectors/StatLabel.uss?fileID=7433441132597879392&amp;guid=9887faebe91d67d499f14301975359eb&amp;type=3#StatLabel"/>
-    <ui:VisualElement data-source-type="StatEntry, Assembly-CSharp" name="" style="flex-grow: 1;">
-        <ui:Label text="Label" data-source-path="StatName" class="StatLabel"/>
-        <ui:Label text="Label" data-source-path="ValueDisplay" class="StatLabel"/>
+    <ui:VisualElement data-source-type="OutlandHaven.UIToolkit.StatEntry, Assembly-CSharp" name="" style="flex-grow: 1; flex-direction: row;">
+        <ui:Label text="Label" class="StatLabel">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="StatName" data-source-type="StatEntry, Assembly-CSharp" binding-mode="TwoWay"/>
+            </Bindings>
+        </ui:Label>
+        <ui:Label text="Label" data-source-path="" class="StatLabel">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="ValueDisplay" data-source-type="StatEntry, Assembly-CSharp" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:Label>
     </ui:VisualElement>
 </ui:UXML>

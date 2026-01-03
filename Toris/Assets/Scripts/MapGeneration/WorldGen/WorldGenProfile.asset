@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de75fa5e73852447a8acc95ebd4371c, type: 3}
+  m_Name: WorldGenProfile
+  m_EditorClassIdentifier: Assembly-CSharp::WorldGenProfile
+  seed: 11111
+  worldRadiusTiles: 500
+  spawnPosTiles: {x: 0, y: 0}
+  chunkSize: 32
+  viewDistanceChunks: 2
+  dangerCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 1
+    m_RotationOrder: 4
+  islandRadius01: 0.92
+  coastNoiseScale: 0.0025
+  coastNoiseStrength01: 0.25
+  forestStart01: 0.3
+  forestFull01: 0.45
+  forestRegionScale: 0.0012
+  forestDensityMultiplier: 0.6
+  lakeScale: 0.02
+  lakeThreshold01: 0.789
+  enableRoads: 1
+  mainRoadCount: 4
+  roadControlPointCount: 200
+  roadMaxTurnDeg: 25
+  roadWidthFalloffTiles: 1
+  roadHalfWidthNearFar: {x: 5, y: 5}
+  roadSegmentLenMinMax: {x: 50, y: 80}
+  plainsGroundVariants:
+  - {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
+  - {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+  - {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+  waterTile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+  flowerDecorVariants:
+  - {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+  - {fileID: 11400000, guid: 8b9553300961c6e41ac34f25e2727bf6, type: 2}
+  treeDecorVariants:
+  - {fileID: 11400000, guid: aa9850cf47687fc41b4873c90083cb91, type: 2}
+  roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}

@@ -1,0 +1,6 @@
+:root {
+}
+
+.StatLabel {
+    font-size: 40px;
+}

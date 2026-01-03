@@ -3,4 +3,9 @@
 
 .StatLabel {
     font-size: 40px;
+    background-color: rgb(255, 255, 255);
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-width: 5px;
+    border-right-width: 5px;
 }

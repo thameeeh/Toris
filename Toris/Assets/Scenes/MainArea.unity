@@ -39462,6 +39462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.PlayerController
   dataAsset: {fileID: 11400000, guid: 02a9a16839c28d2498fbd9c86be3278c, type: 2}
+  statRowTemplate: {fileID: 9197481963319205126, guid: cc50438b37380084d8ca38fae83ea373, type: 3}
 --- !u!1 &716633733
 GameObject:
   m_ObjectHideFlags: 0

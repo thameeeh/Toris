@@ -11,7 +11,6 @@ public sealed class NoiseContext
 
     public NoiseContext(int seed)
     {
-        // stable offsets derived from seed (not UnityEngine.Random)
         coastOffset = MakeOffset(seed, 11);
         forestOffset = MakeOffset(seed, 22);
         variationOffset = MakeOffset(seed, 33);
@@ -29,7 +28,6 @@ public sealed class NoiseContext
             _ => Vector2.zero
         };
 
-        // Mathf.PerlinNoise returns 0..1
         return Mathf.PerlinNoise((x + o.x) * scale, (y + o.y) * scale);
     }
 

@@ -36,7 +36,7 @@ public sealed class TileResolver
 
         bool nearRoad = s.road01 > 0.25f;
         if (nearRoad)
-            return r; // no decor on/near roads
+            return r;
 
         // 5) Forest overlay decor (Biome 2)
         if (TryPickForestDecor(tilePos, ctx, s, out TileBase forestDecor))
@@ -45,7 +45,7 @@ public sealed class TileResolver
             return r;
         }
 
-        // 6) Flowers (Plains decor) – suppressed by forest
+        // 6) Flowers (Plains decor) suppressed by forest
         if (TryPickFlowerDecor(tilePos, ctx, s, out TileBase flower))
         {
             r.decor = flower;
@@ -59,7 +59,6 @@ public sealed class TileResolver
         TileBase[] variants = ctx.Profile.plainsGroundVariants;
         if (variants == null || variants.Length == 0) return null;
 
-        // Deterministic pick using hash
         uint h = DeterministicHash.Hash((uint)ctx.Seed, p.x, p.y, 101);
         int idx = (int)(DeterministicHash.Hash01(h) * variants.Length);
         if (idx < 0) idx = 0;
@@ -72,7 +71,6 @@ public sealed class TileResolver
         tile = null;
         if (ctx.Profile.treeDecorVariants == null || ctx.Profile.treeDecorVariants.Length == 0) return false;
 
-        // Probability rises with forest01 (tunable feel)
         float prob = Mathf.Clamp01(Mathf.Lerp(0f, 0.75f, s.forest01));
         if (prob <= 0f) return false;
 
@@ -90,7 +88,6 @@ public sealed class TileResolver
         tile = null;
         if (ctx.Profile.flowerDecorVariants == null || ctx.Profile.flowerDecorVariants.Length == 0) return false;
 
-        // Flowers are common in plains, but fade out as forest grows
         float baseProb = 0.10f;
         float prob = baseProb * (1f - s.forest01);
         if (prob <= 0f) return false;

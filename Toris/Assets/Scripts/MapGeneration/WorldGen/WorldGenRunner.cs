@@ -100,26 +100,64 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         EnqueueNeededChunks(streamingAnchorChunk, profile.viewDistanceChunks + preloadChunks);
 
-        var swUnload = System.Diagnostics.Stopwatch.StartNew();
-        UnloadFarChunks(streamingAnchorChunk, profile.viewDistanceChunks);
-        swUnload.Stop();
-
-        // --- Time-budgeted generation (INSPECTOR-CONTROLLED) ---
+        // --- REAL time budget over the WHOLE streaming work (unload + gen + apply) ---
         double budgetMs = Mathf.Max(0.1f, genBudgetMs);
 
         long frameStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
         long freq = System.Diagnostics.Stopwatch.Frequency;
 
-        int hardCap = Mathf.Max(1, maxChunksPerFrame);
+        double ElapsedMs()
+            => (System.Diagnostics.Stopwatch.GetTimestamp() - frameStartTicks) * 1000.0 / freq;
+
+        // 1) Unload first, but also budget it.
+        long unloadT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+        UnloadFarChunks(streamingAnchorChunk, profile.viewDistanceChunks);
+        long unloadT1 = System.Diagnostics.Stopwatch.GetTimestamp();
+        double unloadMs = (unloadT1 - unloadT0) * 1000.0 / freq;
+
+        // If unload alone ate the budget, do nothing else this frame.
+        if (ElapsedMs() >= budgetMs)
+        {
+            if (unloadMs >= 2.0)
+            {
+                Debug.Log(
+                    $"[WorldGen] unload={(int)unloadMs}ms, genChunks=0/{Mathf.Max(1, maxChunksPerFrame)} " +
+                    $"budget={budgetMs:F1}ms gen=0.00ms apply=0.00ms, queue={generateQueue.Count} loaded={loaded.Count} chunkSize={profile.chunkSize}"
+                );
+            }
+            return;
+        }
+
+        // 2) Generation + apply, fully budgeted.
+        int hardCap = Mathf.Max(0, maxChunksPerFrame); // allow 0 if you want to pause streaming
         int genCount = 0;
 
         long genTicksTotal = 0;
         long applyTicksTotal = 0;
 
+        // Rolling estimate for "one chunk cost" (gen+apply).
+        // Start with a conservative estimate to avoid blowing budget on the first chunk.
+        double estChunkMs = 6.0; // safe default; will converge quickly
+
         while (generateQueue.Count > 0 && genCount < hardCap)
         {
-            double elapsedMsSoFar = (System.Diagnostics.Stopwatch.GetTimestamp() - frameStartTicks) * 1000.0 / freq;
-            if (elapsedMsSoFar >= budgetMs)
+            double elapsedMs = ElapsedMs();
+            double remainingMs = budgetMs - elapsedMs;
+            if (remainingMs <= 0.0)
+                break;
+
+            // If we already have measurements this frame, update estimate.
+            if (genCount > 0)
+            {
+                double genMsSoFar = genTicksTotal * 1000.0 / freq;
+                double applyMsSoFar = applyTicksTotal * 1000.0 / freq;
+                estChunkMs = (genMsSoFar + applyMsSoFar) / genCount;
+            }
+
+            // Don�t start a chunk if we probably can�t finish it inside the remaining budget.
+            // Small safety margin to avoid borderline overruns.
+            const double safetyMs = 0.25;
+            if (remainingMs < (estChunkMs + safetyMs))
                 break;
 
             Vector2Int c = generateQueue.Dequeue();
@@ -145,11 +183,11 @@ public sealed class WorldGenRunner : MonoBehaviour
         double genMsTotal = genTicksTotal * 1000.0 / freq;
         double applyMsTotal = applyTicksTotal * 1000.0 / freq;
 
-        // Log only when something notable happens
-        if (swUnload.ElapsedMilliseconds >= 2 || genMsTotal >= 10.0 || applyMsTotal >= 2.0)
+        // Log only when notable (same spirit as your original)
+        if (unloadMs >= 2.0 || genMsTotal >= 10.0 || applyMsTotal >= 2.0)
         {
             Debug.Log(
-                $"[WorldGen] unload={swUnload.ElapsedMilliseconds}ms, " +
+                $"[WorldGen] unload={(int)unloadMs}ms, " +
                 $"genChunks={genCount}/{hardCap} budget={budgetMs:F1}ms " +
                 $"gen={genMsTotal:F2}ms apply={applyMsTotal:F2}ms, " +
                 $"queue={generateQueue.Count} loaded={loaded.Count} chunkSize={profile.chunkSize}"
@@ -223,10 +261,8 @@ public sealed class WorldGenRunner : MonoBehaviour
         {
             Vector2Int c = toRemove[i];
 
-            // clear tile visuals
             applier.ClearChunk(c, profile.chunkSize);
 
-            // clear road cache for this chunk (important now that we bake per chunk)
             ctx.Roads.ClearCachedChunk(c);
 
             loaded.Remove(c);

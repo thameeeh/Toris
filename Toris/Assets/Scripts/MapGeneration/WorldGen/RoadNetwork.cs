@@ -2,31 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Deterministic "main roads from spawn" + per-chunk cached influence.
-///
-/// Performance fix:
-/// - Stop doing expensive distance-to-polyline per tile.
-/// - Instead, bake an influence field per chunk:
-///   1) Rasterize road centerlines into a small grid around the chunk
-///   2) Compute an approximate distance field (8-neighbor chamfer)
-///   3) Convert distance -> influence (0..1) for the chunk tiles
-/// - ComputeInfluence(tile) becomes O(1) lookup.
-/// </summary>
+
 public sealed class RoadNetwork
 {
     private readonly WorldGenProfile profile;
     private readonly int seed;
     private readonly Vector2 origin;
 
-    // Generated as world-space polylines (tile units)
     private readonly Vector2[][] roads;
 
-    // Per-chunk cached road influence values (0..1), sized chunkSize*chunkSize
     private readonly Dictionary<Vector2Int, float[]> chunkInfluence = new Dictionary<Vector2Int, float[]>(128);
 
-    // Reused temp buffers during baking (avoid allocations)
-    private int[] distField;        // chamfer distance (int cost, 10 = 1 tile)
+    private int[] distField;
     private int distW, distH;
     private int padCached = -1;
 
@@ -44,7 +31,7 @@ public sealed class RoadNetwork
             roads[i] = BuildMainRoad(i);
     }
 
-    /// <summary> Clear cached data for an unloaded chunk. Safe if not cached. </summary>
+    /// <summary> Clear cached data for an unloaded chunk. </summary>
     public void ClearCachedChunk(Vector2Int chunkCoord)
     {
         chunkInfluence.Remove(chunkCoord);
@@ -67,7 +54,6 @@ public sealed class RoadNetwork
         if (chunkInfluence.ContainsKey(chunkCoord))
             return;
 
-        // Influence pad around the chunk so roads slightly outside still affect inside.
         Vector2 halfWidthNearFar = GetField(profile, "roadHalfWidthNearFar", new Vector2(2.5f, 1.4f));
         float maxHalfWidth = Mathf.Max(halfWidthNearFar.x, halfWidthNearFar.y);
         int pad = Mathf.Clamp(Mathf.CeilToInt(maxHalfWidth) + 3, 3, 64);
@@ -82,20 +68,14 @@ public sealed class RoadNetwork
         int maxX = baseX + chunkSize - 1 + pad;
         int maxY = baseY + chunkSize - 1 + pad;
 
-        // 1) init INF
         const int INF = 1_000_000;
         int total = distW * distH;
         for (int i = 0; i < total; i++) distField[i] = INF;
 
-        // 2) rasterize road centerlines as sources (dist=0)
         RasterizeRoadsToSources(minX, minY, maxX, maxY);
-
-        // 3) chamfer distance transform (fast)
         ChamferDistanceTransform();
 
-        // 4) convert distance -> influence for the chunk interior
         float[] influence = new float[chunkSize * chunkSize];
-
         float roadWidthFalloffTiles = GetField(profile, "roadWidthFalloffTiles", 250f);
         roadWidthFalloffTiles = Mathf.Max(1f, roadWidthFalloffTiles);
 
@@ -121,7 +101,6 @@ public sealed class RoadNetwork
                 halfWidth = Mathf.Max(0.1f, halfWidth);
 
                 float v = 1f - Mathf.Clamp01(distTiles / halfWidth);
-                // smoothstep edge
                 v = v * v * (3f - 2f * v);
 
                 influence[ly * chunkSize + lx] = v;
@@ -132,7 +111,7 @@ public sealed class RoadNetwork
     }
 
     /// <summary>
-    /// Influence in [0..1] at a tile. Uses cache; auto-bakes on demand (debug HUD safe).
+    /// Influence in [0..1] at a tile. Uses cache; auto-bakes on demand
     /// </summary>
     public float ComputeInfluence(Vector2Int tilePos)
     {
@@ -184,7 +163,7 @@ public sealed class RoadNetwork
                 Vector2 b = pts[i + 1];
 
                 float len = Vector2.Distance(a, b);
-                int steps = Mathf.Max(1, Mathf.CeilToInt(len)); // ~1 sample / tile
+                int steps = Mathf.Max(1, Mathf.CeilToInt(len));
 
                 for (int s = 0; s <= steps; s++)
                 {
@@ -208,8 +187,8 @@ public sealed class RoadNetwork
 
     private void ChamferDistanceTransform()
     {
-        const int w1 = 10; // orthogonal
-        const int w2 = 14; // diagonal approx sqrt(2)
+        const int w1 = 10;
+        const int w2 = 14;
 
         // forward
         for (int y = 0; y < distH; y++)

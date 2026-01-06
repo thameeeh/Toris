@@ -20,13 +20,14 @@ public sealed class TilemapApplier
         int baseX = chunk.chunkCoord.x * size;
         int baseY = chunk.chunkCoord.y * size;
 
-        // One SetTilesBlock per map keeps it fast.
         BoundsInt bounds = new BoundsInt(baseX, baseY, 0, size, size, 1);
 
         groundMap.SetTilesBlock(bounds, chunk.ground);
         waterMap.SetTilesBlock(bounds, chunk.water);
         decorMap.SetTilesBlock(bounds, chunk.decor);
     }
+
+    private TileBase[] emptyBlock;
 
     public void ClearChunk(Vector2Int chunkCoord, int chunkSize)
     {
@@ -36,10 +37,12 @@ public sealed class TilemapApplier
         BoundsInt bounds = new BoundsInt(baseX, baseY, 0, chunkSize, chunkSize, 1);
 
         int n = chunkSize * chunkSize;
-        var empty = new TileBase[n]; // all nulls clears tiles
 
-        groundMap.SetTilesBlock(bounds, empty);
-        waterMap.SetTilesBlock(bounds, empty);
-        decorMap.SetTilesBlock(bounds, empty);
+        if (emptyBlock == null || emptyBlock.Length != n)
+            emptyBlock = new TileBase[n];
+
+        groundMap.SetTilesBlock(bounds, emptyBlock);
+        waterMap.SetTilesBlock(bounds, emptyBlock);
+        decorMap.SetTilesBlock(bounds, emptyBlock);
     }
 }

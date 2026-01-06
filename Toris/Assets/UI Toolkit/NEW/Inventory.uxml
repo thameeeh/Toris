@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row-reverse;">
+        <ui:VisualElement style="flex-grow: 0.4; background-color: rgb(255, 255, 255);">
+            <ui:VisualElement style="flex-grow: 1; align-self: auto; justify-content: center; background-color: rgb(255, 253, 131);">
+                <ui:Label text="Player Fit " style="font-size: 125px; -unity-text-align: upper-center;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0.5; align-self: stretch; justify-content: center; background-color: rgb(109, 255, 204);">
+                <ui:Label text="Inventory" name="Label" style="font-size: 126px; -unity-text-align: upper-center;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

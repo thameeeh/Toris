@@ -45,4 +45,11 @@ public sealed class TilemapApplier
         waterMap.SetTilesBlock(bounds, emptyBlock);
         decorMap.SetTilesBlock(bounds, emptyBlock);
     }
+
+    public void ClearAll()
+    {
+        groundMap.ClearAllTiles();
+        waterMap.ClearAllTiles();
+        decorMap.ClearAllTiles();
+    }
 }

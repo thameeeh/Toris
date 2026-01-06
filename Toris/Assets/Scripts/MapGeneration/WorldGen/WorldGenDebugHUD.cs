@@ -49,7 +49,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
         GUILayout.Label($"dist01: {s.dist01:F3}");
         GUILayout.Label($"danger01: {s.danger01:F3}");
-        GUILayout.Label($"islandMask: {s.islandMask01:F3}");
+        //GUILayout.Label($"islandMask: {s.islandMask01:F3}");
         GUILayout.Label($"forest01: {s.forest01:F3}");
         GUILayout.Label($"lake01: {s.lake01:F3}");
         GUILayout.Label($"road01: {s.road01:F3}");

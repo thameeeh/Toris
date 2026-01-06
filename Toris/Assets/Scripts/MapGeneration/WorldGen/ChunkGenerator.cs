@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public sealed class ChunkGenerator
 {
@@ -17,14 +16,10 @@ public sealed class ChunkGenerator
         int size = ctx.Profile.chunkSize;
         ChunkResult result = new ChunkResult(chunkCoord, size);
 
-        if (ctx.Profile.enableRoads)
-            ctx.Roads.BakeChunk(chunkCoord, size);
-
         int baseX = chunkCoord.x * size;
         int baseY = chunkCoord.y * size;
 
         for (int ly = 0; ly < size; ly++)
-        {
             for (int lx = 0; lx < size; lx++)
             {
                 Vector2Int tilePos = new Vector2Int(baseX + lx, baseY + ly);
@@ -35,7 +30,6 @@ public sealed class ChunkGenerator
                 result.water[idx] = t.water;
                 result.decor[idx] = t.decor;
             }
-        }
 
         return result;
     }

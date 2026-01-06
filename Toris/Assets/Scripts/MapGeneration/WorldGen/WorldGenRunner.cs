@@ -21,6 +21,10 @@ public sealed class WorldGenRunner : MonoBehaviour
     [SerializeField] private float genBudgetMs = 1;
     [SerializeField] private bool clearOnDisable = false;
 
+    private int biomeIndex = 0;
+    private float lastGateTime = -999f;
+    [SerializeField] private float gateCooldownSeconds = 1f;
+
     private WorldContext ctx;
     private ChunkGenerator generator;
     private TilemapApplier applier;
@@ -51,11 +55,8 @@ public sealed class WorldGenRunner : MonoBehaviour
         generator = new ChunkGenerator(ctx);
         applier = new TilemapApplier(groundMap, waterMap, decorMap);
 
-        Vector2Int spawnTile = new Vector2Int(
-            Mathf.FloorToInt(ctx.SpawnPosTiles.x),
-            Mathf.FloorToInt(ctx.SpawnPosTiles.y)
-        );
-
+        Vector2Int spawnTile = WorldToTile(ctx.Profile.spawnPosTiles);
+        StartBiome(0, spawnTile);
         streamingAnchorChunk = TileToChunk(spawnTile, profile.chunkSize);
         anchorInitialized = true;
     }
@@ -66,7 +67,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         Vector2 focusWorld = followTarget != null
             ? (Vector2)followTarget.position
-            : ctx.SpawnPosTiles;
+            : profile.spawnPosTiles;
 
         Vector2Int focusTile;
         if (grid != null)
@@ -80,6 +81,20 @@ public sealed class WorldGenRunner : MonoBehaviour
                 Mathf.FloorToInt(focusWorld.x),
                 Mathf.FloorToInt(focusWorld.y)
             );
+        }
+
+        if (Time.time - lastGateTime > gateCooldownSeconds)
+        {
+            if (ctx.Gates.IsGateTile(focusTile))
+            {
+                lastGateTime = Time.time;
+
+                // If you have a fade/teleport system, call it here,
+                // teleport player to new platform tile, then call StartBiome with that tile.
+                // For now: rebind biome around the gate tile.
+                StartBiome(biomeIndex + 1, focusTile);
+                return; // prevent doing streaming work with stale state this frame
+            }
         }
 
         Vector2Int focusChunk = TileToChunk(focusTile, profile.chunkSize);
@@ -263,7 +278,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
             applier.ClearChunk(c, profile.chunkSize);
 
-            ctx.Roads.ClearCachedChunk(c);
+            //ctx.Roads.ClearCachedChunk(c);
 
             loaded.Remove(c);
         }
@@ -301,4 +316,39 @@ public sealed class WorldGenRunner : MonoBehaviour
         queued.Clear();
         generateQueue.Clear();
     }
+    private int ComputeBiomeSeed(int runSeed, int biomeIdx)
+    {
+        uint h = DeterministicHash.Hash((uint)runSeed, biomeIdx, 0, 0xC0FFEEu);
+        return (int)(h & 0x7FFFFFFF);
+    }
+
+    private Vector2Int WorldToTile(Vector2 world)
+    {
+        if (grid != null)
+        {
+            Vector3Int cell = grid.WorldToCell((Vector3)world);
+            return new Vector2Int(cell.x, cell.y);
+        }
+
+        return new Vector2Int(Mathf.FloorToInt(world.x), Mathf.FloorToInt(world.y));
+    }
+
+    private void StartBiome(int nextBiomeIndex, Vector2Int originTile)
+    {
+        biomeIndex = nextBiomeIndex;
+        int biomeSeed = ComputeBiomeSeed(profile.seed, biomeIndex);
+
+        var biome = new BiomeInstance(biomeIndex, biomeSeed, originTile, profile.worldRadiusTiles);
+        ctx.BindBiome(biome);
+
+        // hard reset visuals + streaming state
+        applier.ClearAll();
+
+        loaded.Clear();
+        queued.Clear();
+        generateQueue.Clear();
+
+        anchorInitialized = false;
+    }
+
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WorldGenProfile
   m_EditorClassIdentifier: Assembly-CSharp::WorldGenProfile
   seed: 11111
-  worldRadiusTiles: 500
+  worldRadiusTiles: 50
   spawnPosTiles: {x: 0, y: 0}
   chunkSize: 32
   viewDistanceChunks: 2
@@ -64,7 +64,13 @@ MonoBehaviour:
   waterTile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
   flowerDecorVariants:
   - {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
-  - {fileID: 11400000, guid: 8b9553300961c6e41ac34f25e2727bf6, type: 2}
+  - {fileID: 0}
   treeDecorVariants:
   - {fileID: 11400000, guid: aa9850cf47687fc41b4873c90083cb91, type: 2}
   roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
+  platformGroundTile: {fileID: 0}
+  gateGroundTile: {fileID: 0}
+  roadWidthMin: 3
+  roadWidthMax: 5
+  gateSize: 7
+  maxRoadScanTiles: 4000

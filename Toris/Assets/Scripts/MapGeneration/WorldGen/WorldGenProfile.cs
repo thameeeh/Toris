@@ -47,6 +47,16 @@ public sealed class WorldGenProfile : ScriptableObject
     public TileBase[] treeDecorVariants;
     public TileBase roadTile;
 
+    [Header("Stamps")]
+    public TileBase platformGroundTile;
+    public TileBase gateGroundTile;
+
+    [Range(3, 5)] public int roadWidthMin = 3;
+    [Range(3, 5)] public int roadWidthMax = 5;
+
+    public int gateSize = 7;
+    public int maxRoadScanTiles = 4000;
+
     //[Header("Modules")]
     //public WorldGenModule[] modules;
 }

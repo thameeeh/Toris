@@ -1,8 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/Menu/MenuButtonsUSS.uss?fileID=7433441132597879392&amp;guid=a283cafdf2371d5408e063dd55e021cc&amp;type=3#MenuButtonsUSS" />
-    <ui:VisualElement data-source-type="MainMenuUI, Assembly-CSharp" style="flex-grow: 1; align-items: center; align-self: auto; justify-content: center; background-image: url(&quot;project://database/Assets/Art/PixelArtRPGMegaPack/Textures/Extra/LoadingScreen004.png?fileID=2800000&amp;guid=f3a74eb12ebd0b948bfae0f7f8f0a93c&amp;type=3#LoadingScreen004&quot;);">
-        <ui:Button text="START" selectable="false" focusable="false" name="btn__main-menu--start" class="MenuButtons" />
-        <ui:Button text="SETTINGS" selectable="false" focusable="false" name="btn__main-menu--settings" class="MenuButtons" />
-        <ui:Button text="QUIT" selectable="false" focusable="false" name="btn__main-menu--quit" class="MenuButtons" />
-    </ui:VisualElement>
-</ui:UXML>

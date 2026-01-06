@@ -16,6 +16,7 @@ namespace OutlandHaven.UIToolkit
 
         protected override void SetVisualElements()
         {
+
             Debug.Log("InventoryView: SetVisualElements called");
         }
     }

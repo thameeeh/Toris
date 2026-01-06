@@ -66,6 +66,13 @@ namespace OutlandHaven.UIToolkit
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void ResetToDefaults()
+        {
+            m_playerName = "Hero";
+            Health = 100;
+            // Reset other player data as needed
+        }
+
         public void AddHealth(int amount) 
         {
             Health = Mathf.Clamp(Health + amount, 0, 100000); // Assuming max health is 1000...

@@ -349,6 +349,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 741980998386459183, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 741980998386459183, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 7797051013246395996}
@@ -391,6 +395,10 @@ PrefabInstance:
     - target: {fileID: 977072445131923280, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1838386974697970889, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2408318720793428549, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: m_Name
@@ -1011,6 +1019,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &875006849
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1056,6 +1065,7 @@ TilemapRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1063,7 +1073,6 @@ TilemapRenderer:
   m_SortOrder: 3
   m_Mode: 1
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1839735485 &875006850
 Tilemap:
   m_ObjectHideFlags: 0
@@ -2015,6 +2024,7 @@ Tilemap:
     e33: 1
 --- !u!483693784 &1583650509
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2060,6 +2070,7 @@ TilemapRenderer:
   m_SortingLayerID: -485954437
   m_SortingLayer: -1
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -2067,7 +2078,6 @@ TilemapRenderer:
   m_SortOrder: 3
   m_Mode: 1
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!4 &1583650510
 Transform:
   m_ObjectHideFlags: 0
@@ -2311,7 +2321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 4ebc3ebb3d6a15d418a129543bc78242, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 04d470d7c936dfb4bac73ed349740fe7, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: eb6cb55f1522cdc43b4a2755e0c9a48f, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -2344,7 +2354,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1793267837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 569fce6bb4561df45803084653c64da9, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f2f63aa376799e4a97f2a1964d3dff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
   _coinSO: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
@@ -2728,6 +2738,7 @@ SceneRoots:
   - {fileID: 2118321076}
   - {fileID: 225650376}
   - {fileID: 323554490}
+  - {fileID: 593037145}
   - {fileID: 1793267839}
   - {fileID: 953243618}
   - {fileID: 1745231014}

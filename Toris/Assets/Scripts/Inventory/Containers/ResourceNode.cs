@@ -22,14 +22,14 @@ public class ResourceNode : MonoBehaviour, IPointerClickHandler
     {
         if (Vector3.Distance(transform.position, player.transform.position) < .5f)
         {
-            Inventory.InventoryInstance.AddResource(ResourceToGive, ResourceAmount);
+            Inventory.InventoryInstance.AddToDictionary(ResourceToGive, ResourceAmount);
             Destroy(gameObject);
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Inventory.InventoryInstance.AddResource(ResourceToGive, ResourceAmount);
+        Inventory.InventoryInstance.AddToDictionary(ResourceToGive, ResourceAmount);
         Destroy(gameObject);
     }
 }

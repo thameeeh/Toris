@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/NEW/PlayerStatSelectors/MainMenuButtons.uss?fileID=7433441132597879392&amp;guid=cef6219cf5c08fc4eb5cf3d51a9cda9c&amp;type=3#MainMenuButtons"/>
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:Button text="Start Game" name="btn-start-game" class="MainMenuButtons"/>
+        <ui:Button text="&#175;\_(&#12484;)_/&#175;" name="btn-does-notin" class="MainMenuButtons"/>
+        <ui:Button text="Quit" name="btn-quit-game" class="MainMenuButtons"/>
+    </ui:VisualElement>
+</ui:UXML>

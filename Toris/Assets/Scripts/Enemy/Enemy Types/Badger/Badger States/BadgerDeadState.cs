@@ -25,8 +25,8 @@ public class BadgerDeadState : EnemyState<Badger>
 
         if (Inventory.InventoryInstance != null)
         {
-            Inventory.InventoryInstance.AddResourceStat(enemy._kill, 1);
-            Inventory.InventoryInstance.AddResourceStat(enemy._coin, 4);
+            Inventory.InventoryInstance.AddToDictionary(enemy._kill, 1);
+            Inventory.InventoryInstance.AddToDictionary(enemy._coin, 4);
         }
     }
 

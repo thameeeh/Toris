@@ -2044,7 +2044,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1745231014}
-  - component: {fileID: 1745231013}
+  - component: {fileID: 1745231015}
+  - component: {fileID: 1745231016}
   m_Layer: 0
   m_Name: WorldGenRunner
   m_TagString: Untagged
@@ -2052,30 +2053,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1745231013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1745231012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847987fe40f6e7d448e5126a3f33f6bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldGenRunner
-  profile: {fileID: 11400000, guid: 22905bcd623d5084590412320f77208f, type: 2}
-  grid: {fileID: 328926127}
-  groundMap: {fileID: 1583650508}
-  waterMap: {fileID: 1101475292}
-  decorMap: {fileID: 875006850}
-  followTarget: {fileID: 7797051013246395996}
-  maxChunksPerFrame: 6
-  preloadChunks: 1
-  anchorShiftThreshold: 1
-  genBudgetMs: 8
-  clearOnDisable: 0
-  gateCooldownSeconds: 1
 --- !u!4 &1745231014
 Transform:
   m_ObjectHideFlags: 0
@@ -2091,6 +2068,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1745231015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745231012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c29cfa68e4c244980c8ac7c95797c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldGenDebugHUD
+  runner: {fileID: 1745231016}
+  grid: {fileID: 328926127}
+  followTarget: {fileID: 7797051013246395996}
+  visible: 1
+  panelPos: {x: 12, y: 12}
+  panelSize: {x: 320, y: 250}
+  fontSize: 20
+--- !u!114 &1745231016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745231012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847987fe40f6e7d448e5126a3f33f6bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldGenRunner
+  profile: {fileID: 11400000, guid: a112674befa2cdd4d9e6b1715cad467c, type: 2}
+  grid: {fileID: 328926127}
+  biomeDb: {fileID: 11400000, guid: 7656ee0bf6f8c7f4988c7d932b017c9a, type: 2}
+  groundMap: {fileID: 1583650508}
+  waterMap: {fileID: 1101475292}
+  decorMap: {fileID: 875006850}
+  followTarget: {fileID: 7797051013246395996}
+  maxChunksPerFrame: 4
+  preloadChunks: 1
+  anchorShiftThreshold: 1
+  genBudgetMs: 8
+  clearOnDisable: 1
+  gateCooldownSeconds: 5
 --- !u!1 &1849731110
 GameObject:
   m_ObjectHideFlags: 0

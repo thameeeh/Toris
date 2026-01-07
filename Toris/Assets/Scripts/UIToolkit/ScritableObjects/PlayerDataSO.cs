@@ -1,81 +1,85 @@
-using System.Collections.Generic;
-using System.ComponentModel; // Required for INotifyPropertyChanged
-using System.Runtime.CompilerServices; // Required for "CallerMemberName"
-using Unity.Properties;
+using System;
 using UnityEngine;
 
 namespace OutlandHaven.UIToolkit
 {
-    [System.Serializable]
-    public enum ItemType
+
+    [CreateAssetMenu(fileName = "PlayerDataSO", menuName = "Scriptable Objects/PlayerDataSO")]
+    public class PlayerDataSO : ScriptableObject
     {
-        Weapon,
-        Armor,
-        Consumable,
-        QuestItem,
-        Miscellaneous
-    }
+        [Header("Base Stats")]
+        [SerializeField] private float _maxHealth = 100f;
+        [SerializeField] private float _maxMana = 100f;
 
-    [CreateAssetMenu(menuName = "Skeleton/PlayerData")]
-    public class PlayerDataSO : ScriptableObject, INotifyPropertyChanged
-    {
+        [Header("Current State (Runtime)")]
+        [SerializeField] private float _currentHealth;
+        [SerializeField] private float _currentMana;
 
-        [SerializeField] private string m_playerName;
-        [SerializeField] private int m_health;
+        [SerializeField] private int _level = 1;
+        [SerializeField] private float _experience = 0;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        [SerializeField] private int _gold = 0;
 
-        [SerializeField]
-        private List<StatEntry> m_stats = new List<StatEntry>();
+        // UI and Gameplay systems will listen to these events
+        // Passing 'float' allows the UI to know the % (current / max)
+        public event Action<float, float> OnHealthChanged; // current, max
+        public event Action<float, float> OnManaChanged;   // current, max
+        public event Action<int  , float> OnLevelChanged;     // current level, experience
+        public event Action<int  , int>   OnGoldChanged;      // current gold, change amount
 
-        public List<StatEntry> Stats => m_stats;
+        public float GetMaxHealth() => _maxHealth;
+        public float GetMaxMana() => _maxMana;
 
-        [CreateProperty] public string NameDisplay => m_playerName;
-        [CreateProperty] public string HealthDisplay => $"HP: {m_health}";
-
-
-        [CreateProperty]
-        public int Health
-        {
-            get => m_health;
-            set
-            {
-                if (m_health != value)
-                {
-                    m_health = value;
-                    OnPropertyChanged();
-
-                    OnPropertyChanged(nameof(HealthDisplay));
-                }
-            }
-        }
         private void OnEnable()
         {
-            if (m_stats.Count == 0)
+            // Reset state when the game starts (or the SO loads)
+            _currentHealth = _maxHealth;
+            _currentMana = _maxMana;
+        }
+
+        public void ModifyHealth(float amount)
+        {
+            _currentHealth += amount;
+
+            // Clamp ensures we don't go below 0 or above Max
+            _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+
+            // Notify the UI immediately
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+            if (_currentHealth <= 0)
             {
-                m_stats.Add(new StatEntry("Strength", 15));
-                m_stats.Add(new StatEntry("Agility", 12));
-                m_stats.Add(new StatEntry("Intellect", 8));
+                Debug.Log("Player has died.");
+                // trigger death event here later
             }
         }
 
-        // The Helper Method (Boilerplate)
-        // This allows to just call OnPropertyChanged() without typing the name string
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        public void ModifyMana(float amount)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _currentMana += amount;
+            _currentMana = Mathf.Clamp(_currentMana, 0, _maxMana);
+
+            OnManaChanged?.Invoke(_currentMana, _maxMana);
         }
 
-        public void ResetToDefaults()
+        public void AddExperience(int amount)
         {
-            m_playerName = "Hero";
-            Health = 100;
-            // Reset other player data as needed
+            _experience += amount;
+
+            _level = (int)(_experience / 100) + 1; // Simple leveling logic
+
+            OnLevelChanged?.Invoke(_level, _experience);
         }
 
-        public void AddHealth(int amount) 
+        public void ModifyGold(int amount)
         {
-            Health = Mathf.Clamp(Health + amount, 0, 100000); // Assuming max health is 1000...
+            _gold += amount;
+            if (_gold < 0) _gold = 0; // Prevent negative gold
+            OnGoldChanged?.Invoke(_gold, amount);
         }
+
+        // Helper for UI initialization
+        public float GetHealthPercentage() => _currentHealth / _maxHealth;
+        public float GetManaPercentage() => _currentMana / _maxMana;
     }
 }

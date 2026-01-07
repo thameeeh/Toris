@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 244ab695931492842840e44caa13cf19, type: 3}
-  m_Name: Player1
+  m_Name: Player
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.PlayerDataSO
-  m_playerName: Vitamin D3
-  m_health: 710
-  m_stats:
-  - m_statName: Strength
-    m_value: 15
-  - m_statName: Agility
-    m_value: 12
-  - m_statName: Intellect
-    m_value: 8
+  _maxHealth: 100
+  _maxMana: 100
+  _currentHealth: 44.7
+  _currentMana: 72
+  _level: 4
+  _experience: 366.5
+  _gold: 12

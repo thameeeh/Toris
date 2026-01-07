@@ -8,8 +8,6 @@ namespace UIToolkit.UI
 {
     public class MainMenuScreenController : MonoBehaviour
     {
-        [Header("Data References")]
-        public PlayerDataSO playerData;
         public GameSessionSO gameSession; // will be used for save/load etc.
 
         [Header("Scene Names")]
@@ -37,10 +35,6 @@ namespace UIToolkit.UI
 
         private void OnNewGameClicked()
         {
-            // 1. Wipe the memory (Fresh start)
-            playerData.ResetToDefaults();
-
-            // 3. Load the World
             SceneManager.LoadScene(VillageSceneName);
         }
 

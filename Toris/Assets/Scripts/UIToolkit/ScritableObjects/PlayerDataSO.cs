@@ -27,6 +27,9 @@ namespace OutlandHaven.UIToolkit
         public event Action<int  , float> OnLevelChanged;     // current level, experience
         public event Action<int  , int>   OnGoldChanged;      // current gold, change amount
 
+        public float GetMaxHealth() => _maxHealth;
+        public float GetMaxMana() => _maxMana;
+
         private void OnEnable()
         {
             // Reset state when the game starts (or the SO loads)

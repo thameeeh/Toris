@@ -37,13 +37,13 @@ namespace OutlandHaven.UIToolkit
         protected override void SetVisualElements()
         {
             // These names must match your UXML 'name' attributes exactly
-            _healthBar = m_TopElement.Q<ProgressBar>("health-bar");
-            _manaBar = m_TopElement.Q<ProgressBar>("mana-bar");
+            _healthBar = m_TopElement.Q<ProgressBar>("hud__health-bar");
+            _manaBar = m_TopElement.Q<ProgressBar>("hud__mana-bar");
 
             // New elements for the new Data
-            _xpBar = m_TopElement.Q<ProgressBar>("xp-bar");
-            _levelLabel = m_TopElement.Q<Label>("level-label");
-            _goldLabel = m_TopElement.Q<Label>("gold-label");
+            _xpBar = m_TopElement.Q<ProgressBar>("hud__xp-bar");
+            _levelLabel = m_TopElement.Q<Label>("hud__level-label");
+            _goldLabel = m_TopElement.Q<Label>("hud__gold-label");
         }
 
         public override void Show()
@@ -56,6 +56,9 @@ namespace OutlandHaven.UIToolkit
                 _playerData.OnManaChanged += UpdateManaUI;
                 _playerData.OnLevelChanged += UpdateLevelUI;
                 _playerData.OnGoldChanged += UpdateGoldUI;
+
+                _playerData.AddExperience(0); // Trigger initial level/XP update
+                _playerData.ModifyGold(0);    // Trigger initial gold update
             }
         }
 
@@ -90,7 +93,7 @@ namespace OutlandHaven.UIToolkit
         private void UpdateLevelUI(int level, float experience)
         {
             if (_levelLabel != null)
-                _levelLabel.text = $"Lvl {level}";
+                _levelLabel.text = $"Level {level}";
 
             if (_xpBar != null)
             {

@@ -1,0 +1,9 @@
+:root {
+}
+
+.HUD {
+    min-width: auto;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+}

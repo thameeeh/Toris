@@ -39471,10 +39471,9 @@ GameObject:
   m_Component:
   - component: {fileID: 669065272}
   - component: {fileID: 669065271}
-  - component: {fileID: 669065273}
   - component: {fileID: 669065275}
   m_Layer: 0
-  m_Name: UI_Manager
+  m_Name: UIViews
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39518,20 +39517,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &669065273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 669065270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ec17e620b5af04d94c84debd8562b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.PlayerController
-  dataAsset: {fileID: 11400000, guid: 02a9a16839c28d2498fbd9c86be3278c, type: 2}
-  statRowTemplate: {fileID: 9197481963319205126, guid: cc50438b37380084d8ca38fae83ea373, type: 3}
 --- !u!114 &669065275
 MonoBehaviour:
   m_ObjectHideFlags: 0

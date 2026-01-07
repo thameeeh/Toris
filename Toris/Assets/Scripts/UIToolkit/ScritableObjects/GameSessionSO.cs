@@ -19,6 +19,10 @@ namespace OutlandHaven.UIToolkit
     [CreateAssetMenu(fileName = "GameSessionSO", menuName = "Scriptable Objects/GameSessionSO")]
     public class GameSessionSO : ScriptableObject
     {
+        [Header("Data References")]
+        public PlayerDataSO PlayerData;
+
+        [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
         [SerializeField] private string targetSpawnPointID;
     }

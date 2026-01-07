@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d95a6684f25b38446a16e258b8a78325, type: 3}
   m_Name: GameSession
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.GameSessionSO
-  PlayerData: {fileID: 0}
+  PlayerData: {fileID: 11400000, guid: a455d6211ba0e404aa484cb808f96747, type: 2}
   CurrentSaveSlotIndex: 0
   targetSpawnPointID: 

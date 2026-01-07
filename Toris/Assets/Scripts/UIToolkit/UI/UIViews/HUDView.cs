@@ -107,7 +107,7 @@ namespace OutlandHaven.UIToolkit
         private void UpdateGoldUI(int currentGold, int changeAmount)
         {
             if (_goldLabel != null)
-                _goldLabel.text = $"{currentGold} G";
+                _goldLabel.text = $"Gold: {currentGold}";
 
             // Optional: You could spawn a "floating text" effect here using 'changeAmount'
             // e.g. if changeAmount > 0, show green "+50" text.

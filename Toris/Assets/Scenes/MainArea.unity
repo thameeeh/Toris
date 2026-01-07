@@ -39008,7 +39008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ede8b6770718034184452a105e4af2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.HudScreenController
-  _gameSession: {fileID: 11400000, guid: 2a20e4af7154a6b46bae4bbfc1a06772, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
 --- !u!114 &523163205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40584,6 +40584,14 @@ Transform:
   - {fileID: 1229864478}
   - {fileID: 1153659985}
   - {fileID: 876082277}
+  - {fileID: 104472956}
+  - {fileID: 226433778}
+  - {fileID: 830354224}
+  - {fileID: 1049271750}
+  - {fileID: 1272428673}
+  - {fileID: 1309490685}
+  - {fileID: 1721300364}
+  - {fileID: 1988838650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1049271748
@@ -61358,3 +61366,4 @@ SceneRoots:
   - {fileID: 298659721}
   - {fileID: 669065272}
   - {fileID: 1591760356}
+  - {fileID: 534092289}

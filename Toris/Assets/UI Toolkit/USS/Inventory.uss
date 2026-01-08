@@ -1,0 +1,78 @@
+/* Main Window Container */
+.inventory-window {
+    width: 900px;
+    height: 500px;
+    background-color: rgba(30, 30, 30, 0.95);
+    border-color: #6d6d6d;
+    border-width: 2px;
+    border-radius: 10px;
+    flex-direction: column;
+    padding: 10px;
+}
+
+/* The area holding both panels side-by-side */
+.dual-panel-container {
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Individual Panel (Player or Chest) */
+.inventory-panel {
+    width: 48%; /* Leave small gap between them */
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Header Text */
+.panel-header {
+    color: #e3e3e3;
+    -unity-font-style: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom-width: 1px;
+    border-bottom-color: #555;
+}
+
+/* The Grid that holds slots */
+.inventory-grid {
+    flex-direction: row;
+    flex-wrap: wrap; /* CRITICAL: This makes items flow to the next line */
+    justify-content: flex-start;
+}
+
+/* A Single Slot */
+.slot {
+    width: 60px;
+    height: 60px;
+    margin: 4px;
+    background-color: #383838;
+    border-width: 1px;
+    border-color: #222;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.slot:hover {
+    border-color: #dcb35c; /* Gold highlight on hover */
+}
+
+/* Slot Icon */
+.slot-icon {
+    width: 48px;
+    height: 48px;
+}
+
+/* Stack Quantity Label */
+.slot-qty {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    color: white;
+    font-size: 12px;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: black;
+}

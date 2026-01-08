@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.PlayerDataSO
   _maxHealth: 100
   _maxMana: 100
-  _currentHealth: 44.7
-  _currentMana: 72
-  _level: 4
-  _experience: 366.5
-  _gold: 12
+  _currentHealth: 11.8
+  _currentMana: 74.4
+  _level: 15
+  _experience: 1460.8
+  _gold: 64

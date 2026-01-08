@@ -61,17 +61,17 @@ namespace OutlandHaven.UIToolkit
             // Inventory Shortcut (I)
             if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
             {
-                UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory);
+                UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
             }
 
             // Character Sheet Shortcut (C)
             if (Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame)
             {
-                UIEvents.OnRequestOpen?.Invoke(ScreenType.CharacterSheet);
+                UIEvents.OnRequestOpen?.Invoke(ScreenType.CharacterSheet, null);
             }
         }
 
-        private void OpenWindow(ScreenType type)
+        private void OpenWindow(ScreenType type, object payload = null)
         {
             // 1. Find the view requested
             GameView view = _allViews.Find(v => v.ID == type);
@@ -92,6 +92,8 @@ namespace OutlandHaven.UIToolkit
             }
 
             // 4. Show the new window
+            view.Setup(payload);
+
             view.Show();
             _currentActiveWindow = view;
 

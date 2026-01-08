@@ -9,6 +9,8 @@ namespace OutlandHaven.UIToolkit
 
         public GameView(VisualElement topElement) : base(topElement) { }
 
+        public virtual void Setup(object payload) { }
+
         public override void Show()
         {
             base.Show();

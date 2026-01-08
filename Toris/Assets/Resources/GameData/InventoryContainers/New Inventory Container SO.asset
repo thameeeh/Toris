@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67ba3904b7eb034ebc473a6baa9ff0b, type: 3}
+  m_Name: New Inventory Container SO
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryContainerSO
+  SlotCount: 20
+  Slots:
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 11400000, guid: f553aed2dd585b64baf66153c26ec3b0, type: 2}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0
+  - Item: {fileID: 0}
+    Quantity: 0

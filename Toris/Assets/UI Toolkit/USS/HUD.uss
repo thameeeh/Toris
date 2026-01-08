@@ -7,3 +7,19 @@
     color: rgb(255, 255, 255);
     font-size: 30px;
 }
+
+#hud__health-bar .unity-progress-bar__progress {
+    background-color: #D92323;
+    border-radius: 4px;
+    margin: 1px;
+}
+
+#hud__mana-bar .unity-progress-bar__progress {
+    background-color: #234BD9;
+    border-radius: 4px;
+    margin: 1px;
+}
+
+#hud__xp-bar .unity-progress-bar__progress {
+    background-color: #D9D923;
+}

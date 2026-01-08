@@ -4,7 +4,7 @@ using UnityEngine;
 namespace OutlandHaven.UIToolkit
 {
 
-    [CreateAssetMenu(fileName = "PlayerDataSO", menuName = "Scriptable Objects/PlayerDataSO")]
+    [CreateAssetMenu(menuName = "UI/Scriptable Objects/PlayerDataSO")]
     public class PlayerDataSO : ScriptableObject
     {
         [Header("Base Stats")]

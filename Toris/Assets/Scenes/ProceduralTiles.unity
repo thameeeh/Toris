@@ -2096,7 +2096,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1745231012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847987fe40f6e7d448e5126a3f33f6bc, type: 3}
+  m_Script: {fileID: 11500000, guid: bd5e465bac5848b45b5848cd4adcaef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldGenRunner
   profile: {fileID: 11400000, guid: a112674befa2cdd4d9e6b1715cad467c, type: 2}
@@ -2110,8 +2110,8 @@ MonoBehaviour:
   preloadChunks: 1
   anchorShiftThreshold: 1
   genBudgetMs: 8
-  clearOnDisable: 1
-  gateCooldownSeconds: 5
+  clearOnDisable: 0
+  gateCooldownSeconds: 1
 --- !u!1 &1849731110
 GameObject:
   m_ObjectHideFlags: 0

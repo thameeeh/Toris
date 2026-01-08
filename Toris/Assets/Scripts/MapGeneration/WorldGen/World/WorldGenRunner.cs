@@ -93,13 +93,11 @@ public sealed class WorldGenRunner : MonoBehaviour
             {
                 lastGateTime = Time.time;
 
-                // If you have a fade/teleport system, call it here,
-                // teleport player to new platform tile, then call StartBiome with that tile.
-                // For now: rebind biome around the gate tile.
                 int next = biomeIndex + 1;
 
                 if (biomeDb != null && biomeDb.Count > 0)
                     next = next % biomeDb.Count;
+
                 StartBiome(next, focusTile);
                 return;
             }
@@ -131,23 +129,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         double ElapsedMs()
             => (System.Diagnostics.Stopwatch.GetTimestamp() - frameStartTicks) * 1000.0 / freq;
 
-        long unloadT0 = System.Diagnostics.Stopwatch.GetTimestamp();
-        UnloadFarChunks(streamingAnchorChunk, profile.viewDistanceChunks);
-        long unloadT1 = System.Diagnostics.Stopwatch.GetTimestamp();
-        double unloadMs = (unloadT1 - unloadT0) * 1000.0 / freq;
-
-        if (ElapsedMs() >= budgetMs)
-        {
-            if (unloadMs >= 2.0)
-            {
-                Debug.Log(
-                    $"[WorldGen] unload={(int)unloadMs}ms, genChunks=0/{Mathf.Max(1, maxChunksPerFrame)} " +
-                    $"budget={budgetMs:F1}ms gen=0.00ms apply=0.00ms, queue={generateQueue.Count} loaded={loaded.Count} chunkSize={profile.chunkSize}"
-                );
-            }
-            return;
-        }
-
         int hardCap = Mathf.Max(0, maxChunksPerFrame);
         int genCount = 0;
 
@@ -171,7 +152,6 @@ public sealed class WorldGenRunner : MonoBehaviour
             }
 
             const double safetyMs = 0.25;
-            // allow at least one chunk even if exceeding budget, otherwise stalling at nothing loaded might happen
             if (genCount > 0 && remainingMs < (estChunkMs + safetyMs))
                 break;
 
@@ -195,10 +175,14 @@ public sealed class WorldGenRunner : MonoBehaviour
             genCount++;
         }
 
+        long unloadT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+        UnloadFarChunks(streamingAnchorChunk, profile.viewDistanceChunks);
+        long unloadT1 = System.Diagnostics.Stopwatch.GetTimestamp();
+        double unloadMs = (unloadT1 - unloadT0) * 1000.0 / freq;
+
         double genMsTotal = genTicksTotal * 1000.0 / freq;
         double applyMsTotal = applyTicksTotal * 1000.0 / freq;
 
-        // Log only when notable (same spirit as your original)
         if (unloadMs >= 2.0 || genMsTotal >= 10.0 || applyMsTotal >= 2.0)
         {
             Debug.Log(
@@ -214,7 +198,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     {
         List<Vector2Int> needed = new List<Vector2Int>();
 
-        float loadRadius = radius + 0.5f;
+        int r2 = radius * radius;
 
         for (int dy = -radius; dy <= radius; dy++)
         {
@@ -222,10 +206,12 @@ public sealed class WorldGenRunner : MonoBehaviour
             {
                 Vector2Int c = new Vector2Int(centerChunk.x + dx, centerChunk.y + dy);
 
-                if (dx * dx + dy * dy > loadRadius * loadRadius)
+                if (dx * dx + dy * dy > r2)
                     continue;
 
-                if (loaded.Contains(c) || queued.Contains(c)) continue;
+                if (loaded.Contains(c) || queued.Contains(c))
+                    continue;
+
                 needed.Add(c);
             }
         }
@@ -276,6 +262,9 @@ public sealed class WorldGenRunner : MonoBehaviour
         for (int i = 0; i < n; i++)
         {
             Vector2Int c = candidates[i].c;
+            
+            Debug.Log($"CLEAR {c}");
+
             applier.ClearChunk(c, profile.chunkSize);
             loaded.Remove(c);
         }

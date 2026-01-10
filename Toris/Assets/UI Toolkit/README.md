@@ -59,6 +59,6 @@ It serves as the central "Brain" of the UI architecture, managing the lifecycle 
    * **Registration Process**: It exposes a public method void `RegisterView(GameView view)`. Every individual View Controller (like `InventoryScreenController`) calls this method during its own `OnEnable()` phase to add itself to the Manager's list.
 
 
-* *(Image) InventoryScreenController*
+*(Image) InventoryScreenController*
 <img width="869" height="246" alt="Screenshot 2026-01-10 191710" src="https://github.com/user-attachments/assets/8127c605-0ba9-4bec-b9cc-2e95ae064f51" />
 

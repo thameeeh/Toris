@@ -16,16 +16,15 @@ namespace OutlandHaven.UIToolkit
         Mage
     }
 
-    [CreateAssetMenu(fileName = "GameSessionSO", menuName = "Scriptable Objects/GameSessionSO")]
+    [CreateAssetMenu(menuName = "UI/Scriptable Objects/GameSessionSO")]
     public class GameSessionSO : ScriptableObject
     {
         [Header("Data References")]
         public PlayerDataSO PlayerData;
+        public InventoryContainerSO PlayerInventory;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
         [SerializeField] private string targetSpawnPointID;
     }
 }
-
-// none of it will be in the final game :D

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: GameSession
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.GameSessionSO
   PlayerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
-  CurrentSaveSlotIndex: 0
+  PlayerInventory: {fileID: 11400000, guid: 5b0459b12565c5f498a3b056f66bee0b, type: 2}
+  CurrentSaveSlotIndex: 1
   targetSpawnPointID: 

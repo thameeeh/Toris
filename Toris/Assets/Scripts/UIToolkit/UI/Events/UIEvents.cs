@@ -15,7 +15,7 @@ namespace OutlandHaven.UIToolkit
     }
     public static class UIEvents
     {
-        public static Action<ScreenType> OnRequestOpen;
+        public static Action<ScreenType, object> OnRequestOpen;
 
         public static Action<ScreenType> OnRequestClose;
 

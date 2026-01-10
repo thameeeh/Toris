@@ -71,11 +71,11 @@ Object of `InventoryContainerSO` Type is sent on `Action<ScreenType, object> OnR
 <img width="623" height="187" alt="image" src="https://github.com/user-attachments/assets/81d5028c-dd50-4a06-bc05-4bc1c4a5e7e8" />
 
 
-`UIMamager` opens only the Player's Inventory. OnRequestOpen? -> (`GameSessionSO` -> `InventoryView`).
+`UIMamager` opens only the Player's Inventory. **`OnRequestOpen?`** -> (`GameSessionSO` -> `InventoryView`).
 
 <img width="639" height="114" alt="image" src="https://github.com/user-attachments/assets/7463ef01-db54-4cc0-bb16-3736fb242e3a" />
 
 
-In any other container that have `WorldContainer` script and `InventoryContainerSO` asset is called Action that caries additional payload.
+In any other container that have `WorldContainer` script and `InventoryContainerSO` asset. Action is called that carries additional payload.
 
 <img width="649" height="154" alt="image" src="https://github.com/user-attachments/assets/6ad5c287-1147-43d3-a6d7-fb9df80bd7d4" />

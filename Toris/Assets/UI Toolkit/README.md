@@ -36,12 +36,18 @@ All persistent state is stored in ScriptableObjects. This acts as the "Shared Ha
 
 **GameSessionSO** is the central container for the active playthrough's state. It acts as a bridge between your static assets (code/prefabs) and the changing data of the current game (Health, Inventory).
 
-   * Scene Independence (Persistence):
+   * **Scene Independence (Persistence)**:
       * Unlike GameObjects, which are destroyed when loading a new scene (e.g., moving from Village to Dungeon), ScriptableObjects live in memory.
       * GameSessionSO ensures that when a new scene loads, the UI and Gameplay scripts can immediately reconnect to the correct Health and Inventory data without losing progress.
-   * The "Session Folder" Metaphor:
+   * **The "Session Folder" Metaphor**:
       * Think of it as a single "Folder" that holds the current player's entire existence.
       * Instead of your UI needing separate references for HP, Mana, Backpack, Stash, and Save Slots, it only needs one reference to GameSessionSO. Through this hub, it can access everything else.
-* In Short:
+* **In Short**:
    * It is the persistent memory of the game. It ensures that no matter which scene triggers Start(), the game knows exactly who the player is and what they are carrying.
 
+## PlayerDataSO
+
+It holds runtime information for player stats such as Health, Mana, and Gold. It uses Events for variable changes instead of an `Update()` loop, ensuring the UI only repaints when values actually change.
+It is responsible for player stat logic. Any system that inflicts damage or gives gold (e.g., an Enemy) must hold a reference to this `PlayerDataSO` asset and call the appropriate method (e.g., `ModifyHealth`).
+
+<img width="919" height="248" alt="image" src="https://github.com/user-attachments/assets/c139a54c-4747-4259-8d0f-08ebc4fa4080" />

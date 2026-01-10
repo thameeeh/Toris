@@ -6,3 +6,24 @@ The User Interface (UI) system in OutlandHaven is designed to be decoupled, even
    A. UIManager - decides which window is open and handles the global "Stack" (e.g., pressing Escape closes the top window).
    B. UIEvents - static class defining Actions that anyone can shout into.
    C. Views - these are classes inheriting from GameView (e.g., InventoryView, HUDView). **Responsibility**: They bind directly to ScriptableObjects. They do not run game logic; they only display data.
+
+3. The Data Layer (ScriptableObjects)
+   All persistent state is stored in ScriptableObjects. This acts as the "Shared Hard Drive" for the game. All SO stored in Assets -> Resources
+
+4. Workflow
+   Scenario A: Health Bar updates without checking every frame.
+   
+    -> Gameplay: An Enemy hits the Player GameObject. The Player script calls PlayerDataSO.ModifyHealth(-10).
+    -> Data: The SO calculates the new health and fires public event Action<float, float> OnHealthChanged.
+    -> UI: The HUDView, which subscribed to this event, wakes up.
+    -> Visuals: HUDView updates the .value of the standard ProgressBar.
+
+   Scenario B: One UI screen handles both the Player's Backpack and a random Chest.
+
+    Interaction: Player walks into a Chest trigger zone and presses 'F'.
+    Trigger: WorldContainer.cs on the chest grabs its own specific data (Container_VillageChest).
+    Event: It fires UIEvents.OnRequestOpen(ScreenType.Inventory, Container_VillageChest).
+    Manager: UIManager receives the call and activates InventoryView, passing the "Chest Data" along.
+    View: InventoryView checks the payload:
+        If Payload exists: It renders the "Right Panel" with the Chest's items.
+        Always: It renders the "Left Panel" with the Player's items (from GameSessionSO).

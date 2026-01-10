@@ -62,3 +62,15 @@ It serves as the central "Brain" of the UI architecture, managing the lifecycle 
 *(Image) InventoryScreenController*
 <img width="869" height="246" alt="Screenshot 2026-01-10 191710" src="https://github.com/user-attachments/assets/8127c605-0ba9-4bec-b9cc-2e95ae064f51" />
 
+
+## Paylaod
+
+Object of `InventoryContainerSO` Type is sent on `Action<ScreenType, object> OnRequestOpen` call. If it is `null`, only the player's Inventory is opened, otherwise the right side of the screen is filled with additional Inventory. Player and any other additional inventory-like objects use the `InventoryContainerSO`
+
+<img width="623" height="187" alt="image" src="https://github.com/user-attachments/assets/81d5028c-dd50-4a06-bc05-4bc1c4a5e7e8" />
+
+`UIMamager` opens only the Player's Inventory. Data flow `GameSessionSO` -> `InventoryView`.
+<img width="639" height="114" alt="image" src="https://github.com/user-attachments/assets/7463ef01-db54-4cc0-bb16-3736fb242e3a" />
+
+In any other container that have `WorldContainer` script and `InventoryContainerSO` asset is called Action that caries additional payload.
+<img width="649" height="154" alt="image" src="https://github.com/user-attachments/assets/6ad5c287-1147-43d3-a6d7-fb9df80bd7d4" />

@@ -17,10 +17,10 @@ All persistent state is stored in ScriptableObjects. This acts as the "Shared Ha
 
 ### Scenario A: Health Bar updates without checking every frame.
 
-1.  ** Gameplay:** An Enemy hits the Player GameObject. The Player script calls `PlayerDataSO.ModifyHealth(-10)`.
-2.  ** Data:** The SO calculates the new health and fires public event `Action<float, float> OnHealthChanged`.
-3.  ** UI:** The HUDView, which subscribed to this event, wakes up.
-4.  ** Visuals:** HUDView updates the `.value` of the standard ProgressBar.
+1.  **Gameplay:** An Enemy hits the Player GameObject. The Player script calls `PlayerDataSO.ModifyHealth(-10)`.
+2.  **Data:** The SO calculates the new health and fires public event `Action<float, float> OnHealthChanged`.
+3.  **UI:** The HUDView, which subscribed to this event, wakes up.
+4.  **Visuals:** HUDView updates the `.value` of the standard ProgressBar.
 
 ### Scenario B: One UI screen handles both the Player's Backpack and a random Chest.
 

@@ -10,28 +10,21 @@ namespace OutlandHaven.UIToolkit
         // Visual Elements
         private ProgressBar _healthBar;
         private ProgressBar _manaBar;
-        private ProgressBar _xpBar; // Optional: If you want an XP bar
+        private ProgressBar _xpBar;
         private Label _levelLabel;
         private Label _goldLabel;
 
         // Data Reference
         private PlayerDataSO _playerData;
 
-        // Constructor receives the Data
         public HUDView(VisualElement topElement, PlayerDataSO data) : base(topElement)
         {
             _playerData = data;
 
-            // Initialize UI immediately to match current data
-            // (We pass dummy '0' for the second parameters since init doesn't need "change amount")
             UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
             UpdateManaUI(_playerData.GetManaPercentage(), 1f);
 
-            // We need a helper to get current Gold/Level if they are private in SO.
-            // For now, we wait for the first event, OR you can make public getters for them in SO.
-            // Assuming for now they start at default or we wait for an event:
-            UpdateGoldUI(0, 0); // Placeholder until data flows or you add GetGold()
-            UpdateLevelUI(1, 0); // Placeholder
+            UpdateLevelUI(0, 0); // Placeholder
         }
 
         protected override void SetVisualElements()
@@ -80,7 +73,7 @@ namespace OutlandHaven.UIToolkit
         private void UpdateHealthUI(float current, float max)
         {
             if (_healthBar == null) return;
-            // Unity Progress Bar is 0-100
+            //Progress Bar is 0-100
             _healthBar.value = (current / max) * 100f;
         }
 
@@ -97,8 +90,6 @@ namespace OutlandHaven.UIToolkit
 
             if (_xpBar != null)
             {
-                // Simple example: 0 to 100 XP per level
-                // In a real game, you'd calculate % of current level cap
                 float xpPercent = experience % 100;
                 _xpBar.value = xpPercent;
             }

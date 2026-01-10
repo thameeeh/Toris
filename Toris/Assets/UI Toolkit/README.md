@@ -50,4 +50,11 @@ All persistent state is stored in ScriptableObjects. This acts as the "Shared Ha
 It holds runtime information for player stats such as Health, Mana, and Gold. It uses Events for variable changes instead of an `Update()` loop, ensuring the UI only repaints when values actually change.
 It is responsible for player stat logic. Any system that inflicts damage or gives gold (e.g., an Enemy) must hold a reference to this `PlayerDataSO` asset and call the appropriate method (e.g., `ModifyHealth`).
 
-<img width="919" height="248" alt="image" src="https://github.com/user-attachments/assets/c139a54c-4747-4259-8d0f-08ebc4fa4080" />
+## UIManager
+
+It holds list of every view, is responsible for opening and closing windows, in `Update()` it tracks buttons currently 'I' for Inventory.
+every view controller 'OnEnable()' registers itself on UIManager List calling `public void RegisterView(GameView view)`
+
+* *InventoryScreenController*
+<img width="869" height="246" alt="Screenshot 2026-01-10 191710" src="https://github.com/user-attachments/assets/8127c605-0ba9-4bec-b9cc-2e95ae064f51" />
+

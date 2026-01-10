@@ -58,6 +58,7 @@ It serves as the central "Brain" of the UI architecture, managing the lifecycle 
    * **Input Handling**: In its `Update()` loop, it listens for global UI hotkeys (currently tracking 'I' for Inventory and 'C' for Character Sheet) and fires the corresponding events.
    * **Registration Process**: It exposes a public method void `RegisterView(GameView view)`. Every individual View Controller (like `InventoryScreenController`) calls this method during its own `OnEnable()` phase to add itself to the Manager's list.
 
-* *InventoryScreenController*
+
+* *(Image) InventoryScreenController*
 <img width="869" height="246" alt="Screenshot 2026-01-10 191710" src="https://github.com/user-attachments/assets/8127c605-0ba9-4bec-b9cc-2e95ae064f51" />
 

@@ -52,8 +52,11 @@ It is responsible for player stat logic. Any system that inflicts damage or give
 
 ## UIManager
 
-It holds list of every view, is responsible for opening and closing windows, in `Update()` it tracks buttons currently 'I' for Inventory.
-every view controller 'OnEnable()' registers itself on UIManager List calling `public void RegisterView(GameView view)`
+It serves as the central "Brain" of the UI architecture, managing the lifecycle and visibility of all application windows.
+   * **View Registry**: Holds a private list of every active `GameView`. It does not create views but waits for them to register themselves.
+   * **Window Management**: Responsible for the logic of opening, closing, and toggling windows. It ensures only the appropriate windows are visible (e.g., closing Inventory when opening the Map).
+   * **Input Handling**: In its `Update()` loop, it listens for global UI hotkeys (currently tracking 'I' for Inventory and 'C' for Character Sheet) and fires the corresponding events.
+   * **Registration Process**: It exposes a public method void `RegisterView(GameView view)`. Every individual View Controller (like `InventoryScreenController`) calls this method during its own `OnEnable()` phase to add itself to the Manager's list.
 
 * *InventoryScreenController*
 <img width="869" height="246" alt="Screenshot 2026-01-10 191710" src="https://github.com/user-attachments/assets/8127c605-0ba9-4bec-b9cc-2e95ae064f51" />

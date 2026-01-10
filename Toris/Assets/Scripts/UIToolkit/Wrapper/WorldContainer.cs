@@ -5,7 +5,7 @@ namespace OutlandHaven.UIToolkit
     public class WorldContainer : MonoBehaviour
     {
         [Header("Data")]
-        [SerializeField] private InventoryContainerSO _containerData; // Drag 'Container_VillageChest' here
+        [SerializeField] private InventoryContainerSO _containerData;
 
         [Header("Interaction")]
         [SerializeField] private KeyCode _interactKey = KeyCode.F;
@@ -25,7 +25,7 @@ namespace OutlandHaven.UIToolkit
         {
             Debug.Log($"Opening Container: {_containerData.name}");
 
-            // KEY MOMENT: Fire the event with the Chest Data as the Payload!
+            // Fire the event with the Chest Data as the Payload!
             UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, _containerData);
         }
 

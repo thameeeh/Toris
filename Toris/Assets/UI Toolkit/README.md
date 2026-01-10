@@ -71,7 +71,7 @@ Object of `InventoryContainerSO` Type is sent on `Action<ScreenType, object> OnR
 <img width="623" height="187" alt="image" src="https://github.com/user-attachments/assets/81d5028c-dd50-4a06-bc05-4bc1c4a5e7e8" />
 
 
-`UIMamager` opens only the Player's Inventory. Data flow `GameSessionSO` -> `InventoryView`.
+`UIMamager` opens only the Player's Inventory. OnRequestOpen? -> (`GameSessionSO` -> `InventoryView`).
 
 <img width="639" height="114" alt="image" src="https://github.com/user-attachments/assets/7463ef01-db54-4cc0-bb16-3736fb242e3a" />
 

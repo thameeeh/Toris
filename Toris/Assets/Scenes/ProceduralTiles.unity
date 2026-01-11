@@ -1679,7 +1679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
   m_ComponentVersion: 1
-  m_AssetsPPU: 100
+  m_AssetsPPU: 32
   m_RefResolutionX: 320
   m_RefResolutionY: 180
   m_CropFrame: 0
@@ -1725,7 +1725,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 0.9
+  orthographic size: 2.8125
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -2106,7 +2106,9 @@ MonoBehaviour:
   waterMap: {fileID: 1101475292}
   decorMap: {fileID: 875006850}
   followTarget: {fileID: 7797051013246395996}
-  maxChunksPerFrame: 4
+  streamCamera: {fileID: 506412731}
+  unloadHysteresisChunks: 1
+  maxChunksPerFrame: 6
   preloadChunks: 1
   anchorShiftThreshold: 1
   genBudgetMs: 8

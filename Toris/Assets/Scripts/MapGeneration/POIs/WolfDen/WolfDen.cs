@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class WolfDen : MonoBehaviour
+public sealed class WolfDen : MonoBehaviour, IDamageable
 {
     [Header("HP")]
     [SerializeField] private float maxHp = 50f;
@@ -11,13 +11,16 @@ public sealed class WolfDen : MonoBehaviour
     [SerializeField] private GameObject activeVisual;
     [SerializeField] private GameObject collapsedVisual;
 
-    private float hp;
     private bool cleared;
 
     private WorldGenRunner runner;
     private Vector2Int denTile;
     private Vector2Int chunkCoord;
     private int spawnId;
+
+    // --- IDamageable ---
+    public float MaxHealth { get; set; }
+    public float CurrentHealth { get; set; }
 
     public void Initialize(WorldGenRunner runner, Vector2Int denTile, Vector2Int chunkCoord, int spawnId)
     {
@@ -26,19 +29,28 @@ public sealed class WolfDen : MonoBehaviour
         this.chunkCoord = chunkCoord;
         this.spawnId = spawnId;
 
-        hp = maxHp;
+        MaxHealth = maxHp;
+        CurrentHealth = MaxHealth;
 
         cleared = runner.Context.ChunkStates.GetChunkState(chunkCoord).consumedIds.Contains(spawnId);
         ApplyVisualState(cleared);
+
+        if (cleared)
+            CurrentHealth = 0f;
     }
 
-    public void ApplyDamage(float amount)
+    public void Damage(float damageAmount)
     {
         if (cleared) return;
 
-        hp -= Mathf.Max(0f, amount);
-        if (hp <= 0f)
-            ClearDen();
+        CurrentHealth -= Mathf.Max(0f, damageAmount);
+        if (CurrentHealth <= 0f)
+            Die();
+    }
+
+    public void Die()
+    {
+        ClearDen();
     }
 
     private void ClearDen()
@@ -52,7 +64,8 @@ public sealed class WolfDen : MonoBehaviour
         foreach (var c in GetComponentsInChildren<Collider2D>())
             c.enabled = false;
 
-        // Later: tell spawner to stop / despawn leader, etc.
+        Debug.Log("Den Cleared");
+        // later spawner despawn wolves
     }
 
     private void ApplyVisualState(bool collapsed)

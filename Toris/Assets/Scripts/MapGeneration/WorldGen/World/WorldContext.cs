@@ -14,9 +14,9 @@ public sealed class WorldContext
     public BiomeMask Mask { get; private set; }
     public FeatureStamps Stamps { get; private set; }
     public GateRegistry Gates { get; private set; }
+    public ChunkStateStore ChunkStates { get; private set; }
 
     public AnimationCurve DangerCurve => World.dangerCurve;
-
     public WorldContext(WorldProfile world)
     {
         World = world;
@@ -25,6 +25,7 @@ public sealed class WorldContext
         Mask = new BiomeMask();
         Stamps = new FeatureStamps();
         Gates = new GateRegistry();
+        ChunkStates = new ChunkStateStore();
 
         ActiveBiome = new BiomeInstance(0, World.seed, Vector2Int.zero, world.worldRadiusTiles);
         Noise = new NoiseContext(ActiveBiome.Seed);
@@ -38,6 +39,7 @@ public sealed class WorldContext
 
         Stamps.Clear();
         Gates.Clear();
+        ChunkStates.Clear();
 
         ActiveDef?.BuildFeatures(this);
     }

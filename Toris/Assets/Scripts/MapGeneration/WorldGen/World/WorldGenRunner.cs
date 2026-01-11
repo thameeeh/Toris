@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public sealed class WorldGenRunner : MonoBehaviour
 {
-    #region Inspector - References
+    #region Inspector
 
     [Header("Assets")]
     [SerializeField] private WorldProfile profile;
@@ -16,10 +16,6 @@ public sealed class WorldGenRunner : MonoBehaviour
     [SerializeField] private Tilemap waterMap;
     [SerializeField] private Tilemap decorMap;
 
-    #endregion
-
-    #region Inspector - Streaming
-
     [Header("Streaming")]
     [SerializeField] private Transform followTarget;
 
@@ -28,14 +24,10 @@ public sealed class WorldGenRunner : MonoBehaviour
     [SerializeField] private int unloadHysteresisChunks = 1;
     [SerializeField] private int maxChunksPerFrame = 2;
     [SerializeField] private int preloadChunks = 1;
-    [SerializeField] private int anchorShiftThreshold = 1; // currently unused in rect-streaming, kept for future/compat
+    //[SerializeField] private int anchorShiftThreshold = 1; // currently unused in rect-streaming, kept for future/compat
     [SerializeField] private float genBudgetMs = 1f;
 
     [SerializeField] private bool clearOnDisable = false;
-
-    #endregion
-
-    #region Inspector - Gate
 
     [Header("Gate")]
     [SerializeField] private float gateCooldownSeconds = 1f;
@@ -57,6 +49,9 @@ public sealed class WorldGenRunner : MonoBehaviour
     private readonly Queue<Vector2Int> generateQueue = new Queue<Vector2Int>();
     private readonly HashSet<Vector2Int> queued = new HashSet<Vector2Int>();
     private readonly HashSet<Vector2Int> loaded = new HashSet<Vector2Int>();
+
+    public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
+    public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
 
     #endregion
 
@@ -152,7 +147,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         Vector2Int unloadMinChunk = loadMinChunk - new Vector2Int(unloadHysteresisChunks, unloadHysteresisChunks);
         Vector2Int unloadMaxChunk = loadMaxChunk + new Vector2Int(unloadHysteresisChunks, unloadHysteresisChunks);
 
-        EnqueueNeededChunksRect(loadMinChunk, loadMaxChunk);
+        EnqueueNeededChunks(loadMinChunk, loadMaxChunk);
 
         double budgetMs = Mathf.Max(0.1f, genBudgetMs);
 
@@ -194,7 +189,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             if (loaded.Contains(c))
                 continue;
 
-            if (!IsChunkInRect(c, loadMinChunk, loadMaxChunk))
+            if (!IsChunkIn(c, loadMinChunk, loadMaxChunk))
                 continue;
 
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -205,6 +200,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
 
             loaded.Add(c);
+            NotifyChunkLoaded(c);
 
             genTicksTotal += (t1 - t0);
             applyTicksTotal += (t2 - t1);
@@ -212,7 +208,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
 
         long unloadT0 = System.Diagnostics.Stopwatch.GetTimestamp();
-        UnloadOutsideRect(unloadMinChunk, unloadMaxChunk);
+        UnloadOutside(unloadMinChunk, unloadMaxChunk);
         long unloadT1 = System.Diagnostics.Stopwatch.GetTimestamp();
         double unloadMs = (unloadT1 - unloadT0) * 1000.0 / freq;
 
@@ -286,9 +282,9 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     #endregion
 
-    #region Streaming - Rect Queue/Unload
+    #region Streaming - Queue/Unload
 
-    private void EnqueueNeededChunksRect(Vector2Int minChunk, Vector2Int maxChunk)
+    private void EnqueueNeededChunks(Vector2Int minChunk, Vector2Int maxChunk)
     {
         List<Vector2Int> needed = new List<Vector2Int>();
 
@@ -324,7 +320,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
     }
 
-    private void UnloadOutsideRect(Vector2Int keepMinChunk, Vector2Int keepMaxChunk)
+    private void UnloadOutside(Vector2Int keepMinChunk, Vector2Int keepMaxChunk)
     {
         if (loaded.Count == 0)
             return;
@@ -335,7 +331,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         foreach (var c in loaded)
         {
-            if (IsChunkInRect(c, keepMinChunk, keepMaxChunk))
+            if (IsChunkIn(c, keepMinChunk, keepMaxChunk))
                 continue;
 
             int dx = 0;
@@ -362,12 +358,13 @@ public sealed class WorldGenRunner : MonoBehaviour
         {
             Vector2Int c = candidates[i].c;
 
+            NotifyChunkUnloading(c);
             applier.ClearChunk(c, profile.chunkSize);
             loaded.Remove(c);
         }
     }
 
-    private static bool IsChunkInRect(Vector2Int c, Vector2Int minChunk, Vector2Int maxChunk)
+    private static bool IsChunkIn(Vector2Int c, Vector2Int minChunk, Vector2Int maxChunk)
     {
         return c.x >= minChunk.x && c.x <= maxChunk.x &&
                c.y >= minChunk.y && c.y <= maxChunk.y;
@@ -455,6 +452,20 @@ public sealed class WorldGenRunner : MonoBehaviour
             q--;
 
         return q;
+    }
+
+    #endregion
+    #region Chunk State Persistence Helpers
+    private void NotifyChunkLoaded(Vector2Int chunkCoord)
+    {
+        var st = ctx.ChunkStates.GetChunkState(chunkCoord);
+        OnChunkLoaded?.Invoke(chunkCoord, st);
+    }
+
+    private void NotifyChunkUnloading(Vector2Int chunkCoord)
+    {
+        var st = ctx.ChunkStates.GetChunkState(chunkCoord);
+        OnChunkUnloading?.Invoke(chunkCoord, st);
     }
 
     #endregion

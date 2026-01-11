@@ -24,7 +24,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     [SerializeField] private int unloadHysteresisChunks = 1;
     [SerializeField] private int maxChunksPerFrame = 2;
     [SerializeField] private int preloadChunks = 1;
-    //[SerializeField] private int anchorShiftThreshold = 1; // currently unused in rect-streaming, kept for future/compat
+    //[SerializeField] private int anchorShiftThreshold = 1; // currently unused kept for future/compat
     [SerializeField] private float genBudgetMs = 1f;
 
     [SerializeField] private bool clearOnDisable = false;
@@ -225,7 +225,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (unloadMs >= 2.0 || genMsTotal >= 10.0 || applyMsTotal >= 2.0)
         {
             Debug.Log(
-                $"[WorldGenRect] unload={(int)unloadMs}ms, " +
+                $"[WorldGen] unload={(int)unloadMs}ms, " +
                 $"genChunks={genCount}/{hardCap} budget={budgetMs:F1}ms " +
                 $"gen={genMsTotal:F2}ms apply={applyMsTotal:F2}ms, " +
                 $"queue={generateQueue.Count} loaded={loaded.Count} chunkSize={profile.chunkSize}"
@@ -497,7 +497,10 @@ public sealed class WorldGenRunner : MonoBehaviour
             int ly = gateCenter.y - baseY;
             int localIndex = lx + ly * size;
 
-            if (!ctx.ChunkStates.TryClaimSpawn(ctx.ActiveBiome.Seed, chunkCoord, localIndex, GateSpawnSalt, out _))
+            int spawnId = ctx.ChunkStates.MakeSpawnId(ctx.ActiveBiome.Seed, chunkCoord, localIndex, GateSpawnSalt);
+
+            var st = ctx.ChunkStates.GetChunkState(chunkCoord);
+            if (st.consumedIds.Contains(spawnId))
                 continue;
 
             Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(gateCenter.x, gateCenter.y, 0));
@@ -580,7 +583,10 @@ public sealed class WorldGenRunner : MonoBehaviour
             int ly = denCenter.y - baseY;
             int localIndex = lx + ly * size;
 
-            if (!ctx.ChunkStates.TryClaimSpawn(ctx.ActiveBiome.Seed, chunkCoord, localIndex, WolfDenSpawnSalt, out int spawnId))
+            int spawnId = ctx.ChunkStates.MakeSpawnId(ctx.ActiveBiome.Seed, chunkCoord, localIndex, WolfDenSpawnSalt);
+
+            var st = ctx.ChunkStates.GetChunkState(chunkCoord);
+            if (st.consumedIds.Contains(spawnId))
                 continue;
 
             Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(denCenter.x, denCenter.y, 0));

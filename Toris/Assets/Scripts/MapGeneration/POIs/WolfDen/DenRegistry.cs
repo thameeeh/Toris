@@ -3,10 +3,10 @@ using UnityEngine;
 
 public sealed class DenRegistry
 {
-    private readonly List<Vector2Int> centers = new List<Vector2Int>(64);
+    private readonly HashSet<Vector2Int> centers = new HashSet<Vector2Int>();
     private readonly HashSet<Vector2Int> footprint = new HashSet<Vector2Int>();
 
-    public IReadOnlyList<Vector2Int> DenCenters => centers;
+    public IEnumerable<Vector2Int> DenCenters => centers;
 
     public void Clear()
     {

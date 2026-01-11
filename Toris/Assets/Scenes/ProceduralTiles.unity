@@ -2110,7 +2110,6 @@ MonoBehaviour:
   unloadHysteresisChunks: 1
   maxChunksPerFrame: 6
   preloadChunks: 1
-  anchorShiftThreshold: 1
   genBudgetMs: 8
   clearOnDisable: 0
   gateCooldownSeconds: 1
@@ -2357,7 +2356,7 @@ PrefabInstance:
     - target: {fileID: 5077778647754622771, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _tileInteractor
       value: 
-      objectReference: {fileID: 7797051013246396024}
+      objectReference: {fileID: 0}
     - target: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2373,7 +2372,10 @@ PrefabInstance:
       addedObject: {fileID: 7797051013246396009}
     - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7797051013246396024}
+      addedObject: {fileID: 7797051013246396040}
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7797051013246396039}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &7797051013246395996 stripped
 Transform:
@@ -2394,7 +2396,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NavSafeSpawn
   groundMap: {fileID: 1583650508}
   searchRadius: 10
---- !u!114 &7797051013246396024
+--- !u!114 &7797051013246396035 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5077778647754622771, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 424703103185275433}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538588407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b19e48299728a548a777ac5282630ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
+--- !u!114 &7797051013246396039
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2407,7 +2420,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileInteractor
   _interactableTilemap: {fileID: 875006850}
-  PickRange: 0
+  PickRange: 1
+--- !u!114 &7797051013246396040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538588407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a184587158ba8e5409f8797dd66ca76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+  _inputReader: {fileID: 7797051013246396035}
+  _tileInteractor: {fileID: 7797051013246396039}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

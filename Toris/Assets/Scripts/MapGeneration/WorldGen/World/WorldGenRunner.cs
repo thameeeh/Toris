@@ -53,6 +53,10 @@ public sealed class WorldGenRunner : MonoBehaviour
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
 
+    private readonly Dictionary<Vector2Int, List<GameObject>> spawnedByChunk
+    = new Dictionary<Vector2Int, List<GameObject>>();
+
+    private const uint GateSpawnSalt = 0x6A7E1234u;
     #endregion
 
     #region Public API
@@ -118,26 +122,26 @@ public sealed class WorldGenRunner : MonoBehaviour
             );
         }
 
-        if (Time.time - lastGateTime > gateCooldownSeconds)
-        {
-            if (ctx.Gates.IsGateTile(focusTile))
-            {
-                lastGateTime = Time.time;
+        //if (Time.time - lastGateTime > gateCooldownSeconds)
+        //{
+        //    if (ctx.Gates.IsGateTile(focusTile))
+        //    {
+        //        lastGateTime = Time.time;
 
-                int next = biomeIndex + 1;
-                if (biomeDb != null && biomeDb.Count > 0)
-                    next = next % biomeDb.Count;
+        //        int next = biomeIndex + 1;
+        //        if (biomeDb != null && biomeDb.Count > 0)
+        //            next = next % biomeDb.Count;
 
-                StartBiome(next, focusTile);
-                return;
-            }
-        }
+        //        StartBiome(next, focusTile);
+        //        return;
+        //    }
+        //}
 
         Camera cam = streamCamera != null ? streamCamera : Camera.main;
         if (cam == null)
             return;
 
-        GetCameraChunkRect(cam, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
+        GetCameraChunk(cam, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
 
         int pad = Mathf.Max(0, profile.viewDistanceChunks) + Mathf.Max(0, preloadChunks);
 
@@ -197,6 +201,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
 
             applier.Apply(chunk);
+            SpawnGatesForChunk(c);
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
 
             loaded.Add(c);
@@ -266,7 +271,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         ctx.BindBiome(def, biomeInstance);
 
         applier.ClearAll();
-
+        DespawnAllSpawned();
         loaded.Clear();
         queued.Clear();
         generateQueue.Clear();
@@ -359,6 +364,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             Vector2Int c = candidates[i].c;
 
             NotifyChunkUnloading(c);
+            DespawnObjectsForChunk(c);
             applier.ClearChunk(c, profile.chunkSize);
             loaded.Remove(c);
         }
@@ -374,7 +380,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     #region Camera Rect -> Chunk Rect
 
-    private void GetCameraChunkRect(Camera cam, out Vector2Int minChunk, out Vector2Int maxChunk)
+    private void GetCameraChunk(Camera cam, out Vector2Int minChunk, out Vector2Int maxChunk)
     {
         float zPlane = 0f;
         float dist = DistanceAlongCameraForwardToZPlane(cam, zPlane);
@@ -455,7 +461,8 @@ public sealed class WorldGenRunner : MonoBehaviour
     }
 
     #endregion
-    #region Chunk State Persistence Helpers
+    #region Helpers
+    // Chunk persistance helpers
     private void NotifyChunkLoaded(Vector2Int chunkCoord)
     {
         var st = ctx.ChunkStates.GetChunkState(chunkCoord);
@@ -468,5 +475,88 @@ public sealed class WorldGenRunner : MonoBehaviour
         OnChunkUnloading?.Invoke(chunkCoord, st);
     }
 
+    // Gate helpers
+    private void SpawnGatesForChunk(Vector2Int chunkCoord)
+    {
+        var prefab = ctx.Biome != null ? ctx.Biome.GatePrefab : null;
+        if (prefab == null || grid == null)
+            return;
+
+        int size = profile.chunkSize;
+        int baseX = chunkCoord.x * size;
+        int baseY = chunkCoord.y * size;
+
+        foreach (var gateCenter in ctx.Gates.GateCenters)
+        {
+            if (gateCenter.x < baseX || gateCenter.x >= baseX + size) continue;
+            if (gateCenter.y < baseY || gateCenter.y >= baseY + size) continue;
+
+            int lx = gateCenter.x - baseX;
+            int ly = gateCenter.y - baseY;
+            int localIndex = lx + ly * size;
+
+            if (!ctx.ChunkStates.TryClaimSpawn(ctx.ActiveBiome.Seed, chunkCoord, localIndex, GateSpawnSalt, out _))
+                continue;
+
+            Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(gateCenter.x, gateCenter.y, 0));
+            var go = Instantiate(prefab, worldPos, Quaternion.identity);
+            var gate = go.GetComponentInChildren<GateInteractable>();
+            if (gate != null)
+            {
+                gate.Initialize(this, gateCenter);
+            }
+            else
+            {
+                Debug.LogWarning($"Gate prefab '{prefab.name}' has no GateInteractable", go);
+            }
+
+            if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
+            {
+                list = new List<GameObject>(4);
+                spawnedByChunk.Add(chunkCoord, list);
+            }
+            list.Add(go);
+        }
+    }
+    private void DespawnObjectsForChunk(Vector2Int chunkCoord)
+    {
+        if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
+            return;
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i] != null)
+                Destroy(list[i]);
+        }
+
+        spawnedByChunk.Remove(chunkCoord);
+    }
+
+    private void DespawnAllSpawned()
+    {
+        foreach (var kvp in spawnedByChunk)
+        {
+            var list = kvp.Value;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] != null)
+                    Destroy(list[i]);
+            }
+        }
+        spawnedByChunk.Clear();
+    }
+    public void UseGate(Vector2Int gateTile)
+    {
+        if (Time.time - lastGateTime <= gateCooldownSeconds)
+            return;
+
+        lastGateTime = Time.time;
+
+        int next = biomeIndex + 1;
+        if (biomeDb != null && biomeDb.Count > 0)
+            next %= biomeDb.Count;
+
+        StartBiome(next, gateTile);
+    }
     #endregion
 }

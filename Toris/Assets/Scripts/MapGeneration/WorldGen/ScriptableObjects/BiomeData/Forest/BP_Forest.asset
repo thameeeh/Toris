@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9228c0d81cccbf74b92b064e49e7afa3, type: 3}
-  m_Name: BP_Plains
+  m_Name: BP_Forest
   m_EditorClassIdentifier: Assembly-CSharp::BiomeProfile
-  displayName: Plains
+  displayName: Forest
   landRadius01: 0.92
   coastlineNoiseScale: 0.0025
   coastlineNoiseStrength01: 0.25
-  vegetationStart01: 0.3
-  vegetationFull01: 0.45
   vegetationRegionScale: 0.0012
   vegetationDensity: 1
   lakeNoiseScale: 0.004
@@ -29,16 +27,15 @@ MonoBehaviour:
   waterTile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
   flowerDecorVariants:
   - {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
-  - {fileID: 11400000, guid: f1ca0c694471746419692574e32f72db, type: 2}
-  flowerBaseProb: 0.1
+  flowerBaseProb: 0.104
   vegetationDecorVariants:
-  - {fileID: 11400000, guid: f5b6c8d9c0aa5974cbefb5b082aa0737, type: 2}
-  - {fileID: 11400000, guid: 9506e7960fb442e49880c8bf671e4b3a, type: 2}
-  vegetationMaxProb: 0.022
+  - {fileID: 11400000, guid: c4b2277d2543bec46a08c04f63253d2f, type: 2}
+  vegetationMaxProb: 0.836
   roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
   roadWidthMin: 3
   roadWidthMax: 5
-  platformGroundTile: {fileID: 11400000, guid: 1c40cc4626fd17c47ad058b83f216236, type: 2}
-  gateGroundTile: {fileID: 11400000, guid: 23e85be6831935040bf92cac00daf0e5, type: 2}
+  gatePrefab: {fileID: 7397065028336915349, guid: e5427efef2ad1044bbc1901c69d5da92, type: 3}
+  platformGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
+  gateGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
   gateSize: 7
   maxRoadScanTiles: 4000

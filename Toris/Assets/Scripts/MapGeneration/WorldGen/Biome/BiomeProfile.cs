@@ -38,6 +38,9 @@ public sealed class BiomeProfile : ScriptableObject
     [Range(3, 5)] public int roadWidthMin = 3;
     [Range(3, 5)] public int roadWidthMax = 5;
 
+    [SerializeField] private GameObject gatePrefab;
+    public GameObject GatePrefab => gatePrefab;
+
     public TileBase platformGroundTile;
     public TileBase gateGroundTile;
     public int gateSize = 7;

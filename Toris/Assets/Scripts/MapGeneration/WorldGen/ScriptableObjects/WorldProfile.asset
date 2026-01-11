@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: WorldProfile
   m_EditorClassIdentifier: Assembly-CSharp::WorldProfile
   seed: 12345
-  worldRadiusTiles: 200
+  worldRadiusTiles: 100
   spawnPosTiles: {x: 0, y: 0}
-  chunkSize: 32
+  chunkSize: 16
   viewDistanceChunks: 3
   dangerCurve:
     serializedVersion: 2

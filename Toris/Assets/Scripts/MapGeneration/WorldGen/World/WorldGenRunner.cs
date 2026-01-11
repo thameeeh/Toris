@@ -57,6 +57,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     = new Dictionary<Vector2Int, List<GameObject>>();
 
     private const uint GateSpawnSalt = 0x6A7E1234u;
+    private const uint WolfDenSpawnSalt = 0xA11CE5EDu;
     #endregion
 
     #region Public API
@@ -202,6 +203,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
             applier.Apply(chunk);
             SpawnGatesForChunk(c);
+            SpawnDensForChunk(c);
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
 
             loaded.Add(c);
@@ -558,5 +560,50 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         StartBiome(next, gateTile);
     }
+    // Wolf Den
+    private void SpawnDensForChunk(Vector2Int chunkCoord)
+    {
+        var prefab = ctx.Biome != null ? ctx.Biome.WolfDenPrefab : null;
+        if (prefab == null || grid == null)
+            return;
+
+        int size = profile.chunkSize;
+        int baseX = chunkCoord.x * size;
+        int baseY = chunkCoord.y * size;
+
+        foreach (var denCenter in ctx.Dens.DenCenters)
+        {
+            if (denCenter.x < baseX || denCenter.x >= baseX + size) continue;
+            if (denCenter.y < baseY || denCenter.y >= baseY + size) continue;
+
+            int lx = denCenter.x - baseX;
+            int ly = denCenter.y - baseY;
+            int localIndex = lx + ly * size;
+
+            if (!ctx.ChunkStates.TryClaimSpawn(ctx.ActiveBiome.Seed, chunkCoord, localIndex, WolfDenSpawnSalt, out int spawnId))
+                continue;
+
+            Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(denCenter.x, denCenter.y, 0));
+            var go = Instantiate(prefab, worldPos, Quaternion.identity);
+
+            var den = go.GetComponentInChildren<WolfDen>();
+            if (den != null)
+            {
+                den.Initialize(this, denCenter, chunkCoord, spawnId);
+            }
+            else
+            {
+                Debug.LogWarning($"WolfDen prefab '{prefab.name}' has no WolfDen component", go);
+            }
+
+            if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
+            {
+                list = new List<GameObject>(4);
+                spawnedByChunk.Add(chunkCoord, list);
+            }
+            list.Add(go);
+        }
+    }
+
     #endregion
 }

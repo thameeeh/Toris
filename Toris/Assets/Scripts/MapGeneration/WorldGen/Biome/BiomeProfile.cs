@@ -33,16 +33,26 @@ public sealed class BiomeProfile : ScriptableObject
     public TileBase[] vegetationDecorVariants;
     [Range(0f, 1f)] public float vegetationMaxProb = 0.75f;
 
-    [Header("Stamps")]
+    #region Stamps
+    [Header("Road")]
     public TileBase roadTile;
     [Range(3, 5)] public int roadWidthMin = 3;
     [Range(3, 5)] public int roadWidthMax = 5;
+    public int maxRoadScanTiles = 4000;
 
+    [Header("Gate / Spawn")]
     [SerializeField] private GameObject gatePrefab;
-    public GameObject GatePrefab => gatePrefab;
-
-    public TileBase platformGroundTile;
     public TileBase gateGroundTile;
     public int gateSize = 7;
-    public int maxRoadScanTiles = 4000;
+    public GameObject GatePrefab => gatePrefab;
+    public TileBase platformGroundTile;
+
+    [Header("Wolf Dens")]
+    [Min(0)] public int minWolfDenCount = 3;
+    [Min(1)] public int wolfDenMinSpacingTiles = 40;
+    [SerializeField] private GameObject wolfDenPrefab;
+    public GameObject WolfDenPrefab => wolfDenPrefab;
+    public TileBase wolfDenGroundTile;
+    [Range(1, 15)] public int wolfDenStampSize = 5;
+    #endregion
 }

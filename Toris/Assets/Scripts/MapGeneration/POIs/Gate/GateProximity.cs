@@ -5,7 +5,7 @@ public class GateProximity : MonoBehaviour
 {
     private IInteractable _interactable;
 
-    private void Awake() => _interactable = GetComponentInChildren<IInteractable>();
+    private void Awake() => _interactable = GetComponentInParent<IInteractable>();
 
     private void OnTriggerEnter2D(Collider2D other)
     {

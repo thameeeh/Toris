@@ -35,8 +35,13 @@ MonoBehaviour:
   roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
   roadWidthMin: 3
   roadWidthMax: 5
+  maxRoadScanTiles: 4000
   gatePrefab: {fileID: 7397065028336915349, guid: e5427efef2ad1044bbc1901c69d5da92, type: 3}
-  platformGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
   gateGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
   gateSize: 7
-  maxRoadScanTiles: 4000
+  platformGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
+  minWolfDenCount: 10
+  wolfDenMinSpacingTiles: 20
+  wolfDenPrefab: {fileID: 1274265222522766002, guid: 63a6ec8e1e181e04f985b6af0d49a768, type: 3}
+  wolfDenGroundTile: {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
+  wolfDenStampSize: 5

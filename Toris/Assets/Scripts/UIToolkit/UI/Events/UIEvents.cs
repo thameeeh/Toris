@@ -9,9 +9,8 @@ namespace OutlandHaven.UIToolkit
         HUD,
         Inventory,
         CharacterSheet,
-        SkillTree,
         PauseMenu,
-        Vendor
+        Smith
     }
     public static class UIEvents
     {

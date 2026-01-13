@@ -9,7 +9,7 @@ namespace OutlandHaven.UIToolkit
 
         [Header("Interaction")]
         [SerializeField] private KeyCode _interactKey = KeyCode.F;
-        private bool _playerInRange;
+        private bool _playerInRange = false;
 
         private void Update()
         {
@@ -26,7 +26,7 @@ namespace OutlandHaven.UIToolkit
             Debug.Log($"Opening Container: {_containerData.name}");
 
             // KEY MOMENT: Fire the event with the Chest Data as the Payload!
-            UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, _containerData);
+            UIEvents.OnRequestOpen?.Invoke(_containerData.AssociatedView, _containerData);
         }
 
         // Detect Player entering the trigger zone

@@ -13,9 +13,6 @@ namespace OutlandHaven.UIToolkit
 
         // UI Containers
         private VisualElement _playerGrid;
-        private VisualElement _externalGrid;
-        private VisualElement _externalPanel; // The whole right side
-        private Label _externalHeader;
 
         public InventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session)
             : base(topElement)
@@ -28,13 +25,9 @@ namespace OutlandHaven.UIToolkit
         {
             // Find the grids where slots live
             _playerGrid = m_TopElement.Q<VisualElement>("grid-player");
-            _externalGrid = m_TopElement.Q<VisualElement>("grid-external");
-
-            // Find the containers for toggling visibility
-            _externalPanel = m_TopElement.Q<VisualElement>("container__external");
-            _externalHeader = m_TopElement.Q<Label>("label__external-header");
         }
 
+        /*
         public override void Setup(object payload)
         {
 
@@ -52,6 +45,7 @@ namespace OutlandHaven.UIToolkit
                 _externalPanel.style.display = DisplayStyle.None;
             }
         }
+        */
 
         private void RefreshGrid(VisualElement gridRoot, InventoryContainerSO data)
         {

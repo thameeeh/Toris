@@ -73,19 +73,18 @@ namespace OutlandHaven.UIToolkit
 
         private void OpenWindow(ScreenType type, object payload = null)
         {
-            // 1. Find the view requested
+
             GameView view = _allViews.Find(v => v.ID == type);
             if (view == null) return;
 
-            // 2. Logic: If it's already open, toggle it closed (Diablo style behavior)
+            // Close if it's already open
             if (_currentActiveWindow == view)
             {
                 CloseWindow(type);
                 return;
             }
 
-            // 3. Logic: If another window is open (e.g. Inventory), close it first?
-            // (Or keep both open if you support multi-window)
+            // If another window is open (e.g. Inventory), close it first
             if (_currentActiveWindow != null)
             {
                 _currentActiveWindow.Hide();

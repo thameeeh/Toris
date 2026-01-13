@@ -37,12 +37,10 @@ namespace OutlandHaven.UIToolkit
 
         public override void Setup(object payload)
         {
-            // 1. Refresh Player Inventory (Always)
-            // Assuming GameSession has a generic 'PlayerInventory' field now
-            // If you haven't added 'public InventoryContainerSO PlayerInventory' to GameSessionSO, do it!
-            RefreshGrid(_playerGrid, _gameSession.PlayerInventory); // You might need to add this field
 
-            // 2. Handle Payload (Chest/Vendor)
+            RefreshGrid(_playerGrid, _gameSession.PlayerInventory);
+
+            // Handle Payload (Chest/Vendor)
             if (payload is InventoryContainerSO externalData)
             {
                 _externalPanel.style.display = DisplayStyle.Flex;
@@ -50,8 +48,7 @@ namespace OutlandHaven.UIToolkit
                 RefreshGrid(_externalGrid, externalData);
             }
             else
-            {
-                // No payload? Hide the right panel.
+            { 
                 _externalPanel.style.display = DisplayStyle.None;
             }
         }

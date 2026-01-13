@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class WolfDen : MonoBehaviour, IDamageable
+public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 {
     [Header("HP")]
     [SerializeField] private float maxHp = 50f;
@@ -29,6 +29,9 @@ public sealed class WolfDen : MonoBehaviour, IDamageable
         this.chunkCoord = chunkCoord;
         this.spawnId = spawnId;
 
+        foreach (var c in GetComponentsInChildren<Collider2D>(true))
+            c.enabled = true;
+
         MaxHealth = maxHp;
         CurrentHealth = MaxHealth;
 
@@ -36,7 +39,29 @@ public sealed class WolfDen : MonoBehaviour, IDamageable
         ApplyVisualState(cleared);
 
         if (cleared)
+        {
             CurrentHealth = 0f;
+
+            foreach (var c in GetComponentsInChildren<Collider2D>(true))
+                c.enabled = false;
+        }
+    }
+
+    public void OnSpawned()
+    {
+        foreach (var c in GetComponentsInChildren<Collider2D>(true))
+            c.enabled = true;
+
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+        }
+    }
+
+    public void OnDespawned()
+    {
+        // stop particles/coroutines/etc later
     }
 
     public void Damage(float damageAmount)

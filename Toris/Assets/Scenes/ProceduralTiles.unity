@@ -232,6 +232,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d0208f4659de304e8a851d6eb2c5aa2, type: 3}
+--- !u!1 &101758320
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 101758322}
+  - component: {fileID: 101758321}
+  m_Layer: 0
+  m_Name: POIPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &101758321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101758320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543fd93c493050948a2dd209431cb8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldPoiPoolManager
+  worldSpawnsRoot: {fileID: 101758322}
+--- !u!4 &101758322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101758320}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.1019, y: 1.48485, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &112009087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1983,10 +2028,14 @@ MonoBehaviour:
   runner: {fileID: 1745231016}
   grid: {fileID: 328926127}
   followTarget: {fileID: 7797051013246395996}
-  visible: 1
+  visible: 0
   panelPos: {x: 12, y: 12}
   panelSize: {x: 320, y: 250}
   fontSize: 20
+  drawChunkBorders: 0
+  drawStreamingRects: 0
+  zOffset: -0.1
+  toggleKey: 284
 --- !u!114 &1745231016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2013,6 +2062,7 @@ MonoBehaviour:
   genBudgetMs: 8
   clearOnDisable: 0
   gateCooldownSeconds: 1
+  poiPool: {fileID: 101758321}
 --- !u!1 &1849731110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,3 +2403,4 @@ SceneRoots:
   - {fileID: 521899252}
   - {fileID: 1745231014}
   - {fileID: 632992832}
+  - {fileID: 101758322}

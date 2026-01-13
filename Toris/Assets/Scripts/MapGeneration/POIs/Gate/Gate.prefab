@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2957066882983164877}
   - component: {fileID: 3437281733166413074}
   - component: {fileID: 1828253248605346204}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 1714048445971611391}
   - component: {fileID: 9216374963478984340}
   - component: {fileID: 134413703458271055}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3710912610797503525}
   - component: {fileID: 4274292101956026408}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}

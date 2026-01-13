@@ -32,6 +32,9 @@ public sealed class WorldGenRunner : MonoBehaviour
     [Header("Gate")]
     [SerializeField] private float gateCooldownSeconds = 1f;
 
+    [Header("Pool")]
+    [SerializeField] private WorldPoiPoolManager poiPool;
+
     #endregion
 
     #region Runtime State
@@ -55,6 +58,15 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     private readonly Dictionary<Vector2Int, List<GameObject>> spawnedByChunk
     = new Dictionary<Vector2Int, List<GameObject>>();
+
+    private readonly Dictionary<Vector2Int, List<Vector2Int>> gateCentersByChunk = new();
+    private readonly Dictionary<Vector2Int, List<Vector2Int>> denCentersByChunk = new();
+
+    private readonly Dictionary<Vector2Int, Transform> activeChunkRoots = new();
+    private readonly Dictionary<Vector2Int, Transform> cachedChunkRoots = new();
+
+    private Transform poiChunkRootsActive;
+    private Transform poiChunkRootsCached;
 
     private const uint GateSpawnSalt = 0x6A7E1234u;
     private const uint WolfDenSpawnSalt = 0xA11CE5EDu;
@@ -89,9 +101,18 @@ public sealed class WorldGenRunner : MonoBehaviour
             return;
         }
 
+        if (poiPool == null)
+        {
+            poiPool = gameObject.GetComponent<WorldPoiPoolManager>();
+            if (poiPool == null)
+                poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
+        }
+
         ctx = new WorldContext(profile);
         generator = new ChunkGenerator(ctx);
         applier = new TilemapApplier(groundMap, waterMap, decorMap);
+
+        EnsurePoiPool();
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
 
@@ -238,6 +259,8 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (!clearOnDisable || profile == null)
             return;
 
+        DespawnAllSpawned();
+
         foreach (var c in loaded)
             applier.ClearChunk(c, profile.chunkSize);
 
@@ -272,8 +295,11 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         ctx.BindBiome(def, biomeInstance);
 
+        RebuildPoiLookup();
         applier.ClearAll();
         DespawnAllSpawned();
+        ClearCachedChunkRoots();
+
         loaded.Clear();
         queued.Clear();
         generateQueue.Clear();
@@ -376,6 +402,15 @@ public sealed class WorldGenRunner : MonoBehaviour
     {
         return c.x >= minChunk.x && c.x <= maxChunk.x &&
                c.y >= minChunk.y && c.y <= maxChunk.y;
+    }
+    private void ClearCachedChunkRoots()
+    {
+        foreach (var kvp in cachedChunkRoots)
+        {
+            if (kvp.Value != null)
+                Destroy(kvp.Value.gameObject);
+        }
+        cachedChunkRoots.Clear();
     }
 
     #endregion
@@ -484,14 +519,18 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (prefab == null || grid == null)
             return;
 
+        if (!gateCentersByChunk.TryGetValue(chunkCoord, out var centers) || centers == null || centers.Count == 0)
+            return;
+
         int size = profile.chunkSize;
         int baseX = chunkCoord.x * size;
         int baseY = chunkCoord.y * size;
 
-        foreach (var gateCenter in ctx.Gates.GateCenters)
+        Transform parent = GetChunkGroup(chunkCoord, "Gates");
+
+        for (int i = 0; i < centers.Count; i++)
         {
-            if (gateCenter.x < baseX || gateCenter.x >= baseX + size) continue;
-            if (gateCenter.y < baseY || gateCenter.y >= baseY + size) continue;
+            Vector2Int gateCenter = centers[i];
 
             int lx = gateCenter.x - baseX;
             int ly = gateCenter.y - baseY;
@@ -504,7 +543,11 @@ public sealed class WorldGenRunner : MonoBehaviour
                 continue;
 
             Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(gateCenter.x, gateCenter.y, 0));
-            var go = Instantiate(prefab, worldPos, Quaternion.identity);
+
+            var go = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
+            if (go == null)
+                continue;
+
             var gate = go.GetComponentInChildren<GateInteractable>();
             if (gate != null)
             {
@@ -523,18 +566,28 @@ public sealed class WorldGenRunner : MonoBehaviour
             list.Add(go);
         }
     }
+
     private void DespawnObjectsForChunk(Vector2Int chunkCoord)
     {
-        if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
-            return;
-
-        for (int i = 0; i < list.Count; i++)
+        if (spawnedByChunk.TryGetValue(chunkCoord, out var list))
         {
-            if (list[i] != null)
-                Destroy(list[i]);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] != null)
+                    poiPool.Release(list[i]);
+            }
+
+            spawnedByChunk.Remove(chunkCoord);
         }
 
-        spawnedByChunk.Remove(chunkCoord);
+        if (activeChunkRoots.TryGetValue(chunkCoord, out var root) && root != null)
+        {
+            root.gameObject.SetActive(false);
+            root.SetParent(poiChunkRootsCached, false);
+
+            activeChunkRoots.Remove(chunkCoord);
+            cachedChunkRoots[chunkCoord] = root;
+        }
     }
 
     private void DespawnAllSpawned()
@@ -545,11 +598,49 @@ public sealed class WorldGenRunner : MonoBehaviour
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i] != null)
-                    Destroy(list[i]);
+                    poiPool.Release(list[i]);
             }
         }
         spawnedByChunk.Clear();
+
+        foreach (var kvp in activeChunkRoots)
+        {
+            var root = kvp.Value;
+            if (root == null) continue;
+
+            root.gameObject.SetActive(false);
+            root.SetParent(poiChunkRootsCached, false);
+            cachedChunkRoots[kvp.Key] = root;
+        }
+        activeChunkRoots.Clear();
     }
+
+    private void EnsurePoiPool()
+    {
+        if (poiPool == null)
+            poiPool = GetComponent<WorldPoiPoolManager>();
+
+        if (poiPool == null)
+            poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
+
+        // Chunk-root parents live under the pool's Active root so hierarchy stays tidy
+        var active = poiPool.GetActiveRoot();
+
+        if (poiChunkRootsActive == null)
+        {
+            var go = new GameObject("ChunkRoots");
+            go.transform.SetParent(active, false);
+            poiChunkRootsActive = go.transform;
+        }
+
+        if (poiChunkRootsCached == null)
+        {
+            var go = new GameObject("ChunkRoots (Cached)");
+            go.transform.SetParent(active, false);
+            poiChunkRootsCached = go.transform;
+        }
+    }
+
     public void UseGate(Vector2Int gateTile)
     {
         if (Time.time - lastGateTime <= gateCooldownSeconds)
@@ -570,14 +661,18 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (prefab == null || grid == null)
             return;
 
+        if (!denCentersByChunk.TryGetValue(chunkCoord, out var centers) || centers == null || centers.Count == 0)
+            return;
+
         int size = profile.chunkSize;
         int baseX = chunkCoord.x * size;
         int baseY = chunkCoord.y * size;
 
-        foreach (var denCenter in ctx.Dens.DenCenters)
+        Transform parent = GetChunkGroup(chunkCoord, "Dens");
+
+        for (int i = 0; i < centers.Count; i++)
         {
-            if (denCenter.x < baseX || denCenter.x >= baseX + size) continue;
-            if (denCenter.y < baseY || denCenter.y >= baseY + size) continue;
+            Vector2Int denCenter = centers[i];
 
             int lx = denCenter.x - baseX;
             int ly = denCenter.y - baseY;
@@ -590,17 +685,16 @@ public sealed class WorldGenRunner : MonoBehaviour
                 continue;
 
             Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(denCenter.x, denCenter.y, 0));
-            var go = Instantiate(prefab, worldPos, Quaternion.identity);
+
+            var go = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
+            if (go == null)
+                continue;
 
             var den = go.GetComponentInChildren<WolfDen>();
             if (den != null)
-            {
                 den.Initialize(this, denCenter, chunkCoord, spawnId);
-            }
             else
-            {
                 Debug.LogWarning($"WolfDen prefab '{prefab.name}' has no WolfDen component", go);
-            }
 
             if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
             {
@@ -609,6 +703,72 @@ public sealed class WorldGenRunner : MonoBehaviour
             }
             list.Add(go);
         }
+    }
+
+    private void RebuildPoiLookup()
+    {
+        gateCentersByChunk.Clear();
+        denCentersByChunk.Clear();
+
+        int size = profile.chunkSize;
+
+        foreach (var c in ctx.Gates.GateCenters)
+        {
+            Vector2Int ch = TileToChunk(c, size);
+
+            if (!gateCentersByChunk.TryGetValue(ch, out var list))
+                gateCentersByChunk[ch] = list = new List<Vector2Int>(2);
+
+            list.Add(c);
+        }
+
+        foreach (var c in ctx.Dens.DenCenters)
+        {
+            Vector2Int ch = TileToChunk(c, size);
+
+            if (!denCentersByChunk.TryGetValue(ch, out var list))
+                denCentersByChunk[ch] = list = new List<Vector2Int>(2);
+
+            list.Add(c);
+        }
+    }
+
+    private Transform GetChunkRoot(Vector2Int chunkCoord)
+    {
+        if (activeChunkRoots.TryGetValue(chunkCoord, out var root) && root != null)
+            return root;
+
+        // Reuse cached folder if we have it
+        if (cachedChunkRoots.TryGetValue(chunkCoord, out var cached) && cached != null)
+        {
+            cachedChunkRoots.Remove(chunkCoord);
+
+            cached.SetParent(poiChunkRootsActive, false);
+            cached.gameObject.SetActive(true);
+
+            activeChunkRoots[chunkCoord] = cached;
+            return cached;
+        }
+
+        // Create new
+        var go = new GameObject($"Chunk ({chunkCoord.x}, {chunkCoord.y})");
+        go.transform.SetParent(poiChunkRootsActive, false);
+
+        activeChunkRoots[chunkCoord] = go.transform;
+        return go.transform;
+    }
+
+    private Transform GetChunkGroup(Vector2Int chunkCoord, string groupName)
+    {
+        Transform root = GetChunkRoot(chunkCoord);
+
+        var child = root.Find(groupName);
+        if (child != null)
+            return child;
+
+        var go = new GameObject(groupName);
+        go.transform.SetParent(root, false);
+        return go.transform;
     }
 
     #endregion

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -1459441345012215996}
   - component: {fileID: -4840808633312414887}
   m_Layer: 0
-  m_Name: Den
+  m_Name: DenActive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,5 +154,5 @@ MonoBehaviour:
   maxHp: 50
   animator: {fileID: 0}
   collapseTrigger: Collapse
-  activeVisual: {fileID: 0}
+  activeVisual: {fileID: 1274265222522766002}
   collapsedVisual: {fileID: 0}

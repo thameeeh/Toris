@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GateInteractable : MonoBehaviour, IInteractable
+public class GateInteractable : MonoBehaviour, IInteractable, IPoolable
 {
     private WorldGenRunner _runner;
     private Vector2Int _gateTile;
@@ -9,6 +9,8 @@ public class GateInteractable : MonoBehaviour, IInteractable
     {
         _runner = runner;
         _gateTile = gateTile;
+
+        // disable colliders/visuals, reset them here
     }
 
     public void Interact(GameObject interactor)
@@ -20,7 +22,21 @@ public class GateInteractable : MonoBehaviour, IInteractable
         }
 
         // do VFX/SFX/animation here
-
         _runner.UseGate(_gateTile);
+    }
+
+    // --- Pool lifecycle ---
+    public void OnSpawned()
+    {
+        // reset animator/highlight/prompt when you add them
+    }
+
+    public void OnDespawned()
+    {
+        // Stop any delayed logic
+        StopAllCoroutines();
+
+        _runner = null;
+        _gateTile = default;
     }
 }

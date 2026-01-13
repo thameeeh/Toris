@@ -51,6 +51,6 @@ public class NavSafeSpawn : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("[NavSafeSpawn] Could not find walkable spawn near " + startPos);
+        //Debug.LogWarning("[NavSafeSpawn] Could not find walkable spawn near " + startPos);
     }
 }

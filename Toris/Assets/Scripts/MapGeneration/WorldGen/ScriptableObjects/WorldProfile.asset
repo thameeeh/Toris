@@ -15,7 +15,7 @@ MonoBehaviour:
   seed: 12345
   worldRadiusTiles: 50
   spawnPosTiles: {x: 0, y: 0}
-  chunkSize: 16
+  chunkSize: 8
   viewDistanceChunks: 2
   dangerCurve:
     serializedVersion: 2

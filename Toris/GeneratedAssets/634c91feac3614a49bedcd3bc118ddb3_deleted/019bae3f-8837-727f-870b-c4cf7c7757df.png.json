@@ -1,0 +1,19 @@
+{
+    "asset": "634c91feac3614a49bedcd3bc118ddb3",
+    "fileName": "019bae3f-8837-727f-870b-c4cf7c7757df.png",
+    "prompt": "Wolf den for isometric 2D game, games standard pixel size for a tile is 32x32.",
+    "negativePrompt": "",
+    "model": "9b6d7135-dd33-43ae-b148-cd1212ca7052",
+    "customSeed": -1,
+    "w3CTraceId": "33c9aef18b55f51e8e83e32dad6dbf89",
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0
+}

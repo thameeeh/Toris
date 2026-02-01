@@ -1200,6 +1200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.WorldContainer
   _containerData: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
+  _UIEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _interactKey: 101
 --- !u!58 &238257602
 CircleCollider2D:
@@ -39744,6 +39745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.UIManager
   showHudOnStart: 1
+  _UIEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
 --- !u!1 &716633733
 GameObject:
   m_ObjectHideFlags: 0

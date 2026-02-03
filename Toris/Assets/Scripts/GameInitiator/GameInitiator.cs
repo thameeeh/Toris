@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 
 public class GameInitiator : MonoBehaviour
@@ -13,7 +11,7 @@ public class GameInitiator : MonoBehaviour
         MainMenu,
         Paused,
         InTown,
-        InDungeon,
+        InOverworld,
         InUIOverlay
     }
 
@@ -24,7 +22,7 @@ public class GameInitiator : MonoBehaviour
     [SerializeField] private string _mainMenuScene;
     [SerializeField] private string _pausedScene;
     [SerializeField] private string _townScene;
-    [SerializeField] private string _dungeonScene;
+    [SerializeField] private string _overworldScene;
 
     [SerializeField] private InputActionReference pauseAction;
     [SerializeField] private EventSystem _eventSystem;
@@ -58,7 +56,7 @@ public class GameInitiator : MonoBehaviour
 
     void Start()
     {
-        ChangeState(GameState.MainMenu);
+        //ChangeState(GameState.MainMenu);
     }
 
     public GameState GetState() 
@@ -68,22 +66,16 @@ public class GameInitiator : MonoBehaviour
 
     private void OnPausePress(InputAction.CallbackContext context)
     {
-        Debug.Log("Pause Button Pressed");
         if (currentState == GameState.Paused)
         {
-            currentState = prevState;
-            SceneManager.UnloadSceneAsync(_pausedScene);
-            Time.timeScale = 1f;
-            Debug.Log("Game Resumed");
+            BackToPrevScene(); // single unpause path
             return;
         }
-        //ESC only calls pause if in town or dungeon
-        if (currentState == GameState.InTown || currentState == GameState.InDungeon)
-        {
+
+        if (currentState == GameState.InTown || currentState == GameState.InOverworld)
             ChangeState(GameState.Paused);
-            Debug.Log("Game Paused");
-        }
     }
+
 
     public void ChangeState(GameState newState)
     {
@@ -104,8 +96,8 @@ public class GameInitiator : MonoBehaviour
                 SceneManager.LoadSceneAsync(_townScene);
                 Time.timeScale = 1f;
                 break;
-            case GameState.InDungeon:
-                SceneManager.LoadSceneAsync(_dungeonScene);
+            case GameState.InOverworld:
+                SceneManager.LoadSceneAsync(_overworldScene);
                 Time.timeScale = 1f;
                 break;
             case GameState.InUIOverlay:

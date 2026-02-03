@@ -107,6 +107,11 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
         // Not used yet
     }
 
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        // Not used yet
+    }
     public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.performed)

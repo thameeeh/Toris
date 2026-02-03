@@ -16,7 +16,7 @@ public class PackController : MonoBehaviour
     private float _lastHowlTimestamp = -999f;
 
     [Header("World / Chunk")]
-    [SerializeField] private MapGenerator _mapGenerator; // NEW: to register minions in chunks
+    [SerializeField] private MapGenerator _mapGenerator; // to register minions in chunks
 
     private void Awake()
     {

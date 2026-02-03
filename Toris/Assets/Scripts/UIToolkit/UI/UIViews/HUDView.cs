@@ -56,6 +56,7 @@ namespace OutlandHaven.UIToolkit
 
             // Clear any placeholder content from the UI Builder
             _optionsContainer?.Clear();
+            _optionsContainer.style.display = DisplayStyle.None; // Start hidden
         }
 
         private void GenerateMenuButtons()

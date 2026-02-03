@@ -53,3 +53,15 @@
     background-color: rgb(30, 30, 30);
     scale: 0.95;
 }
+
+.hud-menu-container {
+    background-color: rgba(0, 0, 0, 0.85); 
+    border-radius: 8px;                    
+    border-width: 1px;
+    border-color: rgb(100, 100, 100);
+    
+    padding: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+}

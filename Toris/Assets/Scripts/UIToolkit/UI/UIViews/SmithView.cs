@@ -27,5 +27,10 @@ namespace OutlandHaven.UIToolkit
             _externalPanel = m_TopElement.Q<VisualElement>("container__external");
             _externalHeader = m_TopElement.Q<Label>("label__external-header");
         }
+
+        public override void Setup(object payload) 
+        {
+            
+        }
     }
 }

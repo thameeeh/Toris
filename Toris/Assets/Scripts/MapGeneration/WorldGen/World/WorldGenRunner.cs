@@ -49,6 +49,9 @@ public sealed class WorldGenRunner : MonoBehaviour
     private Vector2Int streamingAnchorChunk;
     private bool anchorInitialized;
 
+    private GameObject runGateInstance;
+    private Transform runGateRoot;
+
     private readonly Queue<Vector2Int> generateQueue = new Queue<Vector2Int>();
     private readonly HashSet<Vector2Int> queued = new HashSet<Vector2Int>();
     private readonly HashSet<Vector2Int> loaded = new HashSet<Vector2Int>();
@@ -143,21 +146,6 @@ public sealed class WorldGenRunner : MonoBehaviour
                 Mathf.FloorToInt(focusWorld.y)
             );
         }
-
-        //if (Time.time - lastGateTime > gateCooldownSeconds)
-        //{
-        //    if (ctx.Gates.IsGateTile(focusTile))
-        //    {
-        //        lastGateTime = Time.time;
-
-        //        int next = biomeIndex + 1;
-        //        if (biomeDb != null && biomeDb.Count > 0)
-        //            next = next % biomeDb.Count;
-
-        //        StartBiome(next, focusTile);
-        //        return;
-        //    }
-        //}
 
         Camera cam = streamCamera != null ? streamCamera : Camera.main;
         if (cam == null)
@@ -299,6 +287,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         applier.ClearAll();
         DespawnAllSpawned();
         ClearCachedChunkRoots();
+        SpawnRunGateForBiome();
 
         loaded.Clear();
         queued.Clear();
@@ -654,6 +643,44 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         StartBiome(next, gateTile);
     }
+
+    private void EnsureRunGateRoot()
+    {
+        if (poiPool == null) return;
+
+        var active = poiPool.GetActiveRoot();
+        if (runGateRoot == null)
+        {
+            var go = new GameObject("RunGate");
+            go.transform.SetParent(active, false);
+            runGateRoot = go.transform;
+        }
+    }
+
+    private void DespawnRunGate()
+    {
+        if (runGateInstance != null)
+        {
+            poiPool.Release(runGateInstance);
+            runGateInstance = null;
+        }
+    }
+
+    private void SpawnRunGateForBiome()
+    {
+        var prefab = ctx.Biome != null ? ctx.Biome.endGatePrefab : null;
+        if (prefab == null || grid == null || poiPool == null || ctx == null)
+            return;
+
+        EnsureRunGateRoot();
+        DespawnRunGate();
+
+        Vector2Int tile = ctx.ActiveBiome.OriginTile + ctx.Biome.RunGateOffsetTiles;
+        Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));
+
+        runGateInstance = poiPool.Spawn(prefab, worldPos, Quaternion.identity, runGateRoot);
+    }
+
     // Wolf Den
     private void SpawnDensForChunk(Vector2Int chunkCoord)
     {
@@ -680,9 +707,10 @@ public sealed class WorldGenRunner : MonoBehaviour
 
             int spawnId = ctx.ChunkStates.MakeSpawnId(ctx.ActiveBiome.Seed, chunkCoord, localIndex, WolfDenSpawnSalt);
 
+            //if (st.consumedIds.Contains(spawnId))
+            //    continue;
             var st = ctx.ChunkStates.GetChunkState(chunkCoord);
-            if (st.consumedIds.Contains(spawnId))
-                continue;
+            bool consumed = st.consumedIds.Contains(spawnId);
 
             Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(denCenter.x, denCenter.y, 0));
 

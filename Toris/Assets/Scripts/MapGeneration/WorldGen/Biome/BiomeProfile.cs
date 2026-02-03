@@ -42,6 +42,8 @@ public sealed class BiomeProfile : ScriptableObject
 
     [Header("Gate / Spawn")]
     [SerializeField] private GameObject gatePrefab;
+    [SerializeField] public GameObject endGatePrefab;
+    [SerializeField] public Vector2Int RunGateOffsetTiles = new Vector2Int(0, -1);
     public TileBase gateGroundTile;
     public int gateSize = 7;
     public GameObject GatePrefab => gatePrefab;

@@ -17,7 +17,10 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (_inputReader != null)
             _inputReader.OnInteractPressed -= HandleInteractPressed;
+
+        _current = null;
     }
+
 
     public void SetCurrent(IInteractable interactable)
     {
@@ -32,6 +35,9 @@ public class PlayerInteractor : MonoBehaviour
 
     private void HandleInteractPressed()
     {
+        if (_current is UnityEngine.Object uobj && uobj == null)
+            _current = null;
+
         if (_current != null)
         {
             _current.Interact(gameObject);
@@ -40,4 +46,5 @@ public class PlayerInteractor : MonoBehaviour
 
         _tileInteractor?.HandleInteract();
     }
+
 }

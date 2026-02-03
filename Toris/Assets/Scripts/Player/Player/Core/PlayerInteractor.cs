@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] private PlayerInputReader _inputReader;
-    [SerializeField] private TileInteractor _tileInteractor;
 
     private IInteractable _current;
 
@@ -37,7 +36,5 @@ public class PlayerInteractor : MonoBehaviour
             _current.Interact(gameObject);
             return;
         }
-
-        _tileInteractor?.HandleInteract();
     }
 }

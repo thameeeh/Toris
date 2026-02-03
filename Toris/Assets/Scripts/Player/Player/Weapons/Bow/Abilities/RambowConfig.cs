@@ -4,7 +4,6 @@ using UnityEngine;
 public class RamboBowConfig : PlayerAbilitySO
 {
     [Header("Unlock Requirements")]
-    public ResourceData killsStat;
     [Min(0)] public int killsRequired = 30;
 
     [Header("Firing Behaviour")]
@@ -27,20 +26,8 @@ public class RamboBowConfig : PlayerAbilitySO
 
     public override bool IsUnlocked(PlayerAbilityContext context)
     {
-        if (killsStat == null)
-        {
-            //Debug.LogWarning("[Rambow] killsStat is NULL, treating as UNLOCKED (no requirement).");
-            return true;
-        }
 
-        if (Inventory.InventoryInstance == null)
-        {
-            //Debug.LogWarning("[Rambow] InventoryInstance is NULL, treating as LOCKED.");
-            return false;
-        }
-
-        int kills = Inventory.InventoryInstance.GetResourceAmount(killsStat);
-        bool unlocked = kills >= killsRequired;
+        bool unlocked = true;   /*kills >= killsRequired; previous logic, kills from Inventory instance.*/
 
         //Debug.Log($"[Rambow] IsUnlocked? {unlocked} (kills={kills}, required={killsRequired}, stat={killsStat.name})");
 

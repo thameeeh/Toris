@@ -14,18 +14,28 @@ namespace OutlandHaven.UIToolkit
         private GameView _currentActiveWindow;
         private GameView _hudView;
 
+        [SerializeField] private UIEventsSO _UIEvents;
+
         private void OnEnable()
         {
-            UIEvents.OnRequestOpen += OpenWindow;
-            UIEvents.OnRequestClose += CloseWindow;
-            UIEvents.OnRequestCloseAll += CloseAllWindows;
+            _UIEvents.OnRequestOpen += OpenWindow;
+            _UIEvents.OnRequestClose += CloseWindow;
+            _UIEvents.OnRequestCloseAll += CloseAllWindows;
         }
 
         private void OnDisable()
         {
-            UIEvents.OnRequestOpen -= OpenWindow;
-            UIEvents.OnRequestClose -= CloseWindow;
-            UIEvents.OnRequestCloseAll -= CloseAllWindows;
+            _UIEvents.OnRequestOpen -= OpenWindow;
+            _UIEvents.OnRequestClose -= CloseWindow;
+            _UIEvents.OnRequestCloseAll -= CloseAllWindows;
+        }
+
+        private void OnValidate()
+        {
+            if(_UIEvents == null)
+            {
+                Debug.LogError($"<color=red>Paperdau</color> {name} is missing, put SO in the inspector!", this);
+            }
         }
 
         // Call this from your Controllers (e.g. PlayerController) to register themselves
@@ -61,31 +71,25 @@ namespace OutlandHaven.UIToolkit
             // Inventory Shortcut (I)
             if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
             {
-                UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
-            }
-
-            // Character Sheet Shortcut (C)
-            if (Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame)
-            {
-                UIEvents.OnRequestOpen?.Invoke(ScreenType.CharacterSheet, null);
+                //payload is null, cuz inventory gets it from GameSessionSO
+                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null); 
             }
         }
 
         private void OpenWindow(ScreenType type, object payload = null)
         {
-            // 1. Find the view requested
+
             GameView view = _allViews.Find(v => v.ID == type);
             if (view == null) return;
 
-            // 2. Logic: If it's already open, toggle it closed (Diablo style behavior)
+            // Close if it's already open
             if (_currentActiveWindow == view)
             {
                 CloseWindow(type);
                 return;
             }
 
-            // 3. Logic: If another window is open (e.g. Inventory), close it first?
-            // (Or keep both open if you support multi-window)
+            // If another window is open (e.g. Inventory), close it first
             if (_currentActiveWindow != null)
             {
                 _currentActiveWindow.Hide();

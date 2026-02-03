@@ -9,6 +9,8 @@ namespace OutlandHaven.UIToolkit
         public int SlotCount = 20;
         public List<InventorySlot> Slots = new List<InventorySlot>();
 
+        public ScreenType AssociatedView = ScreenType.None;
+
         // Initialize list in editor or runtime
         private void OnEnable()
         {
@@ -19,6 +21,11 @@ namespace OutlandHaven.UIToolkit
             while (Slots.Count < SlotCount)
             {
                 Slots.Add(new InventorySlot());
+            }
+
+            if(AssociatedView == ScreenType.None)
+            {
+                Debug.Log("Container is set as None, Change [ScreenType]");
             }
         }
 

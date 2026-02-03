@@ -8,6 +8,9 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Dependencies")]
         [SerializeField] private GameSessionSO _gameSession; // Access to data
+        [SerializeField] private UIEventsSO _uiEvents;
+
+        [SerializeField] private VisualTreeAsset _buttonTemplate; // HUD Menu Button Template
 
         private HUDView _view;
         private UIManager _uiManager;
@@ -28,9 +31,21 @@ namespace OutlandHaven.UIToolkit
             var uiDoc = GetComponent<UIDocument>();
 
             // Pass the data into the View constructor
-            _view = new HUDView(uiDoc.rootVisualElement, _gameSession.PlayerData);
+            _view = new HUDView(uiDoc.rootVisualElement, _gameSession.PlayerData, _uiEvents, _buttonTemplate);
 
             _uiManager.RegisterView(_view);
+        }
+
+        private void OnValidate()
+        {
+            if (_uiEvents == null)
+            {
+                Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
+            }
+            if (_buttonTemplate == null)
+            {
+                Debug.LogError($" <color=red>{name}</color> missing Button Template", this);
+            }
         }
     }
 }

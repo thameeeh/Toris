@@ -6,8 +6,12 @@ namespace OutlandHaven.UIToolkit
     public abstract class GameView : UIView
     {
         public abstract ScreenType ID { get; }
+        protected UIEventsSO UIEvents;
 
-        public GameView(VisualElement topElement) : base(topElement) { }
+        public GameView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement) 
+        {
+            UIEvents = uiEvents;
+        }
 
         public virtual void Setup(object payload) { }
 

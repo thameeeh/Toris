@@ -49,15 +49,13 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
     public void OnSpawned()
     {
-        foreach (var c in GetComponentsInChildren<Collider2D>(true))
-            c.enabled = true;
-
         if (animator != null)
         {
             animator.Rebind();
             animator.Update(0f);
         }
     }
+
 
     public void OnDespawned()
     {
@@ -86,7 +84,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         runner.Context.ChunkStates.MarkConsumed(chunkCoord, spawnId);
         ApplyVisualState(true);
 
-        foreach (var c in GetComponentsInChildren<Collider2D>())
+        foreach (var c in GetComponentsInChildren<Collider2D>(true))
             c.enabled = false;
 
         Debug.Log("Den Cleared");

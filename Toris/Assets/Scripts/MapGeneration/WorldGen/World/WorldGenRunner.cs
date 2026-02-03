@@ -668,12 +668,13 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     private void SpawnRunGateForBiome()
     {
+        DespawnRunGate();
+
         var prefab = ctx.Biome != null ? ctx.Biome.endGatePrefab : null;
         if (prefab == null || grid == null || poiPool == null || ctx == null)
             return;
 
         EnsureRunGateRoot();
-        DespawnRunGate();
 
         Vector2Int tile = ctx.ActiveBiome.OriginTile + ctx.Biome.RunGateOffsetTiles;
         Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));

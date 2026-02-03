@@ -537,7 +537,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             if (go == null)
                 continue;
 
-            var gate = go.GetComponentInChildren<GateInteractable>();
+            var gate = go.GetComponentInChildren<BiomeGateInteractable>();
             if (gate != null)
             {
                 gate.Initialize(this, gateCenter);

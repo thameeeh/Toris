@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GateInteractable : MonoBehaviour, IInteractable, IPoolable
+public class BiomeGateInteractable : MonoBehaviour, IInteractable, IPoolable
 {
     private WorldGenRunner _runner;
     private Vector2Int _gateTile;

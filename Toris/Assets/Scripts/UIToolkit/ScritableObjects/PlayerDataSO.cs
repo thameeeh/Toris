@@ -20,8 +20,6 @@ namespace OutlandHaven.UIToolkit
 
         [SerializeField] private int _gold = 0;
 
-        // UI and Gameplay systems will listen to these events
-        // Passing 'float' allows the UI to know the % (current / max)
         public event Action<float, float> OnHealthChanged; // current, max
         public event Action<float, float> OnManaChanged;   // current, max
         public event Action<int  , float> OnLevelChanged;     // current level, experience

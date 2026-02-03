@@ -1,0 +1,21 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row-reverse;">
+        <ui:VisualElement name="container__player" style="flex-grow: 0; background-color: rgb(18, 18, 18);">
+            <ui:VisualElement name="" style="flex-grow: 0;">
+                <ui:Label text="Inventory" style="color: rgb(255, 255, 255); font-size: 40px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;"/>
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:ScrollView>
+                    <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
+                        <ui:VisualElement class="slot" style="flex-grow: 1;"/>
+                        <ui:VisualElement class="slot" style="flex-grow: 1;"/>
+                        <ui:VisualElement class="slot" style="flex-grow: 1;"/>
+                        <ui:VisualElement class="slot" style="flex-grow: 1;"/>
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

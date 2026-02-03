@@ -6,7 +6,7 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Data")]
         [SerializeField] private InventoryContainerSO _containerData; // Drag 'Container_VillageChest' here
-        [SerializeField] private UIEventsSO _UIEvents;
+        [SerializeField] private UIEventsSO _uiEvents;
 
         [Header("Interaction")]
         [SerializeField] private KeyCode _interactKey = KeyCode.F;
@@ -14,7 +14,7 @@ namespace OutlandHaven.UIToolkit
 
         private void OnValidate()
         {
-            if (_UIEvents == null)
+            if (_uiEvents == null)
             {
                 Debug.LogError($"<color=red>Paperdau</color> {name} is missing, put SO in the inspector!", this);
             }
@@ -35,7 +35,7 @@ namespace OutlandHaven.UIToolkit
             Debug.Log($"Opening Container: {_containerData.name}");
 
             // KEY MOMENT: Fire the event with the Chest Data as the Payload!
-            _UIEvents.OnRequestOpen?.Invoke(_containerData.AssociatedView, _containerData);
+            _uiEvents.OnRequestOpen?.Invoke(_containerData.AssociatedView, _containerData);
         }
 
         // Detect Player entering the trigger zone
@@ -55,7 +55,7 @@ namespace OutlandHaven.UIToolkit
             {
                 _playerInRange = false;
                 // Optional: Auto-close UI when walking away
-                _UIEvents.OnRequestClose?.Invoke(ScreenType.Inventory);
+                _uiEvents.OnRequestClose?.Invoke(ScreenType.Inventory);
             }
         }
     }

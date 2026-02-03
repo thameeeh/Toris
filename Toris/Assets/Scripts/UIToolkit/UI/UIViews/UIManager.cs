@@ -71,13 +71,8 @@ namespace OutlandHaven.UIToolkit
             // Inventory Shortcut (I)
             if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
             {
-                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
-            }
-
-            // Character Sheet Shortcut (C)
-            if (Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame)
-            {
-                _UIEvents.OnRequestOpen?.Invoke(ScreenType.CharacterSheet, null);
+                //payload is null, cuz inventory gets it from GameSessionSO
+                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null); 
             }
         }
 

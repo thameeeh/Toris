@@ -13,37 +13,103 @@ namespace OutlandHaven.UIToolkit
         private ProgressBar _xpBar; // Optional: If you want an XP bar
         private Label _levelLabel;
         private Label _goldLabel;
+        private Button _mainToggleBtn;
+        private VisualElement _optionsContainer;
+
+        private VisualTreeAsset _buttonTemplate;
 
         // Data Reference
         private PlayerDataSO _playerData;
+        
+
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerDataSO data) : base(topElement)
+        public HUDView(VisualElement topElement, PlayerDataSO data, UIEventsSO uiEvents, VisualTreeAsset template) : base(topElement, uiEvents)
         {
             _playerData = data;
+            _buttonTemplate = template;
 
-            // Initialize UI immediately to match current data
-            // (We pass dummy '0' for the second parameters since init doesn't need "change amount")
-            UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
-            UpdateManaUI(_playerData.GetManaPercentage(), 1f);
+            GenerateMenuButtons();
 
-            // We need a helper to get current Gold/Level if they are private in SO.
-            // For now, we wait for the first event, OR you can make public getters for them in SO.
-            // Assuming for now they start at default or we wait for an event:
-            UpdateGoldUI(0, 0); // Placeholder until data flows or you add GetGold()
-            UpdateLevelUI(1, 0); // Placeholder
+            if (_playerData != null)
+            {
+                UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
+                UpdateManaUI(_playerData.GetManaPercentage(), 1f);
+                UpdateGoldUI(0, 0);
+                UpdateLevelUI(1, 0);
+            }
         }
 
         protected override void SetVisualElements()
         {
-            // These names must match your UXML 'name' attributes exactly
+            // Player Stats
             _healthBar = m_TopElement.Q<ProgressBar>("hud__health-bar");
             _manaBar = m_TopElement.Q<ProgressBar>("hud__mana-bar");
 
-            // New elements for the new Data
             _xpBar = m_TopElement.Q<ProgressBar>("hud__xp-bar");
             _levelLabel = m_TopElement.Q<Label>("hud__level-label");
             _goldLabel = m_TopElement.Q<Label>("hud__gold-label");
+
+            // Menu Tab Elements
+            _mainToggleBtn = m_TopElement.Q<Button>("hud__menu-tab");
+            _optionsContainer = m_TopElement.Q<VisualElement>("hud__menu-options");
+
+            // Clear any placeholder content from the UI Builder
+            _optionsContainer?.Clear();
+        }
+
+        private void GenerateMenuButtons()
+        {
+            if (_optionsContainer == null) return;
+
+            CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
+            CreateMenuButton("Skills", "(K)", ScreenType.CharacterSheet);
+            // Add other buttons here
+        }
+
+        protected override void RegisterButtonCallbacks()
+        {
+            _mainToggleBtn.RegisterCallback<ClickEvent>(ToggleMenu);
+        }
+
+        private void CreateMenuButton(string name, string shortcut, ScreenType targetScreen)
+        {
+            if (_buttonTemplate == null)
+            {
+                Debug.LogError("Template not loaded! Check Resources path.");
+                return;
+            }
+
+            // 1. Instantiate the template
+            TemplateContainer instance = _buttonTemplate.Instantiate();
+
+            // 2. Setup the Data (Find elements INSIDE the new instance)
+            var btnRoot = instance.Q<Button>("menu-btn-root");
+            var label = instance.Q<Label>("menu-btn-label");
+            var shortcutLabel = instance.Q<Label>("menu-btn-shortcut");
+
+            label.text = name;
+            shortcutLabel.text = shortcut;
+
+            // 3. Register Click Event
+            btnRoot.RegisterCallback<ClickEvent>(evt =>
+            {
+                // Close the mini-menu
+                ToggleMenu(null);
+
+                // Open the target window
+                UIEvents.OnRequestOpen?.Invoke(targetScreen, null);
+            });
+
+            // 4. Add to the container
+            _optionsContainer.Add(instance);
+        }
+
+        private void ToggleMenu(ClickEvent evt)
+        {
+            // Toggle logic: check if display is None, switch to Flex, etc.
+            bool isHidden = _optionsContainer.style.display == DisplayStyle.None;
+            _optionsContainer.style.display = isHidden ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         public override void Show()

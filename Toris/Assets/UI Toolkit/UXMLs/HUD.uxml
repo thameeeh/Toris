@@ -1,6 +1,12 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/USS/HUD.uss?fileID=7433441132597879392&amp;guid=43e903c3de9567e4d8dec40db6b25400&amp;type=3#HUD"/>
     <ui:VisualElement name="hud__screen" style="flex-grow: 1; justify-content: flex-end; padding-bottom: 20px; padding-left: 20px; padding-right: 20px;">
+        <ui:VisualElement style="flex-grow: 0; align-items: flex-start; flex-direction: column-reverse; margin-bottom: 10px;">
+            <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&amp;guid=065e66474324a9f459577583dff2a17e&amp;type=3#Compass&quot;); width: 60px; height: 60px; -unity-background-scale-mode: scale-to-fit; background-color: rgba(0, 0, 0, 0); border-width: 0;"/>
+            <ui:VisualElement name="hud__menu-options" style="display: none; padding-bottom: 10px; align-items: center;">
+                <ui:VisualElement style="width: 50px; height: 50px; margin-bottom: 5px;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
         <ui:VisualElement style="flex-direction: row; align-items: flex-end; width: 100%; height: 150px;">
             <ui:VisualElement style="width: 300px; margin-right: auto; flex-shrink: 1; flex-grow: 0.1;">
                 <ui:Label text="Level" name="hud__level-label" class="HUD" style="-unity-font-style: bold; color: rgb(255, 255, 255);"/>

@@ -14,8 +14,8 @@ namespace OutlandHaven.UIToolkit
         // UI Containers
         private VisualElement _playerGrid;
 
-        public InventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session)
-            : base(topElement)
+        public InventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents)
+            : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;

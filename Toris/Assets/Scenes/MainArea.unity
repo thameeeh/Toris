@@ -1200,7 +1200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.WorldContainer
   _containerData: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
-  _UIEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _interactKey: 101
 --- !u!58 &238257602
 CircleCollider2D:
@@ -39153,6 +39153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.HudScreenController
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _buttonTemplate: {fileID: 9197481963319205126, guid: 58da16bb20c30c546a4a2c542410a601, type: 3}
 --- !u!114 &523163205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39274,6 +39276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryScreenController
   _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
 --- !u!114 &553322320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61185,6 +61188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
   _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
 --- !u!114 &1727686992
 MonoBehaviour:
   m_ObjectHideFlags: 0

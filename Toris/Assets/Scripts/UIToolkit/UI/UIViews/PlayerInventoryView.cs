@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace OutlandHaven.UIToolkit
 {
-    public class InventoryView : GameView
+    public class PlayerInventoryView : GameView
     {
         public override ScreenType ID => ScreenType.Inventory;
 
@@ -14,7 +14,7 @@ namespace OutlandHaven.UIToolkit
         // UI Containers
         private VisualElement _playerGrid;
 
-        public InventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents)
+        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
@@ -27,12 +27,13 @@ namespace OutlandHaven.UIToolkit
             _playerGrid = m_TopElement.Q<VisualElement>("grid-player");
         }
 
-        /*
+        
         public override void Setup(object payload)
         {
 
             RefreshGrid(_playerGrid, _gameSession.PlayerInventory);
 
+            /*old code does not work on new UXML structure
             // Handle Payload (Chest/Vendor)
             if (payload is InventoryContainerSO externalData)
             {
@@ -43,9 +44,9 @@ namespace OutlandHaven.UIToolkit
             else
             { 
                 _externalPanel.style.display = DisplayStyle.None;
-            }
+            }*/
         }
-        */
+        
 
         private void RefreshGrid(VisualElement gridRoot, InventoryContainerSO data)
         {

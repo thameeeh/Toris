@@ -29,6 +29,19 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
+        public bool AddItem (InventoryItemSO item, int quantity)
+        {
+            // Simple implementation: add to first empty slot
+            foreach (var slot in Slots)
+            {
+                if (slot.IsEmpty)
+                {
+                    slot.SetItem(item, quantity);
+                    return true;
+                }
+            }
+            return false; // No empty slots
+        }
         //add methods like AddItem, RemoveItem here later
     }
 }

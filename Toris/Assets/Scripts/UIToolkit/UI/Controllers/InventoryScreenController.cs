@@ -10,7 +10,7 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
 
-        private InventoryView _view;
+        private PlayerInventoryView _view;
         private UIManager _uiManager;
 
         void Awake()
@@ -29,7 +29,7 @@ namespace OutlandHaven.UIToolkit
             var uiDoc = GetComponent<UIDocument>();
 
             // Pass the Template and the GameSession (for player data) to the View
-            _view = new InventoryView(uiDoc.rootVisualElement, _slotTemplate, _gameSession, _uiEvents);
+            _view = new PlayerInventoryView(uiDoc.rootVisualElement, _slotTemplate, _gameSession, _uiEvents);
 
             _uiManager.RegisterView(_view);
         }

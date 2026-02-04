@@ -15,26 +15,29 @@ public class PackController : MonoBehaviour
     public List<Wolf> activeMinions = new List<Wolf>();
     private float _lastHowlTimestamp = -999f;
 
-    [Header("World / Chunk")]
-    [SerializeField] private MapGenerator _mapGenerator; // to register minions in chunks
+    // NEW: lets WolfDenSpawner observe pack-spawned minions
+    public System.Action<Wolf> MinionSpawned;
 
     private void Awake()
     {
-        // Resolve MapGenerator so we can register minions into its chunk map
-        if (_mapGenerator == null)
-        {
-            _mapGenerator = FindFirstObjectByType<MapGenerator>();
-        }
+        if (leaderWolf == null)
+            leaderWolf = GetComponent<Wolf>();
+
+        if (leaderWolf != null)
+            RegisterLeader(leaderWolf);
+    }
+
+    public bool EnsureLeader(Wolf candidate)
+    {
+        if (candidate == null) return false;
 
         if (leaderWolf == null)
         {
-            leaderWolf = GetComponent<Wolf>();
+            RegisterLeader(candidate);
+            return true;
         }
 
-        if (leaderWolf != null)
-        {
-            RegisterLeader(leaderWolf);
-        }
+        return leaderWolf == candidate;
     }
 
     public bool CanLeaderHowl(Wolf requester = null)
@@ -57,7 +60,6 @@ public class PackController : MonoBehaviour
 
     public int GetActiveMinionCount()
     {
-        // Clean out destroyed entries
         activeMinions.RemoveAll(m => m == null);
         return activeMinions.Count;
     }
@@ -81,12 +83,7 @@ public class PackController : MonoBehaviour
             {
                 Enemy enemy = poolManager.SpawnEnemy(minionWolfPrefab, spawnPoint, Quaternion.identity);
                 newMinion = enemy as Wolf;
-
-                if (newMinion == null)
-                {
-                    //Debug.LogError("Minion prefab is not a Wolf or pooled enemy is not a Wolf.");
-                    continue;
-                }
+                if (newMinion == null) continue;
             }
             else
             {
@@ -96,19 +93,13 @@ public class PackController : MonoBehaviour
             newMinion.role = WolfRole.Minion;
             newMinion.pack = this;
 
+            newMinion.Despawned -= OnMinionDespawned;
             newMinion.Despawned += OnMinionDespawned;
 
             activeMinions.Add(newMinion);
 
-            if (_mapGenerator == null)
-            {
-                _mapGenerator = FindFirstObjectByType<MapGenerator>();
-            }
-
-            if (_mapGenerator != null)
-            {
-                _mapGenerator.RegisterEnemyInChunk(newMinion, newMinion.transform.position);
-            }
+            // NEW: notify den spawner (or other owner) that a minion was created
+            MinionSpawned?.Invoke(newMinion);
         }
     }
 
@@ -117,73 +108,54 @@ public class PackController : MonoBehaviour
         for (int attempt = 0; attempt < 8; attempt++)
         {
             Vector2 direction = Random.insideUnitCircle.normalized;
-            if (direction == Vector2.zero)
-            {
-                continue;
-            }
+            if (direction == Vector2.zero) continue;
 
             Vector2 candidatePos = spawnCenter + direction * spawnDistance;
             Collider2D hit = Physics2D.OverlapCircle(candidatePos, 0.3f,
                 LayerMask.GetMask("Default", "Ground", "Walls"));
+
             if (hit == null) return candidatePos;
         }
+
         return spawnCenter + Random.insideUnitCircle * spawnDistance * 0.5f;
-    }
-
-    public bool EnsureLeader(Wolf candidate)
-    {
-        if (candidate == null) return false;
-
-        if (leaderWolf == null)
-        {
-            RegisterLeader(candidate);
-            return true;
-        }
-
-        return leaderWolf == candidate;
     }
 
     private void RegisterLeader(Wolf leader)
     {
-        if (leader == null) return;
-
-        if (leaderWolf != null && leaderWolf != leader)
-        {
-            leaderWolf.role = WolfRole.Minion;
-            leaderWolf.pack = null;
-        }
-
         leaderWolf = leader;
-        leaderWolf.role = WolfRole.Leader;
-        leaderWolf.pack = this;
+
+        // Leader despawn => clean up minions (chunk unload / pooling)
+        leaderWolf.Despawned -= OnLeaderDespawned;
+        leaderWolf.Despawned += OnLeaderDespawned;
+    }
+
+    private void OnLeaderDespawned(Enemy e)
+    {
+        DespawnAllMinions();
     }
 
     private Wolf ResolveLeader(Wolf requester)
     {
         if (leaderWolf == null) return null;
         if (requester != null && requester != leaderWolf) return null;
-
         return leaderWolf;
     }
 
-    public void DespawnAllMinions()
+    private void DespawnAllMinions()
     {
-        foreach (var minion in activeMinions)
-        {
-            if (minion == null) continue;
+        activeMinions.RemoveAll(m => m == null);
 
-            minion.Despawned -= OnMinionDespawned;
-            minion.RequestDespawn();
-        }
+        for (int i = 0; i < activeMinions.Count; i++)
+            if (activeMinions[i] != null)
+                activeMinions[i].RequestDespawn();
 
         activeMinions.Clear();
     }
 
+    // Keep a public helper if other code calls it directly
     public void NotifyMinionDespawned(Wolf minion)
     {
         if (minion == null) return;
-
-        minion.Despawned -= OnMinionDespawned;
         activeMinions.Remove(minion);
     }
 
@@ -191,7 +163,6 @@ public class PackController : MonoBehaviour
     {
         var wolf = enemy as Wolf;
         if (wolf == null) return;
-
         activeMinions.Remove(wolf);
     }
 }

@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 3762083291208101471}
   - component: {fileID: -4097853586496794636}
   - component: {fileID: 2775268617574141809}
+  - component: {fileID: 5021340337154736360}
   m_Layer: 0
   m_Name: WolfDenRoot
   m_TagString: Untagged
@@ -236,6 +237,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5021340337154736360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5145460778764920192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6607f3e3612a2444aeee5492c7acfb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WolfDenSpawner
+  leaderPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
+  minionPrefab: {fileID: 7255815159274722986, guid: 68112641f8cb2f54c894da2c8fe35c71, type: 3}
+  leaderRespawnDelay: 6
+  spawnRadius: 1
 --- !u!1 &8814487277129519714
 GameObject:
   m_ObjectHideFlags: 0

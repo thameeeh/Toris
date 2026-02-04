@@ -116,6 +116,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         applier = new TilemapApplier(groundMap, waterMap, decorMap);
 
         EnsurePoiPool();
+        EnsureNavWorld();
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
 
@@ -211,6 +212,9 @@ public sealed class WorldGenRunner : MonoBehaviour
             long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
 
             applier.Apply(chunk);
+
+            TileNavWorld.Instance?.BuildNavChunk(c, profile.chunkSize);
+
             SpawnGatesForChunk(c);
             SpawnDensForChunk(c);
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -383,6 +387,9 @@ public sealed class WorldGenRunner : MonoBehaviour
             NotifyChunkUnloading(c);
             DespawnObjectsForChunk(c);
             applier.ClearChunk(c, profile.chunkSize);
+
+            TileNavWorld.Instance?.ClearNavChunk(c);
+
             loaded.Remove(c);
         }
     }
@@ -801,4 +808,16 @@ public sealed class WorldGenRunner : MonoBehaviour
     }
 
     #endregion
+
+    // Tile nav
+    private void EnsureNavWorld()
+    {
+        if (TileNavWorld.Instance != null)
+            return;
+
+        var go = new GameObject("TileNavWorld");
+        go.AddComponent<TileNavWorld>();
+        DontDestroyOnLoad(go);
+    }
+
 }

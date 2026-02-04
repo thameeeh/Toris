@@ -56,13 +56,19 @@ public sealed class WorldPoiPoolManager : MonoBehaviour
         if (!id) return null;
 
         var go = id.gameObject;
+
+        if (go.activeSelf)
+            go.SetActive(false);
+
         go.transform.SetParent(parent, false);
         go.transform.SetPositionAndRotation(position, rotation);
+        go.SetActive(true);
 
-        // Call IPoolable callbacks on any scripts under the POI.
         InvokeOnSpawned(go);
+
         return go;
     }
+
 
     public void Release(GameObject instance)
     {
@@ -124,8 +130,8 @@ public sealed class WorldPoiPoolManager : MonoBehaviour
             // OnGet
             id =>
             {
-                if (!id) return;
-                id.gameObject.SetActive(true);
+                //if (!id) return;
+                //id.gameObject.SetActive(true);
             },
             // OnRelease
             id =>

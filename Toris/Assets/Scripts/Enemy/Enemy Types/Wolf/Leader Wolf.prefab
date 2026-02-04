@@ -36,6 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1512816972072078386
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -81,6 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 9038641558441596822, guid: 236368b4cb36b894990c48bf76c163fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -90,7 +92,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &7572564355417335875
 Animator:
@@ -287,13 +288,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e896dc43e4f8241acd884888f03862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wolf
-  _kill: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
-  _coin: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   AttackDamage: 35
   MovementSpeed: 2
+  PlayerData: {fileID: 0}
   role: 0
   healthMultiplier: 1
   pack: {fileID: -2298867679096013564}
@@ -321,7 +321,6 @@ MonoBehaviour:
   spawnDistance: 2.5
   howlCooldownDuration: 6
   activeMinions: []
-  _mapGenerator: {fileID: 0}
 --- !u!114 &-4774567673522461205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +356,7 @@ MonoBehaviour:
   maxPathRange: 50
   waypointReachThreshold: 0.2
   targetChangeThreshold: 1
-  allowDirectFallbackWhenNoPath: 0
+  allowDirectFallbackWhenNoPath: 1
 --- !u!58 &2695960224398103068
 CircleCollider2D:
   m_ObjectHideFlags: 0

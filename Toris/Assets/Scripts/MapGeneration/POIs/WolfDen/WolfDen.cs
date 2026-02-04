@@ -18,6 +18,10 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
     private Vector2Int chunkCoord;
     private int spawnId;
 
+    public bool IsInitialized { get; private set; }
+    public bool IsCleared => cleared;
+    public Vector3 WorldPosition => transform.position;
+
     // --- IDamageable ---
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
@@ -45,6 +49,13 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
             foreach (var c in GetComponentsInChildren<Collider2D>(true))
                 c.enabled = false;
         }
+
+        IsInitialized = true;
+
+        var spawner = GetComponent<WolfDenSpawner>();
+        if (spawner != null)
+            spawner.OnDenInitialized();
+
     }
 
     public void OnSpawned()
@@ -55,7 +66,6 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
             animator.Update(0f);
         }
     }
-
 
     public void OnDespawned()
     {
@@ -84,11 +94,15 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         runner.Context.ChunkStates.MarkConsumed(chunkCoord, spawnId);
         ApplyVisualState(true);
 
-        foreach (var c in GetComponentsInChildren<Collider2D>(true))
+        foreach (var c in GetComponentsInChildren<Collider2D>())
             c.enabled = false;
 
         Debug.Log("Den Cleared");
-        // later spawner despawn wolves
+
+        // despawn here
+        var spawner = GetComponent<WolfDenSpawner>();
+        if (spawner != null)
+            spawner.OnDenCleared();
     }
 
     private void ApplyVisualState(bool collapsed)

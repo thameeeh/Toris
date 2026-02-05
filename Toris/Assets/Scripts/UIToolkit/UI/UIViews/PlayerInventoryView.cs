@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System;
 
 namespace OutlandHaven.UIToolkit
 {
-    public class PlayerInventoryView : GameView
+    public class PlayerInventoryView : GameView, IDisposable
     {
         public override ScreenType ID => ScreenType.Inventory;
 
@@ -14,11 +15,15 @@ namespace OutlandHaven.UIToolkit
         // UI Containers
         private VisualElement _playerGrid;
 
-        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents)
+        private UIInventoryEventsSO _uiInventoryEvents;
+        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;
+
+            _uiInventoryEvents = uiInventoryEvents;
+            _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
         }
 
         protected override void SetVisualElements()
@@ -27,7 +32,11 @@ namespace OutlandHaven.UIToolkit
             _playerGrid = m_TopElement.Q<VisualElement>("grid-player");
         }
 
-        
+        void OnInventoryUpdated() 
+        {
+            RefreshGrid(_playerGrid, _gameSession.PlayerInventory);
+        }
+
         public override void Setup(object payload)
         {
 
@@ -68,6 +77,11 @@ namespace OutlandHaven.UIToolkit
                 var slotView = new InventorySlotView(slotInstance);
                 slotView.Update(slotData);
             }
+        }
+
+        void OnDispose()
+        {
+            _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
         }
     }
 }

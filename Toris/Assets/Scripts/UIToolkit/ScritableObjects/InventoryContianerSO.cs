@@ -11,6 +11,7 @@ namespace OutlandHaven.UIToolkit
 
         public ScreenType AssociatedView = ScreenType.None;
 
+        [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         // Initialize list in editor or runtime
         private void OnEnable()
         {
@@ -37,6 +38,9 @@ namespace OutlandHaven.UIToolkit
                 if (slot.IsEmpty)
                 {
                     slot.SetItem(item, quantity);
+                    
+                    // Inventory update event
+                    _uiInventoryEvents?.OnInventoryUpdated?.Invoke(); 
                     return true;
                 }
             }

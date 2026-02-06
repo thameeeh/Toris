@@ -22,12 +22,6 @@ public class WorldItem : MonoBehaviour, IInteractable
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     void OnValidate()
     {
         if (_itemData == null)
@@ -36,13 +30,28 @@ public class WorldItem : MonoBehaviour, IInteractable
         }
     }
 
-    public string GetInteractionPrompt()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public bool Interact(InventoryContainerSO targetContainer)
     {
-        throw new System.NotImplementedException();
+        if (targetContainer == null) return false;
+
+        // Attempt to add the item to the container passed in
+        bool success = targetContainer.AddItem(_itemData, _quantity);
+
+        if (success)
+        {
+            // Visual feedback, sound effects go here
+            Destroy(gameObject);
+            return true;
+        }
+        else
+        {
+            Debug.Log("Inventory is full!");
+            return false;
+        }
+    }
+
+    public string GetInteractionPrompt()
+    {
+        return $"Pick up {_itemData.ItemName} (x{_quantity})";
     }
 }

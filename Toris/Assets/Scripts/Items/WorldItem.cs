@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-public class WorldItem : MonoBehaviour, IInteractable
+public class WorldItem : MonoBehaviour, IContainerInteractable
 {
     [Header("Data")]
     [SerializeField] private InventoryItemSO _itemData;
@@ -11,7 +11,10 @@ public class WorldItem : MonoBehaviour, IInteractable
 
     [Header("Visuals")]
     private SpriteRenderer _renderer;
-
+    private void Awake()
+    {
+        _renderer = GetComponent<SpriteRenderer>();
+    }
     private void Start()
     {
         // Auto-configure visuals to match the data

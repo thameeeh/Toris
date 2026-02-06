@@ -76,3 +76,37 @@
     -unity-text-outline-width: 1px;
     -unity-text-outline-color: black;
 }
+
+#grid-player {
+    /* Layout direction */
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    /* "Sit nicely" - This centers the whole grid block inside the panel */
+    align-items: flex-start;
+    justify-content: center;
+
+    /* Add padding so slots don't touch the very edge of the panel */
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.slot {
+    /* SIZE: Adjust these numbers to make them bigger/smaller */
+    width: 80px;
+    height: 80px;
+
+    /* SPACING: This creates the gaps between slots */
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+
+    /* VISUALS: Background color and rounded corners */
+    background-color: rgba(60, 60, 60, 1);
+    border-radius: 5px;
+    
+    /* Center the icon inside the slot */
+    align-items: center;
+    justify-content: center;
+}

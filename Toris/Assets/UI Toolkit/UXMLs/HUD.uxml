@@ -3,7 +3,7 @@
     <ui:VisualElement name="hud__screen" style="flex-grow: 1; justify-content: flex-end; padding-bottom: 20px; padding-left: 20px; padding-right: 20px;">
         <ui:VisualElement style="flex-grow: 0; align-items: flex-start; flex-direction: column-reverse; margin-bottom: 10px;">
             <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&amp;guid=065e66474324a9f459577583dff2a17e&amp;type=3#Compass&quot;); width: 60px; height: 60px; -unity-background-scale-mode: scale-to-fit; background-color: rgba(0, 0, 0, 0); border-width: 0;"/>
-            <ui:VisualElement name="hud__menu-options" style="display: none; padding-bottom: 10px; align-items: center;">
+            <ui:VisualElement name="hud__menu-options" class="hud-menu-container" style="display: none; padding-bottom: 10px; align-items: center; background-color: rgba(0, 0, 0, 0.57);">
                 <ui:VisualElement style="width: 50px; height: 50px; margin-bottom: 5px;"/>
             </ui:VisualElement>
         </ui:VisualElement>

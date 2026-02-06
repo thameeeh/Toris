@@ -16,7 +16,12 @@ namespace OutlandHaven.UIToolkit
         {
             if (_uiEvents == null)
             {
-                Debug.LogError($"<color=red>Paperdau</color> {name} is missing, put SO in the inspector!", this);
+                Debug.LogError($"<color=red>{name}</color> missing, put SO in the inspector!", this);
+            }
+
+            if(_containerData == null)
+            {
+                Debug.LogError($"<color=red>{name}</color> missing Container Data, put SO in the inspector!", this);
             }
         }
 
@@ -45,7 +50,7 @@ namespace OutlandHaven.UIToolkit
             if (other.CompareTag("Player"))
             {
                 _playerInRange = true;
-                Debug.Log("Player near chest. Press 'F' to open.");
+                Debug.Log("Player near chest. Press 'E' to open.");
             }
         }
 

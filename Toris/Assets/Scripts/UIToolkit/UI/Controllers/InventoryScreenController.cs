@@ -8,9 +8,11 @@ namespace OutlandHaven.UIToolkit
         [Header("Dependencies")]
         [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
         [SerializeField] private GameSessionSO _gameSession;
+        
         [SerializeField] private UIEventsSO _uiEvents;
+        [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
 
-        private InventoryView _view;
+        private PlayerInventoryView _view;
         private UIManager _uiManager;
 
         void Awake()
@@ -29,7 +31,7 @@ namespace OutlandHaven.UIToolkit
             var uiDoc = GetComponent<UIDocument>();
 
             // Pass the Template and the GameSession (for player data) to the View
-            _view = new InventoryView(uiDoc.rootVisualElement, _slotTemplate, _gameSession, _uiEvents);
+            _view = new PlayerInventoryView(uiDoc.rootVisualElement, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents);
 
             _uiManager.RegisterView(_view);
         }
@@ -39,6 +41,10 @@ namespace OutlandHaven.UIToolkit
             if (_uiEvents == null)
             {
                 Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
+            }
+            if (_uiInventoryEvents == null)
+            {
+                Debug.LogError($" <color=red>{name}</color> missing UI Inventory Events SO", this);
             }
         }
     }

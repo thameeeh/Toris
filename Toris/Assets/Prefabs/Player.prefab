@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2980662243367807876}
   - component: {fileID: 4313767850351379256}
   - component: {fileID: 7577956846138625648}
-  - component: {fileID: 5077778647754622771}
+  - component: {fileID: 762103139718483297}
   - component: {fileID: 6347703112388059557}
   - component: {fileID: 1738574752484829038}
   - component: {fileID: 5599079654927792221}
@@ -235,12 +235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _inputReader: {fileID: 5077778647754622771}
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _motor: {fileID: 6347703112388059557}
   _animController: {fileID: 3977578414653168071}
   _stats: {fileID: 8137892244548921797}
   _dash: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
---- !u!114 &5077778647754622771
+--- !u!114 &762103139718483297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,10 +249,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5600970068102170111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b19e48299728a548a777ac5282630ff, type: 3}
+  m_Script: {fileID: 11500000, guid: bbc636d186b009a428cc8a879b84b461, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
-  _debugInput: 0
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
 --- !u!114 &6347703112388059557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3f9391a1f4c37488d25e9199994fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBowController
-  _input: {fileID: 5077778647754622771}
+  _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _animController: {fileID: 3977578414653168071}
   _bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
   _muzzle: {fileID: 2980662243367807876}
@@ -382,7 +382,7 @@ MonoBehaviour:
   _disableOnDeath:
   - {fileID: 7577956846138625648}
   - {fileID: 1738574752484829038}
-  - {fileID: 5077778647754622771}
+  - {fileID: 0}
   - {fileID: 6347703112388059557}
   - {fileID: 5599079654927792221}
   _disableColliders:
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad78e93ac137d9643aa6ab075206ac8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilityController
-  _input: {fileID: 5077778647754622771}
+  _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
   _ability1:
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a184587158ba8e5409f8797dd66ca76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
-  _inputReader: {fileID: 5077778647754622771}
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

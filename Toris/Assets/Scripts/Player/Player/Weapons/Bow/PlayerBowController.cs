@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerBowController : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private PlayerInputReader _input;
+    [SerializeField] private PlayerInputReaderSO _input;
     [SerializeField] private PlayerAnimationController _animController;
     [SerializeField] private BowSO _bow;
     [SerializeField] private Transform _muzzle;
@@ -46,6 +46,14 @@ public class PlayerBowController : MonoBehaviour
         }
         _motor?.SetMovementLocked(false);
         drawing = false;
+    }
+
+    private void OnValidate()
+    {
+        if (_input == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerBowController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+        }
     }
 
     void Update()

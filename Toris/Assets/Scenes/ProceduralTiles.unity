@@ -1144,6 +1144,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
   - {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
   - {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
+  - {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
+  - {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
   blockingTiles: []
 --- !u!4 &632992832
 Transform:

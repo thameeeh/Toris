@@ -54,7 +54,7 @@ public class TileNavWorld : MonoBehaviour
 
     public void BuildNavChunk(Vector2Int chunkCoord, int chunkSize)
     {
-        Debug.Log($"[TileNavWorld] BuildNavChunk {chunkCoord} groundMap={(groundMap ? "OK" : "NULL")} walkables={_walkableSet?.Count ?? -1}");
+        //Debug.Log($"[TileNavWorld] BuildNavChunk {chunkCoord} groundMap={(groundMap ? "OK" : "NULL")} walkables={_walkableSet?.Count ?? -1}");
 
         if (!groundMap) return;
 

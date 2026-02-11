@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(WolfDen))]
-public sealed class WolfDenSpawner : MonoBehaviour
+public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 {
     [Header("Prefabs")]
     [SerializeField] private Wolf leaderPrefab;
@@ -29,6 +29,25 @@ public sealed class WolfDenSpawner : MonoBehaviour
 
     private void OnEnable()
     {
+        ResetRuntime();
+    }
+
+    // --- IPoolable ---
+    public void OnSpawned()
+    {
+        // When den comes out of pool, clear old refs
+        ResetRuntime();
+    }
+
+    public void OnDespawned()
+    {
+        // When den goes back to pool (chunk unload), hard-clean ALL wolves spawned by this den
+        ForceDespawnAllTracked();
+        ResetRuntime();
+    }
+
+    private void ResetRuntime()
+    {
         ready = false;
 
         tracked.Clear();
@@ -46,9 +65,6 @@ public sealed class WolfDenSpawner : MonoBehaviour
 
         if (den != null && !den.IsCleared)
             EnsureLeader();
-
-        //Debug.Log($"OnDenInitialized den={name} pos={transform.position} initialized={den.IsInitialized}");
-
     }
 
     private void Update()
@@ -72,15 +88,35 @@ public sealed class WolfDenSpawner : MonoBehaviour
     public void OnDenCleared()
     {
         enabled = false;
+        ForceDespawnAllTracked();
+        ResetRuntime();
+    }
 
-        for (int i = 0; i < tracked.Count; i++)
-            if (tracked[i] != null)
-                tracked[i].RequestDespawn();
+    private void ForceDespawnAllTracked()
+    {
+        if (pack != null)
+        {
+            var minions = pack.activeMinions.ToArray();
+            pack.activeMinions.Clear();
+
+            for (int i = 0; i < minions.Length; i++)
+                if (minions[i] != null)
+                    minions[i].RequestDespawn();
+        }
+        var trackedCopy = tracked.ToArray();
+        tracked.Clear();
+
+        for (int i = 0; i < trackedCopy.Length; i++)
+            if (trackedCopy[i] != null)
+                trackedCopy[i].RequestDespawn();
 
         tracked.Clear();
         leader = null;
         pack = null;
+        respawnTimer = 0f;
+        ready = false;
     }
+
 
     private void EnsureLeader()
     {

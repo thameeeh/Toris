@@ -27,7 +27,7 @@ public static class TilePathfinder
         bool startWalk = nav.IsWalkableCell(start);
         bool goalWalk = nav.IsWalkableCell(goal);
 
-        Debug.Log($"[TilePathfinder] start={start} walk={startWalk}, goal={goal} walk={goalWalk}");
+        //Debug.Log($"[TilePathfinder] start={start} walk={startWalk}, goal={goal} walk={goalWalk}");
 
         if (!startWalk || !goalWalk)
             return false;

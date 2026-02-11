@@ -143,13 +143,12 @@ public class PackController : MonoBehaviour
 
     private void DespawnAllMinions()
     {
-        activeMinions.RemoveAll(m => m == null);
-
-        for (int i = 0; i < activeMinions.Count; i++)
-            if (activeMinions[i] != null)
-                activeMinions[i].RequestDespawn();
-
+        var copy = activeMinions.ToArray();
         activeMinions.Clear();
+
+        for (int i = 0; i < copy.Length; i++)
+            if (copy[i] != null)
+                copy[i].RequestDespawn();
     }
 
     // Keep a public helper if other code calls it directly
@@ -166,3 +165,4 @@ public class PackController : MonoBehaviour
         activeMinions.Remove(wolf);
     }
 }
+

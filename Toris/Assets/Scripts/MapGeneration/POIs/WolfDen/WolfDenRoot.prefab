@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f42b124584fd6c43ad0377cd8aebade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WolfDen
-  maxHp: 50
+  maxHp: 500
   animator: {fileID: 0}
   collapseTrigger: Collapse
   activeVisual: {fileID: 8814487277129519714}

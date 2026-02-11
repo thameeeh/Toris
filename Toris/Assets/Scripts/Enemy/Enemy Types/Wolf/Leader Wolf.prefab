@@ -356,7 +356,7 @@ MonoBehaviour:
   maxPathRange: 50
   waypointReachThreshold: 0.2
   targetChangeThreshold: 1
-  allowDirectFallbackWhenNoPath: 1
+  allowDirectFallbackWhenNoPath: 0
 --- !u!58 &2695960224398103068
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -387,7 +387,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -469,7 +469,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.54, y: 0.2}
+  m_Size: {x: 0.6, y: 0.1}
   m_EdgeRadius: 0
 --- !u!1 &8459690044861325770
 GameObject:

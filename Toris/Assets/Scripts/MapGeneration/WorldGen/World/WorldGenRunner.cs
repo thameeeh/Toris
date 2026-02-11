@@ -812,12 +812,15 @@ public sealed class WorldGenRunner : MonoBehaviour
     // Tile nav
     private void EnsureNavWorld()
     {
-        if (TileNavWorld.Instance != null)
-            return;
+        var nav = TileNavWorld.Instance;
+        if (nav == null)
+        {
+            var go = new GameObject("TileNavWorld");
+            nav = go.AddComponent<TileNavWorld>();
+            DontDestroyOnLoad(go);
+        }
 
-        var go = new GameObject("TileNavWorld");
-        go.AddComponent<TileNavWorld>();
-        DontDestroyOnLoad(go);
+        nav.Initialize(groundMap, waterMap);
     }
 
 }

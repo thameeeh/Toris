@@ -22,6 +22,8 @@ public class TileNavWorld : MonoBehaviour
     private HashSet<TileBase> _walkableSet;
     private HashSet<TileBase> _blockingSet;
 
+    private DenRegistry _dens;
+
     // We assume one global chunk size for nav; set from first BuildNavChunk call
     private int _chunkSize;
 
@@ -135,6 +137,9 @@ public class TileNavWorld : MonoBehaviour
         if (_chunkSize <= 0)
             return false;
 
+        if (_dens != null && _dens.IsDenTile(worldCell))
+            return false;
+
         int chunkSize = _chunkSize;
 
         int cx = Mathf.FloorToInt(worldCell.x / (float)chunkSize);
@@ -203,6 +208,11 @@ public class TileNavWorld : MonoBehaviour
         {
             return _walkable[x, y];
         }
+    }
+
+    public void SetDenRegistry(DenRegistry dens)
+    {
+        _dens = dens;
     }
 
 #if UNITY_EDITOR

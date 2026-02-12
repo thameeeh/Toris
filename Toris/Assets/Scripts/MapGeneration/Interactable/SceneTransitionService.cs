@@ -38,8 +38,7 @@ public sealed class SceneTransitionService : MonoBehaviour
         _isLoading = true;
         onTransitionStart?.Invoke();
 
-        // If you have a UI system, this is where you'd show loading screen / fade.
-        yield return null; // let UI react this frame
+        yield return null;
 
         var op = SceneManager.LoadSceneAsync(sceneName, mode);
         if (op == null)
@@ -49,7 +48,6 @@ public sealed class SceneTransitionService : MonoBehaviour
             yield break;
         }
 
-        // Optional: op.allowSceneActivation = false; // for manual control
         while (!op.isDone)
             yield return null;
 

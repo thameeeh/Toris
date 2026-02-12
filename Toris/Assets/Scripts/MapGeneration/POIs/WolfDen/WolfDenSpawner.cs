@@ -12,7 +12,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     [SerializeField] private float leaderRespawnDelay = 6f;
 
     [Header("Spawn Area")]
-    [SerializeField] private float spawnRadius = 2.5f;
+    [SerializeField] private int spawnRadius;
 
     [Header("Chunk Unload Behavior")]
     [SerializeField] private bool keepChasingWolvesOnUnload = true;
@@ -252,6 +252,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     private Wolf SpawnWolf(Wolf prefab)
     {
         Vector3 pos = den.WorldPosition + (Vector3)(Random.insideUnitCircle * spawnRadius);
+        pos = FindNearestWalkableSpawn(pos, maxTileRadius: spawnRadius);
 
         Enemy e = GameplayPoolManager.Instance != null
             ? GameplayPoolManager.Instance.SpawnEnemy(prefab, pos, Quaternion.identity)
@@ -288,5 +289,39 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
             pack = null;
             respawnTimer = 0f;
         }
+    }
+
+    private Vector3 FindNearestWalkableSpawn(Vector3 desiredWorldPos, int maxTileRadius = 6)
+    {
+        var nav = TileNavWorld.Instance;
+        if (nav == null) return desiredWorldPos;
+
+        Vector2Int startCell = nav.WorldToCell(desiredWorldPos);
+
+        if (nav.IsWalkableCell(startCell))
+            return nav.CellToWorldCenter(startCell);
+
+        for (int r = 1; r <= maxTileRadius; r++)
+        {
+            for (int x = -r; x <= r; x++)
+            {
+                var c1 = startCell + new Vector2Int(x, r);
+                if (nav.IsWalkableCell(c1)) return nav.CellToWorldCenter(c1);
+
+                var c2 = startCell + new Vector2Int(x, -r);
+                if (nav.IsWalkableCell(c2)) return nav.CellToWorldCenter(c2);
+            }
+
+            for (int y = -r + 1; y <= r - 1; y++)
+            {
+                var c3 = startCell + new Vector2Int(r, y);
+                if (nav.IsWalkableCell(c3)) return nav.CellToWorldCenter(c3);
+
+                var c4 = startCell + new Vector2Int(-r, y);
+                if (nav.IsWalkableCell(c4)) return nav.CellToWorldCenter(c4);
+            }
+        }
+
+        return desiredWorldPos;
     }
 }

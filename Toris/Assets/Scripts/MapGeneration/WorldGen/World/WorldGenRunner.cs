@@ -821,6 +821,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
 
         nav.Initialize(groundMap, waterMap);
+        nav.SetDenRegistry(ctx.Dens);
     }
 
 }

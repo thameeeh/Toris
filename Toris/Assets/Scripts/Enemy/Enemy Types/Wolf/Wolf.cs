@@ -33,6 +33,8 @@ public class Wolf : Enemy
     private bool _hasStarted;
 
     public bool IsMovingWhileBiting { get; set; } = false;
+    public bool IsChasingPlayer { get; private set; }
+    public void SetChasingPlayer(bool chasingP) => IsChasingPlayer = chasingP;
     public void PrintMessage(string msg) 
     {
         Debug.Log(msg);

@@ -14,6 +14,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     [Header("Spawn Area")]
     [SerializeField] private float spawnRadius = 2.5f;
 
+    [Header("Chunk Unload Behavior")]
+    [SerializeField] private bool keepChasingWolvesOnUnload = true;
+    [SerializeField] private float keepChaseIfWithinPlayerRange = 40f;
+
     private WolfDen den;
 
     private bool ready;
@@ -35,14 +39,16 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     // --- IPoolable ---
     public void OnSpawned()
     {
-        // When den comes out of pool, clear old refs
         ResetRuntime();
     }
 
     public void OnDespawned()
     {
-        // When den goes back to pool (chunk unload), hard-clean ALL wolves spawned by this den
-        ForceDespawnAllTracked();
+        if (keepChasingWolvesOnUnload)
+            DespawnTrackedExceptActiveChasers();
+        else
+            ForceDespawnAllTracked();
+
         ResetRuntime();
     }
 
@@ -87,9 +93,99 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 
     public void OnDenCleared()
     {
+        ready = false;
+        respawnTimer = 0f;
+
+        if (pack != null)
+            pack.MinionSpawned -= OnPackMinionSpawned;
+
+        leader = null;
+        pack = null;
+
         enabled = false;
-        ForceDespawnAllTracked();
-        ResetRuntime();
+    }
+
+    private void DespawnTrackedExceptActiveChasers()
+    {
+        Transform player = FindPlayerTransform();
+
+        if (pack != null)
+        {
+            var minions = pack.activeMinions.ToArray();
+            pack.activeMinions.Clear();
+
+            for (int i = 0; i < minions.Length; i++)
+            {
+                Wolf w = minions[i];
+                if (w == null) continue;
+
+                if (ShouldKeepAliveOnUnload(w, player))
+                {
+                    DetachFromDen(w);
+                    continue;
+                }
+
+                w.RequestDespawn();
+            }
+        }
+
+        var trackedCopy = tracked.ToArray();
+        tracked.Clear();
+
+        for (int i = 0; i < trackedCopy.Length; i++)
+        {
+            Wolf w = trackedCopy[i];
+            if (w == null) continue;
+
+            if (ShouldKeepAliveOnUnload(w, player))
+            {
+                DetachFromDen(w);
+                continue;
+            }
+
+            w.RequestDespawn();
+        }
+
+        leader = null;
+        pack = null;
+        respawnTimer = 0f;
+        ready = false;
+    }
+    private Transform FindPlayerTransform()
+    {
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+        return p != null ? p.transform : null;
+    }
+
+    private bool ShouldKeepAliveOnUnload(Wolf w, Transform player)
+    {
+        if (!keepChasingWolvesOnUnload) return false;
+        if (w == null) return false;
+        if (player == null) return false;
+
+        float d = Vector3.Distance(w.transform.position, player.position);
+        if (d > keepChaseIfWithinPlayerRange) return false;
+
+        return IsWolfActivelyChasingPlayer(w);
+    }
+
+    private bool IsWolfActivelyChasingPlayer(Wolf w)
+    {
+        return w != null && w.IsChasingPlayer;
+    }
+
+    private void DetachFromDen(Wolf w)
+    {
+        if (w == null) return;
+
+        w.Despawned -= OnWolfDespawned;
+
+        var home = w.GetComponent<HomeAnchor>();
+        if (home != null)
+        {
+            home.center = w.transform.position;
+            home.radius = 9999f;
+        }
     }
 
     private void ForceDespawnAllTracked()

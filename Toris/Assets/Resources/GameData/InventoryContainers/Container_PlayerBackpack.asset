@@ -55,3 +55,4 @@ MonoBehaviour:
   - Item: {fileID: 0}
     Quantity: 0
   AssociatedView: 2
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}

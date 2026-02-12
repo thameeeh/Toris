@@ -31,7 +31,7 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
     public bool IsShootHeld =>
         _actions != null &&
         _actions.Player.Attack.IsPressed();
-
+    /*
     private void OnEnable()
     {
         if (_actions == null)
@@ -40,7 +40,7 @@ public class PlayerInputReader : MonoBehaviour, InputSystem_Actions.IPlayerActio
         _actions.Player.SetCallbacks(this);
 
         _actions.Enable();
-    }
+    }*/
 
     private void OnDisable()
     {

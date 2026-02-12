@@ -11,6 +11,7 @@ namespace OutlandHaven.UIToolkit
 
         public ScreenType AssociatedView = ScreenType.None;
 
+        [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         // Initialize list in editor or runtime
         private void OnEnable()
         {
@@ -29,6 +30,44 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        //add methods like AddItem, RemoveItem here later
+        public bool AddItem (InventoryItemSO item, int quantity)
+        {
+            // 1. Check for existing stacks first
+            foreach (var slot in Slots)
+            {
+                // If slot has the SAME item and has space
+                if (!slot.IsEmpty && slot.Item == item && slot.Count < item.MaxStackSize)
+                {
+                    int remainingSpace = item.MaxStackSize - slot.Count;
+                    int amountToAdd = Mathf.Min(remainingSpace, quantity);
+
+                    slot.IncreaseCount(amountToAdd);
+                    quantity -= amountToAdd;
+
+                    // If we added everything, we are done
+                    if (quantity <= 0)
+                    {
+                        _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+                        return true;
+                    }
+                }
+            }
+
+            // 2. If we still have quantity left, find empty slots
+            if (quantity > 0)
+            {
+                foreach (var slot in Slots)
+                {
+                    if (slot.IsEmpty)
+                    {
+                        slot.SetItem(item, quantity);
+                        _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+                        return true;
+                    }
+                }
+            }
+
+            return false; // Could not add all items (Inventory Full)
+        }
     }
 }

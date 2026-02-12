@@ -15,7 +15,7 @@ public class NavSafeSpawn : MonoBehaviour
     {
         if (TileNavWorld.Instance == null)
         {
-            Debug.LogWarning("[NavSafeSpawn] No TileNavWorld in scene.");
+            //Debug.LogWarning("[NavSafeSpawn] No TileNavWorld in scene.");
             return;
         }
 

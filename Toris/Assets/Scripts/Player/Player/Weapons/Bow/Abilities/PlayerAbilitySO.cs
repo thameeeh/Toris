@@ -5,7 +5,7 @@ public struct PlayerAbilityContext
     public PlayerAbilityController controller;
     public PlayerStats stats;
     public PlayerBowController bow;
-    public PlayerInputReader input;
+    public PlayerInputReaderSO input;
 }
 
 public abstract class PlayerAbilitySO : ScriptableObject

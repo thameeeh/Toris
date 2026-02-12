@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerInteractor : MonoBehaviour
 {
-    [SerializeField] private PlayerInputReader _inputReader;
+    [SerializeField] private PlayerInputReaderSO _inputReader;
 
     private IInteractable _current;
 
@@ -19,7 +20,13 @@ public class PlayerInteractor : MonoBehaviour
 
         _current = null;
     }
-
+    private void OnValidate()
+    {
+        if (_inputReader == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerInteractor]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+        }
+    }
 
     public void SetCurrent(IInteractable interactable)
     {

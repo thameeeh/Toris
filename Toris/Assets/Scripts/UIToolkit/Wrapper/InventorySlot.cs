@@ -6,21 +6,26 @@ namespace OutlandHaven.UIToolkit
     public class InventorySlot
     {
         public InventoryItemSO Item;
-        public int Quantity;
+        public int Count;
 
         public bool IsEmpty => Item == null;
 
         public void Clear()
         {
             Item = null;
-            Quantity = 0;
+            Count = 0;
         }
 
         // Helper to add items
         public void SetItem(InventoryItemSO newItem, int amount)
         {
             Item = newItem;
-            Quantity = amount;
+            Count = amount;
+        }
+
+        public void IncreaseCount(int amount)
+        {
+            Count += amount;
         }
     }
 }

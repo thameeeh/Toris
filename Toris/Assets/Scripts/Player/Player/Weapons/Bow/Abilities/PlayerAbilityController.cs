@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAbilityController : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private PlayerInputReader _input;
+    [SerializeField] private PlayerInputReaderSO _input;
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private PlayerBowController _bow;
 
@@ -38,6 +38,19 @@ public class PlayerAbilityController : MonoBehaviour
 
         if (_ability2.ability != null)
             _ability2.ability.ResetCooldown();
+        
+        /*
+        // Create a clone of the SO so we don't modify the file on disk  <=========
+        if (_ability1.ability != null)
+            _ability1.ability = Instantiate(_ability1.ability);
+
+        if (_ability2.ability != null)
+            _ability2.ability = Instantiate(_ability2.ability);
+
+        // Now it's safe to reset and tick
+        _ability1.ability?.ResetCooldown();
+        _ability2.ability?.ResetCooldown();
+        */
     }
 
     private void OnEnable()
@@ -63,7 +76,13 @@ public class PlayerAbilityController : MonoBehaviour
         _input.OnAbility2Started -= OnAbility2Pressed;
         _input.OnAbility2Released -= OnAbility2Released;
     }
-
+    private void OnValidate()
+    {
+        if (_input == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+        }
+    }
     private void Update()
     {
         if (_ability1.ability != null)

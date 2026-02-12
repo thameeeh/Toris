@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerInputReader _inputReader;
+    [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private PlayerMotor _motor;
     [SerializeField] private PlayerAnimationController _animController;
     [SerializeField] private PlayerStats _stats;
@@ -10,7 +10,13 @@ public class PlayerController : MonoBehaviour
 
     void OnEnable() { if (_inputReader) _inputReader.OnDashPressed += HandleDashRequested; }
     void OnDisable() { if (_inputReader) _inputReader.OnDashPressed -= HandleDashRequested; }
-
+    private void OnValidate()
+    {
+        if (_inputReader == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+        }
+    }
     public DashAbility DashAbility => _motor != null ? _motor.DashAbility : null;
     void Update()
     {

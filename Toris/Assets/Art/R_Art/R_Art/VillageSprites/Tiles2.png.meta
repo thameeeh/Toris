@@ -737,8 +737,8 @@ TextureImporter:
       name: Tiles2_21
       rect:
         serializedVersion: 2
-        x: 16
-        y: 112
+        x: 15
+        y: 113
         width: 16
         height: 16
       alignment: 0
@@ -1203,8 +1203,8 @@ TextureImporter:
         y: 16
         width: 48
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.09682205}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

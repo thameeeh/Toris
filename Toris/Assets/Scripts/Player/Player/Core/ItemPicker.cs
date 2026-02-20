@@ -32,6 +32,16 @@ public class ItemPicker : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        _itemPickerSO.OnItemPick += PickItem;
+    }
+
+    private void OnDisable()
+    {
+        _itemPickerSO.OnItemPick -= PickItem;
+    }
+
     void Update()
     {
         // CONSTANTLY scan items for UI
@@ -49,6 +59,11 @@ public class ItemPicker : MonoBehaviour
         {
             _interactionUI.Hide();
         }
+    }
+
+    void PickItem() 
+    {
+        _currentSelection.Interact(_myInventorySO);
     }
 
     private void FindBestInteractable()

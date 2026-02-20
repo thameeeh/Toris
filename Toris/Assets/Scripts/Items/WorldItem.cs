@@ -1,5 +1,5 @@
 using OutlandHaven.UIToolkit;
-using System.Runtime.CompilerServices;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
@@ -8,6 +8,8 @@ public class WorldItem : MonoBehaviour, IContainerInteractable
     [Header("Data")]
     [SerializeField] private InventoryItemSO _itemData;
     [SerializeField] private int _quantity = 1;
+
+    public Vector3 InteractionPosition => transform.position + Vector3.up * 1.0f;
 
     [Header("Visuals")]
     private SpriteRenderer _renderer;
@@ -55,6 +57,6 @@ public class WorldItem : MonoBehaviour, IContainerInteractable
 
     public string GetInteractionPrompt()
     {
-        return $"Pick up {_itemData.ItemName} (x{_quantity})";
+        return "E";
     }
 }

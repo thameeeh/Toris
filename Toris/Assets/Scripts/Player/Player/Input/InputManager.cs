@@ -5,6 +5,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 {
 
     [SerializeField] private PlayerInputReaderSO _inputReader;
+    [SerializeField] private ItemPickEventSO _itemPicker;
 
     private InputSystem_Actions _inputActions;
 
@@ -28,6 +29,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         if (_inputReader == null)
         {
             Debug.LogError($"<b>[InputReaderSO]</b> is missing on GameObject: <b>{name}<b>", this);
+        }
+        if (_itemPicker == null)
+        {
+            Debug.LogError($"<b>[ItemPickEventSO]</b> is missing on GameObject: <b>{name}<b>", this);
         }
     }
 
@@ -83,6 +88,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnInteract(InputAction.CallbackContext context) 
     {
         _inputReader.OnInteractPressed?.Invoke();
+        _itemPicker.OnItemPick?.Invoke();
     }
     public void OnNext(InputAction.CallbackContext context) { /* Handle Next */ }
     public void OnPause(InputAction.CallbackContext context) {}

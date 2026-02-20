@@ -15,44 +15,44 @@ MonoBehaviour:
   SlotCount: 20
   Slots:
   - Item: {fileID: 11400000, guid: 4ce328c625f9b3f4dafcbbb70a9813fd, type: 2}
-    Quantity: 1
+    Count: 0
   - Item: {fileID: 11400000, guid: f553aed2dd585b64baf66153c26ec3b0, type: 2}
-    Quantity: 7
-  - Item: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
-    Quantity: 3
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 1
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
+  - Item: {fileID: 0}
+    Count: 0
   AssociatedView: 2
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}

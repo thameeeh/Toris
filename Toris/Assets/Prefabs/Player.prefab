@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
+  _itemPicker: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
 --- !u!114 &6347703112388059557
 MonoBehaviour:
   m_ObjectHideFlags: 0

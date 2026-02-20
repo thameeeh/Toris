@@ -87,8 +87,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnCrouch(InputAction.CallbackContext context) { /* Handle Crouch */ }
     public void OnInteract(InputAction.CallbackContext context) 
     {
-        _inputReader.OnInteractPressed?.Invoke();
-        _itemPicker.OnItemPick?.Invoke();
+        if (context.started)
+            _inputReader.OnInteractPressed?.Invoke();
+        if (context.started)
+            _itemPicker.OnItemPick?.Invoke();
     }
     public void OnNext(InputAction.CallbackContext context) { /* Handle Next */ }
     public void OnPause(InputAction.CallbackContext context) {}

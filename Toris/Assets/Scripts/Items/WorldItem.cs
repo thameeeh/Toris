@@ -27,6 +27,11 @@ public class WorldItem : MonoBehaviour, IContainerInteractable
         }
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
     void OnValidate()
     {
         if (_itemData == null)

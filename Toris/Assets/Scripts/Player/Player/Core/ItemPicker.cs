@@ -63,7 +63,15 @@ public class ItemPicker : MonoBehaviour
 
     void PickItem() 
     {
-        _currentSelection.Interact(_myInventorySO);
+        if (_currentSelection == null) return;
+
+        bool picked = _currentSelection.Interact(_myInventorySO);
+        
+        if (picked)
+        {
+            _currentSelection = null;
+            _interactionUI.Hide();
+        }
     }
 
     private void FindBestInteractable()

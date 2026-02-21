@@ -24,7 +24,7 @@
                     <ui:Label text="Mana" name="" class="HUD" style="color: white; -unity-font-style: bold;"/>
                     <ui:Label text="Gold:" name="hud__gold-label" class="HUD"/>
                 </ui:VisualElement>
-                <ui:ProgressBar value="100" name="hud__mana-bar" style="height: 40px; width: 100%; color: blue;"/>
+                <ui:ProgressBar value="20" name="hud__mana-bar" style="height: 40px; width: 100%; color: blue;"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

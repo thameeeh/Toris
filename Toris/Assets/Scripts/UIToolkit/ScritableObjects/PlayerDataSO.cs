@@ -21,7 +21,7 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private int _gold = 0;
 
         public event Action<float, float> OnHealthChanged; // current, max
-        public event Action<float, float> OnManaChanged;   // current, max
+        public Action<float, float> OnManaChanged;   // current, max
         public event Action<int  , float> OnLevelChanged;     // current level, experience
         public event Action<int  , int>   OnGoldChanged;      // current gold, change amount
 

@@ -165,12 +165,12 @@ GameObject:
   - component: {fileID: 8137892244548921797}
   - component: {fileID: 1888605010783103947}
   - component: {fileID: 5229613945364294266}
-  - component: {fileID: 4773480451423900946}
   - component: {fileID: 2003589166597666773}
   - component: {fileID: 503972616382245057}
   - component: {fileID: 6478609135783926460}
   - component: {fileID: 7014179871662737768}
   - component: {fileID: 4549348511874797031}
+  - component: {fileID: 4055305976804400490}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -353,6 +353,7 @@ MonoBehaviour:
   maxStamina: 100
   currentStamina: 100
   staminaRegenPerSec: 50
+  _playerdata: {fileID: 0}
 --- !u!114 &1888605010783103947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,21 +390,6 @@ MonoBehaviour:
   _disableColliders:
   - {fileID: 5599079654927792221}
   _rb: {fileID: 4313767850351379256}
---- !u!114 &4773480451423900946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4291f67c5ef9a144f8df7a5f6165cc75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthStaminaHUD
-  player: {fileID: 8137892244548921797}
-  healthBar: {fileID: 0}
-  staminaBar: {fileID: 0}
 --- !u!114 &2003589166597666773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,6 +471,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
+--- !u!114 &4055305976804400490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a860f3d090e1444bd6fa027ebb6578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPicker
+  _itemPickerSO: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
+  _myInventorySO: {fileID: 11400000, guid: 5b0459b12565c5f498a3b056f66bee0b, type: 2}
+  _interactionPoint: {fileID: 2980662243367807876}
+  _radius: 1.5
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 131072
+  _interactionUI: {fileID: 0}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

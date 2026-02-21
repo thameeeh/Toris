@@ -20,8 +20,8 @@ public class InteractionPromptUI : MonoBehaviour
 
         _promptText.text = text;
 
-        Vector3 screenPos = _mainCam.WorldToScreenPoint(worldPosition);
-        transform.position = screenPos;
+        // Directly assign the world position. No matrix math required.
+        transform.position = worldPosition;
     }
 
     public void Hide()

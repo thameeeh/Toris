@@ -25,6 +25,9 @@ public class WorldItem : MonoBehaviour, IContainerInteractable
             _renderer.sprite = _itemData.Icon;
             name = $"WorldItem_{_itemData.ItemName}";
         }
+
+        Collider2D col = GetComponent<Collider2D>();
+        col.isTrigger = true; // Make sure it's a trigger so the player can walk over it
     }
 
     private void OnEnable()

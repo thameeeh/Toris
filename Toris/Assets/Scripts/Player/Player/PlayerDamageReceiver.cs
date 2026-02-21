@@ -29,7 +29,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     public void ReceiveHit(in HitData hit)
     {
-        Debug.Log($"Hit from: {hit.source?.name}, bypass={hit.bypassIFrames}");
+        //Debug.Log($"Hit from: {hit.source?.name}, bypass={hit.bypassIFrames}");
 
         if (IsInvulnerable && !hit.bypassIFrames) return;
 

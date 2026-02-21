@@ -110,28 +110,35 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.56666666
-    functionName: MoveWhileBite
+    functionName: Anim_SetMoveWhileAttacking
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.8333333
-    functionName: MoveWhileBite
+    functionName: Anim_SetMoveWhileAttacking
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
   - time: 1
-    functionName: WolfDealDamage
+    functionName: Anim_AttackHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.0833334
-    functionName: MoveWhileBite
+    functionName: Anim_SetMoveWhileAttacking
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.0833334
+    functionName: Anim_AttackFinished
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

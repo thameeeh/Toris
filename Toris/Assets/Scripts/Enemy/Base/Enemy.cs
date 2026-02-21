@@ -164,11 +164,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         StateMachine.CurrentEnemyState.AnimationTriggerEvent(triggerType);
     }
 
-    public enum AnimationTriggerType //test
+    public enum AnimationTriggerType
     {
         EnemyDamaged,
         PlayFootstepSound,
         Attack,
+        AttackFinished,
         Chase,
         Idle,
         Howl

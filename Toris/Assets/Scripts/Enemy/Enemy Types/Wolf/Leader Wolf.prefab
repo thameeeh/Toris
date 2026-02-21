@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3677846044796937164}
   - component: {fileID: 1512816972072078386}
   - component: {fileID: 7572564355417335875}
-  - component: {fileID: 5041533026276626117}
+  - component: {fileID: 5208697836334948119}
   m_Layer: 7
   m_Name: Animator
   m_TagString: Untagged
@@ -115,7 +115,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5041533026276626117
+--- !u!114 &5208697836334948119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,9 +124,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 235023414957237221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53193355bf59dc24796b26726ff8eb52, type: 3}
+  m_Script: {fileID: 11500000, guid: f3f736bb4b3d07c4db856b3866a4450f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimationEventRelay
 --- !u!1 &1493656191233448096
 GameObject:
   m_ObjectHideFlags: 0

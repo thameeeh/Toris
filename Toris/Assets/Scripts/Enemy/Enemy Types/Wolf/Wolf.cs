@@ -149,6 +149,6 @@ public class Wolf : Enemy
 
     public void DamagePlayer(float damage) {
         base.DamagePlayer(damage, _hitData);
-        PlayerData.ModifyHealth(-20);
+        //PlayerData.ModifyHealth(-20);
     }
 }

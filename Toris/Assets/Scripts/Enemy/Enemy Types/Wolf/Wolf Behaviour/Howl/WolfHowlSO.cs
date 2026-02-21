@@ -3,10 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Howl_Alert", menuName = "Enemy Logic/Howl Logic/Wolf Howl Alert")]
 public class WolfHowlSO : HowlSOBase<Wolf>
 {
-    private bool _isRunning = false;
-    private float _timer;
+    [SerializeField] private float howlDuration = 1f;
 
-    public float howlDuration = 1f;
+    public bool isComplete { get; private set; }
+    private float _timer;
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -16,20 +16,9 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     {
         base.DoEnterLogic();
 
-        bool hasPack = enemy.pack != null;
-        bool isLeader = hasPack && enemy.pack.EnsureLeader(enemy);
-
-        if (!enemy.CanHowl || !hasPack || !isLeader || !enemy.pack.CanLeaderHowl(enemy))
-        {
-            enemy.animator.ResetTrigger("Howl");
-            enemy.animator.ResetTrigger("Attack");
-            enemy.animator.ResetTrigger("Dead");
-            enemy.StateMachine.ChangeState(enemy.ChaseState);
-            return;
-        }
-
-        _isRunning = true;
+        isComplete = false;
         _timer = 0f;
+
         enemy.animator.ResetTrigger("Attack");
         enemy.animator.ResetTrigger("Dead");
         enemy.animator.SetTrigger("Howl");
@@ -45,16 +34,9 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
-        if (!_isRunning) return;
-
         _timer += Time.deltaTime;
-        if (_timer >= howlDuration)
-        {
-            enemy.pack.HandleLeaderHowl(enemy);
-            _isRunning = false;
-
-            enemy.StateMachine.ChangeState(enemy.ChaseState);
-        }
+        if (_timer > howlDuration) 
+            isComplete = true;
     }
 
     public override void DoPhysicsLogic()
@@ -62,7 +44,7 @@ public class WolfHowlSO : HowlSOBase<Wolf>
         base.DoPhysicsLogic();
     }
 
-    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
+    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
     }
@@ -70,5 +52,8 @@ public class WolfHowlSO : HowlSOBase<Wolf>
     public override void ResetValues()
     {
         base.ResetValues();
+
+        isComplete = false;
+        _timer = 0f;
     }
 }

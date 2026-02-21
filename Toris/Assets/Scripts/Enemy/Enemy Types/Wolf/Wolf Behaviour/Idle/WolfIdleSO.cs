@@ -143,7 +143,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         return origin;
     }
 
-    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
+    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
     }

@@ -7,6 +7,7 @@ public static class TilePathfinder
     /// Finds a path from startWorld -> targetWorld.
     /// Returns waypoints in world space (tile centers).
     /// </summary>
+
     public static bool TryFindPath(
         Vector3 startWorld,
         Vector3 targetWorld,
@@ -25,6 +26,7 @@ public static class TilePathfinder
 
         bool startWalk = nav.IsWalkableCell(start);
         bool goalWalk = nav.IsWalkableCell(goal);
+
         //Debug.Log($"[TilePathfinder] start={start} walk={startWalk}, goal={goal} walk={goalWalk}");
 
         if (!startWalk || !goalWalk)

@@ -15,7 +15,7 @@ public class NavSafeSpawn : MonoBehaviour
     {
         if (TileNavWorld.Instance == null)
         {
-            Debug.LogWarning("[NavSafeSpawn] No TileNavWorld in scene.");
+            //Debug.LogWarning("[NavSafeSpawn] No TileNavWorld in scene.");
             return;
         }
 
@@ -51,6 +51,6 @@ public class NavSafeSpawn : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("[NavSafeSpawn] Could not find walkable spawn near " + startPos);
+        //Debug.LogWarning("[NavSafeSpawn] Could not find walkable spawn near " + startPos);
     }
 }

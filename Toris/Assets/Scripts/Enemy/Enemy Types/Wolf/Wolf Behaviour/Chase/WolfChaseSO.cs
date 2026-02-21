@@ -35,6 +35,8 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
     {
         base.DoEnterLogic();
 
+        enemy.SetChasingPlayer(true);
+
         enemy.animator.SetBool("IsMoving", true);
         enemy.animator.Play("Run");
 
@@ -101,7 +103,12 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
             enemy.MoveEnemy(Vector2.zero);
     }
 
-    public override void DoExitLogic() { base.DoExitLogic(); }
+    public override void DoExitLogic() 
+    { 
+        base.DoExitLogic();
+        
+        enemy.SetChasingPlayer(false);
+    }
     public override void DoPhysicsLogic() { base.DoPhysicsLogic(); }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType) { base.DoAnimationTriggerEventLogic(triggerType); }
     public override void ResetValues() { base.ResetValues(); }

@@ -22,6 +22,8 @@ public class TileNavWorld : MonoBehaviour
     private HashSet<TileBase> _walkableSet;
     private HashSet<TileBase> _blockingSet;
 
+    private DenRegistry _dens;
+
     // We assume one global chunk size for nav; set from first BuildNavChunk call
     private int _chunkSize;
 
@@ -33,18 +35,29 @@ public class TileNavWorld : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    // --- Public API ---
+
+    public void Initialize(Tilemap ground, Tilemap water)
+    {
+        groundMap = ground;
+        waterMap = water;
 
         if (!groundMap)
-            Debug.LogError("[TileNavWorld] groundMap not assigned!");
+            Debug.LogError("[TileNavWorld] Initialize received null groundMap");
 
         _walkableSet = new HashSet<TileBase>(walkableTiles ?? new TileBase[0]);
         _blockingSet = new HashSet<TileBase>(blockingTiles ?? new TileBase[0]);
-    }
 
-    // --- Public API: used by MapGenerator ---
+        _navChunks.Clear();
+        _chunkSize = 0;
+    }
 
     public void BuildNavChunk(Vector2Int chunkCoord, int chunkSize)
     {
+        //Debug.Log($"[TileNavWorld] BuildNavChunk {chunkCoord} groundMap={(groundMap ? "OK" : "NULL")} walkables={_walkableSet?.Count ?? -1}");
+
         if (!groundMap) return;
 
         // Initialize global chunk size the first time we see one
@@ -121,19 +134,25 @@ public class TileNavWorld : MonoBehaviour
     /// </summary>
     public bool IsWalkableCell(Vector2Int worldCell)
     {
+        if (_chunkSize <= 0)
+            return false;
+
+        if (_dens != null && _dens.IsDenTile(worldCell))
+            return false;
+
         int chunkSize = _chunkSize;
-        // Use floor division to match MapGenerator.WorldTileToChunk
+
         int cx = Mathf.FloorToInt(worldCell.x / (float)chunkSize);
         int cy = Mathf.FloorToInt(worldCell.y / (float)chunkSize);
         var chunkCoord = new Vector2Int(cx, cy);
 
         if (!_navChunks.TryGetValue(chunkCoord, out var navChunk))
-            return false; // no data => treat as non-walkable
+            return false;
 
         int localX = worldCell.x - (chunkCoord.x * chunkSize);
         int localY = worldCell.y - (chunkCoord.y * chunkSize);
 
-        if (localX < 0 || localY < 0 || localX >= chunkSize || localY >= chunkSize)
+        if ((uint)localX >= (uint)chunkSize || (uint)localY >= (uint)chunkSize)
             return false;
 
         return navChunk.GetWalkable(localX, localY);
@@ -156,14 +175,13 @@ public class TileNavWorld : MonoBehaviour
     {
         if (tile == null) return false;
 
-        if (_blockingSet.Contains(tile))
+        if (_blockingSet != null && _blockingSet.Contains(tile))
             return false;
 
-        if (_walkableSet.Contains(tile))
+        if (_walkableSet == null || _walkableSet.Count == 0)
             return true;
 
-        // default: not walkable
-        return false;
+        return _walkableSet.Contains(tile);
     }
 
     // --- Internal NavChunk type ---
@@ -190,6 +208,11 @@ public class TileNavWorld : MonoBehaviour
         {
             return _walkable[x, y];
         }
+    }
+
+    public void SetDenRegistry(DenRegistry dens)
+    {
+        _dens = dens;
     }
 
 #if UNITY_EDITOR

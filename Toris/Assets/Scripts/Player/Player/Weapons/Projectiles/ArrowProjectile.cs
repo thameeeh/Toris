@@ -139,13 +139,14 @@ public class ArrowProjectile : Projectile
     {
         if (target == null) return;
 
-        if (target.TryGetComponent<IDamageable>(out var dmgTarget))
+        var dmgTarget = target.GetComponentInParent<IDamageable>();
+        if (dmgTarget != null)
         {
             dmgTarget.Damage(damage);
-
             SpawnHitEffect(transform.position);
         }
     }
+
 
     private void SetOwnerIgnore(bool ignore)
     {

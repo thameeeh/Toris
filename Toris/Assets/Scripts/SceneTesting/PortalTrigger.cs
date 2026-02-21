@@ -9,7 +9,7 @@ public class ScenePortal : MonoBehaviour
 
     private void Update()
     {
-        if(GameInitiator.Instance.GetState() == GameInitiator.GameState.InDungeon)
+        if(GameInitiator.Instance.GetState() == GameInitiator.GameState.InOverworld)
             portalCollider.enabled = false;
         else portalCollider.enabled = true;
     }
@@ -18,7 +18,7 @@ public class ScenePortal : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        GameInitiator.Instance.ChangeState(GameInitiator.GameState.InDungeon);
+        GameInitiator.Instance.ChangeState(GameInitiator.GameState.InOverworld);
         //SceneLoader.I.GoTo(nextScene);
     }
 }

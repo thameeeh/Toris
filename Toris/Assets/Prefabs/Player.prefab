@@ -37,6 +37,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3694909814248404840
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -82,6 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 2082086513, guid: 6dd50e9f6d072564092946cc83abdda2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -91,7 +93,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &1374906520803086630
 Animator:
@@ -157,18 +158,19 @@ GameObject:
   - component: {fileID: 2980662243367807876}
   - component: {fileID: 4313767850351379256}
   - component: {fileID: 7577956846138625648}
-  - component: {fileID: 5077778647754622771}
+  - component: {fileID: 762103139718483297}
   - component: {fileID: 6347703112388059557}
   - component: {fileID: 1738574752484829038}
   - component: {fileID: 5599079654927792221}
   - component: {fileID: 8137892244548921797}
   - component: {fileID: 1888605010783103947}
   - component: {fileID: 5229613945364294266}
-  - component: {fileID: 4773480451423900946}
-  - component: {fileID: 3149346686833117398}
   - component: {fileID: 2003589166597666773}
   - component: {fileID: 503972616382245057}
   - component: {fileID: 6478609135783926460}
+  - component: {fileID: 7014179871662737768}
+  - component: {fileID: 4549348511874797031}
+  - component: {fileID: 4055305976804400490}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -233,12 +235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _inputReader: {fileID: 5077778647754622771}
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _motor: {fileID: 6347703112388059557}
   _animController: {fileID: 3977578414653168071}
   _stats: {fileID: 8137892244548921797}
   _dash: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
---- !u!114 &5077778647754622771
+--- !u!114 &762103139718483297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,11 +249,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5600970068102170111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b19e48299728a548a777ac5282630ff, type: 3}
+  m_Script: {fileID: 11500000, guid: bbc636d186b009a428cc8a879b84b461, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
-  _debugInput: 0
-  _tileInteractor: {fileID: 3149346686833117398}
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
+  _itemPicker: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
 --- !u!114 &6347703112388059557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3f9391a1f4c37488d25e9199994fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBowController
-  _input: {fileID: 5077778647754622771}
+  _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _animController: {fileID: 3977578414653168071}
   _bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
   _muzzle: {fileID: 2980662243367807876}
@@ -351,6 +353,7 @@ MonoBehaviour:
   maxStamina: 100
   currentStamina: 100
   staminaRegenPerSec: 50
+  _playerdata: {fileID: 0}
 --- !u!114 &1888605010783103947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,41 +384,12 @@ MonoBehaviour:
   _disableOnDeath:
   - {fileID: 7577956846138625648}
   - {fileID: 1738574752484829038}
-  - {fileID: 5077778647754622771}
+  - {fileID: 0}
   - {fileID: 6347703112388059557}
   - {fileID: 5599079654927792221}
   _disableColliders:
   - {fileID: 5599079654927792221}
   _rb: {fileID: 4313767850351379256}
---- !u!114 &4773480451423900946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4291f67c5ef9a144f8df7a5f6165cc75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthStaminaHUD
-  player: {fileID: 8137892244548921797}
-  healthBar: {fileID: 0}
-  staminaBar: {fileID: 0}
---- !u!114 &3149346686833117398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd3a77283bef31f43b515fe53a6b526d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TileInteractor
-  _interactableTilemap: {fileID: 0}
-  PickRange: 2
 --- !u!114 &2003589166597666773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,13 +402,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad78e93ac137d9643aa6ab075206ac8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilityController
-  _input: {fileID: 5077778647754622771}
+  _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
   _ability1:
-    ability: {fileID: 0}
+    ability: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   _ability2:
-    ability: {fileID: 0}
+    ability: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
 --- !u!114 &503972616382245057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +444,53 @@ MonoBehaviour:
   playerStats: {fileID: 8137892244548921797}
   effectId: test_effect
   localOffset: {x: 0, y: 0.75, z: 0}
+--- !u!114 &7014179871662737768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c890bc83bdee34195e677926873c4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavSafeSpawn
+  groundMap: {fileID: 0}
+  searchRadius: 10
+--- !u!114 &4549348511874797031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a184587158ba8e5409f8797dd66ca76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
+--- !u!114 &4055305976804400490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a860f3d090e1444bd6fa027ebb6578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPicker
+  _itemPickerSO: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
+  _myInventorySO: {fileID: 11400000, guid: 5b0459b12565c5f498a3b056f66bee0b, type: 2}
+  _interactionPoint: {fileID: 2980662243367807876}
+  _radius: 1.5
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 131072
+  _interactionUI: {fileID: 0}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

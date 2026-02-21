@@ -1,7 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/Menu/MenuButtonsUSS.uss?fileID=7433441132597879392&amp;guid=a283cafdf2371d5408e063dd55e021cc&amp;type=3#MenuButtonsUSS" />
-    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.47);">
-        <ui:Button text="RESUME" name="btn__pause-menu--resume" class="MenuButtons" />
-        <ui:Button text="QUIT" name="btn__pause-menu--quit" class="MenuButtons" />
-    </ui:VisualElement>
-</ui:UXML>

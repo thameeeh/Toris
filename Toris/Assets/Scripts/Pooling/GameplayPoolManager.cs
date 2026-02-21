@@ -8,7 +8,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
     [Header("Configuration")]
     [SerializeField] private GameplayPoolConfiguration configuration;
-    [SerializeField] private bool persistAcrossScenes = true;
+    [SerializeField] private bool persistAcrossScenes = false;
 
     [Header("Parents (optional)")]
     [SerializeField] private Transform projectileRoot;

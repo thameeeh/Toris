@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using OutlandHaven.UIToolkit;
 
 // All States and ScriptableObjects specific to the Wolf enemy
 // are defined and instantiated here
@@ -15,6 +16,8 @@ public class Wolf : Enemy
     public float AttackDamage = 20;
     public float MovementSpeed = 2;
 
+    [SerializeField]
+    private PlayerDataSO PlayerData;
 
     // leader/minion implement
     [Header("Role")]
@@ -30,6 +33,8 @@ public class Wolf : Enemy
     private bool _hasStarted;
 
     public bool IsMovingWhileBiting { get; set; } = false;
+    public bool IsChasingPlayer { get; private set; }
+    public void SetChasingPlayer(bool chasingP) => IsChasingPlayer = chasingP;
     public void PrintMessage(string msg) 
     {
         Debug.Log(msg);
@@ -144,5 +149,6 @@ public class Wolf : Enemy
 
     public void DamagePlayer(float damage) {
         base.DamagePlayer(damage, _hitData);
+        PlayerData.ModifyHealth(-20);
     }
 }

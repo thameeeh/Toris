@@ -1,0 +1,19 @@
+{
+    "asset": "634c91feac3614a49bedcd3bc118ddb3",
+    "fileName": "019bae42-35b9-73ff-b59e-db9369adcb21.png",
+    "prompt": "Generate a wolf den",
+    "negativePrompt": "",
+    "model": "9b6d7135-dd33-43ae-b148-cd1212ca7052",
+    "customSeed": -1,
+    "w3CTraceId": "a02d9c1371d6d53bdda34f67970e7673",
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0
+}

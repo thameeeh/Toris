@@ -22,12 +22,6 @@ public class BadgerDeadState : EnemyState<Badger>
             _escapeDirection = Random.insideUnitCircle.normalized;
         }
         _currentEscapeSpeed = enemy.TunnelingSpeed;
-
-        if (Inventory.InventoryInstance != null)
-        {
-            Inventory.InventoryInstance.AddResourceStat(enemy._kill, 1);
-            Inventory.InventoryInstance.AddResourceStat(enemy._coin, 4);
-        }
     }
 
     public override void ExitState()

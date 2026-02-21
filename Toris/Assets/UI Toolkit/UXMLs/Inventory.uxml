@@ -1,0 +1,50 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; background-color: rgba(0,0,0,0.6);">
+    <ui:VisualElement class="inventory-window">
+            
+            <ui:Label text="Inventory" style="align-self: center; font-size: 24px; color: white; -unity-font-style: bold;" />
+
+            <ui:VisualElement class="dual-panel-container">
+
+                <ui:VisualElement name="container__player" class="inventory-panel">
+                    <ui:Label text="My Backpack" class="panel-header" />
+                    
+                    <ui:ScrollView>
+                        <ui:VisualElement class="inventory-grid" name="grid-player">
+                            <ui:VisualElement class="slot">
+                                <ui:Image name="slot-icon" class="slot-icon" /> <ui:Label name="slot-qty" text="5" class="slot-qty" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="slot">
+                                <ui:Label name="slot-qty" text="" class="slot-qty" />
+                            </ui:VisualElement>
+                             <ui:VisualElement class="slot" />
+                            <ui:VisualElement class="slot" />
+                            <ui:VisualElement class="slot" />
+                        </ui:VisualElement>
+                    </ui:ScrollView>
+                </ui:VisualElement>
+
+                <ui:VisualElement name="container__external" class="inventory-panel" style="display: flex;">
+                    <ui:Label name="label__external-header" text="Village Stash" class="panel-header" />
+                    
+                    <ui:ScrollView>
+                        <ui:VisualElement class="inventory-grid" name="grid-external">
+                            <ui:VisualElement class="slot" />
+                            <ui:VisualElement class="slot" />
+                            <ui:VisualElement class="slot" />
+                            <ui:VisualElement class="slot" />
+                        </ui:VisualElement>
+                    </ui:ScrollView>
+                </ui:VisualElement>
+
+            </ui:VisualElement>
+            
+            <ui:VisualElement style="flex-direction: row; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top-width: 1px; border-top-color: #555;">
+                <ui:Label text="Gold: 1,250" style="color: gold; font-size: 16px;" />
+                <ui:Label text="Press 'ESC' or 'I' to Close" style="color: grey; font-size: 14px;" />
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

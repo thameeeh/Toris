@@ -1,20 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace OutlandHaven.UIToolkit
 {
     public class UIManager : MonoBehaviour
     {
         [Header("Configuration")]
+        [SerializeField] private UIEventsSO _UIEvents;
         [SerializeField] private bool showHudOnStart = true;
 
         private List<GameView> _allViews = new List<GameView>();
 
-        private GameView _currentActiveWindow;
-        private GameView _hudView;
+        private VisualElement _hudZone; 
+        private VisualElement _leftZone;
+        private VisualElement _rightZone;
 
-        [SerializeField] private UIEventsSO _UIEvents;
+        private void Awake()
+        {
+            var root = GetComponent<UIDocument>().rootVisualElement;
+
+            _hudZone = root.Q<VisualElement>();
+            _hudZone = root.Q<VisualElement>("Layer_HUD");
+            _leftZone = root.Q<VisualElement>("Left_Zone");
+            _rightZone = root.Q<VisualElement>("Right_Zone");
+
+            if (_hudZone == null || _leftZone == null || _rightZone == null)
+            {
+                Debug.LogError("UIManager: Could not find Layout Zones in the UIDocument! Check your UXML names.");
+            }
+        }
 
         private void OnEnable()
         {
@@ -39,40 +55,24 @@ namespace OutlandHaven.UIToolkit
         }
 
         // Call this from your Controllers (e.g. PlayerController) to register themselves
-        public void RegisterView(GameView view)
+        public void RegisterView(GameView view, ScreenZone zone)
         {
+            _allViews.Add(view);
+
+            switch (zone)
+            {
+                case ScreenZone.HUD: _hudZone.Add(view.Root); break;
+                case ScreenZone.Left: _leftZone.Add(view.Root); break;
+                case ScreenZone.Right: _rightZone.Add(view.Root); break;
+            }
+
             if (view.ID == ScreenType.HUD)
             {
-                _hudView = view;
-                if (showHudOnStart) _hudView.Show();
+                view.Show();
             }
             else
             {
-                _allViews.Add(view);
-                view.Hide(); // Default to hidden
-            }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                if (_currentActiveWindow != null)
-                {
-                    CloseWindow(_currentActiveWindow.ID);
-                }
-                else
-                {
-                    OpenWindow(ScreenType.PauseMenu);
-                }
-            }
-
-            // Inventory Shortcut (I)
-            if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
-            {
-                //payload is null, cuz inventory gets it from GameSessionSO
-                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null); 
+                view.Hide();
             }
         }
 
@@ -83,35 +83,22 @@ namespace OutlandHaven.UIToolkit
             if (view == null) return;
 
             // Close if it's already open
-            if (_currentActiveWindow == view)
+            if (!view.IsHidden)
             {
                 CloseWindow(type);
                 return;
             }
 
-            // If another window is open (e.g. Inventory), close it first
-            if (_currentActiveWindow != null)
-            {
-                _currentActiveWindow.Hide();
-            }
-
-            // 4. Show the new window
             view.Setup(payload);
-
             view.Show();
-            _currentActiveWindow = view;
-
-            // Optional: Pause Game?
-            // Time.timeScale = 0; 
         }
 
         private void CloseWindow(ScreenType type)
         {
             GameView view = _allViews.Find(v => v.ID == type);
-            if (view != null)
+            if (view != null && !view.IsHidden)
             {
                 view.Hide();
-                if (_currentActiveWindow == view) _currentActiveWindow = null;
             }
         }
 
@@ -119,9 +106,20 @@ namespace OutlandHaven.UIToolkit
         {
             foreach (var view in _allViews)
             {
-                view.Hide();
+                if (view.ID != ScreenType.HUD) view.Hide();
             }
-            _currentActiveWindow = null;
+        }
+        void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CloseAllWindows(); // Simplified for now
+            }
+
+            if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
+            {
+                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
+            }
         }
     }
 }

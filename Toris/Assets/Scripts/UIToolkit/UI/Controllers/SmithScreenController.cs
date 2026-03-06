@@ -7,6 +7,7 @@ namespace UIToolkit.UI
     public class SmithScreenController : MonoBehaviour
     {
         [Header("Dependencies")]
+        [SerializeField] private VisualTreeAsset _smithMainTemplate; // <--- Drag Smith.uxml here
         [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
         [SerializeField] private UIEventsSO _uiEvents;
 
@@ -20,16 +21,21 @@ namespace UIToolkit.UI
 
         private void OnEnable()
         {
+            if (_smithMainTemplate == null)
+            {
+                Debug.LogError("SmithScreenController: Smith Main Template is missing!");
+                return;
+            }
             if (_slotTemplate == null)
             {
                 Debug.LogError("SmithScreenController: Slot Template is missing!");
                 return;
             }
 
-            var uiDoc = GetComponent<UIDocument>();
+            TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
             
             // Pass the Template and the GameSession (for player data) to the View
-            _view = new SmithView(uiDoc.rootVisualElement, _slotTemplate, _uiEvents);
+            _view = new SmithView(smithInstance, _slotTemplate, _uiEvents);
             
             _uiManager.RegisterView(_view, ScreenZone.Left);
         }

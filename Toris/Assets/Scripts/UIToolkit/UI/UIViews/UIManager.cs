@@ -108,22 +108,5 @@ namespace OutlandHaven.UIToolkit
                 if (view.ID != ScreenType.HUD) view.Hide();
             }
         }
-        void Update()
-        {
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                CloseAllWindows(); // Simplified for now
-            }
-
-            if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
-            {
-                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
-            }
-
-            if (Keyboard.current != null && Keyboard.current.uKey.wasPressedThisFrame) 
-            {
-                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
-            }
-        }
     }
 }

@@ -163,8 +163,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         if (w == null) return false;
         if (player == null) return false;
 
-        float d = Vector3.Distance(w.transform.position, player.position);
-        if (d > keepChaseIfWithinPlayerRange) return false;
+        float sqrD = (w.transform.position - player.position).sqrMagnitude;
+        if (sqrD > keepChaseIfWithinPlayerRange * keepChaseIfWithinPlayerRange) return false;
 
         return IsWolfActivelyChasingPlayer(w);
     }

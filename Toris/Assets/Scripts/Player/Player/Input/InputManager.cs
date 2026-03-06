@@ -38,6 +38,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         {
             Debug.LogError($"<b><color=green>[ItemPickEventSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
         }
+        if (_uiEvents == null)
+        {
+            Debug.LogError($"<b><color=red>[UIEventsSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
+        }
     }
 
     // -------- IPlayerActions implementation --------

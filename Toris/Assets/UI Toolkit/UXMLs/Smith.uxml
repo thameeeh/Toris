@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
-    <ui:VisualElement style="flex-grow: 1; width: 100%; height: 100%;">
-        <ui:VisualElement name="container-smith" style="flex-grow: 1; width: 100%; height: 100%; flex-wrap: wrap; background-color: rgb(23, 23, 23);">
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; height: 100%;">
+        <ui:VisualElement name="container-smith" style="flex-grow: 0; flex-wrap: wrap; background-color: rgb(23, 23, 23); width: 100%; height: 100%;">
             <ui:Label text="Smith" style="font-size: 40px; color: rgb(255, 255, 255); -unity-font-style: bold;"/>
             <ui:VisualElement style="flex-grow: 1;"/>
             <ui:VisualElement style="flex-grow: 1; flex-wrap: wrap; flex-direction: row;">

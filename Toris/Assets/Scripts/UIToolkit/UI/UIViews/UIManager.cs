@@ -21,7 +21,6 @@ namespace OutlandHaven.UIToolkit
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
 
-            _hudZone = root.Q<VisualElement>();
             _hudZone = root.Q<VisualElement>("Layer_HUD");
             _leftZone = root.Q<VisualElement>("Left_Zone");
             _rightZone = root.Q<VisualElement>("Right_Zone");
@@ -119,6 +118,11 @@ namespace OutlandHaven.UIToolkit
             if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
             {
                 _UIEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
+            }
+
+            if (Keyboard.current != null && Keyboard.current.uKey.wasPressedThisFrame) 
+            {
+                _UIEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
             }
         }
     }

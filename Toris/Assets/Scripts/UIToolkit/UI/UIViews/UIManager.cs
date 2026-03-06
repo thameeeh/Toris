@@ -50,7 +50,7 @@ namespace OutlandHaven.UIToolkit
         {
             if(_UIEvents == null)
             {
-                Debug.LogError($"<color=red>Paperdau</color> {name} is missing, put SO in the inspector!", this);
+                Debug.LogError($"<color=red>UIEvents</color> {name} is missing, put SO in the inspector!", this);
             }
         }
 

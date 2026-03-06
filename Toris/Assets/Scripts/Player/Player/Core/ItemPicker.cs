@@ -28,7 +28,7 @@ public class ItemPicker : MonoBehaviour
         }
         if (_interactionUI == null)
         {
-            Debug.LogError($"<b><color=red>[InteractionUI]</color></b> is missing InteractionPromptUI on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=teal>[InteractionUI]</color></b> is missing InteractionPromptUI on GameObject: <b>{name}<b>", this);
         }
     }
 

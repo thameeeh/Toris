@@ -31,7 +31,7 @@ namespace UIToolkit.UI
             // Pass the Template and the GameSession (for player data) to the View
             _view = new SmithView(uiDoc.rootVisualElement, _slotTemplate, _uiEvents);
             
-            _uiManager.RegisterView(_view);
+            _uiManager.RegisterView(_view, ScreenZone.Left);
         }
 
         private void OnValidate()

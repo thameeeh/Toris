@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Master-Root" style="flex-grow: 1; picking-mode: Ignore;">
+        
+        <ui:VisualElement name="Layer_Windows" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; flex-direction: row; picking-mode: Ignore;">
+            
+            <ui:VisualElement name="Left_Zone" style="width: 50%; height: 100%; picking-mode: Ignore; align-items: center; justify-content: center;" />
+            
+            <ui:VisualElement name="Right_Zone" style="width: 50%; height: 100%; picking-mode: Ignore; align-items: center; justify-content: center;" />
+        
+        </ui:VisualElement>
+
+        <ui:VisualElement name="Layer_HUD" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; picking-mode: Ignore; justify-content: flex-end;" />
+        
+    </ui:VisualElement>
+</ui:UXML>

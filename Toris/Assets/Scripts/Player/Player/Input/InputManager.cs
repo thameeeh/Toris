@@ -32,7 +32,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
         if (_itemPicker == null)
         {
-            Debug.LogError($"<b>[ItemPickEventSO]</b> is missing on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=green>[ItemPickEventSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
         }
     }
 

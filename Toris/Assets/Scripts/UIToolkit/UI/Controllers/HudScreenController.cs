@@ -3,14 +3,13 @@ using UnityEngine.UIElements;
 
 namespace OutlandHaven.UIToolkit
 {
-    [RequireComponent(typeof(UIDocument))]
     public class HudScreenController : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private GameSessionSO _gameSession; // Access to data
+        [SerializeField] private VisualTreeAsset _hudMainTemplate; // <--- Drag HUD.uxml here
+        [SerializeField] private VisualTreeAsset _buttonTemplate;
+        [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
-
-        [SerializeField] private VisualTreeAsset _buttonTemplate; // HUD Menu Button Template
 
         private HUDView _view;
         private UIManager _uiManager;
@@ -22,18 +21,16 @@ namespace OutlandHaven.UIToolkit
 
         private void OnEnable()
         {
-            if (_gameSession == null || _gameSession.PlayerData == null)
-            {
-                Debug.LogError("HUD Controller is missing GameSession or PlayerData!");
-                return;
-            }
+            if (_hudMainTemplate == null) return;
 
-            var uiDoc = GetComponent<UIDocument>();
+            // 1. Instantiate the UI from the asset
+            TemplateContainer hudInstance = _hudMainTemplate.Instantiate();
 
-            // Pass the data into the View constructor
-            _view = new HUDView(uiDoc.rootVisualElement, _gameSession.PlayerData, _uiEvents, _buttonTemplate);
+            // 2. Pass the INSTANCE to the View
+            _view = new HUDView(hudInstance, _gameSession.PlayerData, _uiEvents, _buttonTemplate);
 
-            _uiManager.RegisterView(_view);
+            // 3. Register to the HUD Zone
+            _uiManager.RegisterView(_view, ScreenZone.HUD);
         }
 
         private void OnValidate()

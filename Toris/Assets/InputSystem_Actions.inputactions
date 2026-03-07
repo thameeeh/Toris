@@ -568,6 +568,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ToggleInventory",
+                    "type": "Button",
+                    "id": "89b5314a-55de-4b95-a50d-6e86336e3926",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleSmith",
+                    "type": "Button",
+                    "id": "14f08f87-a2f0-4566-b31c-c76a4ec16867",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Point",
                     "type": "PassThrough",
                     "id": "32b35790-4ed0-4e9a-aa41-69ac6d629449",
@@ -915,6 +933,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e67b2ab1-ac56-4299-982d-13f56d953684",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53e6d8a7-d8ac-4589-9e8a-8c763d3e8a49",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleSmith",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

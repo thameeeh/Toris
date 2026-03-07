@@ -41,19 +41,6 @@ namespace OutlandHaven.UIToolkit
         {
             // Refresh Player Inventory (Always)
             RefreshGrid(_playerGrid, _gameSession.PlayerInventory); 
-
-            /*old code does not work on new UXML structure
-            // Handle Payload (Chest/Vendor)
-            if (payload is InventoryContainerSO externalData)
-            {
-                _externalPanel.style.display = DisplayStyle.Flex;
-                if (_externalHeader != null) _externalHeader.text = externalData.name;
-                RefreshGrid(_externalGrid, externalData);
-            }
-            else
-            { 
-                _externalPanel.style.display = DisplayStyle.None;
-            }*/
         }
         
 

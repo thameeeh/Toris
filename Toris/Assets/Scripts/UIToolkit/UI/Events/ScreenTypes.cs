@@ -12,6 +12,13 @@ namespace OutlandHaven.UIToolkit
         PauseMenu,
         Smith
     }
+    public enum ScreenZone
+    {
+        HUD,
+        Left,
+        Right,
+        Modal
+    }
     public static class UIEvents
     {
         public static Action<ScreenType> OnScreenOpen;

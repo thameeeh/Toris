@@ -24,11 +24,11 @@ public class ItemPicker : MonoBehaviour
         }
         if (_myInventorySO == null)
         {
-            Debug.LogError($"<b><color=red>[ItemPicker]</color></b> is missing InventoryContainerSO on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=red>[InventorySO]</color></b> is missing InventoryContainerSO on GameObject: <b>{name}<b>", this);
         }
         if (_interactionUI == null)
         {
-            Debug.LogError($"<b><color=red>[ItemPicker]</color></b> is missing InteractionPromptUI on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=teal>[InteractionUI]</color></b> is missing InteractionPromptUI on GameObject: <b>{name}<b>", this);
         }
     }
 

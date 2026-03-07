@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using OutlandHaven.UIToolkit; // for screen types
 
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, InputSystem_Actions.IUIActions
 {
 
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private ItemPickEventSO _itemPicker;
+
+    [Header("UI Events")]
+    [SerializeField] private UIEventsSO _uiEvents;
 
     private InputSystem_Actions _inputActions;
 
@@ -32,7 +36,11 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
         if (_itemPicker == null)
         {
-            Debug.LogError($"<b>[ItemPickEventSO]</b> is missing on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=green>[ItemPickEventSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
+        }
+        if (_uiEvents == null)
+        {
+            Debug.LogError($"<b><color=red>[UIEventsSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
         }
     }
 
@@ -100,7 +108,13 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     // -------- IUIActions implementation --------
     public void OnNavigate(InputAction.CallbackContext context) { }
     public void OnSubmit(InputAction.CallbackContext context) { }
-    public void OnCancel(InputAction.CallbackContext context) { }
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents.OnRequestCloseAll?.Invoke();
+        }
+    }
     public void OnPoint(InputAction.CallbackContext context) { }
     public void OnClick(InputAction.CallbackContext context) { }
     public void OnRightClick(InputAction.CallbackContext context) { }
@@ -108,4 +122,20 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnScrollWheel(InputAction.CallbackContext context) { }
     public void OnTrackedDevicePosition(InputAction.CallbackContext context) { }
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context) { }
+
+    public void OnToggleInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
+        }
+    }
+
+    public void OnToggleSmith(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
+        }
+    }
 }

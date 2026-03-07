@@ -27,5 +27,14 @@ namespace OutlandHaven.UIToolkit
         {
             Count += amount;
         }
+
+        public void DecreaseCount(int amount)
+        {
+            Count -= amount;
+            if (Count <= 0)
+            {
+                Clear();
+            }
+        }
     }
 }

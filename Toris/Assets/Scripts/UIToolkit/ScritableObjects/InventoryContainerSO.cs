@@ -71,5 +71,46 @@ namespace OutlandHaven.UIToolkit
 
             return false; // Could not add all items (Inventory Full)
         }
+
+        public bool RemoveItem(InventoryItemSO item, int quantity)
+        {
+            // First pass: verify we have enough total items
+            int totalAvailable = 0;
+            foreach (var slot in Slots)
+            {
+                if (!slot.IsEmpty && slot.Item == item)
+                {
+                    totalAvailable += slot.Count;
+                }
+            }
+
+            if (totalAvailable < quantity)
+            {
+                return false; // Not enough items to remove
+            }
+
+            // Second pass: actually remove the items
+            int remainingToRemove = quantity;
+
+            foreach (var slot in Slots)
+            {
+                if (!slot.IsEmpty && slot.Item == item)
+                {
+                    if (slot.Count >= remainingToRemove)
+                    {
+                        slot.DecreaseCount(remainingToRemove);
+                        _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+                        return true;
+                    }
+                    else
+                    {
+                        remainingToRemove -= slot.Count;
+                        slot.Clear();
+                    }
+                }
+            }
+
+            return false; // Should not reach here based on first pass check
+        }
     }
 }

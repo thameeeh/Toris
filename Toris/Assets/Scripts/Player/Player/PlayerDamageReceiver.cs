@@ -29,8 +29,6 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     public void ReceiveHit(in HitData hit)
     {
-        Debug.Log($"Hit from: {hit.source?.name}, bypass={hit.bypassIFrames}");
-
         if (IsInvulnerable && !hit.bypassIFrames) return;
 
         // Apply damage; PlayerStats is the single source of truth for death

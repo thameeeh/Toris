@@ -30,14 +30,18 @@ namespace OutlandHaven.UIToolkit
             // Only allow opening if player is close AND presses F
             if (_playerInRange && Input.GetKeyDown(_interactKey))
             {
+#if UNITY_EDITOR
                 Debug.Log("Interact key pressed.");
+#endif
                 OpenContainer();
             }
         }
 
         private void OpenContainer()
         {
+#if UNITY_EDITOR
             Debug.Log($"Opening Container: {_containerData.name}");
+#endif
 
             // KEY MOMENT: Fire the event with the Chest Data as the Payload!
             _uiEvents.OnRequestOpen?.Invoke(_containerData.AssociatedView, _containerData);
@@ -50,7 +54,9 @@ namespace OutlandHaven.UIToolkit
             if (other.CompareTag("Player"))
             {
                 _playerInRange = true;
+#if UNITY_EDITOR
                 Debug.Log("Player near chest. Press 'E' to open.");
+#endif
             }
         }
 

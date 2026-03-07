@@ -31,12 +31,16 @@ namespace UIToolkit.UI
                 Debug.LogError("SmithScreenController: Slot Template is missing!");
                 return;
             }
+        }
+
+        // In SmithScreenController.cs (and apply this to InventoryScreenController.cs as well)
+        private void Start()
+        {
+            if (_smithMainTemplate == null || _slotTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
-            
-            // Pass the Template and the GameSession (for player data) to the View
             _view = new SmithView(smithInstance, _slotTemplate, _uiEvents);
-            
+
             _uiManager.RegisterView(_view, ScreenZone.Left);
         }
 

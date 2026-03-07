@@ -53,6 +53,14 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
+        private void Update()
+        {
+            bool isLeft = _leftZone.Q<TemplateContainer>() != null;
+            bool isRight = _rightZone.Q<TemplateContainer>() != null;
+
+            Debug.Log($"Left has UI: {isLeft} | Right has UI: {isRight}");
+        }
+
         // Call this from your Controllers (e.g. PlayerController) to register themselves
         public void RegisterView(GameView view, ScreenZone zone)
         {

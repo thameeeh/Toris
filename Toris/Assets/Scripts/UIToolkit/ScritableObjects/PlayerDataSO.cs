@@ -47,7 +47,9 @@ namespace OutlandHaven.UIToolkit
 
             if (_currentHealth <= 0)
             {
+#if UNITY_EDITOR
                 Debug.Log("Player has died.");
+#endif
                 // trigger death event here later
             }
         }

@@ -26,7 +26,9 @@ namespace OutlandHaven.UIToolkit
 
             if(AssociatedView == ScreenType.None)
             {
+#if UNITY_EDITOR
                 Debug.Log("Container is set as None, Change [ScreenType]");
+#endif
             }
         }
 

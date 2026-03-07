@@ -33,7 +33,6 @@ namespace UIToolkit.UI
             }
         }
 
-        // In SmithScreenController.cs (and apply this to InventoryScreenController.cs as well)
         private void Start()
         {
             if (_smithMainTemplate == null || _slotTemplate == null) return;

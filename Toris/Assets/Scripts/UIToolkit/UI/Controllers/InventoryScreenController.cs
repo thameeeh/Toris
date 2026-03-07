@@ -22,8 +22,15 @@ namespace OutlandHaven.UIToolkit
 
         private void OnEnable()
         {
-            if (_inventoryMainTemplate == null) return;
+            if (_inventoryMainTemplate == null) 
+            {
+                Debug.LogError("InventoryScreenController: Main Template is missing!");
+                return;
+            }
+        }
 
+        private void Start()
+        {
             TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
 
             _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents);

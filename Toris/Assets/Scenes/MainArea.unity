@@ -61150,7 +61150,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4509164335605956850, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
       propertyPath: showHudOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5602856202135280051, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
       propertyPath: m_LocalPosition.x

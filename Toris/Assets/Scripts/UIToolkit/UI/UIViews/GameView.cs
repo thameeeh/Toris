@@ -13,8 +13,6 @@ namespace OutlandHaven.UIToolkit
             UIEvents = uiEvents;
         }
 
-        public virtual void Setup(object payload) { }
-
         public override void Show()
         {
             base.Show();

@@ -7,25 +7,22 @@ namespace OutlandHaven.UIToolkit
     {
         public override ScreenType ID => ScreenType.Smith;
 
-        private VisualTreeAsset _slotTemplate;
+        private VisualTreeAsset _shopTemplate;
+        private VisualElement _shopPanel;
 
-        private VisualElement _externalGrid;
-        private VisualElement _externalPanel; // The whole right side
-        private Label _externalHeader;
-
-        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, UIEventsSO uiEvents)
+        public SmithView(VisualElement topElement, VisualTreeAsset shopTemplate, UIEventsSO uiEvents)
             : base(topElement, uiEvents)
         {
-            _slotTemplate = slotTemplate;
+            _shopTemplate = shopTemplate;
         }
 
         protected override void SetVisualElements()
         {
-            _externalGrid = m_TopElement.Q<VisualElement>("grid-external");
+            _shopPanel = m_TopElement.Q<VisualElement>("Smith-middle__panel");
 
-            // Find the containers for toggling visibility
-            _externalPanel = m_TopElement.Q<VisualElement>("container__external");
-            _externalHeader = m_TopElement.Q<Label>("label__external-header");
+            TemplateContainer shopInstance = _shopTemplate.Instantiate();
+
+            _shopPanel.Add(shopInstance);
         }
 
         public override void Setup(object payload) 

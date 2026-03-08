@@ -7,8 +7,8 @@ namespace UIToolkit.UI
     public class SmithScreenController : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private VisualTreeAsset _smithMainTemplate; // <--- Drag Smith.uxml here
-        [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
+        [SerializeField] private VisualTreeAsset _smithMainTemplate; // Smith.uxml
+        [SerializeField] private VisualTreeAsset _shopTemplate;
         [SerializeField] private UIEventsSO _uiEvents;
 
         private SmithView _view;
@@ -26,19 +26,22 @@ namespace UIToolkit.UI
                 Debug.LogError("SmithScreenController: Smith Main Template is missing!");
                 return;
             }
-            if (_slotTemplate == null)
+            if (_shopTemplate == null)
             {
                 Debug.LogError("SmithScreenController: Slot Template is missing!");
                 return;
             }
+
         }
 
         private void Start()
         {
-            if (_smithMainTemplate == null || _slotTemplate == null) return;
+            if (_smithMainTemplate == null || _shopTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
-            _view = new SmithView(smithInstance, _slotTemplate, _uiEvents);
+            _view = new SmithView(smithInstance, _shopTemplate, _uiEvents);
+
+            _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);
         }

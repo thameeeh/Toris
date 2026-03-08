@@ -91,3 +91,14 @@
     align-items: center;
     justify-content: center;
 }
+
+.NPC_PanelButtons {
+    align-items: center;
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    flex-grow: 0;
+    flex-shrink: 1;
+    background-size: 100% 100%;
+}

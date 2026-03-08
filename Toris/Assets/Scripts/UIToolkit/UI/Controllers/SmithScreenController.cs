@@ -7,8 +7,9 @@ namespace UIToolkit.UI
     public class SmithScreenController : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private VisualTreeAsset _smithMainTemplate; // Smith.uxml
-        [SerializeField] private VisualTreeAsset _shopTemplate;
+        [SerializeField] private VisualTreeAsset _smithMainTemplate; // <--- Drag Smith.uxml here
+        [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
+        [SerializeField] private VisualTreeAsset _shopTemplate; // <--- DRAG ShopSubView.uxml HERE
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;

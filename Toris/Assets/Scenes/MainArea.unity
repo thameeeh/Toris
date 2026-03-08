@@ -61342,10 +61342,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIControllers
       objectReference: {fileID: 0}
-    - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: _inventoryMainTemplate
-      value: 
-      objectReference: {fileID: 9197481963319205126, guid: 2f20def441eddc04085d1e7161475f75, type: 3}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7823
@@ -61386,14 +61382,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: _hudMainTemplate
+    - target: {fileID: 8374538060683133373, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _gameSession
       value: 
-      objectReference: {fileID: 9197481963319205126, guid: 0a24cf31fdc15a34e81fa7749db4dfda, type: 3}
+      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     - target: {fileID: 8374538060683133373, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: _slotTemplate
       value: 
-      objectReference: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
+      objectReference: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+    - target: {fileID: 8374538060683133373, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _shopContainer
+      value: 
+      objectReference: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
+    - target: {fileID: 8374538060683133373, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _uiInventoryEvents
+      value: 
+      objectReference: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -45,19 +45,21 @@ namespace OutlandHaven.UIToolkit
 
         public override void Setup(object payload = null)
         {
-            if (!_isSetup)
+            if (payload is InventoryContainerSO dynamicShopContainer)
             {
-                // Create Slots
-                CreateSlots();
-
-                // Bind initial gold
-                if (_gameSession != null && _gameSession.PlayerData != null)
-                {
-                    UpdateGoldAmount(_gameSession.PlayerData.Gold);
-                }
-
-                _isSetup = true;
+                _shopContainer = dynamicShopContainer;
             }
+
+            // Always recreate slots when setup is called to ensure we have the latest payload data
+            CreateSlots();
+
+            // Bind initial gold
+            if (_gameSession != null && _gameSession.PlayerData != null)
+            {
+                UpdateGoldAmount(_gameSession.PlayerData.Gold);
+            }
+
+            _isSetup = true;
         }
 
         public override void Show()
@@ -67,6 +69,7 @@ namespace OutlandHaven.UIToolkit
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnCurrencyChanged += UpdateGoldAmount;
+                _uiInventoryEvents.OnShopInventoryUpdated += HandleShopInventoryUpdated;
                 _eventsBound = true;
             }
         }
@@ -77,6 +80,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
+                _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
                 _eventsBound = false;
             }
         }
@@ -101,20 +105,29 @@ namespace OutlandHaven.UIToolkit
 
                 // Register buy interaction on Right Click (ContextClickEvent)
                 var currentSlotData = slotData; // Capture variable for lambda
-                var currentSlotView = slotView;
 
                 // We register on the slot instance root so the player can click anywhere in the slot
-                slotInstance.RegisterCallback<ContextClickEvent>(evt =>
+                slotInstance.RegisterCallback<MouseUpEvent>(evt =>
                 {
-                    if (currentSlotData != null && !currentSlotData.IsEmpty)
+                    if (evt.button == 1)
                     {
-                        // Request Buy 1 for now on right-click. Could add modifiers later.
-                        _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.Item, 1);
-                        // Update view
-                        currentSlotView.Update(currentSlotData);
+                        if (currentSlotData != null && !currentSlotData.IsEmpty)
+                        {
+                            int amount = evt.shiftKey ? 10 : 1;
+                            // Only request buy, let the manager handle logic and update UI
+                            _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.Item, amount);
+                        }
                     }
                 });
             }
+        }
+
+        private void HandleShopInventoryUpdated()
+        {
+            if (_shopContainer == null) return;
+
+            // Recreate slots to handle any size changes in the inventory container
+            CreateSlots();
         }
 
         private void UpdateGoldAmount(int amount)
@@ -130,6 +143,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
+                _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
                 _eventsBound = false;
             }
             base.Dispose();

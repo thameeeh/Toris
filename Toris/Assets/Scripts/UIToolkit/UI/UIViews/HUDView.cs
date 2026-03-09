@@ -134,7 +134,6 @@ namespace OutlandHaven.UIToolkit
                 _playerData.OnGoldChanged += UpdateGoldUI;
 
                 _playerData.AddExperience(0); // Trigger initial level/XP update
-                _playerData.ModifyGold(0);    // Trigger initial gold update
             }
         }
 

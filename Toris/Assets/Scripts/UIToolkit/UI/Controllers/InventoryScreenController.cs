@@ -34,7 +34,6 @@ namespace OutlandHaven.UIToolkit
             TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
 
             _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents);
-            _view.Initialize();
 
             // Register to the RIGHT zone
             _uiManager.RegisterView(_view, ScreenZone.Right);

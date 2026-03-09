@@ -16,9 +16,6 @@ namespace OutlandHaven.UIToolkit
 
         private List<InventorySlotView> _slotViews = new List<InventorySlotView>();
 
-        private bool _isSetup = false;
-        private bool _eventsBound = false;
-
         public ShopSubView(VisualElement topElement, VisualTreeAsset slotTemplate, InventoryContainerSO shopContainer, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession)
             : base(topElement)
         {
@@ -26,9 +23,11 @@ namespace OutlandHaven.UIToolkit
             _shopContainer = shopContainer;
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
+
+            InitializeCustom();
         }
 
-        protected override void SetVisualElements()
+        private void InitializeCustom()
         {
             // Set VisualElements
             _shopGrid = m_TopElement.Q<VisualElement>("shop-grid");
@@ -41,43 +40,20 @@ namespace OutlandHaven.UIToolkit
 #endif
                 return;
             }
-        }
 
-        public override void Setup(object payload = null)
-        {
-            if (!_isSetup)
+            // Create Slots
+            CreateSlots();
+
+            // Bind initial gold
+            if (_gameSession != null)
             {
-                // Create Slots
-                CreateSlots();
-
-                // Bind initial gold
-                if (_gameSession != null)
-                {
-                    UpdateGoldAmount(_gameSession.Gold);
-                }
-
-                _isSetup = true;
+                UpdateGoldAmount(_gameSession.Gold);
             }
-        }
 
-        public override void Show()
-        {
-            base.Show();
             // Listen to Events
-            if (!_eventsBound && _uiInventoryEvents != null)
+            if (_uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnCurrencyChanged += UpdateGoldAmount;
-                _eventsBound = true;
-            }
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            if (_eventsBound && _uiInventoryEvents != null)
-            {
-                _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
-                _eventsBound = false;
             }
         }
 
@@ -127,10 +103,9 @@ namespace OutlandHaven.UIToolkit
 
         public override void Dispose()
         {
-            if (_eventsBound && _uiInventoryEvents != null)
+            if (_uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
-                _eventsBound = false;
             }
             base.Dispose();
         }

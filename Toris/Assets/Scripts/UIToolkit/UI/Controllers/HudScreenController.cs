@@ -28,7 +28,6 @@ namespace OutlandHaven.UIToolkit
 
             // 2. Pass the INSTANCE to the View
             _view = new HUDView(hudInstance, _gameSession.PlayerData, _uiEvents, _buttonTemplate);
-            _view.Initialize();
 
             // 3. Register to the HUD Zone
             _uiManager.RegisterView(_view, ScreenZone.HUD);

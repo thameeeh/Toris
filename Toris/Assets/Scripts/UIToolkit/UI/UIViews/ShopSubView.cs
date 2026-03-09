@@ -51,9 +51,9 @@ namespace OutlandHaven.UIToolkit
                 CreateSlots();
 
                 // Bind initial gold
-                if (_gameSession != null)
+                if (_gameSession != null && _gameSession.PlayerData != null)
                 {
-                    UpdateGoldAmount(_gameSession.Gold);
+                    UpdateGoldAmount(_gameSession.PlayerData.Gold);
                 }
 
                 _isSetup = true;

@@ -104,14 +104,18 @@ namespace OutlandHaven.UIToolkit
                 var currentSlotView = slotView;
 
                 // We register on the slot instance root so the player can click anywhere in the slot
-                slotInstance.RegisterCallback<ContextClickEvent>(evt =>
+                slotInstance.RegisterCallback<MouseUpEvent>(evt =>
                 {
-                    if (currentSlotData != null && !currentSlotData.IsEmpty)
+                    if (evt.button == 1)
                     {
-                        // Request Buy 1 for now on right-click. Could add modifiers later.
-                        _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.Item, 1);
-                        // Update view
-                        currentSlotView.Update(currentSlotData);
+                        if (currentSlotData != null && !currentSlotData.IsEmpty)
+                        {
+                            int amount = evt.shiftKey ? 10 : 1;
+                            _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.Item, amount);
+                            
+                            currentSlotData.Count -= amount;
+                            currentSlotView.Update(currentSlotData);
+                        }
                     }
                 });
             }

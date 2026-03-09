@@ -9,12 +9,12 @@ namespace OutlandHaven.UIToolkit
         public GameSessionSO SessionData;
         public UIInventoryEventsSO InventoryEvents;
 
-        // This could be passed dynamically via the UI event payload when talking to different NPCs,
-        // but for a standalone system a master or current shop container reference is typical.
         public InventoryContainerSO CurrentShopInventory;
 
-        private void OnEnable()
+        public void Initialize()
         {
+            Cleanup();
+            Debug.Log("Hello from shop manager!");
             if (InventoryEvents != null)
             {
                 InventoryEvents.OnRequestBuy += HandleRequestBuy;
@@ -22,7 +22,7 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void OnDisable()
+        public void Cleanup() 
         {
             if (InventoryEvents != null)
             {

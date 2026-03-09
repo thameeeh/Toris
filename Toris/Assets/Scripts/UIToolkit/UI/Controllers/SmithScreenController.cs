@@ -14,6 +14,7 @@ namespace UIToolkit.UI
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private InventoryContainerSO _shopContainer;
+        [SerializeField] private ShopManagerSO _shopManagerSO;
 
         private SmithView _view;
         private UIManager _uiManager;
@@ -21,6 +22,8 @@ namespace UIToolkit.UI
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
+
+            if(_shopManagerSO != null) _shopManagerSO.Initialize();
         }
 
         private void OnEnable()

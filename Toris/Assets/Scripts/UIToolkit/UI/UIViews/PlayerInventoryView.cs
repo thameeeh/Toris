@@ -16,34 +16,14 @@ namespace OutlandHaven.UIToolkit
         private VisualElement _playerGrid;
 
         private UIInventoryEventsSO _uiInventoryEvents;
-        private bool _eventsBound = false;
-
         public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;
+
             _uiInventoryEvents = uiInventoryEvents;
-        }
-
-        public override void Show()
-        {
-            base.Show();
-            if (!_eventsBound && _uiInventoryEvents != null)
-            {
-                _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
-                _eventsBound = true;
-            }
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            if (_eventsBound && _uiInventoryEvents != null)
-            {
-                _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
-                _eventsBound = false;
-            }
+            _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
         }
 
         protected override void SetVisualElements()

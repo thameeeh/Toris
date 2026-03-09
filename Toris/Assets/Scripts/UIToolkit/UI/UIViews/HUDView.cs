@@ -23,20 +23,29 @@ namespace OutlandHaven.UIToolkit
         
 
 
+        private bool _isSetup = false;
+
         // Constructor receives the Data
         public HUDView(VisualElement topElement, PlayerDataSO data, UIEventsSO uiEvents, VisualTreeAsset template) : base(topElement, uiEvents)
         {
             _playerData = data;
             _buttonTemplate = template;
+        }
 
-            GenerateMenuButtons();
-
-            if (_playerData != null)
+        public override void Setup(object payload)
+        {
+            if (!_isSetup)
             {
-                UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
-                UpdateManaUI(_playerData.GetManaPercentage(), 1f);
-                UpdateGoldUI(0, 0);
-                UpdateLevelUI(1, 0);
+                GenerateMenuButtons();
+
+                if (_playerData != null)
+                {
+                    UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
+                    UpdateManaUI(_playerData.GetManaPercentage(), 1f);
+                    UpdateGoldUI(_playerData.Gold, 0);
+                    UpdateLevelUI(1, 0);
+                }
+                _isSetup = true;
             }
         }
 

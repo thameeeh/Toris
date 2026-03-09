@@ -30,7 +30,6 @@ namespace OutlandHaven.UIToolkit
         public UIView(VisualElement topElement)
         {
             m_TopElement = topElement ?? throw new ArgumentNullException(nameof(topElement));
-            Initialize();
         }
 
         public virtual void Initialize()
@@ -41,6 +40,11 @@ namespace OutlandHaven.UIToolkit
             }
             SetVisualElements();
             RegisterButtonCallbacks();
+        }
+
+        public virtual void Setup(object payload = null)
+        {
+
         }
 
         // Sets up the VisualElements for the UI. Override to customize.

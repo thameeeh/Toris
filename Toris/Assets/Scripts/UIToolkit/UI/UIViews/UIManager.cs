@@ -67,6 +67,7 @@ namespace OutlandHaven.UIToolkit
 
             if (view.ID == ScreenType.HUD)
             {
+                view.Setup(null);
                 view.Show();
             }
             else

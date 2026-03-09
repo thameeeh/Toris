@@ -10,48 +10,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f67ba3904b7eb034ebc473a6baa9ff0b, type: 3}
-  m_Name: Container_VillageChest
+  m_Name: Container_Shop
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryContainerSO
   SlotCount: 20
   Slots:
   - Item: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
-    Quantity: 1
+    Count: 0
   - Item: {fileID: 11400000, guid: 97cdfc356f275114783a34bb32dc93fa, type: 2}
-    Quantity: 24
+    Count: 0
   - Item: {fileID: 11400000, guid: f01661975570f2f47b5579af1aa6bf67, type: 2}
-    Quantity: 16
+    Count: 0
   - Item: {fileID: 11400000, guid: 4ce328c625f9b3f4dafcbbb70a9813fd, type: 2}
-    Quantity: 1
+    Count: 0
   - Item: {fileID: 11400000, guid: e043d0fee05a2724e8b9d65f014132c9, type: 2}
-    Quantity: 1
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   - Item: {fileID: 0}
-    Quantity: 0
+    Count: 0
   AssociatedView: 5
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}

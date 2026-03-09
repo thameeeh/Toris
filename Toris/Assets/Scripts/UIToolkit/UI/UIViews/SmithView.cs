@@ -45,6 +45,12 @@ namespace OutlandHaven.UIToolkit
 
         public override void Setup(object payload) 
         {
+            // Payload could be a specific NPC's inventory
+            if (payload is InventoryContainerSO dynamicShopContainer)
+            {
+                _shopContainer = dynamicShopContainer;
+            }
+
             // Default to showing Market for now
             ShowMarketTab();
         }
@@ -67,7 +73,7 @@ namespace OutlandHaven.UIToolkit
                 }
             }
             
-            _shopSubView?.Setup();
+            _shopSubView?.Setup(_shopContainer);
             _shopSubView?.Show();
         }
 

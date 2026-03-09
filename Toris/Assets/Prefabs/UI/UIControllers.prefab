@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
   _smithMainTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
-  _shopTemplate: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}
+  _slotTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
 --- !u!1 &7038642308199410776
 GameObject:

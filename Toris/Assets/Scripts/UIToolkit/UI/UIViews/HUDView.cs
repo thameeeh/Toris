@@ -42,7 +42,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
                     UpdateManaUI(_playerData.GetManaPercentage(), 1f);
-                    UpdateGoldUI(0, 0);
+                    UpdateGoldUI(_playerData.Gold, 0);
                     UpdateLevelUI(1, 0);
                 }
                 _isSetup = true;

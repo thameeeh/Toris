@@ -11,6 +11,9 @@ namespace UIToolkit.UI
         [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
         [SerializeField] private VisualTreeAsset _shopTemplate; // <--- DRAG ShopSubView.uxml HERE
         [SerializeField] private UIEventsSO _uiEvents;
+        [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+        [SerializeField] private GameSessionSO _gameSession;
+        [SerializeField] private InventoryContainerSO _shopContainer;
 
         private SmithView _view;
         private UIManager _uiManager;
@@ -40,8 +43,7 @@ namespace UIToolkit.UI
             if (_smithMainTemplate == null || _shopTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
-            _view = new SmithView(smithInstance, _shopTemplate, _uiEvents);
-
+            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopContainer);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

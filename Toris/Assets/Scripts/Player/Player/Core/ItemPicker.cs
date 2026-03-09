@@ -79,7 +79,8 @@ public class ItemPicker : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(_interactionPoint.position, _radius, _layerMask);
 
         IContainerInteractable closest = null;
-        float minDst = float.MaxValue;
+        float minSqrDst = float.MaxValue;
+        Vector2 position2D = transform.position;
 
         foreach (var hit in hits)
         {
@@ -87,12 +88,12 @@ public class ItemPicker : MonoBehaviour
             if (hit.TryGetComponent(out IContainerInteractable found))
             {
                 //use Vector2 since V3 have depth for sorting layers
-                float dst = Vector2.Distance(transform.position, hit.transform.position);
+                float sqrDst = (position2D - (Vector2)hit.transform.position).sqrMagnitude;
 
-                if (dst < minDst)
+                if (sqrDst < minSqrDst)
                 {
                     closest = found;
-                    minDst = dst;
+                    minSqrDst = sqrDst;
                 }
             }
         }

@@ -34,13 +34,13 @@ namespace OutlandHaven.UIToolkit
         private void HandleRequestBuy(InventoryItemSO item, int quantity)
         {
             if (item == null || quantity <= 0) return;
-            if (SessionData == null || SessionData.PlayerInventory == null) return;
+            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
             if (CurrentShopInventory == null) return;
 
             int totalCost = item.GoldValue * quantity;
 
             // Check if player has enough gold
-            if (SessionData.Gold >= totalCost)
+            if (SessionData.PlayerData.Gold >= totalCost)
             {
                 // Attempt to add to player inventory
                 bool added = SessionData.PlayerInventory.AddItem(item, quantity);
@@ -48,15 +48,15 @@ namespace OutlandHaven.UIToolkit
                 if (added)
                 {
                     // Deduct gold
-                    SessionData.Gold -= totalCost;
+                    SessionData.PlayerData.ModifyGold(-totalCost);
 
                     // Note: Removing from ShopInventory could be done here if the shop has limited stock.
                     // For now, assuming infinite or handling via separate logic if shop also uses RemoveItem.
 
-                    InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.Gold);
+                    InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
 
 #if UNITY_EDITOR
-                    Debug.Log($"Bought {quantity} {item.ItemName} for {totalCost} gold. Remaining Gold: {SessionData.Gold}");
+                    Debug.Log($"Bought {quantity} {item.ItemName} for {totalCost} gold. Remaining Gold: {SessionData.PlayerData.Gold}");
 #endif
                 }
                 else
@@ -77,7 +77,7 @@ namespace OutlandHaven.UIToolkit
         private void HandleRequestSell(InventoryItemSO item, int quantity)
         {
             if (item == null || quantity <= 0) return;
-            if (SessionData == null || SessionData.PlayerInventory == null) return;
+            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
             // CurrentShopInventory could be used to receive the item if shop stock is dynamic.
 
             int totalValue = item.GoldValue * quantity;
@@ -86,12 +86,12 @@ namespace OutlandHaven.UIToolkit
 
             if (removed)
             {
-                SessionData.Gold += totalValue;
-                InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.Gold);
+                SessionData.PlayerData.ModifyGold(totalValue);
+                InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
                 InventoryEvents?.OnInventoryUpdated?.Invoke();
 
 #if UNITY_EDITOR
-                Debug.Log($"Sold {quantity} {item.ItemName} for {totalValue} gold. Total Gold: {SessionData.Gold}");
+                Debug.Log($"Sold {quantity} {item.ItemName} for {totalValue} gold. Total Gold: {SessionData.PlayerData.Gold}");
 #endif
             }
             else

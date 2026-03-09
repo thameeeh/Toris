@@ -23,9 +23,6 @@ namespace OutlandHaven.UIToolkit
         public PlayerDataSO PlayerData;
         public InventoryContainerSO PlayerInventory;
 
-        [Header("Currency")]
-        public int Gold;
-
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
         [SerializeField] private string targetSpawnPointID;

@@ -42,7 +42,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
                     UpdateManaUI(_playerData.GetManaPercentage(), 1f);
-                    UpdateGoldUI(0, 0);
+                    UpdateGoldUI(_playerData.Gold, 0);
                     UpdateLevelUI(1, 0);
                 }
                 _isSetup = true;
@@ -134,7 +134,6 @@ namespace OutlandHaven.UIToolkit
                 _playerData.OnGoldChanged += UpdateGoldUI;
 
                 _playerData.AddExperience(0); // Trigger initial level/XP update
-                _playerData.ModifyGold(0);    // Trigger initial gold update
             }
         }
 

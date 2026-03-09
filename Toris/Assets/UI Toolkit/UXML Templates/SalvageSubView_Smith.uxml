@@ -5,7 +5,7 @@
     xmlns:uie="UnityEditor.UIElements"
     xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
 >
-    <ui:VisualElement name="forge-container" class="forge-subview-container">
-        <ui:Label text="Forge Panel (WIP)" class="forge-title" />
+    <ui:VisualElement name="salvage-container" class="salvage-subview-container">
+        <ui:Label text="Salvage Panel (WIP)" class="salvage-title" />
     </ui:VisualElement>
 </ui:UXML>

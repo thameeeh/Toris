@@ -1146,7 +1146,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
   - {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
   - {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
-  blockingTiles: []
+  blockingTiles:
+  - {fileID: 11400000, guid: 341d008024432b34884a54ea05576254, type: 2}
+  - {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
 --- !u!4 &632992832
 Transform:
   m_ObjectHideFlags: 0
@@ -1970,30 +1972,30 @@ Tilemap:
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
-      e00: -11438.75
+      e00: 1e-45
       e01: 0
-      e02: -11439.156
-      e03: -1.4495531e+10
-      e10: 3.01e-43
+      e02: 4.1991896e-12
+      e03: 9.223386e+19
+      e10: 1e-45
       e11: 0
-      e12: 3.01e-43
-      e13: 9.39e-43
-      e20: -1.4073703e-22
+      e12: 8.4e-44
+      e13: 7.7e-43
+      e20: -3.366056e+17
       e21: 0
-      e22: -4.7618887e-10
-      e23: 3.1680565e-28
-      e30: 4.5915e-41
+      e22: 1.7116848e+29
+      e23: -2.4755133e-17
+      e30: 4.591e-41
       e31: 0
-      e32: 9.42e-43
-      e33: 9.4e-43
+      e32: 7.74e-43
+      e33: 7.7e-43
   m_TileColorArray:
   - m_RefCount: 0
-    m_Data: {r: -11438.9375, g: -11438.9375, b: -11438.9375, a: -11438.9375}
+    m_Data: {r: 1.8932662e-27, g: 1.8932662e-27, b: 1.8932662e-27, a: 1.8932662e-27}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -4, z: 0}
-  m_Size: {x: 15, y: 4, z: 1}
+  m_Size: {x: 15, y: 28, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:

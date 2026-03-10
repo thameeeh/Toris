@@ -66,12 +66,12 @@ namespace OutlandHaven.UIToolkit
             if (SessionData.PlayerData.Gold >= totalCost)
             {
                 // First check if the shop actually has enough items to sell
-                bool removedFromShop = CurrentShopInventory.RemoveItem(item, quantity);
+                bool removedFromShop = CurrentShopInventory.RemoveItem(new ItemInstance(item), quantity);
 
                 if (removedFromShop)
                 {
                     // Attempt to add to player inventory
-                    bool added = SessionData.PlayerInventory.AddItem(item, quantity);
+                    bool added = SessionData.PlayerInventory.AddItem(new ItemInstance(item), quantity);
 
                     if (added)
                     {
@@ -88,7 +88,7 @@ namespace OutlandHaven.UIToolkit
                     else
                     {
                         // If player inventory was full, refund the item to the shop
-                        CurrentShopInventory.AddItem(item, quantity);
+                        CurrentShopInventory.AddItem(new ItemInstance(item), quantity);
 #if UNITY_EDITOR
                         Debug.LogWarning("Inventory full! Could not buy item. Refunded to shop.");
 #endif
@@ -117,12 +117,12 @@ namespace OutlandHaven.UIToolkit
 
             int totalValue = item.GoldValue * quantity;
 
-            bool removed = SessionData.PlayerInventory.RemoveItem(item, quantity);
+            bool removed = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item), quantity);
 
             if (removed)
             {
                 // Add the item to the shop's inventory so the NPC can resell it
-                bool addedToShop = CurrentShopInventory.AddItem(item, quantity);
+                bool addedToShop = CurrentShopInventory.AddItem(new ItemInstance(item), quantity);
 
                 SessionData.PlayerData.ModifyGold(totalValue);
                 InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);

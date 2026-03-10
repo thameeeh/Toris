@@ -32,15 +32,15 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        public bool AddItem (InventoryItemSO item, int quantity)
+        public bool AddItem (ItemInstance itemInstance, int quantity)
         {
             // 1. Check for existing stacks first
             foreach (var slot in Slots)
             {
                 // If slot has the SAME item and has space
-                if (!slot.IsEmpty && slot.Item == item && slot.Count < item.MaxStackSize)
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance) && slot.Count < itemInstance.BaseItem.MaxStackSize)
                 {
-                    int remainingSpace = item.MaxStackSize - slot.Count;
+                    int remainingSpace = itemInstance.BaseItem.MaxStackSize - slot.Count;
                     int amountToAdd = Mathf.Min(remainingSpace, quantity);
 
                     slot.IncreaseCount(amountToAdd);
@@ -62,7 +62,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     if (slot.IsEmpty)
                     {
-                        slot.SetItem(item, quantity);
+                        slot.SetItem(itemInstance, quantity);
                         _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
                         return true;
                     }
@@ -72,13 +72,13 @@ namespace OutlandHaven.UIToolkit
             return false; // Could not add all items (Inventory Full)
         }
 
-        public bool RemoveItem(InventoryItemSO item, int quantity)
+        public bool RemoveItem(ItemInstance itemInstance, int quantity)
         {
             // First pass: verify we have enough total items
             int totalAvailable = 0;
             foreach (var slot in Slots)
             {
-                if (!slot.IsEmpty && slot.Item == item)
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance))
                 {
                     totalAvailable += slot.Count;
                 }
@@ -94,7 +94,7 @@ namespace OutlandHaven.UIToolkit
 
             foreach (var slot in Slots)
             {
-                if (!slot.IsEmpty && slot.Item == item)
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance))
                 {
                     if (slot.Count >= remainingToRemove)
                     {

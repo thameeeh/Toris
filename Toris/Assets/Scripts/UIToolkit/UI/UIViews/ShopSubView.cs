@@ -115,7 +115,7 @@ namespace OutlandHaven.UIToolkit
                         {
                             int amount = evt.shiftKey ? 10 : 1;
                             // Only request buy, let the manager handle logic and update UI
-                            _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.Item, amount);
+                            _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.HeldItem.BaseItem, amount);
                         }
                     }
                 });

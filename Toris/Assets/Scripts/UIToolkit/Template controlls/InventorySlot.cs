@@ -8,7 +8,7 @@ namespace OutlandHaven.UIToolkit
         public ItemInstance HeldItem;
         public int Count;
 
-        public bool IsEmpty => HeldItem == null;
+        public bool IsEmpty => HeldItem == null || HeldItem.BaseItem == null;
 
         public void Clear()
         {

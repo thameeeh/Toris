@@ -666,7 +666,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""ToggleSmith"",
                     ""type"": ""Button"",
                     ""id"": ""14f08f87-a2f0-4566-b31c-c76a4ec16867"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false

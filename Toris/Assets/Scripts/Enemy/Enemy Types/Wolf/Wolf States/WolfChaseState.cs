@@ -38,7 +38,10 @@ public class WolfChaseState : EnemyState<Wolf>
 
         if (!enemy.IsAggroed)
         {
-            enemyStateMachine.ChangeState(enemy.IdleState);
+            if (enemy.HasHome)
+                enemyStateMachine.ChangeState(enemy.ReturnHomeState);
+            else
+                enemyStateMachine.ChangeState(enemy.IdleState);
             return;
         }
     }

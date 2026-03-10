@@ -25,6 +25,22 @@ public class Wolf : Enemy
     [Range(0.5f, 3f)] public float healthMultiplier = 1f;
     public bool CanHowl => role == WolfRole.Leader;
 
+    // wolf knowledge of home
+    private HomeAnchor _homeAnchor;
+    [SerializeField] private float fallbackHomeRadius = 4f;
+    public bool HasHome => _homeAnchor != null;
+    public Vector3 HomeCenter => HasHome ? _homeAnchor.center : transform.position;
+    public float HomeRadius => HasHome ? _homeAnchor.radius : fallbackHomeRadius;
+    public float DistanceToHome => Vector2.Distance(transform.position, HomeCenter);
+    public bool IsOutsideHome(float extraPadding)
+    {
+        return DistanceToHome > (HomeRadius + Mathf.Max(0f, extraPadding));
+    }
+    public void RefreshHomeAnchor()
+    {
+        _homeAnchor = GetComponent<HomeAnchor>();
+    }
+
     [Header("Leader Pack")]
     public PackController pack;
 
@@ -47,6 +63,8 @@ public class Wolf : Enemy
     public WolfIdleState IdleState { get; set; }
     public WolfAttackState AttackState { get; set; }
     public WolfDeadState DeadState { get; set; }
+
+    public WolfReturnHomeState ReturnHomeState { get; set; }
     #endregion
 
     #region Wolf-Specific ScriptableObjects
@@ -56,18 +74,22 @@ public class Wolf : Enemy
     [SerializeField] private WolfIdleSO EnemyIdleBase;
     [SerializeField] private WolfAttackSO EnemyAttackBase;
     [SerializeField] private WolfDeadSO EnemyDeadBase;
+    [SerializeField] private WolfReturnHomeSO EnemyReturnHomeBase;
 
     public WolfHowlSO EnemyHowlBaseInstance { get; set; }
     public WolfChaseSO EnemyChaseBaseInstance { get; set; }
     public WolfIdleSO EnemyIdleBaseInstance { get; set; }
     public WolfAttackSO EnemyAttackBaseInstance { get; set; }
     public WolfDeadSO EnemyDeadBaseInstance { get; set; }
+
+    public WolfReturnHomeSO EnemyReturnHomeBaseInstance { get; set; }
     #endregion
 
     protected override void Awake()
     {
         base.Awake();
 
+        RefreshHomeAnchor();
         _baseAttackDamage = AttackDamage;
 
         EnemyHowlBaseInstance = Instantiate(EnemyHowlBase);
@@ -75,12 +97,14 @@ public class Wolf : Enemy
         EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
         EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
         EnemyDeadBaseInstance = Instantiate(EnemyDeadBase);
+        EnemyReturnHomeBaseInstance = Instantiate(EnemyReturnHomeBase);
 
         IdleState = new WolfIdleState(this, StateMachine);
         HowlState = new WolfHowlState(this, StateMachine);
         ChaseState = new WolfChaseState(this, StateMachine);
         AttackState = new WolfAttackState(this, StateMachine);
         DeadState = new WolfDeadState(this, StateMachine);
+        ReturnHomeState = new WolfReturnHomeState(this, StateMachine);
     }
 
     protected override void Start()
@@ -92,6 +116,7 @@ public class Wolf : Enemy
         EnemyHowlBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyAttackBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyDeadBaseInstance.Initialize(gameObject, this, PlayerTransform);
+        EnemyReturnHomeBaseInstance.Initialize(gameObject, this, PlayerTransform);
 
         ApplyScaling();
         InitializeRuntimeState();
@@ -111,6 +136,7 @@ public class Wolf : Enemy
     }
     public override void OnSpawned()
     {
+        RefreshHomeAnchor();
         ApplyScaling();
         base.OnSpawned();
 

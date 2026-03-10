@@ -21,6 +21,15 @@ namespace OutlandHaven.UIToolkit
 
         private void OnEnable()
         {
+            if (_hudMainTemplate == null)
+            {
+                Debug.LogError("HudScreenController: HUD Main Template is missing!");
+                return;
+            }
+        }
+
+        private void Start()
+        {
             if (_hudMainTemplate == null) return;
 
             // 1. Instantiate the UI from the asset

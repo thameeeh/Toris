@@ -15,21 +15,36 @@ namespace UIToolkit.UI
 
         private UIDocument _doc;
 
+        private Button _startGameButton;
+        private Button _quitGameButton;
+
         private void OnEnable()
         {
             _doc = GetComponent<UIDocument>();
             var root = _doc.rootVisualElement;
 
             // Assuming your UXML has a button named "btn-new-game"
-            var startGameButton = root.Q<Button>("btn-start-game");
-            var quitGameButton = root.Q<Button>("btn-quit-game");
-            if (startGameButton != null)
+            _startGameButton = root.Q<Button>("btn-start-game");
+            _quitGameButton = root.Q<Button>("btn-quit-game");
+            if (_startGameButton != null)
             {
-                startGameButton.clicked += OnNewGameClicked;
+                _startGameButton.clicked += OnNewGameClicked;
             }
-            if (quitGameButton != null)
+            if (_quitGameButton != null)
             {
-                quitGameButton.clicked += QuitGame;
+                _quitGameButton.clicked += QuitGame;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_startGameButton != null)
+            {
+                _startGameButton.clicked -= OnNewGameClicked;
+            }
+            if (_quitGameButton != null)
+            {
+                _quitGameButton.clicked -= QuitGame;
             }
         }
 

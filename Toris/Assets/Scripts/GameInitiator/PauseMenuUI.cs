@@ -13,10 +13,6 @@ public class PauseMenuUI : MonoBehaviour
     private void OnEnable()
     {
         _uiDocumen = GetComponent<UIDocument>();
-    }
-
-    private void Start()
-    {
         VisualElement root = _uiDocumen.rootVisualElement;
         
         _resumeButton = root.Q<Button>(RESUME_BTN_NAME);

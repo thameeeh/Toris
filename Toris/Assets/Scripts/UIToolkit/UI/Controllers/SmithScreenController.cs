@@ -17,6 +17,9 @@ namespace UIToolkit.UI
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private InventoryContainerSO _shopContainer;
         [SerializeField] private ShopManagerSO _shopManagerSO;
+        [SerializeField] private CraftingManagerSO _craftingManagerSO;
+        [SerializeField] private SalvageManagerSO _salvageManagerSO;
+        [SerializeField] private CraftingRegistrySO _craftingRegistrySO;
 
         private SmithView _view;
         private UIManager _uiManager;
@@ -26,6 +29,8 @@ namespace UIToolkit.UI
             _uiManager = FindFirstObjectByType<UIManager>();
 
             if(_shopManagerSO != null) _shopManagerSO.Initialize();
+            if(_craftingManagerSO != null) _craftingManagerSO.Initialize();
+            if(_salvageManagerSO != null) _salvageManagerSO.Initialize();
         }
 
         private void OnEnable()
@@ -47,7 +52,7 @@ namespace UIToolkit.UI
             if (_smithMainTemplate == null || _slotTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
-            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopContainer);
+            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopContainer, _craftingRegistrySO);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

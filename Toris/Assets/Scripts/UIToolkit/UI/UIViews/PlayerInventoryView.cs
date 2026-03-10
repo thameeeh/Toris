@@ -16,14 +16,34 @@ namespace OutlandHaven.UIToolkit
         private VisualElement _playerGrid;
 
         private UIInventoryEventsSO _uiInventoryEvents;
+        private bool _eventsBound = false;
+
         public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;
-
             _uiInventoryEvents = uiInventoryEvents;
-            _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
+        }
+
+        public override void Show()
+        {
+            base.Show();
+            if (!_eventsBound && _uiInventoryEvents != null)
+            {
+                _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
+                _eventsBound = true;
+            }
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            if (_eventsBound && _uiInventoryEvents != null)
+            {
+                _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+                _eventsBound = false;
+            }
         }
 
         protected override void SetVisualElements()
@@ -41,19 +61,6 @@ namespace OutlandHaven.UIToolkit
         {
             // Refresh Player Inventory (Always)
             RefreshGrid(_playerGrid, _gameSession.PlayerInventory); 
-
-            /*old code does not work on new UXML structure
-            // Handle Payload (Chest/Vendor)
-            if (payload is InventoryContainerSO externalData)
-            {
-                _externalPanel.style.display = DisplayStyle.Flex;
-                if (_externalHeader != null) _externalHeader.text = externalData.name;
-                RefreshGrid(_externalGrid, externalData);
-            }
-            else
-            { 
-                _externalPanel.style.display = DisplayStyle.None;
-            }*/
         }
         
 

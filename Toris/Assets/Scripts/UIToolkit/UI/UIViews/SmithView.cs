@@ -8,29 +8,85 @@ namespace OutlandHaven.UIToolkit
         public override ScreenType ID => ScreenType.Smith;
 
         private VisualTreeAsset _slotTemplate;
+        private VisualTreeAsset _shopTemplate;
+        private UIInventoryEventsSO _uiInventoryEvents;
+        private GameSessionSO _gameSession;
+        private InventoryContainerSO _shopContainer;
 
-        private VisualElement _externalGrid;
-        private VisualElement _externalPanel; // The whole right side
-        private Label _externalHeader;
+        private VisualElement _middlePanel;
 
-        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, UIEventsSO uiEvents)
+        // SubViews
+        private ShopSubView _shopSubView;
+
+        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, InventoryContainerSO shopContainer)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
+            _shopTemplate = shopTemplate;
+            _uiInventoryEvents = uiInventoryEvents;
+            _gameSession = gameSession;
+            _shopContainer = shopContainer;
         }
 
         protected override void SetVisualElements()
         {
-            _externalGrid = m_TopElement.Q<VisualElement>("grid-external");
+            _middlePanel = m_TopElement.Q<VisualElement>("Smith-middle__panel");
 
-            // Find the containers for toggling visibility
-            _externalPanel = m_TopElement.Q<VisualElement>("container__external");
-            _externalHeader = m_TopElement.Q<Label>("label__external-header");
+            // Setup Tab Buttons (Forge, Market, Salvage)
+            var labels = m_TopElement.Query<Label>(className: "NPC_PanelButtons").ToList();
+            foreach (var label in labels)
+            {
+                if (label.text == "Market")
+                {
+                    label.RegisterCallback<ClickEvent>(evt => ShowMarketTab());
+                }
+            }
         }
 
         public override void Setup(object payload) 
         {
+            // Payload could be a specific NPC's inventory
+            if (payload is InventoryContainerSO dynamicShopContainer)
+            {
+                _shopContainer = dynamicShopContainer;
+            }
+
+            // Default to showing Market for now
+            ShowMarketTab();
+        }
+
+        private void ShowMarketTab()
+        {
+            if (_middlePanel == null) return;
+
+            // Hide other sub-views when implemented
+
+            // Lazy initialization of the ShopSubView
+            if (_shopSubView == null)
+            {
+                if (_shopTemplate != null)
+                {
+                    TemplateContainer shopInstance = _shopTemplate.Instantiate();
+                    _middlePanel.Add(shopInstance);
+                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _shopContainer, _uiInventoryEvents, _gameSession);
+                    _shopSubView.Initialize();
+                }
+            }
             
+            _shopSubView?.Setup(_shopContainer);
+            _shopSubView?.Show();
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            _shopSubView?.Hide();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _shopSubView?.Dispose();
         }
     }
 }

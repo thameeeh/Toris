@@ -6,9 +6,9 @@ namespace OutlandHaven.UIToolkit
     public class InventoryScreenController : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
+        [SerializeField] private VisualTreeAsset _inventoryMainTemplate; // <--- Drag Inventory.uxml here
+        [SerializeField] private VisualTreeAsset _slotTemplate;
         [SerializeField] private GameSessionSO _gameSession;
-        
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
 
@@ -22,18 +22,22 @@ namespace OutlandHaven.UIToolkit
 
         private void OnEnable()
         {
-            if (_slotTemplate == null)
+            if (_inventoryMainTemplate == null) 
             {
-                Debug.LogError("InventoryScreenController: Slot Template is missing!");
+                Debug.LogError("InventoryScreenController: Main Template is missing!");
                 return;
             }
+        }
 
-            var uiDoc = GetComponent<UIDocument>();
+        private void Start()
+        {
+            TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
 
-            // Pass the Template and the GameSession (for player data) to the View
-            _view = new PlayerInventoryView(uiDoc.rootVisualElement, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents);
+            _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents);
+            _view.Initialize();
 
-            _uiManager.RegisterView(_view);
+            // Register to the RIGHT zone
+            _uiManager.RegisterView(_view, ScreenZone.Right);
         }
 
         private void OnValidate()

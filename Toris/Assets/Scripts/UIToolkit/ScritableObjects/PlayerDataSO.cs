@@ -19,6 +19,7 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private float _experience = 0;
 
         [SerializeField] private int _gold = 0;
+        public int Gold => _gold;
 
         public event Action<float, float> OnHealthChanged; // current, max
         public Action<float, float> OnManaChanged;   // current, max
@@ -47,7 +48,9 @@ namespace OutlandHaven.UIToolkit
 
             if (_currentHealth <= 0)
             {
+#if UNITY_EDITOR
                 Debug.Log("Player has died.");
+#endif
                 // trigger death event here later
             }
         }

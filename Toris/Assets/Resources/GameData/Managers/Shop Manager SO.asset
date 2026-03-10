@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f853381b66725974b961b0e5c0a88359, type: 3}
+  m_Name: Shop Manager SO
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.ShopManagerSO
+  SessionData: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  InventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  UIEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  CurrentShopInventory: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}

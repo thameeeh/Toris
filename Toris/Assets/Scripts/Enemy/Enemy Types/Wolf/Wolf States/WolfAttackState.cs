@@ -24,20 +24,27 @@ public class WolfAttackState : EnemyState<Wolf>
 
     public override void FrameUpdate()
     {
-        base.FrameUpdate();
-
         enemy.EnemyAttackBaseInstance.DoFrameUpdateLogic();
 
-        if (enemy.EnemyAttackBaseInstance.isComplete)
+        if (!enemy.IsAggroed)
+        {
+            if (enemy.HasHome)
+                enemyStateMachine.ChangeState(enemy.ReturnHomeState);
+            else
+                enemyStateMachine.ChangeState(enemy.IdleState);
+
+            return;
+        }
+
+        if (!enemy.IsWithinStrikingDistance)
         {
             enemyStateMachine.ChangeState(enemy.ChaseState);
             return;
         }
 
-        if (!enemy.IsAggroed)
+        if (enemy.EnemyAttackBaseInstance.isComplete)
         {
-            enemyStateMachine.ChangeState(enemy.IdleState);
-            return;
+            enemyStateMachine.ChangeState(enemy.ChaseState);
         }
     }
 

@@ -29,8 +29,8 @@ public class Wolf : Enemy
     private HomeAnchor _homeAnchor;
     [SerializeField] private float fallbackHomeRadius = 4f;
     public bool HasHome => _homeAnchor != null;
-    public Vector3 HomeCenter => HasHome ? _homeAnchor.center : transform.position;
-    public float HomeRadius => HasHome ? _homeAnchor.radius : fallbackHomeRadius;
+    public Vector3 HomeCenter => HasHome ? _homeAnchor.Center : transform.position;
+    public float HomeRadius => HasHome ? _homeAnchor.Radius : fallbackHomeRadius;
     public float DistanceToHome => Vector2.Distance(transform.position, HomeCenter);
     public bool IsOutsideHome(float extraPadding)
     {

@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a749acbfe59cccf44b8ad9c3c63d4c03, type: 3}
   m_Name: Wolf_Idle_Wander
   m_EditorClassIdentifier: Assembly-CSharp::WolfIdleSO
-  _wanderRadius: 6
-  _wanderInterval: 4
-  _wanderPointReachSqr: 1
-  _directionLerpSpeed: 10
+  wanderInterval: 2.5
+  homeRadiusUsage: 0.65
+  outwardPadding: 1
+  returnToHomeThreshold: 0.5
+  maxCandidateChecks: 12
+  wanderPointReachSqr: 0.5
+  directionLerpSpeed: 5
+  minMoveDirectionSqr: 0.0001

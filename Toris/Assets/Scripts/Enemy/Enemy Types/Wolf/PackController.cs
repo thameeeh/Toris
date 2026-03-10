@@ -15,7 +15,6 @@ public class PackController : MonoBehaviour
     public List<Wolf> activeMinions = new List<Wolf>();
     private float _lastHowlTimestamp = -999f;
 
-    // NEW: lets WolfDenSpawner observe pack-spawned minions
     public System.Action<Wolf> MinionSpawned;
 
     private void Awake()
@@ -90,6 +89,14 @@ public class PackController : MonoBehaviour
                 newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
             }
 
+            var leaderHome = leaderWolf != null ? leaderWolf.GetComponent<HomeAnchor>() : null;
+            var minionHome = newMinion.GetComponent<HomeAnchor>();
+
+            if (leaderHome != null && minionHome != null)
+            {
+                minionHome.SetHome(leaderHome.Center, leaderHome.Radius);
+            }
+
             newMinion.role = WolfRole.Minion;
             newMinion.pack = this;
 
@@ -98,7 +105,6 @@ public class PackController : MonoBehaviour
 
             activeMinions.Add(newMinion);
 
-            // NEW: notify den spawner (or other owner) that a minion was created
             MinionSpawned?.Invoke(newMinion);
         }
     }
@@ -124,7 +130,6 @@ public class PackController : MonoBehaviour
     {
         leaderWolf = leader;
 
-        // Leader despawn => clean up minions (chunk unload / pooling)
         leaderWolf.Despawned -= OnLeaderDespawned;
         leaderWolf.Despawned += OnLeaderDespawned;
     }
@@ -151,7 +156,6 @@ public class PackController : MonoBehaviour
                 copy[i].RequestDespawn();
     }
 
-    // Keep a public helper if other code calls it directly
     public void NotifyMinionDespawned(Wolf minion)
     {
         if (minion == null) return;

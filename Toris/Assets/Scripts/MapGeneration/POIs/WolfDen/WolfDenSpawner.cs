@@ -18,6 +18,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     [SerializeField] private bool keepChasingWolvesOnUnload = true;
     [SerializeField] private float keepChaseIfWithinPlayerRange = 40f;
 
+    [Header("Home")]
+    [SerializeField] private float homeRadius = 8f;
+
     private WolfDen den;
 
     private bool ready;
@@ -183,8 +186,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         var home = w.GetComponent<HomeAnchor>();
         if (home != null)
         {
-            home.center = w.transform.position;
-            home.radius = 9999f;
+            home.Center = w.transform.position;
+            home.Radius = homeRadius;
         }
     }
 
@@ -265,8 +268,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         if (home == null)
             home = w.gameObject.AddComponent<HomeAnchor>();
 
-        home.center = den.WorldPosition;
-        home.radius = 8f;
+        home.Center = den.WorldPosition;
+        home.Radius = homeRadius;
 
         if (!tracked.Contains(w))
         {

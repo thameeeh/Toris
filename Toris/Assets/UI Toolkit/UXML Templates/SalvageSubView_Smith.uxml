@@ -1,11 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
-    <ui:VisualElement name="salvage-container" class="salvage-subview-container">
-        <ui:Label text="Salvage Panel (WIP)" class="salvage-title" />
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
+    
+    <ui:VisualElement name="salvage-container" class="salvage-subview-container" style="background-color: rgb(0, 0, 0); padding: 15px;">
+        <ui:Label text="Salvage / Sell" class="salvage-title NPC_PanelButtons" style="color: white; -unity-text-align: middle-center; margin-bottom: 20px; font-size: 18px; font-weight: bold;"/>
+        
+        <ui:VisualElement name="salvage-input-section" style="align-items: center; margin-bottom: 25px;">
+            <ui:Label text="Place Item Here" style="color: rgb(170, 170, 170); font-size: 12px; margin-bottom: 8px;" />
+            <ui:VisualElement name="salvage-slot-input" class="item-slot" style="width: 64px; height: 64px; background-color: rgb(30, 30, 30); border-width: 2px; border-color: rgb(150, 150, 150);" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="salvage-options" style="flex-direction: row; justify-content: space-between;">
+            
+            <ui:VisualElement name="gold-option-container" style="flex-grow: 1; margin-right: 5px; align-items: center; background-color: rgb(20, 20, 20); padding: 10px; border-radius: 5px; border-width: 1px; border-color: rgb(50, 50, 50);">
+                <ui:Label text="Gold Yield:" style="color: rgb(200, 180, 100); font-size: 12px; margin-bottom: 5px;" />
+                <ui:TextField name="salvage-gold-field" value="0" readonly="true" style="width: 80px; margin-bottom: 15px; background-color: rgb(10, 10, 10); color: white; -unity-text-align: middle-center;" />
+                <ui:Button name="btn-get-gold" text="Get Gold" style="width: 100%; height: 35px; background-color: rgb(120, 90, 20); color: white; border-width: 0;" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="item-option-container" style="flex-grow: 1; margin-left: 5px; align-items: center; background-color: rgb(20, 20, 20); padding: 10px; border-radius: 5px; border-width: 1px; border-color: rgb(50, 50, 50);">
+                <ui:Label text="Material Yield:" style="color: rgb(100, 150, 200); font-size: 12px; margin-bottom: 5px;" />
+                <ui:VisualElement name="salvage-item-yield" class="item-slot" style="width: 40px; height: 40px; margin-bottom: 15px; background-color: rgb(30, 30, 30); border-width: 1px; border-color: rgb(100, 100, 100);" />
+                <ui:Button name="btn-get-item" text="Salvage Item" style="width: 100%; height: 35px; background-color: rgb(40, 60, 120); color: white; border-width: 0;" />
+            </ui:VisualElement>
+
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

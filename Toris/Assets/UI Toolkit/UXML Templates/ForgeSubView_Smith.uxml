@@ -1,11 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
-    <ui:VisualElement name="forge-container" class="forge-subview-container">
-        <ui:Label text="Forge Panel (WIP)" class="forge-title" />
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
+    
+    <ui:VisualElement name="forge-container" class="forge-subview-container" style="background-color: rgb(0, 0, 0); padding: 10px;">
+        <ui:Label text="Forge Panel" class="forge-title NPC_PanelButtons" style="color: white; -unity-text-align: middle-center; margin-bottom: 20px; font-size: 18px;"/>
+        
+        <ui:VisualElement name="forge-inputs" style="flex-direction: row; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <ui:VisualElement name="forge-slot-1" class="item-slot" style="width: 60px; height: 60px; background-color: rgb(40, 40, 40); border-width: 2px; border-color: rgb(100, 100, 100);" />
+            <ui:Label text="+" style="color: white; font-size: 24px; margin-left: 15px; margin-right: 15px;" />
+            <ui:VisualElement name="forge-slot-2" class="item-slot" style="width: 60px; height: 60px; background-color: rgb(40, 40, 40); border-width: 2px; border-color: rgb(100, 100, 100);" />
+        </ui:VisualElement>
+
+        <ui:Button name="btn-forge-items" text="Forge Items" style="height: 40px; margin-bottom: 20px; background-color: rgb(70, 70, 70); color: white;" />
+
+        <ui:VisualElement name="forge-result-slot" class="item-slot" style="width: 60px; height: 60px; background-color: rgb(20, 20, 20); border-width: 2px; border-color: rgb(200, 150, 50); align-self: center;" />
     </ui:VisualElement>
 </ui:UXML>

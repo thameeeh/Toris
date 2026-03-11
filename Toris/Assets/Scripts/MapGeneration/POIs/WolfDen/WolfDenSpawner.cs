@@ -22,10 +22,11 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     [SerializeField] private float homeRadius = 8f;
 
     private WolfDen den;
-
-    private bool ready;
     private Wolf leader;
     private PackController pack;
+
+    private bool ready;
+
     private readonly List<Wolf> tracked = new();
     private float respawnTimer;
 

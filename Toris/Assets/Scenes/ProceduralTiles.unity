@@ -1164,6 +1164,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &678641242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+  m_PrefabInstance: {fileID: 2105782579}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &678641245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678641242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67dcbc586f021f54db3ff07ae613f143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
+  _smithMainTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
+  _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+  _shopTemplate: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _shopContainer: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
+  _shopManagerSO: {fileID: 11400000, guid: a1f9750d1affea14f9ef38e8b30fc7ca, type: 2}
 --- !u!1 &875006846
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,7 +2434,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 678641245}
   m_SourcePrefab: {fileID: 100100000, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
 --- !u!1 &2118321074
 GameObject:

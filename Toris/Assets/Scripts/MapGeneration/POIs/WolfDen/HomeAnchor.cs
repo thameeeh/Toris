@@ -9,6 +9,14 @@ public sealed class HomeAnchor : MonoBehaviour
     [SerializeField] private float radius = 8f;
     [SerializeField] private bool initializeFromTransformIfUnset = true;
 
+    [Header("Debug")]
+    [SerializeField] private bool showDebugGizmo = true;
+    [SerializeField] private bool drawOnlyWhenSelected = true;
+    [SerializeField] private float centerMarkerRadius = 0.15f;
+    [SerializeField] private Color centerColor = Color.red;
+    [SerializeField] private Color radiusColor = Color.yellow;
+    [SerializeField] private Color linkColor = Color.cyan;
+
     public Vector3 Center
     {
         get => center;
@@ -43,13 +51,29 @@ public sealed class HomeAnchor : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(center, 0.15f);
+        if (!showDebugGizmo || drawOnlyWhenSelected)
+            return;
 
-        Handles.color = Color.yellow;
+        DrawDebugGizmo();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!showDebugGizmo || !drawOnlyWhenSelected)
+            return;
+
+        DrawDebugGizmo();
+    }
+
+    private void DrawDebugGizmo()
+    {
+        Gizmos.color = centerColor;
+        Gizmos.DrawSphere(center, centerMarkerRadius);
+
+        Handles.color = radiusColor;
         Handles.DrawWireDisc(center, Vector3.forward, radius);
 
-        Gizmos.color = Color.cyan;
+        Gizmos.color = linkColor;
         Gizmos.DrawLine(transform.position, center);
     }
 #endif

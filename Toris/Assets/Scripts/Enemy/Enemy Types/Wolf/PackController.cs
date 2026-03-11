@@ -89,16 +89,10 @@ public class PackController : MonoBehaviour
                 newMinion = Instantiate(minionWolfPrefab, spawnPoint, Quaternion.identity);
             }
 
-            var leaderHome = leaderWolf != null ? leaderWolf.GetComponent<HomeAnchor>() : null;
-            var minionHome = newMinion.GetComponent<HomeAnchor>();
-
-            if (leaderHome != null && minionHome != null)
-            {
-                minionHome.SetHome(leaderHome.Center, leaderHome.Radius);
-            }
-
             newMinion.role = WolfRole.Minion;
             newMinion.pack = this;
+
+            CopyLeaderHomeToMinion(newMinion);
 
             newMinion.Despawned -= OnMinionDespawned;
             newMinion.Despawned += OnMinionDespawned;
@@ -169,6 +163,28 @@ public class PackController : MonoBehaviour
         var wolf = enemy as Wolf;
         if (wolf == null) return;
         activeMinions.Remove(wolf);
+    }
+
+    private void CopyLeaderHomeToMinion(Wolf newMinion)
+    {
+        if (newMinion == null)
+            return;
+
+        if (leaderWolf == null)
+            return;
+
+        if (!leaderWolf.TryGetComponent<HomeAnchor>(out var leaderHome) || leaderHome == null)
+            return;
+
+        if (!newMinion.TryGetComponent<HomeAnchor>(out var minionHome) || minionHome == null)
+        {
+            minionHome = newMinion.gameObject.AddComponent<HomeAnchor>();
+        }
+
+        minionHome.Center = leaderHome.Center;
+        minionHome.Radius = leaderHome.Radius;
+
+        newMinion.RefreshHomeAnchor();
     }
 }
 

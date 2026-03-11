@@ -121,7 +121,7 @@ public class Wolf : Enemy
         ApplyScaling();
         InitializeRuntimeState();
 
-        _hasStarted = true;   
+        _hasStarted = true;
     }
 
     protected override void Update()
@@ -145,7 +145,6 @@ public class Wolf : Enemy
 
         InitializeRuntimeState();
     }
-
     private float GetDifficultyMultiplier()
     {
         return 1f + (0.2f * DifficultyTier);
@@ -173,8 +172,8 @@ public class Wolf : Enemy
         RequestDespawn();
     }
 
-    public void DamagePlayer(float damage) {
+    public void DamagePlayer(float damage)
+    {
         base.DamagePlayer(damage, _hitData);
-        PlayerData.ModifyHealth(-AttackDamage);
     }
 }

@@ -21,7 +21,8 @@ namespace OutlandHaven.UIToolkit
         // Data Reference
         private PlayerDataSO _playerData;
         
-
+        // Progress Bar is 0-100
+        private const float PROGRESS_BAR_MAX = 100f;
 
         private bool _isSetup = false;
 
@@ -155,14 +156,14 @@ namespace OutlandHaven.UIToolkit
         private void UpdateHealthUI(float current, float max)
         {
             if (_healthBar == null) return;
-            //Progress Bar is 0-100
-            _healthBar.value = (current / max) * 100f;
+
+            _healthBar.value = (current / max) * PROGRESS_BAR_MAX;
         }
 
         private void UpdateManaUI(float current, float max)
         {
             if (_manaBar == null) return;
-            _manaBar.value = (current / max) * 100f;
+            _manaBar.value = (current / max) * PROGRESS_BAR_MAX;
         }
 
         private void UpdateLevelUI(int level, float experience)
@@ -172,8 +173,9 @@ namespace OutlandHaven.UIToolkit
 
             if (_xpBar != null)
             {
-                float xpPercent = experience % 100;
-                _xpBar.value = xpPercent;
+                float xpPercent = experience % PlayerDataSO.XP_PER_LEVEL;
+                // Convert to percentage of progress bar max scale
+                _xpBar.value = (xpPercent / PlayerDataSO.XP_PER_LEVEL) * PROGRESS_BAR_MAX;
             }
         }
 

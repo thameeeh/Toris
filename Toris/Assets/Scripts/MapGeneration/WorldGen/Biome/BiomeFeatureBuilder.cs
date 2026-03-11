@@ -18,7 +18,9 @@ public static class BiomeFeatureBuilder
     private static void StampPlatform(WorldContext ctx)
     {
         if (ctx.Biome == null || ctx.Biome.platformGroundTile == null) return;
-        ctx.Stamps.StampRectGround(ctx.ActiveBiome.OriginTile, 9, 9, ctx.Biome.platformGroundTile);
+        const int PLATFORM_WIDTH = 9;
+        const int PLATFORM_HEIGHT = 9;
+        ctx.Stamps.StampRectGround(ctx.ActiveBiome.OriginTile, PLATFORM_WIDTH, PLATFORM_HEIGHT, ctx.Biome.platformGroundTile);
     }
 
     private static Vector2Int Step(Dir d) => d switch
@@ -71,7 +73,8 @@ public static class BiomeFeatureBuilder
     {
         if (ctx.Biome == null || ctx.Biome.roadTile == null) return;
 
-        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, center.x, center.y, 5001);
+        const uint ROAD_HASH_SALT = 5001;
+        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, center.x, center.y, ROAD_HASH_SALT);
         float r = DeterministicHash.Hash01(h);
 
         int minW = Mathf.Clamp(ctx.Biome.roadWidthMin, 3, 5);

@@ -19,6 +19,8 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
         private bool _eventsBound = false;
 
+        private const int BULK_BUY_AMOUNT = 10;
+
         public ShopSubView(VisualElement topElement, VisualTreeAsset slotTemplate, InventoryContainerSO shopContainer, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession)
             : base(topElement)
         {
@@ -113,7 +115,7 @@ namespace OutlandHaven.UIToolkit
                     {
                         if (currentSlotData != null && !currentSlotData.IsEmpty)
                         {
-                            int amount = evt.shiftKey ? 10 : 1;
+                            int amount = evt.shiftKey ? BULK_BUY_AMOUNT : 1;
                             // Only request buy, let the manager handle logic and update UI
                             _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.Item, amount);
                         }

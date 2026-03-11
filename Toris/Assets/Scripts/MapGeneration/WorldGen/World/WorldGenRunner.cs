@@ -235,7 +235,12 @@ public sealed class WorldGenRunner : MonoBehaviour
         double genMsTotal = genTicksTotal * 1000.0 / freq;
         double applyMsTotal = applyTicksTotal * 1000.0 / freq;
 
-        if (unloadMs >= 2.0 || genMsTotal >= 10.0 || applyMsTotal >= 2.0)
+        // Thresholds in ms to warn about heavy frames
+        const double WARN_UNLOAD_MS = 2.0;
+        const double WARN_GEN_MS = 10.0;
+        const double WARN_APPLY_MS = 2.0;
+
+        if (unloadMs >= WARN_UNLOAD_MS || genMsTotal >= WARN_GEN_MS || applyMsTotal >= WARN_APPLY_MS)
         {
             Debug.Log(
                 $"[WorldGen] unload={(int)unloadMs}ms, " +

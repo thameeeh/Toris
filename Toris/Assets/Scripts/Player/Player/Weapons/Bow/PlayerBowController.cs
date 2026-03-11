@@ -148,7 +148,7 @@ public class PlayerBowController : MonoBehaviour
             spawnPos = transform.position + (Vector3)(dir * spawnOffsetFromCenter);
 
         // Get a Projectile prefab from the Bow (ArrowProjectile derives from Projectile)
-        var prefabProj = _bow.arrowPrefab.GetComponent<Projectile>();
+        var prefabProj = _bow.arrowPrefab;
         if (prefabProj == null)
         {
             //Debug.LogError("[Bow] BowSO.arrowPrefab must have a Projectile-derived component on it.", _bow.arrowPrefab);

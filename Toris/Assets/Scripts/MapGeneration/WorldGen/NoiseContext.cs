@@ -11,10 +11,15 @@ public sealed class NoiseContext
 
     public NoiseContext(int seed)
     {
-        coastOffset = MakeOffset(seed, 11);
-        forestOffset = MakeOffset(seed, 22);
-        variationOffset = MakeOffset(seed, 33);
-        lakeOffset = MakeOffset(seed, 44);
+        const int COAST_NOISE_SALT = 11;
+        const int FOREST_NOISE_SALT = 22;
+        const int VARIATION_NOISE_SALT = 33;
+        const int LAKE_NOISE_SALT = 44;
+
+        coastOffset = MakeOffset(seed, COAST_NOISE_SALT);
+        forestOffset = MakeOffset(seed, FOREST_NOISE_SALT);
+        variationOffset = MakeOffset(seed, VARIATION_NOISE_SALT);
+        lakeOffset = MakeOffset(seed, LAKE_NOISE_SALT);
     }
 
     public float Sample01(NoiseChannel channel, float x, float y, float scale)

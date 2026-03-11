@@ -49,7 +49,11 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             source.loop = false;
             source.spatialBlend = 1f;
             source.minDistance = 1f;
+
+            // Set max distance (e.g. 25f) to ensure audio sources
+            // naturally fall off logarithmically beyond this unit range.
             source.maxDistance = 25f;
+
             source.rolloffMode = AudioRolloffMode.Logarithmic;
 
             if (defaultMixerGroup != null)

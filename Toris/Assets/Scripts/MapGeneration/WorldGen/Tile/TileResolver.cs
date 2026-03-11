@@ -48,12 +48,17 @@ public sealed class TileResolver
         return r;
     }
 
+    // Unique deterministic salts for different layer permutations
+    private const uint HASH_SALT_GROUND = 101;
+    private const uint HASH_SALT_TREE = 202;
+    private const uint HASH_SALT_FLOWER = 303;
+
     private TileBase PickGround(Vector2Int local, WorldContext ctx)
     {
         var variants = ctx.Biome?.groundVariants;
         if (variants == null || variants.Length == 0) return null;
 
-        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, 101);
+        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_GROUND);
         int idx = (int)(DeterministicHash.Hash01(h) * variants.Length);
         idx = Mathf.Clamp(idx, 0, variants.Length - 1);
         return variants[idx];
@@ -70,7 +75,7 @@ public sealed class TileResolver
         float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.vegetationMaxProb, s.vegetation01));
         if (prob <= 0f) return false;
 
-        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, 202);
+        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_TREE);
         if (DeterministicHash.Hash01(h) > prob) return false;
 
         int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * bp.vegetationDecorVariants.Length);
@@ -90,7 +95,7 @@ public sealed class TileResolver
         float prob = bp.flowerBaseProb * (1f - s.vegetation01);
         if (prob <= 0f) return false;
 
-        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, 303);
+        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_FLOWER);
         if (DeterministicHash.Hash01(h) > prob) return false;
 
         int idx = (int)(DeterministicHash.Hash01(h ^ 0x5AA5u) * bp.flowerDecorVariants.Length);

@@ -105,13 +105,15 @@ public class PackController : MonoBehaviour
 
     private Vector2 GetRandomSpawnPoint(Vector2 spawnCenter)
     {
-        for (int attempt = 0; attempt < 8; attempt++)
+        const int maxSpawnAttempts = 8;
+        const float spawnCheckRadius = 0.3f;
+        for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
         {
             Vector2 direction = Random.insideUnitCircle.normalized;
             if (direction == Vector2.zero) continue;
 
             Vector2 candidatePos = spawnCenter + direction * spawnDistance;
-            Collider2D hit = Physics2D.OverlapCircle(candidatePos, 0.3f,
+            Collider2D hit = Physics2D.OverlapCircle(candidatePos, spawnCheckRadius,
                 LayerMask.GetMask("Default", "Ground", "Walls"));
 
             if (hit == null) return candidatePos;

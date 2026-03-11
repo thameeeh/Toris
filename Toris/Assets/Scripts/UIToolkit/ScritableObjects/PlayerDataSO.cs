@@ -18,6 +18,8 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private int _level = 1;
         [SerializeField] private float _experience = 0;
 
+        public const int XP_PER_LEVEL = 100;
+
         [SerializeField] private int _gold = 0;
         public int Gold => _gold;
 
@@ -67,7 +69,7 @@ namespace OutlandHaven.UIToolkit
         {
             _experience += amount;
 
-            _level = (int)(_experience / 100) + 1; // Simple leveling logic
+            _level = (int)(_experience / XP_PER_LEVEL) + 1; // Simple leveling logic
 
             OnLevelChanged?.Invoke(_level, _experience);
         }

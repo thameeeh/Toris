@@ -83,6 +83,19 @@ namespace OutlandHaven.UIToolkit
                 // Initialize the wrapper and update it
                 var slotView = new InventorySlotView(slotInstance);
                 slotView.Update(slotData);
+
+                // Register click event
+                var currentSlotData = slotData; // Capture variable for lambda
+                slotInstance.RegisterCallback<MouseUpEvent>(evt =>
+                {
+                    if (evt.button == 0) // Left click
+                    {
+                        if (currentSlotData != null && !currentSlotData.IsEmpty)
+                        {
+                            _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);
+                        }
+                    }
+                });
             }
         }
 

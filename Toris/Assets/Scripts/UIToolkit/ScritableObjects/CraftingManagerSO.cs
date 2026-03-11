@@ -33,8 +33,12 @@ namespace OutlandHaven.UIToolkit
             if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
             if (Registry == null) return;
 
+            // Cache items before doing anything that could invalidate references
+            InventoryItemSO item1Type = slot1.HeldItem.BaseItem;
+            InventoryItemSO item2Type = slot2.HeldItem.BaseItem;
+
             // Find a matching recipe
-            CraftingRecipeSO recipe = GetMatchingRecipe(slot1.HeldItem.BaseItem, slot2.HeldItem.BaseItem);
+            CraftingRecipeSO recipe = GetMatchingRecipe(item1Type, item2Type);
             if (recipe == null)
             {
 #if UNITY_EDITOR
@@ -52,19 +56,26 @@ namespace OutlandHaven.UIToolkit
                 return;
             }
 
-            
+            // Determine required quantities based on the recipe
+            int slot1Req = 1;
+            int slot2Req = 1;
 
-            // Capture item references before potentially clearing slots. 
-            // If slot1 and slot2 refer to the same slot, removing slot1 first could clear the slot, invalidating slot2.
-            InventoryItemSO item1 = slot1.HeldItem.BaseItem;
-            InventoryItemSO item2 = slot2.HeldItem.BaseItem;
+            if (recipe.BaseItemRequirement == item1Type)
+            {
+                var matReq = recipe.MaterialRequirements.Find(m => m.Material == item2Type);
+                slot2Req = matReq.Quantity;
+            }
+            else
+            {
+                var matReq = recipe.MaterialRequirements.Find(m => m.Material == item1Type);
+                slot1Req = matReq.Quantity;
+            }
 
             // Attempt to remove inputs from player inventory
-            // Note: Since we are referencing the inventory slots directly, removing 1 quantity of each.
-            bool removedSlot1 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item1), 1);
+            bool removedSlot1 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item1Type), slot1Req);
             if (removedSlot1)
             {
-                bool removedSlot2 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item2), 1);
+                bool removedSlot2 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item2Type), slot2Req);
                 if (removedSlot2)
                 {Debug.Log("Craft Packt has been made");
                     // Add output to player inventory
@@ -84,7 +95,7 @@ namespace OutlandHaven.UIToolkit
                     else
                     {
                         // Rollback slot 2 removal
-                        SessionData.PlayerInventory.AddItem(new ItemInstance(item2), 1);
+                        SessionData.PlayerInventory.AddItem(new ItemInstance(item2Type), slot2Req);
 #if UNITY_EDITOR
                         Debug.LogWarning("Forge failed: Inventory full. Refunded ingredients.");
 #endif
@@ -92,7 +103,13 @@ namespace OutlandHaven.UIToolkit
                 }
 
                 // Rollback slot 1 removal
-                SessionData.PlayerInventory.AddItem(new ItemInstance(item1), 1);
+                SessionData.PlayerInventory.AddItem(new ItemInstance(item1Type), slot1Req);
+            }
+            else
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning("Forge failed: Not enough items.");
+#endif
             }
         }
 

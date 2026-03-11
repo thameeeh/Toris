@@ -8,6 +8,7 @@ namespace OutlandHaven.UIToolkit
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
         private CraftingRegistrySO _registry;
+        private GameSessionSO _gameSession;
 
         private VisualElement _slot1Container;
         private VisualElement _slot2Container;
@@ -24,12 +25,13 @@ namespace OutlandHaven.UIToolkit
 
         private bool _eventsBound = false;
 
-        public ForgeSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingRegistrySO registry)
+        public ForgeSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingRegistrySO registry, GameSessionSO gameSession)
             : base(topElement)
         {
             _slotTemplate = slotTemplate;
             _uiInventoryEvents = uiInventoryEvents;
             _registry = registry;
+            _gameSession = gameSession;
         }
 
         protected override void SetVisualElements()
@@ -116,15 +118,20 @@ namespace OutlandHaven.UIToolkit
 
         private void HandleItemClicked(InventorySlot slot)
         {
+            if (slot == null || slot.IsEmpty) return;
+
+            InventorySlot proxySlot = new InventorySlot();
+            proxySlot.SetItem(new ItemInstance(slot.HeldItem.BaseItem), 1);
+
             if (_currentSlot1Data == null)
             {
-                _currentSlot1Data = slot;
-                _slot1View?.Update(slot);
+                _currentSlot1Data = proxySlot;
+                _slot1View?.Update(proxySlot);
             }
             else if (_currentSlot2Data == null)
             {
-                _currentSlot2Data = slot;
-                _slot2View?.Update(slot);
+                _currentSlot2Data = proxySlot;
+                _slot2View?.Update(proxySlot);
             }
 
             UpdateResultVisual();
@@ -158,11 +165,65 @@ namespace OutlandHaven.UIToolkit
 
             if (recipe != null)
             {
+                // Update proxy slots visually based on recipe requirements
+                int slot1Req = 1;
+                int slot2Req = 1;
+
+                if (recipe.BaseItemRequirement == _currentSlot1Data.HeldItem.BaseItem)
+                {
+                    var matReq = recipe.MaterialRequirements.Find(m => m.Material == _currentSlot2Data.HeldItem.BaseItem);
+                    slot2Req = matReq.Quantity;
+                }
+                else
+                {
+                    var matReq = recipe.MaterialRequirements.Find(m => m.Material == _currentSlot1Data.HeldItem.BaseItem);
+                    slot1Req = matReq.Quantity;
+                }
+
+                _currentSlot1Data.Count = slot1Req;
+                _slot1View?.Update(_currentSlot1Data);
+
+                _currentSlot2Data.Count = slot2Req;
+                _slot2View?.Update(_currentSlot2Data);
+
                 InventorySlot dummySlot = new InventorySlot();
                 dummySlot.SetItem(new ItemInstance(recipe.OutputItem), 1);
                 _resultSlotView?.Update(dummySlot);
 
-                if (_btnForgeItems != null) _btnForgeItems.SetEnabled(true);
+                bool canForge = false;
+                if (_gameSession != null && _gameSession.PlayerInventory != null && _gameSession.PlayerData != null)
+                {
+                    // Check if player has enough gold
+                    bool hasGold = _gameSession.PlayerData.Gold >= recipe.GoldCost;
+
+                    // Count total available for slot 1 item
+                    int totalItem1 = 0;
+                    foreach(var slot in _gameSession.PlayerInventory.Slots)
+                    {
+                        if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(_currentSlot1Data.HeldItem.BaseItem)))
+                            totalItem1 += slot.Count;
+                    }
+
+                    // Count total available for slot 2 item
+                    int totalItem2 = 0;
+                    foreach(var slot in _gameSession.PlayerInventory.Slots)
+                    {
+                        if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(_currentSlot2Data.HeldItem.BaseItem)))
+                            totalItem2 += slot.Count;
+                    }
+
+                    // If items are the same base type, we need enough for both combined
+                    if (_currentSlot1Data.HeldItem.BaseItem == _currentSlot2Data.HeldItem.BaseItem)
+                    {
+                        canForge = hasGold && totalItem1 >= (slot1Req + slot2Req);
+                    }
+                    else
+                    {
+                        canForge = hasGold && totalItem1 >= slot1Req && totalItem2 >= slot2Req;
+                    }
+                }
+
+                if (_btnForgeItems != null) _btnForgeItems.SetEnabled(canForge);
             }
             else
             {

@@ -255,6 +255,7 @@ MonoBehaviour:
   spawnRadius: 3
   keepChasingWolvesOnUnload: 1
   keepChaseIfWithinPlayerRange: 40
+  homeRadius: 8
 --- !u!1 &8814487277129519714
 GameObject:
   m_ObjectHideFlags: 0

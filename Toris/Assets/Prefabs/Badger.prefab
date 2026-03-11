@@ -113,8 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e4f57084f45954ca542742cdb540d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Badger
-  _kill: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
-  _coin: {fileID: 11400000, guid: 2a4af5dbf97ed1e4b9e16702429a7d17, type: 2}
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 4508843636919014498}
   playerTransform: {fileID: 0}
@@ -161,7 +159,7 @@ GameObject:
   - component: {fileID: 1305497850133588629}
   - component: {fileID: 7996728096887072004}
   - component: {fileID: 1067796083070728876}
-  - component: {fileID: 8183350839330779080}
+  - component: {fileID: 4368181669815859382}
   m_Layer: 7
   m_Name: Animator
   m_TagString: Untagged
@@ -186,6 +184,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7996728096887072004
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -231,6 +230,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -4538797452166173101, guid: 5d7564c43cf9e4f46a28d32f28347a71, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -240,7 +240,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &1067796083070728876
 Animator:
@@ -264,7 +263,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8183350839330779080
+--- !u!114 &4368181669815859382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -273,9 +272,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1542764315742055245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53193355bf59dc24796b26726ff8eb52, type: 3}
+  m_Script: {fileID: 11500000, guid: f3f736bb4b3d07c4db856b3866a4450f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimationEventRelay
 --- !u!1 &3546017213066101775
 GameObject:
   m_ObjectHideFlags: 0

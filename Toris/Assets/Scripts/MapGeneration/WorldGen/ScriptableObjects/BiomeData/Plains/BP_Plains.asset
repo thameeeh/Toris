@@ -25,8 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
   - {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
   waterTile: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
-  flowerDecorVariants:
-  - {fileID: 11400000, guid: 8b8aae446cab96f42bcc09896af67f3d, type: 2}
+  flowerDecorVariants: []
   flowerBaseProb: 0.1
   vegetationDecorVariants:
   - {fileID: 11400000, guid: f5b6c8d9c0aa5974cbefb5b082aa0737, type: 2}

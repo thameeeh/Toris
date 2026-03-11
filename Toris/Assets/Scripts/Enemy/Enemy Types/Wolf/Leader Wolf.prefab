@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3677846044796937164}
   - component: {fileID: 1512816972072078386}
   - component: {fileID: 7572564355417335875}
-  - component: {fileID: 5041533026276626117}
+  - component: {fileID: 5208697836334948119}
   m_Layer: 7
   m_Name: Animator
   m_TagString: Untagged
@@ -115,7 +115,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5041533026276626117
+--- !u!114 &5208697836334948119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,9 +124,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 235023414957237221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53193355bf59dc24796b26726ff8eb52, type: 3}
+  m_Script: {fileID: 11500000, guid: f3f736bb4b3d07c4db856b3866a4450f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimationEventRelay
 --- !u!1 &1493656191233448096
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 4137995065482030071}
   - component: {fileID: 2695960224398103068}
   - component: {fileID: -512811958546087626}
+  - component: {fileID: -1937439834259062225}
   m_Layer: 7
   m_Name: Leader Wolf
   m_TagString: Enemy
@@ -297,12 +298,14 @@ MonoBehaviour:
   PlayerData: {fileID: 0}
   role: 0
   healthMultiplier: 1
+  fallbackHomeRadius: 4
   pack: {fileID: -2298867679096013564}
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
   EnemyIdleBase: {fileID: 11400000, guid: 82b81c892a8365441b1246466bcf4d86, type: 2}
   EnemyAttackBase: {fileID: 11400000, guid: b1e35d958b037b149ab5d2eeb8d4d2f1, type: 2}
   EnemyDeadBase: {fileID: 11400000, guid: ab8f8e04fa3ddad4a9a7e8edf1aa51c0, type: 2}
+  EnemyReturnHomeBase: {fileID: 11400000, guid: 2505ef9fd822aa94ebb4e3b8a160a6c0, type: 2}
 --- !u!114 &-2298867679096013564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +412,21 @@ MonoBehaviour:
   enemy: {fileID: 7255815159274722986}
   modules:
   - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
+--- !u!114 &-1937439834259062225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211954740449028837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b7c25c6d6a430468bd946f36102d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HomeAnchor
+  center: {x: 0, y: 0, z: 0}
+  radius: 4
+  initializeFromTransformIfUnset: 0
 --- !u!1 &7414158134763573296
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,13 +29,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
   flowerBaseProb: 0.104
   vegetationDecorVariants:
-  - {fileID: 11400000, guid: c4b2277d2543bec46a08c04f63253d2f, type: 2}
-  vegetationMaxProb: 0.836
+  - {fileID: 11400000, guid: 341d008024432b34884a54ea05576254, type: 2}
+  vegetationMaxProb: 0.286
   roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
   roadWidthMin: 3
   roadWidthMax: 5
+  maxRoadScanTiles: 4000
   gatePrefab: {fileID: 7397065028336915349, guid: e5427efef2ad1044bbc1901c69d5da92, type: 3}
-  platformGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
+  endGatePrefab: {fileID: 0}
+  RunGateOffsetTiles: {x: 0, y: -1}
   gateGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
   gateSize: 7
-  maxRoadScanTiles: 4000
+  platformGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
+  minWolfDenCount: 3
+  wolfDenMinSpacingTiles: 40
+  wolfDenPrefab: {fileID: 0}
+  wolfDenGroundTile: {fileID: 0}
+  wolfDenStampSize: 5

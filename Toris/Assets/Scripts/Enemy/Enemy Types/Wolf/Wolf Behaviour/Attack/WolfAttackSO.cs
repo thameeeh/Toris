@@ -3,9 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Attack_QuickBite", menuName = "Enemy Logic/Attack Logic/Wolf Attack QuickBite")]
 public class WolfAttackSO : AttackSOBase<Wolf>
 {
-    private Vector2 _animationDirection = Vector2.zero;
-    private int _attackTagHash = Animator.StringToHash("AttackAnimations");
-    public bool _isAttackAnimationFinished { get; set; } = false;
+    public bool isComplete {  get; private set; }
 
     private GridPathAgent _pathAgent;
 
@@ -24,7 +22,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     {
         base.DoEnterLogic();
 
-        _isAttackAnimationFinished = false;
+        isComplete = false;
     }
 
     public override void DoExitLogic()
@@ -45,38 +43,31 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         Vector2 moveDirection = Vector2.zero;
 
         if (_pathAgent != null && TileNavWorld.Instance != null)
-        {
             moveDirection = _pathAgent.GetMoveDirection(playerTransform.position);
-        }
 
         if (moveDirection.sqrMagnitude > 0.0001f)
-        {
             enemy.MoveEnemy(moveDirection * enemy.MovementSpeed);
-        }
         else
-        {
             enemy.MoveEnemy(Vector2.zero);
-        }
     }
 
     public override void DoPhysicsLogic()
     {
         base.DoPhysicsLogic();
+    }
 
-        if (_isAttackAnimationFinished) return;
+    public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
+    {
+        base.DoAnimationTriggerEventLogic(triggerType);
 
-        AnimatorStateInfo stateInfo = enemy.animator.GetCurrentAnimatorStateInfo(0);
-
-        if (stateInfo.tagHash == _attackTagHash && stateInfo.normalizedTime >= 1.0f)
+        if (triggerType == Enemy.AnimationTriggerType.Attack)
         {
-            _isAttackAnimationFinished = true;
-            enemy.animator.ResetTrigger("Attack");
+            enemy.DamagePlayer(enemy.AttackDamage);
         }
 
-        _animationDirection = enemy.PlayerTransform.position - enemy.transform.position;
-        if (_animationDirection.sqrMagnitude > 0.0001f)
+        if (triggerType == Enemy.AnimationTriggerType.AttackFinished)
         {
-            enemy.UpdateAnimationDirection(_animationDirection.normalized);
+            isComplete = true;
         }
     }
 
@@ -84,11 +75,6 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     {
         base.ResetValues();
 
-        //Debug.Log("Values have been reset");
-    }
-
-    public override void DoAnimationTriggerEventLogic(Wolf.AnimationTriggerType triggerType)
-    {
-        base.DoAnimationTriggerEventLogic(triggerType);
+        isComplete = false;
     }
 }

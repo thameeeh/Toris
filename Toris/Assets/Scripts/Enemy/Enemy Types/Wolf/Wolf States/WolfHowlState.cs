@@ -9,6 +9,19 @@ public class WolfHowlState : EnemyState<Wolf>
     {
         base.EnterState();
 
+        // decision
+        bool canHowl =
+            enemy.CanHowl &&
+            enemy.pack != null &&
+            enemy.pack.EnsureLeader(enemy) &&
+            enemy.pack.CanLeaderHowl(enemy);
+
+        if (!canHowl)
+        {
+            enemyStateMachine.ChangeState(enemy.ChaseState);
+            return;
+        }
+
         enemy.EnemyHowlBaseInstance.DoEnterLogic();
     }
 
@@ -24,6 +37,12 @@ public class WolfHowlState : EnemyState<Wolf>
         base.FrameUpdate();
 
         enemy.EnemyHowlBaseInstance.DoFrameUpdateLogic();
+
+        if (enemy.EnemyHowlBaseInstance.isComplete)
+        {
+            enemy.pack.HandleLeaderHowl(enemy);
+            enemyStateMachine.ChangeState(enemy.ChaseState);
+        }
     }
 
     public override void PhysicsUpdate()

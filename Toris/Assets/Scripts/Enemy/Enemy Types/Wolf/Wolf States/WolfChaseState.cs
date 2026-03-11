@@ -10,7 +10,6 @@ public class WolfChaseState : EnemyState<Wolf>
         base.EnterState();
 
         enemy.EnemyChaseBaseInstance.DoEnterLogic();
-        enemy.animator.Play("Run");
 
         if (enemy.CanHowl && enemy.pack != null && enemy.pack.CanLeaderHowl())
         {
@@ -39,7 +38,10 @@ public class WolfChaseState : EnemyState<Wolf>
 
         if (!enemy.IsAggroed)
         {
-            enemyStateMachine.ChangeState(enemy.IdleState);
+            if (enemy.HasHome)
+                enemyStateMachine.ChangeState(enemy.ReturnHomeState);
+            else
+                enemyStateMachine.ChangeState(enemy.IdleState);
             return;
         }
     }

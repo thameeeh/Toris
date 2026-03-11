@@ -39,11 +39,14 @@ namespace OutlandHaven.UIToolkit
             if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
             if (Registry == null) return;
 
-            SalvageRecipeSO recipe = Registry.GetSalvageRecipeFor(slot.HeldItem.BaseItem);
+            // Cache item type for safety
+            InventoryItemSO itemType = slot.HeldItem.BaseItem;
+
+            SalvageRecipeSO recipe = Registry.GetSalvageRecipeFor(itemType);
             if (recipe == null)
             {
 #if UNITY_EDITOR
-                Debug.LogWarning($"Salvage failed: No recipe found for {slot.HeldItem.BaseItem.ItemName}.");
+                Debug.LogWarning($"Salvage failed: No recipe found for {itemType.ItemName}.");
 #endif
                 return;
             }
@@ -57,7 +60,7 @@ namespace OutlandHaven.UIToolkit
                 return;
             }
 
-            bool removed = SessionData.PlayerInventory.RemoveItem(new ItemInstance(slot.HeldItem.BaseItem), 1);
+            bool removed = SessionData.PlayerInventory.RemoveItem(new ItemInstance(itemType), 1);
             if (!removed)
             {
 #if UNITY_EDITOR
@@ -74,7 +77,7 @@ namespace OutlandHaven.UIToolkit
                     InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
                 }
 #if UNITY_EDITOR
-                Debug.Log($"Salvaged {slot.HeldItem.BaseItem.ItemName} for {recipe.GoldYield} gold.");
+                Debug.Log($"Salvaged {itemType.ItemName} for {recipe.GoldYield} gold.");
 #endif
             }
             else if (salvageType == SalvageType.Material)
@@ -92,7 +95,7 @@ namespace OutlandHaven.UIToolkit
                     }
                 }
 #if UNITY_EDITOR
-                Debug.Log($"Salvaged {slot.HeldItem.BaseItem.ItemName} for materials.");
+                Debug.Log($"Salvaged {itemType.ItemName} for materials.");
 #endif
             }
 

@@ -8,6 +8,7 @@ namespace OutlandHaven.UIToolkit
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
         private CraftingRegistrySO _registry;
+        private GameSessionSO _gameSession;
 
         private VisualElement _inputSlotContainer;
         private InventorySlotView _inputSlotView;
@@ -22,12 +23,13 @@ namespace OutlandHaven.UIToolkit
 
         private bool _eventsBound = false;
 
-        public SalvageSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingRegistrySO registry)
+        public SalvageSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingRegistrySO registry, GameSessionSO gameSession)
             : base(topElement)
         {
             _slotTemplate = slotTemplate;
             _uiInventoryEvents = uiInventoryEvents;
             _registry = registry;
+            _gameSession = gameSession;
         }
 
         protected override void SetVisualElements()
@@ -98,11 +100,16 @@ namespace OutlandHaven.UIToolkit
 
         private void HandleItemClicked(InventorySlot slot)
         {
-            // Set the clicked item into the slot visually
-            _currentSlotData = slot;
+            if (slot == null || slot.IsEmpty) return;
+
+            // Set the clicked item into a proxy slot visually
+            InventorySlot proxySlot = new InventorySlot();
+            proxySlot.SetItem(new ItemInstance(slot.HeldItem.BaseItem), 1);
+
+            _currentSlotData = proxySlot;
 
             // To display correctly in the visual slot view which might expect an InventorySlot
-            _inputSlotView?.Update(slot);
+            _inputSlotView?.Update(proxySlot);
 
             UpdateYieldVisuals();
         }
@@ -131,8 +138,21 @@ namespace OutlandHaven.UIToolkit
 
             if (recipe != null)
             {
+                // Check if player actually has the item to salvage
+                bool canSalvage = false;
+                if (_gameSession != null && _gameSession.PlayerInventory != null)
+                {
+                    int totalItems = 0;
+                    foreach(var slot in _gameSession.PlayerInventory.Slots)
+                    {
+                        if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(_currentSlotData.HeldItem.BaseItem)))
+                            totalItems += slot.Count;
+                    }
+                    canSalvage = totalItems > 0;
+                }
+
                 if (_goldYieldField != null) _goldYieldField.value = recipe.GoldYield.ToString();
-                if (_btnGetGold != null) _btnGetGold.SetEnabled(recipe.GoldYield > 0);
+                if (_btnGetGold != null) _btnGetGold.SetEnabled(canSalvage && recipe.GoldYield > 0);
 
                 if (recipe.MaterialYields.Count > 0)
                 {
@@ -140,7 +160,7 @@ namespace OutlandHaven.UIToolkit
                     InventorySlot dummySlot = new InventorySlot();
                     dummySlot.SetItem(new ItemInstance(recipe.MaterialYields[0].Material), recipe.MaterialYields[0].Quantity);
                     _itemYieldView?.Update(dummySlot);
-                    if (_btnGetItem != null) _btnGetItem.SetEnabled(true);
+                    if (_btnGetItem != null) _btnGetItem.SetEnabled(canSalvage);
                 }
                 else
                 {

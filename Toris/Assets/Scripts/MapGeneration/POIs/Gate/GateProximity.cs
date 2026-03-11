@@ -9,13 +9,11 @@ public class GateProximity : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var pi = other.GetComponent<PlayerInteractor>();
-        if (pi != null) pi.SetCurrent(_interactable);
+        if (other.TryGetComponent<PlayerInteractor>(out var pi)) pi.SetCurrent(_interactable);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        var pi = other.GetComponent<PlayerInteractor>();
-        if (pi != null) pi.ClearCurrent(_interactable);
+        if (other.TryGetComponent<PlayerInteractor>(out var pi)) pi.ClearCurrent(_interactable);
     }
 }

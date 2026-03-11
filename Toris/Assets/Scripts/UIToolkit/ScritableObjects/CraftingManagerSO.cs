@@ -77,11 +77,12 @@ namespace OutlandHaven.UIToolkit
             {
                 bool removedSlot2 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item2Type), slot2Req);
                 if (removedSlot2)
-                {
+                {Debug.Log("Craft Packt has been made");
                     // Add output to player inventory
                     bool added = SessionData.PlayerInventory.AddItem(new ItemInstance(recipe.OutputItem), 1);
                     if (added)
                     {
+                        
                         // Deduct gold
                         SessionData.PlayerData.ModifyGold(-recipe.GoldCost);
                         InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);

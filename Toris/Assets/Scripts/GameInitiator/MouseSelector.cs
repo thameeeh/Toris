@@ -24,18 +24,11 @@ public class MouseSelector : MonoBehaviour
 
         if(Mouse.current.rightButton.wasPressedThisFrame)
         {
-            Debug.Log("Right Clicked");
-
             Vector2 mousePosition = Mouse.current.position.ReadValue();
 
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(mousePosition);
 
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-
-            if(hit.collider != null)
-            {
-                Debug.Log("Clicked on: " + hit.collider.gameObject.name);
-            }
         }
 
     }

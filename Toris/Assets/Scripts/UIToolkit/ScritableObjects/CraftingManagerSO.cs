@@ -52,18 +52,26 @@ namespace OutlandHaven.UIToolkit
                 return;
             }
 
+            
+
+            // Capture item references before potentially clearing slots. 
+            // If slot1 and slot2 refer to the same slot, removing slot1 first could clear the slot, invalidating slot2.
+            InventoryItemSO item1 = slot1.HeldItem.BaseItem;
+            InventoryItemSO item2 = slot2.HeldItem.BaseItem;
+
             // Attempt to remove inputs from player inventory
             // Note: Since we are referencing the inventory slots directly, removing 1 quantity of each.
-            bool removedSlot1 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(slot1.HeldItem.BaseItem), 1);
+            bool removedSlot1 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item1), 1);
             if (removedSlot1)
             {
-                bool removedSlot2 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(slot2.HeldItem.BaseItem), 1);
+                bool removedSlot2 = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item2), 1);
                 if (removedSlot2)
-                {
+                {Debug.Log("Craft Packt has been made");
                     // Add output to player inventory
                     bool added = SessionData.PlayerInventory.AddItem(new ItemInstance(recipe.OutputItem), 1);
                     if (added)
                     {
+                        
                         // Deduct gold
                         SessionData.PlayerData.ModifyGold(-recipe.GoldCost);
                         InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
@@ -76,7 +84,7 @@ namespace OutlandHaven.UIToolkit
                     else
                     {
                         // Rollback slot 2 removal
-                        SessionData.PlayerInventory.AddItem(new ItemInstance(slot2.HeldItem.BaseItem), 1);
+                        SessionData.PlayerInventory.AddItem(new ItemInstance(item2), 1);
 #if UNITY_EDITOR
                         Debug.LogWarning("Forge failed: Inventory full. Refunded ingredients.");
 #endif
@@ -84,7 +92,7 @@ namespace OutlandHaven.UIToolkit
                 }
 
                 // Rollback slot 1 removal
-                SessionData.PlayerInventory.AddItem(new ItemInstance(slot1.HeldItem.BaseItem), 1);
+                SessionData.PlayerInventory.AddItem(new ItemInstance(item1), 1);
             }
         }
 

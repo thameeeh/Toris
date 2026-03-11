@@ -71,10 +71,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
             rb = GetComponent<Rigidbody2D>();
         }
         _player = GameObject.FindGameObjectWithTag("Player");
+#if UNITY_EDITOR
         if (_player == null) Debug.Log("_player Null");
-        _playerDamageReceiver = _player.GetComponent<PlayerDamageReceiver>();
-        if (!playerTransform)
-            playerTransform = _player.transform;
+#endif
+        if (_player != null)
+        {
+            _player.TryGetComponent(out _playerDamageReceiver);
+            if (!playerTransform)
+                playerTransform = _player.transform;
+        }
     }
 
     protected virtual void Update()

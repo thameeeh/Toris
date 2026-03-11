@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Crafting Registry SO
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingRegistrySO
   CraftingRecipes:
-  - {fileID: 0}
-  SalvageRecipes: []
+  - {fileID: 11400000, guid: 1c16256eb7753e24798f8cbc63cdb9d1, type: 2}
+  SalvageRecipes:
+  - {fileID: 11400000, guid: 03e18ee9c04673e4caeb8e8335553380, type: 2}

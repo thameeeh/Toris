@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aaa93a8f10600442837f5014f9a6be8, type: 3}
   m_Name: Salvage Manager SO
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SalvageManagerSO
-  SessionData: {fileID: 0}
-  InventoryEvents: {fileID: 0}
-  Registry: {fileID: 0}
+  SessionData: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  InventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  Registry: {fileID: 11400000, guid: cddc7e31749a36546ad0feb99cf23c6f, type: 2}

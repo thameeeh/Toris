@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingManagerSO
   SessionData: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   InventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
-  Registry: {fileID: 0}
+  Registry: {fileID: 11400000, guid: cddc7e31749a36546ad0feb99cf23c6f, type: 2}

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 291ec33f3c14b584ea9e09b27600d7a1, type: 3}
   m_Name: Salvage Recipe SO
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SalvageRecipeSO
-  TargetItem: {fileID: 0}
-  GoldYield: 0
-  MaterialYields: []
+  TargetItem: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
+  GoldYield: 20
+  MaterialYields:
+  - Material: {fileID: 11400000, guid: 4ce328c625f9b3f4dafcbbb70a9813fd, type: 2}
+    Quantity: 1

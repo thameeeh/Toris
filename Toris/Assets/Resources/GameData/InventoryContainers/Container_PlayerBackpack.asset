@@ -30,15 +30,15 @@ MonoBehaviour:
       Durability: 1
     Count: 6
   - HeldItem:
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: e043d0fee05a2724e8b9d65f014132c9, type: 2}
       CurrentLevel: 0
       Durability: 0
-    Count: 0
+    Count: 5
   - HeldItem:
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
       CurrentLevel: 0
       Durability: 0
-    Count: 0
+    Count: 3
   - HeldItem:
       BaseItem: {fileID: 0}
       CurrentLevel: 0

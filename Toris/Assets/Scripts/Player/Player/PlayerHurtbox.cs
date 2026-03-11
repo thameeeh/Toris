@@ -31,7 +31,14 @@ public class PlayerHurtbox : MonoBehaviour
             // Generic fallback
             Vector2 origin = other.bounds.ClosestPoint(transform.position);
             Vector2 dir = (Vector2)(transform.position - (Vector3)origin);
-            hit = new HitData(origin, dir, dmg: 10f, kb: 2f, src: other.gameObject);
+
+            // These fallback magic numbers (10f dmg, 2f kb) provide a baseline
+            // generic damage event when the damaging entity does not provide explicit stats
+            // via the IHitPayloadProvider interface.
+            float fallbackDamage = 10f;
+            float fallbackKnockback = 2f;
+
+            hit = new HitData(origin, dir, dmg: fallbackDamage, kb: fallbackKnockback, src: other.gameObject);
         }
 
         _receiver.ReceiveHit(hit);

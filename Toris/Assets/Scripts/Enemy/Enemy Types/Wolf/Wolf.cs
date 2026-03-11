@@ -13,8 +13,8 @@ public enum WolfRole { Leader, Minion }
 public class Wolf : Enemy
 {
     [Space][Space][Header("Stats")]
-    public float AttackDamage = 20;
-    public float MovementSpeed = 2;
+    public float AttackDamage = 20f;
+    public float MovementSpeed = 2f;
 
     [SerializeField]
     private PlayerDataSO PlayerData;
@@ -149,6 +149,6 @@ public class Wolf : Enemy
 
     public void DamagePlayer(float damage) {
         base.DamagePlayer(damage, _hitData);
-        PlayerData.ModifyHealth(-20);
+        PlayerData.ModifyHealth(-AttackDamage);
     }
 }

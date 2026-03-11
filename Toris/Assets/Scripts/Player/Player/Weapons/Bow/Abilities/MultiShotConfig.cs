@@ -50,11 +50,14 @@ public class MultiShotConfig : PlayerAbilitySO
         else
         {
             //Debug.LogWarning("[MultiShot] BowConfig is null on bow, using fallback ShotStats.");
+            const float FALLBACK_SPEED = 10f;
+            const float FALLBACK_DAMAGE = 10f;
+
             shotStats = new BowSO.ShotStats
             {
                 power = 1f,
-                speed = 10f,
-                damage = 10f,
+                speed = FALLBACK_SPEED,
+                damage = FALLBACK_DAMAGE,
                 spreadDeg = 0f
             };
         }

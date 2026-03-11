@@ -17,11 +17,14 @@ public static class DenFeatureBuilder
         int stampSize = Mathf.Max(1, bp.wolfDenStampSize);
 
         Vector2Int origin = ctx.ActiveBiome.OriginTile;
-        int avoidOriginRadius = 18;
+        const int AVOID_ORIGIN_RADIUS = 18;
+        int avoidOriginRadius = AVOID_ORIGIN_RADIUS;
 
         var chosen = new List<Vector2Int>(targetMin);
 
-        int attempts = Mathf.Max(200, targetMin * 250);
+        const int BASE_ATTEMPTS = 200;
+        const int ATTEMPTS_PER_TARGET = 250;
+        int attempts = Mathf.Max(BASE_ATTEMPTS, targetMin * ATTEMPTS_PER_TARGET);
 
         float radius = ctx.ActiveBiome.RadiusTiles * 0.90f;
 

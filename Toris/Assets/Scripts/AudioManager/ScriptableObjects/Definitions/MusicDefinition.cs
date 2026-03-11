@@ -4,6 +4,9 @@ using UnityEngine.Audio;
 [CreateAssetMenu(menuName = "Audio/Music Definition", fileName = "MusicDefinition")]
 public sealed class MusicDefinition : ScriptableObject
 {
+    // Note: The 'id' field is private and serialized. For testing purposes in MusicLibraryTests,
+    // this field is injected using C# Reflection since we don't have full Unity Editor
+    // serialization mocking set up for these tests.
     [SerializeField] private string id;
     [SerializeField] private AudioClip clip;
     [SerializeField] private AudioMixerGroup outputMixerGroup;

@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Audio/Music Library", fileName = "MusicLibrary")]
 public sealed class MusicLibrary : ScriptableObject
 {
+    // Note: The 'definitions' array is private and serialized. For testing purposes
+    // in MusicLibraryTests, this array is injected using C# Reflection since we don't
+    // have full Unity Editor serialization mocking set up.
     [SerializeField] private MusicDefinition[] definitions;
 
     private readonly Dictionary<string, MusicDefinition> idToDefinition = new Dictionary<string, MusicDefinition>();

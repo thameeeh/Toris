@@ -357,9 +357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
   repathInterval: 0.6
-  maxPathRange: 50
-  waypointReachThreshold: 0.2
-  targetChangeThreshold: 1
+  maxPathRange: 20
+  waypointReachThreshold: 0.35
+  targetChangeThreshold: 0.75
   allowDirectFallbackWhenNoPath: 0
 --- !u!58 &2695960224398103068
 CircleCollider2D:

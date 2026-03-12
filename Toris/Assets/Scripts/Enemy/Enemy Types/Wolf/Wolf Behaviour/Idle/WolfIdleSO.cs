@@ -3,7 +3,27 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Wolf Idle Wander")]
 public class WolfIdleSO : IdleSOBase<Wolf>
 {
-    [Header("Idle Timing")]
+    private enum IdleMode
+    {
+        StandRest,
+        PatrolHome,
+        Regroup
+    }
+
+    [Header("Idle Mode Timing")]
+    [SerializeField] private float decisionInterval = 0.1f;
+    [SerializeField] private float leaderRestDurationMin = 1.0f;
+    [SerializeField] private float leaderRestDurationMax = 2.0f;
+    [SerializeField] private float minionRestDurationMin = 1.5f;
+    [SerializeField] private float minionRestDurationMax = 3.0f;
+
+    [Header("Idle Mode Weights")]
+    [Range(0f, 1f)]
+    [SerializeField] private float leaderRestChance = 0.35f;
+    [Range(0f, 1f)]
+    [SerializeField] private float minionRestChance = 0.65f;
+
+    [Header("Patrol Timing")]
     [SerializeField] private float wanderInterval = 3f;
     [SerializeField] private float idlePauseDuration = 0.35f;
 
@@ -12,6 +32,11 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     [SerializeField] private float outwardPadding = 0.5f;
     [SerializeField] private float returnToHomeThreshold = 0.25f;
     [SerializeField] private int maxCandidateChecks = 12;
+
+    [Header("Regroup")]
+    [SerializeField] private float regroupThresholdPadding = 0.5f;
+    [SerializeField] private float regroupArrivePadding = 0.25f;
+    [SerializeField] private float regroupHomeRadiusUsage = 0.55f;
 
     [Header("Target Filtering")]
     [SerializeField] private float minTargetDistanceFromCurrent = 1.25f;
@@ -26,12 +51,17 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     [SerializeField] private float minMoveDirectionSqr = 0.0001f;
 
     private float movementSpeed;
-    private float timer;
+    private float patrolTimer;
     private float idlePauseTimer;
+    private float modeTimer;
+    private float decisionTimer;
+
     private Vector2 wanderPoint;
     private Vector2 currentMoveDir;
     private GridPathAgent pathAgent;
+
     private bool isPausedAtPoint;
+    private IdleMode currentMode;
 
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
@@ -43,11 +73,15 @@ public class WolfIdleSO : IdleSOBase<Wolf>
             Debug.LogWarning($"[WolfIdleSO] No GridPathAgent on {enemy.name}. Idle wander will not use pathfinding.");
         }
 
-        timer = wanderInterval;
+        patrolTimer = wanderInterval;
         idlePauseTimer = 0f;
+        modeTimer = 0f;
+        decisionTimer = 0f;
+
         wanderPoint = enemy.transform.position;
         currentMoveDir = Vector2.zero;
         isPausedAtPoint = false;
+        currentMode = IdleMode.StandRest;
     }
 
     public override void DoEnterLogic()
@@ -55,11 +89,16 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         base.DoEnterLogic();
 
         movementSpeed = enemy.MovementSpeed;
-        timer = wanderInterval;
+        patrolTimer = wanderInterval;
         idlePauseTimer = 0f;
+        modeTimer = 0f;
+        decisionTimer = 0f;
+
         wanderPoint = enemy.transform.position;
         currentMoveDir = Vector2.zero;
         isPausedAtPoint = false;
+
+        ChooseNewMode(force: true);
 
         enemy.animator.SetBool("IsMoving", false);
     }
@@ -70,8 +109,11 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 
         enemy.animator.SetBool("IsMoving", false);
         enemy.MoveEnemy(Vector2.zero);
+
         currentMoveDir = Vector2.zero;
         idlePauseTimer = 0f;
+        modeTimer = 0f;
+        decisionTimer = 0f;
         isPausedAtPoint = false;
     }
 
@@ -79,21 +121,67 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
+        decisionTimer -= Time.deltaTime;
+        modeTimer -= Time.deltaTime;
+
+        if (currentMode != IdleMode.Regroup && ShouldRegroup())
+        {
+            EnterRegroupMode();
+            return;
+        }
+
+        if (currentMode == IdleMode.StandRest)
+        {
+            enemy.animator.SetBool("IsMoving", false);
+
+            if (modeTimer <= 0f && decisionTimer <= 0f)
+            {
+                ChooseNewMode(force: false);
+            }
+
+            return;
+        }
+
+        if (currentMode == IdleMode.Regroup)
+        {
+            if (HasFinishedRegroup())
+            {
+                ChooseNewMode(force: true);
+                return;
+            }
+
+            float sqrDistToRegroupTarget = (wanderPoint - (Vector2)enemy.transform.position).sqrMagnitude;
+            if (sqrDistToRegroupTarget <= wanderPointReachSqr)
+            {
+                wanderPoint = GetRegroupTarget();
+            }
+
+            return;
+        }
+
         if (isPausedAtPoint)
         {
             idlePauseTimer -= Time.deltaTime;
 
             if (idlePauseTimer <= 0f)
             {
-                wanderPoint = GetNextIdleTarget();
-                timer = 0f;
-                isPausedAtPoint = false;
+                if (decisionTimer <= 0f)
+                {
+                    ChooseNewMode(force: false);
+                }
+
+                if (currentMode == IdleMode.PatrolHome)
+                {
+                    wanderPoint = GetNextIdleTarget();
+                    patrolTimer = 0f;
+                    isPausedAtPoint = false;
+                }
             }
 
             return;
         }
 
-        timer += Time.deltaTime;
+        patrolTimer += Time.deltaTime;
 
         Vector2 currentPos = enemy.transform.position;
         float sqrDistToWander = (wanderPoint - currentPos).sqrMagnitude;
@@ -102,13 +190,19 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         {
             isPausedAtPoint = true;
             idlePauseTimer = idlePauseDuration;
+            currentMoveDir = Vector2.zero;
             return;
         }
 
-        if (timer >= wanderInterval)
+        if (patrolTimer >= wanderInterval)
         {
             wanderPoint = GetNextIdleTarget();
-            timer = 0f;
+            patrolTimer = 0f;
+        }
+
+        if (modeTimer <= 0f && decisionTimer <= 0f)
+        {
+            ChooseNewMode(force: false);
         }
     }
 
@@ -116,7 +210,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.DoPhysicsLogic();
 
-        if (isPausedAtPoint)
+        if (currentMode == IdleMode.StandRest || isPausedAtPoint)
         {
             currentMoveDir = Vector2.zero;
             enemy.MoveEnemy(Vector2.zero);
@@ -166,11 +260,115 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.ResetValues();
 
-        timer = 0f;
+        patrolTimer = 0f;
         idlePauseTimer = 0f;
+        modeTimer = 0f;
+        decisionTimer = 0f;
+
         currentMoveDir = Vector2.zero;
         wanderPoint = enemy.transform.position;
         isPausedAtPoint = false;
+        currentMode = IdleMode.StandRest;
+    }
+
+    private void ChooseNewMode(bool force)
+    {
+        decisionTimer = decisionInterval;
+
+        if (ShouldRegroup())
+        {
+            EnterRegroupMode();
+            return;
+        }
+
+        float restChance = enemy.role == WolfRole.Leader ? leaderRestChance : minionRestChance;
+
+        IdleMode nextMode = Random.value < restChance
+            ? IdleMode.StandRest
+            : IdleMode.PatrolHome;
+
+        if (!force && nextMode == currentMode)
+        {
+            modeTimer = GetModeDuration(currentMode);
+            return;
+        }
+
+        currentMode = nextMode;
+        modeTimer = GetModeDuration(currentMode);
+
+        if (currentMode == IdleMode.StandRest)
+        {
+            isPausedAtPoint = false;
+            currentMoveDir = Vector2.zero;
+            enemy.MoveEnemy(Vector2.zero);
+            enemy.animator.SetBool("IsMoving", false);
+        }
+        else
+        {
+            isPausedAtPoint = false;
+            wanderPoint = GetNextIdleTarget();
+            patrolTimer = 0f;
+        }
+    }
+
+    private void EnterRegroupMode()
+    {
+        currentMode = IdleMode.Regroup;
+        modeTimer = wanderInterval;
+        isPausedAtPoint = false;
+        currentMoveDir = Vector2.zero;
+        wanderPoint = GetRegroupTarget();
+        patrolTimer = 0f;
+    }
+
+    private float GetModeDuration(IdleMode mode)
+    {
+        switch (mode)
+        {
+            case IdleMode.StandRest:
+                if (enemy.role == WolfRole.Leader)
+                    return Random.Range(leaderRestDurationMin, leaderRestDurationMax);
+
+                return Random.Range(minionRestDurationMin, minionRestDurationMax);
+
+            case IdleMode.PatrolHome:
+                return wanderInterval;
+
+            case IdleMode.Regroup:
+                return wanderInterval;
+
+            default:
+                return wanderInterval;
+        }
+    }
+
+    private bool ShouldRegroup()
+    {
+        if (!enemy.HasHome)
+            return false;
+
+        float regroupThreshold = enemy.HomeRadius + regroupThresholdPadding;
+        float distanceToHome = Vector2.Distance(enemy.transform.position, enemy.HomeCenter);
+
+        return distanceToHome > regroupThreshold;
+    }
+
+    private bool HasFinishedRegroup()
+    {
+        if (!enemy.HasHome)
+            return true;
+
+        float arriveDistance = Mathf.Max(0.1f, enemy.HomeRadius - regroupArrivePadding);
+        float distanceToHome = Vector2.Distance(enemy.transform.position, enemy.HomeCenter);
+
+        return distanceToHome <= arriveDistance;
+    }
+
+    private Vector2 GetRegroupTarget()
+    {
+        Vector2 homeCenter = enemy.HomeCenter;
+        float radius = Mathf.Max(0.1f, enemy.HomeRadius * regroupHomeRadiusUsage);
+        return GetWalkablePointNearOrigin(homeCenter, radius);
     }
 
     private Vector2 GetNextIdleTarget()

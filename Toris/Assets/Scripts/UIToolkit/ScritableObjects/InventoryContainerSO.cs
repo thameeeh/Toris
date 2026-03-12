@@ -68,7 +68,6 @@ namespace OutlandHaven.UIToolkit
                     }
                 }
             }
-
             return false; // Could not add all items (Inventory Full)
         }
 
@@ -109,7 +108,6 @@ namespace OutlandHaven.UIToolkit
                     }
                 }
             }
-
             return false; // Should not reach here based on first pass check
         }
     }

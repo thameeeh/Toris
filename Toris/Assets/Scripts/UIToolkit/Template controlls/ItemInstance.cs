@@ -16,6 +16,12 @@ namespace OutlandHaven.UIToolkit
 
         // You can add more instance-specific stats here later
 
+        public ItemInstance()
+        {
+            CurrentLevel = 1;
+            Durability = 100f;
+        }
+
         public ItemInstance(InventoryItemSO baseItem)
         {
             BaseItem = baseItem;

@@ -41,10 +41,11 @@ Controllers act as the bridge between Unity's Component system (MonoBehaviours, 
 
 Their workflow is generally:
 1.  Receive dependencies via the Inspector (e.g., `VisualTreeAsset` for the main template and sub-templates, Data ScriptableObjects, Event ScriptableObjects).
-2.  In `OnEnable()`, instantiate the main `VisualTreeAsset` into a `TemplateContainer`.
-3.  Instantiate the specific `GameView` class, passing in the `TemplateContainer` and other necessary data.
-4.  Find the `UIManager` in the scene.
-5.  Call `_uiManager.RegisterView(_view, ScreenZone.TargetZone)`.
+2.  In `OnEnable()`, validate the required templates or references.
+3.  In `Start()`, instantiate the main `VisualTreeAsset` into a `TemplateContainer`.
+4.  Instantiate the specific `GameView` class, passing in the `TemplateContainer` and other necessary data.
+5.  Find the `UIManager` in the scene (typically in `Awake()`).
+6.  Call `_uiManager.RegisterView(_view, ScreenZone.TargetZone)`.
 
 ### 5. Event System (`UIEventsSO.cs`)
 
@@ -63,3 +64,11 @@ When working with or extending the UI system, adhere to the following rules:
 2.  **Use `VisualTreeAsset`:** Controllers must require a `VisualTreeAsset` (UXML) via the Inspector. Instantiate this asset (`asset.Instantiate()`), pass the resulting `TemplateContainer` instance to the View, and register the view with the `UIManager` specifying the appropriate `ScreenZone`.
 3.  **Prefer USS over C# Inline Styles:** When modifying UI Toolkit layouts, always prefer adjusting the UXML or USS files for layout, sizing, and styling. **Avoid using C# inline styles** (e.g., `element.style.width = ...`). C# inline styles override all other stylesheets and can cause unintended project-wide regressions or make maintenance difficult. Handle state changes (like showing/hiding) via the provided View methods (`Show()` / `Hide()`) which modify `display` safely, or by toggling USS classes.
 4.  **Decouple via Events:** Do not have Views or Controllers directly reference each other to open screens. Always use the `UIEventsSO` to request opening or closing screens.
+
+---
+
+## Recommendations
+
+*   **View Construction & Logic:** Maintain the principle that logic should be separated from presentation. Views should solely update visuals based on events and shouldn't handle game state changes like directly modifying item counts in the inventory container.
+*   **Controller Flow Consistency:** All controllers should execute `_uiManager.RegisterView` inside `Start()` instead of `OnEnable()` to avoid race conditions with the `UIManager`'s own `Awake()` method and zone finding logic.
+*   **Cleanup and Event Management:** All views and controllers should ensure proper event cleanup. When `Hide()` is called on a view, it should unbind visual-specific events to prevent memory leaks if the controller disables.

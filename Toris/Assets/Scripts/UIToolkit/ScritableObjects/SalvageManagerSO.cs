@@ -33,6 +33,25 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
+        public bool CanSalvage(InventoryItemSO itemType)
+        {
+            if (itemType == null) return false;
+            if (SessionData == null || SessionData.PlayerInventory == null) return false;
+            if (Registry == null) return false;
+
+            SalvageRecipeSO recipe = Registry.GetSalvageRecipeFor(itemType);
+            if (recipe == null) return false;
+
+            int totalItems = 0;
+            foreach (var slot in SessionData.PlayerInventory.Slots)
+            {
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(itemType)))
+                    totalItems += slot.Count;
+            }
+
+            return totalItems > 0;
+        }
+
         private void HandleRequestSalvage(InventorySlot slot, SalvageType salvageType)
         {
             if (slot == null || slot.IsEmpty) return;

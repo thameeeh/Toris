@@ -27,6 +27,64 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
+        public bool CanForge(CraftingRecipeSO recipe, InventorySlot slot1, InventorySlot slot2, out int slot1Req, out int slot2Req)
+        {
+            slot1Req = 0;
+            slot2Req = 0;
+
+            if (recipe == null || slot1 == null || slot1.IsEmpty || slot2 == null || slot2.IsEmpty) return false;
+
+            InventoryItemSO item1Type = slot1.HeldItem.BaseItem;
+            InventoryItemSO item2Type = slot2.HeldItem.BaseItem;
+
+            // Determine required quantities based on the recipe before early returns
+            slot1Req = 1;
+            slot2Req = 1;
+
+            if (recipe.BaseItemRequirement == item1Type)
+            {
+                var matReq = recipe.MaterialRequirements.Find(m => m.Material == item2Type);
+                if (matReq.Material != null) slot2Req = matReq.Quantity;
+            }
+            else
+            {
+                var matReq = recipe.MaterialRequirements.Find(m => m.Material == item1Type);
+                if (matReq.Material != null) slot1Req = matReq.Quantity;
+            }
+
+            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return false;
+
+            // Check if player has enough gold
+            bool hasGold = SessionData.PlayerData.Gold >= recipe.GoldCost;
+            if (!hasGold) return false;
+
+            // Count total available for slot 1 item
+            int totalItem1 = 0;
+            foreach (var s in SessionData.PlayerInventory.Slots)
+            {
+                if (!s.IsEmpty && s.HeldItem.IsStackableWith(new ItemInstance(item1Type)))
+                    totalItem1 += s.Count;
+            }
+
+            // Count total available for slot 2 item
+            int totalItem2 = 0;
+            foreach (var s in SessionData.PlayerInventory.Slots)
+            {
+                if (!s.IsEmpty && s.HeldItem.IsStackableWith(new ItemInstance(item2Type)))
+                    totalItem2 += s.Count;
+            }
+
+            // If items are the same base type, we need enough for both combined
+            if (item1Type == item2Type)
+            {
+                return totalItem1 >= (slot1Req + slot2Req);
+            }
+            else
+            {
+                return totalItem1 >= slot1Req && totalItem2 >= slot2Req;
+            }
+        }
+
         private void HandleRequestForge(InventorySlot slot1, InventorySlot slot2)
         {
             if (slot1 == null || slot1.IsEmpty || slot2 == null || slot2.IsEmpty) return;
@@ -113,7 +171,7 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private CraftingRecipeSO GetMatchingRecipe(InventoryItemSO itemA, InventoryItemSO itemB)
+        public CraftingRecipeSO GetMatchingRecipe(InventoryItemSO itemA, InventoryItemSO itemB)
         {
             foreach (var recipe in Registry.CraftingRecipes)
             {

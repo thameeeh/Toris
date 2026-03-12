@@ -12,6 +12,36 @@ namespace OutlandHaven.UIToolkit
         public ScreenType AssociatedView = ScreenType.None;
 
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (Slots == null) return;
+
+            foreach (var slot in Slots)
+            {
+                if (slot == null) continue;
+
+                if (slot.HeldItem != null && slot.HeldItem.BaseItem != null)
+                {
+                    // If an item is placed in the slot, ensure defaults are set if currently 0
+                    if (slot.Count <= 0) slot.Count = 1;
+                    if (slot.HeldItem.CurrentLevel <= 0) slot.HeldItem.CurrentLevel = 1;
+                    if (slot.HeldItem.Durability <= 0) slot.HeldItem.Durability = 100f;
+                }
+                else
+                {
+                    // If the slot is empty, ensure values are 0
+                    slot.Count = 0;
+                    if (slot.HeldItem != null)
+                    {
+                        slot.HeldItem.CurrentLevel = 0;
+                        slot.HeldItem.Durability = 0f;
+                    }
+                }
+            }
+        }
+#endif
+
         // Initialize list in editor or runtime
         private void OnEnable()
         {

@@ -18,7 +18,7 @@ MonoBehaviour:
       BaseItem: {fileID: 11400000, guid: f553aed2dd585b64baf66153c26ec3b0, type: 2}
       CurrentLevel: 1
       Durability: 1
-    Count: 12
+    Count: 15
   - HeldItem:
       BaseItem: {fileID: 11400000, guid: 4ce328c625f9b3f4dafcbbb70a9813fd, type: 2}
       CurrentLevel: 1
@@ -28,17 +28,17 @@ MonoBehaviour:
       BaseItem: {fileID: 11400000, guid: e043d0fee05a2724e8b9d65f014132c9, type: 2}
       CurrentLevel: 1
       Durability: 1
-    Count: 6
+    Count: 3
   - HeldItem:
       BaseItem: {fileID: 11400000, guid: e043d0fee05a2724e8b9d65f014132c9, type: 2}
       CurrentLevel: 0
       Durability: 0
     Count: 5
   - HeldItem:
-      BaseItem: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
+      BaseItem: {fileID: 0}
       CurrentLevel: 0
       Durability: 0
-    Count: 3
+    Count: 0
   - HeldItem:
       BaseItem: {fileID: 0}
       CurrentLevel: 0

@@ -75,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2765215845804869651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a3babd6389c969458a70bb8ba0d89c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 67dcbc586f021f54db3ff07ae613f143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
   _smithMainTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}

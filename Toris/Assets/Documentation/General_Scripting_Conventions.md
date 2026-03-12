@@ -35,7 +35,7 @@ Controllers act as the bridge between Unity's lifecycle/scene and the pure C# UI
     *   Instantiates the HUD template container.
     *   Constructs the `HUDView` with dependencies.
     *   Initializes the view and registers it with the `UIManager` (`ScreenZone.HUD`).
-    *   *Note:* Initialization and registration happen in `OnEnable` here, unlike other controllers which use `Start()`. This might be an inconsistency to review if HUD needs to wait for other systems.
+    *   *Why here?* Delaying instantiation to `Start()` ensures `UIManager` has fully executed its `Awake()` and is ready to accept registrations.
 
 #### `InventoryScreenController` (`Toris/Assets/Scripts/UIToolkit/UI/Controllers/InventoryScreenController.cs`)
 *   **`Awake()`**:
@@ -66,25 +66,7 @@ Controllers act as the bridge between Unity's lifecycle/scene and the pure C# UI
     *   Subscribes to button `clicked` events.
     *   *Note:* It lacks `OnDisable` for unsubscription, which is generally safe for Main Menu but good practice to include.
 
-### 2. Legacy / Game Initiator UIs (UGUI / Hybrid)
-
-#### `MainMenuUI` (`Toris/Assets/Scripts/GameInitiator/MainMenuUI.cs`)
-*   **`OnEnable()`**:
-    *   Retrieves `UIDocument` if null.
-    *   Queries for interactive buttons (`START_BTN_NAME`, `SETTINGS_BTN_NAME`, `QUIT_BTN_NAME`).
-    *   Subscribes to button `clicked` events.
-    *   *Why here?* Setup and event binding happen simultaneously when the menu becomes active.
-
-#### `PauseMenuUI` (`Toris/Assets/Scripts/GameInitiator/PauseMenuUI.cs`)
-*   **`OnEnable()`**:
-    *   Retrieves the `UIDocument` component.
-*   **`Start()`**:
-    *   Retrieves the root `VisualElement`.
-    *   Queries for buttons (`RESUME_BTN_NAME`, `QUIT_BTN_NAME`).
-    *   Validates and subscribes to button `clicked` events.
-    *   *Note:* It queries elements in `Start()` but unsubscribes in `OnDisable()`. Querying elements in `OnEnable` (like `MainMenuUI`) is usually preferable if the UI might be toggled on/off without being destroyed.
-
-### 3. ScriptableObjects (Data & Events)
+### 2. ScriptableObjects (Data & Events)
 
 #### `InventoryContainerSO` (`Toris/Assets/Scripts/UIToolkit/ScritableObjects/InventoryContainerSO.cs`)
 *   **`OnEnable()`**:
@@ -97,9 +79,9 @@ Controllers act as the bridge between Unity's lifecycle/scene and the pure C# UI
 
 ---
 
-## Key Findings & Recommendations
+## Recommendations
 
-1.  **Consistent Registration Timing:** Most UI Toolkit controllers use `Start()` to instantiate templates and register with the `UIManager` (e.g., `InventoryScreenController`, `SmithScreenController`). This is good because it guarantees `UIManager.Awake()` has executed. However, `HudScreenController` does this in `OnEnable()`. Standardizing this to `Start()` across all controllers will prevent race conditions during scene load.
-2.  **View Initialization:** As per project guidelines, UI Toolkit Views (e.g., `ShopSubView`) are correctly initialized by calling an explicit `Initialize()` method from the Controller after instantiation, avoiding work in the View constructor.
-3.  **Event Unsubscription:** While `OnEnable` is heavily used to subscribe to UI events, ensure corresponding `OnDisable` methods are consistently implemented to prevent memory leaks or multiple subscriptions, particularly in `MainMenuScreenController`.
-4.  **UI Element Querying in Old Systems:** `PauseMenuUI` queries elements in `Start()` but unbinds in `OnDisable()`. If the pause menu is simply disabled/enabled (rather than instantiated/destroyed) when toggling pause, `Start()` will only run once, but `OnDisable` runs every time. Re-enabling the menu wouldn't rebind the events. It's safer to query and bind in `OnEnable()` for toggleable UI.
+1.  **Consistent Registration Timing:** All UI Toolkit controllers use `Start()` to instantiate templates and register with the `UIManager` (e.g., `InventoryScreenController`, `SmithScreenController`, `HudScreenController`). This guarantees `UIManager.Awake()` has executed and prevents race conditions during scene load. Ensure new controllers follow this pattern.
+2.  **View Initialization:** As per project guidelines, UI Toolkit Views (e.g., `ShopSubView`) should continue to be correctly initialized by calling an explicit `Initialize()` method from the Controller after instantiation, avoiding work in the View constructor.
+3.  **Event Unsubscription:** While `OnEnable` is heavily used to subscribe to UI events, ensure corresponding `OnDisable` methods are consistently implemented across all scripts to prevent memory leaks or multiple subscriptions.
+4.  **Component Retrieval:** Continue using `TryGetComponent<T>(out var component)` instead of `GetComponent<T>()` and null checks, especially in update loops or physics callbacks, to avoid unnecessary memory allocations.

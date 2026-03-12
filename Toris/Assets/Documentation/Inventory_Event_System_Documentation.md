@@ -126,3 +126,11 @@ The entire system relies on ScriptableObject-based event channels to prevent tig
     *   `OnRequestBuy` / `OnRequestSell`: Dispatched by the UI Views when a user clicks, caught and processed by `ShopManagerSO`.
     *   `OnCurrencyChanged`: Fired when gold values update.
     *   `OnItemClicked`, `OnRequestSalvage`, `OnRequestForge`: Used by other crafting systems (not covered in detail here) following the identical request-listen-validate pattern.
+
+---
+
+## 6. Recommendations
+
+*   **Null Checks on Event Payloads:** When views dispatch events like `OnRequestBuy` or `OnItemClicked`, ensure they are passing robust references. Consider adding validation to verify `slotData.HeldItem` is not null before dispatching to prevent unexpected behaviors in listeners like `ShopManagerSO` or `CraftingManagerSO`.
+*   **Event Unbinding Optimization:** Ensure `PlayerInventoryView`, `ShopSubView`, and other UI event listeners use `private bool _eventsBound` to prevent double subscriptions during lifecycle changes, particularly if views are repeatedly shown and hidden rather than destroyed.
+*   **Cache Base Items During Iteration:** If multiple removals are processed simultaneously by managers (e.g., crafting multiple items at once), cache the `InventoryItemSO` base references first to prevent `NullReferenceException` if the underlying stack is completely cleared during iteration.

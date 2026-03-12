@@ -7,18 +7,13 @@ public class ScenePortal : MonoBehaviour
 
     void Reset() { portalCollider = GetComponent<Collider2D>(); }
 
-    private void Update()
+    private void Start()
     {
-        if(GameInitiator.Instance.GetState() == GameInitiator.GameState.InOverworld)
-            portalCollider.enabled = false;
-        else portalCollider.enabled = true;
+       portalCollider.enabled = true;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-
-        GameInitiator.Instance.ChangeState(GameInitiator.GameState.InOverworld);
-        //SceneLoader.I.GoTo(nextScene);
     }
 }

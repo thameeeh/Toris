@@ -13,7 +13,7 @@ namespace UIToolkit.UI
         [Header("Scene Names")]
         public string VillageSceneName = "MainArea";
 
-        private UIDocument _doc;
+        public UIDocument _doc;
 
         private Button _startGameButton;
         private Button _quitGameButton;

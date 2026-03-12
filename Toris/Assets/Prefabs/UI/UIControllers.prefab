@@ -90,7 +90,6 @@ MonoBehaviour:
   _shopManagerSO: {fileID: 11400000, guid: a1f9750d1affea14f9ef38e8b30fc7ca, type: 2}
   _craftingManagerSO: {fileID: 11400000, guid: 5183623d120660d4788fe968e87cd1c8, type: 2}
   _salvageManagerSO: {fileID: 11400000, guid: 402cb2d0cf22d5343b29bbfef2e6fcce, type: 2}
-  _craftingRegistrySO: {fileID: 11400000, guid: cddc7e31749a36546ad0feb99cf23c6f, type: 2}
 --- !u!1 &7038642308199410776
 GameObject:
   m_ObjectHideFlags: 0

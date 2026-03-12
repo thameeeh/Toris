@@ -7,8 +7,7 @@ namespace OutlandHaven.UIToolkit
     {
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
-        private CraftingRegistrySO _registry;
-        private GameSessionSO _gameSession;
+        private CraftingManagerSO _craftingManager;
 
         private VisualElement _slot1Container;
         private VisualElement _slot2Container;
@@ -25,13 +24,12 @@ namespace OutlandHaven.UIToolkit
 
         private bool _eventsBound = false;
 
-        public ForgeSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingRegistrySO registry, GameSessionSO gameSession)
+        public ForgeSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingManagerSO craftingManager)
             : base(topElement)
         {
             _slotTemplate = slotTemplate;
             _uiInventoryEvents = uiInventoryEvents;
-            _registry = registry;
-            _gameSession = gameSession;
+            _craftingManager = craftingManager;
         }
 
         protected override void SetVisualElements()
@@ -153,7 +151,7 @@ namespace OutlandHaven.UIToolkit
 
         private void UpdateResultVisual()
         {
-            if (_currentSlot1Data == null || _currentSlot2Data == null || _registry == null)
+            if (_currentSlot1Data == null || _currentSlot2Data == null || _craftingManager == null)
             {
                 _resultSlotView?.Update(null);
                 if (_btnForgeItems != null) _btnForgeItems.SetEnabled(false);
@@ -161,24 +159,14 @@ namespace OutlandHaven.UIToolkit
             }
 
             // Check if there's a valid recipe
-            CraftingRecipeSO recipe = GetMatchingRecipe(_currentSlot1Data.HeldItem.BaseItem, _currentSlot2Data.HeldItem.BaseItem);
+            CraftingRecipeSO recipe = _craftingManager.GetMatchingRecipe(_currentSlot1Data.HeldItem.BaseItem, _currentSlot2Data.HeldItem.BaseItem);
 
             if (recipe != null)
             {
-                // Update proxy slots visually based on recipe requirements
                 int slot1Req = 1;
                 int slot2Req = 1;
 
-                if (recipe.BaseItemRequirement == _currentSlot1Data.HeldItem.BaseItem)
-                {
-                    var matReq = recipe.MaterialRequirements.Find(m => m.Material == _currentSlot2Data.HeldItem.BaseItem);
-                    slot2Req = matReq.Quantity;
-                }
-                else
-                {
-                    var matReq = recipe.MaterialRequirements.Find(m => m.Material == _currentSlot1Data.HeldItem.BaseItem);
-                    slot1Req = matReq.Quantity;
-                }
+                bool canForge = _craftingManager.CanForge(recipe, _currentSlot1Data, _currentSlot2Data, out slot1Req, out slot2Req);
 
                 _currentSlot1Data.Count = slot1Req;
                 _slot1View?.Update(_currentSlot1Data);
@@ -189,39 +177,6 @@ namespace OutlandHaven.UIToolkit
                 InventorySlot dummySlot = new InventorySlot();
                 dummySlot.SetItem(new ItemInstance(recipe.OutputItem), 1);
                 _resultSlotView?.Update(dummySlot);
-
-                bool canForge = false;
-                if (_gameSession != null && _gameSession.PlayerInventory != null && _gameSession.PlayerData != null)
-                {
-                    // Check if player has enough gold
-                    bool hasGold = _gameSession.PlayerData.Gold >= recipe.GoldCost;
-
-                    // Count total available for slot 1 item
-                    int totalItem1 = 0;
-                    foreach(var slot in _gameSession.PlayerInventory.Slots)
-                    {
-                        if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(_currentSlot1Data.HeldItem.BaseItem)))
-                            totalItem1 += slot.Count;
-                    }
-
-                    // Count total available for slot 2 item
-                    int totalItem2 = 0;
-                    foreach(var slot in _gameSession.PlayerInventory.Slots)
-                    {
-                        if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(_currentSlot2Data.HeldItem.BaseItem)))
-                            totalItem2 += slot.Count;
-                    }
-
-                    // If items are the same base type, we need enough for both combined
-                    if (_currentSlot1Data.HeldItem.BaseItem == _currentSlot2Data.HeldItem.BaseItem)
-                    {
-                        canForge = hasGold && totalItem1 >= (slot1Req + slot2Req);
-                    }
-                    else
-                    {
-                        canForge = hasGold && totalItem1 >= slot1Req && totalItem2 >= slot2Req;
-                    }
-                }
 
                 if (_btnForgeItems != null) _btnForgeItems.SetEnabled(canForge);
             }
@@ -240,27 +195,6 @@ namespace OutlandHaven.UIToolkit
                 ClearSlot1();
                 ClearSlot2();
             }
-        }
-
-        private CraftingRecipeSO GetMatchingRecipe(InventoryItemSO itemA, InventoryItemSO itemB)
-        {
-            foreach (var recipe in _registry.CraftingRecipes)
-            {
-                if (recipe == null) continue;
-
-                if (recipe.BaseItemRequirement == itemA &&
-                    recipe.MaterialRequirements.Exists(m => m.Material == itemB))
-                {
-                    return recipe;
-                }
-
-                if (recipe.BaseItemRequirement == itemB &&
-                    recipe.MaterialRequirements.Exists(m => m.Material == itemA))
-                {
-                    return recipe;
-                }
-            }
-            return null;
         }
 
         public override void Dispose()

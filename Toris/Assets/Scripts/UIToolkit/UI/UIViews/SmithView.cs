@@ -14,7 +14,8 @@ namespace OutlandHaven.UIToolkit
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
         private InventoryContainerSO _shopContainer;
-        private CraftingRegistrySO _craftingRegistrySO;
+        private CraftingManagerSO _craftingManager;
+        private SalvageManagerSO _salvageManager;
 
         private VisualElement _middlePanel;
 
@@ -23,7 +24,7 @@ namespace OutlandHaven.UIToolkit
         private ForgeSubView _forgeSubView;
         private SalvageSubView _salvageSubView;
 
-        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, InventoryContainerSO shopContainer, CraftingRegistrySO craftingRegistrySO)
+        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, InventoryContainerSO shopContainer, CraftingManagerSO craftingManager, SalvageManagerSO salvageManager)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
@@ -33,7 +34,8 @@ namespace OutlandHaven.UIToolkit
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
             _shopContainer = shopContainer;
-            _craftingRegistrySO = craftingRegistrySO;
+            _craftingManager = craftingManager;
+            _salvageManager = salvageManager;
         }
 
         protected override void SetVisualElements()
@@ -100,7 +102,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     TemplateContainer forgeInstance = _forgeTemplate.Instantiate();
                     _middlePanel.Add(forgeInstance);
-                    _forgeSubView = new ForgeSubView(forgeInstance, _slotTemplate, _uiInventoryEvents, _craftingRegistrySO, _gameSession);
+                    _forgeSubView = new ForgeSubView(forgeInstance, _slotTemplate, _uiInventoryEvents, _craftingManager);
                     _forgeSubView.Initialize();
                 }
             }
@@ -123,7 +125,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     TemplateContainer salvageInstance = _salvageTemplate.Instantiate();
                     _middlePanel.Add(salvageInstance);
-                    _salvageSubView = new SalvageSubView(salvageInstance, _slotTemplate, _uiInventoryEvents, _craftingRegistrySO, _gameSession);
+                    _salvageSubView = new SalvageSubView(salvageInstance, _slotTemplate, _uiInventoryEvents, _salvageManager);
                     _salvageSubView.Initialize();
                 }
             }

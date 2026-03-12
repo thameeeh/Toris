@@ -7,8 +7,7 @@ namespace OutlandHaven.UIToolkit
     {
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
-        private CraftingRegistrySO _registry;
-        private GameSessionSO _gameSession;
+        private SalvageManagerSO _salvageManager;
 
         private VisualElement _inputSlotContainer;
         private InventorySlotView _inputSlotView;
@@ -23,13 +22,12 @@ namespace OutlandHaven.UIToolkit
 
         private bool _eventsBound = false;
 
-        public SalvageSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingRegistrySO registry, GameSessionSO gameSession)
+        public SalvageSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, SalvageManagerSO salvageManager)
             : base(topElement)
         {
             _slotTemplate = slotTemplate;
             _uiInventoryEvents = uiInventoryEvents;
-            _registry = registry;
-            _gameSession = gameSession;
+            _salvageManager = salvageManager;
         }
 
         protected override void SetVisualElements()
@@ -123,7 +121,7 @@ namespace OutlandHaven.UIToolkit
 
         private void UpdateYieldVisuals()
         {
-            if (_currentSlotData == null || _currentSlotData.IsEmpty || _registry == null)
+            if (_currentSlotData == null || _currentSlotData.IsEmpty || _salvageManager == null)
             {
                 if (_goldYieldField != null) _goldYieldField.value = "0";
                 _itemYieldView?.Update(null);
@@ -134,22 +132,12 @@ namespace OutlandHaven.UIToolkit
                 return;
             }
 
-            SalvageRecipeSO recipe = _registry.GetSalvageRecipeFor(_currentSlotData.HeldItem.BaseItem);
+            SalvageRecipeSO recipe = _salvageManager.Registry.GetSalvageRecipeFor(_currentSlotData.HeldItem.BaseItem);
 
             if (recipe != null)
             {
                 // Check if player actually has the item to salvage
-                bool canSalvage = false;
-                if (_gameSession != null && _gameSession.PlayerInventory != null)
-                {
-                    int totalItems = 0;
-                    foreach(var slot in _gameSession.PlayerInventory.Slots)
-                    {
-                        if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(_currentSlotData.HeldItem.BaseItem)))
-                            totalItems += slot.Count;
-                    }
-                    canSalvage = totalItems > 0;
-                }
+                bool canSalvage = _salvageManager.CanSalvage(_currentSlotData.HeldItem.BaseItem);
 
                 if (_goldYieldField != null) _goldYieldField.value = recipe.GoldYield.ToString();
                 if (_btnGetGold != null) _btnGetGold.SetEnabled(canSalvage && recipe.GoldYield > 0);

@@ -10,6 +10,12 @@ namespace OutlandHaven.UIToolkit
 
         public bool IsEmpty => HeldItem == null || HeldItem.BaseItem == null;
 
+        public InventorySlot()
+        {
+            HeldItem = new ItemInstance();
+            Count = 0;
+        }
+
         public void Clear()
         {
             HeldItem = null;

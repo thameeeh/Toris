@@ -295,7 +295,8 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   AttackDamage: 35
   MovementSpeed: 2
-  PlayerData: {fileID: 0}
+  PlayerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
+  gold: 50
   role: 0
   healthMultiplier: 1
   fallbackHomeRadius: 4
@@ -339,11 +340,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
   indicatorOffset: {x: 0, y: 1.25, z: 0}
   displayDuration: 1.25
+  alertSprite: {fileID: 21300000, guid: 87c3c62b424df364f9c2ee6e733a60f9, type: 3}
   indicatorColor: {r: 0.9622642, g: 0.057493582, b: 0.09701543, a: 1}
-  indicatorText: '!'
-  baseFontSize: 4
-  minFontSize: 2
-  maxFontSize: 6
+  indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
+  sortingOrder: 100
 --- !u!114 &4137995065482030071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,9 +357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
   repathInterval: 0.6
-  maxPathRange: 50
-  waypointReachThreshold: 0.2
-  targetChangeThreshold: 1
+  maxPathRange: 20
+  waypointReachThreshold: 0.35
+  targetChangeThreshold: 0.75
   allowDirectFallbackWhenNoPath: 0
 --- !u!58 &2695960224398103068
 CircleCollider2D:

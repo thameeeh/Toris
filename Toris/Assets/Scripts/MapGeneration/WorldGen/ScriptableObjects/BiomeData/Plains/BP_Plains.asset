@@ -41,7 +41,7 @@ MonoBehaviour:
   gateGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
   gateSize: 7
   platformGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
-  minWolfDenCount: 10
+  minWolfDenCount: 4
   wolfDenMinSpacingTiles: 20
   wolfDenPrefab: {fileID: 5145460778764920192, guid: b3a67880993d31649b6f38f893c67ee1, type: 3}
   wolfDenGroundTile: {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}

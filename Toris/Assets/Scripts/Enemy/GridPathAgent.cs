@@ -55,7 +55,7 @@ public class GridPathAgent : MonoBehaviour
             return Vector2.zero;
         }
 
-        _repathTimer -= Time.deltaTime;
+        _repathTimer -= Time.fixedDeltaTime;
 
         bool needRepath = false;
 
@@ -103,7 +103,9 @@ public class GridPathAgent : MonoBehaviour
         Vector3 waypoint = _currentPath[_pathIndex];
         Vector2 toWaypoint = waypoint - transform.position;
 
-        if (toWaypoint.sqrMagnitude < waypointReachThreshold * waypointReachThreshold)
+        float reachSqr = waypointReachThreshold * waypointReachThreshold;
+
+        while (toWaypoint.sqrMagnitude < reachSqr)
         {
             if (_pathIndex < _currentPath.Count - 1)
             {

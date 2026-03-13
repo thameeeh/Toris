@@ -16,5 +16,15 @@ namespace OutlandHaven.UIToolkit
         [Header("Modular Behaviours")]
         [SerializeReference]
         public List<ItemComponent> Components = new List<ItemComponent>();
+
+        public T GetComponent<T>() where T : ItemComponent
+        {
+            foreach (var component in Components)
+            {
+                if (component is T typedComponent)
+                    return typedComponent;
+            }
+            return null;
+        }
     }
 }

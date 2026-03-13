@@ -17,7 +17,9 @@ public class Wolf : Enemy
     public float MovementSpeed = 2f;
 
     [SerializeField]
-    private PlayerDataSO PlayerData;
+    public PlayerDataSO PlayerData;
+
+    public int gold = 50;
 
     // leader/minion implement
     [Header("Role")]
@@ -28,6 +30,7 @@ public class Wolf : Enemy
     // wolf knowledge of home
     private HomeAnchor _homeAnchor;
     [SerializeField] private float fallbackHomeRadius = 4f;
+
     public bool HasHome => _homeAnchor != null;
     public Vector3 HomeCenter => HasHome ? _homeAnchor.Center : transform.position;
     public float HomeRadius => HasHome ? _homeAnchor.Radius : fallbackHomeRadius;
@@ -54,6 +57,42 @@ public class Wolf : Enemy
     public void PrintMessage(string msg) 
     {
         Debug.Log(msg);
+    }
+
+    [Header("Investigation")]
+    public bool HasInvestigationTarget { get; private set; }
+    public Vector3 InvestigationTarget { get; private set; }
+    public float InvestigationUntilTime { get; private set; }
+    public float InvestigationStandDurationBonus { get; private set; }
+
+    public void SetInvestigationTarget(Vector3 target, float duration, float standDurationBonus = 0f)
+    {
+        InvestigationTarget = target;
+        InvestigationUntilTime = Time.time + Mathf.Max(0f, duration);
+        InvestigationStandDurationBonus = Mathf.Max(0f, standDurationBonus);
+        HasInvestigationTarget = true;
+    }
+
+    public void ClearInvestigationTarget()
+    {
+        HasInvestigationTarget = false;
+        InvestigationTarget = transform.position;
+        InvestigationUntilTime = 0f;
+        InvestigationStandDurationBonus = 0f;
+    }
+
+    public bool IsInvestigationTargetActive()
+    {
+        if (!HasInvestigationTarget)
+            return false;
+
+        if (Time.time > InvestigationUntilTime)
+        {
+            ClearInvestigationTarget();
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -131,6 +170,7 @@ public class Wolf : Enemy
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
+            PlayerData.ModifyGold(gold);
             StateMachine.ChangeState(DeadState);
         }
     }
@@ -138,6 +178,8 @@ public class Wolf : Enemy
     {
         RefreshHomeAnchor();
         ApplyScaling();
+        ClearInvestigationTarget();
+
         base.OnSpawned();
 
         if (!_hasStarted)

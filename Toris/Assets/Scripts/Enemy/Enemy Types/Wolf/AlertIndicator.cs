@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -9,15 +8,14 @@ public class EnemyAlertIndicator : MonoBehaviour
     [Header("Alert Indicator")]
     [SerializeField] private Vector3 indicatorOffset = new Vector3(0f, 1.25f, 0f);
     [SerializeField] private float displayDuration = 1.25f;
-    [SerializeField] private Color indicatorColor = new Color(0.94f, 0.29f, 0.12f);
-    [SerializeField] private string indicatorText = "!";
-    [SerializeField] private float baseFontSize = 4f;
-    [SerializeField] private float minFontSize = 2f;
-    [SerializeField] private float maxFontSize = 6f;
+    [SerializeField] private Sprite alertSprite;
+    [SerializeField] private Color indicatorColor = Color.white;
+    [SerializeField] private Vector3 indicatorScale = Vector3.one * 0.5f;
+    [SerializeField] private int sortingOrder = 100;
 
     private Enemy _enemy;
     private GameObject _indicator;
-    private TextMeshPro _indicatorText;
+    private SpriteRenderer _indicatorRenderer;
     private Coroutine _displayRoutine;
 
     private void Awake()
@@ -46,6 +44,11 @@ public class EnemyAlertIndicator : MonoBehaviour
             StopCoroutine(_displayRoutine);
             _displayRoutine = null;
         }
+
+        if (_indicator != null)
+        {
+            _indicator.SetActive(false);
+        }
     }
 
     private void CreateIndicator()
@@ -56,23 +59,13 @@ public class EnemyAlertIndicator : MonoBehaviour
         _indicator.transform.SetParent(transform);
         _indicator.transform.localPosition = indicatorOffset;
         _indicator.transform.localRotation = Quaternion.identity;
+        _indicator.transform.localScale = indicatorScale;
 
-        _indicatorText = _indicator.AddComponent<TextMeshPro>();
-        _indicatorText.text = indicatorText;
-        _indicatorText.alignment = TextAlignmentOptions.Center;
-        _indicatorText.fontSize = baseFontSize;
-        _indicatorText.enableAutoSizing = true;
-        _indicatorText.fontSizeMin = minFontSize;
-        _indicatorText.fontSizeMax = maxFontSize;
-        _indicatorText.color = indicatorColor;
-        _indicatorText.raycastTarget = false;
-
-        var meshRenderer = _indicator.GetComponent<MeshRenderer>();
-        if (meshRenderer != null)
-        {
-            meshRenderer.sortingLayerID = SortingLayer.NameToID("Default");
-            meshRenderer.sortingOrder = 100;
-        }
+        _indicatorRenderer = _indicator.AddComponent<SpriteRenderer>();
+        _indicatorRenderer.sprite = alertSprite;
+        _indicatorRenderer.color = indicatorColor;
+        _indicatorRenderer.sortingLayerID = SortingLayer.NameToID("Default");
+        _indicatorRenderer.sortingOrder = sortingOrder;
 
         _indicator.SetActive(false);
     }
@@ -98,28 +91,23 @@ public class EnemyAlertIndicator : MonoBehaviour
         _displayRoutine = StartCoroutine(DisplayIndicatorRoutine());
     }
 
-    private IEnumerator DisplayIndicatorRoutine()
+    public void ShowPersistent()
     {
         if (_indicator == null)
         {
-            yield break;
+            CreateIndicator();
+        }
+
+        if (_displayRoutine != null)
+        {
+            StopCoroutine(_displayRoutine);
+            _displayRoutine = null;
         }
 
         _indicator.SetActive(true);
-        var waitDuration = Mathf.Max(0f, displayDuration);
-        if (waitDuration > 0f)
-        {
-            yield return new WaitForSeconds(waitDuration);
-        }
-        else
-        {
-            yield return null;
-        }
-        _indicator.SetActive(false);
-        _displayRoutine = null;
     }
 
-    private void HideIndicator()
+    public void HideIndicator()
     {
         if (_displayRoutine != null)
         {
@@ -131,5 +119,24 @@ public class EnemyAlertIndicator : MonoBehaviour
         {
             _indicator.SetActive(false);
         }
+    }
+
+    private IEnumerator DisplayIndicatorRoutine()
+    {
+        if (_indicator == null)
+        {
+            yield break;
+        }
+
+        _indicator.SetActive(true);
+
+        float waitDuration = Mathf.Max(0f, displayDuration);
+        if (waitDuration > 0f)
+        {
+            yield return new WaitForSeconds(waitDuration);
+        }
+
+        _indicator.SetActive(false);
+        _displayRoutine = null;
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace OutlandHaven.UIToolkit
 {
@@ -11,6 +13,8 @@ namespace OutlandHaven.UIToolkit
         public int MaxStackSize = 99;
         public int GoldValue = 10;
 
-        //add types later (Weapon, Potion, etc.)
+        [Header("Modular Behaviours")]
+        [SerializeReference]
+        public List<ItemComponent> Components = new List<ItemComponent>();
     }
 }

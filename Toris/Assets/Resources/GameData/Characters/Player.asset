@@ -16,6 +16,6 @@ MonoBehaviour:
   _maxMana: 100
   _currentHealth: 100
   _currentMana: 100
-  _level: 37
+  _level: 2
   _experience: 116
-  _gold: 5413
+  _gold: 5000

@@ -46,6 +46,11 @@ public class EnemyAlertIndicator : MonoBehaviour
             StopCoroutine(_displayRoutine);
             _displayRoutine = null;
         }
+
+        if (_indicator != null)
+        {
+            _indicator.SetActive(false);
+        }
     }
 
     private void CreateIndicator()
@@ -98,28 +103,23 @@ public class EnemyAlertIndicator : MonoBehaviour
         _displayRoutine = StartCoroutine(DisplayIndicatorRoutine());
     }
 
-    private IEnumerator DisplayIndicatorRoutine()
+    public void ShowPersistent()
     {
         if (_indicator == null)
         {
-            yield break;
+            CreateIndicator();
+        }
+
+        if (_displayRoutine != null)
+        {
+            StopCoroutine(_displayRoutine);
+            _displayRoutine = null;
         }
 
         _indicator.SetActive(true);
-        var waitDuration = Mathf.Max(0f, displayDuration);
-        if (waitDuration > 0f)
-        {
-            yield return new WaitForSeconds(waitDuration);
-        }
-        else
-        {
-            yield return null;
-        }
-        _indicator.SetActive(false);
-        _displayRoutine = null;
     }
 
-    private void HideIndicator()
+    public void HideIndicator()
     {
         if (_displayRoutine != null)
         {
@@ -131,5 +131,24 @@ public class EnemyAlertIndicator : MonoBehaviour
         {
             _indicator.SetActive(false);
         }
+    }
+
+    private IEnumerator DisplayIndicatorRoutine()
+    {
+        if (_indicator == null)
+        {
+            yield break;
+        }
+
+        _indicator.SetActive(true);
+
+        float waitDuration = Mathf.Max(0f, displayDuration);
+        if (waitDuration > 0f)
+        {
+            yield return new WaitForSeconds(waitDuration);
+        }
+
+        _indicator.SetActive(false);
+        _displayRoutine = null;
     }
 }

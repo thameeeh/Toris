@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
@@ -21,6 +22,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
     public bool IsInitialized { get; private set; }
     public bool IsCleared => cleared;
     public Vector3 WorldPosition => transform.position;
+
+    public event Action<Vector3> DamagedAlert;
 
     // --- IDamageable ---
     public float MaxHealth { get; set; }
@@ -55,7 +58,6 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         var spawner = GetComponent<WolfDenSpawner>();
         if (spawner != null)
             spawner.OnDenInitialized();
-
     }
 
     public void OnSpawned()
@@ -69,14 +71,22 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
     public void OnDespawned()
     {
-        // stop particles/coroutines/etc later
+        DamagedAlert = null;
     }
 
     public void Damage(float damageAmount)
     {
-        if (cleared) return;
+        if (cleared)
+            return;
 
-        CurrentHealth -= Mathf.Max(0f, damageAmount);
+        float appliedDamage = Mathf.Max(0f, damageAmount);
+        if (appliedDamage <= 0f)
+            return;
+
+        CurrentHealth -= appliedDamage;
+
+        DamagedAlert?.Invoke(WorldPosition);
+
         if (CurrentHealth <= 0f)
             Die();
     }
@@ -88,7 +98,9 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
     private void ClearDen()
     {
-        if (cleared) return;
+        if (cleared)
+            return;
+
         cleared = true;
 
         runner.Context.ChunkStates.MarkConsumed(chunkCoord, spawnId);
@@ -97,9 +109,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         foreach (var c in GetComponentsInChildren<Collider2D>())
             c.enabled = false;
 
-        Debug.Log("Den Cleared");
+        //Debug.Log("Den Cleared");
 
-        // despawn here
         var spawner = GetComponent<WolfDenSpawner>();
         if (spawner != null)
             spawner.OnDenCleared();

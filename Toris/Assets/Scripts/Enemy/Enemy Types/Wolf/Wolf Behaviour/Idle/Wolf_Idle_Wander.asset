@@ -20,11 +20,14 @@ MonoBehaviour:
   leaderRestChance: 0.25
   minionRestChance: 0.65
   wanderInterval: 2.5
-  idlePauseDuration: 0.35
+  idlePauseDuration: 0.45
   homeRadiusUsage: 1
   outwardPadding: 1
   returnToHomeThreshold: 0.5
   maxCandidateChecks: 12
+  regroupThresholdPadding: 0.5
+  regroupArrivePadding: 0.25
+  regroupHomeRadiusUsage: 0.55
   minTargetDistanceFromCurrent: 1.25
   wanderPointReachSqr: 0.15
   directionLerpSpeed: 5

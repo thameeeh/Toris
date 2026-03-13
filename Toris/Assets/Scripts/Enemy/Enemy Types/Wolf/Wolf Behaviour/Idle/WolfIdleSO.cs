@@ -1,3 +1,4 @@
+using OutlandHaven.UIToolkit;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Wolf Idle Wander")]
@@ -7,7 +8,8 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         StandRest,
         PatrolHome,
-        Regroup
+        Regroup,
+        Investigate
     }
 
     [Header("Idle Mode Timing")]
@@ -38,6 +40,12 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     [SerializeField] private float regroupArrivePadding = 0.25f;
     [SerializeField] private float regroupHomeRadiusUsage = 0.55f;
 
+    [Header("Investigate")]
+    [SerializeField] private float investigateArriveSqr = 0.35f;
+    [SerializeField] private float investigateRepathInterval = 0.35f;
+    [SerializeField] private float investigateStandDurationMin = 1.0f;
+    [SerializeField] private float investigateStandDurationMax = 2.0f;
+
     [Header("Target Filtering")]
     [SerializeField] private float minTargetDistanceFromCurrent = 1.25f;
 
@@ -55,12 +63,18 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     private float idlePauseTimer;
     private float modeTimer;
     private float decisionTimer;
+    private float investigateRepathTimer;
+    private float investigateStandTimer;
+    private float investigateRetargetSqr = 0.25f;
 
     private Vector2 wanderPoint;
     private Vector2 currentMoveDir;
+    private Vector2 committedInvestigateTarget;
     private GridPathAgent pathAgent;
+    private EnemyAlertIndicator alertIndicator;
 
     private bool isPausedAtPoint;
+    private bool isStandingAtInvestigatePoint;
     private IdleMode currentMode;
 
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
@@ -73,14 +87,20 @@ public class WolfIdleSO : IdleSOBase<Wolf>
             Debug.LogWarning($"[WolfIdleSO] No GridPathAgent on {enemy.name}. Idle wander will not use pathfinding.");
         }
 
+        alertIndicator = enemy.GetComponent<EnemyAlertIndicator>();
+
         patrolTimer = wanderInterval;
         idlePauseTimer = 0f;
         modeTimer = 0f;
         decisionTimer = 0f;
+        investigateRepathTimer = 0f;
+        investigateStandTimer = 0f;
 
         wanderPoint = enemy.transform.position;
+        committedInvestigateTarget = enemy.transform.position;
         currentMoveDir = Vector2.zero;
         isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
         currentMode = IdleMode.StandRest;
     }
 
@@ -93,10 +113,14 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         idlePauseTimer = 0f;
         modeTimer = 0f;
         decisionTimer = 0f;
+        investigateRepathTimer = 0f;
+        investigateStandTimer = 0f;
 
         wanderPoint = enemy.transform.position;
+        committedInvestigateTarget = enemy.transform.position;
         currentMoveDir = Vector2.zero;
         isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
 
         ChooseNewMode(force: true);
 
@@ -114,7 +138,13 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         idlePauseTimer = 0f;
         modeTimer = 0f;
         decisionTimer = 0f;
+        investigateRepathTimer = 0f;
+        investigateStandTimer = 0f;
         isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
+
+        if (alertIndicator != null)
+            alertIndicator.HideIndicator();
     }
 
     public override void DoFrameUpdateLogic()
@@ -123,6 +153,18 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 
         decisionTimer -= Time.deltaTime;
         modeTimer -= Time.deltaTime;
+
+        if (currentMode == IdleMode.Investigate)
+        {
+            UpdateInvestigateMode();
+            return;
+        }
+
+        if (enemy.IsInvestigationTargetActive())
+        {
+            EnterInvestigateMode();
+            return;
+        }
 
         if (currentMode != IdleMode.Regroup && ShouldRegroup())
         {
@@ -210,7 +252,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
     {
         base.DoPhysicsLogic();
 
-        if (currentMode == IdleMode.StandRest || isPausedAtPoint)
+        if (currentMode == IdleMode.StandRest || isPausedAtPoint || isStandingAtInvestigatePoint)
         {
             currentMoveDir = Vector2.zero;
             enemy.MoveEnemy(Vector2.zero);
@@ -264,16 +306,107 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         idlePauseTimer = 0f;
         modeTimer = 0f;
         decisionTimer = 0f;
+        investigateRepathTimer = 0f;
+        investigateStandTimer = 0f;
 
         currentMoveDir = Vector2.zero;
         wanderPoint = enemy.transform.position;
+        committedInvestigateTarget = enemy.transform.position;
         isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
         currentMode = IdleMode.StandRest;
+    }
+
+    private void UpdateInvestigateMode()
+    {
+        if (enemy.IsInvestigationTargetActive())
+        {
+            Vector2 latestTarget = enemy.InvestigationTarget;
+
+            // If a new alert moved the target meaningfully, break out of the stand
+            // and continue investigating the new point.
+            if ((latestTarget - committedInvestigateTarget).sqrMagnitude > investigateRetargetSqr)
+            {
+                committedInvestigateTarget = latestTarget;
+                wanderPoint = committedInvestigateTarget;
+                investigateRepathTimer = investigateRepathInterval;
+                isStandingAtInvestigatePoint = false;
+                investigateStandTimer = 0f;
+                currentMoveDir = Vector2.zero;
+            }
+        }
+
+        if (!enemy.IsInvestigationTargetActive())
+        {
+            if (isStandingAtInvestigatePoint)
+            {
+                investigateStandTimer -= Time.deltaTime;
+                if (investigateStandTimer <= 0f)
+                {
+                    CompleteInvestigation();
+                }
+            }
+            else
+            {
+                CompleteInvestigation();
+            }
+
+            return;
+        }
+
+        if (isStandingAtInvestigatePoint)
+        {
+            investigateStandTimer -= Time.deltaTime;
+            if (investigateStandTimer <= 0f)
+            {
+                enemy.ClearInvestigationTarget();
+                CompleteInvestigation();
+            }
+
+            return;
+        }
+
+        investigateRepathTimer -= Time.deltaTime;
+        if (investigateRepathTimer <= 0f)
+        {
+            wanderPoint = committedInvestigateTarget;
+            investigateRepathTimer = investigateRepathInterval;
+        }
+
+        float sqrDistToInvestigate = (wanderPoint - (Vector2)enemy.transform.position).sqrMagnitude;
+        if (sqrDistToInvestigate <= investigateArriveSqr)
+        {
+            isStandingAtInvestigatePoint = true;
+            investigateStandTimer =
+                Random.Range(investigateStandDurationMin, investigateStandDurationMax)
+                + enemy.InvestigationStandDurationBonus;
+
+            currentMoveDir = Vector2.zero;
+            enemy.MoveEnemy(Vector2.zero);
+            enemy.animator.SetBool("IsMoving", false);
+        }
+    }
+
+    private void CompleteInvestigation()
+    {
+        isStandingAtInvestigatePoint = false;
+
+        if (alertIndicator != null)
+            alertIndicator.HideIndicator();
+
+        decisionTimer = 0f;
+        ChooseNewMode(force: true);
     }
 
     private void ChooseNewMode(bool force)
     {
         decisionTimer = decisionInterval;
+
+        if (enemy.IsInvestigationTargetActive())
+        {
+            EnterInvestigateMode();
+            return;
+        }
 
         if (ShouldRegroup())
         {
@@ -296,16 +429,20 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         currentMode = nextMode;
         modeTimer = GetModeDuration(currentMode);
 
+        isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
+
+        if (alertIndicator != null)
+            alertIndicator.HideIndicator();
+
         if (currentMode == IdleMode.StandRest)
         {
-            isPausedAtPoint = false;
             currentMoveDir = Vector2.zero;
             enemy.MoveEnemy(Vector2.zero);
             enemy.animator.SetBool("IsMoving", false);
         }
         else
         {
-            isPausedAtPoint = false;
             wanderPoint = GetNextIdleTarget();
             patrolTimer = 0f;
         }
@@ -316,9 +453,31 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         currentMode = IdleMode.Regroup;
         modeTimer = wanderInterval;
         isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
         currentMoveDir = Vector2.zero;
         wanderPoint = GetRegroupTarget();
         patrolTimer = 0f;
+
+        if (alertIndicator != null)
+            alertIndicator.HideIndicator();
+    }
+
+    private void EnterInvestigateMode()
+    {
+        currentMode = IdleMode.Investigate;
+        modeTimer = wanderInterval;
+        isPausedAtPoint = false;
+        isStandingAtInvestigatePoint = false;
+        currentMoveDir = Vector2.zero;
+
+        committedInvestigateTarget = enemy.InvestigationTarget;
+        wanderPoint = committedInvestigateTarget;
+        investigateRepathTimer = investigateRepathInterval;
+        investigateStandTimer = 0f;
+        patrolTimer = 0f;
+
+        if (alertIndicator != null)
+            alertIndicator.ShowPersistent();
     }
 
     private float GetModeDuration(IdleMode mode)
@@ -332,9 +491,8 @@ public class WolfIdleSO : IdleSOBase<Wolf>
                 return Random.Range(minionRestDurationMin, minionRestDurationMax);
 
             case IdleMode.PatrolHome:
-                return wanderInterval;
-
             case IdleMode.Regroup:
+            case IdleMode.Investigate:
                 return wanderInterval;
 
             default:
@@ -439,26 +597,26 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 
         int searchRadius = Mathf.Max(1, maxCandidateChecks / 2);
 
-        for (int r = 1; r <= searchRadius; r++)
+        for (int iRadius = 1; iRadius <= searchRadius; iRadius++)
         {
-            for (int x = -r; x <= r; x++)
+            for (int x = -iRadius; x <= iRadius; x++)
             {
-                Vector2Int top = startCell + new Vector2Int(x, r);
+                Vector2Int top = startCell + new Vector2Int(x, iRadius);
                 if (nav.IsWalkableCell(top))
                     return nav.CellToWorldCenter(top);
 
-                Vector2Int bottom = startCell + new Vector2Int(x, -r);
+                Vector2Int bottom = startCell + new Vector2Int(x, -iRadius);
                 if (nav.IsWalkableCell(bottom))
                     return nav.CellToWorldCenter(bottom);
             }
 
-            for (int y = -r + 1; y <= r - 1; y++)
+            for (int y = -iRadius + 1; y <= iRadius - 1; y++)
             {
-                Vector2Int right = startCell + new Vector2Int(r, y);
+                Vector2Int right = startCell + new Vector2Int(iRadius, y);
                 if (nav.IsWalkableCell(right))
                     return nav.CellToWorldCenter(right);
 
-                Vector2Int left = startCell + new Vector2Int(-r, y);
+                Vector2Int left = startCell + new Vector2Int(-iRadius, y);
                 if (nav.IsWalkableCell(left))
                     return nav.CellToWorldCenter(left);
             }

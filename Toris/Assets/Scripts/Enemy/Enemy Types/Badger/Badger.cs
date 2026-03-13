@@ -1,3 +1,4 @@
+using OutlandHaven.UIToolkit;
 using System.Data;
 using System.Linq;
 using UnityEngine;
@@ -113,6 +114,7 @@ public class Badger : Enemy
         if (CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
+            
             StateMachine.ChangeState(DeadState);
         }
 

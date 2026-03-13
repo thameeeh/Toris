@@ -295,7 +295,8 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   AttackDamage: 35
   MovementSpeed: 2
-  PlayerData: {fileID: 0}
+  PlayerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
+  gold: 50
   role: 0
   healthMultiplier: 1
   fallbackHomeRadius: 4

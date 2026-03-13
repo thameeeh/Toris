@@ -340,11 +340,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
   indicatorOffset: {x: 0, y: 1.25, z: 0}
   displayDuration: 1.25
+  alertSprite: {fileID: 21300000, guid: 87c3c62b424df364f9c2ee6e733a60f9, type: 3}
   indicatorColor: {r: 0.9622642, g: 0.057493582, b: 0.09701543, a: 1}
-  indicatorText: '!'
-  baseFontSize: 4
-  minFontSize: 2
-  maxFontSize: 6
+  indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
+  sortingOrder: 100
 --- !u!114 &4137995065482030071
 MonoBehaviour:
   m_ObjectHideFlags: 0

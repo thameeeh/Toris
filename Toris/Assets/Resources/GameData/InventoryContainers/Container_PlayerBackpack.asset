@@ -24,35 +24,65 @@ MonoBehaviour:
     Count: 5
   - Item: {fileID: 0}
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
-  - Item: {fileID: 0}
-    Count: 0
-  - Item: {fileID: 0}
-    Count: 0
-  - Item: {fileID: 0}
-    Count: 0
-  - Item: {fileID: 0}
+  - HeldItem:
+      BaseItem: {fileID: 0}
+      CurrentLevel: 0
+      Durability: 0
     Count: 0
   AssociatedView: 2
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}

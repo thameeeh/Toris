@@ -5,21 +5,27 @@ namespace OutlandHaven.UIToolkit
     [Serializable]
     public class InventorySlot
     {
-        public InventoryItemSO Item;
+        public ItemInstance HeldItem;
         public int Count;
 
-        public bool IsEmpty => Item == null;
+        public bool IsEmpty => HeldItem == null || HeldItem.BaseItem == null;
+
+        public InventorySlot()
+        {
+            HeldItem = new ItemInstance();
+            Count = 0;
+        }
 
         public void Clear()
         {
-            Item = null;
+            HeldItem = null;
             Count = 0;
         }
 
         // Helper to add items
-        public void SetItem(InventoryItemSO newItem, int amount)
+        public void SetItem(ItemInstance newItem, int amount)
         {
-            Item = newItem;
+            HeldItem = newItem;
             Count = amount;
         }
 

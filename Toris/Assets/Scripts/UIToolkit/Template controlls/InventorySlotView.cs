@@ -26,7 +26,7 @@ namespace OutlandHaven.UIToolkit
             }
             else
             {
-                _icon.sprite = slotData.Item.Icon;
+                _icon.sprite = slotData.HeldItem.BaseItem.Icon;
                 _icon.style.display = DisplayStyle.Flex;
                 _qtyLabel.text = slotData.Count > 1 ? slotData.Count.ToString() : "";
             }

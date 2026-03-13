@@ -491,7 +491,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 131072
-  _interactionUI: {fileID: 0}
+  _interactionUI: {fileID: 4443428452464939475, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

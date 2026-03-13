@@ -12,6 +12,36 @@ namespace OutlandHaven.UIToolkit
         public ScreenType AssociatedView = ScreenType.None;
 
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (Slots == null) return;
+
+            foreach (var slot in Slots)
+            {
+                if (slot == null) continue;
+
+                if (slot.HeldItem != null && slot.HeldItem.BaseItem != null)
+                {
+                    // If an item is placed in the slot, ensure defaults are set if currently 0
+                    if (slot.Count <= 0) slot.Count = 1;
+                    if (slot.HeldItem.CurrentLevel <= 0) slot.HeldItem.CurrentLevel = 1;
+                    if (slot.HeldItem.Durability <= 0) slot.HeldItem.Durability = 100f;
+                }
+                else
+                {
+                    // If the slot is empty, ensure values are 0
+                    slot.Count = 0;
+                    if (slot.HeldItem != null)
+                    {
+                        slot.HeldItem.CurrentLevel = 0;
+                        slot.HeldItem.Durability = 0f;
+                    }
+                }
+            }
+        }
+#endif
+
         // Initialize list in editor or runtime
         private void OnEnable()
         {
@@ -32,15 +62,15 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        public bool AddItem (InventoryItemSO item, int quantity)
+        public bool AddItem (ItemInstance itemInstance, int quantity)
         {
             // 1. Check for existing stacks first
             foreach (var slot in Slots)
             {
                 // If slot has the SAME item and has space
-                if (!slot.IsEmpty && slot.Item == item && slot.Count < item.MaxStackSize)
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance) && slot.Count < itemInstance.BaseItem.MaxStackSize)
                 {
-                    int remainingSpace = item.MaxStackSize - slot.Count;
+                    int remainingSpace = itemInstance.BaseItem.MaxStackSize - slot.Count;
                     int amountToAdd = Mathf.Min(remainingSpace, quantity);
 
                     slot.IncreaseCount(amountToAdd);
@@ -62,23 +92,22 @@ namespace OutlandHaven.UIToolkit
                 {
                     if (slot.IsEmpty)
                     {
-                        slot.SetItem(item, quantity);
+                        slot.SetItem(itemInstance, quantity);
                         _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
                         return true;
                     }
                 }
             }
-
             return false; // Could not add all items (Inventory Full)
         }
 
-        public bool RemoveItem(InventoryItemSO item, int quantity)
+        public bool RemoveItem(ItemInstance itemInstance, int quantity)
         {
             // First pass: verify we have enough total items
             int totalAvailable = 0;
             foreach (var slot in Slots)
             {
-                if (!slot.IsEmpty && slot.Item == item)
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance))
                 {
                     totalAvailable += slot.Count;
                 }
@@ -94,7 +123,7 @@ namespace OutlandHaven.UIToolkit
 
             foreach (var slot in Slots)
             {
-                if (!slot.IsEmpty && slot.Item == item)
+                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance))
                 {
                     if (slot.Count >= remainingToRemove)
                     {
@@ -109,7 +138,6 @@ namespace OutlandHaven.UIToolkit
                     }
                 }
             }
-
             return false; // Should not reach here based on first pass check
         }
     }

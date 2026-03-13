@@ -47,8 +47,9 @@ public class WorldItem : MonoBehaviour, IContainerInteractable
     {
         if (targetContainer == null) return false;
 
+        ItemInstance item = new ItemInstance(_itemData);
         // Attempt to add the item to the container passed in
-        bool success = targetContainer.AddItem(_itemData, _quantity);
+        bool success = targetContainer.AddItem(item, _quantity);
 
         if (success)
         {

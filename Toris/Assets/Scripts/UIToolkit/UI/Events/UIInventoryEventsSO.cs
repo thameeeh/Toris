@@ -14,5 +14,10 @@ namespace OutlandHaven.UIToolkit
         public UnityAction<InventoryItemSO, int> OnRequestBuy;
         public UnityAction<InventoryItemSO, int> OnRequestSell;
         public UnityAction<int> OnCurrencyChanged;
+
+        [Header("Crafting Events")]
+        public UnityAction<InventorySlot> OnItemClicked;
+        public UnityAction<InventorySlot, SalvageType> OnRequestSalvage;
+        public UnityAction<InventorySlot, InventorySlot> OnRequestForge;
     }
 }

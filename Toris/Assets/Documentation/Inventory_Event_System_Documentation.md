@@ -20,15 +20,17 @@ Items in the game are strictly separated into two concepts: **Base Definitions (
     *   `GoldValue`: Base economic value used for buying/selling.
 
 ### `ItemInstance` (Runtime State)
-*   **What it is:** A standard serializable C# class that wraps an `InventoryItemSO` and holds data that can change during gameplay.
+*   **What it is:** A standard serializable C# class that wraps an `InventoryItemSO` and dynamically holds state data that can change during gameplay.
 *   **Location:** `Toris/Assets/Scripts/UIToolkit/Template controlls/ItemInstance.cs`
-*   **Why it exists:** Since `InventoryItemSO` is a global asset, changing a stat on it would change it for all instances in the game. `ItemInstance` allows two identical swords to have different durability or levels.
+*   **Why it exists:** Since `InventoryItemSO` is a global asset, changing a stat on it would change it for all instances in the game. `ItemInstance` uses a component-based architecture to hold a dynamic list of `ItemComponentState` objects (e.g., `DurabilityState`, `UpgradeableState`).
 *   **Properties:**
+    *   `InstanceID`: A unique string (GUID) identifying the specific item instance, crucial for saving/loading.
     *   `BaseItem`: A reference to the underlying `InventoryItemSO` blueprint.
-    *   `CurrentLevel`: Represents upgrading mechanics.
-    *   `Durability`: Health of the item before breaking.
+    *   `States`: A `[SerializeReference]` list of `ItemComponentState` objects containing the actual runtime data.
 *   **Core Logic:**
-    *   `IsStackableWith(ItemInstance other)`: Critical function that determines if two items can merge into one stack. They must share the exact same `BaseItem` reference AND have the exact same `CurrentLevel`.
+    *   **Initialization:** Upon creation, it iterates through the `BaseItem`'s `Components` list and uses a Factory Method (`CreateInitialState()`) to populate its `States` list.
+    *   `GetState<T>()`: Retrieves a specific state dynamically at runtime (e.g., `GetState<UpgradeableState>()`).
+    *   `IsStackableWith(ItemInstance other)`: Critical function that determines if two items can merge into one stack. They must share the exact same `BaseItem` reference, have the same number of states, and every individual state must evaluate as stackable (e.g., matching levels or durability).
 
 ### `InventorySlot` (The Container Slot)
 *   **What it is:** A standard serializable C# class representing a single physical square in an inventory grid.
@@ -55,7 +57,7 @@ The player's inventory (and NPC inventories) are managed by dedicated `Scriptabl
     *   `Slots`: A `List<InventorySlot>` representing the actual inventory grid.
     *   `AssociatedView`: An enum (`ScreenType`) linking this container to a specific UI window type.
 *   **Core Logic:**
-    *   **Initialization (`OnEnable` & `OnValidate`)**: Ensures the `Slots` list is populated up to `SlotCount` with empty `InventorySlot` objects. It also prevents editor crashes by enforcing sensible defaults (like level 1 and 100 durability) if an item is manually placed in a slot via the inspector but left with 0 values.
+    *   **Initialization (`OnEnable` & `OnValidate`)**: Ensures the `Slots` list is populated up to `SlotCount` with empty `InventorySlot` objects. It also ensures basic default constraints (like setting a minimum quantity of 1) if an item is manually placed in a slot via the inspector.
     *   **Adding Items (`AddItem`)**:
         1.  *First Pass:* Iterates through slots to find existing stacks of the *same* item (`IsStackableWith`). Fills those stacks up to the `MaxStackSize` defined in the blueprint.
         2.  *Second Pass:* If there is still quantity leftover, it looks for the first `IsEmpty` slot and places the remainder there.

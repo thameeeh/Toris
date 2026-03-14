@@ -14,75 +14,112 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryContainerSO
   SlotCount: 20
   Slots:
-  - Item: {fileID: 11400000, guid: 4ce328c625f9b3f4dafcbbb70a9813fd, type: 2}
-    Count: 4
-  - Item: {fileID: 11400000, guid: f553aed2dd585b64baf66153c26ec3b0, type: 2}
+  - HeldItem:
+      InstanceID: 535976bb-a1ea-4f8c-b622-9f11ca4bf263
+      BaseItem: {fileID: 11400000, guid: 97cdfc356f275114783a34bb32dc93fa, type: 2}
+      States:
+      - rid: -2
+      - rid: -2
+    Count: 1
+  - HeldItem:
+      InstanceID: 576821f2-451b-4a39-a172-bfeb8a0008f8
+      BaseItem: {fileID: 11400000, guid: 97cdfc356f275114783a34bb32dc93fa, type: 2}
+      States: []
     Count: 5
-  - Item: {fileID: 11400000, guid: 97cdfc356f275114783a34bb32dc93fa, type: 2}
-    Count: 3
-  - Item: {fileID: 11400000, guid: e043d0fee05a2724e8b9d65f014132c9, type: 2}
-    Count: 5
-  - Item: {fileID: 0}
+  - HeldItem:
+      InstanceID: d7c15e69-3f87-4958-9c24-217fa0bae54d
+      BaseItem: {fileID: 0}
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: a1a7a9e9-9b0c-42b9-befd-97ca49f57186
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: f4f9b57e-51fb-4cac-82e3-d245c4e71815
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 3aaaa254-2011-4af2-bc31-df2f03a11fee
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 430f0edd-668a-4002-befb-a988ffe5b4e9
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 19719ee7-e1f3-411f-9ad0-5b9409ca917e
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 2950ff0e-22bf-469b-b59c-033196539ce9
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: dbf03f79-8f18-4a44-8de4-e23cb288cf30
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 6249e9c4-6dde-422c-9082-2fec05063502
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: cdc992de-da7b-4db0-923e-92ebca8da564
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: b4b248f0-713c-4491-bc6a-bd4fd7a0935c
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 98dc03cd-6edf-49c2-9dab-f54aef897cd3
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 671ad998-005c-4ada-bf06-a8d74a484e21
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: bad385cc-f4ad-456e-a814-c0cdbba3c927
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: f4efd0af-8c4d-48f8-b76e-3c4939430ad0
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 7e88a91a-c556-49fd-9906-e66087cf77d4
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 935fcc25-c711-4abd-ad79-97ce2ab1d7cd
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 5d67e83b-58a2-49f7-a9ee-855c8770140e
+      BaseItem: {fileID: 0}
+      States: []
     Count: 0
   AssociatedView: 2
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

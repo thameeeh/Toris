@@ -15,104 +15,107 @@ MonoBehaviour:
   SlotCount: 20
   Slots:
   - HeldItem:
+      InstanceID: 91072a2e-7f6a-4ef1-8aa0-a9f6411daea4
       BaseItem: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 37
   - HeldItem:
+      InstanceID: c00cc094-f8b0-46fd-8875-44cfd3d42151
       BaseItem: {fileID: 11400000, guid: f01661975570f2f47b5579af1aa6bf67, type: 2}
-      CurrentLevel: 1
-      Durability: 1
+      States: []
     Count: 7
   - HeldItem:
-      BaseItem: {fileID: 11400000, guid: 97cdfc356f275114783a34bb32dc93fa, type: 2}
-      CurrentLevel: 1
-      Durability: 1
-    Count: 3
-  - HeldItem:
+      InstanceID: bf852820-a86e-4102-ae1c-787536aa2c77
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: ab2d5643-6d99-4580-bfab-2d38a856af1b
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 30a89fd1-84cc-4ce7-9a41-21edae61deb0
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 3d999612-92e9-4ea3-a33c-463c8ec95f0d
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 82d11991-6d16-4fdb-8840-fc503a723632
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 08d664e1-abbe-40d0-a5ea-b90095eb3c7b
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 9c11c18d-53e6-4f8b-9b3f-e06e9575a73b
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 43d7c6b4-ccb6-4083-8b21-f0a2155df262
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 79195588-8dad-49ef-9a60-73df7a63036b
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: b1b61246-8c4e-40c9-9b2f-5968d64fe28c
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 115edb75-f35d-4870-b5ec-141e6b17e500
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: e772171b-740b-48ce-9580-5dc1b2ce40cc
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 3399fe0a-f582-4066-84fc-3cbad409d441
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 0f76b7c2-61c8-4d05-a5fe-d702d24e7233
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: ca32b722-6dbb-49e3-b69f-74c13e7e9d9d
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 08d754fc-ee67-45f6-986b-c7e5217f8e4b
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
     Count: 0
   - HeldItem:
+      InstanceID: 6a519b2a-0022-49f4-ade3-6fa22e6d8194
       BaseItem: {fileID: 0}
-      CurrentLevel: 0
-      Durability: 0
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 0a25adf5-507a-4daa-82e1-dc5b29c8ac5b
+      BaseItem: {fileID: 0}
+      States: []
     Count: 0
   AssociatedView: 5
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  references:
+    version: 2
+    RefIds: []

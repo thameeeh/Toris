@@ -15,8 +15,7 @@ MonoBehaviour:
   abilityName: Rambow
   icon: {fileID: 0}
   cooldownSeconds: 0
-  killsStat: {fileID: 11400000, guid: df87e7ada9986364d94d785537cf9696, type: 2}
-  killsRequired: 10
+  killsRequired: 0
   shotsPerSecond: 12
   spreadDegrees: 3
   damagePerShot: 25

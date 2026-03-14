@@ -2,61 +2,116 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private const float MOVE_INPUT_EPSILON_SQR = 0.01f;
+    private const float FACING_EPSILON_SQR = 0.0001f;
+
+    [Header("References")]
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private PlayerMotor _motor;
     [SerializeField] private PlayerAnimationController _animController;
     [SerializeField] private PlayerStats _stats;
-    [SerializeField] private DashConfig _dash;
 
-    void OnEnable() { if (_inputReader) _inputReader.OnDashPressed += HandleDashRequested; }
-    void OnDisable() { if (_inputReader) _inputReader.OnDashPressed -= HandleDashRequested; }
+    private Vector2 _lastDashFacing = Vector2.right;
+
+    public DashAbility DashAbility => _motor != null ? _motor.DashAbility : null;
+
+    private void OnEnable()
+    {
+        if (_inputReader != null)
+        {
+            _inputReader.OnDashPressed += HandleDashRequested;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_inputReader != null)
+        {
+            _inputReader.OnDashPressed -= HandleDashRequested;
+        }
+    }
+
     private void OnValidate()
     {
         if (_inputReader == null)
         {
-            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}</b>", this);
+        }
+
+        if (_motor == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerMotor on GameObject: <b>{name}</b>", this);
+        }
+
+        if (_animController == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerAnimationController on GameObject: <b>{name}</b>", this);
+        }
+
+        if (_stats == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerStats on GameObject: <b>{name}</b>", this);
         }
     }
-    public DashAbility DashAbility => _motor != null ? _motor.DashAbility : null;
-    void Update()
+
+    private void Update()
     {
-        if (!_inputReader || !_motor || !_animController)
+        if (_inputReader == null || _motor == null)
             return;
 
-        Vector2 move = _inputReader.Move;
+        Vector2 moveInput = _inputReader.Move;
+        _motor.SetMoveInput(moveInput);
 
-        bool canMove = _animController.CanMove();
-        _motor.SetMovementLocked(!canMove);
-
-        _motor.SetMoveInput(move);
-
-        var animVec = _motor.isDashing ? Vector2.zero : move;
-        _animController.Tick(animVec);
+        UpdateAnimation(moveInput);
     }
 
-    private Vector2 _dashFacing;
+    private void UpdateAnimation(Vector2 moveInput)
+    {
+        if (_animController == null || _motor == null)
+            return;
+
+        Vector2 animationMoveInput = _motor.isDashing ? Vector2.zero : moveInput;
+        _animController.Tick(animationMoveInput);
+    }
 
     private void HandleDashRequested()
     {
-        if (!_motor || !_stats || !_animController) return;
+        if (_inputReader == null || _motor == null || _stats == null || _animController == null)
+            return;
 
         DashAbility dashAbility = _motor.DashAbility;
-        DashConfig dashConfig = dashAbility?.Config;
+        DashConfig dashConfig = dashAbility != null ? dashAbility.Config : null;
+
         if (dashConfig == null)
             return;
 
-        Vector2 input = _inputReader ? _inputReader.Move : Vector2.zero;
-        Vector2 facing = input.sqrMagnitude > 0.01f ? input : _animController.CurrentFacing;
-        if (facing.sqrMagnitude < 0.0001f)
-            facing = _dashFacing == Vector2.zero ? Vector2.right : _dashFacing;
+        Vector2 dashFacing = ResolveDashFacing();
+
+        if (dashFacing.sqrMagnitude < FACING_EPSILON_SQR)
+            return;
 
         if (_stats.currentStamina < dashConfig.staminaCost)
             return;
 
-        if (_motor.TryStartDash(facing.normalized))
+        Vector2 normalizedDashFacing = dashFacing.normalized;
+
+        if (_motor.TryStartDash(normalizedDashFacing))
         {
-            _dashFacing = facing.normalized;
+            _lastDashFacing = normalizedDashFacing;
             _stats.TryConsumeStamina(dashConfig.staminaCost);
         }
+    }
+
+    private Vector2 ResolveDashFacing()
+    {
+        Vector2 inputMove = _inputReader != null ? _inputReader.Move : Vector2.zero;
+
+        if (inputMove.sqrMagnitude > MOVE_INPUT_EPSILON_SQR)
+            return inputMove;
+
+        if (_animController != null && _animController.CurrentFacing.sqrMagnitude > FACING_EPSILON_SQR)
+            return _animController.CurrentFacing;
+
+        return _lastDashFacing;
     }
 }

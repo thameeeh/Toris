@@ -10,66 +10,23 @@ public class MultiShotConfig : PlayerAbilitySO
     [Header("Cost")]
     [Min(0f)] public float staminaCost = 25f;
 
-    public override void OnButtonDown(PlayerAbilityContext context)
+    public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
-        var stats = context.stats;
-        var bow = context.bow;
+        PlayerStats playerStats = context.stats;
+        PlayerBowController playerBow = context.bow;
 
-        if (stats == null || bow == null)
-        {
-            //Debug.LogWarning("[MultiShot] Missing stats or bow in context, aborting.");
+        if (runtime == null || playerStats == null || playerBow == null)
             return;
-        }
 
-        // Multishot is always unlocked unless you override IsUnlocked, but let's log anyway.
-        if (!IsUnlocked(context))
-        {
-            //Debug.Log("[MultiShot] IsUnlocked returned false, ability locked.");
+        if (!runtime.IsReady(context))
             return;
-        }
 
-        if (isOnCooldown)
-        {
-            //Debug.Log("[MultiShot] Ability on cooldown, cannot fire.");
+        if (staminaCost > 0f && !playerStats.TryConsumeStamina(staminaCost))
             return;
-        }
 
-        if (staminaCost > 0f && !stats.TryConsumeStamina(staminaCost))
-        {
-            //Debug.Log("[MultiShot] Not enough stamina. Required: " + staminaCost);
-            return;
-        }
+        BowSO.ShotStats shotStats = playerBow.BuildFullyDrawnShotStats();
 
-        BowSO bowConfig = bow.BowConfig;
-        BowSO.ShotStats shotStats;
-
-        if (bowConfig != null)
-        {
-            shotStats = bowConfig.BuildShotStats(bowConfig.maxDrawTime, 0f);
-        }
-        else
-        {
-            //Debug.LogWarning("[MultiShot] BowConfig is null on bow, using fallback ShotStats.");
-            const float FALLBACK_SPEED = 10f;
-            const float FALLBACK_DAMAGE = 10f;
-
-            shotStats = new BowSO.ShotStats
-            {
-                power = 1f,
-                speed = FALLBACK_SPEED,
-                damage = FALLBACK_DAMAGE,
-                spreadDeg = 0f
-            };
-        }
-
-        //Debug.Log($"[MultiShot] Firing volley: count={arrowCount}, spread={totalSpreadDegrees}");
-
-        bow.FireMultiShotVolley(shotStats, arrowCount, totalSpreadDegrees);
-
-        if (cooldownSeconds > 0f)
-        {
-            StartCooldown();
-            //Debug.Log($"[MultiShot] Starting cooldown: {cooldownSeconds} seconds.");
-        }
+        playerBow.FireMultiShotVolley(shotStats, arrowCount, totalSpreadDegrees);
+        runtime.StartCooldown();
     }
 }

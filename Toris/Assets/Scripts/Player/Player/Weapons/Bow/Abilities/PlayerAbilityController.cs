@@ -10,18 +10,32 @@ public class PlayerAbilityController : MonoBehaviour
     [System.Serializable]
     public class AbilitySlot
     {
-        public PlayerAbilitySO ability;
+        [SerializeField] private PlayerAbilitySO _abilityDefinition;
+
+        private PlayerAbilityRuntime _runtime;
+
+        public PlayerAbilitySO AbilityDefinition => _abilityDefinition;
+        public PlayerAbilityRuntime Runtime => _runtime;
+
+        public void Initialize()
+        {
+            _runtime = _abilityDefinition != null
+                ? _abilityDefinition.CreateRuntime()
+                : null;
+
+            _runtime?.Initialize(_abilityDefinition);
+        }
     }
 
     [Header("Ability Slots")]
     [SerializeField] private AbilitySlot _ability1;
     [SerializeField] private AbilitySlot _ability2;
 
-    public PlayerAbilitySO Ability1 => _ability1.ability;
-    public PlayerAbilitySO Ability2 => _ability2.ability;
+    public PlayerAbilityRuntime Ability1Runtime => _ability1?.Runtime;
+    public PlayerAbilityRuntime Ability2Runtime => _ability2?.Runtime;
     public PlayerAbilityContext AbilityContext => _context;
 
-    PlayerAbilityContext _context;
+    private PlayerAbilityContext _context;
 
     private void Awake()
     {
@@ -33,24 +47,8 @@ public class PlayerAbilityController : MonoBehaviour
             bow = _bow
         };
 
-        if (_ability1.ability != null)
-            _ability1.ability.ResetCooldown();
-
-        if (_ability2.ability != null)
-            _ability2.ability.ResetCooldown();
-        
-        /*
-        // Create a clone of the SO so we don't modify the file on disk  <=========
-        if (_ability1.ability != null)
-            _ability1.ability = Instantiate(_ability1.ability);
-
-        if (_ability2.ability != null)
-            _ability2.ability = Instantiate(_ability2.ability);
-
-        // Now it's safe to reset and tick
-        _ability1.ability?.ResetCooldown();
-        _ability2.ability?.ResetCooldown();
-        */
+        _ability1?.Initialize();
+        _ability2?.Initialize();
     }
 
     private void OnEnable()
@@ -62,7 +60,6 @@ public class PlayerAbilityController : MonoBehaviour
         }
 
         _input.OnAbility1Pressed += OnAbility1Pressed;
-
         _input.OnAbility2Started += OnAbility2Pressed;
         _input.OnAbility2Released += OnAbility2Released;
     }
@@ -76,34 +73,33 @@ public class PlayerAbilityController : MonoBehaviour
         _input.OnAbility2Started -= OnAbility2Pressed;
         _input.OnAbility2Released -= OnAbility2Released;
     }
+
     private void OnValidate()
     {
         if (_input == null)
         {
-            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}</b>", this);
         }
     }
+
     private void Update()
     {
-        if (_ability1.ability != null)
-            _ability1.ability.Tick(_context);
-
-        if (_ability2.ability != null)
-            _ability2.ability.Tick(_context);
+        _ability1?.Runtime?.Tick(_context);
+        _ability2?.Runtime?.Tick(_context);
     }
 
-    void OnAbility1Pressed()
+    private void OnAbility1Pressed()
     {
-        _ability1.ability?.OnButtonDown(_context);
+        _ability1?.Runtime?.OnButtonDown(_context);
     }
 
     private void OnAbility2Pressed()
     {
-        _ability2.ability?.OnButtonDown(_context);
+        _ability2?.Runtime?.OnButtonDown(_context);
     }
 
     private void OnAbility2Released()
     {
-        _ability2.ability?.OnButtonUp(_context);
+        _ability2?.Runtime?.OnButtonUp(_context);
     }
 }

@@ -17,6 +17,24 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private float spawnOffsetFromCenter = 0.35f;
 
     public BowSO BowConfig => _bow;
+    public BowSO.ShotStats BuildFullyDrawnShotStats()
+    {
+        if (_bow != null)
+        {
+            return _bow.BuildShotStats(_bow.maxDrawTime, 0f);
+        }
+
+        const float fallbackSpeed = 10f;
+        const float fallbackDamage = 10f;
+
+        return new BowSO.ShotStats
+        {
+            power = 1f,
+            speed = fallbackSpeed,
+            damage = fallbackDamage,
+            spreadDeg = 0f
+        };
+    }
 
     public event System.Action DrawStarted;
     public event System.Action ShotReleased;

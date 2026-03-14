@@ -20,6 +20,7 @@ namespace OutlandHaven.UIToolkit
 
         // Data Reference
         private PlayerDataSO _playerData;
+        private PlayerStats _playerStats; // use this for HP/Stamina
         
         // Progress Bar is 0-100
         private const float PROGRESS_BAR_MAX = 100f;

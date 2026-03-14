@@ -24,7 +24,7 @@ namespace OutlandHaven.UIToolkit
         public int Gold => _gold;
 
         public event Action<float, float> OnHealthChanged; // current, max
-        public Action<float, float> OnManaChanged;   // current, max
+        public event Action<float, float> OnManaChanged;   // current, max
         public event Action<int  , float> OnLevelChanged;     // current level, experience
         public event Action<int  , int>   OnGoldChanged;      // current gold, change amount
 
@@ -61,6 +61,15 @@ namespace OutlandHaven.UIToolkit
         {
             _currentMana += amount;
             _currentMana = Mathf.Clamp(_currentMana, 0, _maxMana);
+
+            OnManaChanged?.Invoke(_currentMana, _maxMana);
+        }
+
+        //test with event for Mana
+        public void SyncMana(float currentMana, float maxMana)
+        {
+            _maxMana = Mathf.Max(0f, maxMana);
+            _currentMana = Mathf.Clamp(currentMana, 0f, _maxMana);
 
             OnManaChanged?.Invoke(_currentMana, _maxMana);
         }

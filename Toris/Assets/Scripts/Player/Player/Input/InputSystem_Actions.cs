@@ -120,6 +120,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ToggleMage"",
+                    ""type"": ""Button"",
+                    ""id"": ""11111111-2222-3333-4444-555555555555"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
@@ -210,6 +219,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66666666-7777-8888-9999-000000000000"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleMage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1263,6 +1283,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_ToggleInventory = m_UI.FindAction("ToggleInventory", throwIfNotFound: true);
         m_UI_ToggleSmith = m_UI.FindAction("ToggleSmith", throwIfNotFound: true);
+        m_UI_ToggleMage = m_UI.FindAction("ToggleMage", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
@@ -1573,6 +1594,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_ToggleInventory;
     private readonly InputAction m_UI_ToggleSmith;
+    private readonly InputAction m_UI_ToggleMage;
     private readonly InputAction m_UI_Point;
     private readonly InputAction m_UI_Click;
     private readonly InputAction m_UI_RightClick;
@@ -1611,6 +1633,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/ToggleSmith".
         /// </summary>
         public InputAction @ToggleSmith => m_Wrapper.m_UI_ToggleSmith;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/ToggleMage".
+        /// </summary>
+        public InputAction @ToggleMage => m_Wrapper.m_UI_ToggleMage;
         /// <summary>
         /// Provides access to the underlying input action "UI/Point".
         /// </summary>
@@ -1680,6 +1706,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleSmith.started += instance.OnToggleSmith;
             @ToggleSmith.performed += instance.OnToggleSmith;
             @ToggleSmith.canceled += instance.OnToggleSmith;
+            @ToggleMage.started += instance.OnToggleMage;
+            @ToggleMage.performed += instance.OnToggleMage;
+            @ToggleMage.canceled += instance.OnToggleMage;
             @Point.started += instance.OnPoint;
             @Point.performed += instance.OnPoint;
             @Point.canceled += instance.OnPoint;
@@ -1727,6 +1756,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleSmith.started -= instance.OnToggleSmith;
             @ToggleSmith.performed -= instance.OnToggleSmith;
             @ToggleSmith.canceled -= instance.OnToggleSmith;
+            @ToggleMage.started -= instance.OnToggleMage;
+            @ToggleMage.performed -= instance.OnToggleMage;
+            @ToggleMage.canceled -= instance.OnToggleMage;
             @Point.started -= instance.OnPoint;
             @Point.performed -= instance.OnPoint;
             @Point.canceled -= instance.OnPoint;
@@ -1980,6 +2012,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleSmith(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleMage" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleMage(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Point" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

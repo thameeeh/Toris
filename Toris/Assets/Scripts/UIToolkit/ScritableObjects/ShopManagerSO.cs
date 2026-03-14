@@ -42,7 +42,7 @@ namespace OutlandHaven.UIToolkit
 
         private void HandleRequestOpen(ScreenType screenType, object payload)
         {
-            if (screenType == ScreenType.Smith) // Add any other vendor types here as they are created
+            if (screenType == ScreenType.Smith || screenType == ScreenType.Mage) // Add any other vendor types here as they are created
             {
                 if (payload is InventoryContainerSO dynamicShopContainer)
                 {

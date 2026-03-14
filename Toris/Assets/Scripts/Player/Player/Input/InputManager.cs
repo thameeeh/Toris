@@ -138,4 +138,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
         }
     }
+
+    public void OnToggleMage(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Mage, null);
+        }
+    }
 }

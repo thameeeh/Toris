@@ -91,7 +91,7 @@ namespace OutlandHaven.UIToolkit
 
             view.Setup(payload);
 
-            if(view.ID == ScreenType.Smith) // opens inventrory together with smith
+            if(view.ID == ScreenType.Smith || view.ID == ScreenType.Mage) // opens inventory together with smith or mage
             {
                 GameView inventory = _allViews.Find(v => v.ID == ScreenType.Inventory);
                 if (inventory != null) inventory.Show();

@@ -20,7 +20,13 @@ namespace OutlandHaven.UIToolkit
         public int CalculateUpgradeCost(ItemInstance itemInstance)
         {
             if (itemInstance == null) return 0;
-            return UpgradeBaseGoldCost * itemInstance.CurrentLevel;
+
+            var upgradeState = itemInstance.GetState<UpgradeableState>();
+            if (upgradeState != null)
+            {
+                return UpgradeBaseGoldCost * upgradeState.CurrentLevel;
+            }
+            return 0;
         }
 
         /// <summary>
@@ -44,6 +50,32 @@ namespace OutlandHaven.UIToolkit
                 return false;
             }
 
+            var upgradeState = slot.HeldItem.GetState<UpgradeableState>();
+            if (upgradeState == null)
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning("Upgrade failed: Item does not have an UpgradeableState.");
+#endif
+                return false;
+            }
+
+            var upgradeableComponent = slot.HeldItem.BaseItem.GetComponent<UpgradeableComponent>();
+            if (upgradeableComponent == null)
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning("Upgrade failed: Item does not have an UpgradeableComponent.");
+#endif
+                return false;
+            }
+
+            if (upgradeState.CurrentLevel >= upgradeableComponent.MaxLevel)
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning($"Upgrade failed: Item is already at Max Level ({upgradeableComponent.MaxLevel}).");
+#endif
+                return false;
+            }
+
             int cost = CalculateUpgradeCost(slot.HeldItem);
 
             if (SessionData.PlayerData.Gold >= cost)
@@ -52,10 +84,10 @@ namespace OutlandHaven.UIToolkit
                 SessionData.PlayerData.ModifyGold(-cost);
 
                 // Upgrade instance
-                slot.HeldItem.CurrentLevel++;
+                upgradeState.CurrentLevel++;
 
 #if UNITY_EDITOR
-                Debug.Log($"Upgraded {slot.HeldItem.BaseItem.ItemName} to level {slot.HeldItem.CurrentLevel} for {cost} gold.");
+                Debug.Log($"Upgraded {slot.HeldItem.BaseItem.ItemName} to level {upgradeState.CurrentLevel} for {cost} gold.");
 #endif
                 // Events will be handled in a future task or fired by PlayerData
                 return true;

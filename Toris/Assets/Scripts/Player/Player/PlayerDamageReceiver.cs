@@ -1,64 +1,186 @@
 using UnityEngine;
 
 // PURPOSE: Applies incoming HitData to the player (damage, knockback, i-frames),
-// and triggers Hurt/Death animations. Does NOT decide what is a hit—that's Hurtbox.
+// triggers Hurt/Death animations, and forwards optional status payloads to
+// PlayerStatusController. Does NOT decide what is a hit—that's Hurtbox.
 
 [RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerDamageReceiver : MonoBehaviour
 {
     [Header("I-Frames")]
-    [SerializeField] float iFrameDuration = 0.35f;  // how long subsequent hits are ignored
-    [SerializeField] float hurtFlashTime = 0.12f;   // brief visual feedback tint
+    [SerializeField] private float iFrameDuration = 0.35f;
+    [SerializeField] private float hurtFlashTime = 0.12f;
 
     [Header("Knockback")]
-    [SerializeField] float knockbackMultiplier = 1f;    // global scale on incoming knockback
+    [SerializeField] private float knockbackMultiplier = 1f;
 
-    float _iFrameUntil;                                 // world time when i-frames end
-    PlayerStats _stats; Rigidbody2D _rb; SpriteRenderer _sr; PlayerAnimationController _anim;
+    [Header("Status")]
+    [SerializeField] private PlayerStatusController _statusController;
+
+    private float _iFrameUntil;
+    private float _flashUntil;
+
+    private PlayerStats _stats;
+    private Rigidbody2D _rb;
+    private SpriteRenderer _sr;
+    private PlayerAnimationController _anim;
+
+    private Color _originalColor;
+    private bool _flashActive;
 
     public bool IsInvulnerable => Time.time < _iFrameUntil;
 
-    void Awake()
+    private void Awake()
     {
         _stats = GetComponent<PlayerStats>();
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponentInChildren<SpriteRenderer>();
         _anim = GetComponentInChildren<PlayerAnimationController>();
+
+        if (_statusController == null)
+        {
+            _statusController = GetComponent<PlayerStatusController>();
+        }
+
+        if (_sr != null)
+        {
+            _originalColor = _sr.color;
+        }
+    }
+
+    private void Update()
+    {
+        UpdateFlash();
     }
 
     public void ReceiveHit(in HitData hit)
     {
-        if (IsInvulnerable && !hit.bypassIFrames) return;
+        if (IsInvulnerable && !hit.bypassIFrames)
+            return;
 
-        // Apply damage; PlayerStats is the single source of truth for death
-        _stats.ApplyDamage(hit.damage);
+        float finalDamage = CalculateFinalDamage(hit.damage);
 
-        // If HP is now zero, play death and exit (LifeGate listens to OnPlayerDied)
+        _stats.ApplyDamage(finalDamage);
+        TryApplyStatus(hit);
+
         if (_stats.currentHP <= 0f)
         {
             _anim?.PlayDeath();
-            // Optional broadcast for legacy hooks—safe to keep, but avoid double-handling
             BroadcastMessage("OnPlayerDied", SendMessageOptions.DontRequireReceiver);
             return;
         }
 
-        // Apply knockback impulse if requested (testing)
         if (hit.knockback > 0f && _rb != null)
+        {
             _rb.AddForce(hit.direction * hit.knockback * knockbackMultiplier, ForceMode2D.Impulse);
+        }
 
-        // Start i-frames and play hurt feedback
         _iFrameUntil = Time.time + iFrameDuration;
         _anim?.PlayHurt();
-        if (_sr != null) StartCoroutine(FlashRoutine());
+        StartFlash();
     }
 
-    // Brief tint to communicate damage taken (will be switched out later with proper graphics)
-    System.Collections.IEnumerator FlashRoutine()
+    private float CalculateFinalDamage(float baseDamage)
     {
-        var original = _sr.color;
-        _sr.color = new Color(original.r, original.g * 0.6f, original.b * 0.6f, 1f);
-        float end = Time.time + hurtFlashTime; while (Time.time < end) yield return null;
-        _sr.color = original;
+        const float minDamageMultiplier = 0f;
+
+        float validatedBaseDamage = Mathf.Max(0f, baseDamage);
+        float incomingDamageMultiplier = 1f;
+
+        if (_stats != null)
+        {
+            incomingDamageMultiplier = Mathf.Max(
+                minDamageMultiplier,
+                _stats.ResolvedEffects.incomingDamageMultiplier);
+        }
+
+        return validatedBaseDamage * incomingDamageMultiplier;
+    }
+
+    private void TryApplyStatus(in HitData hit)
+    {
+        if (_statusController == null)
+            return;
+
+        if (!hit.appliesStatus)
+            return;
+
+        _statusController.TryApplyStatus(
+            hit.statusType,
+            hit.statusDamagePerSecond,
+            hit.statusDuration,
+            hit.statusTickInterval,
+            hit.statusStacks);
+    }
+
+    private void StartFlash()
+    {
+        if (_sr == null)
+            return;
+
+        _originalColor = _sr.color;
+        _sr.color = new Color(
+            _originalColor.r,
+            _originalColor.g * 0.6f,
+            _originalColor.b * 0.6f,
+            1f);
+
+        _flashUntil = Time.time + hurtFlashTime;
+        _flashActive = true;
+    }
+
+    private void UpdateFlash()
+    {
+        if (!_flashActive || _sr == null)
+            return;
+
+        if (Time.time < _flashUntil)
+            return;
+
+        _sr.color = _originalColor;
+        _flashActive = false;
+    }
+
+    [ContextMenu("Test Poison Hit")]
+    private void DebugTestPoisonHit()
+    {
+        HitData hit = new HitData(
+            origin: transform.position,
+            dir: Vector2.right,
+            dmg: 10f,
+            kb: 2f,
+            src: gameObject,
+            bypass: false);
+
+        hit.SetStatus(
+            PlayerStatusEffectType.Poison,
+            damagePerSecond: 5f,
+            duration: 4f,
+            tickInterval: 1f,
+            stacks: 1);
+
+        ReceiveHit(hit);
+    }
+
+    [ContextMenu("Test Burning Hit")]
+    private void DebugTestBurningHit()
+    {
+        HitData hit = new HitData(
+            origin: transform.position,
+            dir: Vector2.left,
+            dmg: 8f,
+            kb: 1f,
+            src: gameObject,
+            bypass: false);
+
+        hit.SetStatus(
+            PlayerStatusEffectType.Burning,
+            damagePerSecond: 6f,
+            duration: 3f,
+            tickInterval: 1f,
+            stacks: 1);
+
+        ReceiveHit(hit);
     }
 }

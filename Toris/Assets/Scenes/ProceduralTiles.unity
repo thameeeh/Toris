@@ -2610,6 +2610,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7797051013246396014}
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7797051013246396029}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &7797051013246395996 stripped
 Transform:
@@ -2644,7 +2647,7 @@ MonoBehaviour:
   _blueGemEffect: {fileID: 11400000, guid: 97818c776b2074840ba712a68cecf0a4, type: 2}
   _redGemEffect: {fileID: 11400000, guid: 81f5ab2735ec17542bfd5d2a12a6ccf4, type: 2}
   _greenGemEffect: {fileID: 11400000, guid: 556e1ae9d38cde94bb76795fa046e179, type: 2}
-  _purpleGemEffect: {fileID: 11400000, guid: bc2d63b7fd7304a43a4015799a44d9ae, type: 2}
+  _purpleGemEffect: {fileID: 11400000, guid: aea3fa23ca30c6e4797b4cc1e9c71f72, type: 2}
 --- !u!114 &7797051013246396013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2672,6 +2675,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
   _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
   _initializeFromConfigOnAwake: 1
+--- !u!114 &7797051013246396029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600678435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9113600bb713c124790ba67a452e633b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatusController
+  _playerStats: {fileID: 7797051013246396005}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

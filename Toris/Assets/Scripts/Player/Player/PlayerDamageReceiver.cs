@@ -1,8 +1,5 @@
+using System;
 using UnityEngine;
-
-// PURPOSE: Applies incoming HitData to the player (damage, knockback, i-frames),
-// triggers Hurt/Death animations, and forwards optional status payloads to
-// PlayerStatusController. Does NOT decide what is a hit—that's Hurtbox.
 
 [RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -24,10 +21,12 @@ public class PlayerDamageReceiver : MonoBehaviour
     private PlayerStats _stats;
     private Rigidbody2D _rb;
     private SpriteRenderer _sr;
-    private PlayerAnimationController _anim;
 
     private Color _originalColor;
     private bool _flashActive;
+
+    public event Action OnHurtReceived;
+    public event Action OnDeathReceived;
 
     public bool IsInvulnerable => Time.time < _iFrameUntil;
 
@@ -36,7 +35,6 @@ public class PlayerDamageReceiver : MonoBehaviour
         _stats = GetComponent<PlayerStats>();
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponentInChildren<SpriteRenderer>();
-        _anim = GetComponentInChildren<PlayerAnimationController>();
 
         if (_statusController == null)
         {
@@ -66,7 +64,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 
         if (_stats.currentHP <= 0f)
         {
-            _anim?.PlayDeath();
+            OnDeathReceived?.Invoke();
             BroadcastMessage("OnPlayerDied", SendMessageOptions.DontRequireReceiver);
             return;
         }
@@ -77,7 +75,7 @@ public class PlayerDamageReceiver : MonoBehaviour
         }
 
         _iFrameUntil = Time.time + iFrameDuration;
-        _anim?.PlayHurt();
+        OnHurtReceived?.Invoke();
         StartFlash();
     }
 
@@ -100,10 +98,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     private void TryApplyStatus(in HitData hit)
     {
-        if (_statusController == null)
-            return;
-
-        if (!hit.appliesStatus)
+        if (_statusController == null || !hit.appliesStatus)
             return;
 
         _statusController.TryApplyStatus(
@@ -120,11 +115,7 @@ public class PlayerDamageReceiver : MonoBehaviour
             return;
 
         _originalColor = _sr.color;
-        _sr.color = new Color(
-            _originalColor.r,
-            _originalColor.g * 0.6f,
-            _originalColor.b * 0.6f,
-            1f);
+        _sr.color = new Color(_originalColor.r, _originalColor.g * 0.6f, _originalColor.b * 0.6f, 1f);
 
         _flashUntil = Time.time + hurtFlashTime;
         _flashActive = true;
@@ -140,47 +131,5 @@ public class PlayerDamageReceiver : MonoBehaviour
 
         _sr.color = _originalColor;
         _flashActive = false;
-    }
-
-    [ContextMenu("Test Poison Hit")]
-    private void DebugTestPoisonHit()
-    {
-        HitData hit = new HitData(
-            origin: transform.position,
-            dir: Vector2.right,
-            dmg: 10f,
-            kb: 2f,
-            src: gameObject,
-            bypass: false);
-
-        hit.SetStatus(
-            PlayerStatusEffectType.Poison,
-            damagePerSecond: 5f,
-            duration: 4f,
-            tickInterval: 1f,
-            stacks: 1);
-
-        ReceiveHit(hit);
-    }
-
-    [ContextMenu("Test Burning Hit")]
-    private void DebugTestBurningHit()
-    {
-        HitData hit = new HitData(
-            origin: transform.position,
-            dir: Vector2.left,
-            dmg: 8f,
-            kb: 1f,
-            src: gameObject,
-            bypass: false);
-
-        hit.SetStatus(
-            PlayerStatusEffectType.Burning,
-            damagePerSecond: 6f,
-            duration: 3f,
-            tickInterval: 1f,
-            stacks: 1);
-
-        ReceiveHit(hit);
     }
 }

@@ -15,6 +15,7 @@ public class PlayerMotor : MonoBehaviour
     private Vector2 _moveInput;
     private bool _movementLocked;
 
+    public Vector2 CurrentMoveInput => _moveInput;
     public DashAbility DashAbility => _dashAbility;
     public bool isDashing => _dashAbility != null && _dashAbility.isActive;
 

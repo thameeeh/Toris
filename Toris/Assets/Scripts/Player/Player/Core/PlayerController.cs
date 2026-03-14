@@ -8,8 +8,8 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private PlayerMotor _motor;
-    [SerializeField] private PlayerAnimationController _animController;
     [SerializeField] private PlayerStats _stats;
+    [SerializeField] private PlayerFacing _playerFacing;
 
     private Vector2 _lastDashFacing = Vector2.right;
 
@@ -43,14 +43,14 @@ public class PlayerController : MonoBehaviour
             Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerMotor on GameObject: <b>{name}</b>", this);
         }
 
-        if (_animController == null)
-        {
-            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerAnimationController on GameObject: <b>{name}</b>", this);
-        }
-
         if (_stats == null)
         {
             Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerStats on GameObject: <b>{name}</b>", this);
+        }
+
+        if (_playerFacing == null)
+        {
+            Debug.LogWarning($"[PlayerController] Missing PlayerFacing on {name}", this);
         }
     }
 
@@ -62,21 +62,15 @@ public class PlayerController : MonoBehaviour
         Vector2 moveInput = _inputReader.Move;
         _motor.SetMoveInput(moveInput);
 
-        UpdateAnimation(moveInput);
-    }
-
-    private void UpdateAnimation(Vector2 moveInput)
-    {
-        if (_animController == null || _motor == null)
-            return;
-
-        Vector2 animationMoveInput = _motor.isDashing ? Vector2.zero : moveInput;
-        _animController.Tick(animationMoveInput);
+        if (moveInput.sqrMagnitude > MOVE_INPUT_EPSILON_SQR)
+        {
+            _playerFacing?.SetFacing(moveInput);
+        }
     }
 
     private void HandleDashRequested()
     {
-        if (_inputReader == null || _motor == null || _stats == null || _animController == null)
+        if (_inputReader == null || _motor == null || _stats == null)
             return;
 
         DashAbility dashAbility = _motor.DashAbility;
@@ -98,6 +92,7 @@ public class PlayerController : MonoBehaviour
         if (_motor.TryStartDash(normalizedDashFacing))
         {
             _lastDashFacing = normalizedDashFacing;
+            _playerFacing?.SetFacing(normalizedDashFacing);
             _stats.TryConsumeStamina(dashConfig.staminaCost);
         }
     }
@@ -109,8 +104,8 @@ public class PlayerController : MonoBehaviour
         if (inputMove.sqrMagnitude > MOVE_INPUT_EPSILON_SQR)
             return inputMove;
 
-        if (_animController != null && _animController.CurrentFacing.sqrMagnitude > FACING_EPSILON_SQR)
-            return _animController.CurrentFacing;
+        if (_playerFacing != null && _playerFacing.CurrentFacing.sqrMagnitude > FACING_EPSILON_SQR)
+            return _playerFacing.CurrentFacing;
 
         return _lastDashFacing;
     }

@@ -161,7 +161,7 @@ public class PlayerStatusController : MonoBehaviour
             _ => false
         };
     }
-
+#if UNITY_EDITOR
     [ContextMenu("Test Poison")]
     private void TestPoison()
     {
@@ -185,4 +185,6 @@ public class PlayerStatusController : MonoBehaviour
     {
         ClearAllStatuses();
     }
+
+#endif
 }

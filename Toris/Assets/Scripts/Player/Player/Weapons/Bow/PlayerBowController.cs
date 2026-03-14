@@ -5,19 +5,21 @@ public class PlayerBowController : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] private PlayerInputReaderSO _input;
-    [SerializeField] private PlayerAnimationController _animController;
     [SerializeField] private BowSO _bow;
     [SerializeField] private Transform _muzzle;
     [SerializeField] private PlayerMotor _motor;
     [SerializeField] private Collider2D _ownerCollider;
     [SerializeField] private GameplayPoolManager _poolManager;
     [SerializeField] private PlayerStats _stats;
+    [SerializeField] private PlayerFacing _playerFacing;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
     [SerializeField] private float spawnOffsetFromCenter = 0.35f;
 
     public BowSO BowConfig => _bow;
+    public bool IsDrawing => drawing;
+    public Vector2 CurrentAimDirection => GetAimDirection();
 
     public BowSO.ShotStats BuildFullyDrawnShotStats()
     {
@@ -46,8 +48,6 @@ public class PlayerBowController : MonoBehaviour
     private float drawStartTime = -999f;
     private float lastShotTime = -999f;
     private bool drawing;
-
-    public bool IsAutoaiming { get; set; } = false;
 
     private void OnEnable()
     {
@@ -80,29 +80,30 @@ public class PlayerBowController : MonoBehaviour
 
     private void Update()
     {
-        if (drawing && _animController != null)
+        if (!drawing)
+            return;
+
+        Vector2 aimDirection = GetAimDirection();
+        if (aimDirection.sqrMagnitude > 0.0001f)
         {
-            Vector2 aim = GetAimDirection();
-            if (aim.sqrMagnitude > 0.0001f)
-                _animController.UpdateAim(aim);
+            _playerFacing?.SetFacing(aimDirection);
         }
     }
-
     private void BeginDraw()
     {
         if (_bow == null) return;
         if (Time.time - lastShotTime < _bow.cooldownAfterShot) return;
 
+        Vector2 aimDirection = GetAimDirection();
+        if (aimDirection.sqrMagnitude > 0.0001f)
+        {
+            _playerFacing?.SetFacing(aimDirection);
+        }
+
         drawing = true;
         drawStartTime = Time.time;
         _motor?.SetMovementLocked(true);
         DrawStarted?.Invoke();
-
-        Vector2 aim = GetAimDirection();
-        if (aim.sqrMagnitude > 0.0001f)
-            _animController?.UpdateAim(aim);
-
-        _animController?.BeginHold();
     }
 
     private void ReleaseShot()
@@ -122,9 +123,7 @@ public class PlayerBowController : MonoBehaviour
 
         if (held < _bow.nockTime)
         {
-            _animController?.ReleaseHold();
             lastShotTime = Time.time;
-
             DryReleased?.Invoke();
             ShotReleased?.Invoke();
             return;
@@ -133,11 +132,9 @@ public class PlayerBowController : MonoBehaviour
         float overHoldExtra = Mathf.Max(0f, held - _bow.overHoldStartsAt);
         BowSO.ShotStats stats = _bow.BuildShotStats(held, overHoldExtra);
 
-        _animController?.ReleaseHold();
         FireArrow(stats);
 
         lastShotTime = Time.time;
-
         ShotFired?.Invoke();
         ShotReleased?.Invoke();
     }
@@ -150,16 +147,14 @@ public class PlayerBowController : MonoBehaviour
 
         BowSO.ShotStats finalStats = ApplyResolvedDamageModifiers(stats);
 
-        Debug.Log($"[Bow Test] Base damage={stats.damage}, Final damage={finalStats.damage}, Outgoing multiplier={(_stats != null ? _stats.ResolvedEffects.outgoingDamageMultiplier : -1f)}", this);
-
         Vector2 baseDir = GetAimDirection();
         if (baseDir.sqrMagnitude < 0.0001f)
             baseDir = Vector2.right;
 
+        _playerFacing?.SetFacing(baseDir);
         SpawnArrow(finalStats, baseDir);
     }
 
-    /// <summary>Spawns a single arrow using your original logic.</summary>
     private void SpawnArrow(BowSO.ShotStats stats, Vector2 dir)
     {
         float spread = Random.Range(-stats.spreadDeg, stats.spreadDeg);
@@ -212,10 +207,6 @@ public class PlayerBowController : MonoBehaviour
         return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
 
-    /// <summary>
-    /// Public entry point for abilities: fire a multishot volley
-    /// in the current aim direction.
-    /// </summary>
     public void FireMultiShotVolley(BowSO.ShotStats stats, int arrowCount, float totalSpreadDegrees)
     {
         BowSO.ShotStats finalStats = ApplyResolvedDamageModifiers(stats);
@@ -223,6 +214,8 @@ public class PlayerBowController : MonoBehaviour
         Vector2 baseDir = GetAimDirection();
         if (baseDir.sqrMagnitude < 0.0001f)
             baseDir = Vector2.right;
+
+        _playerFacing?.SetFacing(baseDir);
 
         int count = Mathf.Max(1, arrowCount);
         for (int i = 0; i < count; i++)

@@ -82,8 +82,6 @@ public class PlayerProgression : MonoBehaviour
 
         _runtimeProgression.AddGold(validatedAmount);
         OnGoldChanged?.Invoke(_runtimeProgression.CurrentGold, validatedAmount);
-
-        Debug.Log($"[PlayerProgression] Gold is now {CurrentGold}", this);
     }
 
     public bool TrySpendGold(int amount)

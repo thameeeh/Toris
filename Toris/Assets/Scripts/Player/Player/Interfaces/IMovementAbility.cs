@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+
+//outdated
 public interface IMovementAbility 
 {
     bool isActive { get; }

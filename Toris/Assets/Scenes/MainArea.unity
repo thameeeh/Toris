@@ -40423,7 +40423,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1049202497}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &1010793783 stripped
 Transform:
@@ -40484,6 +40487,25 @@ Transform:
   - {fileID: 1988838650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1049202481 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 1010793782}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1049202497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049202481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e2cfe41795205488976a030b89cf9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
+  _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
+  _initializeFromConfigOnAwake: 1
 --- !u!1 &1049271748
 GameObject:
   m_ObjectHideFlags: 0

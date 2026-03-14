@@ -2505,6 +2505,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1738574752484829038, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _stats
+      value: 
+      objectReference: {fileID: 7797051013246396005}
     - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _ability1._abilityDefinition
       value: 
@@ -2569,6 +2573,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6347703112388059557, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _stats
+      value: 
+      objectReference: {fileID: 7797051013246396005}
     - target: {fileID: 7014179871662737768, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: groundMap
       value: 
@@ -2599,6 +2607,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7797051013246396012}
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7797051013246396014}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &7797051013246395996 stripped
 Transform:
@@ -2647,6 +2658,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectSourceController
   _baseEffects: {fileID: 11400000, guid: 9378f3c5514c673428f82ea964b831ae, type: 2}
+--- !u!114 &7797051013246396014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600678435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e2cfe41795205488976a030b89cf9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
+  _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
+  _initializeFromConfigOnAwake: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

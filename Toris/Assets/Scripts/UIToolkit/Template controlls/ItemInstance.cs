@@ -4,8 +4,7 @@ using UnityEngine;
 namespace OutlandHaven.UIToolkit
 {
     /// <summary>
-    /// Wrapper class for holding an instance of an item, including its runtime state
-    /// like current level or durability.
+    /// Wrapper class holding the runtime state of an item.
     /// </summary>
     [Serializable]
     public class ItemInstance

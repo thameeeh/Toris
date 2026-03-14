@@ -10,7 +10,8 @@ namespace OutlandHaven.UIToolkit
         Inventory,
         CharacterSheet,
         PauseMenu,
-        Smith
+        Smith,
+        Mage
     }
     public enum ScreenZone
     {

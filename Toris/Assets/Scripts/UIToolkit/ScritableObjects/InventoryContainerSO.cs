@@ -25,18 +25,11 @@ namespace OutlandHaven.UIToolkit
                 {
                     // If an item is placed in the slot, ensure defaults are set if currently 0
                     if (slot.Count <= 0) slot.Count = 1;
-                    if (slot.HeldItem.CurrentLevel <= 0) slot.HeldItem.CurrentLevel = 1;
-                    if (slot.HeldItem.Durability <= 0) slot.HeldItem.Durability = 100f;
                 }
                 else
                 {
                     // If the slot is empty, ensure values are 0
                     slot.Count = 0;
-                    if (slot.HeldItem != null)
-                    {
-                        slot.HeldItem.CurrentLevel = 0;
-                        slot.HeldItem.Durability = 0f;
-                    }
                 }
             }
         }

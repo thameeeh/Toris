@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OutlandHaven.UIToolkit
@@ -9,43 +10,86 @@ namespace OutlandHaven.UIToolkit
     [Serializable]
     public class ItemInstance
     {
+        public string InstanceID; // Mandatory for saving/loading individual items
         public InventoryItemSO BaseItem;
-        public int CurrentLevel = 1;
-        public float Durability = 100f; // Example skeleton stat
 
-        // You can add more instance-specific stats here later
+        // Holds the runtime data (e.g., DurabilityState, ConsumableState)
+        [SerializeReference]
+        public List<ItemComponentState> States = new List<ItemComponentState>();
 
+        // Default constructor for serialization
         public ItemInstance()
         {
-            CurrentLevel = 1;
-            Durability = 100f;
+            InstanceID = Guid.NewGuid().ToString();
         }
 
         public ItemInstance(InventoryItemSO baseItem)
         {
+            InstanceID = Guid.NewGuid().ToString();
             BaseItem = baseItem;
-            CurrentLevel = 1;
-            Durability = 100f;
-        }
 
-        public ItemInstance(InventoryItemSO baseItem, int startLevel)
-        {
-            BaseItem = baseItem;
-            CurrentLevel = startLevel;
-            Durability = 100f;
+            if (BaseItem != null && BaseItem.Components != null)
+            {
+                foreach (var component in BaseItem.Components)
+                {
+                    var initialState = component.CreateInitialState();
+                    if (initialState != null)
+                    {
+                        States.Add(initialState);
+                    }
+                }
+            }
         }
 
         /// <summary>
-        /// Checks if this ItemInstance is effectively identical to another
-        /// (meaning they can stack together).
+        /// Retrieves a specific state at runtime.
+        /// </summary>
+        public T GetState<T>() where T : ItemComponentState
+        {
+            foreach (var state in States)
+            {
+                if (state is T typedState)
+                    return typedState;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Checks if this ItemInstance is effectively identical to another.
         /// </summary>
         public bool IsStackableWith(ItemInstance other)
         {
             if (other == null) return false;
 
-            // They can only stack if they are the exact same base item
-            // and have the exact same level/stats.
-            return BaseItem == other.BaseItem && CurrentLevel == other.CurrentLevel;
+            // 1. They must be the exact same blueprint
+            if (BaseItem != other.BaseItem) return false;
+
+            // 2. If one has an extra state, they do not match
+            if (States.Count != other.States.Count) return false;
+
+            // 3. Compare every state dynamically
+            foreach (var myState in States)
+            {
+                var otherState = other.GetState(myState.GetType());
+
+                // If the other item lacks this state, or the states report they don't match
+                if (otherState == null || !myState.IsStackableWith(otherState))
+                {
+                    return false;
+                }
+            }
+
+            return true; // All checks passed, items can merge
+        }
+
+        // Internal helper to find a state by its raw System.Type
+        private ItemComponentState GetState(Type type)
+        {
+            foreach (var state in States)
+            {
+                if (state.GetType() == type) return state;
+            }
+            return null;
         }
     }
 }

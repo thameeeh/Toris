@@ -12,6 +12,7 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private bool showHudOnStart = true;
 
         private List<GameView> _allViews = new List<GameView>();
+        private Dictionary<GameView, ScreenZone> _viewZones = new Dictionary<GameView, ScreenZone>();
 
         private VisualElement _hudZone; 
         private VisualElement _leftZone;
@@ -57,6 +58,7 @@ namespace OutlandHaven.UIToolkit
         public void RegisterView(GameView view, ScreenZone zone)
         {
             _allViews.Add(view);
+            _viewZones[view] = zone;
 
             switch (zone)
             {
@@ -87,6 +89,18 @@ namespace OutlandHaven.UIToolkit
             {
                 CloseWindow(type);
                 return;
+            }
+
+            // Close any other open view in the same zone (except HUD)
+            if (_viewZones.TryGetValue(view, out ScreenZone zone) && zone != ScreenZone.HUD)
+            {
+                foreach (var otherView in _allViews)
+                {
+                    if (otherView != view && !otherView.IsHidden && _viewZones.TryGetValue(otherView, out ScreenZone otherZone) && otherZone == zone)
+                    {
+                        CloseWindow(otherView.ID);
+                    }
+                }
             }
 
             view.Setup(payload);

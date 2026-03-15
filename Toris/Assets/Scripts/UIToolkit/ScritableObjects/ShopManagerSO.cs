@@ -54,24 +54,24 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void HandleRequestBuy(InventoryItemSO item, int quantity)
+        private void HandleRequestBuy(ItemInstance item, int quantity)
         {
-            if (item == null || quantity <= 0) return;
+            if (item == null || item.BaseItem == null || quantity <= 0) return;
             if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
             if (CurrentShopInventory == null) return;
 
-            int totalCost = item.GoldValue * quantity;
+            int totalCost = item.BaseItem.GoldValue * quantity;
 
             // Check if player has enough gold
             if (SessionData.PlayerData.Gold >= totalCost)
             {
                 // First check if the shop actually has enough items to sell
-                bool removedFromShop = CurrentShopInventory.RemoveItem(new ItemInstance(item), quantity);
+                bool removedFromShop = CurrentShopInventory.RemoveItem(item, quantity);
 
                 if (removedFromShop)
                 {
                     // Attempt to add to player inventory
-                    bool added = SessionData.PlayerInventory.AddItem(new ItemInstance(item), quantity);
+                    bool added = SessionData.PlayerInventory.AddItem(item, quantity);
 
                     if (added)
                     {
@@ -82,13 +82,13 @@ namespace OutlandHaven.UIToolkit
                         InventoryEvents?.OnShopInventoryUpdated?.Invoke();
 
 #if UNITY_EDITOR
-                        Debug.Log($"Bought {quantity} {item.ItemName} for {totalCost} gold. Remaining Gold: {SessionData.PlayerData.Gold}");
+                        Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {SessionData.PlayerData.Gold}");
 #endif
                     }
                     else
                     {
                         // If player inventory was full, refund the item to the shop
-                        CurrentShopInventory.AddItem(new ItemInstance(item), quantity);
+                        CurrentShopInventory.AddItem(item, quantity);
 #if UNITY_EDITOR
                         Debug.LogWarning("Inventory full! Could not buy item. Refunded to shop.");
 #endif
@@ -109,20 +109,20 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void HandleRequestSell(InventoryItemSO item, int quantity)
+        private void HandleRequestSell(ItemInstance item, int quantity)
         {
-            if (item == null || quantity <= 0) return;
+            if (item == null || item.BaseItem == null || quantity <= 0) return;
             if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
             if (CurrentShopInventory == null) return;
 
-            int totalValue = item.GoldValue * quantity;
+            int totalValue = item.BaseItem.GoldValue * quantity;
 
-            bool removed = SessionData.PlayerInventory.RemoveItem(new ItemInstance(item), quantity);
+            bool removed = SessionData.PlayerInventory.RemoveItem(item, quantity);
 
             if (removed)
             {
                 // Add the item to the shop's inventory so the NPC can resell it
-                bool addedToShop = CurrentShopInventory.AddItem(new ItemInstance(item), quantity);
+                bool addedToShop = CurrentShopInventory.AddItem(item, quantity);
 
                 SessionData.PlayerData.ModifyGold(totalValue);
                 InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
@@ -134,7 +134,7 @@ namespace OutlandHaven.UIToolkit
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"Sold {quantity} {item.ItemName} for {totalValue} gold. Total Gold: {SessionData.PlayerData.Gold}");
+                Debug.Log($"Sold {quantity} {item.BaseItem.ItemName} for {totalValue} gold. Total Gold: {SessionData.PlayerData.Gold}");
 #endif
             }
             else

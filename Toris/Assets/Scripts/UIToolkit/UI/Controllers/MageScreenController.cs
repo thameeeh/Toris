@@ -26,9 +26,35 @@ namespace UIToolkit.UI
 
         private void OnEnable()
         {
+            if (_uiEvents != null)
+            {
+                _uiEvents.OnRequestOpen += HandleRequestOpen;
+            }
+
             if (_mageMainTemplate == null)
             {
                 Debug.LogWarning("MageScreenController: Mage Main Template is missing! This is expected during skeleton phase.");
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_uiEvents != null)
+            {
+                _uiEvents.OnRequestOpen -= HandleRequestOpen;
+            }
+        }
+
+        private void HandleRequestOpen(ScreenType screenType, object payload)
+        {
+            // If the UI is opened via shortcut keys (payload is null)
+            // we manually provide the default container so the ShopManager knows which inventory to use.
+            if (screenType == ScreenType.Mage && payload == null)
+            {
+                if (_shopManagerSO != null && _shopContainer != null)
+                {
+                    _shopManagerSO.CurrentShopInventory = _shopContainer;
+                }
             }
         }
 

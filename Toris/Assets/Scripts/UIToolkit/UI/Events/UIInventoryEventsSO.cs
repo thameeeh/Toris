@@ -11,8 +11,8 @@ namespace OutlandHaven.UIToolkit
 
         [Header("Shop Events")]
         public UnityAction OnShopInventoryUpdated;
-        public UnityAction<InventoryItemSO, int> OnRequestBuy;
-        public UnityAction<InventoryItemSO, int> OnRequestSell;
+        public UnityAction<ItemInstance, int> OnRequestBuy;
+        public UnityAction<ItemInstance, int> OnRequestSell;
         public UnityAction<int> OnCurrencyChanged;
 
         [Header("Crafting Events")]

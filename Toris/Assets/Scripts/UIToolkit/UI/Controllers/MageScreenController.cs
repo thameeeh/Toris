@@ -8,6 +8,8 @@ namespace UIToolkit.UI
     {
         [Header("Dependencies")]
         [SerializeField] private VisualTreeAsset _mageMainTemplate; // <--- Drag Mage.uxml here
+        [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
+        [SerializeField] private VisualTreeAsset _shopTemplate; // <--- DRAG ShopSubView.uxml HERE
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
@@ -33,7 +35,13 @@ namespace UIToolkit.UI
 
             if (_mageMainTemplate == null)
             {
-                Debug.LogWarning("MageScreenController: Mage Main Template is missing! This is expected during skeleton phase.");
+                Debug.LogError("MageScreenController: Mage Main Template is missing!");
+                return;
+            }
+            if (_slotTemplate == null)
+            {
+                Debug.LogError("MageScreenController: Slot Template is missing!");
+                return;
             }
         }
 
@@ -60,18 +68,11 @@ namespace UIToolkit.UI
 
         private void Start()
         {
-            VisualElement mageInstance;
-            if (_mageMainTemplate == null)
-            {
-                // Fallback for skeleton testing without a UXML file
-                mageInstance = new VisualElement();
-            }
-            else
-            {
-                mageInstance = _mageMainTemplate.Instantiate();
-            }
+            if (_mageMainTemplate == null || _slotTemplate == null) return;
 
-            _view = new MageView(mageInstance, _uiEvents, _uiInventoryEvents, _gameSession, _shopContainer, _shopManagerSO);
+            TemplateContainer mageInstance = _mageMainTemplate.Instantiate();
+
+            _view = new MageView(mageInstance, _slotTemplate, _shopTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopContainer, _shopManagerSO);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

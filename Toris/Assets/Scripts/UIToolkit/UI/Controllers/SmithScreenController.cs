@@ -34,6 +34,11 @@ namespace UIToolkit.UI
 
         private void OnEnable()
         {
+            if (_uiEvents != null)
+            {
+                _uiEvents.OnRequestOpen += HandleRequestOpen;
+            }
+
             if (_smithMainTemplate == null)
             {
                 Debug.LogError("SmithScreenController: Smith Main Template is missing!");
@@ -43,6 +48,27 @@ namespace UIToolkit.UI
             {
                 Debug.LogError("SmithScreenController: Slot Template is missing!");
                 return;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_uiEvents != null)
+            {
+                _uiEvents.OnRequestOpen -= HandleRequestOpen;
+            }
+        }
+
+        private void HandleRequestOpen(ScreenType screenType, object payload)
+        {
+            // If the UI is opened via shortcut keys (payload is null)
+            // we manually provide the default container so the ShopManager knows which inventory to use.
+            if (screenType == ScreenType.Smith && payload == null)
+            {
+                if (_shopManagerSO != null && _shopContainer != null)
+                {
+                    _shopManagerSO.CurrentShopInventory = _shopContainer;
+                }
             }
         }
 

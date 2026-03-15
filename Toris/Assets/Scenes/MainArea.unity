@@ -40184,6 +40184,35 @@ PolygonCollider2D:
       - {x: 0.09375, y: -1.078125}
       - {x: 0.5625, y: -1.328125}
   m_UseDelaunayMesh: 0
+--- !u!1 &990650694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+  m_PrefabInstance: {fileID: 5886095197615138555}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &990650697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990650694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67dcbc586f021f54db3ff07ae613f143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
+  _smithMainTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
+  _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+  _shopTemplate: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}
+  _forgeTemplate: {fileID: 9197481963319205126, guid: 27ab7e74a97daa34ab42c184874d7b4c, type: 3}
+  _salvageTemplate: {fileID: 9197481963319205126, guid: 5472df55d707e964398e7e0187e91a47, type: 3}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _shopContainer: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
+  _shopManagerSO: {fileID: 11400000, guid: a1f9750d1affea14f9ef38e8b30fc7ca, type: 2}
+  _craftingManagerSO: {fileID: 11400000, guid: 5183623d120660d4788fe968e87cd1c8, type: 2}
+  _salvageManagerSO: {fileID: 11400000, guid: 402cb2d0cf22d5343b29bbfef2e6fcce, type: 2}
 --- !u!1 &991107869
 GameObject:
   m_ObjectHideFlags: 0
@@ -40335,6 +40364,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _ability1._abilityDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
+    - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _ability2._abilityDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.1000023
@@ -40390,7 +40427,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1049202497}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &1010793783 stripped
 Transform:
@@ -40451,6 +40491,25 @@ Transform:
   - {fileID: 1988838650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1049202481 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 1010793782}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1049202497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049202481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e2cfe41795205488976a030b89cf9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
+  _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
+  _initializeFromConfigOnAwake: 1
 --- !u!1 &1049271748
 GameObject:
   m_ObjectHideFlags: 0

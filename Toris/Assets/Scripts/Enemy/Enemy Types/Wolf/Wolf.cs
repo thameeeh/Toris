@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections;
-using TMPro;
 using OutlandHaven.UIToolkit;
 
 // All States and ScriptableObjects specific to the Wolf enemy
@@ -17,7 +15,8 @@ public class Wolf : Enemy
     public float MovementSpeed = 2f;
 
     [SerializeField]
-    public PlayerDataSO PlayerData;
+    public PlayerDataSO PlayerData; // old; delete once refactored
+    public PlayerProgression PlayerProgression; // new
 
     public int gold = 50;
 
@@ -150,6 +149,11 @@ public class Wolf : Enemy
     {
         base.Start();
 
+        if (PlayerTransform != null) // assigning PlayerProgression
+        {
+            PlayerProgression = PlayerTransform.GetComponent<PlayerProgression>();
+        }
+
         EnemyIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyChaseBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyHowlBaseInstance.Initialize(gameObject, this, PlayerTransform);
@@ -170,7 +174,12 @@ public class Wolf : Enemy
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
-            PlayerData.ModifyGold(gold);
+            PlayerData.ModifyGold(gold); // old; delete once refactored
+            
+            if (PlayerProgression != null)
+            {
+                PlayerProgression.AddGold(gold); // new
+            }
             StateMachine.ChangeState(DeadState);
         }
     }

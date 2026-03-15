@@ -2,9 +2,12 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class DashAbility : IMovementAbility
+public class DashAbility
 {
     [SerializeField] private DashConfig _config;
+
+    private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.01f;
+    private const float MIN_MULTIPLIER = 0f;
 
     private Rigidbody2D _body;
     private PlayerMoveConfig _moveConfig;
@@ -33,36 +36,46 @@ public class DashAbility : IMovementAbility
     {
         if (_config == null || _body == null || _applyVelocity == null)
             return false;
+
         if (isActive || isOnCooldown)
             return false;
-        if (direction.sqrMagnitude < 0.01f)
+
+        if (direction.sqrMagnitude < MIN_DIRECTION_SQR_MAGNITUDE)
             return false;
 
         _dashDirection = direction.normalized;
         _activeTimeRemaining = _config.duration;
         _activeTimeElapsed = 0f;
+
         Activated?.Invoke();
         return true;
     }
 
-    public void FixedTick(float deltaTime)
+    public void FixedTick(float deltaTime, float dashSpeedMultiplier, float dashDistanceMultiplier)
     {
         if (_config == null || _body == null || _applyVelocity == null)
             return;
 
+        float validatedDashSpeedMultiplier = Mathf.Max(MIN_MULTIPLIER, dashSpeedMultiplier);
+        float validatedDashDistanceMultiplier = Mathf.Max(MIN_MULTIPLIER, dashDistanceMultiplier);
+
+        float scaledDuration = _config.duration * validatedDashDistanceMultiplier;
+
         if (isActive)
         {
-            float duration = Mathf.Max(_config.duration, Mathf.Epsilon);
+            float safeDuration = Mathf.Max(scaledDuration, Mathf.Epsilon);
+
             _activeTimeElapsed += deltaTime;
             _activeTimeRemaining = Mathf.Max(0f, _activeTimeRemaining - deltaTime);
 
-            float normalizedTime = Mathf.Clamp01(_activeTimeElapsed / duration);
-            float runSpeed = _moveConfig ? _moveConfig.speed : 0f;
+            float normalizedTime = Mathf.Clamp01(_activeTimeElapsed / safeDuration);
+            float runSpeed = _moveConfig != null ? _moveConfig.speed : 0f;
             float blendTarget = Mathf.Lerp(0f, runSpeed, _config.blendToRun);
             float speedBlend = Mathf.Lerp(_config.initialSpeed, blendTarget, normalizedTime);
             float shapedSpeed = speedBlend * _config.speedCurve.Evaluate(normalizedTime);
 
-            _applyVelocity(_dashDirection * shapedSpeed);
+            float finalDashSpeed = shapedSpeed * validatedDashSpeedMultiplier;
+            _applyVelocity(_dashDirection * finalDashSpeed);
 
             if (!isActive)
             {
@@ -84,6 +97,7 @@ public class DashAbility : IMovementAbility
         bool wasActive = isActive;
         _activeTimeElapsed = 0f;
         _activeTimeRemaining = 0f;
+
         if (wasActive)
             Completed?.Invoke();
     }

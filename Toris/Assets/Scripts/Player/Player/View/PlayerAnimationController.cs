@@ -16,11 +16,6 @@ public class PlayerAnimationController : MonoBehaviour
     private float _hurtEndTime = 0f;
     private float _deathEndTime = 0f;
 
-    public bool CanMove()
-    {
-        return _state == AnimState.Locomotion;
-    }
-
     #region FSM
 
     enum AnimState { Locomotion, HoldUnlocked, HoldLocked, OneShotBusy, Hurt, Dead }

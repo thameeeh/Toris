@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerInteractor : MonoBehaviour
 {

@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - _mageMainTemplate: {instanceID: 0}
+  - _mageMainTemplate: {fileID: 9197481963319205126, guid: 2c14d1e517ba7984295f9eb771c3cecb, type: 3}
   - _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   - _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   - _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}

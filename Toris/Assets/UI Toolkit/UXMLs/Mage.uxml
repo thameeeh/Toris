@@ -1,0 +1,23 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; height: 100%; flex-shrink: 0;">
+        <ui:VisualElement name="container-mage" style="flex-grow: 0; flex-wrap: wrap; background-color: rgb(23, 23, 23); width: 100%; height: 100%;">
+            <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+                <ui:Label text="Mage" class="NPC_PanelButtons" style="flex-shrink: 1; flex-grow: 0; -unity-text-align: upper-left;"/>
+               
+                <ui:VisualElement name="Mage_Spells--Tab" class="slot" style="flex-grow: 1; height: 60px;">
+                    <ui:Label text="Spells" name="Spells_Label" class="NPC_PanelButtons"/>
+                </ui:VisualElement>
+                
+                <ui:VisualElement name="Mage_Market--Tab" class="slot" style="flex-grow: 1; height: 60px;">
+                    <ui:Label text="Market" enable-rich-text="true" name="Market_Label" class="NPC_PanelButtons"/>
+                </ui:VisualElement>
+                
+                <ui:VisualElement name="Mage_Enchant--Tab" class="slot" style="flex-grow: 1; height: 60px;">
+                    <ui:Label text="Enchant" name="Enchant_Label" class="NPC_PanelButtons"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Mage-middle__panel" style="flex-grow: 1;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

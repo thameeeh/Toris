@@ -16,14 +16,14 @@ MonoBehaviour:
   Slots:
   - HeldItem:
       InstanceID: 35429567-3e94-4d5d-b22f-683b3ddcb0a0
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: 97cdfc356f275114783a34bb32dc93fa, type: 2}
       States: []
-    Count: 0
+    Count: 15
   - HeldItem:
       InstanceID: d1bcf634-d5ba-44c7-8bd9-6cb910b02379
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
       States: []
-    Count: 0
+    Count: 13
   - HeldItem:
       InstanceID: fe660c5d-072b-46b2-b02b-2e18b973b52f
       BaseItem: {fileID: 0}

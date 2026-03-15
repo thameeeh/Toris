@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Item_Apple
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryItemSO
-  ItemName: 
+  ItemName: Apple
   Description: 
-  Icon: {fileID: 2877471580529523173, guid: c15ba1dcb835b28498cc6239dc893a2e, type: 3}
+  Icon: {fileID: 21300000, guid: b1698ce191a2c704cbbe4d813e07db2f, type: 3}
   MaxStackSize: 99
   GoldValue: 10
-  Components: []
+  Components:
+  - rid: 7555927810169635087
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 7555927810169635087
+      type: {class: ConsumableComponent, ns: , asm: Assembly-CSharp}
+      data:
+        ItemsName: Consumable Component
+        EffectPayload: HP
+        Cooldown: 1

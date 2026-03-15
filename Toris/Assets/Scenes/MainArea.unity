@@ -40184,23 +40184,6 @@ PolygonCollider2D:
       - {x: 0.09375, y: -1.078125}
       - {x: 0.5625, y: -1.328125}
   m_UseDelaunayMesh: 0
---- !u!1 &990650694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-  m_PrefabInstance: {fileID: 5886095197615138555}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &990650697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990650694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67dcbc586f021f54db3ff07ae613f143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
 --- !u!1 &991107869
 GameObject:
   m_ObjectHideFlags: 0
@@ -40396,6 +40379,10 @@ PrefabInstance:
       propertyPath: _interactionUI
       value: 
       objectReference: {fileID: 845357115}
+    - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _myInventorySO
+      value: 
+      objectReference: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
     - target: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_Name
       value: Player
@@ -61328,6 +61315,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIControllers
       objectReference: {fileID: 0}
+    - target: {fileID: 1930326086921029389, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _shopTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}
+    - target: {fileID: 1930326086921029389, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _slotTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7823
@@ -61368,13 +61363,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8911900497453267458, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _shopContainer
+      value: 
+      objectReference: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 990650697}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

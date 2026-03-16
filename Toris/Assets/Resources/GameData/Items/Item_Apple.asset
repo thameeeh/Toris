@@ -18,13 +18,18 @@ MonoBehaviour:
   MaxStackSize: 99
   GoldValue: 10
   Components:
-  - rid: 7555927810169635087
+  - rid: 7555927821061718018
+  - rid: 7555927832524488824
   references:
     version: 2
     RefIds:
-    - rid: 7555927810169635087
+    - rid: 7555927821061718018
       type: {class: ConsumableComponent, ns: , asm: Assembly-CSharp}
       data:
         ItemsName: Consumable Component
-        EffectPayload: HP
-        Cooldown: 1
+        EffectPayload: 
+        Cooldown: 
+    - rid: 7555927832524488824
+      type: {class: UpgradeableComponent, ns: OutlandHaven.UIToolkit, asm: Assembly-CSharp}
+      data:
+        MaxLevel: 5

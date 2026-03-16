@@ -17,3 +17,27 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 5856aeba5aeb2b14689e00d6d81a3704, type: 3}
   MaxStackSize: 17
   GoldValue: 10
+  Components:
+  - rid: 7555927821061718019
+  - rid: 7555927821061718021
+  - rid: 7555927821061718022
+  references:
+    version: 2
+    RefIds:
+    - rid: 7555927821061718019
+      type: {class: ConsumableComponent, ns: , asm: Assembly-CSharp}
+      data:
+        ItemsName: Consumable Component
+        EffectPayload: 
+        Cooldown: 
+    - rid: 7555927821061718021
+      type: {class: UpgradeableComponent, ns: OutlandHaven.UIToolkit, asm: Assembly-CSharp}
+      data:
+        MaxLevel: 5
+    - rid: 7555927821061718022
+      type: {class: EquipableComponent, ns: , asm: Assembly-CSharp}
+      data:
+        TargetSlot: 3
+        StreangthBonus: 38
+        DefenceBonus: 34
+        MaxDurability: 94.84

@@ -15,12 +15,6 @@ public enum EquipmentSlot
 public class EquipableComponent : ItemComponent
 {
     public EquipmentSlot TargetSlot;
-    public int StreangthBonus;
-    public int DefenceBonus;
-    public float MaxDurability = 100f;
-
-    public override ItemComponentState CreateInitialState()
-    {
-        return new DurabilityState(MaxDurability);
-    }
+    public float StrengthBonus;
+    public float DefenceBonus;
 }

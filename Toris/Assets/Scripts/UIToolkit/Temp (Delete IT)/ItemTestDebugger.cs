@@ -1,31 +1,34 @@
 using UnityEngine;
 using OutlandHaven.UIToolkit;
 
-public class ItemTestDebugger : MonoBehaviour
+public class EvolvingWeaponDebugger : MonoBehaviour
 {
-    public InventoryItemSO MyItemBlueprint;
+    public InventoryItemSO CursedDaggerBlueprint;
 
     void Start()
     {
-        // 1. Create the live item from the blueprint
-        ItemInstance myWand = new ItemInstance(MyItemBlueprint);
+        // 1. Generate the live item
+        ItemInstance myDagger = new ItemInstance(CursedDaggerBlueprint);
 
-        // 2. Read static data (Always the same)
-        var weaponStats = myWand.BaseItem.GetComponent<EquipableComponent>();
-        if (weaponStats != null)
+        // 2. Grab the static rules and the live state
+        var evolvingRules = myDagger.BaseItem.GetComponent<EvolvingComponent>();
+        var evolvingState = myDagger.GetState<EvolvingState>();
+
+        if (evolvingRules != null && evolvingState != null)
         {
-            Debug.Log($"This weapon deals {weaponStats.StreangthBonus} damage.");
-        }
+            Debug.Log($"Looted dagger! Needs {evolvingRules.KillsRequired} kills to awaken.");
 
-        // 3. Read and modify dynamic data (Changes during gameplay)
-        var charges = myWand.GetState<UpgradeableState>();
-        if (charges != null)
-        {
-            Debug.Log($"Wand spawned with {charges.CurrentLevel} charges.");
+            // 3. Simulate killing 50 enemies
+            for (int i = 0; i < 50; i++)
+            {
+                evolvingState.AddKill(evolvingRules.KillsRequired);
+            }
 
-            // Simulate using the item
-            charges.CurrentLevel--;
-            Debug.Log($"Wand used! It now has {charges.CurrentLevel} charges left.");
+            // 4. Check the result
+            if (evolvingState.IsAwakened)
+            {
+                Debug.Log($"The dagger has AWAKENED! It now deals an extra {evolvingRules.AwakenedDamageBonus} damage.");
+            }
         }
     }
 }

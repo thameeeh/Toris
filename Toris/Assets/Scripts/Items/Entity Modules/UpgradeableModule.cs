@@ -1,39 +1,43 @@
 using System;
 using OutlandHaven.UIToolkit;
 
-
-[Serializable]
-public class UpgradeableComponent : ItemComponent
+namespace OutlandHaven.Inventory
 {
-    public int MaxLevel = 5;
 
-    // Future-proofing: If upgrading requires specific materials later,
-    // you would define the material costs or references here, NOT in the state.
 
-    public override ItemComponentState CreateInitialState()
+    [Serializable]
+    public class UpgradeableComponent : ItemComponent
     {
-        // All new items start at level 1 by default
-        return new UpgradeableState(1);
-    }
-}
+        public int MaxLevel = 5;
 
-[Serializable]
-public class UpgradeableState : ItemComponentState
-{
-    public int CurrentLevel;
+        // Future-proofing: If upgrading requires specific materials later,
+        // you would define the material costs or references here, NOT in the state.
 
-    public UpgradeableState(int startLevel)
-    {
-        CurrentLevel = startLevel;
-    }
-
-    public override bool IsStackableWith(ItemComponentState other)
-    {
-        if (other is UpgradeableState otherUpgrade)
+        public override ItemComponentState CreateInitialState()
         {
-            // Items can only stack if they are the exact same level
-            return this.CurrentLevel == otherUpgrade.CurrentLevel;
+            // All new items start at level 1 by default
+            return new UpgradeableState(1);
         }
-        return false;
+    }
+
+    [Serializable]
+    public class UpgradeableState : ItemComponentState
+    {
+        public int CurrentLevel;
+
+        public UpgradeableState(int startLevel)
+        {
+            CurrentLevel = startLevel;
+        }
+
+        public override bool IsStackableWith(ItemComponentState other)
+        {
+            if (other is UpgradeableState otherUpgrade)
+            {
+                // Items can only stack if they are the exact same level
+                return this.CurrentLevel == otherUpgrade.CurrentLevel;
+            }
+            return false;
+        }
     }
 }

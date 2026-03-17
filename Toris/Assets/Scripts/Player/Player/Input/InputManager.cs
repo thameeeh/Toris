@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using OutlandHaven.UIToolkit; // for screen types
+using OutlandHaven.Inventory;
 
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, InputSystem_Actions.IUIActions
 {

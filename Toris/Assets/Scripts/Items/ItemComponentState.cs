@@ -1,6 +1,6 @@
 using System;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     [Serializable]
     public abstract class ItemComponentState

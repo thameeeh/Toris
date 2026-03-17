@@ -1,5 +1,6 @@
 using OutlandHaven.UIToolkit;
 using UnityEngine;
+using OutlandHaven.Inventory;
 
 public interface IContainerInteractable
 {

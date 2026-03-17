@@ -1,271 +1,271 @@
 fileFormatVersion: 2
-guid: 48419ae509f44484b9ead87f6c4e3003
+guid: c6a84afbb92247442993f3436da434df
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7132172409892320828
-    second: Archer_0
+      213: 6638902558152341341
+    second: BowGuy_0
   - first:
-      213: -1353735933490891112
-    second: Archer_1
+      213: -7115901941538923236
+    second: BowGuy_1
   - first:
-      213: 3001767060249510921
-    second: Archer_2
+      213: 1736985034878321419
+    second: BowGuy_2
   - first:
-      213: -2936497657700248757
-    second: Archer_3
+      213: 3286452253389467002
+    second: BowGuy_3
   - first:
-      213: 818616984480399886
-    second: Archer_4
+      213: -6869567909070239997
+    second: BowGuy_4
   - first:
-      213: -3506536579647068688
-    second: Archer_5
+      213: 8108058412635603901
+    second: BowGuy_5
   - first:
-      213: 7243941689720402736
-    second: Archer_6
+      213: -1017278329274647073
+    second: BowGuy_6
   - first:
-      213: -5511490489121558247
-    second: Archer_7
+      213: 4489064412720554311
+    second: BowGuy_7
   - first:
-      213: -6542253794372221699
-    second: Archer_8
+      213: 3961911356301605863
+    second: BowGuy_8
   - first:
-      213: 8994285840009083728
-    second: Archer_9
+      213: 2271273068164040892
+    second: BowGuy_9
   - first:
-      213: 8249779470359433977
-    second: Archer_10
+      213: 7897706037572542401
+    second: BowGuy_10
   - first:
-      213: -1962031107855546696
-    second: Archer_11
+      213: 5899033960078770394
+    second: BowGuy_11
   - first:
-      213: -9041807797270712669
-    second: Archer_12
+      213: 3929072822082246061
+    second: BowGuy_12
   - first:
-      213: 1747913851310489417
-    second: Archer_13
+      213: -7868138056449352944
+    second: BowGuy_13
   - first:
-      213: -8185391877506459701
-    second: Archer_14
+      213: 2305870559190542100
+    second: BowGuy_14
   - first:
-      213: -2650744301020191532
-    second: Archer_15
+      213: 4968621740004015308
+    second: BowGuy_15
   - first:
-      213: -3491436940040637017
-    second: Archer_16
+      213: -8866516331940815465
+    second: BowGuy_16
   - first:
-      213: 737703663463909888
-    second: Archer_17
+      213: 291819670828768690
+    second: BowGuy_17
   - first:
-      213: 1138581748509411818
-    second: Archer_18
+      213: -7276112285095551106
+    second: BowGuy_18
   - first:
-      213: 6586155937423818303
-    second: Archer_19
+      213: 3422070121213867176
+    second: BowGuy_19
   - first:
-      213: 8009077841664831659
-    second: Archer_20
+      213: -2776667546251430811
+    second: BowGuy_20
   - first:
-      213: -3538350284264479481
-    second: Archer_21
+      213: 1987744129325920611
+    second: BowGuy_21
   - first:
-      213: 7628983629375039337
-    second: Archer_22
+      213: 918440204973823137
+    second: BowGuy_22
   - first:
-      213: -5971151869562673699
-    second: Archer_23
+      213: -100706001278181092
+    second: BowGuy_23
   - first:
-      213: -7252216144125549621
-    second: Archer_24
+      213: 4359719148505948006
+    second: BowGuy_24
   - first:
-      213: -3239827517386730994
-    second: Archer_25
+      213: 2042171230808728995
+    second: BowGuy_25
   - first:
-      213: -7000998780855177912
-    second: Archer_26
+      213: -1553740791753987918
+    second: BowGuy_26
   - first:
-      213: 4974585343492711331
-    second: Archer_27
+      213: 7584022228547681850
+    second: BowGuy_27
   - first:
-      213: -3846518608479097937
-    second: Archer_28
+      213: 6946282986866506679
+    second: BowGuy_28
   - first:
-      213: 4557645022326242426
-    second: Archer_29
+      213: 6724290904722943303
+    second: BowGuy_29
   - first:
-      213: 7023020952865225556
-    second: Archer_30
+      213: -8740717829619777614
+    second: BowGuy_30
   - first:
-      213: 7188338922220243952
-    second: Archer_31
+      213: 8660715792247562323
+    second: BowGuy_31
   - first:
-      213: 5810893230690756336
-    second: Archer_32
+      213: 8311975724381905401
+    second: BowGuy_32
   - first:
-      213: -974982828150314320
-    second: Archer_33
+      213: -6861803413901123743
+    second: BowGuy_33
   - first:
-      213: 1648995814239754866
-    second: Archer_34
+      213: -6450075298941523273
+    second: BowGuy_34
   - first:
-      213: -6773332133559497501
-    second: Archer_35
+      213: 7497146080587699848
+    second: BowGuy_35
   - first:
-      213: -6406475812940037373
-    second: Archer_36
+      213: -2467819241260615538
+    second: BowGuy_36
   - first:
-      213: -831034980683400404
-    second: Archer_37
+      213: 5191013101188444122
+    second: BowGuy_37
   - first:
-      213: 4706408571880953610
-    second: Archer_38
+      213: -2443524556496122628
+    second: BowGuy_38
   - first:
-      213: 2507926002511818775
-    second: Archer_39
+      213: 1236272933032361368
+    second: BowGuy_39
   - first:
-      213: -5561081503392899682
-    second: Archer_40
+      213: -5517879118916433931
+    second: BowGuy_40
   - first:
-      213: -6658925714778641832
-    second: Archer_41
+      213: -509314115277530183
+    second: BowGuy_41
   - first:
-      213: 4987308344126289578
-    second: Archer_42
+      213: -6250920074768629988
+    second: BowGuy_42
   - first:
-      213: -2309302278628930799
-    second: Archer_43
+      213: 7208749759626440863
+    second: BowGuy_43
   - first:
-      213: -5938886292679005284
-    second: Archer_44
+      213: -5586732779739198827
+    second: BowGuy_44
   - first:
-      213: -5632558480353415302
-    second: Archer_45
+      213: 1564277522170251320
+    second: BowGuy_45
   - first:
-      213: 8285793340310895079
-    second: Archer_46
+      213: 7123189750168712968
+    second: BowGuy_46
   - first:
-      213: -5574892827587305999
-    second: Archer_47
+      213: -4296971719198193357
+    second: BowGuy_47
   - first:
-      213: 2727244525004801755
-    second: Archer_48
+      213: 3120822700221968079
+    second: BowGuy_48
   - first:
-      213: -9178085699852703378
-    second: Archer_49
+      213: 5508665672673986607
+    second: BowGuy_49
   - first:
-      213: 6517412418285932028
-    second: Archer_50
+      213: -6267869962799281253
+    second: BowGuy_50
   - first:
-      213: -6363745783416740174
-    second: Archer_51
+      213: -3348512103077150569
+    second: BowGuy_51
   - first:
-      213: 7207943461883000607
-    second: Archer_52
+      213: -8166563364058463586
+    second: BowGuy_52
   - first:
-      213: -7842966496701673447
-    second: Archer_53
+      213: -413821975740484922
+    second: BowGuy_53
   - first:
-      213: -7496578106510736855
-    second: Archer_54
+      213: -8302178726282536141
+    second: BowGuy_54
   - first:
-      213: 7373893106507137603
-    second: Archer_55
+      213: -7166446578908399402
+    second: BowGuy_55
   - first:
-      213: 2677105474008719561
-    second: Archer_56
+      213: -4475422355838674953
+    second: BowGuy_56
   - first:
-      213: 8167009325714835159
-    second: Archer_57
+      213: -8972124507440903892
+    second: BowGuy_57
   - first:
-      213: -1201827876199940216
-    second: Archer_58
+      213: -8664068347127947453
+    second: BowGuy_58
   - first:
-      213: 3662490532564934435
-    second: Archer_59
+      213: -2671681261408930171
+    second: BowGuy_59
   - first:
-      213: 7829758640622273135
-    second: Archer_60
+      213: 335217784849691717
+    second: BowGuy_60
   - first:
-      213: -2485814907079751562
-    second: Archer_61
+      213: 2289713038643398946
+    second: BowGuy_61
   - first:
-      213: 5846177069153783481
-    second: Archer_62
+      213: -1633428536607049427
+    second: BowGuy_62
   - first:
-      213: 5177155292046633791
-    second: Archer_63
+      213: -5197346010381887994
+    second: BowGuy_63
   - first:
-      213: -4309774119132842737
-    second: Archer_64
+      213: 7824591041335847983
+    second: BowGuy_64
   - first:
-      213: 5773179363221400670
-    second: Archer_65
+      213: -6535968542345455083
+    second: BowGuy_65
   - first:
-      213: -4297469713852643599
-    second: Archer_66
+      213: 7872255702803620826
+    second: BowGuy_66
   - first:
-      213: 2255055312572520863
-    second: Archer_67
+      213: -6258492866967118747
+    second: BowGuy_67
   - first:
-      213: -2123010957204524105
-    second: Archer_68
+      213: 5768639711882438257
+    second: BowGuy_68
   - first:
-      213: -8719097199058081604
-    second: Archer_69
+      213: 1070406572824402366
+    second: BowGuy_69
   - first:
-      213: -1127169030985701158
-    second: Archer_70
+      213: -1167718461987976411
+    second: BowGuy_70
   - first:
-      213: 5413666252136033321
-    second: Archer_71
+      213: -4306397499609727141
+    second: BowGuy_71
   - first:
-      213: 8767895969115206988
-    second: Archer_72
+      213: -1544196933166694290
+    second: BowGuy_72
   - first:
-      213: -5251535999995879089
-    second: Archer_73
+      213: -4875274486929980289
+    second: BowGuy_73
   - first:
-      213: 1793018466703627780
-    second: Archer_74
+      213: -4577720105916368084
+    second: BowGuy_74
   - first:
-      213: -6846826397465205415
-    second: Archer_75
+      213: 6480044854644701189
+    second: BowGuy_75
   - first:
-      213: -7649581531398615740
-    second: Archer_76
+      213: 1703383793638829581
+    second: BowGuy_76
   - first:
-      213: -6706924471835111775
-    second: Archer_77
+      213: 8828254454129681070
+    second: BowGuy_77
   - first:
-      213: 7416230020014882546
-    second: Archer_78
+      213: 4775403399347732575
+    second: BowGuy_78
   - first:
-      213: 3916485902555024770
-    second: Archer_79
+      213: -7085650814152562971
+    second: BowGuy_79
   - first:
-      213: -7543984831181461513
-    second: Archer_80
+      213: 6195812883154267129
+    second: BowGuy_80
   - first:
-      213: 337281451527755359
-    second: Archer_81
+      213: -6145598504209257522
+    second: BowGuy_81
   - first:
-      213: 1127094175811953200
-    second: Archer_82
+      213: -8462037927137007745
+    second: BowGuy_82
   - first:
-      213: -2612503939776626445
-    second: Archer_83
+      213: -2615596957754066480
+    second: BowGuy_83
   - first:
-      213: 5860605644752713761
-    second: Archer_84
+      213: -3619872860759104307
+    second: BowGuy_84
   - first:
-      213: 9178922064163035466
-    second: Archer_85
+      213: 2127729683746748313
+    second: BowGuy_85
   - first:
-      213: 1498963136922981384
-    second: Archer_86
+      213: -3173112936460997566
+    second: BowGuy_86
   - first:
-      213: 4276890841499259658
-    second: Archer_87
+      213: 671160731410492201
+    second: BowGuy_87
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -374,1937 +374,1937 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Archer_0
+      name: BowGuy_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 720
-        width: 29
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4c9c6872bfe650d90800000000000000
-      internalID: -7132172409892320828
+      spriteID: d573a15c3be122c50800000000000000
+      internalID: 6638902558152341341
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_1
+      name: BowGuy_1
       rect:
         serializedVersion: 2
-        x: 76
-        y: 720
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 896f7944750963de0800000000000000
-      internalID: -1353735933490891112
+      spriteID: c1d5f06c2ec3f3d90800000000000000
+      internalID: -7115901941538923236
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_2
+      name: BowGuy_2
       rect:
         serializedVersion: 2
-        x: 140
-        y: 720
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 90404acbc3b68a920800000000000000
-      internalID: 3001767060249510921
+      spriteID: b038710bfa20b1810800000000000000
+      internalID: 1736985034878321419
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_3
+      name: BowGuy_3
       rect:
         serializedVersion: 2
-        x: 203
-        y: 720
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b43920540f67f37d0800000000000000
-      internalID: -2936497657700248757
+      spriteID: a7daf8e79e2db9d20800000000000000
+      internalID: 3286452253389467002
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_4
+      name: BowGuy_4
       rect:
         serializedVersion: 2
-        x: 267
-        y: 720
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e024e076fcf4c5b00800000000000000
-      internalID: 818616984480399886
+      spriteID: 307027b12646aa0a0800000000000000
+      internalID: -6869567909070239997
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_5
+      name: BowGuy_5
       rect:
         serializedVersion: 2
-        x: 332
-        y: 720
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f5293a2f87465fc0800000000000000
-      internalID: -3506536579647068688
+      spriteID: db3434ffa2c958070800000000000000
+      internalID: 8108058412635603901
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_6
+      name: BowGuy_6
       rect:
         serializedVersion: 2
-        x: 396
-        y: 720
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0337d653696a78460800000000000000
-      internalID: 7243941689720402736
+      spriteID: fddb1e1dfb6e1e1f0800000000000000
+      internalID: -1017278329274647073
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_7
+      name: BowGuy_7
       rect:
         serializedVersion: 2
-        x: 461
-        y: 720
-        width: 29
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 704
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 91137fce9904383b0800000000000000
-      internalID: -5511490489121558247
+      spriteID: 7416e0e9c4c5c4e30800000000000000
+      internalID: 4489064412720554311
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_8
+      name: BowGuy_8
       rect:
         serializedVersion: 2
-        x: 25
-        y: 656
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: df40efb16de3535a0800000000000000
-      internalID: -6542253794372221699
+      spriteID: 7eb71ff23698bf630800000000000000
+      internalID: 3961911356301605863
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_9
+      name: BowGuy_9
       rect:
         serializedVersion: 2
-        x: 90
-        y: 656
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 05b3116515f12dc70800000000000000
-      internalID: 8994285840009083728
+      spriteID: cb844df52de258f10800000000000000
+      internalID: 2271273068164040892
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_10
+      name: BowGuy_10
       rect:
         serializedVersion: 2
-        x: 154
-        y: 656
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9f2951618ba1d7270800000000000000
-      internalID: 8249779470359433977
+      spriteID: 1cf18fd1cc94a9d60800000000000000
+      internalID: 7897706037572542401
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_11
+      name: BowGuy_11
       rect:
         serializedVersion: 2
-        x: 217
-        y: 656
-        width: 28
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8b6010a4a1775c4e0800000000000000
-      internalID: -1962031107855546696
+      spriteID: ad0067cd1249dd150800000000000000
+      internalID: 5899033960078770394
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_12
+      name: BowGuy_12
       rect:
         serializedVersion: 2
-        x: 280
-        y: 656
-        width: 29
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3ae6254c6bb058280800000000000000
-      internalID: -9041807797270712669
+      spriteID: da59ad02aeed68630800000000000000
+      internalID: 3929072822082246061
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_13
+      name: BowGuy_13
       rect:
         serializedVersion: 2
-        x: 344
-        y: 656
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 94fb85d0366d14810800000000000000
-      internalID: 1747913851310489417
+      spriteID: 01b9a95ff12cec290800000000000000
+      internalID: -7868138056449352944
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_14
+      name: BowGuy_14
       rect:
         serializedVersion: 2
-        x: 409
-        y: 656
-        width: 27
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc71cd99475a76e80800000000000000
-      internalID: -8185391877506459701
+      spriteID: 417659a7e09100020800000000000000
+      internalID: 2305870559190542100
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_15
+      name: BowGuy_15
       rect:
         serializedVersion: 2
-        x: 473
-        y: 656
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d4ec4b3a1aa63bd0800000000000000
-      internalID: -2650744301020191532
+      spriteID: cccf83cc52714f440800000000000000
+      internalID: 4968621740004015308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_16
+      name: BowGuy_16
       rect:
         serializedVersion: 2
-        x: 21
-        y: 592
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7a57339f99ceb8fc0800000000000000
-      internalID: -3491436940040637017
+      spriteID: 79dd7777f5ec3f480800000000000000
+      internalID: -8866516331940815465
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_17
+      name: BowGuy_17
       rect:
         serializedVersion: 2
-        x: 86
-        y: 592
-        width: 22
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 00a454ac299dc3a00800000000000000
-      internalID: 737703663463909888
+      spriteID: 2bd583ac170cc0400800000000000000
+      internalID: 291819670828768690
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_18
+      name: BowGuy_18
       rect:
         serializedVersion: 2
-        x: 150
-        y: 592
-        width: 22
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ae985ab511e0dcf00800000000000000
-      internalID: 1138581748509411818
+      spriteID: e7f160d5d6e060b90800000000000000
+      internalID: -7276112285095551106
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_19
+      name: BowGuy_19
       rect:
         serializedVersion: 2
-        x: 213
-        y: 592
-        width: 23
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f3ef97d1ee9b66b50800000000000000
-      internalID: 6586155937423818303
+      spriteID: 8a43e63f4a2ad7f20800000000000000
+      internalID: 3422070121213867176
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_20
+      name: BowGuy_20
       rect:
         serializedVersion: 2
-        x: 276
-        y: 592
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ba072e2fcd5f52f60800000000000000
-      internalID: 8009077841664831659
+      spriteID: 564f35ef39b4779d0800000000000000
+      internalID: -2776667546251430811
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_21
+      name: BowGuy_21
       rect:
         serializedVersion: 2
-        x: 340
-        y: 592
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7056387d92145eec0800000000000000
-      internalID: -3538350284264479481
+      spriteID: 361f6dc01c2e59b10800000000000000
+      internalID: 1987744129325920611
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_22
+      name: BowGuy_22
       rect:
         serializedVersion: 2
-        x: 405
-        y: 592
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9676b2ad0389fd960800000000000000
-      internalID: 7628983629375039337
+      spriteID: 1a4d6e41084febc00800000000000000
+      internalID: 918440204973823137
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_23
+      name: BowGuy_23
       rect:
         serializedVersion: 2
-        x: 469
-        y: 592
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 576
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dd5aecad205322da0800000000000000
-      internalID: -5971151869562673699
+      spriteID: c116017ec683a9ef0800000000000000
+      internalID: -100706001278181092
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_24
+      name: BowGuy_24
       rect:
         serializedVersion: 2
-        x: 21
-        y: 528
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc32b0f37d3fa5b90800000000000000
-      internalID: -7252216144125549621
+      spriteID: 66f5a2f7775d08c30800000000000000
+      internalID: 4359719148505948006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_25
+      name: BowGuy_25
       rect:
         serializedVersion: 2
-        x: 86
-        y: 528
-        width: 22
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e02d0acc902d903d0800000000000000
-      internalID: -3239827517386730994
+      spriteID: 3a560ee1aef375c10800000000000000
+      internalID: 2042171230808728995
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_26
+      name: BowGuy_26
       rect:
         serializedVersion: 2
-        x: 150
-        y: 528
-        width: 22
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84d2f22a3b477de90800000000000000
-      internalID: -7000998780855177912
+      spriteID: 2b828726bf0007ae0800000000000000
+      internalID: -1553740791753987918
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_27
+      name: BowGuy_27
       rect:
         serializedVersion: 2
-        x: 213
-        y: 528
-        width: 23
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a36fbf6307490540800000000000000
-      internalID: 4974585343492711331
+      spriteID: a3e3045f80cdf3960800000000000000
+      internalID: 7584022228547681850
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_28
+      name: BowGuy_28
       rect:
         serializedVersion: 2
-        x: 276
-        y: 528
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fab6caf84bb6e9ac0800000000000000
-      internalID: -3846518608479097937
+      spriteID: 7bb7485d297266060800000000000000
+      internalID: 6946282986866506679
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_29
+      name: BowGuy_29
       rect:
         serializedVersion: 2
-        x: 340
-        y: 528
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a7c35181002004f30800000000000000
-      internalID: 4557645022326242426
+      spriteID: 74da66673fa715d50800000000000000
+      internalID: 6724290904722943303
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_30
+      name: BowGuy_30
       rect:
         serializedVersion: 2
-        x: 405
-        y: 528
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 45b38a9d858c67160800000000000000
-      internalID: 7023020952865225556
+      spriteID: 2bff69bb17bb2b680800000000000000
+      internalID: -8740717829619777614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_31
+      name: BowGuy_31
       rect:
         serializedVersion: 2
-        x: 469
-        y: 528
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 512
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0fb4d001a2c12c360800000000000000
-      internalID: 7188338922220243952
+      spriteID: 3502889602b013870800000000000000
+      internalID: 8660715792247562323
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_32
+      name: BowGuy_32
       rect:
         serializedVersion: 2
-        x: 13
-        y: 465
-        width: 29
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f66b0b1b9074a050800000000000000
-      internalID: 5810893230690756336
+      spriteID: 9f12471f1e11a5370800000000000000
+      internalID: 8311975724381905401
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_33
+      name: BowGuy_33
       rect:
         serializedVersion: 2
-        x: 76
-        y: 464
-        width: 30
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0baaef1984a2872f0800000000000000
-      internalID: -974982828150314320
+      spriteID: 16f5cd3862af5c0a0800000000000000
+      internalID: -6861803413901123743
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_34
+      name: BowGuy_34
       rect:
         serializedVersion: 2
-        x: 140
-        y: 464
-        width: 30
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 27adddfc4f862e610800000000000000
-      internalID: 1648995814239754866
+      spriteID: 7baa11880babc76a0800000000000000
+      internalID: -6450075298941523273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_35
+      name: BowGuy_35
       rect:
         serializedVersion: 2
-        x: 203
-        y: 464
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3ec8279af4a4002a0800000000000000
-      internalID: -6773332133559497501
+      spriteID: 88654a283a63b0860800000000000000
+      internalID: 7497146080587699848
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_36
+      name: BowGuy_36
       rect:
         serializedVersion: 2
-        x: 267
-        y: 465
-        width: 32
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 303c39be030a717a0800000000000000
-      internalID: -6406475812940037373
+      spriteID: e8879c2a97b80cdd0800000000000000
+      internalID: -2467819241260615538
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_37
+      name: BowGuy_37
       rect:
         serializedVersion: 2
-        x: 332
-        y: 464
-        width: 31
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c2b317c86129774f0800000000000000
-      internalID: -831034980683400404
+      spriteID: adf6cb099ee2a0840800000000000000
+      internalID: 5191013101188444122
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_38
+      name: BowGuy_38
       rect:
         serializedVersion: 2
-        x: 396
-        y: 464
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a0751d619a5805140800000000000000
-      internalID: 4706408571880953610
+      spriteID: cfcca1abc5bd61ed0800000000000000
+      internalID: -2443524556496122628
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_39
+      name: BowGuy_39
       rect:
         serializedVersion: 2
-        x: 461
-        y: 464
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 710bea66961fdc220800000000000000
-      internalID: 2507926002511818775
+      spriteID: 89df2dabeaf182110800000000000000
+      internalID: 1236272933032361368
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_40
+      name: BowGuy_40
       rect:
         serializedVersion: 2
-        x: 25
-        y: 401
-        width: 26
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9d554726d113d2b0800000000000000
-      internalID: -5561081503392899682
+      spriteID: 5f7c0732d2e8c63b0800000000000000
+      internalID: -5517879118916433931
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_41
+      name: BowGuy_41
       rect:
         serializedVersion: 2
-        x: 89
-        y: 400
-        width: 27
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 85aa7e8c75eb693a0800000000000000
-      internalID: -6658925714778641832
+      spriteID: 9bb5ac7b28d8ee8f0800000000000000
+      internalID: -509314115277530183
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_42
+      name: BowGuy_42
       rect:
         serializedVersion: 2
-        x: 153
-        y: 400
-        width: 27
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aa63dfcd38a763540800000000000000
-      internalID: 4987308344126289578
+      spriteID: c1fbe009f454049a0800000000000000
+      internalID: -6250920074768629988
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_43
+      name: BowGuy_43
       rect:
         serializedVersion: 2
-        x: 217
-        y: 400
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 11b825310d5b3ffd0800000000000000
-      internalID: -2309302278628930799
+      spriteID: f90773976bf9a0460800000000000000
+      internalID: 7208749759626440863
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_44
+      name: BowGuy_44
       rect:
         serializedVersion: 2
-        x: 281
-        y: 401
-        width: 28
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c9b6e63e166d49da0800000000000000
-      internalID: -5938886292679005284
+      spriteID: 59a4d98f220f772b0800000000000000
+      internalID: -5586732779739198827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_45
+      name: BowGuy_45
       rect:
         serializedVersion: 2
-        x: 345
-        y: 400
-        width: 27
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a7fabe997e125d1b0800000000000000
-      internalID: -5632558480353415302
+      spriteID: 83806175e1e65b510800000000000000
+      internalID: 1564277522170251320
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_46
+      name: BowGuy_46
       rect:
         serializedVersion: 2
-        x: 409
-        y: 400
-        width: 27
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7e9378b942d0df270800000000000000
-      internalID: 8285793340310895079
+      spriteID: 80772866657aad260800000000000000
+      internalID: 7123189750168712968
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_47
+      name: BowGuy_47
       rect:
         serializedVersion: 2
-        x: 473
-        y: 400
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 384
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1fd19c6a28002a2b0800000000000000
-      internalID: -5574892827587305999
+      spriteID: 339ca4bdcf61e54c0800000000000000
+      internalID: -4296971719198193357
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_48
+      name: BowGuy_48
       rect:
         serializedVersion: 2
-        x: 21
-        y: 338
-        width: 23
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd64a88227e19d520800000000000000
-      internalID: 2727244525004801755
+      spriteID: fcea4b506b36f4b20800000000000000
+      internalID: 3120822700221968079
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_49
+      name: BowGuy_49
       rect:
         serializedVersion: 2
-        x: 86
-        y: 336
-        width: 22
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e69ef2efea3e0a080800000000000000
-      internalID: -9178085699852703378
+      spriteID: f280f1e3e36b27c40800000000000000
+      internalID: 5508665672673986607
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_50
+      name: BowGuy_50
       rect:
         serializedVersion: 2
-        x: 150
-        y: 336
-        width: 22
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cfd07ae4010827a50800000000000000
-      internalID: 6517412418285932028
+      spriteID: b9b02093a7d0409a0800000000000000
+      internalID: -6267869962799281253
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_51
+      name: BowGuy_51
       rect:
         serializedVersion: 2
-        x: 213
-        y: 337
-        width: 23
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2b62e823dee6fa7a0800000000000000
-      internalID: -6363745783416740174
+      spriteID: 7908df1cbf1b781d0800000000000000
+      internalID: -3348512103077150569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_52
+      name: BowGuy_52
       rect:
         serializedVersion: 2
-        x: 276
-        y: 338
-        width: 25
-        height: 29
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f17b2a6a362c70460800000000000000
-      internalID: 7207943461883000607
+      spriteID: e92839183e98aae80800000000000000
+      internalID: -8166563364058463586
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_53
+      name: BowGuy_53
       rect:
         serializedVersion: 2
-        x: 340
-        y: 336
-        width: 25
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9109eca668f282390800000000000000
-      internalID: -7842966496701673447
+      spriteID: 6c2fcb70b1fc14af0800000000000000
+      internalID: -413821975740484922
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_54
+      name: BowGuy_54
       rect:
         serializedVersion: 2
-        x: 405
-        y: 336
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92205724eedc6f790800000000000000
-      internalID: -7496578106510736855
+      spriteID: 33bdf1e6f6cb8cc80800000000000000
+      internalID: -8302178726282536141
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_55
+      name: BowGuy_55
       rect:
         serializedVersion: 2
-        x: 469
-        y: 337
-        width: 24
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3424f0936b4555660800000000000000
-      internalID: 7373893106507137603
+      spriteID: 6d8f9525ecaab8c90800000000000000
+      internalID: -7166446578908399402
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_56
+      name: BowGuy_56
       rect:
         serializedVersion: 2
-        x: 21
-        y: 274
-        width: 23
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9c02b84ae3df62520800000000000000
-      internalID: 2677105474008719561
+      spriteID: 7f7d464441b14e1c0800000000000000
+      internalID: -4475422355838674953
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_57
+      name: BowGuy_57
       rect:
         serializedVersion: 2
-        x: 86
-        y: 272
-        width: 22
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7d6098806bb075170800000000000000
-      internalID: 8167009325714835159
+      spriteID: c29886dfb4c9c7380800000000000000
+      internalID: -8972124507440903892
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_58
+      name: BowGuy_58
       rect:
         serializedVersion: 2
-        x: 150
-        y: 272
-        width: 22
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 88fb0f50aef325fe0800000000000000
-      internalID: -1201827876199940216
+      spriteID: 34f9bb31ebb03c780800000000000000
+      internalID: -8664068347127947453
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_59
+      name: BowGuy_59
       rect:
         serializedVersion: 2
-        x: 213
-        y: 273
-        width: 23
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 32f93c21cb7c3d230800000000000000
-      internalID: 3662490532564934435
+      spriteID: 58637a44c084cead0800000000000000
+      internalID: -2671681261408930171
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_60
+      name: BowGuy_60
       rect:
         serializedVersion: 2
-        x: 276
-        y: 274
-        width: 25
-        height: 29
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f620653fff3e8ac60800000000000000
-      internalID: 7829758640622273135
+      spriteID: 544fb5c9ccee6a400800000000000000
+      internalID: 335217784849691717
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_61
+      name: BowGuy_61
       rect:
         serializedVersion: 2
-        x: 340
-        y: 272
-        width: 25
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 678042e238c908dd0800000000000000
-      internalID: -2485814907079751562
+      spriteID: 2298be190e1b6cf10800000000000000
+      internalID: 2289713038643398946
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_62
+      name: BowGuy_62
       rect:
         serializedVersion: 2
-        x: 405
-        y: 272
-        width: 24
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 384
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9be02fce11bc12150800000000000000
-      internalID: 5846177069153783481
+      spriteID: d29fc857665e459e0800000000000000
+      internalID: -1633428536607049427
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_63
+      name: BowGuy_63
       rect:
         serializedVersion: 2
-        x: 469
-        y: 273
-        width: 24
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 448
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f3b2971fe43f8d740800000000000000
-      internalID: 5177155292046633791
+      spriteID: 606d46c17515fd7b0800000000000000
+      internalID: -5197346010381887994
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_64
+      name: BowGuy_64
       rect:
         serializedVersion: 2
-        x: 13
-        y: 208
-        width: 29
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f053ae6d54b9034c0800000000000000
-      internalID: -4309774119132842737
+      spriteID: f2ce68b7818869c60800000000000000
+      internalID: 7824591041335847983
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_65
+      name: BowGuy_65
       rect:
         serializedVersion: 2
-        x: 73
-        y: 208
-        width: 32
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5c6d611b047e1050800000000000000
-      internalID: 5773179363221400670
+      spriteID: 51a1f526d339b45a0800000000000000
+      internalID: -6535968542345455083
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_66
+      name: BowGuy_66
       rect:
         serializedVersion: 2
-        x: 136
-        y: 208
-        width: 32
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1f640d070125c54c0800000000000000
-      internalID: -4297469713852643599
+      spriteID: ad327aa4adedf3d60800000000000000
+      internalID: 7872255702803620826
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_67
+      name: BowGuy_67
       rect:
         serializedVersion: 2
-        x: 200
-        y: 208
-        width: 32
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f991eb6ebd09b4f10800000000000000
-      internalID: 2255055312572520863
+      spriteID: 56cdb1b75ed5529a0800000000000000
+      internalID: -6258492866967118747
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_68
+      name: BowGuy_68
       rect:
         serializedVersion: 2
-        x: 267
-        y: 208
-        width: 31
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7b3ff8958cc8982e0800000000000000
-      internalID: -2123010957204524105
+      spriteID: 176e6ff11435e0050800000000000000
+      internalID: 5768639711882438257
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_69
+      name: BowGuy_69
       rect:
         serializedVersion: 2
-        x: 333
-        y: 208
-        width: 29
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 192
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cb82a001b4b8ff680800000000000000
-      internalID: -8719097199058081604
+      spriteID: eb911725b19dade00800000000000000
+      internalID: 1070406572824402366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_70
+      name: BowGuy_70
       rect:
         serializedVersion: 2
-        x: 25
-        y: 144
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ad8a6420dbd7b50f0800000000000000
-      internalID: -1127169030985701158
+      spriteID: 52b8a83ee3e6bcfe0800000000000000
+      internalID: -1167718461987976411
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_71
+      name: BowGuy_71
       rect:
         serializedVersion: 2
-        x: 89
-        y: 144
-        width: 30
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ca61306c4312b40800000000000000
-      internalID: 5413666252136033321
+      spriteID: b5fb1265a4a9c34c0800000000000000
+      internalID: -4306397499609727141
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_72
+      name: BowGuy_72
       rect:
         serializedVersion: 2
-        x: 153
-        y: 144
-        width: 31
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c45f0bafde2dda970800000000000000
-      internalID: 8767895969115206988
+      spriteID: e600a5f1219e19ae0800000000000000
+      internalID: -1544196933166694290
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_73
+      name: BowGuy_73
       rect:
         serializedVersion: 2
-        x: 217
-        y: 144
-        width: 31
-        height: 33
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f41e113f4dbce17b0800000000000000
-      internalID: -5251535999995879089
+      spriteID: f7483083fab875cb0800000000000000
+      internalID: -4875274486929980289
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_74
+      name: BowGuy_74
       rect:
         serializedVersion: 2
-        x: 281
-        y: 144
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 406d59fabc412e810800000000000000
-      internalID: 1793018466703627780
+      spriteID: c2bf0b541dba870c0800000000000000
+      internalID: -4577720105916368084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_75
+      name: BowGuy_75
       rect:
         serializedVersion: 2
-        x: 345
-        y: 144
-        width: 26
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 128
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 955a154eaaf2bf0a0800000000000000
-      internalID: -6846826397465205415
+      spriteID: 508f1b9667ebde950800000000000000
+      internalID: 6480044854644701189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_76
+      name: BowGuy_76
       rect:
         serializedVersion: 2
-        x: 21
-        y: 80
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44dc89c502a37d590800000000000000
-      internalID: -7649581531398615740
+      spriteID: d0eefff0982a3a710800000000000000
+      internalID: 1703383793638829581
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_77
+      name: BowGuy_77
       rect:
         serializedVersion: 2
-        x: 85
-        y: 80
-        width: 23
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1aec4e84ab73ce2a0800000000000000
-      internalID: -6706924471835111775
+      spriteID: ea2e825e6a2448a70800000000000000
+      internalID: 8828254454129681070
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_78
+      name: BowGuy_78
       rect:
         serializedVersion: 2
-        x: 149
-        y: 80
-        width: 24
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2fe339b09edbbe660800000000000000
-      internalID: 7416230020014882546
+      spriteID: f50805d2714a54240800000000000000
+      internalID: 4775403399347732575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_79
+      name: BowGuy_79
       rect:
         serializedVersion: 2
-        x: 213
-        y: 80
-        width: 24
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 28d0e9d8d272a5630800000000000000
-      internalID: 3916485902555024770
+      spriteID: 5e6aafb3026baad90800000000000000
+      internalID: -7085650814152562971
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_80
+      name: BowGuy_80
       rect:
         serializedVersion: 2
-        x: 277
-        y: 80
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f76e7a04c16e4790800000000000000
-      internalID: -7543984831181461513
+      spriteID: 9fbe23b8df2fbf550800000000000000
+      internalID: 6195812883154267129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_81
+      name: BowGuy_81
       rect:
         serializedVersion: 2
-        x: 341
-        y: 80
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 64
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f56d3a371b34ea400800000000000000
-      internalID: 337281451527755359
+      spriteID: ecb6f60a8b276baa0800000000000000
+      internalID: -6145598504209257522
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_82
+      name: BowGuy_82
       rect:
         serializedVersion: 2
-        x: 21
-        y: 16
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 032eea96e2e34af00800000000000000
-      internalID: 1127094175811953200
+      spriteID: f77ad1dc65dc09a80800000000000000
+      internalID: -8462037927137007745
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_83
+      name: BowGuy_83
       rect:
         serializedVersion: 2
-        x: 85
-        y: 16
-        width: 23
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f04e4722858ebbd0800000000000000
-      internalID: -2612503939776626445
+      spriteID: 0d9f979cc6883bbd0800000000000000
+      internalID: -2615596957754066480
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_84
+      name: BowGuy_84
       rect:
         serializedVersion: 2
-        x: 149
-        y: 16
-        width: 22
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 128722878cd055150800000000000000
-      internalID: 5860605644752713761
+      spriteID: dc46062efc0a3cdc0800000000000000
+      internalID: -3619872860759104307
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_85
+      name: BowGuy_85
       rect:
         serializedVersion: 2
-        x: 213
-        y: 16
-        width: 22
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a49de6f3cf4126f70800000000000000
-      internalID: 9178922064163035466
+      spriteID: 99777c9cfd6378d10800000000000000
+      internalID: 2127729683746748313
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_86
+      name: BowGuy_86
       rect:
         serializedVersion: 2
-        x: 277
-        y: 16
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 80413bbf7036dc410800000000000000
-      internalID: 1498963136922981384
+      spriteID: 24cab0e9896d6f3d0800000000000000
+      internalID: -3173112936460997566
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Archer_87
+      name: BowGuy_87
       rect:
         serializedVersion: 2
-        x: 341
-        y: 16
-        width: 23
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a035fa67f819a5b30800000000000000
-      internalID: 4276890841499259658
+      spriteID: 92be9e61121705900800000000000000
+      internalID: 671160731410492201
       vertices: []
       indices: 
       edges: []
@@ -2313,7 +2313,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: efab8d327e6261645bf553b6efeca425
+    spriteID: 9830301db7095f54b8f1e72b38e7310f
     internalID: 0
     vertices: []
     indices: 
@@ -2323,96 +2323,96 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Archer_0: -7132172409892320828
-      Archer_1: -1353735933490891112
-      Archer_10: 8249779470359433977
-      Archer_11: -1962031107855546696
-      Archer_12: -9041807797270712669
-      Archer_13: 1747913851310489417
-      Archer_14: -8185391877506459701
-      Archer_15: -2650744301020191532
-      Archer_16: -3491436940040637017
-      Archer_17: 737703663463909888
-      Archer_18: 1138581748509411818
-      Archer_19: 6586155937423818303
-      Archer_2: 3001767060249510921
-      Archer_20: 8009077841664831659
-      Archer_21: -3538350284264479481
-      Archer_22: 7628983629375039337
-      Archer_23: -5971151869562673699
-      Archer_24: -7252216144125549621
-      Archer_25: -3239827517386730994
-      Archer_26: -7000998780855177912
-      Archer_27: 4974585343492711331
-      Archer_28: -3846518608479097937
-      Archer_29: 4557645022326242426
-      Archer_3: -2936497657700248757
-      Archer_30: 7023020952865225556
-      Archer_31: 7188338922220243952
-      Archer_32: 5810893230690756336
-      Archer_33: -974982828150314320
-      Archer_34: 1648995814239754866
-      Archer_35: -6773332133559497501
-      Archer_36: -6406475812940037373
-      Archer_37: -831034980683400404
-      Archer_38: 4706408571880953610
-      Archer_39: 2507926002511818775
-      Archer_4: 818616984480399886
-      Archer_40: -5561081503392899682
-      Archer_41: -6658925714778641832
-      Archer_42: 4987308344126289578
-      Archer_43: -2309302278628930799
-      Archer_44: -5938886292679005284
-      Archer_45: -5632558480353415302
-      Archer_46: 8285793340310895079
-      Archer_47: -5574892827587305999
-      Archer_48: 2727244525004801755
-      Archer_49: -9178085699852703378
-      Archer_5: -3506536579647068688
-      Archer_50: 6517412418285932028
-      Archer_51: -6363745783416740174
-      Archer_52: 7207943461883000607
-      Archer_53: -7842966496701673447
-      Archer_54: -7496578106510736855
-      Archer_55: 7373893106507137603
-      Archer_56: 2677105474008719561
-      Archer_57: 8167009325714835159
-      Archer_58: -1201827876199940216
-      Archer_59: 3662490532564934435
-      Archer_6: 7243941689720402736
-      Archer_60: 7829758640622273135
-      Archer_61: -2485814907079751562
-      Archer_62: 5846177069153783481
-      Archer_63: 5177155292046633791
-      Archer_64: -4309774119132842737
-      Archer_65: 5773179363221400670
-      Archer_66: -4297469713852643599
-      Archer_67: 2255055312572520863
-      Archer_68: -2123010957204524105
-      Archer_69: -8719097199058081604
-      Archer_7: -5511490489121558247
-      Archer_70: -1127169030985701158
-      Archer_71: 5413666252136033321
-      Archer_72: 8767895969115206988
-      Archer_73: -5251535999995879089
-      Archer_74: 1793018466703627780
-      Archer_75: -6846826397465205415
-      Archer_76: -7649581531398615740
-      Archer_77: -6706924471835111775
-      Archer_78: 7416230020014882546
-      Archer_79: 3916485902555024770
-      Archer_8: -6542253794372221699
-      Archer_80: -7543984831181461513
-      Archer_81: 337281451527755359
-      Archer_82: 1127094175811953200
-      Archer_83: -2612503939776626445
-      Archer_84: 5860605644752713761
-      Archer_85: 9178922064163035466
-      Archer_86: 1498963136922981384
-      Archer_87: 4276890841499259658
-      Archer_9: 8994285840009083728
+      BowGuy_0: 6638902558152341341
+      BowGuy_1: -7115901941538923236
+      BowGuy_10: 7897706037572542401
+      BowGuy_11: 5899033960078770394
+      BowGuy_12: 3929072822082246061
+      BowGuy_13: -7868138056449352944
+      BowGuy_14: 2305870559190542100
+      BowGuy_15: 4968621740004015308
+      BowGuy_16: -8866516331940815465
+      BowGuy_17: 291819670828768690
+      BowGuy_18: -7276112285095551106
+      BowGuy_19: 3422070121213867176
+      BowGuy_2: 1736985034878321419
+      BowGuy_20: -2776667546251430811
+      BowGuy_21: 1987744129325920611
+      BowGuy_22: 918440204973823137
+      BowGuy_23: -100706001278181092
+      BowGuy_24: 4359719148505948006
+      BowGuy_25: 2042171230808728995
+      BowGuy_26: -1553740791753987918
+      BowGuy_27: 7584022228547681850
+      BowGuy_28: 6946282986866506679
+      BowGuy_29: 6724290904722943303
+      BowGuy_3: 3286452253389467002
+      BowGuy_30: -8740717829619777614
+      BowGuy_31: 8660715792247562323
+      BowGuy_32: 8311975724381905401
+      BowGuy_33: -6861803413901123743
+      BowGuy_34: -6450075298941523273
+      BowGuy_35: 7497146080587699848
+      BowGuy_36: -2467819241260615538
+      BowGuy_37: 5191013101188444122
+      BowGuy_38: -2443524556496122628
+      BowGuy_39: 1236272933032361368
+      BowGuy_4: -6869567909070239997
+      BowGuy_40: -5517879118916433931
+      BowGuy_41: -509314115277530183
+      BowGuy_42: -6250920074768629988
+      BowGuy_43: 7208749759626440863
+      BowGuy_44: -5586732779739198827
+      BowGuy_45: 1564277522170251320
+      BowGuy_46: 7123189750168712968
+      BowGuy_47: -4296971719198193357
+      BowGuy_48: 3120822700221968079
+      BowGuy_49: 5508665672673986607
+      BowGuy_5: 8108058412635603901
+      BowGuy_50: -6267869962799281253
+      BowGuy_51: -3348512103077150569
+      BowGuy_52: -8166563364058463586
+      BowGuy_53: -413821975740484922
+      BowGuy_54: -8302178726282536141
+      BowGuy_55: -7166446578908399402
+      BowGuy_56: -4475422355838674953
+      BowGuy_57: -8972124507440903892
+      BowGuy_58: -8664068347127947453
+      BowGuy_59: -2671681261408930171
+      BowGuy_6: -1017278329274647073
+      BowGuy_60: 335217784849691717
+      BowGuy_61: 2289713038643398946
+      BowGuy_62: -1633428536607049427
+      BowGuy_63: -5197346010381887994
+      BowGuy_64: 7824591041335847983
+      BowGuy_65: -6535968542345455083
+      BowGuy_66: 7872255702803620826
+      BowGuy_67: -6258492866967118747
+      BowGuy_68: 5768639711882438257
+      BowGuy_69: 1070406572824402366
+      BowGuy_7: 4489064412720554311
+      BowGuy_70: -1167718461987976411
+      BowGuy_71: -4306397499609727141
+      BowGuy_72: -1544196933166694290
+      BowGuy_73: -4875274486929980289
+      BowGuy_74: -4577720105916368084
+      BowGuy_75: 6480044854644701189
+      BowGuy_76: 1703383793638829581
+      BowGuy_77: 8828254454129681070
+      BowGuy_78: 4775403399347732575
+      BowGuy_79: -7085650814152562971
+      BowGuy_8: 3961911356301605863
+      BowGuy_80: 6195812883154267129
+      BowGuy_81: -6145598504209257522
+      BowGuy_82: -8462037927137007745
+      BowGuy_83: -2615596957754066480
+      BowGuy_84: -3619872860759104307
+      BowGuy_85: 2127729683746748313
+      BowGuy_86: -3173112936460997566
+      BowGuy_87: 671160731410492201
+      BowGuy_9: 2271273068164040892
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

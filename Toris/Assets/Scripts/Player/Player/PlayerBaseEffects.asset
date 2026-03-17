@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: PlayerBaseEffects
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBaseEffectsSO
   maxHealth: 100
-  maxStamina: 100
-  staminaRegenPerSecond: 10
+  maxStamina: 50000
+  staminaRegenPerSecond: 50
   moveSpeedMultiplier: 1
   dashSpeedMultiplier: 1
-  dashDistanceMultiplier: 1
   outgoingDamageMultiplier: 1
   incomingDamageMultiplier: 1
   isPoisonImmune: 0

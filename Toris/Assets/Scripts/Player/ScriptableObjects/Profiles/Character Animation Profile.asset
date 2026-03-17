@@ -15,7 +15,7 @@ MonoBehaviour:
   dirMode: 1
   baseLayer: 0
   locomotionIdleSuffix: Idle
-  locomotionWalkSuffix: Walk
+  locomotionWalkSuffix: Run
   actionMap:
   - actionKey: Shoot
     defaultSuffix: Shoot

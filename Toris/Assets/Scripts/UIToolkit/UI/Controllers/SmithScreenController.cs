@@ -1,8 +1,9 @@
 using OutlandHaven.UIToolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 
-namespace UIToolkit.UI
+namespace OutlandHaven.UIToolkit
 {
     public class SmithScreenController : MonoBehaviour
     {

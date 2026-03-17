@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     [CreateAssetMenu(menuName = "UI/Scriptable Objects/Events/UIInventoryEventsSO")]
     public class UIInventoryEventsSO : ScriptableObject

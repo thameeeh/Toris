@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {

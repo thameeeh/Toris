@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     // --- THE BLUEPRINT (Static Rules) ---
     [Serializable]

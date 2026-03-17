@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using OutlandHaven.UIToolkit;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit.Tests
 {

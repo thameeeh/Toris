@@ -1,22 +1,27 @@
 using UnityEngine;
 
-public class ItemPickMagnet : MonoBehaviour
+namespace OutlandHaven.Inventory
 {
-    GameObject player;
-    void Start()
-    {
-        player =  GameObject.FindWithTag("Player");
-    }
 
-    // Update is called once per frame
-    void Update()
+    public class ItemPickMagnet : MonoBehaviour
     {
-        if (player == null) return;
-        // Used sqrMagnitude instead of Distance for distance comparison to avoid expensive square root calculations
-        if((transform.position - player.transform.position).sqrMagnitude < 9f)
+        GameObject player;
+        void Start()
         {
-            float step = 5 * Time.deltaTime; // adjust speed as necessary
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+            player =  GameObject.FindWithTag("Player");
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (player == null) return;
+            // Used sqrMagnitude instead of Distance for distance comparison to avoid expensive square root calculations
+            if((transform.position - player.transform.position).sqrMagnitude < 9f)
+            {
+                float step = 5 * Time.deltaTime; // adjust speed as necessary
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+            }
         }
     }
+
 }

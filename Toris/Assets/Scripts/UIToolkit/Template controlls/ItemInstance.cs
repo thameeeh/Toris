@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     /// <summary>
     /// Wrapper class holding the runtime state of an item.

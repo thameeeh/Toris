@@ -1,8 +1,13 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemPickEventSO", menuName = "Scriptable Objects/ItemPickEventSO")]
-public class ItemPickEventSO : ScriptableObject
+namespace OutlandHaven.Inventory
 {
-    public Action OnItemPick;
+
+    [CreateAssetMenu(fileName = "ItemPickEventSO", menuName = "Scriptable Objects/ItemPickEventSO")]
+    public class ItemPickEventSO : ScriptableObject
+    {
+        public Action OnItemPick;
+    }
+
 }

@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System;
+using OutlandHaven.UIToolkit;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     public class PlayerInventoryView : GameView, IDisposable
     {

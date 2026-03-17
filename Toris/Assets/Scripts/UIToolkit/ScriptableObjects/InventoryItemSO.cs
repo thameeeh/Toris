@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     [CreateAssetMenu(menuName = "UI/Inventory/Item")]
     public class InventoryItemSO : ScriptableObject

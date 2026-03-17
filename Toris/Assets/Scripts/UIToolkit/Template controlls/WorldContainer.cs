@@ -1,4 +1,5 @@
 using UnityEngine;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {

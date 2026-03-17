@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
     private const float MIN_MULTIPLIER = 0f;
-    private const float ROTATED_INPUT_SCALE = 0.70710678f;
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
@@ -81,23 +80,8 @@ public class PlayerMotor : MonoBehaviour
 
         Vector2 direction = _movementLocked ? Vector2.zero : _moveInput;
 
-        if (_moveSO.clampDiagonal && direction.sqrMagnitude > 1f)
-            direction.Normalize();
-
-        if (_moveSO.rotateInput45)
-        {
-            direction = RotateInput45Degrees(direction);
-        }
-
         float finalMoveSpeed = _moveSO.speed * moveSpeedMultiplier;
         ApplyVelocity(direction * finalMoveSpeed);
-    }
-
-    private Vector2 RotateInput45Degrees(Vector2 direction)
-    {
-        return new Vector2(
-            direction.x * ROTATED_INPUT_SCALE - direction.y * ROTATED_INPUT_SCALE,
-            direction.x * ROTATED_INPUT_SCALE + direction.y * ROTATED_INPUT_SCALE);
     }
 
     private float GetMoveSpeedMultiplier()

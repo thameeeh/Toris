@@ -4,6 +4,4 @@ using UnityEngine;
 public class PlayerMoveSO : ScriptableObject
 {
     [Min(0f)] public float speed = 6f;
-    public bool clampDiagonal = true;
-    public bool rotateInput45 = false;
 }

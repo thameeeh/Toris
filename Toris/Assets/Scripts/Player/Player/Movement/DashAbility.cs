@@ -10,7 +10,7 @@ public class DashAbility
     private const float MIN_MULTIPLIER = 0f;
 
     private Rigidbody2D _body;
-    private PlayerMoveConfig _moveConfig;
+    private PlayerMoveSO _moveSO;
     private Action<Vector2> _applyVelocity;
 
     private Vector2 _dashDirection;
@@ -25,10 +25,10 @@ public class DashAbility
     public event Action Activated;
     public event Action Completed;
 
-    public void Initialize(Rigidbody2D body, PlayerMoveConfig moveConfig, Action<Vector2> applyVelocity)
+    public void Initialize(Rigidbody2D body, PlayerMoveSO moveSO, Action<Vector2> applyVelocity)
     {
         _body = body;
-        _moveConfig = moveConfig;
+        _moveSO = moveSO;
         _applyVelocity = applyVelocity;
     }
 
@@ -51,25 +51,22 @@ public class DashAbility
         return true;
     }
 
-    public void FixedTick(float deltaTime, float dashSpeedMultiplier, float dashDistanceMultiplier)
+    public void FixedTick(float deltaTime, float dashSpeedMultiplier)
     {
         if (_config == null || _body == null || _applyVelocity == null)
             return;
 
         float validatedDashSpeedMultiplier = Mathf.Max(MIN_MULTIPLIER, dashSpeedMultiplier);
-        float validatedDashDistanceMultiplier = Mathf.Max(MIN_MULTIPLIER, dashDistanceMultiplier);
-
-        float scaledDuration = _config.duration * validatedDashDistanceMultiplier;
 
         if (isActive)
         {
-            float safeDuration = Mathf.Max(scaledDuration, Mathf.Epsilon);
+            float safeDuration = Mathf.Max(_config.duration, Mathf.Epsilon);
 
             _activeTimeElapsed += deltaTime;
             _activeTimeRemaining = Mathf.Max(0f, _activeTimeRemaining - deltaTime);
 
             float normalizedTime = Mathf.Clamp01(_activeTimeElapsed / safeDuration);
-            float runSpeed = _moveConfig != null ? _moveConfig.speed : 0f;
+            float runSpeed = _moveSO != null ? _moveSO.speed : 0f;
             float blendTarget = Mathf.Lerp(0f, runSpeed, _config.blendToRun);
             float speedBlend = Mathf.Lerp(_config.initialSpeed, blendTarget, normalizedTime);
             float shapedSpeed = speedBlend * _config.speedCurve.Evaluate(normalizedTime);

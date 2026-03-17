@@ -1,4 +1,5 @@
 using UnityEngine;
+
 // context menu tester; purely testing
 public class PlayerEffectPipelineTester : MonoBehaviour
 {
@@ -76,7 +77,6 @@ public class PlayerEffectPipelineTester : MonoBehaviour
             $"Stamina Regen: {_playerStats.staminaRegenPerSec}\n" +
             $"Move Speed Mult: {effects.moveSpeedMultiplier}\n" +
             $"Dash Speed Mult: {effects.dashSpeedMultiplier}\n" +
-            $"Dash Distance Mult: {effects.dashDistanceMultiplier}\n" +
             $"Outgoing Damage Mult: {effects.outgoingDamageMultiplier}\n" +
             $"Incoming Damage Mult: {effects.incomingDamageMultiplier}\n" +
             $"Poison Immune: {effects.isPoisonImmune}\n" +

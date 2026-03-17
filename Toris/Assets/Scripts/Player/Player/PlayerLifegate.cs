@@ -19,7 +19,6 @@ public class PlayerLifeGate : MonoBehaviour
 
     void Awake()
     {
-        // Try to subscribe to PlayerStats event if available
         var stats = GetComponent<PlayerStats>();
         if (stats != null) stats.OnPlayerDied += HandleDeath;
     }
@@ -31,19 +30,13 @@ public class PlayerLifeGate : MonoBehaviour
 
         if (_rb) _rb.linearVelocity = Vector2.zero;
 
-        // Disable gameplay behaviours
         for (int i = 0; i < _disableOnDeath.Length; i++)
             if (_disableOnDeath[i]) _disableOnDeath[i].enabled = false;
 
-        // Disable colliders if you want the corpse to be non-interactive
         for (int i = 0; i < _disableColliders.Length; i++)
             if (_disableColliders[i]) _disableColliders[i].enabled = false;
-
-        // IMPORTANT: DO NOT disable anim controller or view here
-        // anim.PlayDeath() should already be called by DamageReceiver.
     }
 
-    // Call this when respawn is implemented
     public void RespawnEnableAll()
     {
         _dead = false;

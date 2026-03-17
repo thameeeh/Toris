@@ -11,7 +11,6 @@ public class PlayerBaseEffectsSO : ScriptableObject
     [Header("Movement")]
     [Min(0f)] public float moveSpeedMultiplier = 1f;
     [Min(0f)] public float dashSpeedMultiplier = 1f;
-    [Min(0f)] public float dashDistanceMultiplier = 1f;
 
     [Header("Combat")]
     [Min(0f)] public float outgoingDamageMultiplier = 1f;

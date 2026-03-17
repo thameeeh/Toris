@@ -223,7 +223,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 
         if (!leader.pack.EnsureLeader(leader))
             return false;
-
+        
         hasTriggeredMaxAlertHowl = true;
 
         leader.ClearInvestigationTarget();

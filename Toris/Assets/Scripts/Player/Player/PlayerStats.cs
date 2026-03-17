@@ -27,6 +27,8 @@ public class PlayerStats : MonoBehaviour
     public event Action OnPlayerDied;
     public event Action<PlayerResolvedEffects> OnResolvedEffectsChanged;
 
+    private bool _isDead;
+    public bool IsDead => _isDead;
     public PlayerRuntimeStats RuntimeStats => _runtimeStats;
     public PlayerResolvedEffects ResolvedEffects => _resolvedEffects;
 
@@ -90,7 +92,7 @@ public class PlayerStats : MonoBehaviour
 
     public void ApplyDamage(float amount)
     {
-        if (_runtimeStats == null)
+        if (_runtimeStats == null || _isDead)
             return;
 
         float previousHealth = _runtimeStats.CurrentHealth;
@@ -103,6 +105,7 @@ public class PlayerStats : MonoBehaviour
 
         if (_runtimeStats.IsDead())
         {
+            _isDead = true;
             OnPlayerDied?.Invoke();
         }
     }
@@ -158,8 +161,9 @@ public class PlayerStats : MonoBehaviour
         _runtimeStats.SetCurrentHealth(value, _resolvedEffects.maxHealth);
         BroadcastHealth();
 
-        if (_runtimeStats.IsDead())
+        if (!_isDead && _runtimeStats.IsDead())
         {
+            _isDead = true;
             OnPlayerDied?.Invoke();
         }
     }

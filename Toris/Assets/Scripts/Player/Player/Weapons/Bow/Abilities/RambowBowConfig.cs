@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RambowConfig", menuName = "Game/Abilities/Rambow")]
-public class RamboBowConfig : PlayerAbilitySO
+[CreateAssetMenu(fileName = "RambowBowConfig", menuName = "Game/Abilities/Rambow")]
+public class RambowBowConfig : PlayerAbilitySO
 {
     [Header("Unlock Requirements")]
     [Min(0)] public int killsRequired = 30;

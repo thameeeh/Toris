@@ -9,7 +9,6 @@ public struct PlayerResolvedEffects
 
     public float moveSpeedMultiplier;
     public float dashSpeedMultiplier;
-    public float dashDistanceMultiplier;
 
     public float outgoingDamageMultiplier;
     public float incomingDamageMultiplier;
@@ -28,7 +27,6 @@ public struct PlayerResolvedEffects
 
             moveSpeedMultiplier = 1f,
             dashSpeedMultiplier = 1f,
-            dashDistanceMultiplier = 1f,
 
             outgoingDamageMultiplier = 1f,
             incomingDamageMultiplier = 1f,

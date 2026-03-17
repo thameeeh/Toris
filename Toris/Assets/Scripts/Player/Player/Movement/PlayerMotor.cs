@@ -8,7 +8,7 @@ public class PlayerMotor : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private PlayerMoveConfig config;
+    [SerializeField] private PlayerMoveSO _moveSO;
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private DashAbility _dashAbility = new DashAbility();
 
@@ -24,7 +24,7 @@ public class PlayerMotor : MonoBehaviour
         if (!rb)
             rb = GetComponent<Rigidbody2D>();
 
-        _dashAbility?.Initialize(rb, config, ApplyVelocity);
+        _dashAbility?.Initialize(rb, _moveSO, ApplyVelocity);
     }
 
     private void OnValidate()
@@ -32,7 +32,7 @@ public class PlayerMotor : MonoBehaviour
         if (!rb)
             rb = GetComponent<Rigidbody2D>();
 
-        _dashAbility?.Initialize(rb, config, ApplyVelocity);
+        _dashAbility?.Initialize(rb, _moveSO, ApplyVelocity);
     }
 
     public void SetMoveInput(Vector2 moveInput)
@@ -65,16 +65,15 @@ public class PlayerMotor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!rb || !config)
+        if (!rb || !_moveSO)
             return;
 
         float moveSpeedMultiplier = GetMoveSpeedMultiplier();
         float dashSpeedMultiplier = GetDashSpeedMultiplier();
-        float dashDistanceMultiplier = GetDashDistanceMultiplier();
 
         if (_dashAbility != null)
         {
-            _dashAbility.FixedTick(Time.fixedDeltaTime, dashSpeedMultiplier, dashDistanceMultiplier);
+            _dashAbility.FixedTick(Time.fixedDeltaTime, dashSpeedMultiplier);
 
             if (_dashAbility.isActive)
                 return;
@@ -82,15 +81,15 @@ public class PlayerMotor : MonoBehaviour
 
         Vector2 direction = _movementLocked ? Vector2.zero : _moveInput;
 
-        if (config.clampDiagonal && direction.sqrMagnitude > 1f)
+        if (_moveSO.clampDiagonal && direction.sqrMagnitude > 1f)
             direction.Normalize();
 
-        if (config.rotateInput45)
+        if (_moveSO.rotateInput45)
         {
             direction = RotateInput45Degrees(direction);
         }
 
-        float finalMoveSpeed = config.speed * moveSpeedMultiplier;
+        float finalMoveSpeed = _moveSO.speed * moveSpeedMultiplier;
         ApplyVelocity(direction * finalMoveSpeed);
     }
 
@@ -115,14 +114,6 @@ public class PlayerMotor : MonoBehaviour
             return 1f;
 
         return Mathf.Max(MIN_MULTIPLIER, _stats.ResolvedEffects.dashSpeedMultiplier);
-    }
-
-    private float GetDashDistanceMultiplier()
-    {
-        if (_stats == null)
-            return 1f;
-
-        return Mathf.Max(MIN_MULTIPLIER, _stats.ResolvedEffects.dashDistanceMultiplier);
     }
 
     private void ApplyVelocity(Vector2 velocity)

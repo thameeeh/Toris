@@ -26,7 +26,6 @@ public class PlayerDamageReceiver : MonoBehaviour
     private bool _flashActive;
 
     public event Action OnHurtReceived;
-    public event Action OnDeathReceived;
 
     public bool IsInvulnerable => Time.time < _iFrameUntil;
 
@@ -54,6 +53,9 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     public void ReceiveHit(in HitData hit)
     {
+        if (_stats == null)
+            return;
+
         if (IsInvulnerable && !hit.bypassIFrames)
             return;
 
@@ -62,12 +64,8 @@ public class PlayerDamageReceiver : MonoBehaviour
         _stats.ApplyDamage(finalDamage);
         TryApplyStatus(hit);
 
-        if (_stats.currentHP <= 0f)
-        {
-            OnDeathReceived?.Invoke();
-            BroadcastMessage("OnPlayerDied", SendMessageOptions.DontRequireReceiver);
+        if (_stats.IsDead)
             return;
-        }
 
         if (hit.knockback > 0f && _rb != null)
         {

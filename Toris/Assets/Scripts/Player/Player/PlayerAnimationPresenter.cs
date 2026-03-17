@@ -12,6 +12,7 @@ public class PlayerAnimationPresenter : MonoBehaviour
     [SerializeField] private PlayerMotor _motor;
     [SerializeField] private PlayerBowController _bowController;
     [SerializeField] private PlayerDamageReceiver _damageReceiver;
+    [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerFacing _playerFacing;
 
     private void OnEnable()
@@ -26,7 +27,11 @@ public class PlayerAnimationPresenter : MonoBehaviour
         if (_damageReceiver != null)
         {
             _damageReceiver.OnHurtReceived += HandleHurtReceived;
-            _damageReceiver.OnDeathReceived += HandleDeathReceived;
+        }
+
+        if (_playerStats != null)
+        {
+            _playerStats.OnPlayerDied += HandlePlayerDied;
         }
     }
 
@@ -42,7 +47,11 @@ public class PlayerAnimationPresenter : MonoBehaviour
         if (_damageReceiver != null)
         {
             _damageReceiver.OnHurtReceived -= HandleHurtReceived;
-            _damageReceiver.OnDeathReceived -= HandleDeathReceived;
+        }
+
+        if (_playerStats != null)
+        {
+            _playerStats.OnPlayerDied -= HandlePlayerDied;
         }
     }
 
@@ -86,7 +95,7 @@ public class PlayerAnimationPresenter : MonoBehaviour
         _animationController?.PlayHurt();
     }
 
-    private void HandleDeathReceived()
+    private void HandlePlayerDied()
     {
         _animationController?.PlayDeath();
     }

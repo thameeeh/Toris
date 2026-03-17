@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerMoveConfig", menuName = "Game/Characters/Movement/Player Move")]
-public class PlayerMoveConfig : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerMoveSO", menuName = "Game/Characters/Movement/Player Move")]
+public class PlayerMoveSO : ScriptableObject
 {
     [Min(0f)] public float speed = 6f;
     public bool clampDiagonal = true;

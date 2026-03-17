@@ -5,7 +5,6 @@ public enum PlayerEffectType
     StaminaRegenPerSecond,
     MoveSpeedMultiplier,
     DashSpeedMultiplier,
-    DashDistanceMultiplier,
     OutgoingDamageMultiplier,
     IncomingDamageMultiplier,
     PoisonImmunity,

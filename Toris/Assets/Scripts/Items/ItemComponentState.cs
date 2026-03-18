@@ -7,5 +7,7 @@ namespace OutlandHaven.Inventory
     {
         // Every unique state must declare if it matches another state.
         public abstract bool IsStackableWith(ItemComponentState other);
+
+        public abstract ItemComponentState Clone();
     }
 }

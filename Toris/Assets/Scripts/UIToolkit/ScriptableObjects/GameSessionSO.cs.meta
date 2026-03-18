@@ -5,7 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - PlayerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
-  - PlayerInventory: {fileID: 11400000, guid: 5b0459b12565c5f498a3b056f66bee0b, type: 2}
+  - PlayerInventory: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

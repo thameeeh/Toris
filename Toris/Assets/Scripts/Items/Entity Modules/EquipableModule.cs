@@ -4,7 +4,6 @@ using System;
 
 namespace OutlandHaven.Inventory
 {
-
     public enum EquipmentSlot
     {
         Head,

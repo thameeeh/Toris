@@ -1,14 +1,23 @@
 using System;
 using UnityEngine;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
+    public enum ConsumptionSlot
+    {
+        HP,
+        Mana
+    }
+
     // --- THE BLUEPRINT (Static Rules) ---
     [Serializable]
     public class ConsumableComponent : ItemComponent
     {
-        [Tooltip("The ID or name of the effect to trigger (e.g., 'Heal_50').")]
-        public string EffectPayload;
+        [Tooltip("The Type of the effect to trigger.")]
+        public ConsumptionSlot EffectPayload;
+
+        [Tooltip("Amount of resources to add.")]
+        public int amount = 20;
 
         [Tooltip("Cooldown in seconds before this item can be used again.")]
         public float CooldownDuration = 1.5f;

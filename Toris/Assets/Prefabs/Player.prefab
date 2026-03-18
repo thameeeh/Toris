@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPicker
   _itemPickerSO: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
-  _myInventorySO: {fileID: 11400000, guid: 5b0459b12565c5f498a3b056f66bee0b, type: 2}
+  _myInventorySO: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
   _interactionPoint: {fileID: 2980662243367807876}
   _radius: 1.5
   _layerMask:

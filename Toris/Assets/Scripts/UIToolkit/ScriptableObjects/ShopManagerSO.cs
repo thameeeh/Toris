@@ -11,7 +11,8 @@ namespace OutlandHaven.UIToolkit
         public UIInventoryEventsSO InventoryEvents;
         public UIEventsSO UIEvents; // Dependency for global UI events like screen open
 
-        public InventoryContainerSO CurrentShopInventory;
+        [System.NonSerialized]
+        public InventoryManager CurrentShopInventory;
 
         public void Initialize()
         {
@@ -45,7 +46,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (screenType == ScreenType.Smith || screenType == ScreenType.Mage) // Add any other vendor types here as they are created
             {
-                if (payload is InventoryContainerSO dynamicShopContainer)
+                if (payload is InventoryManager dynamicShopContainer)
                 {
                     CurrentShopInventory = dynamicShopContainer;
 #if UNITY_EDITOR

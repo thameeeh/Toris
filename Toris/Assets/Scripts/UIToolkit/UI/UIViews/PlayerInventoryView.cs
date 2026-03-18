@@ -65,17 +65,17 @@ namespace OutlandHaven.Inventory
         }
         
 
-        private void RefreshGrid(VisualElement gridRoot, InventoryContainerSO data)
+        private void RefreshGrid(VisualElement gridRoot, InventoryManager data)
         {
             if (gridRoot == null) return;
 
             // Clear any existing slots (visuals)
             gridRoot.Clear();
 
-            if (data == null || data.Slots == null) return;
+            if (data == null || data.LiveSlots == null) return;
 
             // Loop through data and create visuals
-            foreach (var slotData in data.Slots)
+            foreach (var slotData in data.LiveSlots)
             {
                 // Instantiate the UXML Template
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();

@@ -105,7 +105,7 @@ namespace OutlandHaven.UIToolkit
         /// <summary>
         /// Attempts to salvage an item from a specific container, giving the player the yields.
         /// </summary>
-        public bool TrySalvageItem(InventoryContainerSO container, ItemInstance itemInstanceToSalvage)
+        public bool TrySalvageItem(InventoryManager container, ItemInstance itemInstanceToSalvage)
         {
             if (container == null || itemInstanceToSalvage == null) return false;
             if (Registry == null)

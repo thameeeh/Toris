@@ -6,12 +6,20 @@ namespace OutlandHaven.UIToolkit
     public class WorldContainer : MonoBehaviour
     {
         [Header("Data")]
-        [SerializeField] private InventoryContainerSO _containerData; // Drag 'Container_VillageChest' here
+        [SerializeField] private InventoryManager _containerData; // Drag 'InventoryManager' component here
         [SerializeField] private UIEventsSO _uiEvents;
 
         [Header("Interaction")]
         [SerializeField] private KeyCode _interactKey = KeyCode.F;
         private bool _playerInRange = false;
+
+        private void Awake()
+        {
+            if (_containerData == null)
+            {
+                _containerData = GetComponent<InventoryManager>();
+            }
+        }
 
         private void OnValidate()
         {
@@ -22,7 +30,7 @@ namespace OutlandHaven.UIToolkit
 
             if(_containerData == null)
             {
-                Debug.LogError($"<color=red>{name}</color> missing Container Data, put SO in the inspector!", this);
+                Debug.LogError($"<color=red>{name}</color> missing Container Data, put InventoryManager in the inspector!", this);
             }
         }
 
@@ -45,7 +53,10 @@ namespace OutlandHaven.UIToolkit
 #endif
 
             // KEY MOMENT: Fire the event with the Chest Data as the Payload!
-            _uiEvents.OnRequestOpen?.Invoke(_containerData.AssociatedView, _containerData);
+            if (_containerData.ContainerBlueprint != null)
+            {
+                _uiEvents.OnRequestOpen?.Invoke(_containerData.ContainerBlueprint.AssociatedView, _containerData);
+            }
         }
 
         // Detect Player entering the trigger zone

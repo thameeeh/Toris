@@ -16,7 +16,6 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
-        [SerializeField] private InventoryContainerSO _shopContainer;
         [SerializeField] private ShopManagerSO _shopManagerSO;
         [SerializeField] private CraftingManagerSO _craftingManagerSO;
         [SerializeField] private SalvageManagerSO _salvageManagerSO;
@@ -62,14 +61,19 @@ namespace OutlandHaven.UIToolkit
 
         private void HandleRequestOpen(ScreenType screenType, object payload)
         {
-            // If the UI is opened via shortcut keys (payload is null)
-            // we manually provide the default container so the ShopManager knows which inventory to use.
-            if (screenType == ScreenType.Smith && payload == null)
+            if (screenType != ScreenType.Smith) return;
+
+            // 1. The Guard Clause: Reject invalid or missing data immediately
+            if (payload == null || !(payload is InventoryManager shopInventory))
             {
-                if (_shopManagerSO != null && _shopContainer != null)
-                {
-                    _shopManagerSO.CurrentShopInventory = _shopContainer;
-                }
+                Debug.LogWarning("Smith UI attempted to open without a valid InventoryManager payload. Aborting.");
+                return;
+            }
+
+            // 2. The UI is dumb. It just takes what it was given and displays it.
+            if (_shopManagerSO != null)
+            {
+                _shopManagerSO.CurrentShopInventory = shopInventory;
             }
         }
 
@@ -78,7 +82,7 @@ namespace OutlandHaven.UIToolkit
             if (_smithMainTemplate == null || _slotTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
-            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopContainer, _craftingManagerSO, _salvageManagerSO);
+            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _craftingManagerSO, _salvageManagerSO);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

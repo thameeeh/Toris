@@ -7,7 +7,7 @@ public interface IContainerInteractable
 
     // Tries to add Item to the target container
     // Destroys itself on success (Item)
-    bool Interact(InventoryContainerSO targetContainer);
+    bool Interact(InventoryManager targetContainer);
 
     Vector3 InteractionPosition { get; }
     string GetInteractionPrompt();

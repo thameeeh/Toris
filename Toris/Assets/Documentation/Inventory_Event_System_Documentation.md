@@ -48,9 +48,9 @@ Items in the game are strictly separated into two concepts: **Base Definitions (
 
 The player's inventory (and NPC inventories) are managed by dedicated `ScriptableObject` containers, avoiding complex MonoBehaviours on the player object.
 
-### `InventoryContainerSO`
+### `InventoryManager`
 *   **What it is:** A `ScriptableObject` that holds a list of `InventorySlot`s.
-*   **Location:** `Toris/Assets/Scripts/UIToolkit/ScritableObjects/InventoryContainerSO.cs`
+*   **Location:** `Toris/Assets/Scripts/UIToolkit/Player/Core/InventoryManager.cs`
 *   **How it's created:** Created in the Editor via `Create -> UI -> Inventory -> Container`.
 *   **Properties:**
     *   `SlotCount`: Total number of slots available (e.g., 20).
@@ -70,7 +70,7 @@ The player's inventory (and NPC inventories) are managed by dedicated `Scriptabl
 
 ## 3. UI Integration & Visuals
 
-The system strictly adheres to the principle of **Data Decoupling**. UI classes NEVER directly modify the counts or stats inside `InventoryContainerSO`. They only listen to events and dispatch requests.
+The system strictly adheres to the principle of **Data Decoupling**. UI classes NEVER directly modify the counts or stats inside `InventoryManager`. They only listen to events and dispatch requests.
 
 ### `InventorySlotView`
 *   **What it is:** A wrapper class that binds an `InventorySlot` data object to the actual UI Toolkit `VisualElement`s (the icon and quantity label).
@@ -78,11 +78,11 @@ The system strictly adheres to the principle of **Data Decoupling**. UI classes 
 *   **Core Logic:** The `Update(InventorySlot slotData)` method reads the data. If empty, it hides the icon. If populated, it sets the Sprite and updates the text label if the count > 1.
 
 ### `PlayerInventoryView`
-*   **What it is:** The visual representation of the player's `InventoryContainerSO`. Inherits from `GameView`.
+*   **What it is:** The visual representation of the player's `InventoryManager`. Inherits from `GameView`.
 *   **Location:** `Toris/Assets/Scripts/UIToolkit/UI/UIViews/PlayerInventoryView.cs`
 *   **Core Logic:**
     *   Listens to `UIInventoryEventsSO.OnInventoryUpdated` in `Show()` and unbinds in `Hide()`.
-    *   `RefreshGrid()`: When triggered, it clears the entire grid, iterates through every slot in the `InventoryContainerSO`, instantiates a new UI `TemplateContainer` for each, and creates an `InventorySlotView` to bind the data.
+    *   `RefreshGrid()`: When triggered, it clears the entire grid, iterates through every slot in the `InventoryManager`, instantiates a new UI `TemplateContainer` for each, and creates an `InventorySlotView` to bind the data.
     *   **Interaction:** Registers a Left-Click (`MouseUpEvent` button 0) on the visual slot. When clicked, it does NOT do anything directly; it simply fires `_uiInventoryEvents.OnItemClicked` with the slot data as a payload.
 
 ---
@@ -95,7 +95,7 @@ The shop acts as a bridge between the player's inventory, the player's wallet (`
 *   **What it is:** A UI component that displays a dynamic inventory (like a Smith's stock). Inherits from `UIView`.
 *   **Location:** `Toris/Assets/Scripts/UIToolkit/UI/UIViews/ShopSubView.cs`
 *   **Core Logic:**
-    *   Receives an `InventoryContainerSO` (the shop's specific stock) as a payload during `Setup()`.
+    *   Receives an `InventoryManager` (the shop's specific stock) as a payload during `Setup()`.
     *   Listens to `OnCurrencyChanged` to update the player's gold display.
     *   Listens to `OnShopInventoryUpdated` to redraw the shop's grid if an item is bought/sold.
     *   **Interaction:** Registers a Right-Click (`MouseUpEvent` button 1) on the visual slot. Holding Shift requests a quantity of 10, otherwise 1. It then fires `_uiInventoryEvents.OnRequestBuy(item, quantity)`. Note that it only *requests* the buy; it does not perform it.
@@ -104,7 +104,7 @@ The shop acts as a bridge between the player's inventory, the player's wallet (`
 *   **What it is:** The authoritative backend controller that handles the logic of transactions. It is a `ScriptableObject`.
 *   **Location:** `Toris/Assets/Scripts/UIToolkit/ScritableObjects/ShopManagerSO.cs`
 *   **Core Logic:**
-    *   Listens to global `UIEvents.OnRequestOpen` to intercept payloads. If the requested screen is a vendor (e.g., `ScreenType.Smith`), it captures the `InventoryContainerSO` passed in the payload and sets it as `CurrentShopInventory`. This allows a single Shop Manager to handle multiple different NPCs dynamically.
+    *   Listens to global `UIEvents.OnRequestOpen` to intercept payloads. If the requested screen is a vendor (e.g., `ScreenType.Smith`), it captures the `InventoryManager` passed in the payload and sets it as `CurrentShopInventory`. This allows a single Shop Manager to handle multiple different NPCs dynamically.
     *   Listens to `OnRequestBuy` and `OnRequestSell` events.
     *   **Buy Logic (`HandleRequestBuy`)**:
         1.  Calculates total cost (`Item.GoldValue * quantity`).
@@ -123,7 +123,7 @@ The entire system relies on ScriptableObject-based event channels to prevent tig
 
 *   **`UIEventsSO`:** Handles generic window management (`OnRequestOpen`, `OnRequestClose`). It is used to broadcast that an interaction has occurred in the world (e.g., clicking the Smith NPC), passing the relevant data payload (like the Smith's specific `ShopContainerSO`) along with the request to open the `ScreenType.Smith`.
 *   **`UIInventoryEventsSO`:** Handles all inventory-specific actions:
-    *   `OnInventoryUpdated`: Fired by `InventoryContainerSO` when its data changes.
+    *   `OnInventoryUpdated`: Fired by `InventoryManager` when its data changes.
     *   `OnShopInventoryUpdated`: Fired by `ShopManagerSO` when vendor stock changes.
     *   `OnRequestBuy` / `OnRequestSell`: Dispatched by the UI Views when a user clicks, caught and processed by `ShopManagerSO`.
     *   `OnCurrencyChanged`: Fired when gold values update.

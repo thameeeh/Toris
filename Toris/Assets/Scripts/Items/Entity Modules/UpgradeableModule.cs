@@ -43,7 +43,7 @@ namespace OutlandHaven.Inventory
 
         public override ItemComponentState Clone()
         {
-            return new UpgradeableState { CurrentLevel = this.CurrentLevel };
+            return new UpgradeableState(this.CurrentLevel);
         }
     }
 }

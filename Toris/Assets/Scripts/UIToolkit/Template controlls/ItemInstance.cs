@@ -91,5 +91,22 @@ namespace OutlandHaven.Inventory
             }
             return null;
         }
+
+        public ItemInstance Clone()
+        {
+            ItemInstance clonedItem = new ItemInstance();
+
+            clonedItem.InstanceID = Guid.NewGuid().ToString();
+
+            clonedItem.BaseItem = this.BaseItem;
+
+            clonedItem.States = new System.Collections.Generic.List<ItemComponentState>();
+            foreach (var state in this.States)
+            {
+                clonedItem.States.Add(state.Clone());
+            }
+
+            return clonedItem;
+        }
     }
 }

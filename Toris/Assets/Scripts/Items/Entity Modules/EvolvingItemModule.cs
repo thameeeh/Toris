@@ -58,5 +58,13 @@ namespace OutlandHaven.Inventory
             }
             return false;
         }
+
+        public override ItemComponentState Clone()
+        {
+            EvolvingState clone = new EvolvingState();
+            clone.CurrentKills = this.CurrentKills;
+            clone.IsAwakened = this.IsAwakened;
+            return clone;
+        }
     }
 }

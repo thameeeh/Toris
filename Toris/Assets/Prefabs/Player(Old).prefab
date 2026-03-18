@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3977578414653168071}
   - component: {fileID: 4736313697602286086}
   m_Layer: 0
-  m_Name: Visuals
+  m_Name: K_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6638902558152341341, guid: c6a84afbb92247442993f3436da434df, type: 3}
+  m_Sprite: {fileID: 2082086513, guid: 6dd50e9f6d072564092946cc83abdda2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,7 +104,7 @@ Animator:
   m_GameObject: {fileID: 5202819289707330108}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d3f33ba204fe5fe4ab2f9214d5244774, type: 2}
+  m_Controller: {fileID: 9100000, guid: 79e00f1f69401f24a9c424982fcf7f0f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 1738574752484829038}
   - component: {fileID: 5599079654927792221}
   - component: {fileID: 8137892244548921797}
+  - component: {fileID: 1888605010783103947}
   - component: {fileID: 5229613945364294266}
   - component: {fileID: 2003589166597666773}
   - component: {fileID: 503972616382245057}
@@ -170,16 +171,8 @@ GameObject:
   - component: {fileID: 7014179871662737768}
   - component: {fileID: 4549348511874797031}
   - component: {fileID: 4055305976804400490}
-  - component: {fileID: 4459608157227879889}
-  - component: {fileID: 2795140679132295632}
-  - component: {fileID: 5512597181503885225}
-  - component: {fileID: 957290264796575780}
-  - component: {fileID: 5586014437384665622}
-  - component: {fileID: 2365839719724374038}
-  - component: {fileID: 6403586959935130094}
-  - component: {fileID: 1884929689371088939}
   m_Layer: 10
-  m_Name: Player
+  m_Name: Player(Old)
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,8 +237,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _motor: {fileID: 6347703112388059557}
+  _animController: {fileID: 3977578414653168071}
   _stats: {fileID: 8137892244548921797}
-  _playerFacing: {fileID: 1884929689371088939}
+  _dash: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
 --- !u!114 &762103139718483297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,8 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMotor2D
   rb: {fileID: 4313767850351379256}
-  _moveSO: {fileID: 11400000, guid: 24f30c4e31e982344b17ed2b3b3f3a49, type: 2}
-  _stats: {fileID: 8137892244548921797}
+  config: {fileID: 11400000, guid: 24f30c4e31e982344b17ed2b3b3f3a49, type: 2}
   _dashAbility:
     _config: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
 --- !u!114 &1738574752484829038
@@ -291,13 +284,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBowController
   _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
+  _animController: {fileID: 3977578414653168071}
   _bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
   _muzzle: {fileID: 2980662243367807876}
   _motor: {fileID: 6347703112388059557}
   _ownerCollider: {fileID: 5599079654927792221}
   _poolManager: {fileID: 0}
-  _stats: {fileID: 8137892244548921797}
-  _playerFacing: {fileID: 1884929689371088939}
   spawnOffsetFromCenter: 0.35
 --- !u!61 &5599079654927792221
 BoxCollider2D:
@@ -357,10 +349,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a70ec0f9d536a245bec6c1651a16320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  _effectSourceController: {fileID: 4459608157227879889}
-  _playerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
-  _fillResourcesToMaximumOnAwake: 1
-  _preserveResourceRatiosWhenEffectsChange: 1
+  maxHP: 100
+  currentHP: 100
+  maxStamina: 100
+  currentStamina: 100
+  staminaRegenPerSec: 50
+  _playerdata: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
+--- !u!114 &1888605010783103947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebeab39438140414ab3e1a3dd2d5b7ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageReceiver
+  iFrameDuration: 0.35
+  hurtFlashTime: 0.12
+  knockbackMultiplier: 1
 --- !u!114 &5229613945364294266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,9 +407,9 @@ MonoBehaviour:
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
   _ability1:
-    _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
+    ability: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   _ability2:
-    _abilityDefinition: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
+    ability: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
 --- !u!114 &503972616382245057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,140 +479,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06a860f3d090e1444bd6fa027ebb6578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPicker
   _itemPickerSO: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
-  _myInventorySO: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
+  _myInventorySO: {fileID: 11400000, guid: 5b0459b12565c5f498a3b056f66bee0b, type: 2}
   _interactionPoint: {fileID: 2980662243367807876}
   _radius: 1.5
   _layerMask:
     serializedVersion: 2
     m_Bits: 131072
   _interactionUI: {fileID: 4443428452464939475, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
---- !u!114 &4459608157227879889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 884ee5fbb3d469243ba22c8b1ca54c27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectSourceController
-  _baseEffects: {fileID: 11400000, guid: 9378f3c5514c673428f82ea964b831ae, type: 2}
---- !u!114 &2795140679132295632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0d3b4ed7f0e1f941a680c3fe8508310, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectPipelineTester
-  _effectSourceController: {fileID: 4459608157227879889}
-  _playerStats: {fileID: 8137892244548921797}
-  _blueGemEffect: {fileID: 11400000, guid: 97818c776b2074840ba712a68cecf0a4, type: 2}
-  _redGemEffect: {fileID: 11400000, guid: 81f5ab2735ec17542bfd5d2a12a6ccf4, type: 2}
-  _greenGemEffect: {fileID: 11400000, guid: 556e1ae9d38cde94bb76795fa046e179, type: 2}
-  _purpleGemEffect: {fileID: 11400000, guid: aea3fa23ca30c6e4797b4cc1e9c71f72, type: 2}
---- !u!114 &5512597181503885225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e2cfe41795205488976a030b89cf9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
-  _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
-  _initializeFromConfigOnAwake: 1
---- !u!114 &957290264796575780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9113600bb713c124790ba67a452e633b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatusController
-  _playerStats: {fileID: 8137892244548921797}
---- !u!114 &5586014437384665622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1e2c887e736ca4d860cdf440923229, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
-  _view: {fileID: 4736313697602286086}
-  _character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
-  _weapon: {fileID: 11400000, guid: ef8138cce2675194c9de1b4d5c8c6dfe, type: 2}
-  resumeEpsilon: 0.02
---- !u!114 &2365839719724374038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fe3fe114a1350d4cafbc01dca222a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationPresenter
-  _animationController: {fileID: 3977578414653168071}
-  _motor: {fileID: 6347703112388059557}
-  _bowController: {fileID: 1738574752484829038}
-  _damageReceiver: {fileID: 6403586959935130094}
-  _playerStats: {fileID: 8137892244548921797}
-  _playerFacing: {fileID: 1884929689371088939}
---- !u!114 &6403586959935130094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebeab39438140414ab3e1a3dd2d5b7ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageReceiver
-  iFrameDuration: 0.35
-  hurtFlashTime: 0.12
-  knockbackMultiplier: 1
-  _statusController: {fileID: 957290264796575780}
---- !u!114 &1884929689371088939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25e5f3ff7b64a3440911fa0143e74415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerFacing
-  _currentFacing: {x: 0, y: -1}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

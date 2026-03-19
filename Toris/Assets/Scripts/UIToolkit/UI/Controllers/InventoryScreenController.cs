@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.UIToolkit;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     public class InventoryScreenController : MonoBehaviour
     {

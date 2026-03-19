@@ -1077,6 +1077,51 @@ PolygonCollider2D:
       - {x: -0.28125, y: -0.078125}
       - {x: 0.03125, y: -0.234375}
   m_UseDelaunayMesh: 0
+--- !u!1 &213805310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 213805312}
+  - component: {fileID: 213805311}
+  m_Layer: 0
+  m_Name: ItemTestDebuger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &213805311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213805310}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6228e662973940a49bab436e02d98301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  CursedDaggerBlueprint: {fileID: 11400000, guid: f01661975570f2f47b5579af1aa6bf67, type: 2}
+--- !u!4 &213805312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213805310}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.25554, y: 4.58233, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &226433776
 GameObject:
   m_ObjectHideFlags: 0
@@ -40420,10 +40465,18 @@ PrefabInstance:
       propertyPath: _myInventorySO
       value: 
       objectReference: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
+    - target: {fileID: 5229613945364294266, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: '_disableOnDeath.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2014174126}
     - target: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7014179871662737768, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: groundMap
+      value: 
+      objectReference: {fileID: 1689050741}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -41895,7 +41948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 277658a3e3df5024287479724dcd2a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
+  _itemData: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
   _quantity: 1
 --- !u!58 &1681090514
 CircleCollider2D:
@@ -61122,6 +61175,17 @@ PolygonCollider2D:
       - {x: 0, y: -0.17463756}
       - {x: 0.3125, y: 0.012862444}
   m_UseDelaunayMesh: 0
+--- !u!114 &2014174126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7577956846138625648, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 1010793782}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &2016645130
 GameObject:
   m_ObjectHideFlags: 0
@@ -61453,3 +61517,4 @@ SceneRoots:
   - {fileID: 1681090516}
   - {fileID: 5222840374706630204}
   - {fileID: 87562002}
+  - {fileID: 213805312}

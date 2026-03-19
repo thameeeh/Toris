@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -13,7 +14,7 @@ namespace OutlandHaven.UIToolkit
         private VisualTreeAsset _salvageTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
-        private InventoryContainerSO _shopContainer;
+        private InventoryManager _shopContainer;
         private CraftingManagerSO _craftingManager;
         private SalvageManagerSO _salvageManager;
 
@@ -24,7 +25,7 @@ namespace OutlandHaven.UIToolkit
         private ForgeSubView _forgeSubView;
         private SalvageSubView _salvageSubView;
 
-        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, InventoryContainerSO shopContainer, CraftingManagerSO craftingManager, SalvageManagerSO salvageManager)
+        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, CraftingManagerSO craftingManager, SalvageManagerSO salvageManager)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
@@ -33,7 +34,6 @@ namespace OutlandHaven.UIToolkit
             _salvageTemplate = salvageTemplate;
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
-            _shopContainer = shopContainer;
             _craftingManager = craftingManager;
             _salvageManager = salvageManager;
         }
@@ -56,7 +56,7 @@ namespace OutlandHaven.UIToolkit
         public override void Setup(object payload) 
         {
             // Payload could be a specific NPC's inventory
-            if (payload is InventoryContainerSO dynamicShopContainer)
+            if (payload is InventoryManager dynamicShopContainer)
             {
                 _shopContainer = dynamicShopContainer;
             }
@@ -79,7 +79,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     TemplateContainer shopInstance = _shopTemplate.Instantiate();
                     _middlePanel.Add(shopInstance);
-                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _shopContainer, _uiInventoryEvents, _gameSession);
+                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession);
                     _shopSubView.Initialize();
                 }
             }

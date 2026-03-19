@@ -7,7 +7,7 @@ This document outlines the philosophical direction and architectural adaptations
 Our current project architecture relies on a highly decoupled, data-driven foundation:
 - **Flyweight Items:** Static data resides in `InventoryItemSO`.
 - **Dynamic State:** Runtime mutability is achieved via `ItemInstance` holding a list of `ItemComponentState` generated from `ItemComponent` blueprints.
-- **Event-Driven Mutability:** Actions mutate state on data containers (like `InventoryContainerSO`), which emit events to update "dumb" UI views (MVP pattern).
+- **Event-Driven Mutability:** Actions mutate state on data containers (like `InventoryManager`), which emit events to update "dumb" UI views (MVP pattern).
 - **Modular Crafting:** Transformations are managed by `CraftingRecipeSO` and `CraftingManagerSO`.
 
 While our technical architecture is highly scalable and robust, our current *design implementation* leans toward additive progression and "shoplist" crafting. To maximize player engagement without exploding developmental scope, we must pivot toward **multiplicative progression**. By leveraging our existing `ItemComponent` architecture, we can introduce systemic synergies and psychological constraints that force consequential, engaging decisions.
@@ -50,7 +50,7 @@ To transform the inventory from a passive storage bin into an active mechanic th
 ### Path A: Evolving the Slot-Based System (Allocated Constraints)
 *Inspiration: Earthbound, LISA the Painful*
 
-Our current architecture uses an allocated slot system (`InventoryContainerSO` with a fixed capacity). We can refine this to create intense psychological friction.
+Our current architecture uses an allocated slot system (`InventoryManager` with a fixed capacity). We can refine this to create intense psychological friction.
 
 **What must change:**
 1. **Severe Constraints:** Hardcap the player's inventory to an intentionally small number (e.g., 15-20 slots total). Do not provide easy "bag upgrades."
@@ -60,7 +60,7 @@ Our current architecture uses an allocated slot system (`InventoryContainerSO` w
 **What is gained:**
 - Creates an immediate "hoarder's dilemma." Players will stop holding onto powerful consumables out of fear they "might need it later" because they *must* consume it now to pick up a plot-critical item or rare artifact.
 - Imposes an intense economic opportunity cost: leaving the dungeon to sell loot safely, or pressing on and risking death for higher rewards.
-- Requires very little architectural change to our existing `InventoryContainerSO`.
+- Requires very little architectural change to our existing `InventoryManager`.
 
 ### Path B: Pivoting to a Spatial Grid System (Spatial Constraints)
 *Inspiration: Moonlighter (Curses), Backpack Hero*
@@ -68,7 +68,7 @@ Our current architecture uses an allocated slot system (`InventoryContainerSO` w
 Alternatively, we can evolve the UI to treat the inventory as a geometric puzzle.
 
 **What must change:**
-1. **Grid Implementation:** The underlying `InventoryContainerSO` would need to change from a 1D array of `InventorySlot` to a 2D array or graph.
+1. **Grid Implementation:** The underlying `InventoryManager` would need to change from a 1D array of `InventorySlot` to a 2D array or graph.
 2. **Item Footprints:** `InventoryItemSO` would need to define spatial dimensions (e.g., 1x3, 2x2).
 3. **UI Toolkit Overhaul:** The `InventoryView` would need custom drag-and-drop collision logic to handle rotating and snapping items within the visual bounds.
 4. **Positional Synergies:** We would implement `ItemComponent` logic that evaluates adjacency (e.g., "Grants +5 attack if placed adjacent to an item with the `[Magic]` tag").
@@ -175,7 +175,7 @@ namespace Toris.Inventory.Components
         }
 
         // This method would be called by whatever system processes item consumption (e.g., a PlayerActionManager)
-        public void Consume(ItemInstance item, InventoryContainerSO playerInventory)
+        public void Consume(ItemInstance item, InventoryManager playerInventory)
         {
             float finalHealing = _baseHealingAmount;
             bool synergyFound = false;

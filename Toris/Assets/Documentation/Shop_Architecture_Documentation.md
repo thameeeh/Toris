@@ -1,6 +1,6 @@
 # Shop Architecture Documentation
 
-This document outlines the architecture for the shop system using the existing UI Toolkit infrastructure. The system is designed to seamlessly integrate with the current `InventoryContainerSO` and the Event-driven UI framework.
+This document outlines the architecture for the shop system using the existing UI Toolkit infrastructure. The system is designed to seamlessly integrate with the current `InventoryManager` and the Event-driven UI framework.
 
 ## 1. Data Layer
 
@@ -13,7 +13,7 @@ This document outlines the architecture for the shop system using the existing U
     *   **Buying**: Items bought from the shop also use `GoldValue`.
 
 ### `ShopContainerSO` (Shop Inventory)
-*   A ScriptableObject, utilizing `InventoryContainerSO`, holds a list of `InventorySlot`s representing the items available for purchase and their quantities.
+*   A ScriptableObject, utilizing `InventoryManager`, holds a list of `InventorySlot`s representing the items available for purchase and their quantities.
 *   The `AssociatedView` is set to `ScreenType.Smith` or similar vendor screens.
 
 ## 2. Event System
@@ -69,7 +69,7 @@ Instead of a dedicated, standalone screen, the Shop UI is a modular `VisualTreeA
 
 1. Player interacts with the Smith NPC (`WorldContainer` or specialized logic).
 2. NPC invokes `_uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, smithDataPayload)`.
-    *   *(The `smithDataPayload` contains references to the `InventoryContainerSO` representing the shop).*
+    *   *(The `smithDataPayload` contains references to the `InventoryManager` representing the shop).*
 3. `UIManager` receives the event.
 4. `UIManager` finds the registered `SmithView` (in `ScreenZone.Left`) and calls its `Setup(payload)` and `Show()` methods.
 5. The `SmithView` initializes the `ShopSubView` with the shop data.

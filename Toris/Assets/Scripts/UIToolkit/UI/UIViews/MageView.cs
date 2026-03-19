@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -11,7 +12,7 @@ namespace OutlandHaven.UIToolkit
         private VisualTreeAsset _shopTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
-        private InventoryContainerSO _shopContainer;
+        private InventoryManager _shopContainer;
         private ShopManagerSO _shopManager;
 
         private VisualElement _middlePanel;
@@ -19,14 +20,13 @@ namespace OutlandHaven.UIToolkit
         // SubViews
         private ShopSubView _shopSubView;
 
-        public MageView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, InventoryContainerSO shopContainer, ShopManagerSO shopManager)
+        public MageView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, ShopManagerSO shopManager)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _shopTemplate = shopTemplate;
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
-            _shopContainer = shopContainer;
             _shopManager = shopManager;
         }
 
@@ -42,7 +42,7 @@ namespace OutlandHaven.UIToolkit
         public override void Setup(object payload)
         {
             // Payload could be a specific NPC's inventory
-            if (payload is InventoryContainerSO dynamicShopContainer)
+            if (payload is InventoryManager dynamicShopContainer)
             {
                 _shopContainer = dynamicShopContainer;
             }
@@ -62,7 +62,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     TemplateContainer shopInstance = _shopTemplate.Instantiate();
                     _middlePanel.Add(shopInstance);
-                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _shopContainer, _uiInventoryEvents, _gameSession);
+                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession);
                     _shopSubView.Initialize();
                 }
             }

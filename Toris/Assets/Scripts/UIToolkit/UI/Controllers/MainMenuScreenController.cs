@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-namespace UIToolkit.UI
+namespace OutlandHaven.UIToolkit
 {
     public class MainMenuScreenController : MonoBehaviour
     {

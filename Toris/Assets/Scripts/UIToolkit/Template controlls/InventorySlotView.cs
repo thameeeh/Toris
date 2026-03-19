@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     public class InventorySlotView
     {

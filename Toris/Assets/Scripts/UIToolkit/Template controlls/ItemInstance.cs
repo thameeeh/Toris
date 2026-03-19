@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OutlandHaven.UIToolkit
+namespace OutlandHaven.Inventory
 {
     /// <summary>
     /// Wrapper class holding the runtime state of an item.
@@ -90,6 +90,20 @@ namespace OutlandHaven.UIToolkit
                 if (state.GetType() == type) return state;
             }
             return null;
+        }
+
+        public ItemInstance Clone()
+        {
+            ItemInstance clonedItem = new ItemInstance(this.BaseItem);
+            clonedItem.InstanceID = System.Guid.NewGuid().ToString();
+
+            clonedItem.States = new System.Collections.Generic.List<ItemComponentState>();
+            foreach (var state in this.States)
+            {
+                clonedItem.States.Add(state.Clone());
+            }
+
+            return clonedItem;
         }
     }
 }

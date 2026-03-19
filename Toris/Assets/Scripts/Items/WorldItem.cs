@@ -46,7 +46,7 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        public bool Interact(InventoryContainerSO targetContainer)
+        public bool Interact(InventoryManager targetContainer)
         {
             if (targetContainer == null) return false;
 

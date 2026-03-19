@@ -25,7 +25,7 @@ The process of picking up a world item is handled through a sequence of interact
 
 ### C. Adding to Data (`WorldItem.cs`)
 - `WorldItem` implements `IContainerInteractable`.
-- When `Interact(InventoryContainerSO)` is called, it attempts to insert its payload (`InventoryItemSO` and `_quantity`) into the passed container using `targetContainer.AddItem(...)`.
+- When `Interact(InventoryManager)` is called, it attempts to insert its payload (`InventoryItemSO` and `_quantity`) into the passed container using `targetContainer.AddItem(...)`.
 - If successful, the `WorldItem` destroys its GameObject.
 
 ## 2. Inventory Data Management
@@ -33,7 +33,7 @@ The process of picking up a world item is handled through a sequence of interact
 ### `InventoryItemSO`
 - Defines the static data of an item type (Name, Description, Icon, MaxStackSize, GoldValue).
 
-### `InventoryContainerSO`
+### `InventoryManager`
 - The core data model holding the state of an inventory (e.g., Player's Backpack, a Chest, a Shop's stock).
 - Contains a list of `InventorySlot` classes (which hold an `InventoryItemSO` reference and a count).
 - Contains the core logic for insertion (`AddItem`) and removal (`RemoveItem`).
@@ -42,7 +42,7 @@ The process of picking up a world item is handled through a sequence of interact
 
 ## 3. UI Reactivity (The Event System)
 
-The UI needs to know when to redraw itself, but it should not constantly poll the `InventoryContainerSO`.
+The UI needs to know when to redraw itself, but it should not constantly poll the `InventoryManager`.
 
 ### `UIInventoryEventsSO`
 This ScriptableObject acts as the central event bus specifically for inventory and economy-related UI updates.
@@ -60,9 +60,9 @@ This ScriptableObject acts as the central event bus specifically for inventory a
 2.  **Setup & Bind**: The `InventoryScreenController` instantiates the `PlayerInventoryView`. During the view's `Show()` or `Setup()` phase, it subscribes to `UIInventoryEventsSO.OnInventoryUpdated`.
 3.  **The Event Loop**:
     *   Player presses "E" near a sword (`ItemPickEventSO.OnItemPick` fired).
-    *   Sword added to `InventoryContainerSO`.
-    *   `InventoryContainerSO` fires `UIInventoryEventsSO.OnInventoryUpdated`.
-    *   `PlayerInventoryView` hears the event, clears its visual slots, and rebuilds them based on the new authoritative state of the `InventoryContainerSO`.
+    *   Sword added to `InventoryManager`.
+    *   `InventoryManager` fires `UIInventoryEventsSO.OnInventoryUpdated`.
+    *   `PlayerInventoryView` hears the event, clears its visual slots, and rebuilds them based on the new authoritative state of the `InventoryManager`.
 4.  **Cleanup**: When the UI is closed (`Hide()`), the view *must* unsubscribe from `OnInventoryUpdated` to prevent memory leaks and null reference errors when the UI is not active.
 
 ## Summary Diagram
@@ -74,7 +74,7 @@ This ScriptableObject acts as the central event bus specifically for inventory a
                         [ItemPicker.cs] --calls--> WorldItem.Interact(PlayerContainerSO)
                                                          |
                                                          v
-                                              [InventoryContainerSO.AddItem()]
+                                              [InventoryManager.AddItem()]
                                                          | (If successful, mutates data)
                                                          v
                                               fires [UIInventoryEventsSO.OnInventoryUpdated]

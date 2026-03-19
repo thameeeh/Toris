@@ -61,7 +61,7 @@ namespace OutlandHaven.UIToolkit
 
             // Count total available for slot 1 item
             int totalItem1 = 0;
-            foreach (var s in SessionData.PlayerInventory.Slots)
+            foreach (var s in SessionData.PlayerInventory.LiveSlots)
             {
                 if (!s.IsEmpty && s.HeldItem.IsStackableWith(new ItemInstance(item1Type)))
                     totalItem1 += s.Count;
@@ -69,7 +69,7 @@ namespace OutlandHaven.UIToolkit
 
             // Count total available for slot 2 item
             int totalItem2 = 0;
-            foreach (var s in SessionData.PlayerInventory.Slots)
+            foreach (var s in SessionData.PlayerInventory.LiveSlots)
             {
                 if (!s.IsEmpty && s.HeldItem.IsStackableWith(new ItemInstance(item2Type)))
                     totalItem2 += s.Count;

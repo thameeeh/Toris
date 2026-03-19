@@ -8,7 +8,7 @@ namespace OutlandHaven.UIToolkit
     public class ShopSubView : UIView
     {
         private VisualTreeAsset _slotTemplate;
-        private InventoryContainerSO _shopContainer;
+        private InventoryManager _shopContainer;
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
 
@@ -22,11 +22,10 @@ namespace OutlandHaven.UIToolkit
 
         private const int BULK_BUY_AMOUNT = 10;
 
-        public ShopSubView(VisualElement topElement, VisualTreeAsset slotTemplate, InventoryContainerSO shopContainer, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession)
+        public ShopSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession)
             : base(topElement)
         {
             _slotTemplate = slotTemplate;
-            _shopContainer = shopContainer;
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
         }
@@ -48,7 +47,7 @@ namespace OutlandHaven.UIToolkit
 
         public override void Setup(object payload = null)
         {
-            if (payload is InventoryContainerSO dynamicShopContainer)
+            if (payload is InventoryManager dynamicShopContainer)
             {
                 _shopContainer = dynamicShopContainer;
             }
@@ -95,13 +94,13 @@ namespace OutlandHaven.UIToolkit
 
             if (_shopContainer == null) return;
 
-            for (int i = 0; i < _shopContainer.Slots.Count; i++)
+            for (int i = 0; i < _shopContainer.LiveSlots.Count; i++)
             {
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
                 _shopGrid.Add(slotInstance);
 
                 var slotView = new InventorySlotView(slotInstance);
-                var slotData = _shopContainer.Slots[i];
+                var slotData = _shopContainer.LiveSlots[i];
 
                 slotView.Update(slotData);
                 _slotViews.Add(slotView);

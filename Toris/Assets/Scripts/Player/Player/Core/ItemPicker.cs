@@ -7,7 +7,8 @@ namespace OutlandHaven.Inventory
     public class ItemPicker : MonoBehaviour
     {
         [SerializeField] private ItemPickEventSO _itemPickerSO;
-        [SerializeField] private InventoryContainerSO _myInventorySO;
+        [Tooltip("The inventory this picker will send items to.")]
+        [SerializeField] private InventoryManager _myInventoryManager;
 
         [Header("Detection Settings")]
         [SerializeField] private Transform _interactionPoint;
@@ -19,15 +20,29 @@ namespace OutlandHaven.Inventory
 
         private IContainerInteractable _currentSelection;
 
+        private void Awake()
+        {
+            // Failsafe: If the designer forgot to assign it in the Inspector, try to find it automatically.
+            if (_myInventoryManager == null)
+            {
+                _myInventoryManager = GetComponentInParent<InventoryManager>();
+            }
+
+            if (_myInventoryManager == null)
+            {
+                Debug.LogError("ItemPicker cannot find an InventoryManager on the Player!");
+            }
+        }
+
         private void OnValidate()
         {
             if (_itemPickerSO == null)
             {
                 Debug.LogError($"<b><color=red>[ItemPicker]</color></b> is missing ItemPickEventSO on GameObject: <b>{name}<b>", this);
             }
-            if (_myInventorySO == null)
+            if (_myInventoryManager == null)
             {
-                Debug.LogError($"<b><color=red>[InventorySO]</color></b> is missing InventoryContainerSO on GameObject: <b>{name}<b>", this);
+                Debug.LogWarning($"<b><color=yellow>[InventoryManager]</color></b> is missing InventoryManager on GameObject: <b>{name}<b>", this);
             }
             if (_interactionUI == null)
             {
@@ -68,7 +83,7 @@ namespace OutlandHaven.Inventory
         {
             if (_currentSelection == null) return;
 
-            bool picked = _currentSelection.Interact(_myInventorySO);
+            bool picked = _currentSelection.Interact(_myInventoryManager);
 
             if (picked)
             {

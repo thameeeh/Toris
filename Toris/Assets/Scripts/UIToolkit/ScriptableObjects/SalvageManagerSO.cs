@@ -44,7 +44,7 @@ namespace OutlandHaven.UIToolkit
             if (recipe == null) return false;
 
             int totalItems = 0;
-            foreach (var slot in SessionData.PlayerInventory.Slots)
+            foreach (var slot in SessionData.PlayerInventory.LiveSlots)
             {
                 if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(new ItemInstance(itemType)))
                     totalItems += slot.Count;

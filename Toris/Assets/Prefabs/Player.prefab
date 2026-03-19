@@ -178,6 +178,8 @@ GameObject:
   - component: {fileID: 2365839719724374038}
   - component: {fileID: 6403586959935130094}
   - component: {fileID: 1884929689371088939}
+  - component: {fileID: 1016723389627658535}
+  - component: {fileID: 1606071663587447615}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -476,7 +478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPicker
   _itemPickerSO: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
-  _myInventorySO: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
+  _myInventoryManager: {fileID: 0}
   _interactionPoint: {fileID: 2980662243367807876}
   _radius: 1.5
   _layerMask:
@@ -604,6 +606,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFacing
   _currentFacing: {x: 0, y: -1}
+--- !u!114 &1016723389627658535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
+--- !u!114 &1606071663587447615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00bff43de5702e147b449188693bbaef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentDebugger
+  _equipmentController: {fileID: 1016723389627658535}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

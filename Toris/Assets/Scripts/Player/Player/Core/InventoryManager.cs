@@ -79,11 +79,10 @@ namespace OutlandHaven.Inventory
                         int spaceInStack = itemInstance.BaseItem.MaxStackSize;
                         int amountToAdd = Mathf.Min(spaceInStack, quantity);
 
-                        // Since you are splitting the stack, this is where you MUST deep-clone
-                        // the ItemInstance so the new stack doesn't share memory with the original!
-                        // slot.SetItem(itemInstance.Clone(), amountToAdd); <-- Future step
+                        // CRITICAL FIX: Clone the item so the new slot gets its own memory reference
+                        ItemInstance newStack = itemInstance.Clone();
 
-                        slot.SetItem(itemInstance, amountToAdd);
+                        slot.SetItem(newStack, amountToAdd);
                         quantity -= amountToAdd;
 
                         if (quantity <= 0) break;

@@ -23,7 +23,7 @@ namespace OutlandHaven.UIToolkit
         [Header("Data References")]
         public PlayerDataSO PlayerData;
         [System.NonSerialized]
-        public OutlandHaven.Inventory.InventoryManager PlayerInventory;
+        public InventoryManager PlayerInventory;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;

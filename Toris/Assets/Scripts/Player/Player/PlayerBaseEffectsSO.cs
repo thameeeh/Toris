@@ -20,4 +20,8 @@ public class PlayerBaseEffectsSO : ScriptableObject
     public bool isPoisonImmune = false;
     public bool isBurningImmune = false;
     public bool isBleedingImmune = false;
+
+    [Header("Stats")]
+    public float strengthBonus = 0f;
+    public float defenceBonus = 0f;
 }

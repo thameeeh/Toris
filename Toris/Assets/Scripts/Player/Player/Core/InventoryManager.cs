@@ -30,7 +30,7 @@ namespace OutlandHaven.Inventory
 
         private void OnEnable()
         {
-            if (GlobalSession != null)
+            if (GlobalSession != null && ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory)
             {
                 GlobalSession.PlayerInventory = this;
             }
@@ -39,9 +39,12 @@ namespace OutlandHaven.Inventory
         private void OnDisable()
         {
             // Crucial: Prevent memory leaks or dangling references when the scene unloads
-            if (GlobalSession != null && GlobalSession.PlayerInventory == this)
+            if (GlobalSession != null && ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory)
             {
-                GlobalSession.PlayerInventory = null;
+                if (GlobalSession.PlayerInventory == this)
+                {
+                    GlobalSession.PlayerInventory = null;
+                }
             }
         }
 

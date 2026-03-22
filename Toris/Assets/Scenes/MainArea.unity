@@ -1106,7 +1106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6228e662973940a49bab436e02d98301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  CursedDaggerBlueprint: {fileID: 11400000, guid: f01661975570f2f47b5579af1aa6bf67, type: 2}
+  CursedDaggerBlueprint: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
 --- !u!4 &213805312
 Transform:
   m_ObjectHideFlags: 0
@@ -39130,6 +39130,73 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &475817945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 475817947}
+  - component: {fileID: 475817946}
+  - component: {fileID: 475817948}
+  m_Layer: 0
+  m_Name: InventoryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &475817946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475817945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
+  ContainerBlueprint: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
+  LiveSlots: []
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  references:
+    version: 2
+    RefIds: []
+--- !u!4 &475817947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475817945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.85271, y: 3.08239, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &475817948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475817945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ace724ba5c56b8449f4783ad48e38fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentFromInventoryTester
+  _inventory: {fileID: 475817946}
+  _equipment: {fileID: 2014174152}
+  _testSlotIndex: 0
 --- !u!1 &534092287
 GameObject:
   m_ObjectHideFlags: 0
@@ -40457,6 +40524,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _interactionUI
       value: 
       objectReference: {fileID: 845357115}
@@ -40483,9 +40554,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1049202497}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174150}
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &1010793783 stripped
 Transform:
@@ -42056,7 +42124,7 @@ Transform:
   m_GameObject: {fileID: 1681090512}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30, y: 3.2000003, z: 0}
+  m_LocalPosition: {x: 22.67, y: -7.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61188,25 +61256,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
---- !u!114 &2014174150
+--- !u!114 &2014174152 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 1010793782}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049202481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
-  ContainerBlueprint: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
-  LiveSlots: []
-  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
-  GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
-  references:
-    version: 2
-    RefIds: []
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
 --- !u!1 &2016645130
 GameObject:
   m_ObjectHideFlags: 0
@@ -61542,3 +61602,4 @@ SceneRoots:
   - {fileID: 5222840374706630204}
   - {fileID: 87562002}
   - {fileID: 213805312}
+  - {fileID: 475817947}

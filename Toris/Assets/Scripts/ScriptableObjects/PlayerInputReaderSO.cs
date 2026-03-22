@@ -10,6 +10,20 @@ public class PlayerInputReaderSO : ScriptableObject
     public Action OnShootReleased;
     public Action OnDashPressed;
     public Action OnAbility1Pressed;
+
+
+    /* OnInteractPressed Summary
+     * It listens Interact Player Action
+     * 
+     *  USES
+     *  * NPC to know when player is in range and interacted 'E'
+     *  Script
+     *      NPCInteraction
+     *  
+     *  * Player to interact with IInteractable objects
+     *  Script: 
+     *      PlayerInteractor
+    */
     public Action OnInteractPressed;
 
     public Action OnAbility2Started;

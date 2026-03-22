@@ -94,10 +94,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
     }
     public void OnCrouch(InputAction.CallbackContext context) { /* Handle Crouch */ }
-    public void OnInteract(InputAction.CallbackContext context) 
+    public void OnInteract(InputAction.CallbackContext context) // Key 'E'
     {
         if (context.started)
+        {
             _inputReader.OnInteractPressed?.Invoke();
+        }
         if (context.started)
             _itemPicker.OnItemPick?.Invoke();
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using OutlandHaven.Inventory;
+using OutlandHaven.Player.Equipment;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -24,6 +25,8 @@ namespace OutlandHaven.UIToolkit
         public PlayerDataSO PlayerData;
         [System.NonSerialized]
         public InventoryManager PlayerInventory;
+        [System.NonSerialized]
+        public EquipmentManager PlayerEquipment;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;

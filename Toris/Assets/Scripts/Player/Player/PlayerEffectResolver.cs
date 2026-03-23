@@ -27,12 +27,6 @@ public static class PlayerEffectResolver
         bool burningImmunity = resolvedEffects.isBurningImmune;
         bool bleedingImmunity = resolvedEffects.isBleedingImmune;
 
-        float strengthBonusAdditive = 0f;
-        float strengthBonusMultiplicative = 1f;
-
-        float defenceBonusAdditive = 0f;
-        float defenceBonusMultiplicative = 1f;
-
         if (modifiers != null)
         {
             for (int i = 0; i < modifiers.Count; i++)
@@ -80,14 +74,6 @@ public static class PlayerEffectResolver
                     case PlayerEffectType.BleedingImmunity:
                         ApplyBooleanModifier(modifier, ref bleedingImmunity);
                         break;
-
-                    case PlayerEffectType.StrengthBonus:
-                        ApplyNumericModifier(modifier, ref strengthBonusAdditive, ref strengthBonusMultiplicative);
-                        break;
-
-                    case PlayerEffectType.DefenceBonus:
-                        ApplyNumericModifier(modifier, ref defenceBonusAdditive, ref defenceBonusMultiplicative);
-                        break;
                 }
             }
         }
@@ -104,9 +90,6 @@ public static class PlayerEffectResolver
         resolvedEffects.isPoisonImmune = poisonImmunity;
         resolvedEffects.isBurningImmune = burningImmunity;
         resolvedEffects.isBleedingImmune = bleedingImmunity;
-
-        resolvedEffects.strengthBonus = (resolvedEffects.strengthBonus + strengthBonusAdditive) * strengthBonusMultiplicative;
-        resolvedEffects.defenceBonus = (resolvedEffects.defenceBonus + defenceBonusAdditive) * defenceBonusMultiplicative;
 
         return resolvedEffects;
     }
@@ -130,10 +113,7 @@ public static class PlayerEffectResolver
 
             isPoisonImmune = baseEffects.isPoisonImmune,
             isBurningImmune = baseEffects.isBurningImmune,
-            isBleedingImmune = baseEffects.isBleedingImmune,
-
-            strengthBonus = baseEffects.strengthBonus,
-            defenceBonus = baseEffects.defenceBonus
+            isBleedingImmune = baseEffects.isBleedingImmune
         };
     }
 

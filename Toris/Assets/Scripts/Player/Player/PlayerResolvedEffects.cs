@@ -17,9 +17,6 @@ public struct PlayerResolvedEffects
     public bool isBurningImmune;
     public bool isBleedingImmune;
 
-    public float strengthBonus;
-    public float defenceBonus;
-
     public static PlayerResolvedEffects CreateDefault()
     {
         return new PlayerResolvedEffects
@@ -36,10 +33,7 @@ public struct PlayerResolvedEffects
 
             isPoisonImmune = false,
             isBurningImmune = false,
-            isBleedingImmune = false,
-
-            strengthBonus = 0f,
-            defenceBonus = 0f
+            isBleedingImmune = false
         };
     }
 }

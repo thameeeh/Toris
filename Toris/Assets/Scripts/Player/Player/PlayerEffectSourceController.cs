@@ -7,7 +7,7 @@ public class PlayerEffectSourceController : MonoBehaviour
     [Header("Base Effects")]
     [SerializeField] private PlayerBaseEffectsSO _baseEffects;
 
-    private readonly Dictionary<string, PlayerEffectSourceRuntime> _activeSources = new();
+    private readonly Dictionary<string, IPlayerEffectSource> _activeSources = new();
     private readonly List<PlayerEffectModifier> _cachedModifiers = new();
 
     private PlayerResolvedEffects _resolvedEffects;
@@ -30,6 +30,18 @@ public class PlayerEffectSourceController : MonoBehaviour
         }
     }
 
+    public void SetSource(IPlayerEffectSource source)
+    {
+        if (source == null || string.IsNullOrWhiteSpace(source.SourceKey))
+        {
+            Debug.LogWarning("[PlayerEffectSourceController] Tried to set a null or invalid runtime source.", this);
+            return;
+        }
+
+        _activeSources[source.SourceKey] = source;
+        RebuildResolvedEffects();
+    }
+
     public void SetSource(string sourceKey, PlayerEffectDefinitionSO effectDefinition)
     {
         if (string.IsNullOrWhiteSpace(sourceKey))
@@ -44,13 +56,14 @@ public class PlayerEffectSourceController : MonoBehaviour
             return;
         }
 
-        if (_activeSources.TryGetValue(sourceKey, out PlayerEffectSourceRuntime existingSource))
+        if (_activeSources.TryGetValue(sourceKey, out IPlayerEffectSource existingSource) &&
+            existingSource is StaticPlayerEffectSource staticSource)
         {
-            existingSource.SetEffectDefinition(effectDefinition);
+            staticSource.SetEffectDefinition(effectDefinition);
         }
         else
         {
-            _activeSources[sourceKey] = new PlayerEffectSourceRuntime(sourceKey, effectDefinition);
+            _activeSources[sourceKey] = new StaticPlayerEffectSource(sourceKey, effectDefinition);
         }
 
         RebuildResolvedEffects();
@@ -86,9 +99,13 @@ public class PlayerEffectSourceController : MonoBehaviour
         if (string.IsNullOrWhiteSpace(sourceKey))
             return null;
 
-        return _activeSources.TryGetValue(sourceKey, out PlayerEffectSourceRuntime sourceRuntime)
-            ? sourceRuntime.EffectDefinition
-            : null;
+        if (_activeSources.TryGetValue(sourceKey, out IPlayerEffectSource source) &&
+            source is StaticPlayerEffectSource staticSource)
+        {
+            return staticSource.EffectDefinition;
+        }
+
+        return null;
     }
 
     public void RebuildResolvedEffects()
@@ -102,7 +119,7 @@ public class PlayerEffectSourceController : MonoBehaviour
     {
         _cachedModifiers.Clear();
 
-        foreach (KeyValuePair<string, PlayerEffectSourceRuntime> pair in _activeSources)
+        foreach (KeyValuePair<string, IPlayerEffectSource> pair in _activeSources)
         {
             pair.Value.CollectModifiers(_cachedModifiers);
         }

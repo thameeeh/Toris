@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class PlayerEffectSourceRuntime
+public sealed class StaticPlayerEffectSource : IPlayerEffectSource
 {
     private readonly string _sourceKey;
     private PlayerEffectDefinitionSO _effectDefinition;
@@ -8,7 +8,7 @@ public class PlayerEffectSourceRuntime
     public string SourceKey => _sourceKey;
     public PlayerEffectDefinitionSO EffectDefinition => _effectDefinition;
 
-    public PlayerEffectSourceRuntime(string sourceKey, PlayerEffectDefinitionSO effectDefinition)
+    public StaticPlayerEffectSource(string sourceKey, PlayerEffectDefinitionSO effectDefinition)
     {
         _sourceKey = sourceKey;
         _effectDefinition = effectDefinition;

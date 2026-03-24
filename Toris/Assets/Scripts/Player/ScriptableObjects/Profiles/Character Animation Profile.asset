@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42fd1bccffed33408c610ed047561b7, type: 3}
   m_Name: Character Animation Profile
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimSO
-  dirMode: 1
   baseLayer: 0
   locomotionIdleSuffix: Idle
-  locomotionWalkSuffix: Run
+  locomotionWalkSuffix: Walk
   actionMap:
   - actionKey: Shoot
     defaultSuffix: Shoot

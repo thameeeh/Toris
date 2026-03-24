@@ -13,6 +13,7 @@ namespace OutlandHaven.UIToolkit
         private VisualElement _inputSlotContainer;
         private InventorySlotView _inputSlotView;
         private InventorySlot _currentSlotData;
+        private InventorySlot _cachedSourceSlot; // Cache the source slot for validation
 
         private TextField _goldYieldField;
         private VisualElement _itemYieldContainer;
@@ -45,8 +46,9 @@ namespace OutlandHaven.UIToolkit
             if (_inputSlotContainer != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.userData = "salvage-input"; // Set proxy ID
                 _inputSlotContainer.Add(instance);
-                _inputSlotView = new InventorySlotView(instance);
+                _inputSlotView = new InventorySlotView(instance, null, _uiInventoryEvents);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -61,7 +63,7 @@ namespace OutlandHaven.UIToolkit
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 _itemYieldContainer.Add(instance);
-                _itemYieldView = new InventorySlotView(instance);
+                _itemYieldView = new InventorySlotView(instance, null, _uiInventoryEvents);
             }
         }
 
@@ -77,6 +79,7 @@ namespace OutlandHaven.UIToolkit
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked += HandleItemClicked;
+                _uiInventoryEvents.OnRequestSelectForProcessing += HandleProxyDrop;
                 _eventsBound = true;
             }
 
@@ -90,11 +93,29 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+                _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }
 
             _btnGetGold?.UnregisterCallback<ClickEvent>(OnBtnGetGoldClicked);
             _btnGetItem?.UnregisterCallback<ClickEvent>(OnBtnGetItemClicked);
+        }
+
+        private void HandleProxyDrop(InventorySlot sourceSlot, string slotID)
+        {
+            if (slotID == "salvage-input")
+            {
+                if (sourceSlot == null || sourceSlot.IsEmpty) return;
+
+                InventorySlot proxySlot = new InventorySlot();
+                proxySlot.SetItem(new ItemInstance(sourceSlot.HeldItem.BaseItem), sourceSlot.Count); // Full stack
+
+                _currentSlotData = proxySlot;
+                _cachedSourceSlot = sourceSlot;
+
+                _inputSlotView?.Update(proxySlot);
+                UpdateYieldVisuals();
+            }
         }
 
         private void HandleItemClicked(InventorySlot slot)
@@ -106,6 +127,7 @@ namespace OutlandHaven.UIToolkit
             proxySlot.SetItem(new ItemInstance(slot.HeldItem.BaseItem), 1);
 
             _currentSlotData = proxySlot;
+            _cachedSourceSlot = slot;
 
             // To display correctly in the visual slot view which might expect an InventorySlot
             _inputSlotView?.Update(proxySlot);
@@ -116,6 +138,7 @@ namespace OutlandHaven.UIToolkit
         private void ClearInputSlot()
         {
             _currentSlotData = null;
+            _cachedSourceSlot = null;
             _inputSlotView?.Update(null);
             UpdateYieldVisuals();
         }
@@ -168,18 +191,18 @@ namespace OutlandHaven.UIToolkit
 
         private void OnBtnGetGoldClicked(ClickEvent evt)
         {
-            if (_currentSlotData != null && !_currentSlotData.IsEmpty)
+            if (_currentSlotData != null && !_currentSlotData.IsEmpty && _cachedSourceSlot != null)
             {
-                _uiInventoryEvents?.OnRequestSalvage?.Invoke(_currentSlotData, SalvageType.Gold);
+                _uiInventoryEvents?.OnRequestSalvage?.Invoke(_cachedSourceSlot, SalvageType.Gold);
                 ClearInputSlot();
             }
         }
 
         private void OnBtnGetItemClicked(ClickEvent evt)
         {
-            if (_currentSlotData != null && !_currentSlotData.IsEmpty)
+            if (_currentSlotData != null && !_currentSlotData.IsEmpty && _cachedSourceSlot != null)
             {
-                _uiInventoryEvents?.OnRequestSalvage?.Invoke(_currentSlotData, SalvageType.Material);
+                _uiInventoryEvents?.OnRequestSalvage?.Invoke(_cachedSourceSlot, SalvageType.Material);
                 ClearInputSlot();
             }
         }
@@ -189,6 +212,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+                _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }
             base.Dispose();

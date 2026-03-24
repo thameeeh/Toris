@@ -40,7 +40,15 @@ namespace OutlandHaven.Inventory
 
             // Store the target slot and container in the VisualElement's userData
             // so we can resolve the drop target in OnPointerUp.
-            _root.userData = new SlotDropData { Slot = _slotData, Container = _owningContainer };
+            if (_root.userData is string proxySlotID)
+            {
+                // Preserve the proxySlotID if it exists on the root
+                _root.userData = proxySlotID;
+            }
+            else
+            {
+                _root.userData = new SlotDropData { Slot = _slotData, Container = _owningContainer };
+            }
 
             if (slotData == null || slotData.IsEmpty)
             {
@@ -106,16 +114,24 @@ namespace OutlandHaven.Inventory
                 VisualElement targetElement = _root.panel.Pick(evt.position);
 
                 // Assuming the drop target might be a nested element (like an icon or label) inside the root
-                // Traverse up to find the element containing our SlotDropData.
-                SlotDropData targetData = FindTargetDropData(targetElement);
+                // Traverse up to find the element containing our SlotDropData or a ProxySlotID.
+                object targetData = FindTargetDropData(targetElement);
 
-                if (targetData != null && targetData.Container != null && targetData.Slot != null)
+                if (targetData is SlotDropData targetSlotData)
                 {
-                    if (targetData.Slot != _slotData || targetData.Container != _owningContainer)
+                    if (targetSlotData.Container != null && targetSlotData.Slot != null)
                     {
-                        // Invoke the cross-container swap logic
-                        _uiInventoryEvents?.OnRequestMoveItem?.Invoke(_owningContainer, _slotData, targetData.Container, targetData.Slot);
+                        if (targetSlotData.Slot != _slotData || targetSlotData.Container != _owningContainer)
+                        {
+                            // Invoke the cross-container swap logic
+                            _uiInventoryEvents?.OnRequestMoveItem?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot);
+                        }
                     }
+                }
+                else if (targetData is string proxySlotID)
+                {
+                    // It's a proxy slot
+                    _uiInventoryEvents?.OnRequestSelectForProcessing?.Invoke(_slotData, proxySlotID);
                 }
             }
             else
@@ -128,13 +144,17 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        private SlotDropData FindTargetDropData(VisualElement element)
+        private object FindTargetDropData(VisualElement element)
         {
             while (element != null)
             {
                 if (element.userData is SlotDropData data)
                 {
                     return data;
+                }
+                else if (element.userData is string proxySlotID)
+                {
+                    return proxySlotID;
                 }
                 element = element.parent;
             }

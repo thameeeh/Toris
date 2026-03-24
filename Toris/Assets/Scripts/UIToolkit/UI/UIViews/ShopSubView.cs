@@ -99,7 +99,7 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
                 _shopGrid.Add(slotInstance);
 
-                var slotView = new InventorySlotView(slotInstance);
+                var slotView = new InventorySlotView(slotInstance, _shopContainer, _uiInventoryEvents);
                 var slotData = _shopContainer.LiveSlots[i];
 
                 slotView.Update(slotData);

@@ -38,4 +38,24 @@ public class PlayerAttackComputedStatsDebugger : MonoBehaviour
             $"FinalAttackDamage: {attackStats.FinalAttackDamage}"
         );
     }
+
+    [ContextMenu("Debug Upgrade Equipped Weapon")]
+    public void DebugUpgradeEquippedWeapon()
+    {
+        if (_equipment == null)
+            return;
+
+        ItemInstance weaponItem = _equipment.GetEquippedItem(EquipmentSlot.Weapon);
+        if (weaponItem == null)
+            return;
+
+        UpgradeableState upgradeState = weaponItem.GetState<UpgradeableState>();
+        if (upgradeState == null)
+            return;
+
+        upgradeState.CurrentLevel++;
+        weaponItem.NotifyStateChanged();
+
+        Debug.Log($"[PlayerAttackComputedStatsDebugger] Debug upgraded equipped weapon to level {upgradeState.CurrentLevel}");
+    }
 }

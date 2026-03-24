@@ -86,6 +86,7 @@ namespace OutlandHaven.UIToolkit
 
                 // Upgrade instance
                 upgradeState.CurrentLevel++;
+                slot.HeldItem.NotifyStateChanged(); // notification that item was upgraded and we need to update stats
 
 #if UNITY_EDITOR
                 Debug.Log($"Upgraded {slot.HeldItem.BaseItem.ItemName} to level {upgradeState.CurrentLevel} for {cost} gold.");

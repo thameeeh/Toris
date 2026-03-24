@@ -13,6 +13,8 @@ namespace OutlandHaven.Inventory
         public string InstanceID; // Mandatory for saving/loading individual items
         public InventoryItemSO BaseItem;
 
+        public event Action<ItemInstance> OnStateChanged; // for auto update of item stats
+
         // Holds the runtime data (e.g., DurabilityState, ConsumableState)
         [SerializeReference]
         public List<ItemComponentState> States = new List<ItemComponentState>();
@@ -21,6 +23,11 @@ namespace OutlandHaven.Inventory
         public ItemInstance()
         {
             InstanceID = Guid.NewGuid().ToString();
+        }
+
+        public void NotifyStateChanged()
+        {
+            OnStateChanged?.Invoke(this);
         }
 
         public ItemInstance(InventoryItemSO baseItem)

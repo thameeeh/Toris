@@ -4,8 +4,14 @@
         <ui:VisualElement name="container__player" style="flex-grow: 1; width: 100%; height: 100%; background-color: rgb(18, 18, 18); picking-mode: Position; flex-shrink: 0;">
             <ui:VisualElement name="" style="flex-grow: 0;">
                 <ui:Label text="Inventory" style="color: rgb(255, 255, 255); font-size: 40px;"/>
+                <ui:VisualElement name="PlayerEquipment__Panel" style="flex-grow: 1; flex-shrink: 0; background-color: rgb(32, 32, 32); min-height: auto; flex-direction: row; justify-content: center; align-items: center; background-image: url(&quot;project://database/Assets/UI%20Toolkit/BowGuy007.png?fileID=2800000&amp;guid=d2a0ea75174bdc740a7b12c0072b8de5&amp;type=3#BowGuy007&quot;);">
+                    <ui:VisualElement name="slot-head" class="slot"/>
+                    <ui:VisualElement name="slot-chest" class="slot"/>
+                    <ui:VisualElement name="slot-legs" class="slot"/>
+                    <ui:VisualElement name="slot-arms" class="slot"/>
+                    <ui:VisualElement name="slot-weapon" class="slot"/>
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="" style="flex-grow: 1; flex-shrink: 0; background-color: rgb(0, 184, 204); min-height: 70px;"/>
             <ui:VisualElement style="flex-grow: 0; margin-bottom: 0;">
                 <ui:ScrollView>
                     <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">

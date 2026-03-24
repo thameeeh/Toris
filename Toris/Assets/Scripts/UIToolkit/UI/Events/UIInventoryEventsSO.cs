@@ -22,5 +22,8 @@ namespace OutlandHaven.Inventory
 
         [Header("Drag and Drop Events")]
         public UnityAction<InventoryManager, InventorySlot, InventoryManager, InventorySlot> OnRequestMoveItem;
+
+        // Fired when an item is dropped onto a proxy visual slot (like Forge/Salvage)
+        public UnityAction<InventorySlot, string> OnRequestSelectForProcessing;
     }
 }

@@ -21,6 +21,9 @@ namespace OutlandHaven.UIToolkit
         private InventorySlot _currentSlot1Data;
         private InventorySlot _currentSlot2Data;
 
+        private InventorySlot _cachedSlot1;
+        private InventorySlot _cachedSlot2;
+
         private Button _btnForgeItems;
 
         private bool _eventsBound = false;
@@ -43,8 +46,9 @@ namespace OutlandHaven.UIToolkit
             if (_slot1Container != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.userData = "forge-slot-1";
                 _slot1Container.Add(instance);
-                _slot1View = new InventorySlotView(instance);
+                _slot1View = new InventorySlotView(instance, null, _uiInventoryEvents);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -58,8 +62,9 @@ namespace OutlandHaven.UIToolkit
             if (_slot2Container != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.userData = "forge-slot-2";
                 _slot2Container.Add(instance);
-                _slot2View = new InventorySlotView(instance);
+                _slot2View = new InventorySlotView(instance, null, _uiInventoryEvents);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -74,7 +79,7 @@ namespace OutlandHaven.UIToolkit
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 _resultSlotContainer.Add(instance);
-                _resultSlotView = new InventorySlotView(instance);
+                _resultSlotView = new InventorySlotView(instance, null, _uiInventoryEvents);
             }
         }
 
@@ -91,6 +96,7 @@ namespace OutlandHaven.UIToolkit
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked += HandleItemClicked;
+                _uiInventoryEvents.OnRequestSelectForProcessing += HandleProxyDrop;
                 _eventsBound = true;
             }
 
@@ -106,12 +112,39 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+                _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }
 
             if (_btnForgeItems != null)
             {
                 _btnForgeItems.UnregisterCallback<ClickEvent>(OnBtnForgeClicked);
+            }
+        }
+
+        private void HandleProxyDrop(InventorySlot sourceSlot, string slotID)
+        {
+            if (sourceSlot == null || sourceSlot.IsEmpty) return;
+
+            if (slotID == "forge-slot-1")
+            {
+                InventorySlot proxySlot = new InventorySlot();
+                proxySlot.SetItem(new ItemInstance(sourceSlot.HeldItem.BaseItem), sourceSlot.Count); // Full stack
+
+                _currentSlot1Data = proxySlot;
+                _cachedSlot1 = sourceSlot;
+                _slot1View?.Update(proxySlot);
+                UpdateResultVisual();
+            }
+            else if (slotID == "forge-slot-2")
+            {
+                InventorySlot proxySlot = new InventorySlot();
+                proxySlot.SetItem(new ItemInstance(sourceSlot.HeldItem.BaseItem), sourceSlot.Count); // Full stack
+
+                _currentSlot2Data = proxySlot;
+                _cachedSlot2 = sourceSlot;
+                _slot2View?.Update(proxySlot);
+                UpdateResultVisual();
             }
         }
 
@@ -125,11 +158,13 @@ namespace OutlandHaven.UIToolkit
             if (_currentSlot1Data == null)
             {
                 _currentSlot1Data = proxySlot;
+                _cachedSlot1 = slot;
                 _slot1View?.Update(proxySlot);
             }
             else if (_currentSlot2Data == null)
             {
                 _currentSlot2Data = proxySlot;
+                _cachedSlot2 = slot;
                 _slot2View?.Update(proxySlot);
             }
 
@@ -139,6 +174,7 @@ namespace OutlandHaven.UIToolkit
         private void ClearSlot1()
         {
             _currentSlot1Data = null;
+            _cachedSlot1 = null;
             _slot1View?.Update(null);
             UpdateResultVisual();
         }
@@ -146,6 +182,7 @@ namespace OutlandHaven.UIToolkit
         private void ClearSlot2()
         {
             _currentSlot2Data = null;
+            _cachedSlot2 = null;
             _slot2View?.Update(null);
             UpdateResultVisual();
         }
@@ -190,9 +227,9 @@ namespace OutlandHaven.UIToolkit
 
         private void OnBtnForgeClicked(ClickEvent evt)
         {
-            if (_currentSlot1Data != null && _currentSlot2Data != null)
+            if (_currentSlot1Data != null && _currentSlot2Data != null && _cachedSlot1 != null && _cachedSlot2 != null)
             {
-                _uiInventoryEvents?.OnRequestForge?.Invoke(_currentSlot1Data, _currentSlot2Data);
+                _uiInventoryEvents?.OnRequestForge?.Invoke(_cachedSlot1, _cachedSlot2);
                 ClearSlot1();
                 ClearSlot2();
             }
@@ -203,6 +240,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+                _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }
             base.Dispose();

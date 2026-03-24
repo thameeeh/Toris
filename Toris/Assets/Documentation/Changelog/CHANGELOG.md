@@ -7,7 +7,27 @@
 
 ---
 
-## [Current/Recent] - UI Toolkit Drag-and-Drop System
+## [Current/Recent] - Drag-and-Drop functionality for Shop, Salvage, and Forge SubViews
+This update implements drag-and-drop support for Shop, Salvage, and Forge UI subviews, ensuring consistency with the player inventory drag-and-drop system.
+
+### 1. Fixed ShopSubView Initialization
+* Updated `ShopSubView` to properly pass its `_shopContainer` and `_uiInventoryEvents` dependencies into the `InventorySlotView` constructor, enabling drag-and-drop functionality within the shop.
+
+### 2. Added `OnRequestSelectForProcessing` Event
+* Added `OnRequestSelectForProcessing` to `UIInventoryEventsSO` to handle drag-and-drop operations targeting proxy visual slots (like Salvage and Forge inputs) that do not have a backing `InventoryManager`.
+
+### 3. Updated `InventorySlotView` Drop Logic
+* Modified `InventorySlotView.OnPointerUp` to recognize proxy slots via string IDs stored in `VisualElement.userData`.
+* When an item is dropped onto a proxy slot, it now invokes `OnRequestSelectForProcessing` instead of attempting a cross-container move.
+
+### 4. Implemented Full Stack Drag-and-Drop in Salvage and Forge
+* Updated `SalvageSubView` and `ForgeSubView` to assign string proxy IDs to their visual input slots (`salvage-input`, `forge-slot-1`, `forge-slot-2`).
+* Subscribed both views to `OnRequestSelectForProcessing` to visually populate the proxy slots with the full stack count of the dragged item.
+* Cached the original source `InventorySlot` from the player's inventory when an item is dropped or clicked into a proxy slot. This ensures that when the salvage or forge operation is executed, the actual player inventory slot is validated and consumed, preventing potential exploits where an item could be moved or sold before crafting.
+
+---
+
+## [Previous] - UI Toolkit Drag-and-Drop System
 This update introduces a robust drag-and-drop mechanism for the inventory using Unity's UI Toolkit, complete with a drag threshold, a dedicated global overlay for dragging, and cross-container logic.
 
 ### 1. Updated Event Architecture

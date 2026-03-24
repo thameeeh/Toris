@@ -15,16 +15,26 @@ namespace OutlandHaven.Inventory
 
         // UI Containers
         private VisualElement _playerGrid;
+        private PlayerEquipmentView _equipmentView;
+        private InventoryManager _equipmentInventory;
 
         private UIInventoryEventsSO _uiInventoryEvents;
         private bool _eventsBound = false;
 
-        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents)
+        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, InventoryManager equipmentInventory = null)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;
             _uiInventoryEvents = uiInventoryEvents;
+            _equipmentInventory = equipmentInventory;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            _equipmentView = new PlayerEquipmentView(m_TopElement, _slotTemplate, _uiInventoryEvents);
+            _equipmentView.Initialize();
         }
 
         public override void Show()
@@ -35,6 +45,7 @@ namespace OutlandHaven.Inventory
                 _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
                 _eventsBound = true;
             }
+            _equipmentView?.Show();
         }
 
         public override void Hide()
@@ -45,6 +56,7 @@ namespace OutlandHaven.Inventory
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
                 _eventsBound = false;
             }
+            _equipmentView?.Hide();
         }
 
         protected override void SetVisualElements()
@@ -62,8 +74,8 @@ namespace OutlandHaven.Inventory
         {
             // Refresh Player Inventory (Always)
             RefreshGrid(_playerGrid, _gameSession.PlayerInventory); 
+            _equipmentView?.Setup(_equipmentInventory);
         }
-        
 
         private void RefreshGrid(VisualElement gridRoot, InventoryManager data)
         {
@@ -100,9 +112,14 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        void OnDispose()
+        public void Dispose()
         {
-            _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+            if (_eventsBound && _uiInventoryEvents != null)
+            {
+                _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+                _eventsBound = false;
+            }
+            _equipmentView?.Dispose();
         }
     }
 }

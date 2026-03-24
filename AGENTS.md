@@ -77,3 +77,4 @@ Follow strict PR title and description formatting based on the PR type:
 ## Documentation
 - All project markdown documentation is centralized in `Toris/Assets/Documentation/`.
 - Relevant detailed docs include `Inventory_Event_System_Documentation.md`, `UI_System_Documentation.md`, `General_Scripting_Conventions.md`, etc.
+- **MANDATORY**: On every new Pull Request or completed task, you MUST update the general project changelog located at `Toris/Assets/Documentation/Changelog/CHANGELOG.md`. Archive previous changes and add new ones at the top of the log. Also, update any other relevant documentation files to reflect your changes.

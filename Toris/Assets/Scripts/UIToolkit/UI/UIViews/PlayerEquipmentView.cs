@@ -103,7 +103,7 @@ namespace OutlandHaven.Inventory
             TemplateContainer slotInstance = _slotTemplate.Instantiate();
             containerRoot.Add(slotInstance);
 
-            var slotView = new InventorySlotView(slotInstance);
+            var slotView = new InventorySlotView(slotInstance, _equipmentInventory, _uiInventoryEvents);
             slotView.Update(slotData);
 
             // Hide amount text label for equipment slots if it's there
@@ -113,17 +113,7 @@ namespace OutlandHaven.Inventory
                 countLabel.style.display = DisplayStyle.None;
             }
 
-            var currentSlotData = slotData;
-            slotInstance.RegisterCallback<MouseUpEvent>(evt =>
-            {
-                if (evt.button == 0) // Left click
-                {
-                    if (currentSlotData != null && !currentSlotData.IsEmpty)
-                    {
-                        _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);
-                    }
-                }
-            });
+            // Click events are now handled natively inside InventorySlotView via PointerUpEvent
         }
 
         public void Dispose()

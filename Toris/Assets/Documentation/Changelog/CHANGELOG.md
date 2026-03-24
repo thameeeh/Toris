@@ -1,9 +1,14 @@
-# Changelog: Equipment Interaction Improvements
+# General Project Changelog
 
-## Overview
-This update implements click-to-equip and click-to-unequip functionality for the player's inventory, improving the usability of equipment management. Previously, clicking an item in the inventory would emit a UI event but would not physically move the item to its target equipment slot. The `PlayerEquipmentController` has now been updated to respond to these interaction events.
+**Rules:**
+* Archive previous changes and add new ones at the top to continue the log.
+* Shortly describe what was done.
+* Enumerate or mark different changes; if changes are too big, divide them into smaller ones.
 
-## Changes
+---
+
+## [Current/Recent] - Equipment Click Interactions
+This update implements click-to-equip and click-to-unequip functionality for the player's inventory, improving the usability of equipment management.
 
 ### 1. GameSessionSO Dependency Added
 * Added a serialized reference to `GameSessionSO` (`_globalSession`) inside `PlayerEquipmentController`.

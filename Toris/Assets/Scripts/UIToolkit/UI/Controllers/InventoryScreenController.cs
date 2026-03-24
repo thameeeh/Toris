@@ -13,6 +13,10 @@ namespace OutlandHaven.Inventory
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
 
+        [Header("Equipment")]
+        [Tooltip("The InventoryManager configured to act as the equipment container (e.g. 5 slots).")]
+        [SerializeField] private InventoryManager _equipmentInventory;
+
         private PlayerInventoryView _view;
         private UIManager _uiManager;
 
@@ -34,7 +38,7 @@ namespace OutlandHaven.Inventory
         {
             TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
 
-            _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents);
+            _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents, _equipmentInventory);
             _view.Initialize();
 
             // Register to the RIGHT zone

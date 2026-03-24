@@ -53,20 +53,26 @@ Game logic for specific systems (Shops, Crafting, Salvaging) is decoupled into d
 
 The equipment system integrates the player's inventory directly with their stats via a dedicated controller and effect bridge.
 
-* **InventoryManager** (MonoBehaviour) -[acts as]-> **Equipment Container**
-  * An `InventoryManager` is configured specifically to hold equipment (e.g., 5 slots).
-* **PlayerEquipmentController** -[reads]-> **InventoryManager**
-  * The controller reads the equipment container, mapping hardcoded inventory indices to `EquipmentSlot` enums (0=Head, 1=Chest, 2=Legs, 3=Arms, 4=Weapon).
-* **PlayerEquipmentController** -[invokes]-> `OnEquippedItemChanged`, `OnItemEquipped`, `OnItemUnequipped`
-  * Emits events when the equipment slots change based on `UIInventoryEventsSO.OnInventoryUpdated`.
-* **EquipmentEffectBridge** -[listens to]-> `OnEquippedItemChanged`
-  * The logic layer that listens for equipment changes from the `PlayerEquipmentController`.
-* **EquipmentEffectBridge** -[injects]-> **PlayerEffectSourceController**
+**Dependency Chain:**
+**InventoryManager** -> **PlayerEquipmentController** -> **EquipmentEffectBridge** -> **PlayerEffectSourceController** -> **PlayerEffectResolver**
+
+* **InventoryManager** (MonoBehaviour) 
+  * Configured specifically to hold equipment (e.g., 5 slots). Acts as the **Equipment Container**.
+* **PlayerEquipmentController** 
+  * Reads the `InventoryManager`, mapping hardcoded inventory indices to `EquipmentSlot` enums (0=Head, 1=Chest, 2=Legs, 3=Arms, 4=Weapon).
+  * Listens to `UIInventoryEventsSO.OnInventoryUpdated` and invokes `OnEquippedItemChanged`, `OnItemEquipped`, `OnItemUnequipped` accordingly.
+* **EquipmentEffectBridge** 
+  * The logic layer that listens for equipment changes from `PlayerEquipmentController.OnEquippedItemChanged`.
   * Injects item stats (e.g., `StrengthBonus`, `DefenceBonus` from `EquipableComponent`) into the player's effect system via `EquippedItemEffectSource` and `PlayerEffectType`.
-* **PlayerEffectResolver** -[resolves]-> **PlayerResolvedEffects**
+* **PlayerEffectResolver** 
   * Applies the injected numeric modifiers to update the player's `PlayerResolvedEffects` struct.
-* **PlayerEquipmentView** -[renders]-> **VisualElement**
-  * Handles UI rendering by dynamically creating slot instances via `InventorySlotView` and mapping them to the configured `InventoryManager`. It embeds 5 specific equipment slots (`slot-head`, `slot-chest`, `slot-legs`, `slot-arms`, `slot-weapon`) into `PlayerEquipment__Panel`.
+
+**UI Rendering Chain:**
+**InventoryManager** -> **PlayerEquipmentView** -> **VisualElement**
+
+* **PlayerEquipmentView** 
+  * Handles UI rendering by dynamically creating slot instances via `InventorySlotView` and mapping them to the configured `InventoryManager`. 
+  * Embeds 5 specific equipment slots (`slot-head`, `slot-chest`, `slot-legs`, `slot-arms`, `slot-weapon`) into `PlayerEquipment__Panel`.
 
 ## Event Architecture
 

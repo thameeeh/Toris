@@ -103,6 +103,7 @@ namespace OutlandHaven.Inventory
                 {
                     if (evt.button == 0) // Left click
                     {
+                        Debug.Log(slotData.HeldItem.InstanceID + "Hello it is an item");
                         if (currentSlotData != null && !currentSlotData.IsEmpty)
                         {
                             _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);

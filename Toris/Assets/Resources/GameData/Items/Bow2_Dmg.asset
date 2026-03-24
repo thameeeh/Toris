@@ -14,10 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: 
   Description: 
-  Icon: {fileID: 2877471580529523173, guid: c15ba1dcb835b28498cc6239dc893a2e, type: 3}
+  Icon: {fileID: 21300000, guid: 9fe47cc5276ff7b40be82a66dce5be0f, type: 3}
   MaxStackSize: 99
   GoldValue: 10
-  Components: []
+  Components:
+  - rid: 7555928020692500484
+  - rid: 7555928020692500485
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 7555928020692500484
+      type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        TargetSlot: 4
+        StrengthBonus: 15
+        DefenceBonus: 0
+    - rid: 7555928020692500485
+      type: {class: OffensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        BaseDamage: 10
+        AttackSpeed: 1

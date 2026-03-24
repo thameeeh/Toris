@@ -103,9 +103,23 @@ namespace OutlandHaven.Inventory
                 {
                     if (evt.button == 0) // Left click
                     {
-                        if (currentSlotData != null && !currentSlotData.IsEmpty)
+                        _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);
+                    }
+                    else if (evt.button == 1)   // right click
+                    {
+                        if (currentSlotData.HeldItem?.BaseItem == null)
+                            return;
+
+                        bool isEquippable = currentSlotData.HeldItem.BaseItem.GetComponent<EquipableComponent>() != null;
+                        bool isConsumable = currentSlotData.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null;
+                        
+                        if (isEquippable)
                         {
-                            _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);
+                            _uiInventoryEvents?.OnRequestEquip?.Invoke(currentSlotData);
+                        }
+                        else if (isConsumable)
+                        {
+                            _uiInventoryEvents?.OnRequestUse?.Invoke(currentSlotData);
                         }
                     }
                 });

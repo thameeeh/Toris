@@ -114,13 +114,15 @@ namespace OutlandHaven.Inventory
             }
 
             var currentSlotData = slotData;
+            EquipmentSlot slotType = (EquipmentSlot)index;
+
             slotInstance.RegisterCallback<MouseUpEvent>(evt =>
             {
                 if (evt.button == 0) // Left click
                 {
                     if (currentSlotData != null && !currentSlotData.IsEmpty)
                     {
-                        _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);
+                        _uiInventoryEvents?.OnRequestUnequip?.Invoke(slotType);
                     }
                 }
             });

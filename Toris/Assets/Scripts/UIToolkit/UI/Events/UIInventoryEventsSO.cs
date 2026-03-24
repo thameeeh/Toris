@@ -19,5 +19,8 @@ namespace OutlandHaven.Inventory
         public UnityAction<InventorySlot> OnItemClicked;
         public UnityAction<InventorySlot, SalvageType> OnRequestSalvage;
         public UnityAction<InventorySlot, InventorySlot> OnRequestForge;
+
+        [Header("Drag and Drop Events")]
+        public UnityAction<InventoryManager, InventorySlot, InventoryManager, InventorySlot> OnRequestMoveItem;
     }
 }

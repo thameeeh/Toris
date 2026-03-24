@@ -7,7 +7,33 @@
 
 ---
 
-## [Current/Recent] - Equipment Click Interactions
+## [Current/Recent] - UI Toolkit Drag-and-Drop System
+This update introduces a robust drag-and-drop mechanism for the inventory using Unity's UI Toolkit, complete with a drag threshold, a dedicated global overlay for dragging, and cross-container logic.
+
+### 1. Updated Event Architecture
+* Added `OnRequestMoveItem` to `UIInventoryEventsSO` to pass cross-container item transfer requests (source/target managers and slots).
+
+### 2. Transitioned to Pointer Events
+* Updated `InventorySlotView` to listen to `PointerDownEvent`, `PointerMoveEvent`, and `PointerUpEvent` instead of basic clicks.
+* Implemented a 10px drag threshold. If the pointer moves less than this, it correctly falls back to firing the legacy `OnItemClicked` event.
+* Added `SlotDropData` to `VisualElement.userData` to uniquely identify drop targets during raycast picking (`panel.Pick`).
+
+### 3. Added Dedicated `UIDragManager`
+* Created a clean, singleton `UIDragManager` component to isolate pointer tracking and visual drag state from `UIManager`.
+* Programmatically injects a root `#Drag_Layer` and a `#Ghost_Icon` at runtime.
+* Ensures the ghost icon has `picking-mode: ignore` so it does not block the drop target raycast.
+
+### 4. Added Centralized `InventoryTransferManagerSO`
+* Created a centralized, event-driven manager to handle logic between two distinct `InventoryManager` instances.
+* Added logic to evaluate target slots for available space (partial stack merging), empty slots (direct moves), and mismatched items (item swaps).
+* Fires `OnInventoryUpdated` on success.
+
+### 5. Updated Views for Dependency Injection
+* `PlayerInventoryView` and `PlayerEquipmentView` now pass the required `InventoryManager` and `UIInventoryEventsSO` dependencies directly into the `InventorySlotView` constructor to enable self-contained logic mapping.
+
+---
+
+## [Previous] - Equipment Click Interactions
 This update implements click-to-equip and click-to-unequip functionality for the player's inventory, improving the usability of equipment management.
 
 ### 1. GameSessionSO Dependency Added

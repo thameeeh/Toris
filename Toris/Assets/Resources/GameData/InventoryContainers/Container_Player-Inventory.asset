@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Container_Player-Inventory
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryContainerSO
   SlotCount: 20
-  AssociatedView: 0
+  AssociatedView: 2

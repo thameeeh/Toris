@@ -40500,14 +40500,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _ability1._abilityDefinition
-      value: 
-      objectReference: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
-    - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _ability2._abilityDefinition
-      value: 
-      objectReference: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.1000023
@@ -40549,25 +40541,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _interactionUI
       value: 
       objectReference: {fileID: 845357115}
     - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _myInventorySO
-      value: 
-      objectReference: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
-    - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _myInventoryManager
       value: 
       objectReference: {fileID: 475817946}
-    - target: {fileID: 5229613945364294266, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: '_disableOnDeath.Array.data[2]'
-      value: 
-      objectReference: {fileID: 2014174126}
     - target: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_Name
       value: Player
@@ -40576,31 +40556,14 @@ PrefabInstance:
       propertyPath: groundMap
       value: 
       objectReference: {fileID: 1689050741}
+    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _inventory
+      value: 
+      objectReference: {fileID: 475817946}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174175}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1049202497}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174176}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174177}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174178}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174200}
-    - targetCorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2014174199}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!4 &1010793783 stripped
 Transform:
@@ -40661,25 +40624,6 @@ Transform:
   - {fileID: 1988838650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1049202481 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-  m_PrefabInstance: {fileID: 1010793782}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1049202497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e2cfe41795205488976a030b89cf9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
-  _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
-  _initializeFromConfigOnAwake: 1
 --- !u!1 &1049271748
 GameObject:
   m_ObjectHideFlags: 0
@@ -61292,133 +61236,17 @@ PolygonCollider2D:
       - {x: 0, y: -0.17463756}
       - {x: 0.3125, y: 0.012862444}
   m_UseDelaunayMesh: 0
---- !u!114 &2014174126 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7577956846138625648, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-  m_PrefabInstance: {fileID: 1010793782}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54fe369f0e9ad0a4ea176ffc35288601, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!114 &2014174152 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   m_PrefabInstance: {fileID: 1010793782}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
---- !u!114 &2014174154 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8137892244548921797, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-  m_PrefabInstance: {fileID: 1010793782}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a70ec0f9d536a245bec6c1651a16320, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
---- !u!114 &2014174155 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4459608157227879889, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-  m_PrefabInstance: {fileID: 1010793782}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 884ee5fbb3d469243ba22c8b1ca54c27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectSourceController
---- !u!114 &2014174175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7188469476c4b694c91a3b8cd4be06c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EquipmentEffectBridge
-  _equipment: {fileID: 2014174152}
-  _effectSourceController: {fileID: 2014174155}
---- !u!114 &2014174176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c73a22336d95594bbc74da3c59e6578, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerResolvedEffectsDebugger
-  _playerStats: {fileID: 2014174154}
---- !u!114 &2014174177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9978f845a01107540ad048063c504695, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponComputedStatsDebugger
-  _equipment: {fileID: 2014174152}
---- !u!114 &2014174178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 729aaf250e2d7d84daa8de2d88ebc7fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackComputedStatsDebugger
-  _equipment: {fileID: 2014174152}
-  _playerStats: {fileID: 2014174154}
---- !u!114 &2014174199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 085cc28dfe5416e428810e5927f1f5c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryActionControllerDebugger
-  _actions: {fileID: 2014174200}
-  _slotIndex: 0
-  _unequipSlot: 4
---- !u!114 &2014174200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049202481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c9caa956fe80c48b244b79f08f4d3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryActionController
-  _inventory: {fileID: 475817946}
-  _equipment: {fileID: 2014174152}
 --- !u!1 &2016645130
 GameObject:
   m_ObjectHideFlags: 0

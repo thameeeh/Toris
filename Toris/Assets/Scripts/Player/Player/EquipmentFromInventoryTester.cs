@@ -29,8 +29,25 @@ public class EquipmentFromInventoryTester : MonoBehaviour
             return;
         }
 
-        bool equipped = _equipment.Equip(slot.HeldItem);
-        Debug.Log($"[EquipmentFromInventoryTester] Equip from slot {_testSlotIndex}: {equipped}");
+        // 1. Get the EquipableComponent from the item's blueprint
+        EquipableComponent equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+
+        if (equipable == null)
+        {
+            Debug.LogWarning($"[EquipmentFromInventoryTester] Item in slot {_testSlotIndex} is not an equippable item.");
+            return;
+        }
+
+        // 2. Extract the target EquipmentSlot enum
+        EquipmentSlot targetSlot = equipable.TargetSlot;
+
+        // 3. Pass it into TryGetEquippedItem
+        bool equipped = _equipment.TryGetEquippedItem(targetSlot, out ItemInstance currentlyEquippedItem);
+
+        // Optional: Check if the currently equipped item is the exact SAME item instance we are looking at
+        bool isSameItem = equipped && (currentlyEquippedItem == slot.HeldItem);
+
+        Debug.Log($"[EquipmentFromInventoryTester] Slot {targetSlot} occupied: {equipped}. Is it this exact item? {isSameItem}");
     }
 
     [ContextMenu("Log Inventory Slots")]

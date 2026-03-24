@@ -68,12 +68,12 @@ Controllers act as the bridge between Unity's lifecycle/scene and the pure C# UI
 
 ### 2. ScriptableObjects (Data & Events)
 
-#### `InventoryManager` (`Toris/Assets/Scripts/UIToolkit/Player/Core/InventoryManager.cs`)
+#### `InventoryManager` (`Toris/Assets/Scripts/Player/Player/Core/InventoryManager.cs`)
 *   **`OnEnable()`**:
     *   Contains commented/stub logic for initializing the list.
     *   *Note on SOs:* `OnEnable` in ScriptableObjects is called when the SO is loaded (editor domain reload or runtime initialization). It's used to reset or initialize transient state that shouldn't persist between sessions.
 
-#### `PlayerDataSO` (`Toris/Assets/Scripts/UIToolkit/ScritableObjects/PlayerDataSO.cs`)
+#### `PlayerDataSO` (`Toris/Assets/Scripts/UIToolkit/ScriptableObjects/PlayerDataSO.cs`)
 *   **`OnEnable()`**:
     *   Contains logic to reset state when the game starts or the SO loads.
 

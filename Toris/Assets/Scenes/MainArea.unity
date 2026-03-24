@@ -39167,7 +39167,27 @@ MonoBehaviour:
       InstanceID: 
       BaseItem: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
       States: []
-    Count: 5
+    Count: 1
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: f06eea9927c0b534b9ebe5d7754e0953, type: 2}
+      States: []
+    Count: 1
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: aee2b6f549dab4847ac9e3ffc8c2f93a, type: 2}
+      States: []
+    Count: 1
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: e155aa628548fe74a850a9ccc4386ab0, type: 2}
+      States: []
+    Count: 1
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
+      States: []
+    Count: 1
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   references:
@@ -39249,7 +39269,7 @@ MonoBehaviour:
   LiveSlots:
   - HeldItem:
       InstanceID: 
-      BaseItem: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
+      BaseItem: {fileID: 0}
       States: []
     Count: 1
   - HeldItem:
@@ -40553,6 +40573,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _globalSession
+      value: 
+      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _uiInventoryEvents
+      value: 
+      objectReference: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _equipmentInventory
+      value: 
+      objectReference: {fileID: 494592622}
     - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _ability1._abilityDefinition
       value: 
@@ -61563,6 +61595,34 @@ PrefabInstance:
     - target: {fileID: 4676936000085796728, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_Name
       value: SmithNPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[1].Count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[2].Count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[2].HeldItem.BaseItem
+      value: 
+      objectReference: {fileID: 11400000, guid: f06eea9927c0b534b9ebe5d7754e0953, type: 2}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[0].HeldItem.InstanceID
+      value: Ore
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[1].HeldItem.InstanceID
+      value: Bow
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[2].HeldItem.InstanceID
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.x

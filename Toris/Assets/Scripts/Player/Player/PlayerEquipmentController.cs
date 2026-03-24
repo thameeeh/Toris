@@ -2,56 +2,144 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using OutlandHaven.Inventory;
+using OutlandHaven.UIToolkit;
 
 public class PlayerEquipmentController : MonoBehaviour
 {
+    [Header("Dependencies")]
+    [Tooltip("The InventoryManager configured to act as the equipment container (e.g. 5 slots).")]
+    [SerializeField] private InventoryManager _equipmentInventory;
+    [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+    [SerializeField] private GameSessionSO _globalSession;
+
     private readonly Dictionary<EquipmentSlot, ItemInstance> _equippedItems = new();
 
     public event Action<EquipmentSlot, ItemInstance> OnItemEquipped;
     public event Action<EquipmentSlot, ItemInstance> OnItemUnequipped;
     public event Action<EquipmentSlot, ItemInstance> OnEquippedItemChanged;
 
-    public bool Equip(ItemInstance item)
+    private void OnEnable()
     {
-        if (item == null || item.BaseItem == null)
+        if (_uiInventoryEvents != null)
         {
-            Debug.LogWarning("[PlayerEquipmentController] Cannot equip a null item.");
-            return false;
+            _uiInventoryEvents.OnInventoryUpdated += RefreshEquipmentState;
+            _uiInventoryEvents.OnItemClicked += HandleItemClicked;
         }
 
-        EquipableComponent equipable = item.BaseItem.GetComponent<EquipableComponent>();
-        if (equipable == null)
-        {
-            Debug.LogWarning($"[PlayerEquipmentController] Item '{item.BaseItem.ItemName}' is not equippable.");
-            return false;
-        }
-
-        EquipmentSlot slot = equipable.TargetSlot;
-
-        if (_equippedItems.TryGetValue(slot, out ItemInstance existingItem) && existingItem != null)
-        {
-            OnItemUnequipped?.Invoke(slot, existingItem);
-        }
-
-        _equippedItems[slot] = item;
-
-        OnItemEquipped?.Invoke(slot, item);
-        OnEquippedItemChanged?.Invoke(slot, item);
-
-        return true;
+        RefreshEquipmentState();
     }
 
-    public bool Unequip(EquipmentSlot slot)
+    private void OnDisable()
     {
-        if (!_equippedItems.TryGetValue(slot, out ItemInstance existingItem))
-            return false;
+        if (_uiInventoryEvents != null)
+        {
+            _uiInventoryEvents.OnInventoryUpdated -= RefreshEquipmentState;
+            _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+        }
+    }
 
-        _equippedItems.Remove(slot);
+    private void Start()
+    {
+        RefreshEquipmentState();
+    }
 
-        OnItemUnequipped?.Invoke(slot, existingItem);
-        OnEquippedItemChanged?.Invoke(slot, null);
 
-        return true;
+
+    private void HandleItemClicked(InventorySlot clickedSlot)
+    {
+        if (clickedSlot == null || clickedSlot.IsEmpty) return;
+        if (_globalSession == null || _globalSession.PlayerInventory == null) return;
+        if (_equipmentInventory == null || _equipmentInventory.LiveSlots == null) return;
+
+        // Check if we are unequipping (clicked item is in equipment inventory)
+        if (_equipmentInventory.LiveSlots.Contains(clickedSlot))
+        {
+            // Try to add to main inventory
+            if (_globalSession.PlayerInventory.AddItem(clickedSlot.HeldItem, clickedSlot.Count))
+            {
+                clickedSlot.Clear();
+                _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+            }
+            return;
+        }
+
+        // Check if we are equipping (clicked item is in main inventory)
+        if (_globalSession.PlayerInventory.LiveSlots.Contains(clickedSlot))
+        {
+            EquipableComponent equipable = clickedSlot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+            if (equipable != null)
+            {
+                int targetIndex = (int)equipable.TargetSlot;
+                if (targetIndex >= 0 && targetIndex < _equipmentInventory.LiveSlots.Count)
+                {
+                    InventorySlot eqSlot = _equipmentInventory.LiveSlots[targetIndex];
+
+                    if (eqSlot.IsEmpty)
+                    {
+                        eqSlot.SetItem(clickedSlot.HeldItem, clickedSlot.Count);
+                        clickedSlot.Clear();
+                    }
+                    else
+                    {
+                        // Swap
+                        ItemInstance tempItem = eqSlot.HeldItem;
+                        int tempCount = eqSlot.Count;
+
+                        eqSlot.SetItem(clickedSlot.HeldItem, clickedSlot.Count);
+                        clickedSlot.SetItem(tempItem, tempCount);
+                    }
+
+                    _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+                }
+            }
+        }
+    }
+
+    public void RefreshEquipmentState()
+    {
+        if (_equipmentInventory == null || _equipmentInventory.LiveSlots == null)
+            return;
+
+        // Hardcode mapping from InventorySlot index to EquipmentSlot enum
+        // Index 0 = Head, 1 = Chest, 2 = Legs, 3 = Arms, 4 = Weapon
+        ProcessSlot(0, EquipmentSlot.Head);
+        ProcessSlot(1, EquipmentSlot.Chest);
+        ProcessSlot(2, EquipmentSlot.Legs);
+        ProcessSlot(3, EquipmentSlot.Arms);
+        ProcessSlot(4, EquipmentSlot.Weapon);
+    }
+
+    private void ProcessSlot(int index, EquipmentSlot slotType)
+    {
+        if (index >= _equipmentInventory.LiveSlots.Count)
+            return;
+
+        InventorySlot slotData = _equipmentInventory.LiveSlots[index];
+        ItemInstance currentItemInSlot = slotData.IsEmpty ? null : slotData.HeldItem;
+
+        _equippedItems.TryGetValue(slotType, out ItemInstance previouslyEquippedItem);
+
+        // If the item has changed or became empty
+        if (currentItemInSlot != previouslyEquippedItem)
+        {
+            if (previouslyEquippedItem != null)
+            {
+                OnItemUnequipped?.Invoke(slotType, previouslyEquippedItem);
+                _equippedItems.Remove(slotType);
+            }
+
+            if (currentItemInSlot != null)
+            {
+                _equippedItems[slotType] = currentItemInSlot;
+                OnItemEquipped?.Invoke(slotType, currentItemInSlot);
+            }
+            else
+            {
+                _equippedItems.Remove(slotType);
+            }
+
+            OnEquippedItemChanged?.Invoke(slotType, currentItemInSlot);
+        }
     }
 
     public ItemInstance GetEquippedItem(EquipmentSlot slot)
@@ -73,19 +161,5 @@ public class PlayerEquipmentController : MonoBehaviour
     public IReadOnlyDictionary<EquipmentSlot, ItemInstance> GetAllEquippedItems()
     {
         return _equippedItems;
-    }
-
-    public void UnequipAll()
-    {
-        if (_equippedItems.Count == 0)
-            return;
-
-        EquipmentSlot[] slots = new EquipmentSlot[_equippedItems.Count];
-        _equippedItems.Keys.CopyTo(slots, 0);
-
-        for (int i = 0; i < slots.Length; i++)
-        {
-            Unequip(slots[i]);
-        }
     }
 }

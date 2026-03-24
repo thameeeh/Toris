@@ -49,6 +49,31 @@ Game logic for specific systems (Shops, Crafting, Salvaging) is decoupled into d
 * **UpgradeSalvageManagerSO** -[reads/modifies]-> **GameSessionSO**
 * **UpgradeSalvageManagerSO** -[reads]-> **CraftingRegistrySO**
 
+## Equipment Management Architecture
+
+The equipment system integrates the player's inventory directly with their stats via a dedicated controller and effect bridge.
+
+**Dependency Chain:**
+**InventoryManager** -> **PlayerEquipmentController** -> **EquipmentEffectBridge** -> **PlayerEffectSourceController** -> **PlayerEffectResolver**
+
+* **InventoryManager** (MonoBehaviour) 
+  * Configured specifically to hold equipment (e.g., 5 slots). Acts as the **Equipment Container**.
+* **PlayerEquipmentController** 
+  * Reads the `InventoryManager`, mapping hardcoded inventory indices to `EquipmentSlot` enums (0=Head, 1=Chest, 2=Legs, 3=Arms, 4=Weapon).
+  * Listens to `UIInventoryEventsSO.OnInventoryUpdated` and invokes `OnEquippedItemChanged`, `OnItemEquipped`, `OnItemUnequipped` accordingly.
+* **EquipmentEffectBridge** 
+  * The logic layer that listens for equipment changes from `PlayerEquipmentController.OnEquippedItemChanged`.
+  * Injects item stats (e.g., `StrengthBonus`, `DefenceBonus` from `EquipableComponent`) into the player's effect system via `EquippedItemEffectSource` and `PlayerEffectType`.
+* **PlayerEffectResolver** 
+  * Applies the injected numeric modifiers to update the player's `PlayerResolvedEffects` struct.
+
+**UI Rendering Chain:**
+**InventoryManager** -> **PlayerEquipmentView** -> **VisualElement**
+
+* **PlayerEquipmentView** 
+  * Handles UI rendering by dynamically creating slot instances via `InventorySlotView` and mapping them to the configured `InventoryManager`. 
+  * Embeds 5 specific equipment slots (`slot-head`, `slot-chest`, `slot-legs`, `slot-arms`, `slot-weapon`) into `PlayerEquipment__Panel`.
+
 ## Event Architecture
 
 The project employs a robust event-driven architecture using ScriptableObjects to decouple systems. Systems listen to these events rather than holding hard references to each other.

@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
-  m_Name: Item_Defence
+  m_Name: Chest_Def
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: 
   Description: 
-  Icon: {fileID: 21300000, guid: 580570b8d0314404bb9915fc5799c4d7, type: 3}
+  Icon: {fileID: 21300000, guid: 408ecc27b712ced45bf29515c296d02f, type: 3}
   MaxStackSize: 99
   GoldValue: 10
   Components:
-  - rid: 7555927880013971661
-  - rid: 7555927880013971662
+  - rid: 7555928020692500488
+  - rid: 7555928020692500489
   references:
     version: 2
     RefIds:
-    - rid: 7555927880013971661
+    - rid: 7555928020692500488
       type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
         TargetSlot: 1
-        StrengthBonus: 0
-        DefenceBonus: 15
-    - rid: 7555927880013971662
+        StrengthBonus: 9
+        DefenceBonus: 4
+    - rid: 7555928020692500489
       type: {class: DefensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
         PhysicalDefense: 5

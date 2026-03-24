@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
+  m_Name: Head_Def
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
+  ItemName: 
+  Description: 
+  Icon: {fileID: 21300000, guid: 406c543cc52bb4f8494f7203c3bd7a25, type: 3}
+  MaxStackSize: 99
+  GoldValue: 10
+  Components:
+  - rid: 7555928020692500491
+  - rid: 7555928020692500490
+  references:
+    version: 2
+    RefIds:
+    - rid: 7555928020692500490
+      type: {class: DefensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        PhysicalDefense: 5
+        MagicalDefense: 1
+    - rid: 7555928020692500491
+      type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        TargetSlot: 0
+        StrengthBonus: 2
+        DefenceBonus: 3

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f67ba3904b7eb034ebc473a6baa9ff0b, type: 3}
-  m_Name: Container_Player-Inventory
-  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryContainerSO
-  SlotCount: 20
-  AssociatedView: 2
+  m_Name: Container_Player-Equipments
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryContainerSO
+  SlotCount: 5
+  AssociatedView: 3

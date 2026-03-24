@@ -39162,7 +39162,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
   ContainerBlueprint: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
-  LiveSlots: []
+  LiveSlots:
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
+      States: []
+    Count: 5
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   references:
@@ -39211,6 +39216,82 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquippedItemStatsDebugger
   _equipment: {fileID: 2014174152}
+--- !u!1 &494592621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 494592623}
+  - component: {fileID: 494592622}
+  m_Layer: 0
+  m_Name: PlayerEquipments
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &494592622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494592621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
+  ContainerBlueprint: {fileID: 11400000, guid: 1ea796bb121ca6149a4fa41c9b53f6ef, type: 2}
+  LiveSlots:
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
+      States: []
+    Count: 1
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 0}
+      States: []
+    Count: 0
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  references:
+    version: 2
+    RefIds: []
+--- !u!4 &494592623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494592621}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.94983, y: 0.67831, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &534092287
 GameObject:
   m_ObjectHideFlags: 0
@@ -40321,34 +40402,6 @@ PolygonCollider2D:
       - {x: 0.09375, y: -1.078125}
       - {x: 0.5625, y: -1.328125}
   m_UseDelaunayMesh: 0
---- !u!1 &990650694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-  m_PrefabInstance: {fileID: 5886095197615138555}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &990650697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990650694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67dcbc586f021f54db3ff07ae613f143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
-  _smithMainTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
-  _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
-  _shopTemplate: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}
-  _forgeTemplate: {fileID: 9197481963319205126, guid: 27ab7e74a97daa34ab42c184874d7b4c, type: 3}
-  _salvageTemplate: {fileID: 9197481963319205126, guid: 5472df55d707e964398e7e0187e91a47, type: 3}
-  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
-  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
-  _shopManagerSO: {fileID: 11400000, guid: a1f9750d1affea14f9ef38e8b30fc7ca, type: 2}
-  _craftingManagerSO: {fileID: 11400000, guid: 5183623d120660d4788fe968e87cd1c8, type: 2}
-  _salvageManagerSO: {fileID: 11400000, guid: 402cb2d0cf22d5343b29bbfef2e6fcce, type: 2}
 --- !u!1 &991107869
 GameObject:
   m_ObjectHideFlags: 0
@@ -61701,6 +61754,10 @@ PrefabInstance:
       propertyPath: _slotTemplate
       value: 
       objectReference: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+    - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _equipmentInventory
+      value: 
+      objectReference: {fileID: 494592622}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7823
@@ -61748,10 +61805,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2765215845804869651, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 990650697}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -61777,3 +61831,5 @@ SceneRoots:
   - {fileID: 87562002}
   - {fileID: 213805312}
   - {fileID: 3341100861679724228}
+  - {fileID: 475817947}
+  - {fileID: 494592623}

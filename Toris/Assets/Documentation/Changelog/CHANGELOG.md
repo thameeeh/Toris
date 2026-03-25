@@ -81,3 +81,10 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
+
+## [Unreleased]
+### Changed
+- **UI Architecture:** Refactored the UI Toolkit inventory assets (`PlayerInventory`, `Mage`, `Smith`, `ShopSubView`, `ForgeSubView_Smith`, `SalvageSubView_Smith`, `Slot`) to strictly follow BEM naming conventions.
+- **UI Architecture:** Extracted all inline UXML styles into a new `GlobalStyles.uss` file using `:root` CSS variables and applied them correctly across the project in `Inventory.uss`.
+- **UI Architecture:** Removed hardcoded dummy slot instances from `PlayerInventory.uxml` grid, ensuring a purely data-driven template instantiation approach.
+- **UI Controllers:** Updated C# View controllers (`InventorySlotView`, `PlayerEquipmentView`) to query the newly named BEM classes, preventing runtime query failures.

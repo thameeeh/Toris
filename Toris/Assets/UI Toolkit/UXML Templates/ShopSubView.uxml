@@ -1,14 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="shop-root" style="flex-grow: 1; flex-direction: column; background-color: rgb(30, 30, 30); padding: 10px;">
-        <ui:VisualElement style="flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <ui:Label text="Shop" style="font-size: 24px; color: white; -unity-font-style: bold;"/>
-            <ui:VisualElement style="flex-direction: row; align-items: center;">
-                <ui:Label text="Gold: " style="font-size: 18px; color: gold; -unity-font-style: bold;"/>
-                <ui:Label name="gold-amount-label" text="0" style="font-size: 18px; color: white;"/>
+    <ui:VisualElement name="shop-root" class="shop-subview">
+        <ui:VisualElement class="shop-subview__header">
+            <ui:Label text="Shop" class="shop-subview__title"/>
+            <ui:VisualElement class="shop-subview__gold-container">
+                <ui:Label text="Gold: " class="shop-subview__gold-label"/>
+                <ui:Label name="gold-amount-label" text="0" class="shop-subview__gold-amount"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:ScrollView style="flex-grow: 1;">
-            <ui:VisualElement name="shop-grid" style="flex-direction: row; flex-wrap: wrap; justify-content: flex-start;"/>
+        <ui:ScrollView class="shop-subview__scroll">
+            <ui:VisualElement name="shop-grid" class="shop-subview__grid"/>
         </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>

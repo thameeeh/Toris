@@ -107,7 +107,7 @@ namespace OutlandHaven.Inventory
             slotView.Update(slotData);
 
             // Hide amount text label for equipment slots if it's there
-            var countLabel = slotInstance.Q<Label>("count-label");
+            var countLabel = slotInstance.Q<Label>("inventory-slot__qty");
             if (countLabel != null)
             {
                 countLabel.style.display = DisplayStyle.None;

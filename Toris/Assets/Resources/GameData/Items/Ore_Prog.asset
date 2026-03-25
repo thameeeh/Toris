@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Ore_Prog
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Ore
   Description: 
   Icon: {fileID: 21300000, guid: 735e275b699204e36a43b999da486796, type: 3}
   MaxStackSize: 99

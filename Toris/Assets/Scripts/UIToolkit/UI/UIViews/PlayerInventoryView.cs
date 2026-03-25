@@ -94,35 +94,11 @@ namespace OutlandHaven.Inventory
                 gridRoot.Add(slotInstance);
 
                 // Initialize the wrapper and update it
-                var slotView = new InventorySlotView(slotInstance);
+                // We pass in the owning InventoryManager (data) and the UI events
+                var slotView = new InventorySlotView(slotInstance, data, _uiInventoryEvents);
                 slotView.Update(slotData);
 
-                // Register click event
-                var currentSlotData = slotData; // Capture variable for lambda
-                slotInstance.RegisterCallback<MouseUpEvent>(evt =>
-                {
-                    if (evt.button == 0) // Left click
-                    {
-                        _uiInventoryEvents?.OnItemClicked?.Invoke(currentSlotData);
-                    }
-                    else if (evt.button == 1)   // right click
-                    {
-                        if (currentSlotData.HeldItem?.BaseItem == null)
-                            return;
-
-                        bool isEquippable = currentSlotData.HeldItem.BaseItem.GetComponent<EquipableComponent>() != null;
-                        bool isConsumable = currentSlotData.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null;
-                        
-                        if (isEquippable)
-                        {
-                            _uiInventoryEvents?.OnRequestEquip?.Invoke(currentSlotData);
-                        }
-                        else if (isConsumable)
-                        {
-                            _uiInventoryEvents?.OnRequestUse?.Invoke(currentSlotData);
-                        }
-                    }
-                });
+                // Click events are now handled natively inside InventorySlotView via PointerUpEvent
             }
         }
 

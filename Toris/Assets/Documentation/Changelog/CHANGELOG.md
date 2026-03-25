@@ -7,7 +7,53 @@
 
 ---
 
-## [Current/Recent] - Equipment Click Interactions
+## [Current/Recent] - Drag-and-Drop functionality for Shop, Salvage, and Forge SubViews
+This update implements drag-and-drop support for Shop, Salvage, and Forge UI subviews, ensuring consistency with the player inventory drag-and-drop system.
+
+### 1. Fixed ShopSubView Initialization
+* Updated `ShopSubView` to properly pass its `_shopContainer` and `_uiInventoryEvents` dependencies into the `InventorySlotView` constructor, enabling drag-and-drop functionality within the shop.
+
+### 2. Added `OnRequestSelectForProcessing` Event
+* Added `OnRequestSelectForProcessing` to `UIInventoryEventsSO` to handle drag-and-drop operations targeting proxy visual slots (like Salvage and Forge inputs) that do not have a backing `InventoryManager`.
+
+### 3. Updated `InventorySlotView` Drop Logic
+* Modified `InventorySlotView.OnPointerUp` to recognize proxy slots via string IDs stored in `VisualElement.userData`.
+* When an item is dropped onto a proxy slot, it now invokes `OnRequestSelectForProcessing` instead of attempting a cross-container move.
+
+### 4. Implemented Full Stack Drag-and-Drop in Salvage and Forge
+* Updated `SalvageSubView` and `ForgeSubView` to assign string proxy IDs to their visual input slots (`salvage-input`, `forge-slot-1`, `forge-slot-2`).
+* Subscribed both views to `OnRequestSelectForProcessing` to visually populate the proxy slots with the full stack count of the dragged item.
+* Cached the original source `InventorySlot` from the player's inventory when an item is dropped or clicked into a proxy slot. This ensures that when the salvage or forge operation is executed, the actual player inventory slot is validated and consumed, preventing potential exploits where an item could be moved or sold before crafting.
+
+---
+
+## [Previous] - UI Toolkit Drag-and-Drop System
+This update introduces a robust drag-and-drop mechanism for the inventory using Unity's UI Toolkit, complete with a drag threshold, a dedicated global overlay for dragging, and cross-container logic.
+
+### 1. Updated Event Architecture
+* Added `OnRequestMoveItem` to `UIInventoryEventsSO` to pass cross-container item transfer requests (source/target managers and slots).
+
+### 2. Transitioned to Pointer Events
+* Updated `InventorySlotView` to listen to `PointerDownEvent`, `PointerMoveEvent`, and `PointerUpEvent` instead of basic clicks.
+* Implemented a 10px drag threshold. If the pointer moves less than this, it correctly falls back to firing the legacy `OnItemClicked` event.
+* Added `SlotDropData` to `VisualElement.userData` to uniquely identify drop targets during raycast picking (`panel.Pick`).
+
+### 3. Added Dedicated `UIDragManager`
+* Created a clean, singleton `UIDragManager` component to isolate pointer tracking and visual drag state from `UIManager`.
+* Programmatically injects a root `#Drag_Layer` and a `#Ghost_Icon` at runtime.
+* Ensures the ghost icon has `picking-mode: ignore` so it does not block the drop target raycast.
+
+### 4. Added Centralized `InventoryTransferManagerSO`
+* Created a centralized, event-driven manager to handle logic between two distinct `InventoryManager` instances.
+* Added logic to evaluate target slots for available space (partial stack merging), empty slots (direct moves), and mismatched items (item swaps).
+* Fires `OnInventoryUpdated` on success.
+
+### 5. Updated Views for Dependency Injection
+* `PlayerInventoryView` and `PlayerEquipmentView` now pass the required `InventoryManager` and `UIInventoryEventsSO` dependencies directly into the `InventorySlotView` constructor to enable self-contained logic mapping.
+
+---
+
+## [Previous] - Equipment Click Interactions
 This update implements click-to-equip and click-to-unequip functionality for the player's inventory, improving the usability of equipment management.
 
 ### 1. GameSessionSO Dependency Added
@@ -29,3 +75,9 @@ This update implements click-to-equip and click-to-unequip functionality for the
 ### 5. Click-to-Unequip Logic
 * When an item located inside an equipment slot (e.g., the currently equipped Weapon) is clicked, the system intercepts this and treats it as an unequip request.
 * The system calls `_globalSession.PlayerInventory.AddItem(...)` to move the item back to the general inventory. If there is enough space, the equipment slot is cleared.
+
+### Documentation Refactor
+* Reorganized all documentation related to the UI, inventory, and item systems to ensure single-topic focus per document.
+* Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
+* Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
+* Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).

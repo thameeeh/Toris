@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Head_Def
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Head Defence
   Description: 
   Icon: {fileID: 21300000, guid: 406c543cc52bb4f8494f7203c3bd7a25, type: 3}
   MaxStackSize: 99

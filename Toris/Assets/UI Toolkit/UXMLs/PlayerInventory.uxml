@@ -6,11 +6,11 @@
             <ui:VisualElement name="header__container" class="inventory-window__header-container">
                 <ui:Label text="Inventory" class="inventory-window__title"/>
                 <ui:VisualElement name="PlayerEquipment__Panel" class="inventory-equipment__panel">
-                    <ui:VisualElement name="slot-head"/>
-                    <ui:VisualElement name="slot-chest"/>
-                    <ui:VisualElement name="slot-legs"/>
-                    <ui:VisualElement name="slot-arms"/>
-                    <ui:VisualElement name="slot-weapon"/>
+                    <ui:VisualElement name="slot-head" class="inventory-slot"/>
+                    <ui:VisualElement name="slot-chest" class="inventory-slot"/>
+                    <ui:VisualElement name="slot-legs" class="inventory-slot"/>
+                    <ui:VisualElement name="slot-arms" class="inventory-slot"/>
+                    <ui:VisualElement name="slot-weapon" class="inventory-slot"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement class="inventory-grid__scroll-container">

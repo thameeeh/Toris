@@ -53,13 +53,13 @@ namespace OutlandHaven.Inventory
             if (slotData == null || slotData.IsEmpty)
             {
                 _icon.sprite = null;
-                _icon.style.display = DisplayStyle.None;
+                _icon.ToggleInClassList("inventory-slot__icon--hidden", true);
                 _qtyLabel.text = "";
             }
             else
             {
                 _icon.sprite = slotData.HeldItem.BaseItem.Icon;
-                _icon.style.display = DisplayStyle.Flex;
+                _icon.ToggleInClassList("inventory-slot__icon--hidden", false);
                 _qtyLabel.text = slotData.Count > 1 ? slotData.Count.ToString() : "";
             }
         }

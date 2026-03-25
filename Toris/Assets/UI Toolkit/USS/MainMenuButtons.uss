@@ -1,8 +1,11 @@
-:root {
-}
-
-.MainMenuButtons {
+.main-menu-btn {
     font-size: 60px;
     flex-grow: 0;
     min-width: 20%;
+}
+
+.main-menu__container {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Hammer_Dmg
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Hammer
   Description: 
   Icon: {fileID: 21300000, guid: a721fddd719d44ca498d4cc549c79084, type: 3}
   MaxStackSize: 1

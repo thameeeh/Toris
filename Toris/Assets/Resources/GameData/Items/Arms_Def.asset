@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Arms_Def
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Arm Defence
   Description: 
   Icon: {fileID: 21300000, guid: b44fec3898b6c496f803dc8dbdc350b2, type: 3}
   MaxStackSize: 99

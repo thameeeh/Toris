@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1551fc3d0c2e89c4ea0a870f46055be1, type: 3}
   m_Name: Inventory Transfer Manager SO
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryTransferManagerSO
-  _uiInventoryEvents: {fileID: 0}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}

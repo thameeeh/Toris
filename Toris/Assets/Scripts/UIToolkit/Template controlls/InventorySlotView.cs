@@ -110,8 +110,30 @@ namespace OutlandHaven.Inventory
                 _isDragging = false;
                 UIDragManager.Instance?.StopDrag();
 
-                // Pick the element underneath the pointer to find the drop target
+                // 1. Perform the raycast to pick the element underneath the pointer
                 VisualElement targetElement = _root.panel.Pick(evt.position);
+
+                // 2. Add this Debug.Log to see exactly what UI Toolkit hit
+                if (targetElement != null)
+                {
+                    Debug.Log($"[Drag Test] Picked Element Name: '{targetElement.name}', Type: '{targetElement.GetType().Name}'");
+
+                    // Optional: If you want to see the hierarchy of what was hit to make sure you 
+                    // aren't hitting a child element (like an icon or a label instead of the slot root),
+                    // you can log its parent tree:
+                    VisualElement current = targetElement;
+                    string path = current.name;
+                    while (current.parent != null)
+                    {
+                        current = current.parent;
+                        path = $"{current.name} -> {path}";
+                    }
+                    Debug.Log($"[Drag Test] Element Path: {path}");
+                }
+                else
+                {
+                    Debug.Log("[Drag Test] Picked Element was NULL (Dropped outside the UI or hit nothing).");
+                }
 
                 // Assuming the drop target might be a nested element (like an icon or label) inside the root
                 // Traverse up to find the element containing our SlotDropData or a ProxySlotID.
@@ -125,6 +147,7 @@ namespace OutlandHaven.Inventory
                         {
                             // Invoke the cross-container swap logic
                             _uiInventoryEvents?.OnRequestMoveItem?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot);
+                            Debug.Log($"FIRING EVENT: Moving {_slotData.HeldItem.BaseItem.ItemName} to new slot.");
                         }
                     }
                 }

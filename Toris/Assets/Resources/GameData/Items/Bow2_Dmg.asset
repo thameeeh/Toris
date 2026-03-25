@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Bow2_Dmg
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Bow 2 damage
   Description: 
   Icon: {fileID: 21300000, guid: 9fe47cc5276ff7b40be82a66dce5be0f, type: 3}
   MaxStackSize: 99

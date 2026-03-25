@@ -39244,24 +39244,24 @@ MonoBehaviour:
   LiveSlots:
   - HeldItem:
       InstanceID: 
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: f06eea9927c0b534b9ebe5d7754e0953, type: 2}
       States: []
-    Count: 0
+    Count: 1
   - HeldItem:
       InstanceID: 
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: aee2b6f549dab4847ac9e3ffc8c2f93a, type: 2}
       States: []
-    Count: 0
+    Count: 1
   - HeldItem:
       InstanceID: 
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: ea3366356db8549438b123c33b581c2b, type: 2}
       States: []
-    Count: 0
+    Count: 1
   - HeldItem:
       InstanceID: 
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: f3168b74f45f17c47bf6c623620169bc, type: 2}
       States: []
-    Count: 0
+    Count: 6
   - HeldItem:
       InstanceID: 
       BaseItem: {fileID: 0}

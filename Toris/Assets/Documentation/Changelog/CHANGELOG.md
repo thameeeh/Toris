@@ -7,7 +7,30 @@
 
 ---
 
-## [Current/Recent] - Drag-and-Drop functionality for Shop, Salvage, and Forge SubViews
+## [Current/Recent] - USS and UXML Styling Cleanup
+This update refactors the UI styling to consistently use global variables and BEM naming conventions across all UI Toolkit assets.
+
+### 1. Updated Global Styles
+* Added new CSS variables to `GlobalStyles.uss` for health (`--color-health`), mana (`--color-mana`), xp (`--color-xp`), and a dark panel background (`--color-panel-bg-dark`).
+
+### 2. Refactored USS Files
+* **Inventory.uss**: Replaced hardcoded background colors in Shop, Forge, and Salvage subviews with global CSS variables. Added a `.inventory-slot__icon--hidden` override class.
+* **HUD.uss**: Converted ID selectors (e.g., `#hud__health-bar`) to BEM classes (e.g., `.hud-bar--health`) and removed empty `:root` blocks. Added layout classes to replace inline styles.
+* **MainMenuButtons.uss & StatLabel.uss**: Renamed PascalCase classes to lowercase kebab-case (`.main-menu-btn`, `.stat-label`) to enforce BEM conventions. Removed empty `:root` blocks.
+* **MasterLayout.uss**: Created a new stylesheet to hold the BEM layout classes for the main UI structure (`.master-layout`, `.master-layout__left-zone`, etc.).
+
+### 3. Cleaned UXML Files
+* Removed all inline `style="..."` attributes from `HUD.uxml`, `MasterLayout.uxml`, `MainMenu.uxml`, `HUDMenuButtonTemplate.uxml`, and `Slot.uxml`.
+* Applied the newly defined BEM classes and layout classes to the elements.
+* Assigned the `inventory-slot` class to the naked equipment visual elements in `PlayerInventory.uxml`.
+* Added `<Style src="..." />` tags to sub-templates (`Slot.uxml`, `ShopSubView.uxml`, `HUDMenuButtonTemplate.uxml`) for accurate UI Builder previewing.
+
+### 4. Updated C# Controllers
+* **InventorySlotView.cs**: Modified the code to handle icon visibility by toggling the `.inventory-slot__icon--hidden` class instead of hardcoding `style.display = DisplayStyle.None;`.
+
+---
+
+## [Previous] - Drag-and-Drop functionality for Shop, Salvage, and Forge SubViews
 This update implements drag-and-drop support for Shop, Salvage, and Forge UI subviews, ensuring consistency with the player inventory drag-and-drop system.
 
 ### 1. Fixed ShopSubView Initialization

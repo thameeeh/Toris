@@ -3,6 +3,10 @@
     --color-panel-bg: rgb(32, 32, 32);
     --color-panel-bg-alpha: rgba(30, 30, 30, 0.95);
     --color-panel-bg-light: rgba(0, 0, 0, 0.3);
+    --color-panel-bg-dark: rgb(0, 0, 0);
+    --color-health: #D92323;
+    --color-mana: #234BD9;
+    --color-xp: #D9D923;
     --color-border-main: rgb(109, 109, 109);
     --color-border-sub: rgb(85, 85, 85);
     --color-text-main: rgb(255, 255, 255);

@@ -1,99 +1,335 @@
-.inventory-window {
+/* Global Root Styles (Inventory Context) */
+.inventory-window__root, .npc-window__root {
+    picking-mode: Ignore;
+    flex-shrink: 0;
+    flex-grow: 1;
     width: 100%;
     height: 100%;
-    background-color: rgba(30, 30, 30, 0.95);
-    border-color: rgb(109, 109, 109);
-    border-width: 2px;
-    border-radius: 10px;
+}
+
+.inventory-window, .npc-window {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-panel-bg-alpha);
+    border-color: var(--color-border-main);
+    border-width: var(--border-width-md);
+    border-radius: var(--border-radius-lg);
     flex-direction: column;
-    padding: 10px;
+    padding: var(--spacing-md);
     flex-basis: 100%;
 }
 
-.dual-panel-container {
-    flex-grow: 1;
+.npc-window {
+    background-color: rgb(23, 23, 23);
+    padding: 0;
+    border-width: 0;
+}
+
+.inventory-window__header-container, .npc-window__header {
+    flex-grow: 0;
+    flex-direction: column;
+}
+
+.npc-window__header {
     flex-direction: row;
-    justify-content: space-between;
-    margin-top: 10px;
 }
 
-.inventory-panel {
-    width: 48%;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.panel-header {
-    color: rgb(227, 227, 227);
+.inventory-window__title, .npc-window__title {
+    color: var(--color-text-main);
+    font-size: var(--font-size-title);
     -unity-font-style: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(85, 85, 85);
+}
+
+.npc-window__title {
+    flex-shrink: 1;
+    flex-grow: 0;
+    -unity-text-align: upper-left;
+    font-size: var(--font-size-header);
+}
+
+.inventory-equipment__panel {
+    flex-grow: 1;
+    flex-shrink: 0;
+    background-color: var(--color-panel-bg);
+    min-height: auto;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-image: url("project://database/Assets/UI%20Toolkit/BowGuy007.png?fileID=2800000&guid=d2a0ea75174bdc740a7b12c0072b8de5&type=3#BowGuy007");
+}
+
+.inventory-grid__scroll-container {
+    flex-grow: 0;
+    margin-bottom: 0;
 }
 
 .inventory-grid {
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: var(--spacing-lg);
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+}
+
+.npc-window__middle-panel {
+    flex-grow: 1;
+}
+
+.npc-tab-button {
+    flex-grow: 1;
+    height: 60px;
+    margin: var(--spacing-xs);
+    background-color: var(--color-slot-bg);
+    border-width: var(--border-width-sm);
+    border-color: var(--color-slot-border);
+    border-radius: var(--border-radius-sm);
+    justify-content: center;
+    align-items: center;
+}
+
+.npc-tab-button:hover {
+    border-color: var(--color-slot-hover);
+}
+
+.npc-tab-button__label {
+    -unity-font-style: bold;
+    color: var(--color-text-main);
+    font-size: var(--font-size-header);
+}
+
+/* Slots */
+.inventory-slot {
+    width: 80px;
+    height: 80px;
+    margin-left: var(--spacing-sm);
+    margin-right: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    background-color: var(--color-slot-bg);
+    border-width: var(--border-width-sm);
+    border-color: var(--color-slot-border);
+    border-radius: var(--border-radius-md);
+    align-items: center;
+    justify-content: center;
+}
+
+.inventory-slot:hover {
+    border-color: var(--color-slot-hover);
+}
+
+.inventory-slot__icon {
+    width: 48px;
+    height: 48px;
+}
+
+.inventory-slot__qty {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    color: var(--color-text-main);
+    font-size: var(--font-size-small);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: black;
+}
+
+/* Shop Subview */
+.shop-subview {
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: rgba(30, 30, 30, 1);
+    padding: var(--spacing-md);
+}
+
+.shop-subview__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.shop-subview__title {
+    font-size: var(--font-size-header);
+    color: var(--color-text-main);
+    -unity-font-style: bold;
+}
+
+.shop-subview__gold-container {
+    flex-direction: row;
+    align-items: center;
+}
+
+.shop-subview__gold-label {
+    font-size: var(--font-size-sub);
+    color: gold;
+    -unity-font-style: bold;
+}
+
+.shop-subview__gold-amount {
+    font-size: var(--font-size-sub);
+    color: var(--color-text-main);
+}
+
+.shop-subview__scroll {
+    flex-grow: 1;
+}
+
+.shop-subview__grid {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
-.slot {
+/* Forge Subview */
+.forge-subview__container {
+    background-color: rgb(0, 0, 0);
+    padding: var(--spacing-md);
+}
+
+.forge-subview__title {
+    color: var(--color-text-main);
+    -unity-text-align: middle-center;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sub);
+    -unity-font-style: bold;
+}
+
+.forge-subview__inputs-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.forge-subview__input-slot {
     width: 60px;
     height: 60px;
-    margin: 4px;
-    background-color: rgb(56, 56, 56);
-    border-width: 1px;
-    border-color: rgb(34, 34, 34);
-    border-radius: 4px;
-    justify-content: center;
-    align-items: center;
+    background-color: rgb(40, 40, 40);
+    border-width: var(--border-width-md);
+    border-color: rgb(100, 100, 100);
 }
 
-.slot:hover {
-    border-color: rgb(220, 179, 92);
+.forge-subview__plus-label {
+    color: var(--color-text-main);
+    font-size: var(--font-size-header);
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
-.slot-icon {
-    width: 48px;
-    height: 48px;
+.forge-subview__submit-btn {
+    height: 40px;
+    margin-bottom: var(--spacing-lg);
+    background-color: rgb(70, 70, 70);
+    color: var(--color-text-main);
 }
 
-.slot-qty {
-    position: absolute;
-    bottom: 2px;
-    right: 4px;
-    color: white;
-    font-size: 12px;
-    -unity-text-outline-width: 1px;
-    -unity-text-outline-color: black;
+.forge-subview__result-slot {
+    width: 60px;
+    height: 60px;
+    background-color: rgb(20, 20, 20);
+    border-width: var(--border-width-md);
+    border-color: rgb(200, 150, 50);
+    align-self: center;
 }
 
-#grid-player {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+/* Salvage Subview */
+.salvage-subview__container {
+    background-color: rgb(0, 0, 0);
+    padding: 15px;
 }
 
-.slot {
-    width: 80px;
-    height: 80px;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    background-color: rgb(60, 60, 60);
-    border-radius: 5px;
-    align-items: center;
-    justify-content: center;
-}
-
-.NPC_PanelButtons {
+.salvage-subview__title {
+    color: var(--color-text-main);
+    -unity-text-align: middle-center;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sub);
     -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    font-size: 24px;
+}
+
+.salvage-subview__input-section {
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.salvage-subview__input-label {
+    color: rgb(170, 170, 170);
+    font-size: var(--font-size-small);
+    margin-bottom: 8px;
+}
+
+.salvage-subview__input-slot {
+    width: 64px;
+    height: 64px;
+    background-color: rgb(30, 30, 30);
+    border-width: var(--border-width-md);
+    border-color: rgb(150, 150, 150);
+}
+
+.salvage-subview__options-container {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.salvage-subview__option-box--gold, .salvage-subview__option-box--item {
+    flex-grow: 1;
+    align-items: center;
+    background-color: rgb(20, 20, 20);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    border-width: var(--border-width-sm);
+    border-color: rgb(50, 50, 50);
+}
+
+.salvage-subview__option-box--gold {
+    margin-right: var(--spacing-sm);
+}
+
+.salvage-subview__option-box--item {
+    margin-left: var(--spacing-sm);
+}
+
+.salvage-subview__option-label--gold {
+    color: rgb(200, 180, 100);
+    font-size: var(--font-size-small);
+    margin-bottom: var(--spacing-sm);
+}
+
+.salvage-subview__gold-field {
+    width: 80px;
+    margin-bottom: 15px;
+    background-color: rgb(10, 10, 10);
+    color: var(--color-text-main);
+    -unity-text-align: middle-center;
+}
+
+.salvage-subview__btn-gold {
+    width: 100%;
+    height: 35px;
+    background-color: rgb(120, 90, 20);
+    color: var(--color-text-main);
+    border-width: 0;
+}
+
+.salvage-subview__option-label--item {
+    color: rgb(100, 150, 200);
+    font-size: var(--font-size-small);
+    margin-bottom: var(--spacing-sm);
+}
+
+.salvage-subview__item-yield {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+    background-color: rgb(30, 30, 30);
+    border-width: var(--border-width-sm);
+    border-color: rgb(100, 100, 100);
+}
+
+.salvage-subview__btn-item {
+    width: 100%;
+    height: 35px;
+    background-color: rgb(40, 60, 120);
+    color: var(--color-text-main);
+    border-width: 0;
 }

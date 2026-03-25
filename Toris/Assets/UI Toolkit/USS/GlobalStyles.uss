@@ -1,0 +1,30 @@
+:root {
+    --color-primary-bg: rgb(18, 18, 18);
+    --color-panel-bg: rgb(32, 32, 32);
+    --color-panel-bg-alpha: rgba(30, 30, 30, 0.95);
+    --color-panel-bg-light: rgba(0, 0, 0, 0.3);
+    --color-border-main: rgb(109, 109, 109);
+    --color-border-sub: rgb(85, 85, 85);
+    --color-text-main: rgb(255, 255, 255);
+    --color-text-sub: rgb(227, 227, 227);
+    --color-slot-bg: rgb(60, 60, 60);
+    --color-slot-border: rgb(34, 34, 34);
+    --color-slot-hover: rgb(220, 179, 92);
+
+    --font-size-title: 40px;
+    --font-size-header: 24px;
+    --font-size-sub: 18px;
+    --font-size-small: 12px;
+
+    --spacing-xs: 4px;
+    --spacing-sm: 5px;
+    --spacing-md: 10px;
+    --spacing-lg: 20px;
+
+    --border-radius-sm: 4px;
+    --border-radius-md: 5px;
+    --border-radius-lg: 10px;
+
+    --border-width-sm: 1px;
+    --border-width-md: 2px;
+}

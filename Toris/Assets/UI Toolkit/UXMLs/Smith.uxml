@@ -1,20 +1,21 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/GlobalStyles.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#GlobalStyles"/>
     <Style src="project://database/Assets/UI%20Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; height: 100%; flex-shrink: 0;">
-        <ui:VisualElement name="container-smith" style="flex-grow: 0; flex-wrap: wrap; background-color: rgb(23, 23, 23); width: 100%; height: 100%;">
-            <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
-                <ui:Label text="Smith" class="NPC_PanelButtons" style="flex-shrink: 1; flex-grow: 0; -unity-text-align: upper-left;"/>
-                <ui:VisualElement name="Smith_Forge--Tab" class="slot" style="flex-grow: 1; height: 60px;">
-                    <ui:Label text="Forge" name="Forge_Label" class="NPC_PanelButtons"/>
+    <ui:VisualElement class="npc-window__root">
+        <ui:VisualElement name="container-smith" class="npc-window">
+            <ui:VisualElement class="npc-window__header">
+                <ui:Label text="Smith" class="npc-window__title"/>
+                <ui:VisualElement name="Smith_Forge--Tab" class="npc-tab-button">
+                    <ui:Label text="Forge" name="Forge_Label" class="npc-tab-button__label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Smith_Market--Tab" class="slot" style="flex-grow: 1; height: 60px;">
-                    <ui:Label text="Market" enable-rich-text="true" name="Market_Label" class="NPC_PanelButtons"/>
+                <ui:VisualElement name="Smith_Market--Tab" class="npc-tab-button">
+                    <ui:Label text="Market" enable-rich-text="true" name="Market_Label" class="npc-tab-button__label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Smith_Salvage--Tab" class="slot" style="flex-grow: 1; height: 60px;">
-                    <ui:Label text="Salvage" name="Salvage_Label" class="NPC_PanelButtons"/>
+                <ui:VisualElement name="Smith_Salvage--Tab" class="npc-tab-button">
+                    <ui:Label text="Salvage" name="Salvage_Label" class="npc-tab-button__label"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="Smith-middle__panel" style="flex-grow: 1;"/>
+            <ui:VisualElement name="Smith-middle__panel" class="npc-window__middle-panel"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

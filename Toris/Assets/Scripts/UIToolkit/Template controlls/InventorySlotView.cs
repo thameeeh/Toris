@@ -25,8 +25,8 @@ namespace OutlandHaven.Inventory
             _owningContainer = owningContainer;
             _uiInventoryEvents = uiInventoryEvents;
 
-            _icon = root.Q<Image>("slot-icon");
-            _qtyLabel = root.Q<Label>("slot-qty");
+            _icon = root.Q<Image>("inventory-slot__icon");
+            _qtyLabel = root.Q<Label>("inventory-slot__qty");
 
             // Register pointer callbacks
             _root.RegisterCallback<PointerDownEvent>(OnPointerDown);

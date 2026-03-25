@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Potion_Cons
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Potion
   Description: 
   Icon: {fileID: 21300000, guid: 5297e4475a1f69346bc43126007a9b22, type: 3}
   MaxStackSize: 16

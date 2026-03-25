@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Shield_Def
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: 
+  ItemName: Shield
   Description: 
   Icon: {fileID: 21300000, guid: 580570b8d0314404bb9915fc5799c4d7, type: 3}
   MaxStackSize: 99

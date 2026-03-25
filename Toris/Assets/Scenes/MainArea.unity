@@ -39188,6 +39188,11 @@ MonoBehaviour:
       BaseItem: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
       States: []
     Count: 1
+  - HeldItem:
+      InstanceID: 
+      BaseItem: {fileID: 11400000, guid: f3168b74f45f17c47bf6c623620169bc, type: 2}
+      States: []
+    Count: 6
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   references:
@@ -61527,10 +61532,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4509164335605956850, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
-      propertyPath: showHudOnStart
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5602856202135280051, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.38137
@@ -61571,10 +61572,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8217352780333300559, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
-      propertyPath: sourceAsset
-      value: 
-      objectReference: {fileID: 9197481963319205126, guid: 3640653ae8e3d104d89c394c12c86324, type: 3}
     - target: {fileID: 8217643317894173914, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
       propertyPath: m_Name
       value: UIViews

@@ -13,8 +13,6 @@ public sealed class BiomeProfile : ScriptableObject
     [Range(0f, 1f)] public float coastlineNoiseStrength01 = 0.25f;
 
     [Header("Signals: Vegetation")]
-    //[Range(0f, 1f)] public float vegetationStart01 = 0.30f;
-    //[Range(0f, 1f)] public float vegetationFull01 = 0.45f;
     public float vegetationRegionScale = 0.0012f;
     [Min(0f)] public float vegetationDensity = 1.0f;
 

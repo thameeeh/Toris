@@ -14,7 +14,7 @@ public sealed class WorldContext
     public BiomeMask Mask { get; private set; }
     public FeatureStamps Stamps { get; private set; }
     public SiteBlockerMap SiteBlockers { get; private set; }
-
+    public RoadAnchorMap RoadAnchors { get; private set; }
     public SitePlacementIndex SitePlacements { get; private set; }
 
     public GateRegistry Gates { get; private set; }
@@ -32,6 +32,7 @@ public sealed class WorldContext
         Stamps = new FeatureStamps();
         SitePlacements = new SitePlacementIndex();
         SiteBlockers = new SiteBlockerMap();
+        RoadAnchors = new RoadAnchorMap();
 
         Gates = new GateRegistry();
         ChunkStates = new ChunkStateStore();
@@ -50,6 +51,7 @@ public sealed class WorldContext
         Stamps.Clear();
         SitePlacements.Clear();
         SiteBlockers.Clear();
+        RoadAnchors.Clear();
 
         Gates.Clear();
         ChunkStates.Clear();

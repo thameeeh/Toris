@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: BBD_Plains
   m_EditorClassIdentifier: Assembly-CSharp::BasicBiomeDefinition
   profile: {fileID: 11400000, guid: f23e01ebabd325941a8a435ba4fac697, type: 2}
+  buildSteps:
+  - {fileID: 11400000, guid: dfa4070e71586214bbfaca211cf832cc, type: 2}
+  - {fileID: 11400000, guid: 5ea2fc4612f40b94bab3d451105fc524, type: 2}

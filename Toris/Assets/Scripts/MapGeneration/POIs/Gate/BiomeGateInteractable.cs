@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BiomeGateInteractable : MonoBehaviour, IInteractable, IPoolable
+public class BiomeGateInteractable : MonoBehaviour, IInteractable, IPoolable, IWorldSiteBridge
 {
     private IGateTransitionService gateTransitionService;
     private Vector2Int gateTile;
@@ -36,5 +36,10 @@ public class BiomeGateInteractable : MonoBehaviour, IInteractable, IPoolable
 
         gateTransitionService = null;
         gateTile = default;
+    }
+
+    public void Initialize(WorldSiteContext siteContext)
+    {
+        Initialize(siteContext.GateTransitionService, siteContext.Placement.CenterTile);
     }
 }

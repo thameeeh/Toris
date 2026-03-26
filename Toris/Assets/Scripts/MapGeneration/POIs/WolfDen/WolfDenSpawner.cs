@@ -104,6 +104,12 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 
         if (den != null)
         {
+            den.Initialized -= HandleDenInitialized;
+            den.Initialized += HandleDenInitialized;
+
+            den.Cleared -= HandleDenCleared;
+            den.Cleared += HandleDenCleared;
+
             den.DamagedAlert -= OnDenDamaged;
             den.DamagedAlert += OnDenDamaged;
         }
@@ -112,10 +118,14 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     private void UnsubscribeFromDen()
     {
         if (den != null)
+        {
+            den.Initialized -= HandleDenInitialized;
+            den.Cleared -= HandleDenCleared;
             den.DamagedAlert -= OnDenDamaged;
+        }
     }
 
-    public void OnDenInitialized()
+    private void HandleDenInitialized()
     {
         if (den == null)
             den = GetComponent<WolfDen>();
@@ -159,7 +169,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         }
     }
 
-    public void OnDenCleared()
+    private void HandleDenCleared()
     {
         ready = false;
         respawnTimer = 0f;
@@ -223,7 +233,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 
         if (!leader.pack.EnsureLeader(leader))
             return false;
-        
+
         hasTriggeredMaxAlertHowl = true;
 
         leader.ClearInvestigationTarget();

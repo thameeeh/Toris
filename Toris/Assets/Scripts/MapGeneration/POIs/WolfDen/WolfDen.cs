@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
+public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteBridge
 {
     [Header("HP")]
     [SerializeField] private float maxHp = 50f;
@@ -23,6 +23,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
     public bool IsCleared => cleared;
     public Vector3 WorldPosition => transform.position;
 
+    public event Action Initialized;
+    public event Action Cleared;
     public event Action<Vector3> DamagedAlert;
 
     public float MaxHealth { get; set; }
@@ -53,10 +55,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         }
 
         IsInitialized = true;
-
-        var spawner = GetComponent<WolfDenSpawner>();
-        if (spawner != null)
-            spawner.OnDenInitialized();
+        Initialized?.Invoke();
     }
 
     public void OnSpawned()
@@ -70,6 +69,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
     public void OnDespawned()
     {
+        Initialized = null;
+        Cleared = null;
         DamagedAlert = null;
         chunkSiteStateService = null;
     }
@@ -109,9 +110,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         foreach (var c in GetComponentsInChildren<Collider2D>())
             c.enabled = false;
 
-        var spawner = GetComponent<WolfDenSpawner>();
-        if (spawner != null)
-            spawner.OnDenCleared();
+        Cleared?.Invoke();
     }
 
     private void ApplyVisualState(bool collapsed)
@@ -121,5 +120,13 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
         if (collapsed && animator != null && !string.IsNullOrEmpty(collapseTrigger))
             animator.SetTrigger(collapseTrigger);
+    }
+    public void Initialize(WorldSiteContext siteContext)
+    {
+        Initialize(
+            siteContext.ChunkSiteStateService,
+            siteContext.Placement.CenterTile,
+            siteContext.Placement.ChunkCoord,
+            siteContext.SpawnId);
     }
 }

@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: BBD_Forest
   m_EditorClassIdentifier: Assembly-CSharp::BasicBiomeDefinition
   profile: {fileID: 11400000, guid: fd09a857c7e074e43a97934893631ef6, type: 2}
+  buildSteps:
+  - {fileID: 0}
+  - {fileID: 0}

@@ -14,7 +14,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
     private bool cleared;
 
-    private WorldGenRunner runner;
+    private IChunkSiteStateService chunkSiteStateService;
     private Vector2Int denTile;
     private Vector2Int chunkCoord;
     private int spawnId;
@@ -25,13 +25,12 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
     public event Action<Vector3> DamagedAlert;
 
-    // --- IDamageable ---
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
 
-    public void Initialize(WorldGenRunner runner, Vector2Int denTile, Vector2Int chunkCoord, int spawnId)
+    public void Initialize(IChunkSiteStateService chunkSiteStateService, Vector2Int denTile, Vector2Int chunkCoord, int spawnId)
     {
-        this.runner = runner;
+        this.chunkSiteStateService = chunkSiteStateService;
         this.denTile = denTile;
         this.chunkCoord = chunkCoord;
         this.spawnId = spawnId;
@@ -42,7 +41,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
         MaxHealth = maxHp;
         CurrentHealth = MaxHealth;
 
-        cleared = runner.Context.ChunkStates.GetChunkState(chunkCoord).consumedIds.Contains(spawnId);
+        cleared = chunkSiteStateService != null && chunkSiteStateService.IsConsumed(chunkCoord, spawnId);
         ApplyVisualState(cleared);
 
         if (cleared)
@@ -72,6 +71,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
     public void OnDespawned()
     {
         DamagedAlert = null;
+        chunkSiteStateService = null;
     }
 
     public void Damage(float damageAmount)
@@ -103,13 +103,11 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable
 
         cleared = true;
 
-        runner.Context.ChunkStates.MarkConsumed(chunkCoord, spawnId);
+        chunkSiteStateService?.MarkConsumed(chunkCoord, spawnId);
         ApplyVisualState(true);
 
         foreach (var c in GetComponentsInChildren<Collider2D>())
             c.enabled = false;
-
-        //Debug.Log("Den Cleared");
 
         var spawner = GetComponent<WolfDenSpawner>();
         if (spawner != null)

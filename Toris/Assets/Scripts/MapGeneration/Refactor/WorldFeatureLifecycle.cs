@@ -6,6 +6,8 @@ public sealed class WorldFeatureLifecycle
     private readonly WorldGenRunner worldGenRunner;
     private readonly WorldContext worldContext;
     private readonly WorldPoiPoolManager poiPoolManager;
+    private readonly IGateTransitionService gateTransitionService;
+    private readonly IChunkSiteStateService chunkSiteStateService;
 
     private SitePlacementIndex sitePlacementIndex;
 
@@ -25,6 +27,9 @@ public sealed class WorldFeatureLifecycle
         this.worldGenRunner = worldGenRunner;
         this.worldContext = worldContext;
         this.poiPoolManager = poiPoolManager;
+
+        gateTransitionService = new GateTransitionServiceAdapter(worldGenRunner);
+        chunkSiteStateService = new ChunkSiteStateServiceAdapter(worldContext);
     }
 
     public void RebuildPlacements()
@@ -143,12 +148,70 @@ public sealed class WorldFeatureLifecycle
 
     private GameObject SpawnGateSite(SitePlacement placement, Transform parent)
     {
-        return worldGenRunner.SpawnGateSiteFromLifecycle(placement, parent);
+        GameObject prefab = worldContext.Biome != null ? worldContext.Biome.GatePrefab : null;
+        if (prefab == null || worldGenRunner.Grid == null || poiPoolManager == null)
+            return null;
+
+        int spawnId = worldContext.ChunkStates.MakeSpawnId(
+            worldContext.ActiveBiome.Seed,
+            placement.ChunkCoord,
+            placement.LocalIndex,
+            WorldGenRunner.GateSpawnSaltValue);
+
+        ChunkStateStore.ChunkState chunkState = worldContext.ChunkStates.GetChunkState(placement.ChunkCoord);
+        if (chunkState.consumedIds.Contains(spawnId))
+            return null;
+
+        Vector3 worldPosition = worldGenRunner.Grid.GetCellCenterWorld(
+            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
+
+        GameObject gateObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, parent);
+        if (gateObject == null)
+            return null;
+
+        BiomeGateInteractable gateInteractable = gateObject.GetComponentInChildren<BiomeGateInteractable>();
+        if (gateInteractable != null)
+        {
+            gateInteractable.Initialize(gateTransitionService, placement.CenterTile);
+        }
+        else
+        {
+            Debug.LogWarning($"Gate prefab '{prefab.name}' has no BiomeGateInteractable", gateObject);
+        }
+
+        return gateObject;
     }
 
     private GameObject SpawnWolfDenSite(SitePlacement placement, Transform parent)
     {
-        return worldGenRunner.SpawnWolfDenSiteFromLifecycle(placement, parent);
+        GameObject prefab = worldContext.Biome != null ? worldContext.Biome.WolfDenPrefab : null;
+        if (prefab == null || worldGenRunner.Grid == null || poiPoolManager == null)
+            return null;
+
+        int spawnId = worldContext.ChunkStates.MakeSpawnId(
+            worldContext.ActiveBiome.Seed,
+            placement.ChunkCoord,
+            placement.LocalIndex,
+            WorldGenRunner.WolfDenSpawnSaltValue);
+
+        Vector3 worldPosition = worldGenRunner.Grid.GetCellCenterWorld(
+            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
+
+        GameObject denObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, parent);
+        if (denObject == null)
+            return null;
+
+        WolfDen wolfDen = denObject.GetComponentInChildren<WolfDen>();
+        if (wolfDen != null)
+        {
+            wolfDen.Initialize(chunkSiteStateService, placement.CenterTile, placement.ChunkCoord, spawnId);
+        }
+        else
+        {
+            Debug.LogWarning($"WolfDen prefab '{prefab.name}' has no WolfDen component", denObject);
+        }
+
+        return denObject;
     }
 
     private void ReleaseSiteInstance(GameObject instance)

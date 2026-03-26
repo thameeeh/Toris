@@ -2,30 +2,29 @@ using UnityEngine;
 
 public class BiomeGateInteractable : MonoBehaviour, IInteractable, IPoolable
 {
-    private WorldGenRunner _runner;
-    private Vector2Int _gateTile;
+    private IGateTransitionService gateTransitionService;
+    private Vector2Int gateTile;
 
-    public void Initialize(WorldGenRunner runner, Vector2Int gateTile)
+    public void Initialize(IGateTransitionService gateTransitionService, Vector2Int gateTile)
     {
-        _runner = runner;
-        _gateTile = gateTile;
+        this.gateTransitionService = gateTransitionService;
+        this.gateTile = gateTile;
 
         // disable colliders/visuals, reset them here
     }
 
     public void Interact(GameObject interactor)
     {
-        if (_runner == null)
+        if (gateTransitionService == null)
         {
-            Debug.LogWarning("GateInteractable: runner not injected.", this);
+            Debug.LogWarning("GateInteractable: gate transition service not injected.", this);
             return;
         }
 
         // do VFX/SFX/animation here
-        _runner.UseGate(_gateTile);
+        gateTransitionService.UseGate(gateTile);
     }
 
-    // --- Pool lifecycle ---
     public void OnSpawned()
     {
         // reset animator/highlight/prompt when you add them
@@ -33,10 +32,9 @@ public class BiomeGateInteractable : MonoBehaviour, IInteractable, IPoolable
 
     public void OnDespawned()
     {
-        // Stop any delayed logic
         StopAllCoroutines();
 
-        _runner = null;
-        _gateTile = default;
+        gateTransitionService = null;
+        gateTile = default;
     }
 }

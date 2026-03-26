@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
 public sealed class WorldGenRunner : MonoBehaviour
@@ -64,6 +65,11 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     private const uint GateSpawnSalt = 0x6A7E1234u;
     private const uint WolfDenSpawnSalt = 0xA11CE5EDu;
+
+    public static uint GateSpawnSaltValue => GateSpawnSalt;
+    public static uint WolfDenSpawnSaltValue => WolfDenSpawnSalt;
+
+    public Grid Grid => grid;
     #endregion
 
     #region Public API
@@ -571,74 +577,5 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         nav.Initialize(groundMap, waterMap);
         nav.SetDenRegistry(ctx.Dens);
-    }
-
-    // bridge lifecycle temp
-    public GameObject SpawnGateSiteFromLifecycle(SitePlacement placement, Transform parent)
-    {
-        GameObject prefab = ctx.Biome != null ? ctx.Biome.GatePrefab : null;
-        if (prefab == null || grid == null || poiPool == null)
-            return null;
-
-        int spawnId = ctx.ChunkStates.MakeSpawnId(
-            ctx.ActiveBiome.Seed,
-            placement.ChunkCoord,
-            placement.LocalIndex,
-            GateSpawnSalt);
-
-        ChunkStateStore.ChunkState chunkState = ctx.ChunkStates.GetChunkState(placement.ChunkCoord);
-        if (chunkState.consumedIds.Contains(spawnId))
-            return null;
-
-        Vector3 worldPos = grid.GetCellCenterWorld(
-            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
-
-        GameObject gateObject = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
-        if (gateObject == null)
-            return null;
-
-        BiomeGateInteractable gateInteractable = gateObject.GetComponentInChildren<BiomeGateInteractable>();
-        if (gateInteractable != null)
-        {
-            gateInteractable.Initialize(this, placement.CenterTile);
-        }
-        else
-        {
-            Debug.LogWarning($"Gate prefab '{prefab.name}' has no GateInteractable", gateObject);
-        }
-
-        return gateObject;
-    }
-
-    public GameObject SpawnWolfDenSiteFromLifecycle(SitePlacement placement, Transform parent)
-    {
-        GameObject prefab = ctx.Biome != null ? ctx.Biome.WolfDenPrefab : null;
-        if (prefab == null || grid == null || poiPool == null)
-            return null;
-
-        int spawnId = ctx.ChunkStates.MakeSpawnId(
-            ctx.ActiveBiome.Seed,
-            placement.ChunkCoord,
-            placement.LocalIndex,
-            WolfDenSpawnSalt);
-
-        Vector3 worldPos = grid.GetCellCenterWorld(
-            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
-
-        GameObject denObject = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
-        if (denObject == null)
-            return null;
-
-        WolfDen wolfDen = denObject.GetComponentInChildren<WolfDen>();
-        if (wolfDen != null)
-        {
-            wolfDen.Initialize(this, placement.CenterTile, placement.ChunkCoord, spawnId);
-        }
-        else
-        {
-            Debug.LogWarning($"WolfDen prefab '{prefab.name}' has no WolfDen component", denObject);
-        }
-
-        return denObject;
     }
 }

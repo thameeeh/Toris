@@ -69,12 +69,14 @@ public static class DenFeatureBuilder
 
         for (int i = 0; i < chosen.Count; i++)
         {
-            Vector2Int c = chosen[i];
+            Vector2Int centerTile = chosen[i];
 
             if (bp.wolfDenGroundTile != null)
-                ctx.Stamps.StampRectGround(c, stampSize, stampSize, bp.wolfDenGroundTile);
+                ctx.Stamps.StampRectGround(centerTile, stampSize, stampSize, bp.wolfDenGroundTile);
 
-            ctx.Dens.AddDenFootprint(c, stampSize);
+            ctx.Dens.AddDenFootprint(centerTile, stampSize);
+            ctx.SiteBlockers.AddSquareFootprint(centerTile, stampSize);
+            ctx.AddWolfDenSite(centerTile);
         }
 
         if (chosen.Count < targetMin)

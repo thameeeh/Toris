@@ -22,7 +22,7 @@ public class TileNavWorld : MonoBehaviour
     private HashSet<TileBase> _walkableSet;
     private HashSet<TileBase> _blockingSet;
 
-    private DenRegistry _dens;
+    private SiteBlockerMap siteBlockers;
 
     // We assume one global chunk size for nav; set from first BuildNavChunk call
     private int _chunkSize;
@@ -106,8 +106,12 @@ public class TileNavWorld : MonoBehaviour
         _navChunks.Remove(chunkCoord);
     }
 
-    // --- Public API: used by pathfinding / AI ---
 
+    // --- Public API: used by pathfinding / AI ---
+    private bool IsBlockedBySite(Vector2Int tile)
+    {
+        return siteBlockers != null && siteBlockers.IsBlocked(tile);
+    }
     /// <summary>
     /// Convert world position to tile coordinates.
     /// </summary>
@@ -137,9 +141,6 @@ public class TileNavWorld : MonoBehaviour
         if (_chunkSize <= 0)
             return false;
 
-        if (_dens != null && _dens.IsDenTile(worldCell))
-            return false;
-
         int chunkSize = _chunkSize;
 
         int cx = Mathf.FloorToInt(worldCell.x / (float)chunkSize);
@@ -155,9 +156,14 @@ public class TileNavWorld : MonoBehaviour
         if ((uint)localX >= (uint)chunkSize || (uint)localY >= (uint)chunkSize)
             return false;
 
-        return navChunk.GetWalkable(localX, localY);
-    }
+        if (!navChunk.GetWalkable(localX, localY))
+            return false;
 
+        if (IsBlockedBySite(worldCell))
+            return false;
+
+        return true;
+    }
 
     /// <summary>
     /// Quick helper for worldPosition -> tile cell -> walkable.
@@ -210,9 +216,9 @@ public class TileNavWorld : MonoBehaviour
         }
     }
 
-    public void SetDenRegistry(DenRegistry dens)
+    public void SetSiteBlockers(SiteBlockerMap siteBlockers)
     {
-        _dens = dens;
+        this.siteBlockers = siteBlockers;
     }
 
 #if UNITY_EDITOR

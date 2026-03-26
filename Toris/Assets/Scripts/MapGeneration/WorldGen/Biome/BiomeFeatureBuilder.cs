@@ -91,12 +91,15 @@ public static class BiomeFeatureBuilder
 
     private static void StampGate(WorldContext ctx, Vector2Int gateCenter)
     {
-        if (ctx.Biome == null) return;
+        if (ctx.Biome == null)
+            return;
 
-        int s = Mathf.Max(1, ctx.Biome.gateSize);
+        int gateSize = Mathf.Max(1, ctx.Biome.gateSize);
+
         if (ctx.Biome.gateGroundTile != null)
-            ctx.Stamps.StampRectGround(gateCenter, s, s, ctx.Biome.gateGroundTile);
+            ctx.Stamps.StampRectGround(gateCenter, gateSize, gateSize, ctx.Biome.gateGroundTile);
 
-        ctx.Gates.AddGateFootprint(gateCenter, s);
+        ctx.Gates.AddGateFootprint(gateCenter, gateSize);
+        ctx.AddGateSite(gateCenter);
     }
 }

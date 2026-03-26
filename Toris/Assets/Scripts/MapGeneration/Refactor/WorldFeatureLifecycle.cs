@@ -34,7 +34,7 @@ public sealed class WorldFeatureLifecycle
 
     public void RebuildPlacements()
     {
-        sitePlacementIndex = SitePlacementBuilder.Build(worldContext);
+        sitePlacementIndex = worldContext != null ? worldContext.SitePlacements : null;
     }
 
     public void ClearAll()

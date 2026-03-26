@@ -291,6 +291,8 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         ctx.BindBiome(def, biomeInstance);
 
+        TileNavWorld.Instance.SetSiteBlockers(ctx.SiteBlockers);
+
         applier.ClearAll();
         worldFeatureLifecycle?.ClearAll();
         worldFeatureLifecycle?.RebuildPlacements();
@@ -576,6 +578,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
 
         nav.Initialize(groundMap, waterMap);
-        nav.SetDenRegistry(ctx.Dens);
+        nav.SetSiteBlockers(ctx.SiteBlockers);
     }
 }

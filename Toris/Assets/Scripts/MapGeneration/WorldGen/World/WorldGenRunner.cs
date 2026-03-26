@@ -38,7 +38,6 @@ public sealed class WorldGenRunner : MonoBehaviour
     #endregion
 
     #region Runtime State
-
     private int biomeIndex = 0;
     private float lastGateTime = -999f;
 
@@ -59,17 +58,9 @@ public sealed class WorldGenRunner : MonoBehaviour
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
 
-    private readonly Dictionary<Vector2Int, List<GameObject>> spawnedByChunk
-    = new Dictionary<Vector2Int, List<GameObject>>();
-
-    private readonly Dictionary<Vector2Int, List<Vector2Int>> gateCentersByChunk = new();
-    private readonly Dictionary<Vector2Int, List<Vector2Int>> denCentersByChunk = new();
-
-    private readonly Dictionary<Vector2Int, Transform> activeChunkRoots = new();
-    private readonly Dictionary<Vector2Int, Transform> cachedChunkRoots = new();
-
-    private Transform poiChunkRootsActive;
-    private Transform poiChunkRootsCached;
+    // refactor
+    private WorldFeatureLifecycle worldFeatureLifecycle;
+    //
 
     private const uint GateSpawnSalt = 0x6A7E1234u;
     private const uint WolfDenSpawnSalt = 0xA11CE5EDu;
@@ -117,6 +108,8 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         EnsurePoiPool();
         EnsureNavWorld();
+
+        worldFeatureLifecycle = new WorldFeatureLifecycle(this, ctx, poiPool);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
 
@@ -215,8 +208,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
             TileNavWorld.Instance?.BuildNavChunk(c, profile.chunkSize);
 
-            SpawnGatesForChunk(c);
-            SpawnDensForChunk(c);
+            worldFeatureLifecycle?.ActivateChunk(c);
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
 
             loaded.Add(c);
@@ -256,10 +248,11 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (!clearOnDisable || profile == null)
             return;
 
-        DespawnAllSpawned();
+        worldFeatureLifecycle?.ClearAll();
+        DespawnRunGate();
 
-        foreach (var c in loaded)
-            applier.ClearChunk(c, profile.chunkSize);
+        foreach (var chunkCoord in loaded)
+            applier.ClearChunk(chunkCoord, profile.chunkSize);
 
         loaded.Clear();
         queued.Clear();
@@ -292,10 +285,9 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         ctx.BindBiome(def, biomeInstance);
 
-        RebuildPoiLookup();
         applier.ClearAll();
-        DespawnAllSpawned();
-        ClearCachedChunkRoots();
+        worldFeatureLifecycle?.ClearAll();
+        worldFeatureLifecycle?.RebuildPlacements();
         SpawnRunGateForBiome();
 
         loaded.Clear();
@@ -390,7 +382,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             Vector2Int c = candidates[i].c;
 
             NotifyChunkUnloading(c);
-            DespawnObjectsForChunk(c);
+            worldFeatureLifecycle?.DeactivateChunk(c);
             applier.ClearChunk(c, profile.chunkSize);
 
             TileNavWorld.Instance?.ClearNavChunk(c);
@@ -404,16 +396,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         return c.x >= minChunk.x && c.x <= maxChunk.x &&
                c.y >= minChunk.y && c.y <= maxChunk.y;
     }
-    private void ClearCachedChunkRoots()
-    {
-        foreach (var kvp in cachedChunkRoots)
-        {
-            if (kvp.Value != null)
-                Destroy(kvp.Value.gameObject);
-        }
-        cachedChunkRoots.Clear();
-    }
-
     #endregion
 
     #region Camera Rect -> Chunk Rect
@@ -513,109 +495,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         OnChunkUnloading?.Invoke(chunkCoord, st);
     }
 
-    // Gate helpers
-    private void SpawnGatesForChunk(Vector2Int chunkCoord)
-    {
-        var prefab = ctx.Biome != null ? ctx.Biome.GatePrefab : null;
-        if (prefab == null || grid == null)
-            return;
-
-        if (!gateCentersByChunk.TryGetValue(chunkCoord, out var centers) || centers == null || centers.Count == 0)
-            return;
-
-        int size = profile.chunkSize;
-        int baseX = chunkCoord.x * size;
-        int baseY = chunkCoord.y * size;
-
-        Transform parent = GetChunkGroup(chunkCoord, "Gates");
-
-        for (int i = 0; i < centers.Count; i++)
-        {
-            Vector2Int gateCenter = centers[i];
-
-            int lx = gateCenter.x - baseX;
-            int ly = gateCenter.y - baseY;
-            int localIndex = lx + ly * size;
-
-            int spawnId = ctx.ChunkStates.MakeSpawnId(ctx.ActiveBiome.Seed, chunkCoord, localIndex, GateSpawnSalt);
-
-            var st = ctx.ChunkStates.GetChunkState(chunkCoord);
-            if (st.consumedIds.Contains(spawnId))
-                continue;
-
-            Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(gateCenter.x, gateCenter.y, 0));
-
-            var go = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
-            if (go == null)
-                continue;
-
-            var gate = go.GetComponentInChildren<BiomeGateInteractable>();
-            if (gate != null)
-            {
-                gate.Initialize(this, gateCenter);
-            }
-            else
-            {
-                Debug.LogWarning($"Gate prefab '{prefab.name}' has no GateInteractable", go);
-            }
-
-            if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
-            {
-                list = new List<GameObject>(4);
-                spawnedByChunk.Add(chunkCoord, list);
-            }
-            list.Add(go);
-        }
-    }
-
-    private void DespawnObjectsForChunk(Vector2Int chunkCoord)
-    {
-        if (spawnedByChunk.TryGetValue(chunkCoord, out var list))
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] != null)
-                    poiPool.Release(list[i]);
-            }
-
-            spawnedByChunk.Remove(chunkCoord);
-        }
-
-        if (activeChunkRoots.TryGetValue(chunkCoord, out var root) && root != null)
-        {
-            root.gameObject.SetActive(false);
-            root.SetParent(poiChunkRootsCached, false);
-
-            activeChunkRoots.Remove(chunkCoord);
-            cachedChunkRoots[chunkCoord] = root;
-        }
-    }
-
-    private void DespawnAllSpawned()
-    {
-        foreach (var kvp in spawnedByChunk)
-        {
-            var list = kvp.Value;
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] != null)
-                    poiPool.Release(list[i]);
-            }
-        }
-        spawnedByChunk.Clear();
-
-        foreach (var kvp in activeChunkRoots)
-        {
-            var root = kvp.Value;
-            if (root == null) continue;
-
-            root.gameObject.SetActive(false);
-            root.SetParent(poiChunkRootsCached, false);
-            cachedChunkRoots[kvp.Key] = root;
-        }
-        activeChunkRoots.Clear();
-    }
-
     private void EnsurePoiPool()
     {
         if (poiPool == null)
@@ -623,23 +502,6 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         if (poiPool == null)
             poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
-
-        // Chunk-root parents live under the pool's Active root so hierarchy stays tidy
-        var active = poiPool.GetActiveRoot();
-
-        if (poiChunkRootsActive == null)
-        {
-            var go = new GameObject("ChunkRoots");
-            go.transform.SetParent(active, false);
-            poiChunkRootsActive = go.transform;
-        }
-
-        if (poiChunkRootsCached == null)
-        {
-            var go = new GameObject("ChunkRoots (Cached)");
-            go.transform.SetParent(active, false);
-            poiChunkRootsCached = go.transform;
-        }
     }
 
     public void UseGate(Vector2Int gateTile)
@@ -694,124 +556,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         runGateInstance = poiPool.Spawn(prefab, worldPos, Quaternion.identity, runGateRoot);
     }
 
-    // Wolf Den
-    private void SpawnDensForChunk(Vector2Int chunkCoord)
-    {
-        var prefab = ctx.Biome != null ? ctx.Biome.WolfDenPrefab : null;
-        if (prefab == null || grid == null)
-            return;
-
-        if (!denCentersByChunk.TryGetValue(chunkCoord, out var centers) || centers == null || centers.Count == 0)
-            return;
-
-        int size = profile.chunkSize;
-        int baseX = chunkCoord.x * size;
-        int baseY = chunkCoord.y * size;
-
-        Transform parent = GetChunkGroup(chunkCoord, "Dens");
-
-        for (int i = 0; i < centers.Count; i++)
-        {
-            Vector2Int denCenter = centers[i];
-
-            int lx = denCenter.x - baseX;
-            int ly = denCenter.y - baseY;
-            int localIndex = lx + ly * size;
-
-            int spawnId = ctx.ChunkStates.MakeSpawnId(ctx.ActiveBiome.Seed, chunkCoord, localIndex, WolfDenSpawnSalt);
-
-            //if (st.consumedIds.Contains(spawnId))
-            //    continue;
-            var st = ctx.ChunkStates.GetChunkState(chunkCoord);
-            bool consumed = st.consumedIds.Contains(spawnId);
-
-            Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(denCenter.x, denCenter.y, 0));
-
-            var go = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
-            if (go == null)
-                continue;
-
-            var den = go.GetComponentInChildren<WolfDen>();
-            if (den != null)
-                den.Initialize(this, denCenter, chunkCoord, spawnId);
-            else
-                Debug.LogWarning($"WolfDen prefab '{prefab.name}' has no WolfDen component", go);
-
-            if (!spawnedByChunk.TryGetValue(chunkCoord, out var list))
-            {
-                list = new List<GameObject>(4);
-                spawnedByChunk.Add(chunkCoord, list);
-            }
-            list.Add(go);
-        }
-    }
-
-    private void RebuildPoiLookup()
-    {
-        gateCentersByChunk.Clear();
-        denCentersByChunk.Clear();
-
-        int size = profile.chunkSize;
-
-        foreach (var c in ctx.Gates.GateCenters)
-        {
-            Vector2Int ch = TileToChunk(c, size);
-
-            if (!gateCentersByChunk.TryGetValue(ch, out var list))
-                gateCentersByChunk[ch] = list = new List<Vector2Int>(2);
-
-            list.Add(c);
-        }
-
-        foreach (var c in ctx.Dens.DenCenters)
-        {
-            Vector2Int ch = TileToChunk(c, size);
-
-            if (!denCentersByChunk.TryGetValue(ch, out var list))
-                denCentersByChunk[ch] = list = new List<Vector2Int>(2);
-
-            list.Add(c);
-        }
-    }
-
-    private Transform GetChunkRoot(Vector2Int chunkCoord)
-    {
-        if (activeChunkRoots.TryGetValue(chunkCoord, out var root) && root != null)
-            return root;
-
-        // Reuse cached folder if we have it
-        if (cachedChunkRoots.TryGetValue(chunkCoord, out var cached) && cached != null)
-        {
-            cachedChunkRoots.Remove(chunkCoord);
-
-            cached.SetParent(poiChunkRootsActive, false);
-            cached.gameObject.SetActive(true);
-
-            activeChunkRoots[chunkCoord] = cached;
-            return cached;
-        }
-
-        // Create new
-        var go = new GameObject($"Chunk ({chunkCoord.x}, {chunkCoord.y})");
-        go.transform.SetParent(poiChunkRootsActive, false);
-
-        activeChunkRoots[chunkCoord] = go.transform;
-        return go.transform;
-    }
-
-    private Transform GetChunkGroup(Vector2Int chunkCoord, string groupName)
-    {
-        Transform root = GetChunkRoot(chunkCoord);
-
-        var child = root.Find(groupName);
-        if (child != null)
-            return child;
-
-        var go = new GameObject(groupName);
-        go.transform.SetParent(root, false);
-        return go.transform;
-    }
-
     #endregion
 
     // Tile nav
@@ -829,4 +573,72 @@ public sealed class WorldGenRunner : MonoBehaviour
         nav.SetDenRegistry(ctx.Dens);
     }
 
+    // bridge lifecycle temp
+    public GameObject SpawnGateSiteFromLifecycle(SitePlacement placement, Transform parent)
+    {
+        GameObject prefab = ctx.Biome != null ? ctx.Biome.GatePrefab : null;
+        if (prefab == null || grid == null || poiPool == null)
+            return null;
+
+        int spawnId = ctx.ChunkStates.MakeSpawnId(
+            ctx.ActiveBiome.Seed,
+            placement.ChunkCoord,
+            placement.LocalIndex,
+            GateSpawnSalt);
+
+        ChunkStateStore.ChunkState chunkState = ctx.ChunkStates.GetChunkState(placement.ChunkCoord);
+        if (chunkState.consumedIds.Contains(spawnId))
+            return null;
+
+        Vector3 worldPos = grid.GetCellCenterWorld(
+            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
+
+        GameObject gateObject = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
+        if (gateObject == null)
+            return null;
+
+        BiomeGateInteractable gateInteractable = gateObject.GetComponentInChildren<BiomeGateInteractable>();
+        if (gateInteractable != null)
+        {
+            gateInteractable.Initialize(this, placement.CenterTile);
+        }
+        else
+        {
+            Debug.LogWarning($"Gate prefab '{prefab.name}' has no GateInteractable", gateObject);
+        }
+
+        return gateObject;
+    }
+
+    public GameObject SpawnWolfDenSiteFromLifecycle(SitePlacement placement, Transform parent)
+    {
+        GameObject prefab = ctx.Biome != null ? ctx.Biome.WolfDenPrefab : null;
+        if (prefab == null || grid == null || poiPool == null)
+            return null;
+
+        int spawnId = ctx.ChunkStates.MakeSpawnId(
+            ctx.ActiveBiome.Seed,
+            placement.ChunkCoord,
+            placement.LocalIndex,
+            WolfDenSpawnSalt);
+
+        Vector3 worldPos = grid.GetCellCenterWorld(
+            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
+
+        GameObject denObject = poiPool.Spawn(prefab, worldPos, Quaternion.identity, parent);
+        if (denObject == null)
+            return null;
+
+        WolfDen wolfDen = denObject.GetComponentInChildren<WolfDen>();
+        if (wolfDen != null)
+        {
+            wolfDen.Initialize(this, placement.CenterTile, placement.ChunkCoord, spawnId);
+        }
+        else
+        {
+            Debug.LogWarning($"WolfDen prefab '{prefab.name}' has no WolfDen component", denObject);
+        }
+
+        return denObject;
+    }
 }

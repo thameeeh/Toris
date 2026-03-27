@@ -12,6 +12,8 @@ public sealed class ChunkStateStore
         public bool initialized;
         public readonly HashSet<int> claimedSpawnIds = new HashSet<int>();
         public readonly HashSet<int> consumedIds = new HashSet<int>();
+        public readonly Dictionary<int, WorldSiteStateRecord> siteStates =
+    new Dictionary<int, WorldSiteStateRecord>();
     }
 
     private readonly Dictionary<Vector2Int, ChunkState> chunkStates = new Dictionary<Vector2Int, ChunkState>();
@@ -63,5 +65,22 @@ public sealed class ChunkStateStore
     {
         var st = GetChunkState(chunkCoord);
         st.consumedIds.Add(spawnId);
+    }
+
+    public WorldSiteStateHandle GetSiteState(Vector2Int chunkCoord, int spawnId)
+    {
+        ChunkState chunkState = GetChunkState(chunkCoord);
+
+        if (!chunkState.siteStates.TryGetValue(spawnId, out WorldSiteStateRecord siteStateRecord))
+        {
+            siteStateRecord = new WorldSiteStateRecord();
+
+            if (chunkState.consumedIds.Contains(spawnId))
+                siteStateRecord.IsConsumed = true;
+
+            chunkState.siteStates.Add(spawnId, siteStateRecord);
+        }
+
+        return new WorldSiteStateHandle(siteStateRecord, chunkState.consumedIds, spawnId);
     }
 }

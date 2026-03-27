@@ -14,7 +14,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
 
     private bool cleared;
 
-    private IChunkSiteStateService chunkSiteStateService;
+    private IWorldSiteStateService worldSiteStateService;
+    private WorldSiteStateHandle worldSiteState;
     private Vector2Int denTile;
     private Vector2Int chunkCoord;
     private int spawnId;
@@ -30,12 +31,16 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
 
-    public void Initialize(IChunkSiteStateService chunkSiteStateService, Vector2Int denTile, Vector2Int chunkCoord, int spawnId)
+    public void Initialize(IWorldSiteStateService worldSiteStateService, Vector2Int denTile, Vector2Int chunkCoord, int spawnId)
     {
-        this.chunkSiteStateService = chunkSiteStateService;
+        this.worldSiteStateService = worldSiteStateService;
         this.denTile = denTile;
         this.chunkCoord = chunkCoord;
         this.spawnId = spawnId;
+
+        worldSiteState = worldSiteStateService != null
+            ? worldSiteStateService.GetSiteState(chunkCoord, spawnId)
+            : default;
 
         foreach (var c in GetComponentsInChildren<Collider2D>(true))
             c.enabled = true;
@@ -43,7 +48,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         MaxHealth = maxHp;
         CurrentHealth = MaxHealth;
 
-        cleared = chunkSiteStateService != null && chunkSiteStateService.IsConsumed(chunkCoord, spawnId);
+        cleared = worldSiteState.IsConsumed;
         ApplyVisualState(cleared);
 
         if (cleared)
@@ -56,7 +61,6 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
 
         IsInitialized = true;
     }
-
     public void OnSpawned()
     {
         if (animator != null)
@@ -71,7 +75,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         Initialized = null;
         Cleared = null;
         DamagedAlert = null;
-        chunkSiteStateService = null;
+        worldSiteStateService = null;
+        worldSiteState = default;
 
         IsInitialized = false;
         cleared = false;
@@ -113,7 +118,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
 
         cleared = true;
 
-        chunkSiteStateService?.MarkConsumed(chunkCoord, spawnId);
+        worldSiteState.MarkConsumed();
         ApplyVisualState(true);
 
         foreach (var c in GetComponentsInChildren<Collider2D>())
@@ -133,7 +138,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
     public void Initialize(WorldSiteContext siteContext)
     {
         Initialize(
-            siteContext.ChunkSiteStateService,
+            siteContext.WorldSiteStateService,
             siteContext.Placement.CenterTile,
             siteContext.Placement.ChunkCoord,
             siteContext.SpawnId);

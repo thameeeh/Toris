@@ -16,10 +16,8 @@ MonoBehaviour:
   locomotionIdleSuffix: Idle
   locomotionWalkSuffix: Walk
   actionMap:
-  - actionKey: Shoot
-    defaultSuffix: Shoot
   - actionKey: Hurt
     defaultSuffix: Hurt
   - actionKey: Death
     defaultSuffix: Death
-  shootTag: Shoot
+  shootTag: 

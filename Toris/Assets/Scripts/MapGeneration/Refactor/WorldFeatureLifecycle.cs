@@ -9,7 +9,7 @@ public sealed class WorldFeatureLifecycle
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly IGateTransitionService gateTransitionService;
-    private readonly IChunkSiteStateService chunkSiteStateService;
+    private readonly IWorldSiteStateService worldSiteStateService;
 
     private SitePlacementIndex sitePlacementIndex;
 
@@ -36,7 +36,7 @@ public sealed class WorldFeatureLifecycle
         this.gateTransitionService = gateTransitionService;
         this.worldEncounterServices = worldEncounterServices;
 
-        chunkSiteStateService = new ChunkSiteStateServiceAdapter(worldRuntimeState);
+        worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
     }
 
     public void RebuildPlacements()
@@ -150,8 +150,8 @@ public sealed class WorldFeatureLifecycle
 
         if (siteDefinition.skipIfConsumed)
         {
-            ChunkStateStore.ChunkState chunkState = worldRuntimeState.ChunkStates.GetChunkState(placement.ChunkCoord);
-            if (chunkState.consumedIds.Contains(spawnId))
+            WorldSiteStateHandle siteState = worldSiteStateService.GetSiteState(placement.ChunkCoord, spawnId);
+            if (siteState.IsConsumed)
                 return null;
         }
 
@@ -178,7 +178,7 @@ public sealed class WorldFeatureLifecycle
             placement,
             spawnId,
             gateTransitionService,
-            chunkSiteStateService,
+            worldSiteStateService,
             worldEncounterServices);
 
         for (int i = 0; i < siteContextConsumers.Length; i++)

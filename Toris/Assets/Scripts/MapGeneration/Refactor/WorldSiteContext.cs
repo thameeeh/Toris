@@ -5,20 +5,20 @@ public readonly struct WorldSiteContext
     public readonly SitePlacement Placement;
     public readonly int SpawnId;
     public readonly IGateTransitionService GateTransitionService;
-    public readonly IChunkSiteStateService ChunkSiteStateService;
+    public readonly IWorldSiteStateService WorldSiteStateService;
     public readonly WorldEncounterServices EncounterServices;
 
     public WorldSiteContext(
         SitePlacement placement,
         int spawnId,
         IGateTransitionService gateTransitionService,
-        IChunkSiteStateService chunkSiteStateService,
+        IWorldSiteStateService worldSiteStateService,
         WorldEncounterServices encounterServices)
     {
         Placement = placement;
         SpawnId = spawnId;
         GateTransitionService = gateTransitionService;
-        ChunkSiteStateService = chunkSiteStateService;
+        WorldSiteStateService = worldSiteStateService;
         EncounterServices = encounterServices;
     }
 }

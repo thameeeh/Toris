@@ -4,8 +4,6 @@ public sealed class WorldContext
 {
     public readonly WorldProfile World;
 
-    //public int RunSeed { get; private set; } KEEP FOR RUN MODIFIERS LATER
-
     public BiomeInstance ActiveBiome { get; private set; }
     public BiomeDefinition ActiveDef { get; private set; }
     public BiomeProfile Biome => ActiveDef != null ? ActiveDef.profile : null;
@@ -17,26 +15,17 @@ public sealed class WorldContext
     public RoadAnchorMap RoadAnchors { get; private set; }
     public SitePlacementIndex SitePlacements { get; private set; }
 
-    public GateRegistry Gates { get; private set; }
-    public ChunkStateStore ChunkStates { get; private set; }
-    public DenRegistry Dens { get; private set; }
-
     public AnimationCurve DangerCurve => World.dangerCurve;
 
     public WorldContext(WorldProfile world)
     {
         World = world;
-        //RunSeed = world.seed;
 
         Mask = new BiomeMask();
         Stamps = new FeatureStamps();
         SitePlacements = new SitePlacementIndex();
         SiteBlockers = new SiteBlockerMap();
         RoadAnchors = new RoadAnchorMap();
-
-        Gates = new GateRegistry();
-        ChunkStates = new ChunkStateStore();
-        Dens = new DenRegistry();
 
         ActiveBiome = new BiomeInstance(0, World.seed, Vector2Int.zero, world.worldRadiusTiles);
         Noise = new NoiseContext(ActiveBiome.Seed);
@@ -53,24 +42,10 @@ public sealed class WorldContext
         SiteBlockers.Clear();
         RoadAnchors.Clear();
 
-        Gates.Clear();
-        ChunkStates.Clear();
-        Dens.Clear();
-
         ActiveDef?.BuildFeatures(this);
     }
 
-    public void AddGateSite(Vector2Int centerTile)
-    {
-        AddSite(WorldSiteType.Gate, centerTile);
-    }
-
-    public void AddWolfDenSite(Vector2Int centerTile)
-    {
-        AddSite(WorldSiteType.WolfDen, centerTile);
-    }
-
-    private void AddSite(WorldSiteType siteType, Vector2Int centerTile)
+    public void RegisterSite(WorldSiteType siteType, Vector2Int centerTile)
     {
         int chunkSize = Mathf.Max(1, World.chunkSize);
 
@@ -86,9 +61,9 @@ public sealed class WorldContext
 
     private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)
     {
-        int cx = FloorDiv(tile.x, chunkSize);
-        int cy = FloorDiv(tile.y, chunkSize);
-        return new Vector2Int(cx, cy);
+        int chunkX = FloorDiv(tile.x, chunkSize);
+        int chunkY = FloorDiv(tile.y, chunkSize);
+        return new Vector2Int(chunkX, chunkY);
     }
 
     private static int ToLocalIndex(Vector2Int centerTile, Vector2Int chunkCoord, int chunkSize)
@@ -102,18 +77,18 @@ public sealed class WorldContext
         return localX + localY * chunkSize;
     }
 
-    private static int FloorDiv(int a, int b)
+    private static int FloorDiv(int value, int divisor)
     {
-        if (b == 0)
+        if (divisor == 0)
             return 0;
 
-        int q = a / b;
-        int r = a % b;
+        int quotient = value / divisor;
+        int remainder = value % divisor;
 
-        if (r != 0 && ((r > 0) != (b > 0)))
-            q--;
+        if (remainder != 0 && ((remainder > 0) != (divisor > 0)))
+            quotient--;
 
-        return q;
+        return quotient;
     }
 }
 

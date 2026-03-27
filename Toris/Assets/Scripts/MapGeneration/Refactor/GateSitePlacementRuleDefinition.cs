@@ -20,8 +20,7 @@ public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinitio
             if (ctx.Biome.gateGroundTile != null)
                 ctx.Stamps.StampRectGround(gateCenterTile, gateSize, gateSize, ctx.Biome.gateGroundTile);
 
-            ctx.Gates.AddGateFootprint(gateCenterTile, gateSize);
-            ctx.AddGateSite(gateCenterTile);
+            ctx.RegisterSite(WorldSiteType.Gate, gateCenterTile);
         }
     }
 }

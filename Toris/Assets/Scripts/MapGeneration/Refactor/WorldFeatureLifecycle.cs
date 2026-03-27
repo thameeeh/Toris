@@ -5,6 +5,7 @@ public sealed class WorldFeatureLifecycle
 {
     private readonly WorldGenRunner worldGenRunner;
     private readonly WorldContext worldContext;
+    private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly IGateTransitionService gateTransitionService;
     private readonly IChunkSiteStateService chunkSiteStateService;
@@ -22,14 +23,16 @@ public sealed class WorldFeatureLifecycle
     public WorldFeatureLifecycle(
         WorldGenRunner worldGenRunner,
         WorldContext worldContext,
+        WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager)
     {
         this.worldGenRunner = worldGenRunner;
         this.worldContext = worldContext;
+        this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
 
         gateTransitionService = new GateTransitionServiceAdapter(worldGenRunner);
-        chunkSiteStateService = new ChunkSiteStateServiceAdapter(worldContext);
+        chunkSiteStateService = new ChunkSiteStateServiceAdapter(worldRuntimeState);
     }
 
     public void RebuildPlacements()
@@ -143,7 +146,7 @@ public sealed class WorldFeatureLifecycle
 
         if (siteDefinition.skipIfConsumed)
         {
-            ChunkStateStore.ChunkState chunkState = worldContext.ChunkStates.GetChunkState(placement.ChunkCoord);
+            ChunkStateStore.ChunkState chunkState = worldRuntimeState.ChunkStates.GetChunkState(placement.ChunkCoord);
             if (chunkState.consumedIds.Contains(spawnId))
                 return null;
         }
@@ -213,7 +216,7 @@ public sealed class WorldFeatureLifecycle
 
     private int ComputeSpawnId(SitePlacement placement, BiomeSiteDefinition siteDefinition)
     {
-        return worldContext.ChunkStates.MakeSpawnId(
+        return worldRuntimeState.ChunkStates.MakeSpawnId(
             worldContext.ActiveBiome.Seed,
             placement.ChunkCoord,
             placement.LocalIndex,
@@ -228,5 +231,27 @@ public sealed class WorldFeatureLifecycle
         }
 
         return worldContext.Biome.TryGetSiteDefinition(siteType, out siteDefinition);
+    }
+
+    public int GetActiveSiteChunkCount()
+    {
+        return activeSitesByChunk.Count;
+    }
+
+    public int GetActiveSiteCount()
+    {
+        int totalCount = 0;
+
+        foreach (KeyValuePair<Vector2Int, List<ActiveSiteHandle>> pair in activeSitesByChunk)
+        {
+            totalCount += pair.Value.Count;
+        }
+
+        return totalCount;
+    }
+
+    public int GetTotalPlacedSiteCount()
+    {
+        return sitePlacementIndex != null ? sitePlacementIndex.All.Count : 0;
     }
 }

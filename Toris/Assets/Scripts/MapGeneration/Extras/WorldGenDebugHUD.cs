@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -26,60 +25,17 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     private readonly TileResolver resolver = new TileResolver();
     private GUIStyle style;
 
-    // ---------- reflection ----------
-    private static bool reflectionBound;
-    private static FieldInfo f_loaded;
-    private static FieldInfo f_preload;
-    private static FieldInfo f_hyst;
-    private static FieldInfo f_streamCam;
-    private static FieldInfo f_profile;
-
-    private static void BindReflection()
+    private bool TryGetDiagnosticsSnapshot(out WorldGenDiagnosticsSnapshot diagnosticsSnapshot)
     {
-        if (reflectionBound) return;
-        reflectionBound = true;
+        if (runner == null)
+        {
+            diagnosticsSnapshot = default;
+            return false;
+        }
 
-        var t = typeof(WorldGenRunner);
-        const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-
-        f_loaded = t.GetField("loaded", flags);
-        f_preload = t.GetField("preloadChunks", flags);
-        f_hyst = t.GetField("unloadHysteresisChunks", flags);
-        f_streamCam = t.GetField("streamCamera", flags);
-        f_profile = t.GetField("profile", flags);
+        diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
+        return true;
     }
-
-    private HashSet<Vector2Int> TryGetLoaded()
-    {
-        BindReflection();
-        return f_loaded?.GetValue(runner) as HashSet<Vector2Int>;
-    }
-
-    private int TryGetPreloadChunks()
-    {
-        BindReflection();
-        return f_preload?.GetValue(runner) is int i ? i : 0;
-    }
-
-    private int TryGetUnloadHysteresisChunks()
-    {
-        BindReflection();
-        return f_hyst?.GetValue(runner) is int i ? i : 0;
-    }
-
-    private Camera TryGetStreamCamera()
-    {
-        BindReflection();
-        var cam = f_streamCam?.GetValue(runner) as Camera;
-        return cam != null ? cam : Camera.main;
-    }
-
-    private WorldProfile TryGetProfile()
-    {
-        BindReflection();
-        return f_profile?.GetValue(runner) as WorldProfile;
-    }
-
     // ---------- runtime line rendering ----------
     private Material lineMat;
 
@@ -126,7 +82,8 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!visible) return;
+        if (!visible)
+            return;
 
         if (style == null)
         {
@@ -144,55 +101,80 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
         if (runner == null)
         {
-            GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60), "WorldGen Debug");
-            GUI.Label(new Rect(panelPos.x + 10, panelPos.y + 25, panelSize.x - 20, 20), "runner == null", style);
+            GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60f), "WorldGen Debug");
+            GUI.Label(
+                new Rect(panelPos.x + 10f, panelPos.y + 25f, panelSize.x - 20f, 20f),
+                "runner == null",
+                style);
             return;
         }
 
-        WorldContext ctx = runner.Context;
-        if (ctx == null)
+        WorldContext worldContext = runner.Context;
+        if (worldContext == null)
         {
-            GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60), "WorldGen Debug");
-            GUI.Label(new Rect(panelPos.x + 10, panelPos.y + 25, panelSize.x - 20, 20), "runner.Context == null", style);
+            GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60f), "WorldGen Debug");
+            GUI.Label(
+                new Rect(panelPos.x + 10f, panelPos.y + 25f, panelSize.x - 20f, 20f),
+                "runner.Context == null",
+                style);
             return;
         }
 
-        Vector2 focusWorld = followTarget != null ? (Vector2)followTarget.position : Vector2.zero;
+        if (!TryGetDiagnosticsSnapshot(out WorldGenDiagnosticsSnapshot diagnosticsSnapshot))
+        {
+            GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60f), "WorldGen Debug");
+            GUI.Label(
+                new Rect(panelPos.x + 10f, panelPos.y + 25f, panelSize.x - 20f, 20f),
+                "diagnostics unavailable",
+                style);
+            return;
+        }
+
+        Vector2 focusWorldPosition = followTarget != null ? (Vector2)followTarget.position : Vector2.zero;
 
         Vector2Int focusTile;
         if (grid != null)
         {
-            Vector3Int cell = grid.WorldToCell((Vector3)focusWorld);
-            focusTile = new Vector2Int(cell.x, cell.y);
+            Vector3Int focusCell = grid.WorldToCell((Vector3)focusWorldPosition);
+            focusTile = new Vector2Int(focusCell.x, focusCell.y);
         }
         else
         {
-            focusTile = new Vector2Int(Mathf.FloorToInt(focusWorld.x), Mathf.FloorToInt(focusWorld.y));
+            focusTile = new Vector2Int(
+                Mathf.FloorToInt(focusWorldPosition.x),
+                Mathf.FloorToInt(focusWorldPosition.y));
         }
 
-        WorldSignals s = resolver.sampler.Compute(focusTile, ctx);
-        string biomeName = ctx.Biome != null ? ctx.Biome.displayName : "(null biome)";
+        WorldSignals worldSignals = resolver.sampler.Compute(focusTile, worldContext);
+        string biomeName = worldContext.Biome != null ? worldContext.Biome.displayName : "(null biome)";
 
-        Rect r = new Rect(panelPos.x, panelPos.y, panelSize.x, panelSize.y);
-        GUI.Box(r, $"WorldGen Debug ({toggleKey})");
+        Rect panelRect = new Rect(panelPos.x, panelPos.y, panelSize.x, panelSize.y);
+        GUI.Box(panelRect, $"WorldGen Debug ({toggleKey})");
 
-        GUILayout.BeginArea(new Rect(r.x + 10, r.y + 24, r.width - 20, r.height - 34));
+        GUILayout.BeginArea(new Rect(panelRect.x + 10f, panelRect.y + 24f, panelRect.width - 20f, panelRect.height - 34f));
 
         GUILayout.Label("Visuals:", style);
         drawChunkBorders = GUILayout.Toggle(drawChunkBorders, " Chunk borders");
         drawStreamingRects = GUILayout.Toggle(drawStreamingRects, " Streaming rects (load/unload)");
-        GUILayout.Space(6);
+        GUILayout.Space(6f);
 
-        GUILayout.Label($"Biome: {biomeName} (idx {ctx.ActiveBiome.Index})", style);
+        GUILayout.Label($"Biome: {biomeName} (idx {worldContext.ActiveBiome.Index})", style);
         GUILayout.Label($"Tile: {focusTile}", style);
-        GUILayout.Label($"dist01: {s.dist01:F2}", style);
-        GUILayout.Label($"danger01: {s.danger01:F2}", style);
-        GUILayout.Label($"veg01: {s.vegetation01:F2}", style);
-        GUILayout.Label($"lake01: {s.lake01:F2}", style);
+        GUILayout.Label($"dist01: {worldSignals.dist01:F2}", style);
+        GUILayout.Label($"danger01: {worldSignals.danger01:F2}", style);
+        GUILayout.Label($"veg01: {worldSignals.vegetation01:F2}", style);
+        GUILayout.Label($"lake01: {worldSignals.lake01:F2}", style);
+        GUILayout.Space(6f);
+
+        GUILayout.Label($"Loaded chunks: {diagnosticsSnapshot.LoadedChunkCount}", style);
+        GUILayout.Label($"Active site chunks: {diagnosticsSnapshot.ActiveSiteChunkCount}", style);
+        GUILayout.Label($"Active sites: {diagnosticsSnapshot.ActiveSiteCount}", style);
+        GUILayout.Label($"Placed sites: {diagnosticsSnapshot.TotalPlacedSiteCount}", style);
+        GUILayout.Label($"Preload chunks: {diagnosticsSnapshot.PreloadChunks}", style);
+        GUILayout.Label($"Unload hysteresis: {diagnosticsSnapshot.UnloadHysteresisChunks}", style);
 
         GUILayout.EndArea();
     }
-
     private void OnRenderObject()
     {
         if (IsSRPActive) return;
@@ -206,19 +188,34 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
     private void DrawDebugLinesForCamera(Camera cam)
     {
-        if (!visible) return;
-        if (!drawChunkBorders && !drawStreamingRects) return;
-        if (runner == null || runner.Context == null) return;
-        if (grid == null) return;
-        if (cam == null) return;
-        if (cam.cameraType != CameraType.Game && cam.cameraType != CameraType.SceneView) return;
+        if (!visible)
+            return;
 
+        if (!drawChunkBorders && !drawStreamingRects)
+            return;
 
-        WorldProfile prof = TryGetProfile();
-        if (prof == null) return;
+        if (runner == null || runner.Context == null)
+            return;
+
+        if (grid == null)
+            return;
+
+        if (cam == null)
+            return;
+
+        if (cam.cameraType != CameraType.Game && cam.cameraType != CameraType.SceneView)
+            return;
+
+        if (!TryGetDiagnosticsSnapshot(out WorldGenDiagnosticsSnapshot diagnosticsSnapshot))
+            return;
+
+        WorldProfile worldProfile = diagnosticsSnapshot.Profile;
+        if (worldProfile == null)
+            return;
 
         EnsureLineMaterial();
-        if (lineMat == null) return;
+        if (lineMat == null)
+            return;
 
         lineMat.SetPass(0);
 
@@ -226,46 +223,47 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GL.MultMatrix(Matrix4x4.identity);
         GL.Begin(GL.LINES);
 
-        int chunkSize = prof.chunkSize;
+        int chunkSize = worldProfile.chunkSize;
 
         if (drawChunkBorders)
         {
-            var loaded = TryGetLoaded();
-            if (loaded != null)
+            IReadOnlyCollection<Vector2Int> loadedChunks = diagnosticsSnapshot.LoadedChunks;
+            if (loadedChunks != null)
             {
                 GL.Color(new Color(0f, 1f, 0f, 0.75f));
-                foreach (var c in loaded)
-                    DrawChunkRectGL(c, chunkSize);
+                foreach (Vector2Int chunkCoord in loadedChunks)
+                {
+                    DrawChunkRectGL(chunkCoord, chunkSize);
+                }
             }
         }
 
         if (drawStreamingRects)
         {
-            Camera streamCam = TryGetStreamCamera();
-            if (streamCam != null)
+            Camera streamCamera = diagnosticsSnapshot.StreamCamera;
+            if (streamCamera != null)
             {
-                GetCameraChunkRect(streamCam, prof, out var loadMinChunk, out var loadMaxChunk);
+                GetCameraChunkRect(streamCamera, worldProfile, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
 
-                int pad = Mathf.Max(0, prof.viewDistanceChunks) + Mathf.Max(0, TryGetPreloadChunks());
-                loadMinChunk -= new Vector2Int(pad, pad);
-                loadMaxChunk += new Vector2Int(pad, pad);
+                int padding = Mathf.Max(0, worldProfile.viewDistanceChunks) + Mathf.Max(0, diagnosticsSnapshot.PreloadChunks);
+                loadMinChunk -= new Vector2Int(padding, padding);
+                loadMaxChunk += new Vector2Int(padding, padding);
 
-                int hyst = Mathf.Max(0, TryGetUnloadHysteresisChunks());
-                Vector2Int unloadMin = loadMinChunk - new Vector2Int(hyst, hyst);
-                Vector2Int unloadMax = loadMaxChunk + new Vector2Int(hyst, hyst);
+                int unloadHysteresis = Mathf.Max(0, diagnosticsSnapshot.UnloadHysteresisChunks);
+                Vector2Int unloadMinChunk = loadMinChunk - new Vector2Int(unloadHysteresis, unloadHysteresis);
+                Vector2Int unloadMaxChunk = loadMaxChunk + new Vector2Int(unloadHysteresis, unloadHysteresis);
 
                 GL.Color(new Color(0f, 0.6f, 1f, 0.9f));
                 DrawChunkRangeRectGL(loadMinChunk, loadMaxChunk, chunkSize);
 
                 GL.Color(new Color(1f, 0.6f, 0f, 0.9f));
-                DrawChunkRangeRectGL(unloadMin, unloadMax, chunkSize);
+                DrawChunkRangeRectGL(unloadMinChunk, unloadMaxChunk, chunkSize);
             }
         }
 
         GL.End();
         GL.PopMatrix();
     }
-
     private void DrawChunkRectGL(Vector2Int chunk, int chunkSize)
     {
         int baseX = chunk.x * chunkSize;

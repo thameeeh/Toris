@@ -85,9 +85,8 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
             if (biomeProfile.wolfDenGroundTile != null)
                 ctx.Stamps.StampRectGround(centerTile, stampSize, stampSize, biomeProfile.wolfDenGroundTile);
 
-            ctx.Dens.AddDenFootprint(centerTile, stampSize);
             ctx.SiteBlockers.AddSquareFootprint(centerTile, stampSize);
-            ctx.AddWolfDenSite(centerTile);
+            ctx.RegisterSite(WorldSiteType.WolfDen, centerTile);
         }
 
         if (chosenCenters.Count < targetMin)

@@ -43,18 +43,13 @@ public sealed class WorldGenRunner : MonoBehaviour
     private float lastGateTime = -999f;
 
     private WorldContext ctx;
+    private WorldRuntimeState runtimeState;
     private ChunkGenerator generator;
     private TilemapApplier applier;
-
-    private Vector2Int streamingAnchorChunk;
-    private bool anchorInitialized;
+    private ChunkStreamingSystem chunkStreamingSystem;
 
     private GameObject runGateInstance;
     private Transform runGateRoot;
-
-    private readonly Queue<Vector2Int> generateQueue = new Queue<Vector2Int>();
-    private readonly HashSet<Vector2Int> queued = new HashSet<Vector2Int>();
-    private readonly HashSet<Vector2Int> loaded = new HashSet<Vector2Int>();
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -73,14 +68,22 @@ public sealed class WorldGenRunner : MonoBehaviour
     #endregion
 
     #region Public API
-
+    public int PreloadChunkCount => preloadChunks;
+    public int UnloadHysteresisChunkCount => unloadHysteresisChunks;
+    public Camera StreamingCamera => streamCamera != null ? streamCamera : Camera.main;
+    public WorldProfile Profile => profile;
     public WorldContext Context => ctx;
+    public WorldRuntimeState RuntimeState => runtimeState;
 
     public bool IsChunkLoaded(Vector2Int chunk)
     {
-        return loaded.Contains(chunk);
+        return chunkStreamingSystem != null && chunkStreamingSystem.IsChunkLoaded(chunk);
     }
+    public IReadOnlyCollection<Vector2Int> LoadedChunks =>
+    chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunks : null;
 
+    public int LoadedChunkCount =>
+        chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunkCount : 0;
     #endregion
 
     #region Unity Lifecycle
@@ -109,19 +112,22 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
 
         ctx = new WorldContext(profile);
+        runtimeState = new WorldRuntimeState();
         generator = new ChunkGenerator(ctx);
         applier = new TilemapApplier(groundMap, waterMap, decorMap);
 
         EnsurePoiPool();
         EnsureNavWorld();
 
-        worldFeatureLifecycle = new WorldFeatureLifecycle(this, ctx, poiPool);
+        chunkStreamingSystem = new ChunkStreamingSystem();
+        worldFeatureLifecycle = new WorldFeatureLifecycle(this, ctx, runtimeState, poiPool);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
 
         StartBiome(biomeIndex, spawnTile);
-        streamingAnchorChunk = TileToChunk(spawnTile, profile.chunkSize);
-        anchorInitialized = true;
+
+        Vector2Int spawnChunk = TileToChunk(spawnTile, profile.chunkSize);
+        chunkStreamingSystem.InitializeAnchor(spawnChunk);
     }
 
     private void Update()
@@ -133,122 +139,102 @@ public sealed class WorldGenRunner : MonoBehaviour
             ? (Vector2)followTarget.position
             : profile.spawnPosTiles;
 
-        Vector2Int focusTile;
-        if (grid != null)
-        {
-            Vector3Int cell = grid.WorldToCell((Vector3)focusWorld);
-            focusTile = new Vector2Int(cell.x, cell.y);
-        }
-        else
-        {
-            focusTile = new Vector2Int(
-                Mathf.FloorToInt(focusWorld.x),
-                Mathf.FloorToInt(focusWorld.y)
-            );
-        }
-
         Camera cam = streamCamera != null ? streamCamera : Camera.main;
         if (cam == null)
             return;
 
         GetCameraChunk(cam, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
 
-        int pad = Mathf.Max(0, profile.viewDistanceChunks) + Mathf.Max(0, preloadChunks);
+        int paddingChunks = Mathf.Max(0, profile.viewDistanceChunks) + Mathf.Max(0, preloadChunks);
 
-        loadMinChunk -= new Vector2Int(pad, pad);
-        loadMaxChunk += new Vector2Int(pad, pad);
+        loadMinChunk -= new Vector2Int(paddingChunks, paddingChunks);
+        loadMaxChunk += new Vector2Int(paddingChunks, paddingChunks);
 
         Vector2Int unloadMinChunk = loadMinChunk - new Vector2Int(unloadHysteresisChunks, unloadHysteresisChunks);
         Vector2Int unloadMaxChunk = loadMaxChunk + new Vector2Int(unloadHysteresisChunks, unloadHysteresisChunks);
 
-        EnqueueNeededChunks(loadMinChunk, loadMaxChunk);
+        chunkStreamingSystem.EnqueueNeededChunks(loadMinChunk, loadMaxChunk);
 
         double budgetMs = Mathf.Max(0.1f, genBudgetMs);
 
         long frameStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-        long freq = System.Diagnostics.Stopwatch.Frequency;
+        long stopwatchFrequency = System.Diagnostics.Stopwatch.Frequency;
 
         double ElapsedMs()
-            => (System.Diagnostics.Stopwatch.GetTimestamp() - frameStartTicks) * 1000.0 / freq;
+            => (System.Diagnostics.Stopwatch.GetTimestamp() - frameStartTicks) * 1000.0 / stopwatchFrequency;
 
-        int hardCap = Mathf.Max(0, maxChunksPerFrame);
-        int genCount = 0;
+        int hardChunkCap = Mathf.Max(0, maxChunksPerFrame);
+        int generatedChunkCount = 0;
 
-        long genTicksTotal = 0;
-        long applyTicksTotal = 0;
+        long totalGenerationTicks = 0;
+        long totalApplyTicks = 0;
 
-        double estChunkMs = 6.0;
+        double estimatedChunkMs = 6.0;
 
-        while (generateQueue.Count > 0 && genCount < hardCap)
+        while (generatedChunkCount < hardChunkCap)
         {
             double elapsedMs = ElapsedMs();
             double remainingMs = budgetMs - elapsedMs;
             if (remainingMs <= 0.0)
                 break;
 
-            if (genCount > 0)
+            if (generatedChunkCount > 0)
             {
-                double genMsSoFar = genTicksTotal * 1000.0 / freq;
-                double applyMsSoFar = applyTicksTotal * 1000.0 / freq;
-                estChunkMs = (genMsSoFar + applyMsSoFar) / genCount;
+                double generationMsSoFar = totalGenerationTicks * 1000.0 / stopwatchFrequency;
+                double applyMsSoFar = totalApplyTicks * 1000.0 / stopwatchFrequency;
+                estimatedChunkMs = (generationMsSoFar + applyMsSoFar) / generatedChunkCount;
             }
 
             const double safetyMs = 0.25;
-            if (genCount > 0 && remainingMs < (estChunkMs + safetyMs))
+            if (generatedChunkCount > 0 && remainingMs < (estimatedChunkMs + safetyMs))
                 break;
 
-            Vector2Int c = generateQueue.Dequeue();
-            queued.Remove(c);
+            if (!chunkStreamingSystem.TryDequeueNextChunk(loadMinChunk, loadMaxChunk, out Vector2Int chunkCoord))
+                break;
 
-            if (loaded.Contains(c))
-                continue;
-
-            if (!IsChunkIn(c, loadMinChunk, loadMaxChunk))
-                continue;
-
-            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-            ChunkResult chunk = generator.GenerateChunk(c);
-            long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
+            long generationStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+            ChunkResult chunk = generator.GenerateChunk(chunkCoord);
+            long generationEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
 
             applier.Apply(chunk);
 
-            TileNavWorld.Instance?.BuildNavChunk(c, profile.chunkSize);
+            TileNavWorld.Instance?.BuildNavChunk(chunkCoord, profile.chunkSize);
+            worldFeatureLifecycle?.ActivateChunk(chunkCoord);
 
-            worldFeatureLifecycle?.ActivateChunk(c);
-            long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
+            long applyEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
 
-            loaded.Add(c);
-            NotifyChunkLoaded(c);
+            chunkStreamingSystem.MarkChunkLoaded(chunkCoord);
+            NotifyChunkLoaded(chunkCoord);
 
-            genTicksTotal += (t1 - t0);
-            applyTicksTotal += (t2 - t1);
-            genCount++;
+            totalGenerationTicks += (generationEndTicks - generationStartTicks);
+            totalApplyTicks += (applyEndTicks - generationEndTicks);
+            generatedChunkCount++;
         }
 
-        long unloadT0 = System.Diagnostics.Stopwatch.GetTimestamp();
+        long unloadStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
         UnloadOutside(unloadMinChunk, unloadMaxChunk);
-        long unloadT1 = System.Diagnostics.Stopwatch.GetTimestamp();
-        double unloadMs = (unloadT1 - unloadT0) * 1000.0 / freq;
+        long unloadEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+        double unloadMs = (unloadEndTicks - unloadStartTicks) * 1000.0 / stopwatchFrequency;
 
-        double genMsTotal = genTicksTotal * 1000.0 / freq;
-        double applyMsTotal = applyTicksTotal * 1000.0 / freq;
+        double generationMsTotal = totalGenerationTicks * 1000.0 / stopwatchFrequency;
+        double applyMsTotal = totalApplyTicks * 1000.0 / stopwatchFrequency;
 
-        // Thresholds in ms to warn about heavy frames
-        const double WARN_UNLOAD_MS = 2.0;
-        const double WARN_GEN_MS = 10.0;
-        const double WARN_APPLY_MS = 2.0;
+        const double WarnUnloadMs = 2.0;
+        const double WarnGenerationMs = 10.0;
+        const double WarnApplyMs = 2.0;
 
-        if (unloadMs >= WARN_UNLOAD_MS || genMsTotal >= WARN_GEN_MS || applyMsTotal >= WARN_APPLY_MS)
+        if (unloadMs >= WarnUnloadMs || generationMsTotal >= WarnGenerationMs || applyMsTotal >= WarnApplyMs)
         {
             Debug.Log(
                 $"[WorldGen] unload={(int)unloadMs}ms, " +
-                $"genChunks={genCount}/{hardCap} budget={budgetMs:F1}ms " +
-                $"gen={genMsTotal:F2}ms apply={applyMsTotal:F2}ms, " +
-                $"queue={generateQueue.Count} loaded={loaded.Count} chunkSize={profile.chunkSize}"
+                $"genChunks={generatedChunkCount}/{hardChunkCap} budget={budgetMs:F1}ms " +
+                $"gen={generationMsTotal:F2}ms apply={applyMsTotal:F2}ms, " +
+                $"queue={(chunkStreamingSystem != null ? chunkStreamingSystem.GenerationQueueCount : 0)} " +
+                $"loaded={(chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunkCount : 0)} " +
+                $"chunkSize={profile.chunkSize}"
             );
         }
     }
-
     private void OnDisable()
     {
         if (!clearOnDisable || profile == null)
@@ -257,14 +243,14 @@ public sealed class WorldGenRunner : MonoBehaviour
         worldFeatureLifecycle?.ClearAll();
         DespawnRunGate();
 
-        foreach (var chunkCoord in loaded)
-            applier.ClearChunk(chunkCoord, profile.chunkSize);
+        if (chunkStreamingSystem != null && chunkStreamingSystem.LoadedChunks != null)
+        {
+            foreach (Vector2Int chunkCoord in chunkStreamingSystem.LoadedChunks)
+                applier.ClearChunk(chunkCoord, profile.chunkSize);
+        }
 
-        loaded.Clear();
-        queued.Clear();
-        generateQueue.Clear();
+        chunkStreamingSystem?.Reset();
     }
-
     #endregion
 
     #region Biome Control
@@ -290,21 +276,21 @@ public sealed class WorldGenRunner : MonoBehaviour
         );
 
         ctx.BindBiome(def, biomeInstance);
+        runtimeState?.Clear();
 
-        TileNavWorld.Instance.SetSiteBlockers(ctx.SiteBlockers);
+        if (TileNavWorld.Instance != null)
+            TileNavWorld.Instance.SetSiteBlockers(ctx.SiteBlockers);
 
         applier.ClearAll();
         worldFeatureLifecycle?.ClearAll();
         worldFeatureLifecycle?.RebuildPlacements();
         SpawnRunGateForBiome();
 
-        loaded.Clear();
-        queued.Clear();
-        generateQueue.Clear();
+        chunkStreamingSystem?.Reset();
 
-        anchorInitialized = false;
+        Vector2Int spawnChunk = TileToChunk(originTile, profile.chunkSize);
+        chunkStreamingSystem?.InitializeAnchor(spawnChunk);
     }
-
     private int ComputeBiomeSeed(int runSeed, int biomeIdx)
     {
         uint h = DeterministicHash.Hash((uint)runSeed, biomeIdx, 0, 0xC0FFEEu);
@@ -315,90 +301,33 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     #region Streaming - Queue/Unload
 
-    private void EnqueueNeededChunks(Vector2Int minChunk, Vector2Int maxChunk)
-    {
-        List<Vector2Int> needed = new List<Vector2Int>();
-
-        Vector2Int center = new Vector2Int(
-            (minChunk.x + maxChunk.x) / 2,
-            (minChunk.y + maxChunk.y) / 2
-        );
-
-        for (int y = minChunk.y; y <= maxChunk.y; y++)
-        {
-            for (int x = minChunk.x; x <= maxChunk.x; x++)
-            {
-                Vector2Int c = new Vector2Int(x, y);
-
-                if (loaded.Contains(c) || queued.Contains(c))
-                    continue;
-
-                needed.Add(c);
-            }
-        }
-
-        needed.Sort((a, b) =>
-        {
-            int da = Mathf.Abs(a.x - center.x) + Mathf.Abs(a.y - center.y);
-            int db = Mathf.Abs(b.x - center.x) + Mathf.Abs(b.y - center.y);
-            return da.CompareTo(db);
-        });
-
-        for (int i = 0; i < needed.Count; i++)
-        {
-            generateQueue.Enqueue(needed[i]);
-            queued.Add(needed[i]);
-        }
-    }
-
     private void UnloadOutside(Vector2Int keepMinChunk, Vector2Int keepMaxChunk)
     {
-        if (loaded.Count == 0)
+        if (chunkStreamingSystem == null)
             return;
 
         const int maxRemovalsPerFrame = 1;
 
-        List<(Vector2Int c, int score)> candidates = null;
+        List<Vector2Int> chunksToUnload = chunkStreamingSystem.CollectChunksToUnload(
+            keepMinChunk,
+            keepMaxChunk,
+            maxRemovalsPerFrame);
 
-        foreach (var c in loaded)
-        {
-            if (IsChunkIn(c, keepMinChunk, keepMaxChunk))
-                continue;
-
-            int dx = 0;
-            if (c.x < keepMinChunk.x) dx = keepMinChunk.x - c.x;
-            else if (c.x > keepMaxChunk.x) dx = c.x - keepMaxChunk.x;
-
-            int dy = 0;
-            if (c.y < keepMinChunk.y) dy = keepMinChunk.y - c.y;
-            else if (c.y > keepMaxChunk.y) dy = c.y - keepMaxChunk.y;
-
-            int score = dx + dy;
-
-            candidates ??= new List<(Vector2Int c, int score)>();
-            candidates.Add((c, score));
-        }
-
-        if (candidates == null)
+        if (chunksToUnload == null || chunksToUnload.Count == 0)
             return;
 
-        candidates.Sort((a, b) => b.score.CompareTo(a.score));
-
-        int n = Mathf.Min(maxRemovalsPerFrame, candidates.Count);
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < chunksToUnload.Count; i++)
         {
-            Vector2Int c = candidates[i].c;
+            Vector2Int chunkCoord = chunksToUnload[i];
 
-            NotifyChunkUnloading(c);
-            worldFeatureLifecycle?.DeactivateChunk(c);
-            applier.ClearChunk(c, profile.chunkSize);
+            NotifyChunkUnloading(chunkCoord);
+            worldFeatureLifecycle?.DeactivateChunk(chunkCoord);
+            applier.ClearChunk(chunkCoord, profile.chunkSize);
+            TileNavWorld.Instance?.ClearNavChunk(chunkCoord);
 
-            TileNavWorld.Instance?.ClearNavChunk(c);
-
-            loaded.Remove(c);
+            chunkStreamingSystem.MarkChunkUnloaded(chunkCoord);
         }
     }
-
     private static bool IsChunkIn(Vector2Int c, Vector2Int minChunk, Vector2Int maxChunk)
     {
         return c.x >= minChunk.x && c.x <= maxChunk.x &&
@@ -493,14 +422,20 @@ public sealed class WorldGenRunner : MonoBehaviour
     // Chunk persistance helpers
     private void NotifyChunkLoaded(Vector2Int chunkCoord)
     {
-        var st = ctx.ChunkStates.GetChunkState(chunkCoord);
-        OnChunkLoaded?.Invoke(chunkCoord, st);
+        if (runtimeState == null)
+            return;
+
+        ChunkStateStore.ChunkState chunkState = runtimeState.ChunkStates.GetChunkState(chunkCoord);
+        OnChunkLoaded?.Invoke(chunkCoord, chunkState);
     }
 
     private void NotifyChunkUnloading(Vector2Int chunkCoord)
     {
-        var st = ctx.ChunkStates.GetChunkState(chunkCoord);
-        OnChunkUnloading?.Invoke(chunkCoord, st);
+        if (runtimeState == null)
+            return;
+
+        ChunkStateStore.ChunkState chunkState = runtimeState.ChunkStates.GetChunkState(chunkCoord);
+        OnChunkUnloading?.Invoke(chunkCoord, chunkState);
     }
 
     private void EnsurePoiPool()
@@ -565,7 +500,32 @@ public sealed class WorldGenRunner : MonoBehaviour
     }
 
     #endregion
+    // diagnostics
+    public WorldGenDiagnosticsSnapshot CreateDiagnosticsSnapshot()
+    {
+        int activeSiteChunkCount = worldFeatureLifecycle != null
+            ? worldFeatureLifecycle.GetActiveSiteChunkCount()
+            : 0;
 
+        int activeSiteCount = worldFeatureLifecycle != null
+            ? worldFeatureLifecycle.GetActiveSiteCount()
+            : 0;
+
+        int totalPlacedSiteCount = worldFeatureLifecycle != null
+            ? worldFeatureLifecycle.GetTotalPlacedSiteCount()
+            : 0;
+
+        return new WorldGenDiagnosticsSnapshot(
+            LoadedChunks,
+            LoadedChunkCount,
+            preloadChunks,
+            unloadHysteresisChunks,
+            activeSiteChunkCount,
+            activeSiteCount,
+            totalPlacedSiteCount,
+            streamCamera != null ? streamCamera : Camera.main,
+            profile);
+    }
     // Tile nav
     private void EnsureNavWorld()
     {

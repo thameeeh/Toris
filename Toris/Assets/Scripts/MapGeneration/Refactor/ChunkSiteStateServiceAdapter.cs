@@ -2,19 +2,19 @@ using UnityEngine;
 
 public sealed class ChunkSiteStateServiceAdapter : IChunkSiteStateService
 {
-    private readonly WorldContext worldContext;
+    private readonly WorldRuntimeState worldRuntimeState;
 
-    public ChunkSiteStateServiceAdapter(WorldContext worldContext)
+    public ChunkSiteStateServiceAdapter(WorldRuntimeState worldRuntimeState)
     {
-        this.worldContext = worldContext;
+        this.worldRuntimeState = worldRuntimeState;
     }
 
     public bool IsConsumed(Vector2Int chunkCoord, int spawnId)
     {
-        if (worldContext == null)
+        if (worldRuntimeState == null)
             return false;
 
-        return worldContext.ChunkStates
+        return worldRuntimeState.ChunkStates
             .GetChunkState(chunkCoord)
             .consumedIds
             .Contains(spawnId);
@@ -22,9 +22,9 @@ public sealed class ChunkSiteStateServiceAdapter : IChunkSiteStateService
 
     public void MarkConsumed(Vector2Int chunkCoord, int spawnId)
     {
-        if (worldContext == null)
+        if (worldRuntimeState == null)
             return;
 
-        worldContext.ChunkStates.MarkConsumed(chunkCoord, spawnId);
+        worldRuntimeState.ChunkStates.MarkConsumed(chunkCoord, spawnId);
     }
 }

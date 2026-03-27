@@ -39,17 +39,14 @@ public sealed class WorldGenRunner : MonoBehaviour
     #endregion
 
     #region Runtime State
-    private int biomeIndex = 0;
-    private float lastGateTime = -999f;
 
     private WorldContext ctx;
     private WorldRuntimeState runtimeState;
     private ChunkGenerator generator;
     private TilemapApplier applier;
     private ChunkStreamingSystem chunkStreamingSystem;
-
-    private GameObject runGateInstance;
-    private Transform runGateRoot;
+    private ChunkProcessingPipeline chunkProcessingPipeline;
+    private WorldTransitionSystem worldTransitionSystem;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -120,24 +117,43 @@ public sealed class WorldGenRunner : MonoBehaviour
         EnsureNavWorld();
 
         chunkStreamingSystem = new ChunkStreamingSystem();
-        worldFeatureLifecycle = new WorldFeatureLifecycle(this, ctx, runtimeState, poiPool);
+
+        worldTransitionSystem = new WorldTransitionSystem(
+            profile,
+            biomeDb,
+            ctx,
+            runtimeState,
+            applier,
+            chunkStreamingSystem,
+            poiPool,
+            grid,
+            gateCooldownSeconds);
+
+        worldFeatureLifecycle = new WorldFeatureLifecycle(
+            this,
+            ctx,
+            runtimeState,
+            poiPool,
+            worldTransitionSystem);
+
+        worldTransitionSystem.AttachLifecycle(worldFeatureLifecycle);
+
+        chunkProcessingPipeline = new ChunkProcessingPipeline(
+            profile,
+            generator,
+            applier,
+            worldFeatureLifecycle,
+            runtimeState,
+            chunkStreamingSystem);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
-
-        StartBiome(biomeIndex, spawnTile);
-
-        Vector2Int spawnChunk = TileToChunk(spawnTile, profile.chunkSize);
-        chunkStreamingSystem.InitializeAnchor(spawnChunk);
+        worldTransitionSystem.StartInitialBiome(0, spawnTile);
     }
 
     private void Update()
     {
         if (profile == null || groundMap == null || waterMap == null || decorMap == null)
             return;
-
-        Vector2 focusWorld = followTarget != null
-            ? (Vector2)followTarget.position
-            : profile.spawnPosTiles;
 
         Camera cam = streamCamera != null ? streamCamera : Camera.main;
         if (cam == null)
@@ -155,80 +171,31 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         chunkStreamingSystem.EnqueueNeededChunks(loadMinChunk, loadMaxChunk);
 
-        double budgetMs = Mathf.Max(0.1f, genBudgetMs);
-
-        long frameStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-        long stopwatchFrequency = System.Diagnostics.Stopwatch.Frequency;
-
-        double ElapsedMs()
-            => (System.Diagnostics.Stopwatch.GetTimestamp() - frameStartTicks) * 1000.0 / stopwatchFrequency;
-
-        int hardChunkCap = Mathf.Max(0, maxChunksPerFrame);
-        int generatedChunkCount = 0;
-
-        long totalGenerationTicks = 0;
-        long totalApplyTicks = 0;
-
-        double estimatedChunkMs = 6.0;
-
-        while (generatedChunkCount < hardChunkCap)
-        {
-            double elapsedMs = ElapsedMs();
-            double remainingMs = budgetMs - elapsedMs;
-            if (remainingMs <= 0.0)
-                break;
-
-            if (generatedChunkCount > 0)
-            {
-                double generationMsSoFar = totalGenerationTicks * 1000.0 / stopwatchFrequency;
-                double applyMsSoFar = totalApplyTicks * 1000.0 / stopwatchFrequency;
-                estimatedChunkMs = (generationMsSoFar + applyMsSoFar) / generatedChunkCount;
-            }
-
-            const double safetyMs = 0.25;
-            if (generatedChunkCount > 0 && remainingMs < (estimatedChunkMs + safetyMs))
-                break;
-
-            if (!chunkStreamingSystem.TryDequeueNextChunk(loadMinChunk, loadMaxChunk, out Vector2Int chunkCoord))
-                break;
-
-            long generationStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-            ChunkResult chunk = generator.GenerateChunk(chunkCoord);
-            long generationEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-
-            applier.Apply(chunk);
-
-            TileNavWorld.Instance?.BuildNavChunk(chunkCoord, profile.chunkSize);
-            worldFeatureLifecycle?.ActivateChunk(chunkCoord);
-
-            long applyEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-
-            chunkStreamingSystem.MarkChunkLoaded(chunkCoord);
-            NotifyChunkLoaded(chunkCoord);
-
-            totalGenerationTicks += (generationEndTicks - generationStartTicks);
-            totalApplyTicks += (applyEndTicks - generationEndTicks);
-            generatedChunkCount++;
-        }
-
-        long unloadStartTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-        UnloadOutside(unloadMinChunk, unloadMaxChunk);
-        long unloadEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-        double unloadMs = (unloadEndTicks - unloadStartTicks) * 1000.0 / stopwatchFrequency;
-
-        double generationMsTotal = totalGenerationTicks * 1000.0 / stopwatchFrequency;
-        double applyMsTotal = totalApplyTicks * 1000.0 / stopwatchFrequency;
+        ChunkProcessingFrameStats processingFrameStats = chunkProcessingPipeline.ProcessFrame(
+            loadMinChunk,
+            loadMaxChunk,
+            unloadMinChunk,
+            unloadMaxChunk,
+            Mathf.Max(0.1f, genBudgetMs),
+            Mathf.Max(0, maxChunksPerFrame),
+            maxUnloadRemovalsPerFrame: 1,
+            onChunkLoaded: HandleChunkLoaded,
+            onChunkUnloading: HandleChunkUnloading);
 
         const double WarnUnloadMs = 2.0;
         const double WarnGenerationMs = 10.0;
         const double WarnApplyMs = 2.0;
 
-        if (unloadMs >= WarnUnloadMs || generationMsTotal >= WarnGenerationMs || applyMsTotal >= WarnApplyMs)
+        if (processingFrameStats.UnloadMs >= WarnUnloadMs ||
+            processingFrameStats.GenerationMsTotal >= WarnGenerationMs ||
+            processingFrameStats.ApplyMsTotal >= WarnApplyMs)
         {
             Debug.Log(
-                $"[WorldGen] unload={(int)unloadMs}ms, " +
-                $"genChunks={generatedChunkCount}/{hardChunkCap} budget={budgetMs:F1}ms " +
-                $"gen={generationMsTotal:F2}ms apply={applyMsTotal:F2}ms, " +
+                $"[WorldGen] unload={(int)processingFrameStats.UnloadMs}ms, " +
+                $"genChunks={processingFrameStats.GeneratedChunkCount}/{Mathf.Max(0, maxChunksPerFrame)} " +
+                $"budget={Mathf.Max(0.1f, genBudgetMs):F1}ms " +
+                $"gen={processingFrameStats.GenerationMsTotal:F2}ms " +
+                $"apply={processingFrameStats.ApplyMsTotal:F2}ms, " +
                 $"queue={(chunkStreamingSystem != null ? chunkStreamingSystem.GenerationQueueCount : 0)} " +
                 $"loaded={(chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunkCount : 0)} " +
                 $"chunkSize={profile.chunkSize}"
@@ -241,97 +208,9 @@ public sealed class WorldGenRunner : MonoBehaviour
             return;
 
         worldFeatureLifecycle?.ClearAll();
-        DespawnRunGate();
-
-        if (chunkStreamingSystem != null && chunkStreamingSystem.LoadedChunks != null)
-        {
-            foreach (Vector2Int chunkCoord in chunkStreamingSystem.LoadedChunks)
-                applier.ClearChunk(chunkCoord, profile.chunkSize);
-        }
-
+        worldTransitionSystem?.ResetTransitionArtifacts();
+        chunkProcessingPipeline?.ClearLoadedChunks();
         chunkStreamingSystem?.Reset();
-    }
-    #endregion
-
-    #region Biome Control
-
-    private void StartBiome(int nextBiomeIndex, Vector2Int originTile)
-    {
-        biomeIndex = nextBiomeIndex;
-
-        BiomeDefinition def = biomeDb != null ? biomeDb.Get(biomeIndex) : null;
-        if (def == null)
-        {
-            Debug.LogError($"Missing biome definition for index {biomeIndex}", this);
-            return;
-        }
-
-        int biomeSeed = ComputeBiomeSeed(profile.seed, biomeIndex);
-
-        var biomeInstance = new BiomeInstance(
-            biomeIndex,
-            biomeSeed,
-            originTile,
-            profile.worldRadiusTiles
-        );
-
-        ctx.BindBiome(def, biomeInstance);
-        runtimeState?.Clear();
-
-        if (TileNavWorld.Instance != null)
-            TileNavWorld.Instance.SetSiteBlockers(ctx.SiteBlockers);
-
-        applier.ClearAll();
-        worldFeatureLifecycle?.ClearAll();
-        worldFeatureLifecycle?.RebuildPlacements();
-        SpawnRunGateForBiome();
-
-        chunkStreamingSystem?.Reset();
-
-        Vector2Int spawnChunk = TileToChunk(originTile, profile.chunkSize);
-        chunkStreamingSystem?.InitializeAnchor(spawnChunk);
-    }
-    private int ComputeBiomeSeed(int runSeed, int biomeIdx)
-    {
-        uint h = DeterministicHash.Hash((uint)runSeed, biomeIdx, 0, 0xC0FFEEu);
-        return (int)(h & 0x7FFFFFFF);
-    }
-
-    #endregion
-
-    #region Streaming - Queue/Unload
-
-    private void UnloadOutside(Vector2Int keepMinChunk, Vector2Int keepMaxChunk)
-    {
-        if (chunkStreamingSystem == null)
-            return;
-
-        const int maxRemovalsPerFrame = 1;
-
-        List<Vector2Int> chunksToUnload = chunkStreamingSystem.CollectChunksToUnload(
-            keepMinChunk,
-            keepMaxChunk,
-            maxRemovalsPerFrame);
-
-        if (chunksToUnload == null || chunksToUnload.Count == 0)
-            return;
-
-        for (int i = 0; i < chunksToUnload.Count; i++)
-        {
-            Vector2Int chunkCoord = chunksToUnload[i];
-
-            NotifyChunkUnloading(chunkCoord);
-            worldFeatureLifecycle?.DeactivateChunk(chunkCoord);
-            applier.ClearChunk(chunkCoord, profile.chunkSize);
-            TileNavWorld.Instance?.ClearNavChunk(chunkCoord);
-
-            chunkStreamingSystem.MarkChunkUnloaded(chunkCoord);
-        }
-    }
-    private static bool IsChunkIn(Vector2Int c, Vector2Int minChunk, Vector2Int maxChunk)
-    {
-        return c.x >= minChunk.x && c.x <= maxChunk.x &&
-               c.y >= minChunk.y && c.y <= maxChunk.y;
     }
     #endregion
 
@@ -420,21 +299,13 @@ public sealed class WorldGenRunner : MonoBehaviour
     #endregion
     #region Helpers
     // Chunk persistance helpers
-    private void NotifyChunkLoaded(Vector2Int chunkCoord)
+    private void HandleChunkLoaded(Vector2Int chunkCoord, ChunkStateStore.ChunkState chunkState)
     {
-        if (runtimeState == null)
-            return;
-
-        ChunkStateStore.ChunkState chunkState = runtimeState.ChunkStates.GetChunkState(chunkCoord);
         OnChunkLoaded?.Invoke(chunkCoord, chunkState);
     }
 
-    private void NotifyChunkUnloading(Vector2Int chunkCoord)
+    private void HandleChunkUnloading(Vector2Int chunkCoord, ChunkStateStore.ChunkState chunkState)
     {
-        if (runtimeState == null)
-            return;
-
-        ChunkStateStore.ChunkState chunkState = runtimeState.ChunkStates.GetChunkState(chunkCoord);
         OnChunkUnloading?.Invoke(chunkCoord, chunkState);
     }
 
@@ -446,59 +317,10 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (poiPool == null)
             poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
     }
-
     public void UseGate(Vector2Int gateTile)
     {
-        if (Time.time - lastGateTime <= gateCooldownSeconds)
-            return;
-
-        lastGateTime = Time.time;
-
-        int next = biomeIndex + 1;
-        if (biomeDb != null && biomeDb.Count > 0)
-            next %= biomeDb.Count;
-
-        StartBiome(next, gateTile);
+        worldTransitionSystem?.UseGate(gateTile);
     }
-
-    private void EnsureRunGateRoot()
-    {
-        if (poiPool == null) return;
-
-        var active = poiPool.GetActiveRoot();
-        if (runGateRoot == null)
-        {
-            var go = new GameObject("RunGate");
-            go.transform.SetParent(active, false);
-            runGateRoot = go.transform;
-        }
-    }
-
-    private void DespawnRunGate()
-    {
-        if (runGateInstance != null)
-        {
-            poiPool.Release(runGateInstance);
-            runGateInstance = null;
-        }
-    }
-
-    private void SpawnRunGateForBiome()
-    {
-        DespawnRunGate();
-
-        var prefab = ctx.Biome != null ? ctx.Biome.endGatePrefab : null;
-        if (prefab == null || grid == null || poiPool == null || ctx == null)
-            return;
-
-        EnsureRunGateRoot();
-
-        Vector2Int tile = ctx.ActiveBiome.OriginTile + ctx.Biome.RunGateOffsetTiles;
-        Vector3 worldPos = grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));
-
-        runGateInstance = poiPool.Spawn(prefab, worldPos, Quaternion.identity, runGateRoot);
-    }
-
     #endregion
     // diagnostics
     public WorldGenDiagnosticsSnapshot CreateDiagnosticsSnapshot()

@@ -24,14 +24,15 @@ public sealed class WorldFeatureLifecycle
         WorldGenRunner worldGenRunner,
         WorldContext worldContext,
         WorldRuntimeState worldRuntimeState,
-        WorldPoiPoolManager poiPoolManager)
+        WorldPoiPoolManager poiPoolManager,
+        IGateTransitionService gateTransitionService)
     {
         this.worldGenRunner = worldGenRunner;
         this.worldContext = worldContext;
         this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
+        this.gateTransitionService = gateTransitionService;
 
-        gateTransitionService = new GateTransitionServiceAdapter(worldGenRunner);
         chunkSiteStateService = new ChunkSiteStateServiceAdapter(worldRuntimeState);
     }
 

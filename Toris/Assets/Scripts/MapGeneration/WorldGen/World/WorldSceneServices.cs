@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class WorldSceneServices
+public sealed class WorldSceneServices : IWorldNavigationService
 {
     public Grid Grid { get; }
     public TileNavWorld TileNavWorld { get; }
@@ -32,5 +32,26 @@ public sealed class WorldSceneServices
     public void SetSiteBlockers(SiteBlockerMap siteBlockers)
     {
         TileNavWorld?.SetSiteBlockers(siteBlockers);
+    }
+
+    public Vector2Int WorldToCell(Vector3 worldPosition)
+    {
+        if (TileNavWorld == null)
+            return default;
+
+        return TileNavWorld.WorldToCell(worldPosition);
+    }
+
+    public Vector3 CellToWorldCenter(Vector2Int cell)
+    {
+        if (TileNavWorld == null)
+            return Vector3.zero;
+
+        return TileNavWorld.CellToWorldCenter(cell);
+    }
+
+    public bool IsWalkableCell(Vector2Int cell)
+    {
+        return TileNavWorld != null && TileNavWorld.IsWalkableCell(cell);
     }
 }

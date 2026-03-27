@@ -48,6 +48,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     private ChunkProcessingPipeline chunkProcessingPipeline;
     private WorldTransitionSystem worldTransitionSystem;
     private WorldSceneServices worldSceneServices;
+    private WorldEncounterServices worldEncounterServices;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -116,8 +117,12 @@ public sealed class WorldGenRunner : MonoBehaviour
         EnsureNavWorld();
 
         worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
-
         chunkStreamingSystem = new ChunkStreamingSystem();
+
+        worldEncounterServices = new WorldEncounterServices(
+            worldSceneServices,
+            new PlayerLocatorService(followTarget),
+            new EnemySpawnService());
 
         worldTransitionSystem = new WorldTransitionSystem(
             profile,
@@ -135,7 +140,8 @@ public sealed class WorldGenRunner : MonoBehaviour
             ctx,
             runtimeState,
             poiPool,
-            worldTransitionSystem);
+            worldTransitionSystem,
+            worldEncounterServices);
 
         worldTransitionSystem.AttachLifecycle(worldFeatureLifecycle);
 

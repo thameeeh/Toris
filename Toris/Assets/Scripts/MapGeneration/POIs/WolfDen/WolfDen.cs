@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteBridge
+public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteBridge, IWorldSiteActivationListener
 {
     [Header("HP")]
     [SerializeField] private float maxHp = 50f;
@@ -55,7 +55,6 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         }
 
         IsInitialized = true;
-        Initialized?.Invoke();
     }
 
     public void OnSpawned()
@@ -73,8 +72,18 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         Cleared = null;
         DamagedAlert = null;
         chunkSiteStateService = null;
-    }
 
+        IsInitialized = false;
+        cleared = false;
+        CurrentHealth = 0f;
+    }
+    public void OnSiteActivated()
+    {
+        if (!IsInitialized)
+            return;
+
+        Initialized?.Invoke();
+    }
     public void Damage(float damageAmount)
     {
         if (cleared)

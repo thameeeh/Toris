@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(WolfDen))]
-public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
+public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContextConsumer
 {
     [Header("Prefabs")]
     [SerializeField] private Wolf leaderPrefab;
@@ -39,6 +39,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     [SerializeField] private float alertLevelAfterHowl = 0f;
 
     private WolfDen den;
+    private WorldEncounterServices encounterServices;
 
     private bool ready;
     private Wolf leader;
@@ -49,6 +50,11 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
     private float alertLevel;
     private float alertDecayDelayTimer;
     private bool hasTriggeredMaxAlertHowl;
+
+    public void Initialize(WorldSiteContext siteContext)
+    {
+        encounterServices = siteContext.EncounterServices;
+    }
 
     private void Awake()
     {
@@ -81,6 +87,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         else
             ForceDespawnAllTracked();
 
+        encounterServices = null;
         ResetRuntime();
     }
 
@@ -251,12 +258,15 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         if (den == null)
             return transform.position;
 
-        var nav = TileNavWorld.Instance;
-        if (nav == null)
+        IWorldNavigationService navigationService = encounterServices != null
+            ? encounterServices.NavigationService
+            : null;
+
+        if (navigationService == null)
             return den.WorldPosition;
 
         Vector3 denCenterWorld = den.WorldPosition;
-        Vector2Int denCenterCell = nav.WorldToCell(denCenterWorld);
+        Vector2Int denCenterCell = navigationService.WorldToCell(denCenterWorld);
 
         Transform player = FindPlayerTransform();
         Vector2Int stepDir = GetStepDirectionTowardPlayer(denCenterWorld, player);
@@ -273,7 +283,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         {
             currentCell += stepDir;
 
-            if (nav.IsWalkableCell(currentCell))
+            if (navigationService.IsWalkableCell(currentCell))
             {
                 foundBoundaryWalkable = true;
                 break;
@@ -281,7 +291,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         }
 
         if (!foundBoundaryWalkable)
-            return FindNearestWalkableCellAround(currentCell, investigatePointSearchRadius, nav, denCenterWorld);
+            return FindNearestWalkableCellAround(currentCell, investigatePointSearchRadius, navigationService, denCenterWorld);
 
         int outwardSteps = Mathf.Max(
             1,
@@ -291,13 +301,13 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         for (int i = 1; i < outwardSteps; i++)
         {
             Vector2Int nextCell = currentCell + stepDir;
-            if (!nav.IsWalkableCell(nextCell))
+            if (!navigationService.IsWalkableCell(nextCell))
                 break;
 
             currentCell = nextCell;
         }
 
-        return nav.CellToWorldCenter(currentCell);
+        return navigationService.CellToWorldCenter(currentCell);
     }
 
     private Vector2Int GetStepDirectionTowardPlayer(Vector3 denCenterWorld, Transform player)
@@ -325,33 +335,37 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         return new Vector2Int(x, y);
     }
 
-    private Vector3 FindNearestWalkableCellAround(Vector2Int startCell, int maxTileRadius, TileNavWorld nav, Vector3 fallbackWorldPos)
+    private Vector3 FindNearestWalkableCellAround(
+        Vector2Int startCell,
+        int maxTileRadius,
+        IWorldNavigationService navigationService,
+        Vector3 fallbackWorldPos)
     {
-        if (nav.IsWalkableCell(startCell))
-            return nav.CellToWorldCenter(startCell);
+        if (navigationService.IsWalkableCell(startCell))
+            return navigationService.CellToWorldCenter(startCell);
 
         for (int r = 1; r <= maxTileRadius; r++)
         {
             for (int x = -r; x <= r; x++)
             {
                 Vector2Int top = startCell + new Vector2Int(x, r);
-                if (nav.IsWalkableCell(top))
-                    return nav.CellToWorldCenter(top);
+                if (navigationService.IsWalkableCell(top))
+                    return navigationService.CellToWorldCenter(top);
 
                 Vector2Int bottom = startCell + new Vector2Int(x, -r);
-                if (nav.IsWalkableCell(bottom))
-                    return nav.CellToWorldCenter(bottom);
+                if (navigationService.IsWalkableCell(bottom))
+                    return navigationService.CellToWorldCenter(bottom);
             }
 
             for (int y = -r + 1; y <= r - 1; y++)
             {
                 Vector2Int right = startCell + new Vector2Int(r, y);
-                if (nav.IsWalkableCell(right))
-                    return nav.CellToWorldCenter(right);
+                if (navigationService.IsWalkableCell(right))
+                    return navigationService.CellToWorldCenter(right);
 
                 Vector2Int left = startCell + new Vector2Int(-r, y);
-                if (nav.IsWalkableCell(left))
-                    return nav.CellToWorldCenter(left);
+                if (navigationService.IsWalkableCell(left))
+                    return navigationService.CellToWorldCenter(left);
             }
         }
 
@@ -407,8 +421,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 
     private Transform FindPlayerTransform()
     {
-        GameObject p = GameObject.FindGameObjectWithTag("Player");
-        return p != null ? p.transform : null;
+        return encounterServices != null
+            ? encounterServices.PlayerLocator.GetPlayerTransform()
+            : null;
     }
 
     private bool ShouldKeepAliveOnUnload(Wolf w, Transform player)
@@ -511,9 +526,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
         Vector3 pos = den.WorldPosition + (Vector3)(Random.insideUnitCircle * spawnRadius);
         pos = FindNearestWalkableSpawn(pos, maxTileRadius: spawnRadius);
 
-        Enemy e = GameplayPoolManager.Instance != null
-            ? GameplayPoolManager.Instance.SpawnEnemy(prefab, pos, Quaternion.identity)
-            : Instantiate(prefab, pos, Quaternion.identity);
+        if (encounterServices == null || encounterServices.EnemySpawnService == null)
+            return null;
+
+        Enemy e = encounterServices.EnemySpawnService.SpawnEnemy(prefab, pos, Quaternion.identity);
 
         Wolf w = e as Wolf;
         if (w == null) return null;
@@ -550,32 +566,36 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable
 
     private Vector3 FindNearestWalkableSpawn(Vector3 desiredWorldPos, int maxTileRadius = 6)
     {
-        var nav = TileNavWorld.Instance;
-        if (nav == null) return desiredWorldPos;
+        IWorldNavigationService navigationService = encounterServices != null
+            ? encounterServices.NavigationService
+            : null;
 
-        Vector2Int startCell = nav.WorldToCell(desiredWorldPos);
+        if (navigationService == null)
+            return desiredWorldPos;
 
-        if (nav.IsWalkableCell(startCell))
-            return nav.CellToWorldCenter(startCell);
+        Vector2Int startCell = navigationService.WorldToCell(desiredWorldPos);
+
+        if (navigationService.IsWalkableCell(startCell))
+            return navigationService.CellToWorldCenter(startCell);
 
         for (int r = 1; r <= maxTileRadius; r++)
         {
             for (int x = -r; x <= r; x++)
             {
                 var c1 = startCell + new Vector2Int(x, r);
-                if (nav.IsWalkableCell(c1)) return nav.CellToWorldCenter(c1);
+                if (navigationService.IsWalkableCell(c1)) return navigationService.CellToWorldCenter(c1);
 
                 var c2 = startCell + new Vector2Int(x, -r);
-                if (nav.IsWalkableCell(c2)) return nav.CellToWorldCenter(c2);
+                if (navigationService.IsWalkableCell(c2)) return navigationService.CellToWorldCenter(c2);
             }
 
             for (int y = -r + 1; y <= r - 1; y++)
             {
                 var c3 = startCell + new Vector2Int(r, y);
-                if (nav.IsWalkableCell(c3)) return nav.CellToWorldCenter(c3);
+                if (navigationService.IsWalkableCell(c3)) return navigationService.CellToWorldCenter(c3);
 
                 var c4 = startCell + new Vector2Int(-r, y);
-                if (nav.IsWalkableCell(c4)) return nav.CellToWorldCenter(c4);
+                if (navigationService.IsWalkableCell(c4)) return navigationService.CellToWorldCenter(c4);
             }
         }
 

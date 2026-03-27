@@ -4,7 +4,7 @@ using UnityEngine;
 public sealed class WorldFeatureLifecycle
 {
     private readonly WorldSceneServices worldSceneServices;
-    private readonly WorldGenRunner worldGenRunner;
+    private readonly WorldEncounterServices worldEncounterServices;
     private readonly WorldContext worldContext;
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
@@ -26,13 +26,15 @@ public sealed class WorldFeatureLifecycle
         WorldContext worldContext,
         WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
-        IGateTransitionService gateTransitionService)
+        IGateTransitionService gateTransitionService,
+        WorldEncounterServices worldEncounterServices)
     {
         this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
         this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
         this.gateTransitionService = gateTransitionService;
+        this.worldEncounterServices = worldEncounterServices;
 
         chunkSiteStateService = new ChunkSiteStateServiceAdapter(worldRuntimeState);
     }
@@ -159,22 +161,38 @@ public sealed class WorldFeatureLifecycle
         if (siteObject == null)
             return null;
 
-        IWorldSiteBridge siteBridge = siteObject.GetComponentInChildren<IWorldSiteBridge>();
-        if (siteBridge == null)
+        IWorldSiteContextConsumer[] siteContextConsumers =
+            siteObject.GetComponentsInChildren<IWorldSiteContextConsumer>(true);
+
+        if (siteContextConsumers == null || siteContextConsumers.Length == 0)
         {
             Debug.LogWarning(
-                $"Site prefab '{prefab.name}' for site type '{placement.SiteType}' has no IWorldSiteBridge.",
+                $"Site prefab '{prefab.name}' for site type '{placement.SiteType}' has no IWorldSiteContextConsumer.",
                 siteObject);
 
             ReleaseSiteInstance(siteObject);
             return null;
         }
 
-        siteBridge.Initialize(new WorldSiteContext(
+        WorldSiteContext siteContext = new WorldSiteContext(
             placement,
             spawnId,
             gateTransitionService,
-            chunkSiteStateService));
+            chunkSiteStateService,
+            worldEncounterServices);
+
+        for (int i = 0; i < siteContextConsumers.Length; i++)
+        {
+            siteContextConsumers[i].Initialize(siteContext);
+        }
+
+        IWorldSiteActivationListener[] siteActivationListeners =
+    siteObject.GetComponentsInChildren<IWorldSiteActivationListener>(true);
+
+        for (int i = 0; i < siteActivationListeners.Length; i++)
+        {
+            siteActivationListeners[i].OnSiteActivated();
+        }
 
         return siteObject;
     }

@@ -1,4 +1,3 @@
-public interface IWorldSiteBridge
+public interface IWorldSiteBridge : IWorldSiteContextConsumer
 {
-    void Initialize(WorldSiteContext siteContext);
 }

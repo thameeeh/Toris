@@ -3,6 +3,7 @@ using UnityEngine;
 
 public sealed class WorldFeatureLifecycle
 {
+    private readonly WorldSceneServices worldSceneServices;
     private readonly WorldGenRunner worldGenRunner;
     private readonly WorldContext worldContext;
     private readonly WorldRuntimeState worldRuntimeState;
@@ -21,13 +22,13 @@ public sealed class WorldFeatureLifecycle
     private Transform siteRootContainer;
 
     public WorldFeatureLifecycle(
-        WorldGenRunner worldGenRunner,
+        WorldSceneServices worldSceneServices,
         WorldContext worldContext,
         WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
         IGateTransitionService gateTransitionService)
     {
-        this.worldGenRunner = worldGenRunner;
+        this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
         this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
@@ -140,7 +141,7 @@ public sealed class WorldFeatureLifecycle
             return null;
 
         GameObject prefab = siteDefinition.prefab;
-        if (prefab == null || worldGenRunner.Grid == null || poiPoolManager == null)
+        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
             return null;
 
         int spawnId = ComputeSpawnId(placement, siteDefinition);
@@ -152,8 +153,7 @@ public sealed class WorldFeatureLifecycle
                 return null;
         }
 
-        Vector3 worldPosition = worldGenRunner.Grid.GetCellCenterWorld(
-            new Vector3Int(placement.CenterTile.x, placement.CenterTile.y, 0));
+        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(placement.CenterTile);
 
         GameObject siteObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, parent);
         if (siteObject == null)

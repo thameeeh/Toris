@@ -4,12 +4,12 @@ public sealed class WorldTransitionSystem : IGateTransitionService
 {
     private readonly WorldProfile worldProfile;
     private readonly BiomeDatabase biomeDatabase;
+    private readonly WorldSceneServices worldSceneServices;
     private readonly WorldContext worldContext;
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly TilemapApplier tilemapApplier;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
     private readonly WorldPoiPoolManager poiPoolManager;
-    private readonly Grid grid;
     private readonly float gateCooldownSeconds;
 
     private WorldFeatureLifecycle worldFeatureLifecycle;
@@ -25,22 +25,22 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     public WorldTransitionSystem(
         WorldProfile worldProfile,
         BiomeDatabase biomeDatabase,
+        WorldSceneServices worldSceneServices,
         WorldContext worldContext,
         WorldRuntimeState worldRuntimeState,
         TilemapApplier tilemapApplier,
         ChunkStreamingSystem chunkStreamingSystem,
         WorldPoiPoolManager poiPoolManager,
-        Grid grid,
         float gateCooldownSeconds)
     {
         this.worldProfile = worldProfile;
         this.biomeDatabase = biomeDatabase;
+        this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
         this.worldRuntimeState = worldRuntimeState;
         this.tilemapApplier = tilemapApplier;
         this.chunkStreamingSystem = chunkStreamingSystem;
         this.poiPoolManager = poiPoolManager;
-        this.grid = grid;
         this.gateCooldownSeconds = gateCooldownSeconds;
     }
 
@@ -97,8 +97,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         worldContext.BindBiome(biomeDefinition, biomeInstance);
         worldRuntimeState?.Clear();
 
-        if (TileNavWorld.Instance != null)
-            TileNavWorld.Instance.SetSiteBlockers(worldContext.SiteBlockers);
+        worldSceneServices?.SetSiteBlockers(worldContext.SiteBlockers);
 
         tilemapApplier.ClearAll();
         worldFeatureLifecycle?.ClearAll();
@@ -145,13 +144,13 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         DespawnRunGate();
 
         GameObject prefab = worldContext.Biome != null ? worldContext.Biome.endGatePrefab : null;
-        if (prefab == null || grid == null || poiPoolManager == null)
+        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
             return;
 
         EnsureRunGateRoot();
 
         Vector2Int tile = worldContext.ActiveBiome.OriginTile + worldContext.Biome.RunGateOffsetTiles;
-        Vector3 worldPosition = grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));
+        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(tile);
 
         runGateInstance = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, runGateRoot);
     }

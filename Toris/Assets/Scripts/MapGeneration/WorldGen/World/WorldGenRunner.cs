@@ -47,6 +47,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     private ChunkStreamingSystem chunkStreamingSystem;
     private ChunkProcessingPipeline chunkProcessingPipeline;
     private WorldTransitionSystem worldTransitionSystem;
+    private WorldSceneServices worldSceneServices;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -60,8 +61,6 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     public static uint GateSpawnSaltValue => GateSpawnSalt;
     public static uint WolfDenSpawnSaltValue => WolfDenSpawnSalt;
-
-    public Grid Grid => grid;
     #endregion
 
     #region Public API
@@ -116,21 +115,23 @@ public sealed class WorldGenRunner : MonoBehaviour
         EnsurePoiPool();
         EnsureNavWorld();
 
+        worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
+
         chunkStreamingSystem = new ChunkStreamingSystem();
 
         worldTransitionSystem = new WorldTransitionSystem(
             profile,
             biomeDb,
+            worldSceneServices,
             ctx,
             runtimeState,
             applier,
             chunkStreamingSystem,
             poiPool,
-            grid,
             gateCooldownSeconds);
 
         worldFeatureLifecycle = new WorldFeatureLifecycle(
-            this,
+            worldSceneServices,
             ctx,
             runtimeState,
             poiPool,
@@ -140,6 +141,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(
             profile,
+            worldSceneServices,
             generator,
             applier,
             worldFeatureLifecycle,
@@ -317,10 +319,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (poiPool == null)
             poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
     }
-    public void UseGate(Vector2Int gateTile)
-    {
-        worldTransitionSystem?.UseGate(gateTile);
-    }
+
     #endregion
     // diagnostics
     public WorldGenDiagnosticsSnapshot CreateDiagnosticsSnapshot()

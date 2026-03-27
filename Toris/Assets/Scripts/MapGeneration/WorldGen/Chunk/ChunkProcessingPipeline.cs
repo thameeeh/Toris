@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class ChunkProcessingPipeline
 {
     private readonly WorldProfile worldProfile;
+    private readonly WorldSceneServices worldSceneServices;
     private readonly ChunkGenerator chunkGenerator;
     private readonly TilemapApplier tilemapApplier;
     private readonly WorldFeatureLifecycle worldFeatureLifecycle;
@@ -13,6 +14,7 @@ public sealed class ChunkProcessingPipeline
 
     public ChunkProcessingPipeline(
         WorldProfile worldProfile,
+        WorldSceneServices worldSceneServices,
         ChunkGenerator chunkGenerator,
         TilemapApplier tilemapApplier,
         WorldFeatureLifecycle worldFeatureLifecycle,
@@ -20,6 +22,7 @@ public sealed class ChunkProcessingPipeline
         ChunkStreamingSystem chunkStreamingSystem)
     {
         this.worldProfile = worldProfile;
+        this.worldSceneServices = worldSceneServices;
         this.chunkGenerator = chunkGenerator;
         this.tilemapApplier = tilemapApplier;
         this.worldFeatureLifecycle = worldFeatureLifecycle;
@@ -82,7 +85,7 @@ public sealed class ChunkProcessingPipeline
 
             tilemapApplier.Apply(chunkResult);
 
-            TileNavWorld.Instance?.BuildNavChunk(chunkCoord, worldProfile.chunkSize);
+            worldSceneServices?.BuildNavChunk(chunkCoord, worldProfile.chunkSize);
             worldFeatureLifecycle?.ActivateChunk(chunkCoord);
 
             long applyEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -167,7 +170,7 @@ public sealed class ChunkProcessingPipeline
 
             worldFeatureLifecycle?.DeactivateChunk(chunkCoord);
             tilemapApplier.ClearChunk(chunkCoord, worldProfile.chunkSize);
-            TileNavWorld.Instance?.ClearNavChunk(chunkCoord);
+            worldSceneServices?.ClearNavChunk(chunkCoord);
 
             chunkStreamingSystem.MarkChunkUnloaded(chunkCoord);
         }

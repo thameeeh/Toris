@@ -1,0 +1,24 @@
+.inventory-window {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-dark);
+    border-color: rgb(109, 109, 109);
+    border-width: 2px;
+    border-radius: 10px;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.inventory-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+/* If the player grid needs bigger slots, use a modifier class 
+   rather than overwriting the base component */
+.item-slot--large {
+    width: 80px;
+    height: 80px;
+}
+

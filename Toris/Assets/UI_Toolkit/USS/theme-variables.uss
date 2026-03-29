@@ -1,0 +1,20 @@
+:root {
+    /* Global Colors */
+    --color-bg-dark: rgba(30, 30, 30, 0.95);
+    --color-bg-panel: rgba(0, 0, 0, 0.3);
+    --color-border-default: rgb(100, 100, 100);
+    --color-border-highlight: rgb(220, 179, 92);
+    --color-text-light: rgb(255, 255, 255);
+
+    /* Bar Colors */
+    --color-health: #D92323;
+    --color-mana: #234BD9;
+    --color-xp: #D9D923;
+
+    /* Typography Defaults */
+    --font-size-h1: 60px;
+    --font-size-h2: 40px;
+    --font-size-h3: 30px;
+    --font-size-body: 18px;
+    --font-size-small: 12px;
+}

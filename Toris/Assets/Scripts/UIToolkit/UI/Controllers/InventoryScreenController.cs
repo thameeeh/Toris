@@ -37,6 +37,8 @@ namespace OutlandHaven.Inventory
         private void Start()
         {
             TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
+            
+            inventoryInstance.style.flexGrow = 1; // Make it fill the parent container
 
             _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents, _equipmentInventory);
             _view.Initialize();

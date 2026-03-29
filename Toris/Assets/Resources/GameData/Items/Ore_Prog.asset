@@ -18,13 +18,10 @@ MonoBehaviour:
   MaxStackSize: 99
   GoldValue: 10
   Components:
-  - rid: -2
   - rid: 7555927880013971680
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 7555927880013971680
       type: {class: ProgressionComponent, ns: OutlandHaven.UIToolkit, asm: Assembly-CSharp}
       data:

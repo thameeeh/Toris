@@ -4,39 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(WolfDen))]
 public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContextConsumer
 {
-    [Header("Prefabs")]
-    [SerializeField] private Wolf leaderPrefab;
-    [SerializeField] private Wolf minionPrefab;
-
-    [Header("Leader Respawn")]
-    [SerializeField] private float leaderRespawnDelay = 6f;
-
-    [Header("Spawn Area")]
-    [SerializeField] private int spawnRadius;
-
-    [Header("Chunk Unload Behavior")]
-    [SerializeField] private bool keepChasingWolvesOnUnload = true;
-    [SerializeField] private float keepChaseIfWithinPlayerRange = 40f;
-
-    [Header("Home")]
-    [SerializeField] private float homeRadius = 8f;
-
-    [Header("Den Alert")]
-    [SerializeField] private float denAlertDuration = 4f;
-    [SerializeField] private float alertLevelDecayDelay = 2.5f;
-    [SerializeField] private float alertLevelDecayRate = 0.35f;
-    [SerializeField] private float alertLevelPerHit = 1f;
-    [SerializeField] private float maxAlertLevel = 4f;
-
-    [Header("Den Alert Escalation")]
-    [SerializeField] private float investigateStandBonusPerAlert = 0.35f;
-    [SerializeField] private float investigateBaseStepsFromDen = 1f;
-    [SerializeField] private float investigateExtraStepsPerAlert = 1f;
-    [SerializeField] private int investigatePointSearchRadius = 6;
-
-    [Header("Max Alert Response")]
-    [SerializeField] private bool howlAtMaxAlert = true;
-    [SerializeField] private float alertLevelAfterHowl = 0f;
+    [Header("Encounter Config")]
+    [SerializeField] private WolfDenEncounterConfig encounterConfig;
 
     private WolfDen den;
     private WorldEncounterServices encounterServices;
@@ -82,7 +51,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         UnsubscribeFromDen();
 
-        if (keepChasingWolvesOnUnload)
+        if (encounterConfig.KeepChasingWolvesOnUnload)
             DespawnTrackedExceptActiveChasers();
         else
             ForceDespawnAllTracked();
@@ -137,6 +106,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (den == null)
             den = GetComponent<WolfDen>();
 
+        if (!HasEncounterConfig())
+            return;
+
         ready = true;
 
         if (den != null && !den.IsCleared)
@@ -154,7 +126,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (leader == null)
         {
             respawnTimer += Time.deltaTime;
-            if (respawnTimer >= leaderRespawnDelay)
+            if (respawnTimer >= encounterConfig.LeaderRespawnDelay)
             {
                 respawnTimer = 0f;
                 EnsureLeader();
@@ -167,10 +139,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         }
         else if (alertLevel > 0f)
         {
-            alertLevel = Mathf.Max(0f, alertLevel - alertLevelDecayRate * Time.deltaTime);
+            alertLevel = Mathf.Max(0f, alertLevel - encounterConfig.AlertLevelDecayRate * Time.deltaTime);
         }
 
-        if (alertLevel < maxAlertLevel)
+        if (alertLevel < encounterConfig.MaxAlertLevel)
         {
             hasTriggeredMaxAlertHowl = false;
         }
@@ -195,15 +167,15 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (!ready) return;
         if (den == null || den.IsCleared) return;
 
-        alertLevel = Mathf.Min(maxAlertLevel, alertLevel + alertLevelPerHit);
-        alertDecayDelayTimer = alertLevelDecayDelay;
+        alertLevel = Mathf.Min(encounterConfig.MaxAlertLevel, alertLevel + encounterConfig.AlertLevelPerHit);
+        alertDecayDelayTimer = encounterConfig.AlertLevelDecayDelay;
 
         if (TryTriggerMaxAlertHowl())
             return;
 
         Vector3 investigatePoint = BuildDenInvestigationPoint();
-        float investigateDuration = denAlertDuration + alertLevel;
-        float standBonus = alertLevel * investigateStandBonusPerAlert;
+        float investigateDuration = encounterConfig.DenAlertDuration + alertLevel;
+        float standBonus = alertLevel * encounterConfig.InvestigateStandBonusPerAlert;
 
         if (leader != null)
             leader.SetInvestigationTarget(investigatePoint, investigateDuration, standBonus);
@@ -220,10 +192,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private bool TryTriggerMaxAlertHowl()
     {
-        if (!howlAtMaxAlert)
+        if (!encounterConfig.HowlAtMaxAlert)
             return false;
 
-        if (alertLevel < maxAlertLevel)
+        if (alertLevel < encounterConfig.MaxAlertLevel)
             return false;
 
         if (hasTriggeredMaxAlertHowl)
@@ -247,8 +219,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         leader.SetAggroStatus(true);
         leader.StateMachine.ChangeState(leader.HowlState);
 
-        alertLevel = Mathf.Clamp(alertLevelAfterHowl, 0f, maxAlertLevel);
-        alertDecayDelayTimer = alertLevelDecayDelay;
+        alertLevel = Mathf.Clamp(encounterConfig.AlertLevelAfterHowl, 0f, encounterConfig.MaxAlertLevel);
+        alertDecayDelayTimer = encounterConfig.AlertLevelDecayDelay;
 
         return true;
     }
@@ -275,7 +247,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
         Vector2Int currentCell = denCenterCell;
 
-        int maxSteps = Mathf.Max(2, Mathf.CeilToInt(homeRadius) + investigatePointSearchRadius + 4);
+        int maxSteps = Mathf.Max(2, Mathf.CeilToInt(encounterConfig.HomeRadius) + encounterConfig.InvestigatePointSearchRadius + 4);
 
         bool foundBoundaryWalkable = false;
 
@@ -291,11 +263,11 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         }
 
         if (!foundBoundaryWalkable)
-            return FindNearestWalkableCellAround(currentCell, investigatePointSearchRadius, navigationService, denCenterWorld);
+            return FindNearestWalkableCellAround(currentCell, encounterConfig.InvestigatePointSearchRadius, navigationService, denCenterWorld);
 
         int outwardSteps = Mathf.Max(
             1,
-            Mathf.RoundToInt(investigateBaseStepsFromDen + alertLevel * investigateExtraStepsPerAlert)
+            Mathf.RoundToInt(encounterConfig.InvestigateBaseStepsFromDen + alertLevel * encounterConfig.InvestigateExtraStepsPerAlert)
         );
 
         for (int i = 1; i < outwardSteps; i++)
@@ -428,12 +400,12 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private bool ShouldKeepAliveOnUnload(Wolf w, Transform player)
     {
-        if (!keepChasingWolvesOnUnload) return false;
+        if (!encounterConfig.KeepChasingWolvesOnUnload) return false;
         if (w == null) return false;
         if (player == null) return false;
 
         float d = Vector3.Distance(w.transform.position, player.position);
-        if (d > keepChaseIfWithinPlayerRange) return false;
+        if (d > encounterConfig.KeepChaseIfWithinPlayerRange) return false;
 
         return IsWolfActivelyChasingPlayer(w);
     }
@@ -453,7 +425,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (home != null)
         {
             home.Center = w.transform.position;
-            home.Radius = homeRadius;
+            home.Radius = encounterConfig.HomeRadius;
         }
     }
 
@@ -492,9 +464,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (!ready) return;
         if (den == null || !den.IsInitialized) return;
         if (leader != null) return;
-        if (leaderPrefab == null) return;
+        if (encounterConfig.LeaderPrefab == null) return;
 
-        leader = SpawnWolf(leaderPrefab);
+        leader = SpawnWolf(encounterConfig.LeaderPrefab);
         if (leader == null) return;
 
         leader.role = WolfRole.Leader;
@@ -503,7 +475,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (pack != null)
         {
             pack.leaderWolf = leader;
-            pack.minionWolfPrefab = minionPrefab;
+            pack.minionWolfPrefab = encounterConfig.MinionPrefab;
 
             pack.MinionSpawned -= OnPackMinionSpawned;
             pack.MinionSpawned += OnPackMinionSpawned;
@@ -523,8 +495,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private Wolf SpawnWolf(Wolf prefab)
     {
-        Vector3 pos = den.WorldPosition + (Vector3)(Random.insideUnitCircle * spawnRadius);
-        pos = FindNearestWalkableSpawn(pos, maxTileRadius: spawnRadius);
+        Vector3 pos = den.WorldPosition + (Vector3)(Random.insideUnitCircle * encounterConfig.SpawnRadius);
+        pos = FindNearestWalkableSpawn(pos, maxTileRadius: encounterConfig.SpawnRadius);
 
         if (encounterServices == null || encounterServices.EnemySpawnService == null)
             return null;
@@ -539,7 +511,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
             home = w.gameObject.AddComponent<HomeAnchor>();
 
         home.Center = den.WorldPosition;
-        home.Radius = homeRadius;
+        home.Radius = encounterConfig.HomeRadius;
 
         if (!tracked.Contains(w))
         {
@@ -600,5 +572,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         }
 
         return desiredWorldPos;
+    }
+
+    private bool HasEncounterConfig()
+    {
+        return encounterConfig != null;
     }
 }

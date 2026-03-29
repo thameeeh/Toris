@@ -20,4 +20,4 @@ MonoBehaviour:
     defaultSuffix: Hurt
   - actionKey: Death
     defaultSuffix: Death
-  shootTag: 
+  shootTag: Shoot

@@ -5,6 +5,7 @@ using UnityEngine;
     fileName = "GateSitePlacementRuleDefinition")]
 public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {
+    [SerializeField] private WorldSiteDefinition gateSiteDefinition;
     public override void BuildSites(WorldContext ctx)
     {
         if (ctx.Biome == null)
@@ -20,7 +21,7 @@ public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinitio
             if (ctx.Biome.gateGroundTile != null)
                 ctx.Stamps.StampRectGround(gateCenterTile, gateSize, gateSize, ctx.Biome.gateGroundTile);
 
-            ctx.RegisterSite(WorldSiteType.Gate, gateCenterTile);
+            ctx.RegisterSite(gateSiteDefinition, gateCenterTile);
         }
     }
 }

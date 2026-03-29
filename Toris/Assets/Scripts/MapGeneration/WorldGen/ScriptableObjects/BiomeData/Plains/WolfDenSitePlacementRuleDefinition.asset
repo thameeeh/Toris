@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945379faa91c55c419c18bc7fc9a5a1d, type: 3}
   m_Name: WolfDenSitePlacementRuleDefinition
   m_EditorClassIdentifier: Assembly-CSharp::WolfDenSitePlacementRuleDefinition
+  wolfDenSiteDefinition: {fileID: 11400000, guid: ae66dab130fa45344898bcee7f658562, type: 2}

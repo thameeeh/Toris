@@ -45,15 +45,18 @@ public sealed class WorldContext
         ActiveDef?.BuildFeatures(this);
     }
 
-    public void RegisterSite(WorldSiteType siteType, Vector2Int centerTile)
+    public void RegisterSite(WorldSiteDefinition siteDefinition, Vector2Int centerTile)
     {
+        if (siteDefinition == null || !siteDefinition.IsValid)
+            return;
+
         int chunkSize = Mathf.Max(1, World.chunkSize);
 
         Vector2Int chunkCoord = TileToChunk(centerTile, chunkSize);
         int localIndex = ToLocalIndex(centerTile, chunkCoord, chunkSize);
 
         SitePlacements.Add(new SitePlacement(
-            siteType,
+            siteDefinition,
             centerTile,
             chunkCoord,
             localIndex));

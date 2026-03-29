@@ -1,22 +1,21 @@
 using UnityEngine;
 
-
 public readonly struct SitePlacement
 {
-    public readonly WorldSiteType SiteType;
+    public readonly WorldSiteDefinition SiteDefinition;
     public readonly Vector2Int CenterTile;
     public readonly Vector2Int ChunkCoord;
     public readonly int LocalIndex;
 
     public SitePlacement(
-        WorldSiteType siteType,
+        WorldSiteDefinition siteDefinition,
         Vector2Int centerTile,
-        Vector2Int chunkcoord,
+        Vector2Int chunkCoord,
         int localIndex)
     {
-        SiteType = siteType;
+        SiteDefinition = siteDefinition;
         CenterTile = centerTile;
-        ChunkCoord = chunkcoord;
+        ChunkCoord = chunkCoord;
         LocalIndex = localIndex;
     }
 }

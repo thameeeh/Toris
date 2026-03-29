@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f42b124584fd6c43ad0377cd8aebade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WolfDen
-  maxHp: 50000
+  maxHp: 100
   animator: {fileID: 0}
   collapseTrigger: Collapse
   activeVisual: {fileID: 3959095210445863060, guid: d947ca4e669ca7342ae9c62fd06a12fd, type: 3}

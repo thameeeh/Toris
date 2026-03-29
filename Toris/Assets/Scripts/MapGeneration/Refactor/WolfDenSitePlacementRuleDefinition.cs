@@ -15,6 +15,8 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
     private const int RelaxedSpacingFloor = 4;
     private const int RelaxStartIndexBase = 100000;
 
+    [SerializeField] private WorldSiteDefinition wolfDenSiteDefinition;
+
     public override void BuildSites(WorldContext ctx)
     {
         BiomeProfile biomeProfile = ctx.Biome;
@@ -86,7 +88,7 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
                 ctx.Stamps.StampRectGround(centerTile, stampSize, stampSize, biomeProfile.wolfDenGroundTile);
 
             ctx.SiteBlockers.AddSquareFootprint(centerTile, stampSize);
-            ctx.RegisterSite(WorldSiteType.WolfDen, centerTile);
+            ctx.RegisterSite(wolfDenSiteDefinition, centerTile);
         }
 
         if (chosenCenters.Count < targetMin)

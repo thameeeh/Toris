@@ -139,16 +139,17 @@ public sealed class WorldFeatureLifecycle
     }
     private GameObject SpawnSiteInstance(SitePlacement placement, Transform parent)
     {
-        if (!TryResolveSiteDefinition(placement.SiteType, out BiomeSiteDefinition siteDefinition))
+        WorldSiteDefinition siteDefinition = placement.SiteDefinition;
+        if (siteDefinition == null || !siteDefinition.IsValid)
             return null;
 
-        GameObject prefab = siteDefinition.prefab;
+        GameObject prefab = siteDefinition.Prefab;
         if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
             return null;
 
         int spawnId = ComputeSpawnId(placement, siteDefinition);
 
-        if (siteDefinition.skipIfConsumed)
+        if (siteDefinition.SkipIfConsumed)
         {
             WorldSiteStateHandle siteState = worldSiteStateService.GetSiteState(placement.ChunkCoord, spawnId);
             if (siteState.IsConsumed)
@@ -167,7 +168,7 @@ public sealed class WorldFeatureLifecycle
         if (siteContextConsumers == null || siteContextConsumers.Length == 0)
         {
             Debug.LogWarning(
-                $"Site prefab '{prefab.name}' for site type '{placement.SiteType}' has no IWorldSiteContextConsumer.",
+                $"Site prefab '{prefab.name}' for site type '{placement.SiteDefinition}' has no IWorldSiteContextConsumer.",
                 siteObject);
 
             ReleaseSiteInstance(siteObject);
@@ -233,23 +234,13 @@ public sealed class WorldFeatureLifecycle
         return chunkRoot;
     }
 
-    private int ComputeSpawnId(SitePlacement placement, BiomeSiteDefinition siteDefinition)
+    private int ComputeSpawnId(SitePlacement placement, WorldSiteDefinition siteDefinition)
     {
         return worldRuntimeState.ChunkStates.MakeSpawnId(
             worldContext.ActiveBiome.Seed,
             placement.ChunkCoord,
             placement.LocalIndex,
-            siteDefinition.spawnSalt);
-    }
-    private bool TryResolveSiteDefinition(WorldSiteType siteType, out BiomeSiteDefinition siteDefinition)
-    {
-        if (worldContext == null || worldContext.Biome == null)
-        {
-            siteDefinition = default;
-            return false;
-        }
-
-        return worldContext.Biome.TryGetSiteDefinition(siteType, out siteDefinition);
+            siteDefinition.SpawnSalt);
     }
 
     public int GetActiveSiteChunkCount()

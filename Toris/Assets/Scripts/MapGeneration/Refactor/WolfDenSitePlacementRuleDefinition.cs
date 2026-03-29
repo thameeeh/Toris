@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(
     menuName = "WorldGen/Biomes/Site Rules/Wolf Den Site Rule",
@@ -16,19 +17,25 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
     private const int RelaxStartIndexBase = 100000;
 
     [SerializeField] private WorldSiteDefinition wolfDenSiteDefinition;
+    [SerializeField]
+    [Min(0)] private int minWolfDenCount = 3;
+    [SerializeField]
+    [Min(1)] private int wolfDenMinSpacingTiles = 40;
+    [SerializeField] private TileBase wolfDenGroundTile;
+    [SerializeField]
+    [Range(1, 15)] private int wolfDenStampSize = 5;
 
     public override void BuildSites(WorldContext ctx)
     {
-        BiomeProfile biomeProfile = ctx.Biome;
-        if (biomeProfile == null)
+        if (wolfDenSiteDefinition == null || !wolfDenSiteDefinition.IsValid)
             return;
 
-        int targetMin = Mathf.Max(0, biomeProfile.minWolfDenCount);
+        int targetMin = Mathf.Max(0, minWolfDenCount);
         if (targetMin == 0)
             return;
 
-        int spacingTiles = Mathf.Max(1, biomeProfile.wolfDenMinSpacingTiles);
-        int stampSize = Mathf.Max(1, biomeProfile.wolfDenStampSize);
+        int spacingTiles = Mathf.Max(1, wolfDenMinSpacingTiles);
+        int stampSize = Mathf.Max(1, wolfDenStampSize);
 
         Vector2Int originTile = ctx.ActiveBiome.OriginTile;
         List<Vector2Int> chosenCenters = new List<Vector2Int>(targetMin);
@@ -84,8 +91,8 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
         {
             Vector2Int centerTile = chosenCenters[i];
 
-            if (biomeProfile.wolfDenGroundTile != null)
-                ctx.Stamps.StampRectGround(centerTile, stampSize, stampSize, biomeProfile.wolfDenGroundTile);
+            if (wolfDenGroundTile != null)
+                ctx.Stamps.StampRectGround(centerTile, stampSize, stampSize, wolfDenGroundTile);
 
             ctx.SiteBlockers.AddSquareFootprint(centerTile, stampSize);
             ctx.RegisterSite(wolfDenSiteDefinition, centerTile);

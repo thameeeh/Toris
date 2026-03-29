@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldSiteDefinition
   siteId: wolf_den
   prefab: {fileID: 5145460778764920192, guid: b3a67880993d31649b6f38f893c67ee1, type: 3}
-  skipIfConsumed: 1
+  skipIfConsumed: 0
   spawnSalt: 0

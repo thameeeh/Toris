@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(
     menuName = "WorldGen/Biomes/Site Rules/Gate Site Rule",
@@ -6,20 +7,23 @@ using UnityEngine;
 public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {
     [SerializeField] private WorldSiteDefinition gateSiteDefinition;
+    [SerializeField] private TileBase gateGroundTile;
+    [SerializeField]
+    [Min(1)] private int gateSize = 7;
     public override void BuildSites(WorldContext ctx)
     {
-        if (ctx.Biome == null)
+        if (gateSiteDefinition == null || !gateSiteDefinition.IsValid)
             return;
 
-        int gateSize = Mathf.Max(1, ctx.Biome.gateSize);
+        int resolvedGateSize = Mathf.Max(1, gateSize);
 
         var gateAnchorTiles = ctx.RoadAnchors.GateAnchorTiles;
         for (int i = 0; i < gateAnchorTiles.Count; i++)
         {
             Vector2Int gateCenterTile = gateAnchorTiles[i];
 
-            if (ctx.Biome.gateGroundTile != null)
-                ctx.Stamps.StampRectGround(gateCenterTile, gateSize, gateSize, ctx.Biome.gateGroundTile);
+            if (gateGroundTile != null)
+                ctx.Stamps.StampRectGround(gateCenterTile, resolvedGateSize, resolvedGateSize, gateGroundTile);
 
             ctx.RegisterSite(gateSiteDefinition, gateCenterTile);
         }

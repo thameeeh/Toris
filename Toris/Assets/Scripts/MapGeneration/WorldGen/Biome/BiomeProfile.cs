@@ -38,18 +38,11 @@ public sealed class BiomeProfile : ScriptableObject
     [Range(3, 5)] public int roadWidthMax = 5;
     public int maxRoadScanTiles = 4000;
 
-    [Header("Gate / Spawn")]
+    [Header("Run Gate / Spawn")]
     [SerializeField] public GameObject endGatePrefab;
     [SerializeField] public Vector2Int RunGateOffsetTiles = new Vector2Int(0, -1);
-    public TileBase gateGroundTile;
-    public int gateSize = 7;
     public TileBase platformGroundTile;
 
-    [Header("Wolf Dens")]
-    [Min(0)] public int minWolfDenCount = 3;
-    [Min(1)] public int wolfDenMinSpacingTiles = 40;
-    public TileBase wolfDenGroundTile;
-    [Range(1, 15)] public int wolfDenStampSize = 5;
     #endregion
 
 }

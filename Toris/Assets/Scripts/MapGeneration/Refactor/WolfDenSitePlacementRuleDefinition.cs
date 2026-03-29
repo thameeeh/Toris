@@ -38,63 +38,43 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
         int stampSize = Mathf.Max(1, wolfDenStampSize);
 
         Vector2Int originTile = ctx.ActiveBiome.OriginTile;
-        List<Vector2Int> chosenCenters = new List<Vector2Int>(targetMin);
-
-        int attempts = Mathf.Max(BaseAttempts, targetMin * AttemptsPerTarget);
         float radiusTiles = ctx.ActiveBiome.RadiusTiles * 0.90f;
 
-        for (int i = 0; i < attempts && chosenCenters.Count < targetMin; i++)
-        {
-            Vector2Int candidateTile = PickPointInDisk(ctx.ActiveBiome.Seed, i, originTile, radiusTiles);
-
-            if ((candidateTile - originTile).sqrMagnitude < AvoidOriginRadiusTiles * AvoidOriginRadiusTiles)
-                continue;
-
-            Vector2Int localTile = ctx.ActiveBiome.ToLocal(candidateTile);
-            if (!ctx.Mask.IsLand(localTile, ctx))
-                continue;
-
-            if (!IsFarEnough(candidateTile, chosenCenters, spacingTiles))
-                continue;
-
-            chosenCenters.Add(candidateTile);
-        }
-
-        for (int relaxStep = 0; relaxStep < RelaxSteps && chosenCenters.Count < targetMin; relaxStep++)
-        {
-            int relaxedSpacing = Mathf.Max(
-                RelaxedSpacingFloor,
-                spacingTiles - (relaxStep + 1) * RelaxSpacingStep);
-
-            int startIndex = RelaxStartIndexBase + relaxStep * RelaxStartIndexBase;
-
-            for (int i = 0; i < attempts && chosenCenters.Count < targetMin; i++)
+        List<Vector2Int> chosenCenters = SitePlacementSampling.PickSpacedCentersInBiomeDisk(
+            ctx.ActiveBiome.Seed,
+            originTile,
+            radiusTiles,
+            targetMin,
+            spacingTiles,
+            AvoidOriginRadiusTiles,
+            AttemptsPerTarget,
+            BaseAttempts,
+            RelaxSteps,
+            RelaxSpacingStep,
+            RelaxedSpacingFloor,
+            RelaxStartIndexBase,
+            DenPickSalt,
+            candidateTile =>
             {
-                Vector2Int candidateTile = PickPointInDisk(
-                    ctx.ActiveBiome.Seed,
-                    startIndex + i,
-                    originTile,
-                    radiusTiles);
-
                 Vector2Int localTile = ctx.ActiveBiome.ToLocal(candidateTile);
-                if (!ctx.Mask.IsLand(localTile, ctx))
-                    continue;
-
-                if (!IsFarEnough(candidateTile, chosenCenters, relaxedSpacing))
-                    continue;
-
-                chosenCenters.Add(candidateTile);
-            }
-        }
+                return ctx.Mask.IsLand(localTile, ctx);
+            });
 
         for (int i = 0; i < chosenCenters.Count; i++)
         {
             Vector2Int centerTile = chosenCenters[i];
 
-            if (wolfDenGroundTile != null)
-                ctx.Stamps.StampRectGround(centerTile, stampSize, stampSize, wolfDenGroundTile);
+            SiteStamping.StampSquareGround(
+                ctx,
+                centerTile,
+                stampSize,
+                wolfDenGroundTile);
 
-            ctx.SiteBlockers.AddSquareFootprint(centerTile, stampSize);
+            SiteStamping.AddSquareBlocker(
+                ctx,
+                centerTile,
+                stampSize);
+
             ctx.RegisterSite(wolfDenSiteDefinition, centerTile);
         }
 
@@ -104,35 +84,5 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
                 $"[WolfDenSiteRule] Only placed {chosenCenters.Count}/{targetMin} dens (area too constrained).",
                 this);
         }
-    }
-
-    private static bool IsFarEnough(Vector2Int candidateTile, List<Vector2Int> chosenCenters, int spacingTiles)
-    {
-        int spacingSquared = spacingTiles * spacingTiles;
-
-        for (int i = 0; i < chosenCenters.Count; i++)
-        {
-            if ((chosenCenters[i] - candidateTile).sqrMagnitude < spacingSquared)
-                return false;
-        }
-
-        return true;
-    }
-
-    private static Vector2Int PickPointInDisk(int biomeSeed, int index, Vector2Int originTile, float radiusTiles)
-    {
-        uint angleHash = DeterministicHash.Hash((uint)biomeSeed, index, 0, DenPickSalt);
-        uint radiusHash = DeterministicHash.Hash((uint)biomeSeed, index, 1, DenPickSalt);
-
-        float angle01 = DeterministicHash.Hash01(angleHash);
-        float radius01 = DeterministicHash.Hash01(radiusHash);
-
-        float angleRadians = angle01 * Mathf.PI * 2f;
-        float distance = Mathf.Sqrt(radius01) * radiusTiles;
-
-        int offsetX = Mathf.RoundToInt(Mathf.Cos(angleRadians) * distance);
-        int offsetY = Mathf.RoundToInt(Mathf.Sin(angleRadians) * distance);
-
-        return originTile + new Vector2Int(offsetX, offsetY);
     }
 }

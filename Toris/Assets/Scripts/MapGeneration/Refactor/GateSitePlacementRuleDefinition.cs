@@ -22,8 +22,11 @@ public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinitio
         {
             Vector2Int gateCenterTile = gateAnchorTiles[i];
 
-            if (gateGroundTile != null)
-                ctx.Stamps.StampRectGround(gateCenterTile, resolvedGateSize, resolvedGateSize, gateGroundTile);
+            SiteStamping.StampSquareGround(
+                ctx,
+                gateCenterTile,
+                resolvedGateSize,
+                gateGroundTile);
 
             ctx.RegisterSite(gateSiteDefinition, gateCenterTile);
         }

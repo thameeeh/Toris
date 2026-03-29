@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(
     menuName = "WorldGen/Encounters/Wolf Den Encounter Config",
     fileName = "WolfDenEncounterConfig")]
-public sealed class WolfDenEncounterConfig : ScriptableObject
+public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig
 {
     [Header("Prefabs")]
     [SerializeField] private Wolf leaderPrefab;

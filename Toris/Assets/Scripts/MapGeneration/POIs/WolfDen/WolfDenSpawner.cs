@@ -4,9 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(WolfDen))]
 public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContextConsumer
 {
-    [Header("Encounter Config")]
-    [SerializeField] private WolfDenEncounterConfig encounterConfig;
-
+    private WolfDenEncounterConfig encounterConfig;
     private WolfDen den;
     private WorldEncounterServices encounterServices;
 
@@ -22,6 +20,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     public void Initialize(WorldSiteContext siteContext)
     {
+        encounterConfig = siteContext.GetRuntimeConfig<WolfDenEncounterConfig>();
         encounterServices = siteContext.EncounterServices;
     }
 

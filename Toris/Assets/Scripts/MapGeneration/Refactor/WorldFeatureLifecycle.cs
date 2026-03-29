@@ -180,7 +180,8 @@ public sealed class WorldFeatureLifecycle
             spawnId,
             gateTransitionService,
             worldSiteStateService,
-            worldEncounterServices);
+            worldEncounterServices,
+            placement.SiteDefinition != null ? placement.SiteDefinition.RuntimeConfig : null);
 
         for (int i = 0; i < siteContextConsumers.Length; i++)
         {

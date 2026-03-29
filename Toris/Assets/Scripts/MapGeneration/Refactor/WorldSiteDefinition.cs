@@ -9,7 +9,9 @@ public sealed class WorldSiteDefinition : ScriptableObject
     [SerializeField] private GameObject prefab;
     [SerializeField] private bool skipIfConsumed;
     [SerializeField] private uint spawnSalt;
+    [SerializeField] private WorldSiteRuntimeConfig runtimeConfig;
 
+    public WorldSiteRuntimeConfig RuntimeConfig => runtimeConfig;
     public string SiteId => siteId;
     public GameObject Prefab => prefab;
     public bool SkipIfConsumed => skipIfConsumed;

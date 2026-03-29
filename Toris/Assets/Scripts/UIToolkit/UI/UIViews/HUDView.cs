@@ -28,10 +28,10 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerDataSO data, UIEventsSO uiEvents, VisualTreeAsset template) : base(topElement, uiEvents)
+        public HUDView(VisualElement topElement, PlayerDataSO data, UIEventsSO uiEvents, VisualTreeAsset buttonTemplate) : base(topElement, uiEvents)
         {
             _playerData = data;
-            _buttonTemplate = template;
+            _buttonTemplate = buttonTemplate;
         }
 
         public override void Setup(object payload)
@@ -76,6 +76,8 @@ namespace OutlandHaven.UIToolkit
 
             CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
             CreateMenuButton("Skills", "(K)", ScreenType.CharacterSheet);
+            CreateMenuButton("Shop", "(T)", ScreenType.CharacterSheet);
+            CreateMenuButton("Map", "(U)", ScreenType.CharacterSheet);
             // Add other buttons here
         }
 

@@ -17,6 +17,11 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_motor != null)
+        {
+            _motor.DashStarted += HandleDashStarted;
+        }
+
         if (_bowController != null)
         {
             _bowController.DrawStarted += HandleDrawStarted;
@@ -37,6 +42,11 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_motor != null)
+        {
+            _motor.DashStarted -= HandleDashStarted;
+        }
+
         if (_bowController != null)
         {
             _bowController.DrawStarted -= HandleDrawStarted;
@@ -78,6 +88,19 @@ public class PlayerAnimationPresenter : MonoBehaviour
         {
             _animationController.UpdateAim(_playerFacing.CurrentFacing);
         }
+    }
+
+    private void HandleDashStarted(Vector2 dashDirection)
+    {
+        if (_animationController == null)
+            return;
+
+        if (dashDirection.sqrMagnitude > 0.0001f)
+        {
+            _animationController.UpdateAim(dashDirection.normalized);
+        }
+
+        _animationController.BeginHold("Dash");
     }
 
     private void HandleDrawStarted()

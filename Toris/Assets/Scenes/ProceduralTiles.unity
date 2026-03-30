@@ -1715,21 +1715,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055305976804400490, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _myInventoryManager
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_Name
       value: PlayerProcTiles
-      objectReference: {fileID: 0}
-    - target: {fileID: 6478609135783926460, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7014179871662737768, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: groundMap

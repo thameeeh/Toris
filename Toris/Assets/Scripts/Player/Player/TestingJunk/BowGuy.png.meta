@@ -1,415 +1,571 @@
 fileFormatVersion: 2
-guid: 21c8af7f3e30baf42bf2f90962939fec
+guid: fb78fea27878e2c418a3b28868b6214c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1017476828099549738
-    second: BowGuy 1_0
+      213: 6638902558152341341
+    second: BowGuy_0
   - first:
-      213: 6061345690552787877
-    second: BowGuy 1_1
+      213: -7115901941538923236
+    second: BowGuy_1
   - first:
-      213: -6732458242210377461
-    second: BowGuy 1_2
+      213: 1736985034878321419
+    second: BowGuy_2
   - first:
-      213: 2909445308912024862
-    second: BowGuy 1_3
+      213: 3286452253389467002
+    second: BowGuy_3
   - first:
-      213: -7363110510733549213
-    second: BowGuy 1_4
+      213: -6869567909070239997
+    second: BowGuy_4
   - first:
-      213: -6808095697325235913
-    second: BowGuy 1_5
+      213: 8108058412635603901
+    second: BowGuy_5
   - first:
-      213: 6563546422711560101
-    second: BowGuy 1_6
+      213: -1017278329274647073
+    second: BowGuy_6
   - first:
-      213: -2371163707044596209
-    second: BowGuy 1_7
+      213: 4489064412720554311
+    second: BowGuy_7
   - first:
-      213: -934134701663904487
-    second: BowGuy 1_8
+      213: 3961911356301605863
+    second: BowGuy_8
   - first:
-      213: -2714598849872270583
-    second: BowGuy 1_9
+      213: 2271273068164040892
+    second: BowGuy_9
   - first:
-      213: -7127390159011335730
-    second: BowGuy 1_10
+      213: 7897706037572542401
+    second: BowGuy_10
   - first:
-      213: -4724771604288486211
-    second: BowGuy 1_11
+      213: 5899033960078770394
+    second: BowGuy_11
   - first:
-      213: -6036382452732197116
-    second: BowGuy 1_12
+      213: 3929072822082246061
+    second: BowGuy_12
   - first:
-      213: -9048406129548625796
-    second: BowGuy 1_13
+      213: -7868138056449352944
+    second: BowGuy_13
   - first:
-      213: -8877732938566534566
-    second: BowGuy 1_14
+      213: 2305870559190542100
+    second: BowGuy_14
   - first:
-      213: -6727444076985609563
-    second: BowGuy 1_15
+      213: 4968621740004015308
+    second: BowGuy_15
   - first:
-      213: -1232756562374693723
-    second: BowGuy 1_16
+      213: -8866516331940815465
+    second: BowGuy_16
   - first:
-      213: 3775982310742829200
-    second: BowGuy 1_17
+      213: 291819670828768690
+    second: BowGuy_17
   - first:
-      213: 2492759749687319522
-    second: BowGuy 1_18
+      213: -7276112285095551106
+    second: BowGuy_18
   - first:
-      213: 4406555251308817760
-    second: BowGuy 1_19
+      213: 3422070121213867176
+    second: BowGuy_19
   - first:
-      213: 1869796212072190087
-    second: BowGuy 1_20
+      213: -2776667546251430811
+    second: BowGuy_20
   - first:
-      213: -3368358958437862605
-    second: BowGuy 1_21
+      213: 1987744129325920611
+    second: BowGuy_21
   - first:
-      213: 335916165385238261
-    second: BowGuy 1_22
+      213: 918440204973823137
+    second: BowGuy_22
   - first:
-      213: -6704175598568344318
-    second: BowGuy 1_23
+      213: -100706001278181092
+    second: BowGuy_23
   - first:
-      213: -6265101468652660340
-    second: BowGuy 1_24
+      213: 4359719148505948006
+    second: BowGuy_24
   - first:
-      213: 1954030906944627654
-    second: BowGuy 1_25
+      213: 2042171230808728995
+    second: BowGuy_25
   - first:
-      213: -5413474828347826458
-    second: BowGuy 1_26
+      213: -1553740791753987918
+    second: BowGuy_26
   - first:
-      213: -9159631526230758409
-    second: BowGuy 1_27
+      213: 7584022228547681850
+    second: BowGuy_27
   - first:
-      213: -4930836035368283750
-    second: BowGuy 1_28
+      213: 6946282986866506679
+    second: BowGuy_28
   - first:
-      213: 5205976929126459895
-    second: BowGuy 1_29
+      213: 6724290904722943303
+    second: BowGuy_29
   - first:
-      213: -3791037573961758606
-    second: BowGuy 1_30
+      213: -8740717829619777614
+    second: BowGuy_30
   - first:
-      213: 4097444353643088885
-    second: BowGuy 1_31
+      213: 8660715792247562323
+    second: BowGuy_31
   - first:
-      213: -249200886277462680
-    second: BowGuy 1_32
+      213: 8311975724381905401
+    second: BowGuy_32
   - first:
-      213: 3165860569045892987
-    second: BowGuy 1_33
+      213: -6861803413901123743
+    second: BowGuy_33
   - first:
-      213: 3220113716653772911
-    second: BowGuy 1_34
+      213: -6450075298941523273
+    second: BowGuy_34
   - first:
-      213: 1893849049984385222
-    second: BowGuy 1_35
+      213: 7497146080587699848
+    second: BowGuy_35
   - first:
-      213: 4812337235051597764
-    second: BowGuy 1_36
+      213: -2467819241260615538
+    second: BowGuy_36
   - first:
-      213: 840251877237631109
-    second: BowGuy 1_37
+      213: 5191013101188444122
+    second: BowGuy_37
   - first:
-      213: -3821296485051778889
-    second: BowGuy 1_38
+      213: -2443524556496122628
+    second: BowGuy_38
   - first:
-      213: -47931637735963804
-    second: BowGuy 1_39
+      213: 1236272933032361368
+    second: BowGuy_39
   - first:
-      213: 7094902606647650238
-    second: BowGuy 1_40
+      213: -5517879118916433931
+    second: BowGuy_40
   - first:
-      213: 1890214742231412965
-    second: BowGuy 1_41
+      213: -509314115277530183
+    second: BowGuy_41
   - first:
-      213: -7023870413921304639
-    second: BowGuy 1_42
+      213: -6250920074768629988
+    second: BowGuy_42
   - first:
-      213: -4912668170417334801
-    second: BowGuy 1_43
+      213: 7208749759626440863
+    second: BowGuy_43
   - first:
-      213: 8590048487210853829
-    second: BowGuy 1_44
+      213: -5586732779739198827
+    second: BowGuy_44
   - first:
-      213: 1384480667316285254
-    second: BowGuy 1_45
+      213: 1564277522170251320
+    second: BowGuy_45
   - first:
-      213: -3451182865201937334
-    second: BowGuy 1_46
+      213: 7123189750168712968
+    second: BowGuy_46
   - first:
-      213: -631139029043528152
-    second: BowGuy 1_47
+      213: -4296971719198193357
+    second: BowGuy_47
   - first:
-      213: -176995349493700691
-    second: BowGuy 1_48
+      213: 3120822700221968079
+    second: BowGuy_48
   - first:
-      213: 7671412293386937541
-    second: BowGuy 1_49
+      213: 5508665672673986607
+    second: BowGuy_49
   - first:
-      213: 3541629732554004757
-    second: BowGuy 1_50
+      213: -6267869962799281253
+    second: BowGuy_50
   - first:
-      213: -4681444332616394597
-    second: BowGuy 1_51
+      213: -3348512103077150569
+    second: BowGuy_51
   - first:
-      213: 4321806293519189893
-    second: BowGuy 1_52
+      213: -8166563364058463586
+    second: BowGuy_52
   - first:
-      213: -2611183343441446786
-    second: BowGuy 1_53
+      213: -413821975740484922
+    second: BowGuy_53
   - first:
-      213: 8383770950928601525
-    second: BowGuy 1_54
+      213: -8302178726282536141
+    second: BowGuy_54
   - first:
-      213: -1982254657139823879
-    second: BowGuy 1_55
+      213: -7166446578908399402
+    second: BowGuy_55
   - first:
-      213: 8695447406730414896
-    second: BowGuy 1_56
+      213: -4475422355838674953
+    second: BowGuy_56
   - first:
-      213: 5615437427851358654
-    second: BowGuy 1_57
+      213: -8972124507440903892
+    second: BowGuy_57
   - first:
-      213: -7535060569701653787
-    second: BowGuy 1_58
+      213: -8664068347127947453
+    second: BowGuy_58
   - first:
-      213: -513298875584915028
-    second: BowGuy 1_59
+      213: -2671681261408930171
+    second: BowGuy_59
   - first:
-      213: -6489317646636187457
-    second: BowGuy 1_60
+      213: 335217784849691717
+    second: BowGuy_60
   - first:
-      213: 1265896807292017268
-    second: BowGuy 1_61
+      213: 2289713038643398946
+    second: BowGuy_61
   - first:
-      213: 3604373579290266281
-    second: BowGuy 1_62
+      213: -1633428536607049427
+    second: BowGuy_62
   - first:
-      213: -5769496712744716807
-    second: BowGuy 1_63
+      213: -5197346010381887994
+    second: BowGuy_63
   - first:
-      213: -3993370438185633007
-    second: BowGuy 1_64
+      213: 7824591041335847983
+    second: BowGuy_64
   - first:
-      213: -1555634981501005272
-    second: BowGuy 1_65
+      213: -6535968542345455083
+    second: BowGuy_65
   - first:
-      213: -5685959165412513856
-    second: BowGuy 1_66
+      213: 7872255702803620826
+    second: BowGuy_66
   - first:
-      213: 3149032895105945312
-    second: BowGuy 1_67
+      213: -6258492866967118747
+    second: BowGuy_67
   - first:
-      213: -7174257068836179569
-    second: BowGuy 1_68
+      213: 5768639711882438257
+    second: BowGuy_68
   - first:
-      213: -4626610440417226229
-    second: BowGuy 1_69
+      213: 1070406572824402366
+    second: BowGuy_69
   - first:
-      213: 3586141716887096491
-    second: BowGuy 1_70
+      213: -1167718461987976411
+    second: BowGuy_70
   - first:
-      213: -428012976589210044
-    second: BowGuy 1_71
+      213: -4306397499609727141
+    second: BowGuy_71
   - first:
-      213: 311142675636705066
-    second: BowGuy 1_72
+      213: -1544196933166694290
+    second: BowGuy_72
   - first:
-      213: 7495136383230135317
-    second: BowGuy 1_73
+      213: -4875274486929980289
+    second: BowGuy_73
   - first:
-      213: -2894989742658593022
-    second: BowGuy 1_74
+      213: -4577720105916368084
+    second: BowGuy_74
   - first:
-      213: 6601175822073403234
-    second: BowGuy 1_75
+      213: 6480044854644701189
+    second: BowGuy_75
   - first:
-      213: 2110779291791932942
-    second: BowGuy 1_76
+      213: 1703383793638829581
+    second: BowGuy_76
   - first:
-      213: -1115107762368020088
-    second: BowGuy 1_77
+      213: 8828254454129681070
+    second: BowGuy_77
   - first:
-      213: -2213737904165780569
-    second: BowGuy 1_78
+      213: 4775403399347732575
+    second: BowGuy_78
   - first:
-      213: 5027376517409597985
-    second: BowGuy 1_79
+      213: -7085650814152562971
+    second: BowGuy_79
   - first:
-      213: 1605847485589822978
-    second: BowGuy 1_80
+      213: 6195812883154267129
+    second: BowGuy_80
   - first:
-      213: 5973882304992325426
-    second: BowGuy 1_81
+      213: -6145598504209257522
+    second: BowGuy_81
   - first:
-      213: 4531320970954155587
-    second: BowGuy 1_82
+      213: -8462037927137007745
+    second: BowGuy_82
   - first:
-      213: 2344715696615765639
-    second: BowGuy 1_83
+      213: -2615596957754066480
+    second: BowGuy_83
   - first:
-      213: -2074037143106238661
-    second: BowGuy 1_84
+      213: -3619872860759104307
+    second: BowGuy_84
   - first:
-      213: 839487348379712942
-    second: BowGuy 1_85
+      213: 2127729683746748313
+    second: BowGuy_85
   - first:
-      213: 7055280253651638227
-    second: BowGuy 1_86
+      213: -3173112936460997566
+    second: BowGuy_86
   - first:
-      213: 693600998166348800
-    second: BowGuy 1_87
+      213: 671160731410492201
+    second: BowGuy_87
   - first:
-      213: -560045915480169074
-    second: BowGuy 1_88
+      213: -7272532394166310341
+    second: BowGuy_88
   - first:
-      213: -749834039525823973
-    second: BowGuy 1_89
+      213: -2100286838127371392
+    second: BowGuy_89
   - first:
-      213: -890777774214193709
-    second: BowGuy 1_90
+      213: 6669296520467075509
+    second: BowGuy_90
   - first:
-      213: -7886944876522897221
-    second: BowGuy 1_91
+      213: -1709422781124102064
+    second: BowGuy_91
   - first:
-      213: -1784758080698596224
-    second: BowGuy 1_92
+      213: 5353465955868603693
+    second: BowGuy_92
   - first:
-      213: -5589454414825133829
-    second: BowGuy 1_93
+      213: 6442533478766517438
+    second: BowGuy_93
   - first:
-      213: 7126013625298456262
-    second: BowGuy 1_94
+      213: 8327053705102414235
+    second: BowGuy_94
   - first:
-      213: 2989435913124877495
-    second: BowGuy 1_95
+      213: -3253793765155631133
+    second: BowGuy_95
   - first:
-      213: -2996975516194398031
-    second: BowGuy 1_96
+      213: 1094720308929948989
+    second: BowGuy_96
   - first:
-      213: 8329928944254750713
-    second: BowGuy 1_97
+      213: 1434345841952016273
+    second: BowGuy_97
   - first:
-      213: -6442374164617618160
-    second: BowGuy 1_98
+      213: 5890537241743288462
+    second: BowGuy_98
   - first:
-      213: 3153637004149276468
-    second: BowGuy 1_99
+      213: 1695027570273497545
+    second: BowGuy_99
   - first:
-      213: 9003334248694265778
-    second: BowGuy 1_100
+      213: -7878450105998230164
+    second: BowGuy_100
   - first:
-      213: 911066584263456124
-    second: BowGuy 1_101
+      213: -3328115847340920105
+    second: BowGuy_101
   - first:
-      213: 6377855184884762948
-    second: BowGuy 1_102
+      213: 3683938524034592479
+    second: BowGuy_102
   - first:
-      213: 6145771965845248912
-    second: BowGuy 1_103
+      213: -4934528490279896453
+    second: BowGuy_103
   - first:
-      213: 2652125731045972779
-    second: BowGuy 1_104
+      213: -3649521863478307958
+    second: BowGuy_104
   - first:
-      213: 4422318837564051675
-    second: BowGuy 1_105
+      213: 7533389762996846966
+    second: BowGuy_105
   - first:
-      213: -293401339659833238
-    second: BowGuy 1_106
+      213: 5601513822450756870
+    second: BowGuy_106
   - first:
-      213: -438150506806584051
-    second: BowGuy 1_107
+      213: -5736100366894317935
+    second: BowGuy_107
   - first:
-      213: -2245099975309765867
-    second: BowGuy 1_108
+      213: 8369703059683896948
+    second: BowGuy_108
   - first:
-      213: 3260329498434525945
-    second: BowGuy 1_109
+      213: 3785509603551088445
+    second: BowGuy_109
   - first:
-      213: -5025853302594600741
-    second: BowGuy 1_110
+      213: -4941302388257127341
+    second: BowGuy_110
   - first:
-      213: 8743174765276217148
-    second: BowGuy 1_111
+      213: 6778056956816350666
+    second: BowGuy_111
   - first:
-      213: -3212303439274070684
-    second: BowGuy 1_112
+      213: -8482489061061389788
+    second: BowGuy_112
   - first:
-      213: -6153776699910533933
-    second: BowGuy 1_113
+      213: -5316456992272620084
+    second: BowGuy_113
   - first:
-      213: -7320903977204251679
-    second: BowGuy 1_114
+      213: 326625916469828738
+    second: BowGuy_114
   - first:
-      213: 5033467520727535155
-    second: BowGuy 1_115
+      213: 4649568985734069942
+    second: BowGuy_115
   - first:
-      213: 3413602443033918059
-    second: BowGuy 1_116
+      213: -7496714841807694786
+    second: BowGuy_116
   - first:
-      213: 2315687879259732226
-    second: BowGuy 1_117
+      213: 3315332273695853738
+    second: BowGuy_117
   - first:
-      213: -8924064857307082693
-    second: BowGuy 1_118
+      213: -8411135844682340884
+    second: BowGuy_118
   - first:
-      213: -8060105697489258480
-    second: BowGuy 1_119
+      213: 5029487009550959536
+    second: BowGuy_119
   - first:
-      213: 7607531048843427258
-    second: BowGuy 1_120
+      213: -706163115726399758
+    second: BowGuy_120
   - first:
-      213: 4833561980501894456
-    second: BowGuy 1_121
+      213: 6530308269765127337
+    second: BowGuy_121
   - first:
-      213: -4991928080385301425
-    second: BowGuy 1_122
+      213: -3948150366980021984
+    second: BowGuy_122
   - first:
-      213: 5188042051985526553
-    second: BowGuy 1_123
+      213: 7066108017350711327
+    second: BowGuy_123
   - first:
-      213: 45828898369232528
-    second: BowGuy 1_124
+      213: -7703775051979322493
+    second: BowGuy_124
   - first:
-      213: -1988138549982463826
-    second: BowGuy 1_125
+      213: 1222937048401186291
+    second: BowGuy_125
   - first:
-      213: -2765582432021850531
-    second: BowGuy 1_126
+      213: 4719878384061093911
+    second: BowGuy_126
   - first:
-      213: -3914761528109864936
-    second: BowGuy 1_127
+      213: 5919598499171641625
+    second: BowGuy_127
   - first:
-      213: -6475251525401925885
-    second: BowGuy 1_128
+      213: 1938993959241653781
+    second: BowGuy_128
   - first:
-      213: 3543866190370125922
-    second: BowGuy 1_129
+      213: 8249151458383517875
+    second: BowGuy_129
   - first:
-      213: -257198583289074525
-    second: BowGuy 1_130
+      213: -7284023684785317127
+    second: BowGuy_130
   - first:
-      213: 2701264566461548352
-    second: BowGuy 1_131
+      213: -8400704169918722766
+    second: BowGuy_131
   - first:
-      213: 2422342805130656951
-    second: BowGuy 1_132
+      213: 9128048952149698604
+    second: BowGuy_132
   - first:
-      213: 5833716900849396960
-    second: BowGuy 1_133
+      213: -713232180767436574
+    second: BowGuy_133
   - first:
-      213: 2921325954613421587
-    second: BowGuy 1_134
+      213: -411538614476483269
+    second: BowGuy_134
   - first:
-      213: -3270419987579276317
-    second: BowGuy 1_135
+      213: 2161668707857916836
+    second: BowGuy_135
+  - first:
+      213: -3270116203483195777
+    second: BowGuy_136
+  - first:
+      213: 5272608298423118321
+    second: BowGuy_137
+  - first:
+      213: -137946831773333018
+    second: BowGuy_138
+  - first:
+      213: 7745342466412667280
+    second: BowGuy_139
+  - first:
+      213: 6546167837970122623
+    second: BowGuy_140
+  - first:
+      213: 5487789982585505699
+    second: BowGuy_141
+  - first:
+      213: 7517073613167766552
+    second: BowGuy_142
+  - first:
+      213: -6888374329578781866
+    second: BowGuy_143
+  - first:
+      213: -4377951114026431797
+    second: BowGuy_144
+  - first:
+      213: 7266182417738932583
+    second: BowGuy_145
+  - first:
+      213: -8084815126279604191
+    second: BowGuy_146
+  - first:
+      213: -2961795055506544623
+    second: BowGuy_147
+  - first:
+      213: 3238248173052762252
+    second: BowGuy_148
+  - first:
+      213: 5621672296217647527
+    second: BowGuy_149
+  - first:
+      213: -4040767925685788574
+    second: BowGuy_150
+  - first:
+      213: 1044296742981606502
+    second: BowGuy_151
+  - first:
+      213: -1225724795505211611
+    second: BowGuy_152
+  - first:
+      213: -4486244812709410469
+    second: BowGuy_153
+  - first:
+      213: 3409023861964220715
+    second: BowGuy_154
+  - first:
+      213: -2866649367225948070
+    second: BowGuy_155
+  - first:
+      213: 5673648381638196980
+    second: BowGuy_156
+  - first:
+      213: 4619959641800919063
+    second: BowGuy_157
+  - first:
+      213: 5719969352229876894
+    second: BowGuy_158
+  - first:
+      213: -4547555266105648927
+    second: BowGuy_159
+  - first:
+      213: 8082709117211325916
+    second: BowGuy_160
+  - first:
+      213: 917290535428965109
+    second: BowGuy_161
+  - first:
+      213: -1172241725143616173
+    second: BowGuy_162
+  - first:
+      213: 6230739395317285410
+    second: BowGuy_163
+  - first:
+      213: -3477324712893966761
+    second: BowGuy_164
+  - first:
+      213: -436343967882287402
+    second: BowGuy_165
+  - first:
+      213: 274567529572990663
+    second: BowGuy_166
+  - first:
+      213: 8437286056418331698
+    second: BowGuy_167
+  - first:
+      213: -7406344396579117582
+    second: BowGuy_168
+  - first:
+      213: -5775562202778823466
+    second: BowGuy_169
+  - first:
+      213: -7108632734517481906
+    second: BowGuy_170
+  - first:
+      213: 7686574671377381279
+    second: BowGuy_171
+  - first:
+      213: 7291375692620683309
+    second: BowGuy_172
+  - first:
+      213: -1812714649169801258
+    second: BowGuy_173
+  - first:
+      213: -8879241723928250213
+    second: BowGuy_174
+  - first:
+      213: 8292606669823976132
+    second: BowGuy_175
+  - first:
+      213: -755612364814068455
+    second: BowGuy_176
+  - first:
+      213: 7236646329543844489
+    second: BowGuy_177
+  - first:
+      213: 5010596307962377962
+    second: BowGuy_178
+  - first:
+      213: 7517556550780177761
+    second: BowGuy_179
+  - first:
+      213: 4302064760604362513
+    second: BowGuy_180
+  - first:
+      213: -4877297148999691052
+    second: BowGuy_181
+  - first:
+      213: -7410015640532337064
+    second: BowGuy_182
+  - first:
+      213: 6370010250394939129
+    second: BowGuy_183
+  - first:
+      213: 1444778734179768519
+    second: BowGuy_184
+  - first:
+      213: -699556784990890707
+    second: BowGuy_185
+  - first:
+      213: 1762482505413426154
+    second: BowGuy_186
+  - first:
+      213: 3132012881526246517
+    second: BowGuy_187
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -518,2905 +674,3609 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BowGuy 1_0
+      name: BowGuy_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 960
+        y: 1216
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d56fe5373231e1f0800000000000000
-      internalID: -1017476828099549738
+      spriteID: d573a15c3be122c50800000000000000
+      internalID: 6638902558152341341
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_1
+      name: BowGuy_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1d5f06c2ec3f3d90800000000000000
+      internalID: -7115901941538923236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b038710bfa20b1810800000000000000
+      internalID: 1736985034878321419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7daf8e79e2db9d20800000000000000
+      internalID: 3286452253389467002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 307027b12646aa0a0800000000000000
+      internalID: -6869567909070239997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db3434ffa2c958070800000000000000
+      internalID: 8108058412635603901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fddb1e1dfb6e1e1f0800000000000000
+      internalID: -1017278329274647073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1216
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7416e0e9c4c5c4e30800000000000000
+      internalID: 4489064412720554311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eb71ff23698bf630800000000000000
+      internalID: 3961911356301605863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb844df52de258f10800000000000000
+      internalID: 2271273068164040892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cf18fd1cc94a9d60800000000000000
+      internalID: 7897706037572542401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad0067cd1249dd150800000000000000
+      internalID: 5899033960078770394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_12
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da59ad02aeed68630800000000000000
+      internalID: 3929072822082246061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_13
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01b9a95ff12cec290800000000000000
+      internalID: -7868138056449352944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_14
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 417659a7e09100020800000000000000
+      internalID: 2305870559190542100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_15
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1152
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cccf83cc52714f440800000000000000
+      internalID: 4968621740004015308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79dd7777f5ec3f480800000000000000
+      internalID: -8866516331940815465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_17
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bd583ac170cc0400800000000000000
+      internalID: 291819670828768690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_18
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7f160d5d6e060b90800000000000000
+      internalID: -7276112285095551106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_19
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a43e63f4a2ad7f20800000000000000
+      internalID: 3422070121213867176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_20
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 564f35ef39b4779d0800000000000000
+      internalID: -2776667546251430811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_21
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 361f6dc01c2e59b10800000000000000
+      internalID: 1987744129325920611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_22
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a4d6e41084febc00800000000000000
+      internalID: 918440204973823137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_23
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1088
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c116017ec683a9ef0800000000000000
+      internalID: -100706001278181092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66f5a2f7775d08c30800000000000000
+      internalID: 4359719148505948006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_25
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a560ee1aef375c10800000000000000
+      internalID: 2042171230808728995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_26
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b828726bf0007ae0800000000000000
+      internalID: -1553740791753987918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_27
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3e3045f80cdf3960800000000000000
+      internalID: 7584022228547681850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_28
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bb7485d297266060800000000000000
+      internalID: 6946282986866506679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_29
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74da66673fa715d50800000000000000
+      internalID: 6724290904722943303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_30
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bff69bb17bb2b680800000000000000
+      internalID: -8740717829619777614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_31
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 1024
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3502889602b013870800000000000000
+      internalID: 8660715792247562323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 960
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f12471f1e11a5370800000000000000
+      internalID: 8311975724381905401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_33
       rect:
         serializedVersion: 2
         x: 64
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: b7f40a00d0b2d074bace396563b9ccb2
-      internalID: 6061345690552787877
+      spriteID: 16f5cd3862af5c0a0800000000000000
+      internalID: -6861803413901123743
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_2
+      name: BowGuy_34
       rect:
         serializedVersion: 2
         x: 128
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bacaa61a21108d24a83efea6da398201
-      internalID: -6732458242210377461
+      spriteID: 7baa11880babc76a0800000000000000
+      internalID: -6450075298941523273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_3
+      name: BowGuy_35
       rect:
         serializedVersion: 2
         x: 192
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 2f28fd481504c0b40a99aea0e738da92
-      internalID: 2909445308912024862
+      spriteID: 88654a283a63b0860800000000000000
+      internalID: 7497146080587699848
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_4
+      name: BowGuy_36
       rect:
         serializedVersion: 2
         x: 256
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e879b34982d1edc4a989cabd431cb02f
-      internalID: -7363110510733549213
+      spriteID: e8879c2a97b80cdd0800000000000000
+      internalID: -2467819241260615538
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_5
+      name: BowGuy_37
       rect:
         serializedVersion: 2
         x: 320
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d488c90927073964ab8d85efa93811d6
-      internalID: -6808095697325235913
+      spriteID: adf6cb099ee2a0840800000000000000
+      internalID: 5191013101188444122
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_6
+      name: BowGuy_38
       rect:
         serializedVersion: 2
         x: 384
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5bc20daa7c7217449bf6eace5567afb6
-      internalID: 6563546422711560101
+      spriteID: cfcca1abc5bd61ed0800000000000000
+      internalID: -2443524556496122628
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_7
+      name: BowGuy_39
       rect:
         serializedVersion: 2
         x: 448
         y: 960
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 34b20c2fb8e60cb45b3c27feaa186426
-      internalID: -2371163707044596209
+      spriteID: 89df2dabeaf182110800000000000000
+      internalID: 1236272933032361368
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_8
+      name: BowGuy_40
       rect:
         serializedVersion: 2
         x: 0
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 01aa0dc56ade6d04b9e8f4b6a6569491
-      internalID: -934134701663904487
+      spriteID: 5f7c0732d2e8c63b0800000000000000
+      internalID: -5517879118916433931
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_9
+      name: BowGuy_41
       rect:
         serializedVersion: 2
         x: 64
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e445aa725c650b84e8b8751b602b6bc1
-      internalID: -2714598849872270583
+      spriteID: 9bb5ac7b28d8ee8f0800000000000000
+      internalID: -509314115277530183
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_10
+      name: BowGuy_42
       rect:
         serializedVersion: 2
         x: 128
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 219690a9233b81b4ca37c4f60c3de6b2
-      internalID: -7127390159011335730
+      spriteID: c1fbe009f454049a0800000000000000
+      internalID: -6250920074768629988
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_11
+      name: BowGuy_43
       rect:
         serializedVersion: 2
         x: 192
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5b68ba8a75b1a5849bfc9a5c764949ca
-      internalID: -4724771604288486211
+      spriteID: f90773976bf9a0460800000000000000
+      internalID: 7208749759626440863
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_12
+      name: BowGuy_44
       rect:
         serializedVersion: 2
         x: 256
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: fae6eb5aa40abd94a901a4e29fa34480
-      internalID: -6036382452732197116
+      spriteID: 59a4d98f220f772b0800000000000000
+      internalID: -5586732779739198827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_13
+      name: BowGuy_45
       rect:
         serializedVersion: 2
         x: 320
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c4830475ef7e5b54eac3ca97531c9e37
-      internalID: -9048406129548625796
+      spriteID: 83806175e1e65b510800000000000000
+      internalID: 1564277522170251320
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_14
+      name: BowGuy_46
       rect:
         serializedVersion: 2
         x: 384
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 157f08562990fbd459a066b23d6ae06a
-      internalID: -8877732938566534566
+      spriteID: 80772866657aad260800000000000000
+      internalID: 7123189750168712968
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_15
+      name: BowGuy_47
       rect:
         serializedVersion: 2
         x: 448
         y: 896
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1c3e0a37549ee12489d4a6d32ad1f760
-      internalID: -6727444076985609563
+      spriteID: 339ca4bdcf61e54c0800000000000000
+      internalID: -4296971719198193357
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_16
+      name: BowGuy_48
       rect:
         serializedVersion: 2
         x: 0
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 597c453ec1e7edf43bb1f7d5a67a7400
-      internalID: -1232756562374693723
+      spriteID: fcea4b506b36f4b20800000000000000
+      internalID: 3120822700221968079
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_17
+      name: BowGuy_49
       rect:
         serializedVersion: 2
         x: 64
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 402b3e3bf1db4a949a55ba8499f0421d
-      internalID: 3775982310742829200
+      spriteID: f280f1e3e36b27c40800000000000000
+      internalID: 5508665672673986607
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_18
+      name: BowGuy_50
       rect:
         serializedVersion: 2
         x: 128
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 44aa387eb82e299499f40b96a3b48f89
-      internalID: 2492759749687319522
+      spriteID: b9b02093a7d0409a0800000000000000
+      internalID: -6267869962799281253
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_19
+      name: BowGuy_51
       rect:
         serializedVersion: 2
         x: 192
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 49e2f0fcf325cfd4bb1e0280fc1cbad2
-      internalID: 4406555251308817760
+      spriteID: 7908df1cbf1b781d0800000000000000
+      internalID: -3348512103077150569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_20
+      name: BowGuy_52
       rect:
         serializedVersion: 2
         x: 256
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: cc685870a5e88374091c22874b196e49
-      internalID: 1869796212072190087
+      spriteID: e92839183e98aae80800000000000000
+      internalID: -8166563364058463586
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_21
+      name: BowGuy_53
       rect:
         serializedVersion: 2
         x: 320
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bca01f55a6abec549be61ee05eaba049
-      internalID: -3368358958437862605
+      spriteID: 6c2fcb70b1fc14af0800000000000000
+      internalID: -413821975740484922
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_22
+      name: BowGuy_54
       rect:
         serializedVersion: 2
         x: 384
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 712427061d760644085723f494c6bd3d
-      internalID: 335916165385238261
+      spriteID: 33bdf1e6f6cb8cc80800000000000000
+      internalID: -8302178726282536141
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_23
+      name: BowGuy_55
       rect:
         serializedVersion: 2
         x: 448
         y: 832
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 745846d2e97ba5047b504bd9d6d67fc2
-      internalID: -6704175598568344318
+      spriteID: 6d8f9525ecaab8c90800000000000000
+      internalID: -7166446578908399402
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_24
+      name: BowGuy_56
       rect:
         serializedVersion: 2
         x: 0
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8329a6298588771408e527f312228d8f
-      internalID: -6265101468652660340
+      spriteID: 7f7d464441b14e1c0800000000000000
+      internalID: -4475422355838674953
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_25
+      name: BowGuy_57
       rect:
         serializedVersion: 2
         x: 64
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e3eae6fe1d1b6c0478be48870bdb14a5
-      internalID: 1954030906944627654
+      spriteID: c29886dfb4c9c7380800000000000000
+      internalID: -8972124507440903892
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_26
+      name: BowGuy_58
       rect:
         serializedVersion: 2
         x: 128
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 66154071b04597d46af4650029e40faf
-      internalID: -5413474828347826458
+      spriteID: 34f9bb31ebb03c780800000000000000
+      internalID: -8664068347127947453
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_27
+      name: BowGuy_59
       rect:
         serializedVersion: 2
         x: 192
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a3ab2a439e3aa3a43ba7ec7dea77e449
-      internalID: -9159631526230758409
+      spriteID: 58637a44c084cead0800000000000000
+      internalID: -2671681261408930171
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_28
+      name: BowGuy_60
       rect:
         serializedVersion: 2
         x: 256
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f1fb47e537bd27b43973c6742c1b37ab
-      internalID: -4930836035368283750
+      spriteID: 544fb5c9ccee6a400800000000000000
+      internalID: 335217784849691717
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_29
+      name: BowGuy_61
       rect:
         serializedVersion: 2
         x: 320
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d13ec934ffb77fa4badb1dfa586f377b
-      internalID: 5205976929126459895
+      spriteID: 2298be190e1b6cf10800000000000000
+      internalID: 2289713038643398946
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_30
+      name: BowGuy_62
       rect:
         serializedVersion: 2
         x: 384
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ae0014c2baf645e40992bf7b9037cc9a
-      internalID: -3791037573961758606
+      spriteID: d29fc857665e459e0800000000000000
+      internalID: -1633428536607049427
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_31
+      name: BowGuy_63
       rect:
         serializedVersion: 2
         x: 448
         y: 768
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6393852cee87d484ba4e20793bbaafc3
-      internalID: 4097444353643088885
+      spriteID: 606d46c17515fd7b0800000000000000
+      internalID: -5197346010381887994
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_32
+      name: BowGuy_64
       rect:
         serializedVersion: 2
         x: 0
         y: 704
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a546b418888377e488e86fd2194a0627
-      internalID: -249200886277462680
+      spriteID: f2ce68b7818869c60800000000000000
+      internalID: 7824591041335847983
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_33
+      name: BowGuy_65
       rect:
         serializedVersion: 2
         x: 64
         y: 704
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9bce88d18f7d94a48af1a7f2ad81006f
-      internalID: 3165860569045892987
+      spriteID: 51a1f526d339b45a0800000000000000
+      internalID: -6535968542345455083
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_34
+      name: BowGuy_66
       rect:
         serializedVersion: 2
         x: 128
         y: 704
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9709c6a494de695479490da8b0822b30
-      internalID: 3220113716653772911
+      spriteID: ad327aa4adedf3d60800000000000000
+      internalID: 7872255702803620826
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_35
+      name: BowGuy_67
       rect:
         serializedVersion: 2
         x: 192
         y: 704
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d18125306c0bf934db7d11b0ab69e14d
-      internalID: 1893849049984385222
+      spriteID: 56cdb1b75ed5529a0800000000000000
+      internalID: -6258492866967118747
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_36
+      name: BowGuy_68
       rect:
         serializedVersion: 2
         x: 256
         y: 704
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 291dbe733518ec744a295ba54ef4c410
-      internalID: 4812337235051597764
+      spriteID: 176e6ff11435e0050800000000000000
+      internalID: 5768639711882438257
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_37
+      name: BowGuy_69
       rect:
         serializedVersion: 2
         x: 320
         y: 704
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8de7fc010b3112649bf158af1c2d59db
-      internalID: 840251877237631109
+      spriteID: eb911725b19dade00800000000000000
+      internalID: 1070406572824402366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_38
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 704
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 92ee998932f757f4ba118b3bd3a06afd
-      internalID: -3821296485051778889
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_39
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 704
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 373800e8772c49c4197cf041977db504
-      internalID: -47931637735963804
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_40
+      name: BowGuy_70
       rect:
         serializedVersion: 2
         x: 0
         y: 640
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 7954eb07d09a35a459a61634f2ef4a22
-      internalID: 7094902606647650238
+      spriteID: 52b8a83ee3e6bcfe0800000000000000
+      internalID: -1167718461987976411
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_41
+      name: BowGuy_71
       rect:
         serializedVersion: 2
         x: 64
         y: 640
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 894bbdb7c6065bb49b6da916cd7e6ef3
-      internalID: 1890214742231412965
+      spriteID: b5fb1265a4a9c34c0800000000000000
+      internalID: -4306397499609727141
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_42
+      name: BowGuy_72
       rect:
         serializedVersion: 2
         x: 128
         y: 640
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9f3e3c819439ca9478e28f2287c52110
-      internalID: -7023870413921304639
+      spriteID: e600a5f1219e19ae0800000000000000
+      internalID: -1544196933166694290
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_43
+      name: BowGuy_73
       rect:
         serializedVersion: 2
         x: 192
         y: 640
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a961d2a73d4825c46a269f32f6b605dd
-      internalID: -4912668170417334801
+      spriteID: f7483083fab875cb0800000000000000
+      internalID: -4875274486929980289
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_44
+      name: BowGuy_74
       rect:
         serializedVersion: 2
         x: 256
         y: 640
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 334f98139bb55324f957b78ecfc944eb
-      internalID: 8590048487210853829
+      spriteID: c2bf0b541dba870c0800000000000000
+      internalID: -4577720105916368084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_45
+      name: BowGuy_75
       rect:
         serializedVersion: 2
         x: 320
         y: 640
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5f1ecdb85b92cf34d980be92bc72511b
-      internalID: 1384480667316285254
+      spriteID: 508f1b9667ebde950800000000000000
+      internalID: 6480044854644701189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_46
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 640
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4009f8d8f4c5d4f49a5b0c1974d409f2
-      internalID: -3451182865201937334
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_47
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 640
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b88cb3ab56c56784c81eb0f62092e94b
-      internalID: -631139029043528152
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_48
+      name: BowGuy_76
       rect:
         serializedVersion: 2
         x: 0
         y: 576
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 30fabcf1f46931144ba533dbf122362a
-      internalID: -176995349493700691
+      spriteID: d0eefff0982a3a710800000000000000
+      internalID: 1703383793638829581
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_49
+      name: BowGuy_77
       rect:
         serializedVersion: 2
         x: 64
         y: 576
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3cc3ee7775b9a42469f07b01f32627bf
-      internalID: 7671412293386937541
+      spriteID: ea2e825e6a2448a70800000000000000
+      internalID: 8828254454129681070
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_50
+      name: BowGuy_78
       rect:
         serializedVersion: 2
         x: 128
         y: 576
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 2362b9be7700bd5448b8d8d51d7f2b2b
-      internalID: 3541629732554004757
+      spriteID: f50805d2714a54240800000000000000
+      internalID: 4775403399347732575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_51
+      name: BowGuy_79
       rect:
         serializedVersion: 2
         x: 192
         y: 576
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1e450ea7f04d63e47b8d4fca4bfd7e5c
-      internalID: -4681444332616394597
+      spriteID: 5e6aafb3026baad90800000000000000
+      internalID: -7085650814152562971
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_52
+      name: BowGuy_80
       rect:
         serializedVersion: 2
         x: 256
         y: 576
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a8f4b4c8f433bf6438c81e1ec03647c0
-      internalID: 4321806293519189893
+      spriteID: 9fbe23b8df2fbf550800000000000000
+      internalID: 6195812883154267129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_53
+      name: BowGuy_81
       rect:
         serializedVersion: 2
         x: 320
         y: 576
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 2c769db324804ac4485230e113dd29c6
-      internalID: -2611183343441446786
+      spriteID: ecb6f60a8b276baa0800000000000000
+      internalID: -6145598504209257522
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_54
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 576
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 23179106b7e3f9c4ba3b2aab1fd44427
-      internalID: 8383770950928601525
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_55
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 576
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 683d0ccb26f38474abe73b70fae15213
-      internalID: -1982254657139823879
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_56
+      name: BowGuy_82
       rect:
         serializedVersion: 2
         x: 0
         y: 512
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1ab421a990fc40740a91d266f3a8faab
-      internalID: 8695447406730414896
+      spriteID: f77ad1dc65dc09a80800000000000000
+      internalID: -8462037927137007745
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_57
+      name: BowGuy_83
       rect:
         serializedVersion: 2
         x: 64
         y: 512
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 740a9351ee2494d4eb2aa3c463914161
-      internalID: 5615437427851358654
+      spriteID: 0d9f979cc6883bbd0800000000000000
+      internalID: -2615596957754066480
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_58
+      name: BowGuy_84
       rect:
         serializedVersion: 2
         x: 128
         y: 512
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 503a7c48df95f8a47b3b40aec947fed2
-      internalID: -7535060569701653787
+      spriteID: dc46062efc0a3cdc0800000000000000
+      internalID: -3619872860759104307
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_59
+      name: BowGuy_85
       rect:
         serializedVersion: 2
         x: 192
         y: 512
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 0cc35b54fd3020441b85aee60f2d136a
-      internalID: -513298875584915028
+      spriteID: 99777c9cfd6378d10800000000000000
+      internalID: 2127729683746748313
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_60
+      name: BowGuy_86
       rect:
         serializedVersion: 2
         x: 256
         y: 512
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 03ce63e089ff65848b454868797b6924
-      internalID: -6489317646636187457
+      spriteID: 24cab0e9896d6f3d0800000000000000
+      internalID: -3173112936460997566
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_61
+      name: BowGuy_87
       rect:
         serializedVersion: 2
         x: 320
         y: 512
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6e470b6202c378246b42c0da19eac5a9
-      internalID: 1265896807292017268
+      spriteID: 92be9e61121705900800000000000000
+      internalID: 671160731410492201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_62
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 512
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e5901b45ccf8faf4ab41d1e88ed9e8ee
-      internalID: 3604373579290266281
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_63
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 512
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 76e1fc307511c7346912761f24189237
-      internalID: -5769496712744716807
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_64
+      name: BowGuy_88
       rect:
         serializedVersion: 2
         x: 0
         y: 448
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d7b639329d1b6d84f974b0c7a95a8899
-      internalID: -3993370438185633007
+      spriteID: b3a223ca156c21b90800000000000000
+      internalID: -7272532394166310341
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_65
+      name: BowGuy_89
       rect:
         serializedVersion: 2
         x: 64
         y: 448
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bb45826166ecd124782273a961bb57a5
-      internalID: -1555634981501005272
+      spriteID: 08b5dfe9f384ad2e0800000000000000
+      internalID: -2100286838127371392
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_66
+      name: BowGuy_90
       rect:
         serializedVersion: 2
         x: 128
         y: 448
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1da707bab9d419b4eb7753870b9d246e
-      internalID: -5685959165412513856
+      spriteID: 5b1503499d91e8c50800000000000000
+      internalID: 6669296520467075509
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_67
+      name: BowGuy_91
       rect:
         serializedVersion: 2
         x: 192
         y: 448
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1f485e85810eb2c41897aef10bfcdc18
-      internalID: 3149032895105945312
+      spriteID: 05833289909e648e0800000000000000
+      internalID: -1709422781124102064
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_68
+      name: BowGuy_92
       rect:
         serializedVersion: 2
         x: 256
         y: 448
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c20c4584244a05b449387e93aea094cb
-      internalID: -7174257068836179569
+      spriteID: d25f1b84ce45b4a40800000000000000
+      internalID: 5353465955868603693
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_69
+      name: BowGuy_93
       rect:
         serializedVersion: 2
         x: 320
         y: 448
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e6a25938717ff1b419037dae561950ab
-      internalID: -4626610440417226229
+      spriteID: ebc907f901a786950800000000000000
+      internalID: 6442533478766517438
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_70
+      name: BowGuy_94
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b91da36e933af8370800000000000000
+      internalID: 8327053705102414235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_95
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ef84875fc338d2d0800000000000000
+      internalID: -3253793765155631133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_96
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3dec26225a313f00800000000000000
+      internalID: 1094720308929948989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_97
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 197cb9a91f1d7e310800000000000000
+      internalID: 1434345841952016273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_98
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e88615679646fb150800000000000000
+      internalID: 5890537241743288462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_99
       rect:
         serializedVersion: 2
         x: 0
         y: 384
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d83f1aa291141404cbebf028ae15ba7f
-      internalID: 3586141716887096491
+      spriteID: 9c135a23892f58710800000000000000
+      internalID: 1695027570273497545
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_71
+      name: BowGuy_100
       rect:
         serializedVersion: 2
         x: 64
         y: 384
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: febc86a559298b04db00c62f8b7cd65e
-      internalID: -428012976589210044
+      spriteID: c6d3653de5f1aa290800000000000000
+      internalID: -7878450105998230164
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_72
+      name: BowGuy_101
       rect:
         serializedVersion: 2
         x: 128
         y: 384
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a264457b14d939742b2d1a5ae10200c2
-      internalID: 311142675636705066
+      spriteID: 7d275eb154820d1d0800000000000000
+      internalID: -3328115847340920105
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_73
+      name: BowGuy_102
       rect:
         serializedVersion: 2
         x: 192
         y: 384
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 20f10de6a9b35fc40a6e47a7ebf6e628
-      internalID: 7495136383230135317
+      spriteID: fde657bb19aff1330800000000000000
+      internalID: 3683938524034592479
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_74
+      name: BowGuy_103
       rect:
         serializedVersion: 2
         x: 256
         y: 384
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: a3b03ee2f8be03b4db016b0d10e26137
-      internalID: -2894989742658593022
+      spriteID: b7a72da7b78058bb0800000000000000
+      internalID: -4934528490279896453
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_75
+      name: BowGuy_104
       rect:
         serializedVersion: 2
         x: 320
         y: 384
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3c01e9f2f71331c40afc70cbc7e263d5
-      internalID: 6601175822073403234
+      spriteID: a839a5f733b4a5dc0800000000000000
+      internalID: -3649521863478307958
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_76
+      name: BowGuy_105
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 671cdf9631afb8860800000000000000
+      internalID: 7533389762996846966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_106
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60d2e97b4239cbd40800000000000000
+      internalID: 5601513822450756870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_107
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19eb6438b174560b0800000000000000
+      internalID: -5736100366894317935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_108
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47e65f39698272470800000000000000
+      internalID: 8369703059683896948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_109
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 384
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3f0e7d8de4d88430800000000000000
+      internalID: 3785509603551088445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_110
       rect:
         serializedVersion: 2
         x: 0
         y: 320
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e7b04e3a8cd49834491ab04a31f8b1b0
-      internalID: 2110779291791932942
+      spriteID: 354052478a7fc6bb0800000000000000
+      internalID: -4941302388257127341
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_77
+      name: BowGuy_111
       rect:
         serializedVersion: 2
         x: 64
         y: 320
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 206735f7db6aa4c46a40696bbe3ad50e
-      internalID: -1115107762368020088
+      spriteID: acd576af3ee701e50800000000000000
+      internalID: 6778056956816350666
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_78
+      name: BowGuy_112
       rect:
         serializedVersion: 2
         x: 128
         y: 320
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5e2f74a5f3e499240a679836fef69c70
-      internalID: -2213737904165780569
+      spriteID: 4229c402425284a80800000000000000
+      internalID: -8482489061061389788
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_79
+      name: BowGuy_113
       rect:
         serializedVersion: 2
         x: 192
         y: 320
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: bd39752a2f5c4594f8687aa1d02c39f7
-      internalID: 5027376517409597985
+      spriteID: cc5e2f788862836b0800000000000000
+      internalID: -5316456992272620084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_80
+      name: BowGuy_114
       rect:
         serializedVersion: 2
         x: 256
         y: 320
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6af3a20b0735f4843a249497584183f7
-      internalID: 1605847485589822978
+      spriteID: 28cde9d5a88688400800000000000000
+      internalID: 326625916469828738
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_81
+      name: BowGuy_115
       rect:
         serializedVersion: 2
         x: 320
         y: 320
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 237cffb6134d2e546aea4cd45f023e5e
-      internalID: 5973882304992325426
+      spriteID: 6be3a59ab56968040800000000000000
+      internalID: 4649568985734069942
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_82
+      name: BowGuy_116
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3457a7129156f790800000000000000
+      internalID: -7496714841807694786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_117
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aac8706332d620e20800000000000000
+      internalID: 3315332273695853738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_118
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce5672c6384a54b80800000000000000
+      internalID: -8411135844682340884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_119
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b30abea9c35cc540800000000000000
+      internalID: 5029487009550959536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_120
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f615ad33643336f0800000000000000
+      internalID: -706163115726399758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_121
       rect:
         serializedVersion: 2
         x: 0
         y: 256
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1b4f6d923e0a23c47962ae4d2a2ee47b
-      internalID: 4531320970954155587
+      spriteID: 9ac6525b5c050aa50800000000000000
+      internalID: 6530308269765127337
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_83
+      name: BowGuy_122
       rect:
         serializedVersion: 2
         x: 64
         y: 256
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6cb159dd6c10b3d43a01a5fb5170e793
-      internalID: 2344715696615765639
+      spriteID: 021e350d82a5539c0800000000000000
+      internalID: -3948150366980021984
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_84
+      name: BowGuy_123
       rect:
         serializedVersion: 2
         x: 128
         y: 256
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 21405b949b507cd40b12d1fcbc74e5f2
-      internalID: -2074037143106238661
+      spriteID: f189abecdcbdf0260800000000000000
+      internalID: 7066108017350711327
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_85
+      name: BowGuy_124
       rect:
         serializedVersion: 2
         x: 192
         y: 256
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 15d4a770eb4d8b347bc5f5ef35d3ccf3
-      internalID: 839487348379712942
+      spriteID: 38b81451861b61590800000000000000
+      internalID: -7703775051979322493
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_86
+      name: BowGuy_125
       rect:
         serializedVersion: 2
         x: 256
         y: 256
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 83b6dfe4cd6a41b40ac7367dc7f76f11
-      internalID: 7055280253651638227
+      spriteID: 3fd0e9024ceb8f010800000000000000
+      internalID: 1222937048401186291
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_87
+      name: BowGuy_126
       rect:
         serializedVersion: 2
         x: 320
         y: 256
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 7310cfd2d3668214683123a723e02c90
-      internalID: 693600998166348800
+      spriteID: 71891012260608140800000000000000
+      internalID: 4719878384061093911
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_88
+      name: BowGuy_127
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 919af0cb873a62250800000000000000
+      internalID: 5919598499171641625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_128
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51e1a329bb0b8ea10800000000000000
+      internalID: 1938993959241653781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_129
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b85857ab8fda7270800000000000000
+      internalID: 8249151458383517875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_130
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fad6d41d03f9ea90800000000000000
+      internalID: -7284023684785317127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_131
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23d0ad8f014ba6b80800000000000000
+      internalID: -8400704169918722766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowGuy_132
       rect:
         serializedVersion: 2
         x: 0
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3194a6a8806b9ef4b899adc1e9cc78ee
-      internalID: -560045915480169074
+      spriteID: c286245d8285dae70800000000000000
+      internalID: 9128048952149698604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_89
+      name: BowGuy_133
       rect:
         serializedVersion: 2
         x: 64
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 66b6b7f93fb90b44da57903bdec61c32
-      internalID: -749834039525823973
+      spriteID: 2e0daf64c171a16f0800000000000000
+      internalID: -713232180767436574
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_90
+      name: BowGuy_134
       rect:
         serializedVersion: 2
         x: 128
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5a658e967e4148f4dbe30ae345bc6647
-      internalID: -890777774214193709
+      spriteID: b35d5c08fcbe94af0800000000000000
+      internalID: -411538614476483269
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_91
+      name: BowGuy_135
       rect:
         serializedVersion: 2
         x: 192
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: cd6584f9ce78947489f6b02dde79e07d
-      internalID: -7886944876522897221
+      spriteID: 4a3e2fd9c3acffd10800000000000000
+      internalID: 2161668707857916836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_92
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 192
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 49465e1f95103b04380b266eefc965bd
-      internalID: -1784758080698596224
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_93
+      name: BowGuy_136
       rect:
         serializedVersion: 2
         x: 320
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6decd4a7e72810a49b3242dab3acb203
-      internalID: -5589454414825133829
+      spriteID: f76922583a63e92d0800000000000000
+      internalID: -3270116203483195777
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_94
+      name: BowGuy_137
       rect:
         serializedVersion: 2
         x: 384
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8dad18f9e3118b548aad7a7aaca0b604
-      internalID: 7126013625298456262
+      spriteID: 1f9694bdf411c2940800000000000000
+      internalID: 5272608298423118321
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_95
+      name: BowGuy_138
       rect:
         serializedVersion: 2
         x: 448
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 75e8d032d802f4643a454f51a885b8b8
-      internalID: 2989435913124877495
+      spriteID: 6e9824e561ae51ef0800000000000000
+      internalID: -137946831773333018
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_96
+      name: BowGuy_139
       rect:
         serializedVersion: 2
         x: 512
         y: 192
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: b505b5d38a9119c4db981072ca2a9555
-      internalID: -2996975516194398031
+      spriteID: 0916646cfebfc7b60800000000000000
+      internalID: 7745342466412667280
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_97
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 192
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e2a45a87e86ed8449b6302f26fbe6b98
-      internalID: 8329928944254750713
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_98
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 192
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9c41f290ec8bc4446a86d96cfb1f3754
-      internalID: -6442374164617618160
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_99
+      name: BowGuy_140
       rect:
         serializedVersion: 2
         x: 0
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: afc94203c3b8f5745823f62ec7062724
-      internalID: 3153637004149276468
+      spriteID: f77cb4e27f8a8da50800000000000000
+      internalID: 6546167837970122623
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_100
+      name: BowGuy_141
       rect:
         serializedVersion: 2
         x: 64
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 331e39b901d78614f9ce0dd726349563
-      internalID: 9003334248694265778
+      spriteID: 3a7c4f1e9eb882c40800000000000000
+      internalID: 5487789982585505699
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_101
+      name: BowGuy_142
       rect:
         serializedVersion: 2
         x: 128
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5e0cb051c22a4fc4da50b93fa9c58ab5
-      internalID: 911066584263456124
+      spriteID: 81ca35fbf92025860800000000000000
+      internalID: 7517073613167766552
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_102
+      name: BowGuy_143
       rect:
         serializedVersion: 2
         x: 192
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 22cda845f6951e744a106a90c93bd2f4
-      internalID: 6377855184884762948
+      spriteID: 653898d1b049760a0800000000000000
+      internalID: -6888374329578781866
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_103
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 128
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e7a8c8049056d394abdd6ad5bef0ac79
-      internalID: 6145771965845248912
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_104
+      name: BowGuy_144
       rect:
         serializedVersion: 2
         x: 320
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 64e25aa72163d1c44acdbaf5b10d6811
-      internalID: 2652125731045972779
+      spriteID: bcacd6c38a46e33c0800000000000000
+      internalID: -4377951114026431797
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_105
+      name: BowGuy_145
       rect:
         serializedVersion: 2
         x: 384
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 562fbe7b310962d45bb7f24e83a6e70b
-      internalID: 4422318837564051675
+      spriteID: 761a48a396aa6d460800000000000000
+      internalID: 7266182417738932583
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_106
+      name: BowGuy_146
       rect:
         serializedVersion: 2
         x: 448
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ad44fde1f81bac24e89c73aa670fe141
-      internalID: -293401339659833238
+      spriteID: 12836635a77fccf80800000000000000
+      internalID: -8084815126279604191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_107
+      name: BowGuy_147
       rect:
         serializedVersion: 2
         x: 512
         y: 128
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 0d4a5264f96715042bc46b6e38963f5c
-      internalID: -438150506806584051
+      spriteID: 118260bd61795e6d0800000000000000
+      internalID: -2961795055506544623
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_108
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 128
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2395823d4a9852748827a045bf2dc92a
-      internalID: -2245099975309765867
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_109
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 128
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b6038ee27588c7044b61e56b3e3c2eff
-      internalID: 3260329498434525945
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_110
+      name: BowGuy_148
       rect:
         serializedVersion: 2
         x: 0
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9b6a95151db8e8e4e87dcfd9188d2aab
-      internalID: -5025853302594600741
+      spriteID: c881e517e8190fc20800000000000000
+      internalID: 3238248173052762252
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_111
+      name: BowGuy_149
       rect:
         serializedVersion: 2
         x: 64
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 7c589715352f3fa4a88e9ea8bb4b2252
-      internalID: 8743174765276217148
+      spriteID: 7a915b32b21340e40800000000000000
+      internalID: 5621672296217647527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_112
+      name: BowGuy_150
       rect:
         serializedVersion: 2
         x: 128
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 52de16f1d0edc51408f40964e4885cc7
-      internalID: -3212303439274070684
+      spriteID: 260e4b10bfe4ce7c0800000000000000
+      internalID: -4040767925685788574
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_113
+      name: BowGuy_151
       rect:
         serializedVersion: 2
         x: 192
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 0b29960b2a5684f41864970e11cdfdcc
-      internalID: -6153776699910533933
+      spriteID: 66c1485da561e7e00800000000000000
+      internalID: 1044296742981606502
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_114
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 64
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 65a28d5ae702f4b4fbd0f92e94715255
-      internalID: -7320903977204251679
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_115
+      name: BowGuy_152
       rect:
         serializedVersion: 2
         x: 320
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c1efab9428ff93f40876e178d7b8c4fc
-      internalID: 5033467520727535155
+      spriteID: 527068beac95dfee0800000000000000
+      internalID: -1225724795505211611
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_116
+      name: BowGuy_153
       rect:
         serializedVersion: 2
         x: 384
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e5376f40c3e093c46a9a358aba8fac31
-      internalID: 3413602443033918059
+      spriteID: b59440bac18adb1c0800000000000000
+      internalID: -4486244812709410469
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_117
+      name: BowGuy_154
       rect:
         serializedVersion: 2
         x: 448
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 96822474ce63e5d44a202a89fbc66476
-      internalID: 2315687879259732226
+      spriteID: b29253304294f4f20800000000000000
+      internalID: 3409023861964220715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_118
+      name: BowGuy_155
       rect:
         serializedVersion: 2
         x: 512
         y: 64
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6d0ff5e30f750e342a144336e522de16
-      internalID: -8924064857307082693
+      spriteID: a5826e2b69d9738d0800000000000000
+      internalID: -2866649367225948070
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_119
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 64
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 081c9c69ffd0c78409c4a61862224a7e
-      internalID: -8060105697489258480
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_120
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 64
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 04443360f82302d4788160364c4b0328
-      internalID: 7607531048843427258
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_121
+      name: BowGuy_156
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: cbfb06cb89147024ba87f76cde122ff8
-      internalID: 4833561980501894456
+      spriteID: 4feb3009429dcbe40800000000000000
+      internalID: 5673648381638196980
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_122
+      name: BowGuy_157
       rect:
         serializedVersion: 2
         x: 64
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: baf89e3ebf042444a873bfdca867161e
-      internalID: -4991928080385301425
+      spriteID: 7184f2e01d46d1040800000000000000
+      internalID: 4619959641800919063
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_123
+      name: BowGuy_158
       rect:
         serializedVersion: 2
         x: 128
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 46ded54a8dbea7d468281a863739f8df
-      internalID: 5188042051985526553
+      spriteID: e9478c5f1d9616f40800000000000000
+      internalID: 5719969352229876894
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_124
+      name: BowGuy_159
       rect:
         serializedVersion: 2
         x: 192
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 038af7cdece465246bf079387be4333d
-      internalID: 45828898369232528
+      spriteID: 1e8d0575496d3e0c0800000000000000
+      internalID: -4547555266105648927
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_125
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 942cd07bea9cee149a7380bac8b73dbf
-      internalID: -1988138549982463826
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_126
+      name: BowGuy_160
       rect:
         serializedVersion: 2
         x: 320
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 422a35acda5795a449bbd054f3da02ec
-      internalID: -2765582432021850531
+      spriteID: cd5313a3e1d8b2070800000000000000
+      internalID: 8082709117211325916
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_127
+      name: BowGuy_161
       rect:
         serializedVersion: 2
         x: 384
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 202f4744997417948a95e89725a52dcc
-      internalID: -3914761528109864936
+      spriteID: 5f24218c1eedabc00800000000000000
+      internalID: 917290535428965109
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_128
+      name: BowGuy_162
       rect:
         serializedVersion: 2
         x: 448
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8c65185535d411b48a0e75ebde970cf3
-      internalID: -6475251525401925885
+      spriteID: 3557ced9c5c5bbfe0800000000000000
+      internalID: -1172241725143616173
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BowGuy 1_129
+      name: BowGuy_163
       rect:
         serializedVersion: 2
         x: 512
         y: 0
         width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6f1564161a540bb468f779df57f84d83
-      internalID: 3543866190370125922
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_130
-      rect:
-        serializedVersion: 2
-        x: 576
-        y: 0
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 68290770708f2404d93425aadae1334a
-      internalID: -257198583289074525
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BowGuy 1_131
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 0
-        width: 64
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 103b3b109e893ce4faafb82b7184e04a
-      internalID: 2701264566461548352
+      spriteID: 2224be9d778087650800000000000000
+      internalID: 6230739395317285410
       vertices: []
       indices: 
       edges: []
@@ -3425,7 +4285,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 37b2331b3e3122f49940e4751618a2b9
+    spriteID: 2f024c84c242e764eb922117069119fa
     internalID: 0
     vertices: []
     indices: 
@@ -3437,138 +4297,170 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      BowGuy 1_0: -1017476828099549738
-      BowGuy 1_1: 6061345690552787877
-      BowGuy 1_10: -7127390159011335730
-      BowGuy 1_100: 9003334248694265778
-      BowGuy 1_101: 911066584263456124
-      BowGuy 1_102: 6377855184884762948
-      BowGuy 1_103: 6145771965845248912
-      BowGuy 1_104: 2652125731045972779
-      BowGuy 1_105: 4422318837564051675
-      BowGuy 1_106: -293401339659833238
-      BowGuy 1_107: -438150506806584051
-      BowGuy 1_108: -2245099975309765867
-      BowGuy 1_109: 3260329498434525945
-      BowGuy 1_11: -4724771604288486211
-      BowGuy 1_110: -5025853302594600741
-      BowGuy 1_111: 8743174765276217148
-      BowGuy 1_112: -3212303439274070684
-      BowGuy 1_113: -6153776699910533933
-      BowGuy 1_114: -7320903977204251679
-      BowGuy 1_115: 5033467520727535155
-      BowGuy 1_116: 3413602443033918059
-      BowGuy 1_117: 2315687879259732226
-      BowGuy 1_118: -8924064857307082693
-      BowGuy 1_119: -8060105697489258480
-      BowGuy 1_12: -6036382452732197116
-      BowGuy 1_120: 7607531048843427258
-      BowGuy 1_121: 4833561980501894456
-      BowGuy 1_122: -4991928080385301425
-      BowGuy 1_123: 5188042051985526553
-      BowGuy 1_124: 45828898369232528
-      BowGuy 1_125: -1988138549982463826
-      BowGuy 1_126: -2765582432021850531
-      BowGuy 1_127: -3914761528109864936
-      BowGuy 1_128: -6475251525401925885
-      BowGuy 1_129: 3543866190370125922
-      BowGuy 1_13: -9048406129548625796
-      BowGuy 1_130: -257198583289074525
-      BowGuy 1_131: 2701264566461548352
-      BowGuy 1_14: -8877732938566534566
-      BowGuy 1_15: -6727444076985609563
-      BowGuy 1_16: -1232756562374693723
-      BowGuy 1_17: 3775982310742829200
-      BowGuy 1_18: 2492759749687319522
-      BowGuy 1_19: 4406555251308817760
-      BowGuy 1_2: -6732458242210377461
-      BowGuy 1_20: 1869796212072190087
-      BowGuy 1_21: -3368358958437862605
-      BowGuy 1_22: 335916165385238261
-      BowGuy 1_23: -6704175598568344318
-      BowGuy 1_24: -6265101468652660340
-      BowGuy 1_25: 1954030906944627654
-      BowGuy 1_26: -5413474828347826458
-      BowGuy 1_27: -9159631526230758409
-      BowGuy 1_28: -4930836035368283750
-      BowGuy 1_29: 5205976929126459895
-      BowGuy 1_3: 2909445308912024862
-      BowGuy 1_30: -3791037573961758606
-      BowGuy 1_31: 4097444353643088885
-      BowGuy 1_32: -249200886277462680
-      BowGuy 1_33: 3165860569045892987
-      BowGuy 1_34: 3220113716653772911
-      BowGuy 1_35: 1893849049984385222
-      BowGuy 1_36: 4812337235051597764
-      BowGuy 1_37: 840251877237631109
-      BowGuy 1_38: -3821296485051778889
-      BowGuy 1_39: -47931637735963804
-      BowGuy 1_4: -7363110510733549213
-      BowGuy 1_40: 7094902606647650238
-      BowGuy 1_41: 1890214742231412965
-      BowGuy 1_42: -7023870413921304639
-      BowGuy 1_43: -4912668170417334801
-      BowGuy 1_44: 8590048487210853829
-      BowGuy 1_45: 1384480667316285254
-      BowGuy 1_46: -3451182865201937334
-      BowGuy 1_47: -631139029043528152
-      BowGuy 1_48: -176995349493700691
-      BowGuy 1_49: 7671412293386937541
-      BowGuy 1_5: -6808095697325235913
-      BowGuy 1_50: 3541629732554004757
-      BowGuy 1_51: -4681444332616394597
-      BowGuy 1_52: 4321806293519189893
-      BowGuy 1_53: -2611183343441446786
-      BowGuy 1_54: 8383770950928601525
-      BowGuy 1_55: -1982254657139823879
-      BowGuy 1_56: 8695447406730414896
-      BowGuy 1_57: 5615437427851358654
-      BowGuy 1_58: -7535060569701653787
-      BowGuy 1_59: -513298875584915028
-      BowGuy 1_6: 6563546422711560101
-      BowGuy 1_60: -6489317646636187457
-      BowGuy 1_61: 1265896807292017268
-      BowGuy 1_62: 3604373579290266281
-      BowGuy 1_63: -5769496712744716807
-      BowGuy 1_64: -3993370438185633007
-      BowGuy 1_65: -1555634981501005272
-      BowGuy 1_66: -5685959165412513856
-      BowGuy 1_67: 3149032895105945312
-      BowGuy 1_68: -7174257068836179569
-      BowGuy 1_69: -4626610440417226229
-      BowGuy 1_7: -2371163707044596209
-      BowGuy 1_70: 3586141716887096491
-      BowGuy 1_71: -428012976589210044
-      BowGuy 1_72: 311142675636705066
-      BowGuy 1_73: 7495136383230135317
-      BowGuy 1_74: -2894989742658593022
-      BowGuy 1_75: 6601175822073403234
-      BowGuy 1_76: 2110779291791932942
-      BowGuy 1_77: -1115107762368020088
-      BowGuy 1_78: -2213737904165780569
-      BowGuy 1_79: 5027376517409597985
-      BowGuy 1_8: -934134701663904487
-      BowGuy 1_80: 1605847485589822978
-      BowGuy 1_81: 5973882304992325426
-      BowGuy 1_82: 4531320970954155587
-      BowGuy 1_83: 2344715696615765639
-      BowGuy 1_84: -2074037143106238661
-      BowGuy 1_85: 839487348379712942
-      BowGuy 1_86: 7055280253651638227
-      BowGuy 1_87: 693600998166348800
-      BowGuy 1_88: -560045915480169074
-      BowGuy 1_89: -749834039525823973
-      BowGuy 1_9: -2714598849872270583
-      BowGuy 1_90: -890777774214193709
-      BowGuy 1_91: -7886944876522897221
-      BowGuy 1_92: -1784758080698596224
-      BowGuy 1_93: -5589454414825133829
-      BowGuy 1_94: 7126013625298456262
-      BowGuy 1_95: 2989435913124877495
-      BowGuy 1_96: -2996975516194398031
-      BowGuy 1_97: 8329928944254750713
-      BowGuy 1_98: -6442374164617618160
-      BowGuy 1_99: 3153637004149276468
+      BowGuy_0: 6638902558152341341
+      BowGuy_1: -7115901941538923236
+      BowGuy_10: 7897706037572542401
+      BowGuy_100: -7878450105998230164
+      BowGuy_101: -3328115847340920105
+      BowGuy_102: 3683938524034592479
+      BowGuy_103: -4934528490279896453
+      BowGuy_104: -3649521863478307958
+      BowGuy_105: 7533389762996846966
+      BowGuy_106: 5601513822450756870
+      BowGuy_107: -5736100366894317935
+      BowGuy_108: 8369703059683896948
+      BowGuy_109: 3785509603551088445
+      BowGuy_11: 5899033960078770394
+      BowGuy_110: -4941302388257127341
+      BowGuy_111: 6778056956816350666
+      BowGuy_112: -8482489061061389788
+      BowGuy_113: -5316456992272620084
+      BowGuy_114: 326625916469828738
+      BowGuy_115: 4649568985734069942
+      BowGuy_116: -7496714841807694786
+      BowGuy_117: 3315332273695853738
+      BowGuy_118: -8411135844682340884
+      BowGuy_119: 5029487009550959536
+      BowGuy_12: 3929072822082246061
+      BowGuy_120: -706163115726399758
+      BowGuy_121: 6530308269765127337
+      BowGuy_122: -3948150366980021984
+      BowGuy_123: 7066108017350711327
+      BowGuy_124: -7703775051979322493
+      BowGuy_125: 1222937048401186291
+      BowGuy_126: 4719878384061093911
+      BowGuy_127: 5919598499171641625
+      BowGuy_128: 1938993959241653781
+      BowGuy_129: 8249151458383517875
+      BowGuy_13: -7868138056449352944
+      BowGuy_130: -7284023684785317127
+      BowGuy_131: -8400704169918722766
+      BowGuy_132: 9128048952149698604
+      BowGuy_133: -713232180767436574
+      BowGuy_134: -411538614476483269
+      BowGuy_135: 2161668707857916836
+      BowGuy_136: -3270116203483195777
+      BowGuy_137: 5272608298423118321
+      BowGuy_138: -137946831773333018
+      BowGuy_139: 7745342466412667280
+      BowGuy_14: 2305870559190542100
+      BowGuy_140: 6546167837970122623
+      BowGuy_141: 5487789982585505699
+      BowGuy_142: 7517073613167766552
+      BowGuy_143: -6888374329578781866
+      BowGuy_144: -4377951114026431797
+      BowGuy_145: 7266182417738932583
+      BowGuy_146: -8084815126279604191
+      BowGuy_147: -2961795055506544623
+      BowGuy_148: 3238248173052762252
+      BowGuy_149: 5621672296217647527
+      BowGuy_15: 4968621740004015308
+      BowGuy_150: -4040767925685788574
+      BowGuy_151: 1044296742981606502
+      BowGuy_152: -1225724795505211611
+      BowGuy_153: -4486244812709410469
+      BowGuy_154: 3409023861964220715
+      BowGuy_155: -2866649367225948070
+      BowGuy_156: 5673648381638196980
+      BowGuy_157: 4619959641800919063
+      BowGuy_158: 5719969352229876894
+      BowGuy_159: -4547555266105648927
+      BowGuy_16: -8866516331940815465
+      BowGuy_160: 8082709117211325916
+      BowGuy_161: 917290535428965109
+      BowGuy_162: -1172241725143616173
+      BowGuy_163: 6230739395317285410
+      BowGuy_17: 291819670828768690
+      BowGuy_18: -7276112285095551106
+      BowGuy_19: 3422070121213867176
+      BowGuy_2: 1736985034878321419
+      BowGuy_20: -2776667546251430811
+      BowGuy_21: 1987744129325920611
+      BowGuy_22: 918440204973823137
+      BowGuy_23: -100706001278181092
+      BowGuy_24: 4359719148505948006
+      BowGuy_25: 2042171230808728995
+      BowGuy_26: -1553740791753987918
+      BowGuy_27: 7584022228547681850
+      BowGuy_28: 6946282986866506679
+      BowGuy_29: 6724290904722943303
+      BowGuy_3: 3286452253389467002
+      BowGuy_30: -8740717829619777614
+      BowGuy_31: 8660715792247562323
+      BowGuy_32: 8311975724381905401
+      BowGuy_33: -6861803413901123743
+      BowGuy_34: -6450075298941523273
+      BowGuy_35: 7497146080587699848
+      BowGuy_36: -2467819241260615538
+      BowGuy_37: 5191013101188444122
+      BowGuy_38: -2443524556496122628
+      BowGuy_39: 1236272933032361368
+      BowGuy_4: -6869567909070239997
+      BowGuy_40: -5517879118916433931
+      BowGuy_41: -509314115277530183
+      BowGuy_42: -6250920074768629988
+      BowGuy_43: 7208749759626440863
+      BowGuy_44: -5586732779739198827
+      BowGuy_45: 1564277522170251320
+      BowGuy_46: 7123189750168712968
+      BowGuy_47: -4296971719198193357
+      BowGuy_48: 3120822700221968079
+      BowGuy_49: 5508665672673986607
+      BowGuy_5: 8108058412635603901
+      BowGuy_50: -6267869962799281253
+      BowGuy_51: -3348512103077150569
+      BowGuy_52: -8166563364058463586
+      BowGuy_53: -413821975740484922
+      BowGuy_54: -8302178726282536141
+      BowGuy_55: -7166446578908399402
+      BowGuy_56: -4475422355838674953
+      BowGuy_57: -8972124507440903892
+      BowGuy_58: -8664068347127947453
+      BowGuy_59: -2671681261408930171
+      BowGuy_6: -1017278329274647073
+      BowGuy_60: 335217784849691717
+      BowGuy_61: 2289713038643398946
+      BowGuy_62: -1633428536607049427
+      BowGuy_63: -5197346010381887994
+      BowGuy_64: 7824591041335847983
+      BowGuy_65: -6535968542345455083
+      BowGuy_66: 7872255702803620826
+      BowGuy_67: -6258492866967118747
+      BowGuy_68: 5768639711882438257
+      BowGuy_69: 1070406572824402366
+      BowGuy_7: 4489064412720554311
+      BowGuy_70: -1167718461987976411
+      BowGuy_71: -4306397499609727141
+      BowGuy_72: -1544196933166694290
+      BowGuy_73: -4875274486929980289
+      BowGuy_74: -4577720105916368084
+      BowGuy_75: 6480044854644701189
+      BowGuy_76: 1703383793638829581
+      BowGuy_77: 8828254454129681070
+      BowGuy_78: 4775403399347732575
+      BowGuy_79: -7085650814152562971
+      BowGuy_8: 3961911356301605863
+      BowGuy_80: 6195812883154267129
+      BowGuy_81: -6145598504209257522
+      BowGuy_82: -8462037927137007745
+      BowGuy_83: -2615596957754066480
+      BowGuy_84: -3619872860759104307
+      BowGuy_85: 2127729683746748313
+      BowGuy_86: -3173112936460997566
+      BowGuy_87: 671160731410492201
+      BowGuy_88: -7272532394166310341
+      BowGuy_89: -2100286838127371392
+      BowGuy_9: 2271273068164040892
+      BowGuy_90: 6669296520467075509
+      BowGuy_91: -1709422781124102064
+      BowGuy_92: 5353465955868603693
+      BowGuy_93: 6442533478766517438
+      BowGuy_94: 8327053705102414235
+      BowGuy_95: -3253793765155631133
+      BowGuy_96: 1094720308929948989
+      BowGuy_97: 1434345841952016273
+      BowGuy_98: 5890537241743288462
+      BowGuy_99: 1695027570273497545
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

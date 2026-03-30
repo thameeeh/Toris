@@ -22,7 +22,8 @@ public class WeaponProfile : ScriptableObject
     [Header("Action Set")]
     public ActionDef[] actions = new[]
     {
-        new ActionDef { actionKey = "Shoot", usesLock = true, lockAt = 0.50f, crossFade = 0.05f, animSuffixOverride = "" }
+        new ActionDef { actionKey = "Shoot", usesLock = true, lockAt = 0.50f, crossFade = 0.05f, animSuffixOverride = "" },
+        new ActionDef { actionKey = "Dash", usesLock = false, lockAt = 0f, crossFade = 0.05f, animSuffixOverride = "" }
     };
 
     public ActionDef Get(string key)

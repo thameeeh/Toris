@@ -20,6 +20,9 @@ public sealed class WorldGenRunner : MonoBehaviour
     [Header("Streaming")]
     [SerializeField] private Transform followTarget;
 
+    [Header("Gameplay")]
+    [SerializeField] private GameplayPoolManager gameplayPoolManager;
+
     [SerializeField] private Camera streamCamera;
 
     [SerializeField] private int unloadHysteresisChunks = 1;
@@ -108,6 +111,16 @@ public sealed class WorldGenRunner : MonoBehaviour
                 poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
         }
 
+        if (followTarget == null)
+        {
+            Debug.LogWarning($"{nameof(WorldGenRunner)} has no followTarget assigned. PlayerLocatorService will return null.", this);
+        }
+
+        if (gameplayPoolManager == null)
+        {
+            Debug.LogWarning($"{nameof(WorldGenRunner)} has no GameplayPoolManager assigned. Enemy spawning through encounter services will fail.", this);
+        }
+
         ctx = new WorldContext(profile);
         runtimeState = new WorldRuntimeState();
         generator = new ChunkGenerator(ctx);
@@ -122,7 +135,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         worldEncounterServices = new WorldEncounterServices(
             worldSceneServices,
             new PlayerLocatorService(followTarget),
-            new EnemySpawnService());
+            new EnemySpawnService(gameplayPoolManager));
 
         worldTransitionSystem = new WorldTransitionSystem(
             profile,

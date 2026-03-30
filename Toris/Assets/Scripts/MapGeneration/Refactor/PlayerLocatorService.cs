@@ -2,19 +2,15 @@ using UnityEngine;
 
 public sealed class PlayerLocatorService : IPlayerLocator
 {
-    private readonly Transform fallbackPlayerTransform;
+    private readonly Transform playerTransform;
 
-    public PlayerLocatorService(Transform fallbackPlayerTransform)
+    public PlayerLocatorService(Transform playerTransform)
     {
-        this.fallbackPlayerTransform = fallbackPlayerTransform;
+        this.playerTransform = playerTransform;
     }
 
     public Transform GetPlayerTransform()
     {
-        if (fallbackPlayerTransform != null)
-            return fallbackPlayerTransform;
-
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        return playerObject != null ? playerObject.transform : null;
+        return playerTransform;
     }
 }

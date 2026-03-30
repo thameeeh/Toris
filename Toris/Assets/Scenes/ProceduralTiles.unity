@@ -1424,7 +1424,7 @@ MonoBehaviour:
   followTarget: {fileID: 7797051013246395996}
   visible: 0
   panelPos: {x: 12, y: 12}
-  panelSize: {x: 320, y: 250}
+  panelSize: {x: 320, y: 830}
   fontSize: 20
   drawChunkBorders: 0
   drawStreamingRects: 0

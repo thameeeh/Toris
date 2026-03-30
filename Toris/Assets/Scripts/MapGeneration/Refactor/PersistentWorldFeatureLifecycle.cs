@@ -52,6 +52,14 @@ public sealed class PersistentWorldFeatureLifecycle
         persistentOwnership.ClearAll();
     }
 
+    public int GetActiveSiteCount()
+    {
+        if (!persistentOwnership.TryGetGroup(PersistentOwnershipKey, out WorldFeatureOwnershipGroup ownershipGroup))
+            return 0;
+
+        return ownershipGroup.InstanceCount;
+    }
+
     private SitePlacement BuildPlacement(WorldSiteDefinition siteDefinition, Vector2Int centerTile)
     {
         int chunkSize = Mathf.Max(1, worldContext.World.chunkSize);

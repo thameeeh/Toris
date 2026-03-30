@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,6 +49,16 @@ public sealed class WorldPoiPoolManager : MonoBehaviour
 
     public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent)
     {
+        return SpawnPrepared(prefab, position, rotation, parent, null);
+    }
+
+    public GameObject SpawnPrepared(
+        GameObject prefab,
+        Vector3 position,
+        Quaternion rotation,
+        Transform parent,
+        Func<GameObject, bool> prepareInstance)
+    {
         if (prefab == null) return null;
         EnsureRoots();
 
@@ -62,9 +73,16 @@ public sealed class WorldPoiPoolManager : MonoBehaviour
 
         go.transform.SetParent(parent, false);
         go.transform.SetPositionAndRotation(position, rotation);
-        go.SetActive(true);
 
         InvokeOnSpawned(go);
+
+        if (prepareInstance != null && !prepareInstance(go))
+        {
+            pool.Release(id);
+            return null;
+        }
+
+        go.SetActive(true);
 
         return go;
     }

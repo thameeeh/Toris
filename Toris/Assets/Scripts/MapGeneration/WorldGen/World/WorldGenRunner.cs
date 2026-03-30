@@ -53,13 +53,11 @@ public sealed class WorldGenRunner : MonoBehaviour
     private WorldTransitionSystem worldTransitionSystem;
     private WorldSceneServices worldSceneServices;
     private WorldEncounterServices worldEncounterServices;
-    private PersistentWorldFeatureLifecycle persistentWorldFeatureLifecycle;
+    private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
     private WorldSiteActivationPipeline worldSiteActivationPipeline;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
-
-    private WorldFeatureLifecycle worldFeatureLifecycle;
 
     #endregion
 
@@ -139,9 +137,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             worldSceneServices,
             ctx,
             runtimeState,
-            applier,
             chunkStreamingSystem,
-            poiPool,
             gateCooldownSeconds);
 
         worldSiteActivationPipeline = new WorldSiteActivationPipeline(
@@ -151,22 +147,27 @@ public sealed class WorldGenRunner : MonoBehaviour
             poiPool,
             worldTransitionSystem);
 
-        worldFeatureLifecycle = new WorldFeatureLifecycle(
+        WorldFeatureLifecycle chunkFeatureLifecycle = new WorldFeatureLifecycle(
             ctx,
             poiPool,
             worldSiteActivationPipeline);
 
-        persistentWorldFeatureLifecycle = new PersistentWorldFeatureLifecycle(
+        PersistentWorldFeatureLifecycle persistentFeatureLifecycle = new PersistentWorldFeatureLifecycle(
             ctx,
             poiPool,
             worldSiteActivationPipeline);
+
+        worldFeatureLifecycleSystem = new WorldFeatureLifecycleSystem(
+            ctx,
+            chunkFeatureLifecycle,
+            persistentFeatureLifecycle);
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(
             profile,
             worldSceneServices,
             generator,
             applier,
-            worldFeatureLifecycle,
+            worldFeatureLifecycleSystem,
             runtimeState,
             chunkStreamingSystem);
 
@@ -176,9 +177,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             chunkStreamingSystem,
             chunkProcessingPipeline);
 
-        worldTransitionSystem.AttachLifecycles(
-            worldFeatureLifecycle,
-            persistentWorldFeatureLifecycle);
+        worldTransitionSystem.AttachLifecycleSystem(worldFeatureLifecycleSystem);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
         worldTransitionSystem.StartInitialBiome(0, spawnTile);
@@ -236,8 +235,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (!clearOnDisable || profile == null)
             return;
 
-        worldFeatureLifecycle?.ClearAll();
-        persistentWorldFeatureLifecycle?.ClearAll();
+        worldFeatureLifecycleSystem?.ClearAll();
         worldTransitionSystem?.ResetTransitionArtifacts();
         chunkProcessingPipeline?.ClearLoadedChunks();
         chunkStreamingSystem?.Reset();
@@ -283,16 +281,20 @@ public sealed class WorldGenRunner : MonoBehaviour
     // diagnostics
     public WorldGenDiagnosticsSnapshot CreateDiagnosticsSnapshot()
     {
-        int activeSiteChunkCount = worldFeatureLifecycle != null
-            ? worldFeatureLifecycle.GetActiveSiteChunkCount()
+        int activeSiteChunkCount = worldFeatureLifecycleSystem != null
+            ? worldFeatureLifecycleSystem.GetActiveSiteChunkCount()
             : 0;
 
-        int activeSiteCount = worldFeatureLifecycle != null
-            ? worldFeatureLifecycle.GetActiveSiteCount()
+        int activePersistentSiteCount = worldFeatureLifecycleSystem != null
+            ? worldFeatureLifecycleSystem.GetActivePersistentSiteCount()
             : 0;
 
-        int totalPlacedSiteCount = worldFeatureLifecycle != null
-            ? worldFeatureLifecycle.GetTotalPlacedSiteCount()
+        int activeSiteCount = worldFeatureLifecycleSystem != null
+            ? worldFeatureLifecycleSystem.GetActiveSiteCount()
+            : 0;
+
+        int totalPlacedSiteCount = worldFeatureLifecycleSystem != null
+            ? worldFeatureLifecycleSystem.GetTotalPlacedSiteCount()
             : 0;
 
         int generationQueueCount = chunkStreamingSystem != null
@@ -336,6 +338,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             streamingAnchorInitialized,
             streamingAnchorChunk,
             activeSiteChunkCount,
+            activePersistentSiteCount,
             activeSiteCount,
             totalPlacedSiteCount,
             streamCamera != null ? streamCamera : Camera.main,

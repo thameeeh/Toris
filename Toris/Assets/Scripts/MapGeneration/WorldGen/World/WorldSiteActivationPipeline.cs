@@ -51,24 +51,6 @@ public sealed class WorldSiteActivationPipeline
                 return null;
         }
 
-        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(placement.CenterTile);
-        GameObject siteObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, parent);
-        if (siteObject == null)
-            return null;
-
-        IWorldSiteContextConsumer[] siteContextConsumers =
-            siteObject.GetComponentsInChildren<IWorldSiteContextConsumer>(true);
-
-        if (siteContextConsumers == null || siteContextConsumers.Length == 0)
-        {
-            Debug.LogWarning(
-                $"Site prefab '{prefab.name}' has no IWorldSiteContextConsumer.",
-                siteObject);
-
-            poiPoolManager.Release(siteObject);
-            return null;
-        }
-
         WorldSiteContext siteContext = new WorldSiteContext(
             placement,
             spawnId,
@@ -77,10 +59,35 @@ public sealed class WorldSiteActivationPipeline
             worldEncounterServices,
             siteDefinition.RuntimeConfig);
 
-        for (int i = 0; i < siteContextConsumers.Length; i++)
-        {
-            siteContextConsumers[i].Initialize(siteContext);
-        }
+        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(placement.CenterTile);
+        GameObject siteObject = poiPoolManager.SpawnPrepared(
+            prefab,
+            worldPosition,
+            Quaternion.identity,
+            parent,
+            siteObject =>
+            {
+                IWorldSiteContextConsumer[] siteContextConsumers =
+                    siteObject.GetComponentsInChildren<IWorldSiteContextConsumer>(true);
+
+                if (siteContextConsumers == null || siteContextConsumers.Length == 0)
+                {
+                    Debug.LogWarning(
+                        $"Site prefab '{prefab.name}' has no IWorldSiteContextConsumer.",
+                        siteObject);
+                    return false;
+                }
+
+                for (int i = 0; i < siteContextConsumers.Length; i++)
+                {
+                    siteContextConsumers[i].Initialize(siteContext);
+                }
+
+                return true;
+            });
+
+        if (siteObject == null)
+            return null;
 
         IWorldSiteActivationListener[] siteActivationListeners =
             siteObject.GetComponentsInChildren<IWorldSiteActivationListener>(true);

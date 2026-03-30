@@ -14,6 +14,7 @@ public readonly struct WorldGenDiagnosticsSnapshot
     public readonly bool StreamingAnchorInitialized;
     public readonly Vector2Int StreamingAnchorChunk;
     public readonly int ActiveSiteChunkCount;
+    public readonly int ActivePersistentSiteCount;
     public readonly int ActiveSiteCount;
     public readonly int TotalPlacedSiteCount;
     public readonly Camera StreamCamera;
@@ -31,6 +32,7 @@ public readonly struct WorldGenDiagnosticsSnapshot
         bool streamingAnchorInitialized,
         Vector2Int streamingAnchorChunk,
         int activeSiteChunkCount,
+        int activePersistentSiteCount,
         int activeSiteCount,
         int totalPlacedSiteCount,
         Camera streamCamera,
@@ -47,6 +49,7 @@ public readonly struct WorldGenDiagnosticsSnapshot
         StreamingAnchorInitialized = streamingAnchorInitialized;
         StreamingAnchorChunk = streamingAnchorChunk;
         ActiveSiteChunkCount = activeSiteChunkCount;
+        ActivePersistentSiteCount = activePersistentSiteCount;
         ActiveSiteCount = activeSiteCount;
         TotalPlacedSiteCount = totalPlacedSiteCount;
         StreamCamera = streamCamera;

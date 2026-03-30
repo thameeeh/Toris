@@ -235,7 +235,7 @@ MonoBehaviour:
   maxHp: 100
   animator: {fileID: 0}
   collapseTrigger: Collapse
-  activeVisual: {fileID: 3959095210445863060, guid: d947ca4e669ca7342ae9c62fd06a12fd, type: 3}
+  activeVisual: {fileID: 8814487277129519714}
   collapsedVisual: {fileID: 4277812892989054158}
 --- !u!114 &5021340337154736360
 MonoBehaviour:

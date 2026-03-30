@@ -12,7 +12,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     [Header("UI")]
     [SerializeField] private bool visible = true;
     [SerializeField] private Vector2 panelPos = new Vector2(12, 12);
-    [SerializeField] private Vector2 panelSize = new Vector2(360, 250);
+    [SerializeField] private Vector2 panelSize = new Vector2(360, 270);
     [SerializeField] private int fontSize = 14;
 
     [Header("Gameplay Debug Visuals")]
@@ -175,7 +175,8 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
                 : "Streaming anchor: (uninitialized)",
             style);
         GUILayout.Label($"Active site chunks: {diagnosticsSnapshot.ActiveSiteChunkCount}", style);
-        GUILayout.Label($"Active sites: {diagnosticsSnapshot.ActiveSiteCount}", style);
+        GUILayout.Label($"Persistent sites: {diagnosticsSnapshot.ActivePersistentSiteCount}", style);
+        GUILayout.Label($"Active sites total: {diagnosticsSnapshot.ActiveSiteCount}", style);
         GUILayout.Label($"Placed sites: {diagnosticsSnapshot.TotalPlacedSiteCount}", style);
         GUILayout.Label($"Preload chunks: {diagnosticsSnapshot.PreloadChunks}", style);
         GUILayout.Label($"Unload hysteresis: {diagnosticsSnapshot.UnloadHysteresisChunks}", style);

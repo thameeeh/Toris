@@ -8,7 +8,7 @@ public sealed class ChunkProcessingPipeline
     private readonly WorldSceneServices worldSceneServices;
     private readonly ChunkGenerator chunkGenerator;
     private readonly TilemapApplier tilemapApplier;
-    private readonly WorldFeatureLifecycle worldFeatureLifecycle;
+    private readonly WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
 
@@ -17,7 +17,7 @@ public sealed class ChunkProcessingPipeline
         WorldSceneServices worldSceneServices,
         ChunkGenerator chunkGenerator,
         TilemapApplier tilemapApplier,
-        WorldFeatureLifecycle worldFeatureLifecycle,
+        WorldFeatureLifecycleSystem worldFeatureLifecycleSystem,
         WorldRuntimeState worldRuntimeState,
         ChunkStreamingSystem chunkStreamingSystem)
     {
@@ -25,7 +25,7 @@ public sealed class ChunkProcessingPipeline
         this.worldSceneServices = worldSceneServices;
         this.chunkGenerator = chunkGenerator;
         this.tilemapApplier = tilemapApplier;
-        this.worldFeatureLifecycle = worldFeatureLifecycle;
+        this.worldFeatureLifecycleSystem = worldFeatureLifecycleSystem;
         this.worldRuntimeState = worldRuntimeState;
         this.chunkStreamingSystem = chunkStreamingSystem;
     }
@@ -86,7 +86,7 @@ public sealed class ChunkProcessingPipeline
             tilemapApplier.Apply(chunkResult);
 
             worldSceneServices?.BuildNavChunk(chunkCoord, worldProfile.chunkSize);
-            worldFeatureLifecycle?.ActivateChunk(chunkCoord);
+            worldFeatureLifecycleSystem?.ActivateChunk(chunkCoord);
 
             long applyEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
 
@@ -168,7 +168,7 @@ public sealed class ChunkProcessingPipeline
                 onChunkUnloading?.Invoke(chunkCoord, chunkState);
             }
 
-            worldFeatureLifecycle?.DeactivateChunk(chunkCoord);
+            worldFeatureLifecycleSystem?.DeactivateChunk(chunkCoord);
             tilemapApplier.ClearChunk(chunkCoord, worldProfile.chunkSize);
             worldSceneServices?.ClearNavChunk(chunkCoord);
 

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteBridge, IWorldSiteActivationListener
 {
+    private const string ActiveVisualChildName = "ActiveVisual";
+    private const string CollapsedVisualChildName = "CollapsedVisual";
+
     [Header("HP")]
     [SerializeField] private float maxHp = 50f;
 
@@ -12,6 +15,7 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
     [SerializeField] private GameObject activeVisual;
     [SerializeField] private GameObject collapsedVisual;
 
+    private Collider2D[] cachedColliders;
     private bool cleared;
 
     private IWorldSiteStateService worldSiteStateService;
@@ -31,6 +35,31 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
 
+    private void Awake()
+    {
+        cachedColliders = GetComponentsInChildren<Collider2D>(true);
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        activeVisual = ResolveChildVisual(activeVisual, ActiveVisualChildName);
+        collapsedVisual = ResolveChildVisual(collapsedVisual, CollapsedVisualChildName);
+    }
+
+    private GameObject ResolveChildVisual(GameObject currentVisual, string childName)
+    {
+        if (currentVisual != null && currentVisual.transform != null && currentVisual.transform.IsChildOf(transform))
+            return currentVisual;
+
+        Transform child = transform.Find(childName);
+        if (child != null)
+            return child.gameObject;
+
+        return currentVisual;
+    }
+#endif
+
     public void Initialize(IWorldSiteStateService worldSiteStateService, Vector2Int denTile, Vector2Int chunkCoord, int spawnId)
     {
         this.worldSiteStateService = worldSiteStateService;
@@ -42,21 +71,17 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
             ? worldSiteStateService.GetSiteState(chunkCoord, spawnId)
             : default;
 
-        foreach (var c in GetComponentsInChildren<Collider2D>(true))
-            c.enabled = true;
-
+        SetCollidersEnabled(true);
         MaxHealth = maxHp;
         CurrentHealth = MaxHealth;
 
         cleared = worldSiteState.IsConsumed;
-        ApplyVisualState(cleared);
+        ApplyVisualState(cleared, playCollapseAnimation: false);
 
         if (cleared)
         {
             CurrentHealth = 0f;
-
-            foreach (var c in GetComponentsInChildren<Collider2D>(true))
-                c.enabled = false;
+            SetCollidersEnabled(false);
         }
 
         IsInitialized = true;
@@ -68,6 +93,8 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
             animator.Rebind();
             animator.Update(0f);
         }
+
+        HideVisuals();
     }
 
     public void OnDespawned()
@@ -81,6 +108,9 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         IsInitialized = false;
         cleared = false;
         CurrentHealth = 0f;
+
+        HideVisuals();
+        SetCollidersEnabled(true);
     }
     public void OnSiteActivated()
     {
@@ -119,22 +149,43 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         cleared = true;
 
         worldSiteState.MarkConsumed();
-        ApplyVisualState(true);
+        ApplyVisualState(true, playCollapseAnimation: true);
 
-        foreach (var c in GetComponentsInChildren<Collider2D>())
-            c.enabled = false;
-
+        SetCollidersEnabled(false);
         Cleared?.Invoke();
     }
 
-    private void ApplyVisualState(bool collapsed)
+    private void ApplyVisualState(bool collapsed, bool playCollapseAnimation)
     {
         if (activeVisual != null) activeVisual.SetActive(!collapsed);
         if (collapsedVisual != null) collapsedVisual.SetActive(collapsed);
 
-        if (collapsed && animator != null && !string.IsNullOrEmpty(collapseTrigger))
+        if (playCollapseAnimation && collapsed && animator != null && !string.IsNullOrEmpty(collapseTrigger))
             animator.SetTrigger(collapseTrigger);
     }
+
+    private void HideVisuals()
+    {
+        if (activeVisual != null)
+            activeVisual.SetActive(false);
+
+        if (collapsedVisual != null)
+            collapsedVisual.SetActive(false);
+    }
+
+    private void SetCollidersEnabled(bool enabled)
+    {
+        if (cachedColliders == null)
+            return;
+
+        for (int i = 0; i < cachedColliders.Length; i++)
+        {
+            Collider2D collider = cachedColliders[i];
+            if (collider != null)
+                collider.enabled = enabled;
+        }
+    }
+
     public void Initialize(WorldSiteContext siteContext)
     {
         Initialize(

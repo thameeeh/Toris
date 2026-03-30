@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BasicBiomeDefinition
   profile: {fileID: 11400000, guid: fd09a857c7e074e43a97934893631ef6, type: 2}
   buildSteps:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: a132cdf9d09a4220a9ef7f42ca7ae61c, type: 2}
+  - {fileID: 11400000, guid: bc7cb7d9c6434f2887409b116bb4c1a0, type: 2}

@@ -14,13 +14,23 @@ public sealed class BasicBiomeDefinition : BiomeDefinition
             return;
         }
 
+        bool executedBuildStep = false;
+
         for (int i = 0; i < buildSteps.Length; i++)
         {
             BiomeBuildStepDefinition buildStep = buildSteps[i];
             if (buildStep == null)
                 continue;
 
+            executedBuildStep = true;
             buildStep.Build(ctx);
+        }
+
+        if (!executedBuildStep)
+        {
+            Debug.LogWarning(
+                $"{name} has build step slots configured, but all assigned entries are null.",
+                this);
         }
     }
 }

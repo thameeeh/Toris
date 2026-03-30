@@ -976,37 +976,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &924193663
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 924193664}
-  m_Layer: 0
-  m_Name: Enemies
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &924193664
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924193663}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2118321076}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1053786302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1405,37 +1374,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 328926126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1711946035
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1711946036}
-  m_Layer: 0
-  m_Name: Projectiles
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1711946036
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711946035}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2118321076}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1745231012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1511,6 +1449,7 @@ MonoBehaviour:
   waterMap: {fileID: 1101475292}
   decorMap: {fileID: 875006850}
   followTarget: {fileID: 7797051013246395996}
+  gameplayPoolManager: {fileID: 2118321077}
   streamCamera: {fileID: 506412731}
   unloadHysteresisChunks: 1
   maxChunksPerFrame: 6
@@ -1628,6 +1567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118321076}
   - component: {fileID: 2118321075}
+  - component: {fileID: 2118321077}
   m_Layer: 0
   m_Name: GamePoolManager
   m_TagString: Untagged
@@ -1648,8 +1588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayPoolBootstrap
   configuration: {fileID: 11400000, guid: 38b8c10c0b8948e47afcb20ab85d7799, type: 2}
-  projectileRoot: {fileID: 1711946036}
-  enemyRoot: {fileID: 924193664}
+  projectileRoot: {fileID: 0}
+  enemyRoot: {fileID: 0}
 --- !u!4 &2118321076
 Transform:
   m_ObjectHideFlags: 0
@@ -1662,11 +1602,31 @@ Transform:
   m_LocalPosition: {x: 38.06847, y: -2.67385, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1711946036}
-  - {fileID: 924193664}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2118321077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118321074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fad5394a6f744642a9ea1221efe2656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameplayPoolManager
+  configuration: {fileID: 11400000, guid: 38b8c10c0b8948e47afcb20ab85d7799, type: 2}
+  persistAcrossScenes: 0
+  projectileRoot: {fileID: 0}
+  enemyRoot: {fileID: 0}
+  defaultProjectilePrewarm: 0
+  defaultProjectileCapacity: 16
+  defaultProjectileMaxSize: 128
+  defaultEnemyPrewarm: 0
+  defaultEnemyCapacity: 8
+  defaultEnemyMaxSize: 32
 --- !u!1001 &424703103185275433
 PrefabInstance:
   m_ObjectHideFlags: 0

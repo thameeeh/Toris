@@ -13,12 +13,10 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     private readonly float gateCooldownSeconds;
 
     private WorldFeatureLifecycle worldFeatureLifecycle;
+    private PersistentWorldFeatureLifecycle persistentWorldFeatureLifecycle;
 
     private int biomeIndex;
     private float lastGateTime = -999f;
-
-    private GameObject runGateInstance;
-    private Transform runGateRoot;
 
     public int CurrentBiomeIndex => biomeIndex;
 
@@ -44,9 +42,12 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         this.gateCooldownSeconds = gateCooldownSeconds;
     }
 
-    public void AttachLifecycle(WorldFeatureLifecycle worldFeatureLifecycle)
+    public void AttachLifecycles(
+        WorldFeatureLifecycle worldFeatureLifecycle,
+        PersistentWorldFeatureLifecycle persistentWorldFeatureLifecycle)
     {
         this.worldFeatureLifecycle = worldFeatureLifecycle;
+        this.persistentWorldFeatureLifecycle = persistentWorldFeatureLifecycle;
     }
 
     public void StartInitialBiome(int startingBiomeIndex, Vector2Int originTile)
@@ -71,7 +72,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     public void ResetTransitionArtifacts()
     {
         lastGateTime = -999f;
-        DespawnRunGate();
+        persistentWorldFeatureLifecycle?.ClearAll();
     }
 
     private void StartBiome(int nextBiomeIndex, Vector2Int originTile)
@@ -99,10 +100,10 @@ public sealed class WorldTransitionSystem : IGateTransitionService
 
         worldSceneServices?.SetSiteBlockers(worldContext.SiteBlockers);
 
-        tilemapApplier.ClearAll();
         worldFeatureLifecycle?.ClearAll();
         worldFeatureLifecycle?.RebuildPlacements();
-        SpawnRunGateForBiome();
+        persistentWorldFeatureLifecycle?.ClearAll();
+        ActivateRunGateForBiome();
 
         chunkStreamingSystem?.Reset();
 
@@ -116,43 +117,17 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         return (int)(hash & 0x7FFFFFFF);
     }
 
-    private void EnsureRunGateRoot()
+    private void ActivateRunGateForBiome()
     {
-        if (poiPoolManager == null)
+        if (worldContext?.Biome == null)
             return;
 
-        Transform activeRoot = poiPoolManager.GetActiveRoot();
-        if (runGateRoot == null)
-        {
-            GameObject rootObject = new GameObject("RunGate");
-            rootObject.transform.SetParent(activeRoot, false);
-            runGateRoot = rootObject.transform;
-        }
-    }
-
-    private void DespawnRunGate()
-    {
-        if (runGateInstance != null)
-        {
-            poiPoolManager.Release(runGateInstance);
-            runGateInstance = null;
-        }
-    }
-
-    private void SpawnRunGateForBiome()
-    {
-        DespawnRunGate();
-
-        GameObject prefab = worldContext.Biome != null ? worldContext.Biome.endGatePrefab : null;
-        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
+        WorldSiteDefinition runGateSiteDefinition = worldContext.Biome.RunGateSiteDefinition;
+        if (runGateSiteDefinition == null || !runGateSiteDefinition.IsValid)
             return;
-
-        EnsureRunGateRoot();
 
         Vector2Int tile = worldContext.ActiveBiome.OriginTile + worldContext.Biome.RunGateOffsetTiles;
-        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(tile);
-
-        runGateInstance = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, runGateRoot);
+        persistentWorldFeatureLifecycle?.ActivatePersistentSite(runGateSiteDefinition, tile);
     }
 
     private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)

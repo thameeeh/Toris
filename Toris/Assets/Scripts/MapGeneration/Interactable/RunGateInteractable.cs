@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RunGateInteractable : MonoBehaviour, IInteractable
+public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridge
 {
     [Header("Scene Connection")]
     [SerializeField] private string sceneA;
@@ -34,5 +34,9 @@ public class RunGateInteractable : MonoBehaviour, IInteractable
                 this
             );
         }
+    }
+    public void Initialize(WorldSiteContext siteContext)
+    {
+        // no-op for now
     }
 }

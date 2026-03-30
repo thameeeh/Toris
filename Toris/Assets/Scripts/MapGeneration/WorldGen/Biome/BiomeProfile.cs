@@ -39,8 +39,10 @@ public sealed class BiomeProfile : ScriptableObject
     public int maxRoadScanTiles = 4000;
 
     [Header("Run Gate / Spawn")]
-    [SerializeField] public GameObject endGatePrefab;
+    [SerializeField] private WorldSiteDefinition runGateSiteDefinition;
     [SerializeField] public Vector2Int RunGateOffsetTiles = new Vector2Int(0, -1);
+    public WorldSiteDefinition RunGateSiteDefinition => runGateSiteDefinition;
+
     public TileBase platformGroundTile;
 
     #endregion

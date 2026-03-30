@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WolfDenSitePlacementRuleDefinition
   m_EditorClassIdentifier: Assembly-CSharp::WolfDenSitePlacementRuleDefinition
   wolfDenSiteDefinition: {fileID: 11400000, guid: ae66dab130fa45344898bcee7f658562, type: 2}
-  minWolfDenCount: 3
+  minWolfDenCount: 4
   wolfDenMinSpacingTiles: 40
   wolfDenGroundTile: {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
   wolfDenStampSize: 3

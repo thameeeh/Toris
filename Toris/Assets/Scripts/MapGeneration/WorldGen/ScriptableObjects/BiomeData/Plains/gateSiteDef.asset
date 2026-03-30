@@ -15,4 +15,5 @@ MonoBehaviour:
   siteId: gate
   prefab: {fileID: 7397065028336915349, guid: e5427efef2ad1044bbc1901c69d5da92, type: 3}
   skipIfConsumed: 1
-  spawnSalt: 0
+  spawnSalt: 2
+  runtimeConfig: {fileID: 0}

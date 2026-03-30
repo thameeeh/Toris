@@ -52,6 +52,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     private WorldTransitionSystem worldTransitionSystem;
     private WorldSceneServices worldSceneServices;
     private WorldEncounterServices worldEncounterServices;
+    private PersistentWorldFeatureLifecycle persistentWorldFeatureLifecycle;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -156,7 +157,15 @@ public sealed class WorldGenRunner : MonoBehaviour
             worldTransitionSystem,
             worldEncounterServices);
 
-        worldTransitionSystem.AttachLifecycle(worldFeatureLifecycle);
+        persistentWorldFeatureLifecycle = new PersistentWorldFeatureLifecycle(
+            worldSceneServices,
+            ctx,
+            runtimeState,
+            poiPool,
+            worldTransitionSystem,
+            worldEncounterServices);
+
+        worldTransitionSystem.AttachLifecycles(worldFeatureLifecycle, persistentWorldFeatureLifecycle);
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(
             profile,
@@ -229,6 +238,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             return;
 
         worldFeatureLifecycle?.ClearAll();
+        persistentWorldFeatureLifecycle?.ClearAll();
         worldTransitionSystem?.ResetTransitionArtifacts();
         chunkProcessingPipeline?.ClearLoadedChunks();
         chunkStreamingSystem?.Reset();

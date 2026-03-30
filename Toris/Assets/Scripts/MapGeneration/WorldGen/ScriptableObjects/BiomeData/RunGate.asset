@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce87f17e7b9b1404cb0a619e13b3006f, type: 3}
-  m_Name: wolfSiteDef
+  m_Name: RunGate
   m_EditorClassIdentifier: Assembly-CSharp::WorldSiteDefinition
-  siteId: wolf_den
-  prefab: {fileID: 5145460778764920192, guid: b3a67880993d31649b6f38f893c67ee1, type: 3}
+  siteId: RunGate
+  prefab: {fileID: 7397065028336915349, guid: cc25e3b200fd27944a55c63c98b662b3, type: 3}
   skipIfConsumed: 0
-  spawnSalt: 3
-  runtimeConfig: {fileID: 11400000, guid: 05f638bd5020f5a4d8edbd1ea702d5ab, type: 2}
+  spawnSalt: 1
+  runtimeConfig: {fileID: 0}

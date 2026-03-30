@@ -103,7 +103,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         worldFeatureLifecycle?.ClearAll();
         worldFeatureLifecycle?.RebuildPlacements();
         persistentWorldFeatureLifecycle?.ClearAll();
-        ActivateRunGateForBiome();
+        ActivatePersistentFeaturesForBiome();
 
         chunkStreamingSystem?.Reset();
 
@@ -117,17 +117,28 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         return (int)(hash & 0x7FFFFFFF);
     }
 
-    private void ActivateRunGateForBiome()
+    private void ActivatePersistentFeaturesForBiome()
     {
-        if (worldContext?.Biome == null)
+        if (worldContext?.Biome == null || persistentWorldFeatureLifecycle == null)
             return;
 
-        WorldSiteDefinition runGateSiteDefinition = worldContext.Biome.RunGateSiteDefinition;
-        if (runGateSiteDefinition == null || !runGateSiteDefinition.IsValid)
+        PersistentBiomeFeatureDefinition[] persistentFeatures = worldContext.Biome.PersistentFeatures;
+        if (persistentFeatures == null || persistentFeatures.Length == 0)
             return;
 
-        Vector2Int tile = worldContext.ActiveBiome.OriginTile + worldContext.Biome.RunGateOffsetTiles;
-        persistentWorldFeatureLifecycle?.ActivatePersistentSite(runGateSiteDefinition, tile);
+        Vector2Int biomeOriginTile = worldContext.ActiveBiome.OriginTile;
+
+        for (int i = 0; i < persistentFeatures.Length; i++)
+        {
+            PersistentBiomeFeatureDefinition persistentFeature = persistentFeatures[i];
+            if (!persistentFeature.IsValid)
+                continue;
+
+            Vector2Int centerTile = biomeOriginTile + persistentFeature.TileOffsetFromBiomeOrigin;
+            persistentWorldFeatureLifecycle.ActivatePersistentSite(
+                persistentFeature.SiteDefinition,
+                centerTile);
+        }
     }
 
     private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)

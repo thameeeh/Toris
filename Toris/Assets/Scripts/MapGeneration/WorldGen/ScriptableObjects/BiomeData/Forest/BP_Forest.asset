@@ -35,14 +35,7 @@ MonoBehaviour:
   roadWidthMin: 3
   roadWidthMax: 5
   maxRoadScanTiles: 4000
-  gatePrefab: {fileID: 7397065028336915349, guid: e5427efef2ad1044bbc1901c69d5da92, type: 3}
-  endGatePrefab: {fileID: 0}
-  RunGateOffsetTiles: {x: 0, y: -1}
-  gateGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
-  gateSize: 7
+  persistentFeatures:
+  - siteDefinition: {fileID: 11400000, guid: 1fe986f554b2df640abe69e774afe6cd, type: 2}
+    tileOffsetFromBiomeOrigin: {x: 0, y: 0}
   platformGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
-  minWolfDenCount: 3
-  wolfDenMinSpacingTiles: 40
-  wolfDenPrefab: {fileID: 0}
-  wolfDenGroundTile: {fileID: 0}
-  wolfDenStampSize: 5

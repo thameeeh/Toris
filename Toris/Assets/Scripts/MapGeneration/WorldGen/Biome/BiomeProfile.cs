@@ -38,11 +38,10 @@ public sealed class BiomeProfile : ScriptableObject
     [Range(3, 5)] public int roadWidthMax = 5;
     public int maxRoadScanTiles = 4000;
 
-    [Header("Run Gate / Spawn")]
-    [SerializeField] private WorldSiteDefinition runGateSiteDefinition;
-    [SerializeField] public Vector2Int RunGateOffsetTiles = new Vector2Int(0, -1);
-    public WorldSiteDefinition RunGateSiteDefinition => runGateSiteDefinition;
+    [Header("Persistent Biome Features")]
+    [SerializeField] private PersistentBiomeFeatureDefinition[] persistentFeatures;
 
+    public PersistentBiomeFeatureDefinition[] PersistentFeatures => persistentFeatures;
     public TileBase platformGroundTile;
 
     #endregion

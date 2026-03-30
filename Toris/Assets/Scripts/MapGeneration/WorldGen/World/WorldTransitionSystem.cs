@@ -108,7 +108,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         chunkStreamingSystem?.Reset();
 
         Vector2Int spawnChunk = TileToChunk(originTile, worldProfile.chunkSize);
-        chunkStreamingSystem?.InitializeAnchor(spawnChunk);
+        chunkStreamingSystem?.SetStreamingAnchor(spawnChunk);
     }
 
     private int ComputeBiomeSeed(int runSeed, int biomeIndex)

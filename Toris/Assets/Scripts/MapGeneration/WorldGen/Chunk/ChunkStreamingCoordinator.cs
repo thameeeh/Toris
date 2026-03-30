@@ -7,8 +7,8 @@ public sealed class ChunkStreamingCoordinator
     private readonly Grid grid;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
     private readonly ChunkProcessingPipeline chunkProcessingPipeline;
-    private ChunkStreamingBounds lastBounds;
-    private bool hasLastBounds;
+    private ChunkStreamingFrameResult lastFrameResult;
+    private bool hasLastFrameResult;
 
     public ChunkStreamingCoordinator(
         WorldProfile worldProfile,
@@ -22,55 +22,53 @@ public sealed class ChunkStreamingCoordinator
         this.chunkProcessingPipeline = chunkProcessingPipeline;
     }
 
-    public bool TryGetLastBounds(out ChunkStreamingBounds bounds)
+    public bool TryGetLastFrameResult(out ChunkStreamingFrameResult frameResult)
     {
-        bounds = lastBounds;
-        return hasLastBounds;
+        frameResult = lastFrameResult;
+        return hasLastFrameResult;
     }
 
-    public bool TryProcessFrame(
-        Camera camera,
-        ChunkStreamingFrameSettings settings,
+    public ChunkStreamingFrameResult ProcessFrame(
+        ChunkStreamingRequest request,
         Action<Vector2Int, ChunkStateStore.ChunkState> onChunkLoaded,
-        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkUnloading,
-        out ChunkStreamingBounds bounds,
-        out ChunkProcessingFrameStats processingFrameStats)
+        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkUnloading)
     {
-        processingFrameStats = default;
-
         if (chunkStreamingSystem == null || chunkProcessingPipeline == null)
-        {
-            bounds = default;
-            return false;
-        }
+            return default;
 
-        if (!ChunkStreamingBoundsCalculator.TryCalculate(
+        if (!ChunkStreamingBoundsCalculator.TryCalculateView(
                 grid,
-                camera,
+                request.Camera,
                 worldProfile,
-                settings.PreloadChunks,
-                settings.UnloadHysteresisChunks,
-                out bounds))
+                request.Settings.PreloadChunks,
+                request.Settings.UnloadHysteresisChunks,
+                out ChunkStreamingView view))
         {
-            return false;
+            return default;
         }
 
-        lastBounds = bounds;
-        hasLastBounds = true;
+        chunkStreamingSystem.SetStreamingAnchor(view.FocusChunk);
+        chunkStreamingSystem.EnqueueNeededChunks(view.Bounds.LoadMinChunk, view.Bounds.LoadMaxChunk);
 
-        chunkStreamingSystem.EnqueueNeededChunks(bounds.LoadMinChunk, bounds.LoadMaxChunk);
-
-        processingFrameStats = chunkProcessingPipeline.ProcessFrame(
-            bounds.LoadMinChunk,
-            bounds.LoadMaxChunk,
-            bounds.UnloadMinChunk,
-            bounds.UnloadMaxChunk,
-            settings.GenerationBudgetMs,
-            settings.MaxChunksPerFrame,
-            settings.MaxUnloadRemovalsPerFrame,
+        ChunkProcessingFrameStats processingFrameStats = chunkProcessingPipeline.ProcessFrame(
+            view.Bounds.LoadMinChunk,
+            view.Bounds.LoadMaxChunk,
+            view.Bounds.UnloadMinChunk,
+            view.Bounds.UnloadMaxChunk,
+            request.Settings.GenerationBudgetMs,
+            request.Settings.MaxChunksPerFrame,
+            request.Settings.MaxUnloadRemovalsPerFrame,
             onChunkLoaded,
             onChunkUnloading);
 
-        return true;
+        ChunkStreamingFrameResult frameResult = new ChunkStreamingFrameResult(
+            true,
+            view,
+            processingFrameStats);
+
+        lastFrameResult = frameResult;
+        hasLastFrameResult = true;
+
+        return frameResult;
     }
 }

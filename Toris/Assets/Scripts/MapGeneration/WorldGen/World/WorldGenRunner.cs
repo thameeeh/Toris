@@ -200,16 +200,16 @@ public sealed class WorldGenRunner : MonoBehaviour
             maxChunksPerFrame,
             maxUnloadRemovalsPerFrame: 1);
 
-        if (!chunkStreamingCoordinator.TryProcessFrame(
-                cam,
-                streamingSettings,
-                HandleChunkLoaded,
-                HandleChunkUnloading,
-                out _,
-                out ChunkProcessingFrameStats processingFrameStats))
-        {
+        ChunkStreamingRequest streamingRequest = new ChunkStreamingRequest(cam, streamingSettings);
+        ChunkStreamingFrameResult streamingFrameResult = chunkStreamingCoordinator.ProcessFrame(
+            streamingRequest,
+            HandleChunkLoaded,
+            HandleChunkUnloading);
+
+        if (!streamingFrameResult.ProcessedFrame)
             return;
-        }
+
+        ChunkProcessingFrameStats processingFrameStats = streamingFrameResult.ProcessingStats;
 
         const double WarnUnloadMs = 2.0;
         const double WarnGenerationMs = 10.0;
@@ -309,9 +309,20 @@ public sealed class WorldGenRunner : MonoBehaviour
             ? chunkStreamingSystem.StreamingAnchorChunk
             : default;
 
-        ChunkStreamingBounds streamingBounds = default;
-        bool hasStreamingBounds = chunkStreamingCoordinator != null &&
-            chunkStreamingCoordinator.TryGetLastBounds(out streamingBounds);
+        ChunkStreamingFrameResult lastStreamingFrameResult = default;
+        bool hasLastStreamingFrameResult = chunkStreamingCoordinator != null &&
+            chunkStreamingCoordinator.TryGetLastFrameResult(out lastStreamingFrameResult);
+
+        bool hasStreamingBounds = hasLastStreamingFrameResult && lastStreamingFrameResult.HasView;
+        ChunkStreamingBounds streamingBounds = hasStreamingBounds
+            ? lastStreamingFrameResult.View.Bounds
+            : default;
+
+        if (!streamingAnchorInitialized && hasLastStreamingFrameResult && lastStreamingFrameResult.HasView)
+        {
+            streamingAnchorInitialized = true;
+            streamingAnchorChunk = lastStreamingFrameResult.View.FocusChunk;
+        }
 
         return new WorldGenDiagnosticsSnapshot(
             LoadedChunks,

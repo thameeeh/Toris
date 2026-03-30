@@ -27,7 +27,7 @@ public sealed class ChunkStreamingSystem
         anchorInitialized = false;
     }
 
-    public void InitializeAnchor(Vector2Int chunkCoord)
+    public void SetStreamingAnchor(Vector2Int chunkCoord)
     {
         streamingAnchorChunk = chunkCoord;
         anchorInitialized = true;

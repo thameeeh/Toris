@@ -12,10 +12,41 @@ public static class ChunkStreamingBoundsCalculator
     {
         bounds = default;
 
+        if (!TryCalculateView(
+                grid,
+                camera,
+                worldProfile,
+                preloadChunks,
+                unloadHysteresisChunks,
+                out ChunkStreamingView view))
+        {
+            return false;
+        }
+
+        bounds = view.Bounds;
+        return true;
+    }
+
+    public static bool TryCalculateView(
+        Grid grid,
+        Camera camera,
+        WorldProfile worldProfile,
+        int preloadChunks,
+        int unloadHysteresisChunks,
+        out ChunkStreamingView view)
+    {
+        view = default;
+
         if (grid == null || camera == null || worldProfile == null)
             return false;
 
-        GetCameraChunkRect(grid, camera, worldProfile, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
+        GetCameraChunkView(
+            grid,
+            camera,
+            worldProfile,
+            out Vector2Int focusChunk,
+            out Vector2Int loadMinChunk,
+            out Vector2Int loadMaxChunk);
 
         int paddingChunks = Mathf.Max(0, worldProfile.viewDistanceChunks) + Mathf.Max(0, preloadChunks);
         loadMinChunk -= new Vector2Int(paddingChunks, paddingChunks);
@@ -25,19 +56,21 @@ public static class ChunkStreamingBoundsCalculator
         Vector2Int unloadMinChunk = loadMinChunk - new Vector2Int(unloadPadding, unloadPadding);
         Vector2Int unloadMaxChunk = loadMaxChunk + new Vector2Int(unloadPadding, unloadPadding);
 
-        bounds = new ChunkStreamingBounds(
+        ChunkStreamingBounds bounds = new ChunkStreamingBounds(
             loadMinChunk,
             loadMaxChunk,
             unloadMinChunk,
             unloadMaxChunk);
 
+        view = new ChunkStreamingView(focusChunk, bounds);
         return true;
     }
 
-    private static void GetCameraChunkRect(
+    private static void GetCameraChunkView(
         Grid grid,
         Camera camera,
         WorldProfile worldProfile,
+        out Vector2Int focusChunk,
         out Vector2Int minChunk,
         out Vector2Int maxChunk)
     {
@@ -48,11 +81,13 @@ public static class ChunkStreamingBoundsCalculator
         Vector3 worldBottomRight = camera.ViewportToWorldPoint(new Vector3(1f, 0f, distanceToPlane));
         Vector3 worldTopLeft = camera.ViewportToWorldPoint(new Vector3(0f, 1f, distanceToPlane));
         Vector3 worldTopRight = camera.ViewportToWorldPoint(new Vector3(1f, 1f, distanceToPlane));
+        Vector3 worldCenter = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, distanceToPlane));
 
         Vector3Int cellBottomLeft = grid.WorldToCell(worldBottomLeft);
         Vector3Int cellBottomRight = grid.WorldToCell(worldBottomRight);
         Vector3Int cellTopLeft = grid.WorldToCell(worldTopLeft);
         Vector3Int cellTopRight = grid.WorldToCell(worldTopRight);
+        Vector3Int cellCenter = grid.WorldToCell(worldCenter);
 
         int minX = Mathf.Min(cellBottomLeft.x, cellBottomRight.x, cellTopLeft.x, cellTopRight.x) - 1;
         int maxX = Mathf.Max(cellBottomLeft.x, cellBottomRight.x, cellTopLeft.x, cellTopRight.x) + 1;
@@ -61,6 +96,7 @@ public static class ChunkStreamingBoundsCalculator
 
         int chunkSize = Mathf.Max(1, worldProfile.chunkSize);
 
+        focusChunk = TileToChunk(new Vector2Int(cellCenter.x, cellCenter.y), chunkSize);
         minChunk = TileToChunk(new Vector2Int(minX, minY), chunkSize);
         maxChunk = TileToChunk(new Vector2Int(maxX, maxY), chunkSize);
     }

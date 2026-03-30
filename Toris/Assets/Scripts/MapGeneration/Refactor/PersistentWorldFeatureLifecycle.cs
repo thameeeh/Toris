@@ -7,8 +7,8 @@ public sealed class PersistentWorldFeatureLifecycle
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly WorldSiteActivationPipeline worldSiteActivationPipeline;
 
-    private readonly List<GameObject> activePersistentInstances = new List<GameObject>();
-    private Transform persistentRoot;
+    private const string PersistentOwnershipKey = "persistent";
+    private readonly WorldFeatureOwnershipCollection<string> persistentOwnership;
 
     public PersistentWorldFeatureLifecycle(
         WorldContext worldContext,
@@ -18,6 +18,11 @@ public sealed class PersistentWorldFeatureLifecycle
         this.worldContext = worldContext;
         this.poiPoolManager = poiPoolManager;
         this.worldSiteActivationPipeline = worldSiteActivationPipeline;
+
+        persistentOwnership = new WorldFeatureOwnershipCollection<string>(
+            poiPoolManager,
+            "PersistentWorldFeatures_Root",
+            _ => "PersistentWorldFeatures");
     }
 
     public void ActivatePersistentSite(WorldSiteDefinition siteDefinition, Vector2Int centerTile)
@@ -25,49 +30,26 @@ public sealed class PersistentWorldFeatureLifecycle
         if (siteDefinition == null || !siteDefinition.IsValid || worldContext == null)
             return;
 
-        EnsureRoot();
+        WorldFeatureOwnershipGroup ownershipGroup =
+            persistentOwnership.GetOrCreateGroup(PersistentOwnershipKey);
 
         SitePlacement placement = BuildPlacement(siteDefinition, centerTile);
         GameObject siteObject = worldSiteActivationPipeline != null
             ? worldSiteActivationPipeline.ActivateSite(
                 placement,
-                persistentRoot,
+                ownershipGroup.Root,
                 worldContext.ActiveBiome.Seed)
             : null;
 
         if (siteObject != null)
         {
-            activePersistentInstances.Add(siteObject);
+            ownershipGroup.AddInstance(siteObject);
         }
     }
 
     public void ClearAll()
     {
-        for (int i = 0; i < activePersistentInstances.Count; i++)
-        {
-            GameObject instance = activePersistentInstances[i];
-            if (instance != null && poiPoolManager != null)
-                poiPoolManager.Release(instance);
-        }
-
-        activePersistentInstances.Clear();
-
-        if (persistentRoot != null)
-        {
-            Object.Destroy(persistentRoot.gameObject);
-            persistentRoot = null;
-        }
-    }
-
-    private void EnsureRoot()
-    {
-        if (persistentRoot != null)
-            return;
-
-        Transform activeRoot = poiPoolManager.GetActiveRoot();
-        GameObject rootObject = new GameObject("PersistentWorldFeatures");
-        persistentRoot = rootObject.transform;
-        persistentRoot.SetParent(activeRoot, false);
+        persistentOwnership.ClearAll();
     }
 
     private SitePlacement BuildPlacement(WorldSiteDefinition siteDefinition, Vector2Int centerTile)

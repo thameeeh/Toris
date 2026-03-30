@@ -6,16 +6,12 @@ public sealed class WorldFeatureLifecycle
     private readonly WorldContext worldContext;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly WorldSiteActivationPipeline worldSiteActivationPipeline;
+    private readonly WorldFeatureOwnershipCollection<Vector2Int> chunkOwnership;
 
     private SitePlacementIndex sitePlacementIndex;
 
     private readonly Dictionary<Vector2Int, List<ActiveSiteHandle>> activeSitesByChunk =
         new Dictionary<Vector2Int, List<ActiveSiteHandle>>();
-
-    private readonly Dictionary<Vector2Int, Transform> chunkSiteRoots =
-        new Dictionary<Vector2Int, Transform>();
-
-    private Transform siteRootContainer;
 
     public WorldFeatureLifecycle(
         WorldContext worldContext,
@@ -25,6 +21,11 @@ public sealed class WorldFeatureLifecycle
         this.worldContext = worldContext;
         this.poiPoolManager = poiPoolManager;
         this.worldSiteActivationPipeline = worldSiteActivationPipeline;
+
+        chunkOwnership = new WorldFeatureOwnershipCollection<Vector2Int>(
+            poiPoolManager,
+            "WorldFeatureLifecycle_Root",
+            chunkCoord => $"ChunkSites_{chunkCoord.x}_{chunkCoord.y}");
     }
 
     public void RebuildPlacements()
@@ -34,34 +35,9 @@ public sealed class WorldFeatureLifecycle
 
     public void ClearAll()
     {
-        foreach (var pair in activeSitesByChunk)
-        {
-            List<ActiveSiteHandle> activeSites = pair.Value;
-            for (int i = 0; i < activeSites.Count; i++)
-            {
-                ReleaseSiteInstance(activeSites[i].Instance);
-            }
-        }
-
         activeSitesByChunk.Clear();
-
-        foreach (var pair in chunkSiteRoots)
-        {
-            Transform chunkRoot = pair.Value;
-            if (chunkRoot != null)
-            {
-                Object.Destroy(chunkRoot.gameObject);
-            }
-        }
-
-        chunkSiteRoots.Clear();
+        chunkOwnership.ClearAll();
         sitePlacementIndex = null;
-
-        if (siteRootContainer != null)
-        {
-            Object.Destroy(siteRootContainer.gameObject);
-            siteRootContainer = null;
-        }
     }
 
     public void ActivateChunk(Vector2Int chunkCoord)
@@ -81,7 +57,8 @@ public sealed class WorldFeatureLifecycle
             return;
         }
 
-        Transform chunkRoot = GetOrCreateChunkSiteRoot(chunkCoord);
+        WorldFeatureOwnershipGroup ownershipGroup = chunkOwnership.GetOrCreateGroup(chunkCoord);
+        Transform chunkRoot = ownershipGroup.Root;
         List<ActiveSiteHandle> activeSites = new List<ActiveSiteHandle>(placements.Count);
 
         for (int i = 0; i < placements.Count; i++)
@@ -91,6 +68,7 @@ public sealed class WorldFeatureLifecycle
 
             if (instance != null)
             {
+                ownershipGroup.AddInstance(instance);
                 activeSites.Add(new ActiveSiteHandle(placement, instance));
             }
         }
@@ -103,27 +81,13 @@ public sealed class WorldFeatureLifecycle
 
     public void DeactivateChunk(Vector2Int chunkCoord)
     {
-        if (!activeSitesByChunk.TryGetValue(chunkCoord, out List<ActiveSiteHandle> activeSites))
+        if (!activeSitesByChunk.ContainsKey(chunkCoord))
         {
             return;
         }
 
-        for (int i = 0; i < activeSites.Count; i++)
-        {
-            ReleaseSiteInstance(activeSites[i].Instance);
-        }
-
         activeSitesByChunk.Remove(chunkCoord);
-
-        if (chunkSiteRoots.TryGetValue(chunkCoord, out Transform chunkRoot))
-        {
-            if (chunkRoot != null)
-            {
-                Object.Destroy(chunkRoot.gameObject);
-            }
-
-            chunkSiteRoots.Remove(chunkCoord);
-        }
+        chunkOwnership.RemoveAndClearGroup(chunkCoord);
     }
     private GameObject SpawnSiteInstance(SitePlacement placement, Transform parent)
     {
@@ -134,42 +98,6 @@ public sealed class WorldFeatureLifecycle
             placement,
             parent,
             worldContext.ActiveBiome.Seed);
-    }
-    private void ReleaseSiteInstance(GameObject instance)
-    {
-        if (instance == null)
-        {
-            return;
-        }
-
-        if (poiPoolManager != null)
-        {
-            poiPoolManager.Release(instance);
-            return;
-        }
-
-        Object.Destroy(instance);
-    }
-
-    private Transform GetOrCreateChunkSiteRoot(Vector2Int chunkCoord)
-    {
-        if (chunkSiteRoots.TryGetValue(chunkCoord, out Transform existingRoot) && existingRoot != null)
-        {
-            return existingRoot;
-        }
-
-        if (siteRootContainer == null)
-        {
-            GameObject rootObject = new GameObject("WorldFeatureLifecycle_Root");
-            siteRootContainer = rootObject.transform;
-        }
-
-        GameObject chunkRootObject = new GameObject($"ChunkSites_{chunkCoord.x}_{chunkCoord.y}");
-        Transform chunkRoot = chunkRootObject.transform;
-        chunkRoot.SetParent(siteRootContainer, false);
-
-        chunkSiteRoots.Add(chunkCoord, chunkRoot);
-        return chunkRoot;
     }
 
     public int GetActiveSiteChunkCount()

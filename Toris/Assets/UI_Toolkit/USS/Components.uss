@@ -43,3 +43,12 @@
     /* Ensure it never catches mouse clicks so drag-and-drop works smoothly */
     picking-mode: Ignore; 
 }
+
+.item-icon {
+    width: 80%;
+    height: 80%;
+    
+    /* 2. Remove any accidental spacing that might push it off-center */
+    margin: auto;
+    padding: 0;
+}

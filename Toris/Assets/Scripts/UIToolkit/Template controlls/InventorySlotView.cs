@@ -60,6 +60,7 @@ namespace OutlandHaven.Inventory
             {
                 _icon.sprite = slotData.HeldItem.BaseItem.Icon;
                 _icon.style.display = DisplayStyle.Flex;
+                _icon.scaleMode = ScaleMode.ScaleToFit;
                 _qtyLabel.text = slotData.Count > 1 ? slotData.Count.ToString() : "";
             }
         }

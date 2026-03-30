@@ -17,10 +17,29 @@
     width: 82px;
     height: 82px;
     background-color: rgb(56, 56, 56);
-    border-width: .5px;
+    border-width: 0.5px;
     border-color: rgb(255, 212, 180);
 }
 
 .item-slot:hover {
     border-color: var(--color-border-highlight);
+}
+
+.item-quantity {
+    /* 1. Pin it to the bottom right corner */
+    position: absolute;
+    bottom: 2px;
+    left: 4px;
+    
+    /* 2. Typography */
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    -unity-font-style: bold;
+    
+    /* 3. The Contrast Maker (Black Outline) */
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    
+    /* Ensure it never catches mouse clicks so drag-and-drop works smoothly */
+    picking-mode: Ignore; 
 }

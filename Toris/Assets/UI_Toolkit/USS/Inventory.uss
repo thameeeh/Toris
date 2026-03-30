@@ -15,10 +15,12 @@
     justify-content: flex-start;
 }
 
-/* If the player grid needs bigger slots, use a modifier class 
-   rather than overwriting the base component */
 .item-slot--large {
     width: 80px;
     height: 80px;
 }
 
+#grid-player {
+    flex-direction: row;
+    flex-wrap: wrap;
+}

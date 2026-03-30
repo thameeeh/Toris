@@ -49,6 +49,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     private TilemapApplier applier;
     private ChunkStreamingSystem chunkStreamingSystem;
     private ChunkProcessingPipeline chunkProcessingPipeline;
+    private ChunkStreamingCoordinator chunkStreamingCoordinator;
     private WorldTransitionSystem worldTransitionSystem;
     private WorldSceneServices worldSceneServices;
     private WorldEncounterServices worldEncounterServices;
@@ -169,6 +170,12 @@ public sealed class WorldGenRunner : MonoBehaviour
             runtimeState,
             chunkStreamingSystem);
 
+        chunkStreamingCoordinator = new ChunkStreamingCoordinator(
+            profile,
+            grid,
+            chunkStreamingSystem,
+            chunkProcessingPipeline);
+
         worldTransitionSystem.AttachLifecycles(
             worldFeatureLifecycle,
             persistentWorldFeatureLifecycle);
@@ -182,32 +189,27 @@ public sealed class WorldGenRunner : MonoBehaviour
         if (profile == null || groundMap == null || waterMap == null || decorMap == null)
             return;
 
-        Camera cam = streamCamera != null ? streamCamera : Camera.main;
+        Camera cam = StreamingCamera;
         if (cam == null)
             return;
 
-        GetCameraChunk(cam, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
+        ChunkStreamingFrameSettings streamingSettings = new ChunkStreamingFrameSettings(
+            preloadChunks,
+            unloadHysteresisChunks,
+            genBudgetMs,
+            maxChunksPerFrame,
+            maxUnloadRemovalsPerFrame: 1);
 
-        int paddingChunks = Mathf.Max(0, profile.viewDistanceChunks) + Mathf.Max(0, preloadChunks);
-
-        loadMinChunk -= new Vector2Int(paddingChunks, paddingChunks);
-        loadMaxChunk += new Vector2Int(paddingChunks, paddingChunks);
-
-        Vector2Int unloadMinChunk = loadMinChunk - new Vector2Int(unloadHysteresisChunks, unloadHysteresisChunks);
-        Vector2Int unloadMaxChunk = loadMaxChunk + new Vector2Int(unloadHysteresisChunks, unloadHysteresisChunks);
-
-        chunkStreamingSystem.EnqueueNeededChunks(loadMinChunk, loadMaxChunk);
-
-        ChunkProcessingFrameStats processingFrameStats = chunkProcessingPipeline.ProcessFrame(
-            loadMinChunk,
-            loadMaxChunk,
-            unloadMinChunk,
-            unloadMaxChunk,
-            Mathf.Max(0.1f, genBudgetMs),
-            Mathf.Max(0, maxChunksPerFrame),
-            maxUnloadRemovalsPerFrame: 1,
-            onChunkLoaded: HandleChunkLoaded,
-            onChunkUnloading: HandleChunkUnloading);
+        if (!chunkStreamingCoordinator.TryProcessFrame(
+                cam,
+                streamingSettings,
+                HandleChunkLoaded,
+                HandleChunkUnloading,
+                out _,
+                out ChunkProcessingFrameStats processingFrameStats))
+        {
+            return;
+        }
 
         const double WarnUnloadMs = 2.0;
         const double WarnGenerationMs = 10.0;
@@ -242,55 +244,6 @@ public sealed class WorldGenRunner : MonoBehaviour
     }
     #endregion
 
-    #region Camera Rect -> Chunk Rect
-
-    private void GetCameraChunk(Camera cam, out Vector2Int minChunk, out Vector2Int maxChunk)
-    {
-        float zPlane = 0f;
-        float dist = DistanceAlongCameraForwardToZPlane(cam, zPlane);
-
-        Vector3 w0 = cam.ViewportToWorldPoint(new Vector3(0f, 0f, dist));
-        Vector3 w1 = cam.ViewportToWorldPoint(new Vector3(1f, 0f, dist));
-        Vector3 w2 = cam.ViewportToWorldPoint(new Vector3(0f, 1f, dist));
-        Vector3 w3 = cam.ViewportToWorldPoint(new Vector3(1f, 1f, dist));
-
-        Vector3Int c0 = grid.WorldToCell(w0);
-        Vector3Int c1 = grid.WorldToCell(w1);
-        Vector3Int c2 = grid.WorldToCell(w2);
-        Vector3Int c3 = grid.WorldToCell(w3);
-
-        int minX = Mathf.Min(c0.x, c1.x, c2.x, c3.x);
-        int maxX = Mathf.Max(c0.x, c1.x, c2.x, c3.x);
-        int minY = Mathf.Min(c0.y, c1.y, c2.y, c3.y);
-        int maxY = Mathf.Max(c0.y, c1.y, c2.y, c3.y);
-
-        minX -= 1; minY -= 1;
-        maxX += 1; maxY += 1;
-
-        Vector2Int minTile = new Vector2Int(minX, minY);
-        Vector2Int maxTile = new Vector2Int(maxX, maxY);
-
-        minChunk = TileToChunk(minTile, profile.chunkSize);
-        maxChunk = TileToChunk(maxTile, profile.chunkSize);
-    }
-
-    private static float DistanceAlongCameraForwardToZPlane(Camera cam, float zPlane)
-    {
-        Vector3 camPos = cam.transform.position;
-        Vector3 fwd = cam.transform.forward;
-
-        float denom = fwd.z;
-        if (Mathf.Abs(denom) < 0.00001f)
-            return cam.nearClipPlane;
-
-        float t = (zPlane - camPos.z) / denom;
-        if (t < 0f) t = -t;
-
-        return Mathf.Max(cam.nearClipPlane, t);
-    }
-
-    #endregion
-
     #region Coordinates / Math
 
     private Vector2Int WorldToTile(Vector2 world)
@@ -302,26 +255,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
 
         return new Vector2Int(Mathf.FloorToInt(world.x), Mathf.FloorToInt(world.y));
-    }
-
-    private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)
-    {
-        int cx = FloorDiv(tile.x, chunkSize);
-        int cy = FloorDiv(tile.y, chunkSize);
-        return new Vector2Int(cx, cy);
-    }
-
-    private static int FloorDiv(int a, int b)
-    {
-        if (b == 0) return 0;
-
-        int q = a / b;
-        int r = a % b;
-
-        if (r != 0 && ((r > 0) != (b > 0)))
-            q--;
-
-        return q;
     }
 
     #endregion
@@ -362,11 +295,35 @@ public sealed class WorldGenRunner : MonoBehaviour
             ? worldFeatureLifecycle.GetTotalPlacedSiteCount()
             : 0;
 
+        int generationQueueCount = chunkStreamingSystem != null
+            ? chunkStreamingSystem.GenerationQueueCount
+            : 0;
+
+        int queuedChunkCount = chunkStreamingSystem != null
+            ? chunkStreamingSystem.QueuedChunkCount
+            : 0;
+
+        bool streamingAnchorInitialized = chunkStreamingSystem != null && chunkStreamingSystem.AnchorInitialized;
+
+        Vector2Int streamingAnchorChunk = chunkStreamingSystem != null
+            ? chunkStreamingSystem.StreamingAnchorChunk
+            : default;
+
+        ChunkStreamingBounds streamingBounds = default;
+        bool hasStreamingBounds = chunkStreamingCoordinator != null &&
+            chunkStreamingCoordinator.TryGetLastBounds(out streamingBounds);
+
         return new WorldGenDiagnosticsSnapshot(
             LoadedChunks,
             LoadedChunkCount,
+            generationQueueCount,
+            queuedChunkCount,
             preloadChunks,
             unloadHysteresisChunks,
+            hasStreamingBounds,
+            streamingBounds,
+            streamingAnchorInitialized,
+            streamingAnchorChunk,
             activeSiteChunkCount,
             activeSiteCount,
             totalPlacedSiteCount,

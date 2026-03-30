@@ -12,7 +12,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     [Header("UI")]
     [SerializeField] private bool visible = true;
     [SerializeField] private Vector2 panelPos = new Vector2(12, 12);
-    [SerializeField] private Vector2 panelSize = new Vector2(360, 210);
+    [SerializeField] private Vector2 panelSize = new Vector2(360, 250);
     [SerializeField] private int fontSize = 14;
 
     [Header("Gameplay Debug Visuals")]
@@ -167,6 +167,13 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GUILayout.Space(6f);
 
         GUILayout.Label($"Loaded chunks: {diagnosticsSnapshot.LoadedChunkCount}", style);
+        GUILayout.Label($"Queue entries: {diagnosticsSnapshot.GenerationQueueCount}", style);
+        GUILayout.Label($"Queued chunks: {diagnosticsSnapshot.QueuedChunkCount}", style);
+        GUILayout.Label(
+            diagnosticsSnapshot.StreamingAnchorInitialized
+                ? $"Streaming anchor: {diagnosticsSnapshot.StreamingAnchorChunk}"
+                : "Streaming anchor: (uninitialized)",
+            style);
         GUILayout.Label($"Active site chunks: {diagnosticsSnapshot.ActiveSiteChunkCount}", style);
         GUILayout.Label($"Active sites: {diagnosticsSnapshot.ActiveSiteCount}", style);
         GUILayout.Label($"Placed sites: {diagnosticsSnapshot.TotalPlacedSiteCount}", style);
@@ -240,24 +247,21 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
         if (drawStreamingRects)
         {
-            Camera streamCamera = diagnosticsSnapshot.StreamCamera;
-            if (streamCamera != null)
+            if (diagnosticsSnapshot.HasStreamingBounds)
             {
-                GetCameraChunkRect(streamCamera, worldProfile, out Vector2Int loadMinChunk, out Vector2Int loadMaxChunk);
-
-                int padding = Mathf.Max(0, worldProfile.viewDistanceChunks) + Mathf.Max(0, diagnosticsSnapshot.PreloadChunks);
-                loadMinChunk -= new Vector2Int(padding, padding);
-                loadMaxChunk += new Vector2Int(padding, padding);
-
-                int unloadHysteresis = Mathf.Max(0, diagnosticsSnapshot.UnloadHysteresisChunks);
-                Vector2Int unloadMinChunk = loadMinChunk - new Vector2Int(unloadHysteresis, unloadHysteresis);
-                Vector2Int unloadMaxChunk = loadMaxChunk + new Vector2Int(unloadHysteresis, unloadHysteresis);
+                ChunkStreamingBounds streamingBounds = diagnosticsSnapshot.StreamingBounds;
 
                 GL.Color(new Color(0f, 0.6f, 1f, 0.9f));
-                DrawChunkRangeRectGL(loadMinChunk, loadMaxChunk, chunkSize);
+                DrawChunkRangeRectGL(
+                    streamingBounds.LoadMinChunk,
+                    streamingBounds.LoadMaxChunk,
+                    chunkSize);
 
                 GL.Color(new Color(1f, 0.6f, 0f, 0.9f));
-                DrawChunkRangeRectGL(unloadMinChunk, unloadMaxChunk, chunkSize);
+                DrawChunkRangeRectGL(
+                    streamingBounds.UnloadMinChunk,
+                    streamingBounds.UnloadMaxChunk,
+                    chunkSize);
             }
         }
 
@@ -302,67 +306,5 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     {
         GL.Vertex(a);
         GL.Vertex(b);
-    }
-
-    private void GetCameraChunkRect(Camera cam, WorldProfile prof, out Vector2Int minChunk, out Vector2Int maxChunk)
-    {
-        float zPlane = 0f;
-        float dist = DistanceAlongCameraForwardToZPlane(cam, zPlane);
-
-        Vector3 w0 = cam.ViewportToWorldPoint(new Vector3(0f, 0f, dist));
-        Vector3 w1 = cam.ViewportToWorldPoint(new Vector3(1f, 0f, dist));
-        Vector3 w2 = cam.ViewportToWorldPoint(new Vector3(0f, 1f, dist));
-        Vector3 w3 = cam.ViewportToWorldPoint(new Vector3(1f, 1f, dist));
-
-        Vector3Int c0 = grid.WorldToCell(w0);
-        Vector3Int c1 = grid.WorldToCell(w1);
-        Vector3Int c2 = grid.WorldToCell(w2);
-        Vector3Int c3 = grid.WorldToCell(w3);
-
-        int minX = Mathf.Min(c0.x, c1.x, c2.x, c3.x) - 1;
-        int maxX = Mathf.Max(c0.x, c1.x, c2.x, c3.x) + 1;
-        int minY = Mathf.Min(c0.y, c1.y, c2.y, c3.y) - 1;
-        int maxY = Mathf.Max(c0.y, c1.y, c2.y, c3.y) + 1;
-
-        Vector2Int minTile = new Vector2Int(minX, minY);
-        Vector2Int maxTile = new Vector2Int(maxX, maxY);
-
-        minChunk = TileToChunk(minTile, prof.chunkSize);
-        maxChunk = TileToChunk(maxTile, prof.chunkSize);
-    }
-
-    private static float DistanceAlongCameraForwardToZPlane(Camera cam, float zPlane)
-    {
-        Vector3 camPos = cam.transform.position;
-        Vector3 fwd = cam.transform.forward;
-
-        float denom = fwd.z;
-        if (Mathf.Abs(denom) < 0.00001f)
-            return cam.nearClipPlane;
-
-        float t = (zPlane - camPos.z) / denom;
-        if (t < 0f) t = -t;
-
-        return Mathf.Max(cam.nearClipPlane, t);
-    }
-
-    private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)
-    {
-        int cx = FloorDiv(tile.x, chunkSize);
-        int cy = FloorDiv(tile.y, chunkSize);
-        return new Vector2Int(cx, cy);
-    }
-
-    private static int FloorDiv(int a, int b)
-    {
-        if (b == 0) return 0;
-
-        int q = a / b;
-        int r = a % b;
-
-        if (r != 0 && ((r > 0) != (b > 0)))
-            q--;
-
-        return q;
     }
 }

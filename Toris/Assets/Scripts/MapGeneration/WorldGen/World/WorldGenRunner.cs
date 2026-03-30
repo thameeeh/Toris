@@ -53,6 +53,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     private WorldSceneServices worldSceneServices;
     private WorldEncounterServices worldEncounterServices;
     private PersistentWorldFeatureLifecycle persistentWorldFeatureLifecycle;
+    private WorldSiteActivationPipeline worldSiteActivationPipeline;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -149,13 +150,21 @@ public sealed class WorldGenRunner : MonoBehaviour
             poiPool,
             gateCooldownSeconds);
 
+        worldSiteActivationPipeline = new WorldSiteActivationPipeline(
+            worldSceneServices,
+            worldEncounterServices,
+            runtimeState,
+            poiPool,
+            worldTransitionSystem);
+
         worldFeatureLifecycle = new WorldFeatureLifecycle(
             worldSceneServices,
             ctx,
             runtimeState,
             poiPool,
             worldTransitionSystem,
-            worldEncounterServices);
+            worldEncounterServices,
+            worldSiteActivationPipeline);
 
         persistentWorldFeatureLifecycle = new PersistentWorldFeatureLifecycle(
             worldSceneServices,
@@ -163,9 +172,8 @@ public sealed class WorldGenRunner : MonoBehaviour
             runtimeState,
             poiPool,
             worldTransitionSystem,
-            worldEncounterServices);
-
-        worldTransitionSystem.AttachLifecycles(worldFeatureLifecycle, persistentWorldFeatureLifecycle);
+            worldEncounterServices,
+            worldSiteActivationPipeline);
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(
             profile,
@@ -175,6 +183,10 @@ public sealed class WorldGenRunner : MonoBehaviour
             worldFeatureLifecycle,
             runtimeState,
             chunkStreamingSystem);
+
+        worldTransitionSystem.AttachLifecycles(
+            worldFeatureLifecycle,
+            persistentWorldFeatureLifecycle);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
         worldTransitionSystem.StartInitialBiome(0, spawnTile);

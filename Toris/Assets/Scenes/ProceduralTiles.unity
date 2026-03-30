@@ -1454,7 +1454,7 @@ MonoBehaviour:
   unloadHysteresisChunks: 1
   maxChunksPerFrame: 6
   preloadChunks: 1
-  genBudgetMs: 8
+  genBudgetMs: 6
   clearOnDisable: 0
   gateCooldownSeconds: 1
   poiPool: {fileID: 101758321}

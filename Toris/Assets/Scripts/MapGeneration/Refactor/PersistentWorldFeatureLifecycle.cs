@@ -8,6 +8,8 @@ public sealed class PersistentWorldFeatureLifecycle
     private readonly WorldContext worldContext;
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
+    private readonly WorldSiteActivationPipeline worldSiteActivationPipeline;
+
     private readonly IGateTransitionService gateTransitionService;
     private readonly IWorldSiteStateService worldSiteStateService;
 
@@ -20,7 +22,8 @@ public sealed class PersistentWorldFeatureLifecycle
         WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
         IGateTransitionService gateTransitionService,
-        WorldEncounterServices worldEncounterServices)
+        WorldEncounterServices worldEncounterServices,
+        WorldSiteActivationPipeline worldSiteActivationPipeline)
     {
         this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
@@ -28,71 +31,30 @@ public sealed class PersistentWorldFeatureLifecycle
         this.poiPoolManager = poiPoolManager;
         this.gateTransitionService = gateTransitionService;
         this.worldEncounterServices = worldEncounterServices;
+        this.worldSiteActivationPipeline = worldSiteActivationPipeline;
 
         worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
     }
 
     public void ActivatePersistentSite(WorldSiteDefinition siteDefinition, Vector2Int centerTile)
     {
-        if (siteDefinition == null || !siteDefinition.IsValid)
+        if (siteDefinition == null || !siteDefinition.IsValid || worldContext == null)
             return;
-
-        GameObject prefab = siteDefinition.Prefab;
-        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
-            return;
-
-        SitePlacement placement = BuildPlacement(siteDefinition, centerTile);
-        int spawnId = ComputeSpawnId(placement, siteDefinition);
-
-        if (siteDefinition.SkipIfConsumed)
-        {
-            WorldSiteStateHandle siteState = worldSiteStateService.GetSiteState(placement.ChunkCoord, spawnId);
-            if (siteState.IsConsumed)
-                return;
-        }
 
         EnsureRoot();
 
-        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(centerTile);
-        GameObject siteObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, persistentRoot);
-        if (siteObject == null)
-            return;
+        SitePlacement placement = BuildPlacement(siteDefinition, centerTile);
+        GameObject siteObject = worldSiteActivationPipeline != null
+            ? worldSiteActivationPipeline.ActivateSite(
+                placement,
+                persistentRoot,
+                worldContext.ActiveBiome.Seed)
+            : null;
 
-        IWorldSiteContextConsumer[] siteContextConsumers =
-            siteObject.GetComponentsInChildren<IWorldSiteContextConsumer>(true);
-
-        if (siteContextConsumers == null || siteContextConsumers.Length == 0)
+        if (siteObject != null)
         {
-            Debug.LogWarning(
-                $"Persistent site prefab '{prefab.name}' has no IWorldSiteContextConsumer.",
-                siteObject);
-
-            poiPoolManager.Release(siteObject);
-            return;
+            activePersistentInstances.Add(siteObject);
         }
-
-        WorldSiteContext siteContext = new WorldSiteContext(
-            placement,
-            spawnId,
-            gateTransitionService,
-            worldSiteStateService,
-            worldEncounterServices,
-            siteDefinition.RuntimeConfig);
-
-        for (int i = 0; i < siteContextConsumers.Length; i++)
-        {
-            siteContextConsumers[i].Initialize(siteContext);
-        }
-
-        IWorldSiteActivationListener[] siteActivationListeners =
-            siteObject.GetComponentsInChildren<IWorldSiteActivationListener>(true);
-
-        for (int i = 0; i < siteActivationListeners.Length; i++)
-        {
-            siteActivationListeners[i].OnSiteActivated();
-        }
-
-        activePersistentInstances.Add(siteObject);
     }
 
     public void ClearAll()
@@ -135,15 +97,6 @@ public sealed class PersistentWorldFeatureLifecycle
             centerTile,
             chunkCoord,
             localIndex);
-    }
-
-    private int ComputeSpawnId(SitePlacement placement, WorldSiteDefinition siteDefinition)
-    {
-        return worldRuntimeState.ChunkStates.MakeSpawnId(
-            worldContext.ActiveBiome.Seed,
-            placement.ChunkCoord,
-            placement.LocalIndex,
-            siteDefinition.SpawnSalt);
     }
 
     private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)

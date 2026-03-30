@@ -8,6 +8,8 @@ public sealed class WorldFeatureLifecycle
     private readonly WorldContext worldContext;
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
+    private readonly WorldSiteActivationPipeline worldSiteActivationPipeline;
+
     private readonly IGateTransitionService gateTransitionService;
     private readonly IWorldSiteStateService worldSiteStateService;
 
@@ -27,7 +29,8 @@ public sealed class WorldFeatureLifecycle
         WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
         IGateTransitionService gateTransitionService,
-        WorldEncounterServices worldEncounterServices)
+        WorldEncounterServices worldEncounterServices,
+        WorldSiteActivationPipeline worldSiteActivationPipeline)
     {
         this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
@@ -35,6 +38,7 @@ public sealed class WorldFeatureLifecycle
         this.poiPoolManager = poiPoolManager;
         this.gateTransitionService = gateTransitionService;
         this.worldEncounterServices = worldEncounterServices;
+        this.worldSiteActivationPipeline = worldSiteActivationPipeline;
 
         worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
     }
@@ -139,64 +143,13 @@ public sealed class WorldFeatureLifecycle
     }
     private GameObject SpawnSiteInstance(SitePlacement placement, Transform parent)
     {
-        WorldSiteDefinition siteDefinition = placement.SiteDefinition;
-        if (siteDefinition == null || !siteDefinition.IsValid)
+        if (worldSiteActivationPipeline == null || worldContext == null)
             return null;
 
-        GameObject prefab = siteDefinition.Prefab;
-        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
-            return null;
-
-        int spawnId = ComputeSpawnId(placement, siteDefinition);
-
-        if (siteDefinition.SkipIfConsumed)
-        {
-            WorldSiteStateHandle siteState = worldSiteStateService.GetSiteState(placement.ChunkCoord, spawnId);
-            if (siteState.IsConsumed)
-                return null;
-        }
-
-        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(placement.CenterTile);
-
-        GameObject siteObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, parent);
-        if (siteObject == null)
-            return null;
-
-        IWorldSiteContextConsumer[] siteContextConsumers =
-            siteObject.GetComponentsInChildren<IWorldSiteContextConsumer>(true);
-
-        if (siteContextConsumers == null || siteContextConsumers.Length == 0)
-        {
-            Debug.LogWarning(
-                $"Site prefab '{prefab.name}' for site type '{placement.SiteDefinition}' has no IWorldSiteContextConsumer.",
-                siteObject);
-
-            ReleaseSiteInstance(siteObject);
-            return null;
-        }
-
-        WorldSiteContext siteContext = new WorldSiteContext(
+        return worldSiteActivationPipeline.ActivateSite(
             placement,
-            spawnId,
-            gateTransitionService,
-            worldSiteStateService,
-            worldEncounterServices,
-            placement.SiteDefinition != null ? placement.SiteDefinition.RuntimeConfig : null);
-
-        for (int i = 0; i < siteContextConsumers.Length; i++)
-        {
-            siteContextConsumers[i].Initialize(siteContext);
-        }
-
-        IWorldSiteActivationListener[] siteActivationListeners =
-    siteObject.GetComponentsInChildren<IWorldSiteActivationListener>(true);
-
-        for (int i = 0; i < siteActivationListeners.Length; i++)
-        {
-            siteActivationListeners[i].OnSiteActivated();
-        }
-
-        return siteObject;
+            parent,
+            worldContext.ActiveBiome.Seed);
     }
     private void ReleaseSiteInstance(GameObject instance)
     {

@@ -1,0 +1,95 @@
+using UnityEngine;
+
+public sealed class WorldSiteActivationPipeline
+{
+    private readonly WorldSceneServices worldSceneServices;
+    private readonly WorldEncounterServices worldEncounterServices;
+    private readonly WorldRuntimeState worldRuntimeState;
+    private readonly WorldPoiPoolManager poiPoolManager;
+    private readonly IGateTransitionService gateTransitionService;
+    private readonly IWorldSiteStateService worldSiteStateService;
+
+    public WorldSiteActivationPipeline(
+        WorldSceneServices worldSceneServices,
+        WorldEncounterServices worldEncounterServices,
+        WorldRuntimeState worldRuntimeState,
+        WorldPoiPoolManager poiPoolManager,
+        IGateTransitionService gateTransitionService)
+    {
+        this.worldSceneServices = worldSceneServices;
+        this.worldEncounterServices = worldEncounterServices;
+        this.worldRuntimeState = worldRuntimeState;
+        this.poiPoolManager = poiPoolManager;
+        this.gateTransitionService = gateTransitionService;
+
+        worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
+    }
+
+    public GameObject ActivateSite(
+        SitePlacement placement,
+        Transform parent,
+        int biomeSeed)
+    {
+        WorldSiteDefinition siteDefinition = placement.SiteDefinition;
+        if (siteDefinition == null || !siteDefinition.IsValid)
+            return null;
+
+        GameObject prefab = siteDefinition.Prefab;
+        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
+            return null;
+
+        int spawnId = worldRuntimeState.ChunkStates.MakeSpawnId(
+            biomeSeed,
+            placement.ChunkCoord,
+            placement.LocalIndex,
+            siteDefinition.SpawnSalt);
+
+        if (siteDefinition.SkipIfConsumed)
+        {
+            WorldSiteStateHandle siteState = worldSiteStateService.GetSiteState(placement.ChunkCoord, spawnId);
+            if (siteState.IsConsumed)
+                return null;
+        }
+
+        Vector3 worldPosition = worldSceneServices.GetCellCenterWorld(placement.CenterTile);
+        GameObject siteObject = poiPoolManager.Spawn(prefab, worldPosition, Quaternion.identity, parent);
+        if (siteObject == null)
+            return null;
+
+        IWorldSiteContextConsumer[] siteContextConsumers =
+            siteObject.GetComponentsInChildren<IWorldSiteContextConsumer>(true);
+
+        if (siteContextConsumers == null || siteContextConsumers.Length == 0)
+        {
+            Debug.LogWarning(
+                $"Site prefab '{prefab.name}' has no IWorldSiteContextConsumer.",
+                siteObject);
+
+            poiPoolManager.Release(siteObject);
+            return null;
+        }
+
+        WorldSiteContext siteContext = new WorldSiteContext(
+            placement,
+            spawnId,
+            gateTransitionService,
+            worldSiteStateService,
+            worldEncounterServices,
+            siteDefinition.RuntimeConfig);
+
+        for (int i = 0; i < siteContextConsumers.Length; i++)
+        {
+            siteContextConsumers[i].Initialize(siteContext);
+        }
+
+        IWorldSiteActivationListener[] siteActivationListeners =
+            siteObject.GetComponentsInChildren<IWorldSiteActivationListener>(true);
+
+        for (int i = 0; i < siteActivationListeners.Length; i++)
+        {
+            siteActivationListeners[i].OnSiteActivated();
+        }
+
+        return siteObject;
+    }
+}

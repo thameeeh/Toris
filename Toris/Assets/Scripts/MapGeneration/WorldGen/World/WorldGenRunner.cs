@@ -58,15 +58,8 @@ public sealed class WorldGenRunner : MonoBehaviour
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
 
-    // refactor
     private WorldFeatureLifecycle worldFeatureLifecycle;
-    //
 
-    private const uint GateSpawnSalt = 0x6A7E1234u;
-    private const uint WolfDenSpawnSalt = 0xA11CE5EDu;
-
-    public static uint GateSpawnSaltValue => GateSpawnSalt;
-    public static uint WolfDenSpawnSaltValue => WolfDenSpawnSalt;
     #endregion
 
     #region Public API
@@ -158,21 +151,13 @@ public sealed class WorldGenRunner : MonoBehaviour
             worldTransitionSystem);
 
         worldFeatureLifecycle = new WorldFeatureLifecycle(
-            worldSceneServices,
             ctx,
-            runtimeState,
             poiPool,
-            worldTransitionSystem,
-            worldEncounterServices,
             worldSiteActivationPipeline);
 
         persistentWorldFeatureLifecycle = new PersistentWorldFeatureLifecycle(
-            worldSceneServices,
             ctx,
-            runtimeState,
             poiPool,
-            worldTransitionSystem,
-            worldEncounterServices,
             worldSiteActivationPipeline);
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(

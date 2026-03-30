@@ -3,37 +3,21 @@ using UnityEngine;
 
 public sealed class PersistentWorldFeatureLifecycle
 {
-    private readonly WorldSceneServices worldSceneServices;
-    private readonly WorldEncounterServices worldEncounterServices;
     private readonly WorldContext worldContext;
-    private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly WorldSiteActivationPipeline worldSiteActivationPipeline;
-
-    private readonly IGateTransitionService gateTransitionService;
-    private readonly IWorldSiteStateService worldSiteStateService;
 
     private readonly List<GameObject> activePersistentInstances = new List<GameObject>();
     private Transform persistentRoot;
 
     public PersistentWorldFeatureLifecycle(
-        WorldSceneServices worldSceneServices,
         WorldContext worldContext,
-        WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
-        IGateTransitionService gateTransitionService,
-        WorldEncounterServices worldEncounterServices,
         WorldSiteActivationPipeline worldSiteActivationPipeline)
     {
-        this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
-        this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
-        this.gateTransitionService = gateTransitionService;
-        this.worldEncounterServices = worldEncounterServices;
         this.worldSiteActivationPipeline = worldSiteActivationPipeline;
-
-        worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
     }
 
     public void ActivatePersistentSite(WorldSiteDefinition siteDefinition, Vector2Int centerTile)

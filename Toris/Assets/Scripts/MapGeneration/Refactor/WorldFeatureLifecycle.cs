@@ -3,15 +3,9 @@ using UnityEngine;
 
 public sealed class WorldFeatureLifecycle
 {
-    private readonly WorldSceneServices worldSceneServices;
-    private readonly WorldEncounterServices worldEncounterServices;
     private readonly WorldContext worldContext;
-    private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly WorldSiteActivationPipeline worldSiteActivationPipeline;
-
-    private readonly IGateTransitionService gateTransitionService;
-    private readonly IWorldSiteStateService worldSiteStateService;
 
     private SitePlacementIndex sitePlacementIndex;
 
@@ -24,23 +18,13 @@ public sealed class WorldFeatureLifecycle
     private Transform siteRootContainer;
 
     public WorldFeatureLifecycle(
-        WorldSceneServices worldSceneServices,
         WorldContext worldContext,
-        WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
-        IGateTransitionService gateTransitionService,
-        WorldEncounterServices worldEncounterServices,
         WorldSiteActivationPipeline worldSiteActivationPipeline)
     {
-        this.worldSceneServices = worldSceneServices;
         this.worldContext = worldContext;
-        this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
-        this.gateTransitionService = gateTransitionService;
-        this.worldEncounterServices = worldEncounterServices;
         this.worldSiteActivationPipeline = worldSiteActivationPipeline;
-
-        worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
     }
 
     public void RebuildPlacements()
@@ -186,15 +170,6 @@ public sealed class WorldFeatureLifecycle
 
         chunkSiteRoots.Add(chunkCoord, chunkRoot);
         return chunkRoot;
-    }
-
-    private int ComputeSpawnId(SitePlacement placement, WorldSiteDefinition siteDefinition)
-    {
-        return worldRuntimeState.ChunkStates.MakeSpawnId(
-            worldContext.ActiveBiome.Seed,
-            placement.ChunkCoord,
-            placement.LocalIndex,
-            siteDefinition.SpawnSalt);
     }
 
     public int GetActiveSiteChunkCount()

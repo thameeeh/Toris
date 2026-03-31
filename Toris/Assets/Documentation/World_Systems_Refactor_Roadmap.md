@@ -33,6 +33,13 @@ Do not skip ahead to later phases if an earlier phase still forces exceptions or
 ## 3. Current Codebase Snapshot
 
 The codebase already contains meaningful refactor progress.
+### 3.0 Progress Update (2026-04-01)
+
+- Phase 1 close-out is complete for the current active-biome migration scope.
+- Phase 2 close-out is complete for the current chunk streaming extraction scope.
+- Phase 3 close-out is complete for unified site lifecycle ownership.
+- Phase 4 has landed an explicit ISceneTransitionService boundary for run gates; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than direct runtime singleton access.
+- Phase 5 has landed its first encounter-site seam through `IWorldEncounterSite` and now has a reusable occupant-tracking boundary through `WorldEncounterOccupantCollection`, but encounter orchestration is still wolf-den-specific and not yet packaged as a reusable subsystem.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -52,8 +59,8 @@ The codebase already contains meaningful refactor progress.
 - `WorldGenRunner` still acts as the composition root and the top-level frame orchestrator.
 - Chunk load policy still depends on camera math and frame-budget logic living in `WorldGenRunner`.
 - Build output is only partly normalized; terrain output is still mostly transient chunk tile data plus stamp maps.
-- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem.
-- Run-scene transitions still bypass the new transition boundary through `SceneTransitionService`.
+- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem, even though occupant tracking and unload release policy now have a reusable helper boundary.
+- Run-scene transitions now accept `ISceneTransitionService` in the world-site path, but static-scene gate usage still depends on scene-level service availability and should eventually move onto a clearer composition path.
 - Asset migration is incomplete; not all biome assets are wired into the new build-step pipeline.
 
 ### 3.3 Refactor Status Summary
@@ -268,7 +275,7 @@ Reusable encounters are harder to define cleanly if runtimes can still bypass se
 - biome gates use `IGateTransitionService`
 - wolf dens use `IWorldSiteStateService`
 - encounter consumers use `IWorldNavigationService`, `IEnemySpawnService`, and `IPlayerLocator`
-- run-gate transitions still use `SceneTransitionService.Instance`
+- run-gate transitions now use `ISceneTransitionService` through `WorldSiteContext` in procedural-world usage, while static-scene return gates resolve the same service locally until those scenes gain a dedicated composition path
 
 ### Scope
 
@@ -315,17 +322,18 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 
 - `WolfDen` mainly represents site state and interaction state
 - `WolfDenSpawner` represents wolf encounter behavior
-- the split has begun, but the encounter layer is still highly wolf-den-shaped
+- the first encounter-site seam now exists through `IWorldEncounterSite`
+- tracked occupant bookkeeping, despawn callback ownership, and bulk unload release now sit behind `WorldEncounterOccupantCollection`
+- alert escalation, howl behavior, and encounter configuration are still highly wolf-den-shaped and not yet packaged for reuse
 
 ### Scope
-
 - define an encounter package model or service boundary
 - separate site-owned state from occupant-owned state
 - identify which parts of `WolfDenSpawner` are generic encounter concerns versus wolf-specific behavior
 
 ### Key Work Items
 
-- extract shared encounter responsibilities such as occupant spawn/despawn policy, respawn timing, persistence hooks, and chase-on-unload policy
+- continue extracting remaining shared encounter responsibilities such as respawn policy, persistence hooks, and chase-on-unload policy from the still wolf-specific alert/howl layer
 - define what encounter configuration lives in site runtime config versus encounter-specific config
 - decide how a future camp, shrine, nest, or patrol point would request an encounter package
 
@@ -516,17 +524,16 @@ Do not merge all four passes into one large opaque change unless the scope is ge
 
 ## 10. Immediate Next Move
 
-The next implementation step should be Phase 1 close-out.
+The next implementation step should be the next Phase 5 close-out slice.
 
 Specifically:
 
-- audit all biome assets and build-step assets
-- identify which content still bypasses the neutral build pipeline
-- define whether terrain stamps remain acceptable build artifacts for now
-- close the asset migration gap before changing later systems
+- keep separating the remaining wolf-specific orchestration from the new reusable occupant lifecycle boundary
+- decide whether respawn timing and chase-on-unload policy should move into an explicit encounter package API
+- decide what future encounter hosts would need to provide beyond `IWorldEncounterSite` and shared occupant policy
+- keep verification focused on den clear, reload, unload, leader respawn, and chase-on-unload behavior while the seam is widened
 
-That gives the remaining phases one authoritative input model to build around.
-
+That keeps the refactor moving in order without reopening earlier service-boundary work.
 ## 11. Definition Of Done For The Refactor Program
 
 The refactor is finished when all of the following are true:
@@ -538,4 +545,7 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
+
+
 

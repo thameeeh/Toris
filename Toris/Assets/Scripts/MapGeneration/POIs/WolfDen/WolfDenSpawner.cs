@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(WolfDen))]
 public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContextConsumer
 {
+    [SerializeField] private MonoBehaviour encounterSiteComponent;
+
     private WolfDenEncounterConfig encounterConfig;
     private IWorldEncounterSite denSite;
     private WorldEncounterServices encounterServices;
@@ -11,7 +11,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private bool ready;
     private Wolf leader;
     private PackController pack;
-    private readonly List<Wolf> tracked = new();
+    private readonly WorldEncounterOccupantCollection<Wolf> occupants = new();
     private float respawnTimer;
 
     private float alertLevel;
@@ -28,6 +28,16 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         denSite = ResolveDenSite();
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (encounterSiteComponent is IWorldEncounterSite)
+            return;
+
+        encounterSiteComponent = FindEncounterSiteComponent();
+    }
+#endif
 
     private void OnEnable()
     {
@@ -62,7 +72,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private void ResetRuntime()
     {
         ready = false;
-        tracked.Clear();
+        occupants.Clear();
         leader = null;
         pack = null;
         respawnTimer = 0f;
@@ -120,7 +130,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (denSite == null) return;
         if (denSite.IsCleared) return;
 
-        tracked.RemoveAll(w => w == null);
+        occupants.RemoveNulls();
 
         if (leader == null)
         {
@@ -179,9 +189,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (leader != null)
             leader.SetInvestigationTarget(investigatePoint, investigateDuration, standBonus);
 
-        for (int i = 0; i < tracked.Count; i++)
+        Wolf[] occupantsSnapshot = occupants.Snapshot();
+        for (int i = 0; i < occupantsSnapshot.Length; i++)
         {
-            Wolf w = tracked[i];
+            Wolf w = occupantsSnapshot[i];
             if (w == null || w == leader)
                 continue;
 
@@ -348,41 +359,12 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         Transform player = FindPlayerTransform();
 
         if (pack != null)
-        {
-            var minions = pack.activeMinions.ToArray();
             pack.activeMinions.Clear();
 
-            for (int i = 0; i < minions.Length; i++)
-            {
-                Wolf w = minions[i];
-                if (w == null) continue;
-
-                if (ShouldKeepAliveOnUnload(w, player))
-                {
-                    DetachFromDen(w);
-                    continue;
-                }
-
-                w.RequestDespawn();
-            }
-        }
-
-        var trackedCopy = tracked.ToArray();
-        tracked.Clear();
-
-        for (int i = 0; i < trackedCopy.Length; i++)
-        {
-            Wolf w = trackedCopy[i];
-            if (w == null) continue;
-
-            if (ShouldKeepAliveOnUnload(w, player))
-            {
-                DetachFromDen(w);
-                continue;
-            }
-
-            w.RequestDespawn();
-        }
+        occupants.ReleaseWhere(
+            keepAlivePredicate: wolf => ShouldKeepAliveOnUnload(wolf, player),
+            detachAction: DetachFromDen,
+            releaseAction: wolf => wolf.RequestDespawn());
 
         leader = null;
         pack = null;
@@ -420,8 +402,6 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         if (w == null) return;
 
-        w.Despawned -= OnWolfDespawned;
-
         var home = w.GetComponent<HomeAnchor>();
         if (home != null)
         {
@@ -433,27 +413,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private void ForceDespawnAllTracked()
     {
         if (pack != null)
-        {
-            var minions = pack.activeMinions.ToArray();
             pack.activeMinions.Clear();
 
-            for (int i = 0; i < minions.Length; i++)
-            {
-                if (minions[i] != null)
-                    minions[i].RequestDespawn();
-            }
-        }
-
-        var trackedCopy = tracked.ToArray();
-        tracked.Clear();
-
-        for (int i = 0; i < trackedCopy.Length; i++)
-        {
-            if (trackedCopy[i] != null)
-                trackedCopy[i].RequestDespawn();
-        }
-
-        tracked.Clear();
+        occupants.ReleaseAll(wolf => wolf.RequestDespawn());
         leader = null;
         pack = null;
         respawnTimer = 0f;
@@ -487,11 +449,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         if (w == null) return;
 
-        if (!tracked.Contains(w))
-        {
-            tracked.Add(w);
-            w.Despawned += OnWolfDespawned;
-        }
+        occupants.Track(w, OnWolfDespawned);
     }
 
     private Wolf SpawnWolf(Wolf prefab)
@@ -514,21 +472,13 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         home.Center = denSite.WorldPosition;
         home.Radius = encounterConfig.HomeRadius;
 
-        if (!tracked.Contains(w))
-        {
-            tracked.Add(w);
-            w.Despawned += OnWolfDespawned;
-        }
+        occupants.Track(w, OnWolfDespawned);
 
         return w;
     }
 
-    private void OnWolfDespawned(Enemy e)
+    private void OnWolfDespawned(Wolf w)
     {
-        var w = e as Wolf;
-        if (w != null)
-            tracked.Remove(w);
-
         if (w == leader)
         {
             leader = null;
@@ -582,11 +532,23 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private IWorldEncounterSite ResolveDenSite()
     {
+        if (encounterSiteComponent is IWorldEncounterSite assignedEncounterSite)
+            return assignedEncounterSite;
+
+        encounterSiteComponent = FindEncounterSiteComponent();
+        if (encounterSiteComponent is IWorldEncounterSite discoveredEncounterSite)
+            return discoveredEncounterSite;
+
+        return null;
+    }
+
+    private MonoBehaviour FindEncounterSiteComponent()
+    {
         MonoBehaviour[] behaviours = GetComponents<MonoBehaviour>();
         for (int i = 0; i < behaviours.Length; i++)
         {
-            if (behaviours[i] is IWorldEncounterSite encounterSite)
-                return encounterSite;
+            if (behaviours[i] is IWorldEncounterSite)
+                return behaviours[i];
         }
 
         return null;

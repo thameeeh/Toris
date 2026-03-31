@@ -11,9 +11,10 @@ public class PlayerStats : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerEffectSourceController _effectSourceController;
+    [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
 
     [Header("Optional UI Bridge")]
-    [SerializeField] private PlayerDataSO _playerData;
+    // [SerializeField] private PlayerDataSO _playerData;
 
     [Header("Runtime")]
     [SerializeField] private bool _fillResourcesToMaximumOnAwake = true;
@@ -67,6 +68,11 @@ public class PlayerStats : MonoBehaviour
         {
             _effectSourceController.OnResolvedEffectsChanged += HandleResolvedEffectsChanged;
         }
+
+        if (_playerStatsAnchor != null)
+        {
+            _playerStatsAnchor.Provide(this);
+        }
     }
 
     private void OnDisable()
@@ -74,6 +80,11 @@ public class PlayerStats : MonoBehaviour
         if (_effectSourceController != null)
         {
             _effectSourceController.OnResolvedEffectsChanged -= HandleResolvedEffectsChanged;
+        }
+
+        if (_playerStatsAnchor != null)
+        {
+            _playerStatsAnchor.Clear();
         }
     }
 
@@ -247,11 +258,5 @@ public class PlayerStats : MonoBehaviour
     private void BroadcastStamina()
     {
         OnStaminaChanged?.Invoke(currentStamina, maxStamina);
-
-        if (_playerData == null)
-            return;
-
-        // Temporary compatibility bridge for existing UI-side code.
-        _playerData.SyncMana(currentStamina, maxStamina);
     }
 }

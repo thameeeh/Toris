@@ -7,7 +7,26 @@
 
 ---
 
-## [Current/Recent] - USS and UXML Styling Cleanup
+## [Current/Recent] - Refactor Player Data Architecture
+This update refactors how global managers and the HUD access player progression and stats, removing the deprecated `PlayerDataSO` in favor of a Hybrid Architecture using Runtime Anchors and a UI Bridge.
+
+### 1. Created Anchors
+* Added `PlayerProgressionAnchorSO` and `PlayerStatsAnchorSO` ScriptableObjects to act as global access points.
+* `PlayerProgression` and `PlayerStats` MonoBehaviours now register themselves to these anchors on `OnEnable` and clear on `OnDisable`.
+
+### 2. Refactored Global Managers
+* Updated `ShopManagerSO`, `CraftingManagerSO`, `SalvageManagerSO`, and `UpgradeSalvageManagerSO` to use `PlayerProgressionAnchorSO` for checking and deducting gold, removing their dependency on `PlayerDataSO`.
+
+### 3. Updated HUD Controller
+* Modified `HudScreenController` to find the `PlayerHUDBridge` in the scene and pass it to `HUDView` instead of `GameSessionSO.PlayerData`.
+* `HUDView` now binds to the events of `PlayerHUDBridge` (`OnHealthChanged`, `OnStaminaChanged`, `OnLevelChanged`, `OnGoldChanged`) ensuring a decoupled, event-driven update loop.
+
+### 4. Removed Deprecated Assets
+* Deleted `PlayerDataSO.cs` entirely and cleaned up its references in `GameSessionSO` and `Wolf.cs`.
+
+---
+
+## [Previous] - USS and UXML Styling Cleanup
 This update refactors the UI styling to consistently use global variables and BEM naming conventions across all UI Toolkit assets.
 
 ### 1. Updated Global Styles

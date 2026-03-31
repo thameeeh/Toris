@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public sealed class SceneTransitionService : MonoBehaviour
+public sealed class SceneTransitionService : MonoBehaviour, ISceneTransitionService
 {
     public static SceneTransitionService Instance { get; private set; }
 
@@ -26,6 +26,11 @@ public sealed class SceneTransitionService : MonoBehaviour
     }
 
     public bool IsLoading => _isLoading;
+
+    public void LoadScene(string sceneName)
+    {
+        LoadScene(sceneName, LoadSceneMode.Single);
+    }
 
     public void LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
     {

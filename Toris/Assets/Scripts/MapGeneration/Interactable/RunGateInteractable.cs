@@ -6,13 +6,21 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
     [Header("Scene Connection")]
     [SerializeField] private string sceneA;
     [SerializeField] private string sceneB;
+    [SerializeField] private SceneTransitionService sceneTransitionServiceOverride;
+
+    private ISceneTransitionService sceneTransitionService;
+
+    private void Awake()
+    {
+        sceneTransitionService = ResolveSceneTransitionService();
+    }
 
     public void Interact(GameObject interactor)
     {
-        var svc = SceneTransitionService.Instance;
-        if (svc == null)
+        sceneTransitionService ??= ResolveSceneTransitionService();
+        if (sceneTransitionService == null)
         {
-            Debug.LogError("RunGateInteractable: SceneTransitionService missing.");
+            Debug.LogWarning("RunGateInteractable: scene transition service unavailable.", this);
             return;
         }
 
@@ -20,11 +28,11 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
 
         if (current == sceneA)
         {
-            svc.LoadScene(sceneB);
+            sceneTransitionService.LoadScene(sceneB);
         }
         else if (current == sceneB)
         {
-            svc.LoadScene(sceneA);
+            sceneTransitionService.LoadScene(sceneA);
         }
         else
         {
@@ -37,6 +45,17 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
     }
     public void Initialize(WorldSiteContext siteContext)
     {
-        // no-op for now
+        sceneTransitionService = siteContext.SceneTransitionService ?? ResolveSceneTransitionService();
+    }
+
+    private ISceneTransitionService ResolveSceneTransitionService()
+    {
+        if (sceneTransitionServiceOverride != null)
+            return sceneTransitionServiceOverride;
+
+        if (SceneTransitionService.Instance != null)
+            return SceneTransitionService.Instance;
+
+        return FindFirstObjectByType<SceneTransitionService>();
     }
 }

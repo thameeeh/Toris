@@ -5,6 +5,7 @@ public readonly struct WorldSiteContext
     public readonly SitePlacement Placement;
     public readonly int SpawnId;
     public readonly IGateTransitionService GateTransitionService;
+    public readonly ISceneTransitionService SceneTransitionService;
     public readonly IWorldSiteStateService WorldSiteStateService;
     public readonly WorldEncounterServices EncounterServices;
     public readonly WorldSiteRuntimeConfig RuntimeConfig;
@@ -13,6 +14,7 @@ public readonly struct WorldSiteContext
         SitePlacement placement,
         int spawnId,
         IGateTransitionService gateTransitionService,
+        ISceneTransitionService sceneTransitionService,
         IWorldSiteStateService worldSiteStateService,
         WorldEncounterServices encounterServices,
         WorldSiteRuntimeConfig runtimeConfig)
@@ -20,6 +22,7 @@ public readonly struct WorldSiteContext
         Placement = placement;
         SpawnId = spawnId;
         GateTransitionService = gateTransitionService;
+        SceneTransitionService = sceneTransitionService;
         WorldSiteStateService = worldSiteStateService;
         EncounterServices = encounterServices;
         RuntimeConfig = runtimeConfig;

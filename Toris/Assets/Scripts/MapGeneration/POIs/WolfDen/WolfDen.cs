@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteBridge, IWorldSiteActivationListener
+public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteBridge, IWorldSiteActivationListener, IWorldEncounterSite
 {
     private const string ActiveVisualChildName = "ActiveVisual";
     private const string CollapsedVisualChildName = "CollapsedVisual";

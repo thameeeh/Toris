@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContextConsumer
 {
     private WolfDenEncounterConfig encounterConfig;
-    private WolfDen den;
+    private IWorldEncounterSite denSite;
     private WorldEncounterServices encounterServices;
 
     private bool ready;
@@ -26,7 +26,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private void Awake()
     {
-        den = GetComponent<WolfDen>();
+        denSite = ResolveDenSite();
     }
 
     private void OnEnable()
@@ -74,51 +74,51 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private void SubscribeToDen()
     {
-        if (den == null)
-            den = GetComponent<WolfDen>();
+        if (denSite == null)
+            denSite = ResolveDenSite();
 
-        if (den != null)
+        if (denSite != null)
         {
-            den.Initialized -= HandleDenInitialized;
-            den.Initialized += HandleDenInitialized;
+            denSite.Initialized -= HandleDenInitialized;
+            denSite.Initialized += HandleDenInitialized;
 
-            den.Cleared -= HandleDenCleared;
-            den.Cleared += HandleDenCleared;
+            denSite.Cleared -= HandleDenCleared;
+            denSite.Cleared += HandleDenCleared;
 
-            den.DamagedAlert -= OnDenDamaged;
-            den.DamagedAlert += OnDenDamaged;
+            denSite.DamagedAlert -= OnDenDamaged;
+            denSite.DamagedAlert += OnDenDamaged;
         }
     }
 
     private void UnsubscribeFromDen()
     {
-        if (den != null)
+        if (denSite != null)
         {
-            den.Initialized -= HandleDenInitialized;
-            den.Cleared -= HandleDenCleared;
-            den.DamagedAlert -= OnDenDamaged;
+            denSite.Initialized -= HandleDenInitialized;
+            denSite.Cleared -= HandleDenCleared;
+            denSite.DamagedAlert -= OnDenDamaged;
         }
     }
 
     private void HandleDenInitialized()
     {
-        if (den == null)
-            den = GetComponent<WolfDen>();
+        if (denSite == null)
+            denSite = ResolveDenSite();
 
         if (!HasEncounterConfig())
             return;
 
         ready = true;
 
-        if (den != null && !den.IsCleared)
+        if (denSite != null && !denSite.IsCleared)
             EnsureLeader();
     }
 
     private void Update()
     {
         if (!ready) return;
-        if (den == null) return;
-        if (den.IsCleared) return;
+        if (denSite == null) return;
+        if (denSite.IsCleared) return;
 
         tracked.RemoveAll(w => w == null);
 
@@ -164,7 +164,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private void OnDenDamaged(Vector3 threatPoint)
     {
         if (!ready) return;
-        if (den == null || den.IsCleared) return;
+        if (denSite == null || denSite.IsCleared) return;
 
         alertLevel = Mathf.Min(encounterConfig.MaxAlertLevel, alertLevel + encounterConfig.AlertLevelPerHit);
         alertDecayDelayTimer = encounterConfig.AlertLevelDecayDelay;
@@ -226,7 +226,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private Vector3 BuildDenInvestigationPoint()
     {
-        if (den == null)
+        if (denSite == null)
             return transform.position;
 
         IWorldNavigationService navigationService = encounterServices != null
@@ -234,9 +234,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
             : null;
 
         if (navigationService == null)
-            return den.WorldPosition;
+            return denSite.WorldPosition;
 
-        Vector3 denCenterWorld = den.WorldPosition;
+        Vector3 denCenterWorld = denSite.WorldPosition;
         Vector2Int denCenterCell = navigationService.WorldToCell(denCenterWorld);
 
         Transform player = FindPlayerTransform();
@@ -403,8 +403,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (w == null) return false;
         if (player == null) return false;
 
-        float d = Vector3.Distance(w.transform.position, player.position);
-        if (d > encounterConfig.KeepChaseIfWithinPlayerRange) return false;
+        float maxDistance = encounterConfig.KeepChaseIfWithinPlayerRange;
+        float maxDistanceSqr = maxDistance * maxDistance;
+        Vector3 offset = w.transform.position - player.position;
+        if (offset.sqrMagnitude > maxDistanceSqr) return false;
 
         return IsWolfActivelyChasingPlayer(w);
     }
@@ -461,7 +463,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private void EnsureLeader()
     {
         if (!ready) return;
-        if (den == null || !den.IsInitialized) return;
+        if (denSite == null || !denSite.IsInitialized) return;
         if (leader != null) return;
         if (encounterConfig.LeaderPrefab == null) return;
 
@@ -494,7 +496,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private Wolf SpawnWolf(Wolf prefab)
     {
-        Vector3 pos = den.WorldPosition + (Vector3)(Random.insideUnitCircle * encounterConfig.SpawnRadius);
+        Vector3 pos = denSite.WorldPosition + (Vector3)(Random.insideUnitCircle * encounterConfig.SpawnRadius);
         pos = FindNearestWalkableSpawn(pos, maxTileRadius: encounterConfig.SpawnRadius);
 
         if (encounterServices == null || encounterServices.EnemySpawnService == null)
@@ -509,7 +511,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (home == null)
             home = w.gameObject.AddComponent<HomeAnchor>();
 
-        home.Center = den.WorldPosition;
+        home.Center = denSite.WorldPosition;
         home.Radius = encounterConfig.HomeRadius;
 
         if (!tracked.Contains(w))
@@ -576,5 +578,17 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private bool HasEncounterConfig()
     {
         return encounterConfig != null;
+    }
+
+    private IWorldEncounterSite ResolveDenSite()
+    {
+        MonoBehaviour[] behaviours = GetComponents<MonoBehaviour>();
+        for (int i = 0; i < behaviours.Length; i++)
+        {
+            if (behaviours[i] is IWorldEncounterSite encounterSite)
+                return encounterSite;
+        }
+
+        return null;
     }
 }

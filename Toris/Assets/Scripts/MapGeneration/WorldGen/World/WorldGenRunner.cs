@@ -22,6 +22,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     [Header("Gameplay")]
     [SerializeField] private GameplayPoolManager gameplayPoolManager;
+    [SerializeField] private SceneTransitionService sceneTransitionService;
 
     [SerializeField] private Camera streamCamera;
 
@@ -115,6 +116,18 @@ public sealed class WorldGenRunner : MonoBehaviour
             Debug.LogWarning($"{nameof(WorldGenRunner)} has no GameplayPoolManager assigned. Enemy spawning through encounter services will fail.", this);
         }
 
+        if (sceneTransitionService == null)
+        {
+            sceneTransitionService = SceneTransitionService.Instance;
+            if (sceneTransitionService == null)
+                sceneTransitionService = FindFirstObjectByType<SceneTransitionService>();
+        }
+
+        if (sceneTransitionService == null)
+        {
+            Debug.LogWarning($"{nameof(WorldGenRunner)} has no SceneTransitionService assigned. Run gate site transitions will be unavailable.", this);
+        }
+
         ctx = new WorldContext(profile);
         runtimeState = new WorldRuntimeState();
         generator = new ChunkGenerator(ctx);
@@ -145,7 +158,8 @@ public sealed class WorldGenRunner : MonoBehaviour
             worldEncounterServices,
             runtimeState,
             poiPool,
-            worldTransitionSystem);
+            worldTransitionSystem,
+            sceneTransitionService);
 
         WorldFeatureLifecycle chunkFeatureLifecycle = new WorldFeatureLifecycle(
             ctx,

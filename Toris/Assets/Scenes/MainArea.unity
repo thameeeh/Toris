@@ -40549,10 +40549,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _uiInventoryEvents
-      value: 
-      objectReference: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
-    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _equipmentInventory
       value: 
       objectReference: {fileID: 494592622}
@@ -40608,22 +40604,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5600970068102170111, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7014179871662737768, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: groundMap
       value: 
       objectReference: {fileID: 1689050741}
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _inventory
-      value: 
-      objectReference: {fileID: 475817946}
-    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _playerInventory
       value: 
       objectReference: {fileID: 475817946}
-    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _uiInventoryEvents
-      value: 
-      objectReference: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _equipmentInventory
       value: 
@@ -61823,6 +61815,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerAnchor
+      value: 
+      objectReference: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+    - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerStatsAnchor
+      value: 
+      objectReference: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
     - target: {fileID: 8911900497453267458, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: _shopContainer
       value: 

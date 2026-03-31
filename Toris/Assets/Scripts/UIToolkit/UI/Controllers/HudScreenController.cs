@@ -27,7 +27,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_hudMainTemplate == null)
             {
-                Debug.LogError("HudScreenController: HUD Main Template is missing!");
+                Debug.LogError("HudScreenController: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject<color/>");
                 return;
             }
         }

@@ -11,6 +11,7 @@ namespace OutlandHaven.UIToolkit
         private InventoryManager _shopContainer;
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
+        public PlayerProgressionAnchorSO PlayerAnchor;
 
         private VisualElement _shopGrid;
         private Label _goldAmountLabel;
@@ -56,9 +57,9 @@ namespace OutlandHaven.UIToolkit
             CreateSlots();
 
             // Bind initial gold
-            if (_gameSession != null && _gameSession.PlayerData != null)
+            if (_gameSession != null && PlayerAnchor != null)
             {
-                UpdateGoldAmount(_gameSession.PlayerData.Gold);
+                UpdateGoldAmount(PlayerAnchor.Instance.CurrentGold);
             }
 
             _isSetup = true;

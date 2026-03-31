@@ -46,6 +46,10 @@ namespace OutlandHaven.UIToolkit
                     UpdateGoldUI(_playerHudBridge.CurrentGold, 0);
                     UpdateLevelUI(_playerHudBridge.CurrentLevel, _playerHudBridge.CurrentExperience);
                 }
+                else 
+                {
+                    Debug.LogError("HUDView: PlayerHUDBridge data reference is null! HUD will not display player info.");
+                }
                 _isSetup = true;
             }
         }

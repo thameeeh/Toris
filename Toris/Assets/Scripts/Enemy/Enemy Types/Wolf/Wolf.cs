@@ -13,8 +13,6 @@ public class Wolf : Enemy
     [Space][Space][Header("Stats")]
     public float AttackDamage = 20f;
     public float MovementSpeed = 2f;
-
-    [SerializeField]
     public PlayerProgression PlayerProgression; // new
 
     public int gold = 50;

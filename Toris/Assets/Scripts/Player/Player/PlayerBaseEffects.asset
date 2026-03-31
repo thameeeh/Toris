@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerBaseEffects
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBaseEffectsSO
   maxHealth: 500
-  maxStamina: 50000
+  maxStamina: 488
   staminaRegenPerSecond: 50
   moveSpeedMultiplier: 5
   dashSpeedMultiplier: 1

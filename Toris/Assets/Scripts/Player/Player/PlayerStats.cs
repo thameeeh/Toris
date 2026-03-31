@@ -12,9 +12,6 @@ public class PlayerStats : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerEffectSourceController _effectSourceController;
 
-    [Header("Optional UI Bridge")]
-    [SerializeField] private PlayerDataSO _playerData;
-
     [Header("Runtime")]
     [SerializeField] private bool _fillResourcesToMaximumOnAwake = true;
     [SerializeField] private bool _preserveResourceRatiosWhenEffectsChange = true;
@@ -247,11 +244,5 @@ public class PlayerStats : MonoBehaviour
     private void BroadcastStamina()
     {
         OnStaminaChanged?.Invoke(currentStamina, maxStamina);
-
-        if (_playerData == null)
-            return;
-
-        // Temporary compatibility bridge for existing UI-side code.
-        _playerData.SyncMana(currentStamina, maxStamina);
     }
 }

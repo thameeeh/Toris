@@ -52,3 +52,54 @@
     margin: auto;
     padding: 0;
 }
+
+    /* --- THE TAB CONTAINER --- */
+.panel-tab {
+    flex-grow: 1;
+    height: 50px; /* Slightly shorter than a slot looks better for tabs */
+    background-color: rgb(40, 40, 40);
+    
+    /* Create the "Folder Tab" shape */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-width: 1px;
+    border-bottom-width: 0; /* Removes bottom border so it connects to the panel */
+    border-color: rgb(25, 25, 25);
+    
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 5px;
+    
+    /* Perfect centering for the label inside */
+    justify-content: center;
+    align-items: center;
+    
+    transition-duration: 0.1s;
+}
+
+.panel-tab:hover {
+    background-color: rgb(60, 60, 60);
+    border-color: rgb(220, 179, 92); /* Gold highlight on hover */
+}
+
+/* Modifier class for the currently selected tab */
+.panel-tab--active {
+    background-color: rgb(70, 70, 70); /* Brighter background to show it is active */
+    border-color: rgb(220, 179, 92);
+}
+
+/* --- THE TAB TEXT --- */
+.panel-tab-label {
+    color: rgb(180, 180, 180); /* Dimmer when inactive */
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    
+    /* Prevent the text from catching the mouse, ensuring the whole tab is clickable */
+    picking-mode: Ignore; 
+}
+
+/* Make text bright white only when the tab is active */
+.panel-tab--active .panel-tab-label {
+    color: rgb(255, 255, 255); 
+}

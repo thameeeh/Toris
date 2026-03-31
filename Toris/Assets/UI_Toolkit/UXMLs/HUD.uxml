@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <ui:VisualElement name="hud__screen" style="flex-grow: 1; justify-content: flex-end; padding-bottom: 20px; padding-left: 20px; padding-right: 20px;">
         <ui:VisualElement style="flex-grow: 0; align-items: flex-start; flex-direction: column-reverse; margin-bottom: 10px;">
             <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&amp;guid=065e66474324a9f459577583dff2a17e&amp;type=3#Compass&quot;); width: 60px; height: 60px; -unity-background-scale-mode: scale-to-fit; background-color: rgba(0, 0, 0, 0); border-width: 0;"/>
@@ -21,7 +22,7 @@
             <ui:VisualElement style="width: 300px; margin-left: auto; align-items: flex-end; align-self: auto; align-content: auto;">
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row-reverse; justify-content: space-between; align-items: auto; align-self: stretch; align-content: auto; flex-shrink: 1;">
                     <ui:Label text="Mana" name="" class="HUD" style="color: white; -unity-font-style: bold;"/>
-                    <ui:Label text="Gold:" name="hud__gold-label" class="HUD"/>
+                    <ui:Label text="Gold:" name="hud__gold-label" class="panel-tab-label"/>
                 </ui:VisualElement>
                 <ui:ProgressBar value="20" name="hud__mana-bar" style="height: 40px; width: 100%; color: blue;"/>
             </ui:VisualElement>

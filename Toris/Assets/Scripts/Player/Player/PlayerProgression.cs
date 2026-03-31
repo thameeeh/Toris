@@ -10,6 +10,7 @@ public class PlayerProgression : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerProgressionConfigSO _config;
+    [SerializeField] private PlayerProgressionAnchorSO _playerProgressionAnchor;
 
     [Header("Runtime")]
     [SerializeField] private bool _initializeFromConfigOnAwake = true;
@@ -38,6 +39,22 @@ public class PlayerProgression : MonoBehaviour
                 GetStartingLevel(),
                 GetStartingExperience(),
                 GetStartingGold());
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_playerProgressionAnchor != null)
+        {
+            _playerProgressionAnchor.Provide(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_playerProgressionAnchor != null)
+        {
+            _playerProgressionAnchor.Clear();
         }
     }
 

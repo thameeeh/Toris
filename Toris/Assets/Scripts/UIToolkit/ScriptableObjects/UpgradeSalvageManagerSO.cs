@@ -8,6 +8,7 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("References")]
         public GameSessionSO SessionData;
+        public PlayerProgressionAnchorSO PlayerAnchor;
         public CraftingRegistrySO Registry;
 
         [Header("Settings")]
@@ -43,10 +44,18 @@ namespace OutlandHaven.UIToolkit
                 return false;
             }
 
-            if (SessionData == null || SessionData.PlayerData == null)
+            if (SessionData == null)
             {
 #if UNITY_EDITOR
-                Debug.LogError("Upgrade failed: SessionData or PlayerData is missing.");
+                Debug.LogError("Upgrade failed: SessionData is missing.");
+#endif
+                return false;
+            }
+
+            if (PlayerAnchor == null || !PlayerAnchor.IsReady)
+            {
+#if UNITY_EDITOR
+                Debug.LogError("Upgrade failed: PlayerAnchor is missing or not ready.");
 #endif
                 return false;
             }
@@ -79,10 +88,10 @@ namespace OutlandHaven.UIToolkit
 
             int cost = CalculateUpgradeCost(slot.HeldItem);
 
-            if (SessionData.PlayerData.Gold >= cost)
+            if (PlayerAnchor.Instance.CurrentGold >= cost)
             {
                 // Deduct gold
-                SessionData.PlayerData.ModifyGold(-cost);
+                PlayerAnchor.Instance.TrySpendGold(cost);
 
                 // Upgrade instance
                 upgradeState.CurrentLevel++;
@@ -97,7 +106,7 @@ namespace OutlandHaven.UIToolkit
             else
             {
 #if UNITY_EDITOR
-                Debug.LogWarning($"Upgrade failed: Not enough gold. Have {SessionData.PlayerData.Gold}, Need {cost}");
+                Debug.LogWarning($"Upgrade failed: Not enough gold. Have {PlayerAnchor.Instance.CurrentGold}, Need {cost}");
 #endif
                 return false;
             }
@@ -138,9 +147,9 @@ namespace OutlandHaven.UIToolkit
             }
 
             // Give rewards
-            if (recipe.GoldYield > 0 && SessionData != null && SessionData.PlayerData != null)
+            if (recipe.GoldYield > 0 && PlayerAnchor != null && PlayerAnchor.IsReady)
             {
-                SessionData.PlayerData.ModifyGold(recipe.GoldYield);
+                PlayerAnchor.Instance.AddGold(recipe.GoldYield);
             }
 
             // Skeleton for giving item rewards

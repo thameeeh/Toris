@@ -9,18 +9,15 @@ public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig
     [SerializeField] private Wolf leaderPrefab;
     [SerializeField] private Wolf minionPrefab;
 
-    [Header("Leader Respawn")]
-    [SerializeField] private float leaderRespawnDelay = 6f;
+    [Header("Occupant Policy")]
+    [SerializeField] private WorldEncounterOccupantPolicy occupantPolicy = new();
 
-    [Header("Spawn Area")]
-    [SerializeField] private int spawnRadius = 4;
-
-    [Header("Chunk Unload Behavior")]
-    [SerializeField] private bool keepChasingWolvesOnUnload = true;
-    [SerializeField] private float keepChaseIfWithinPlayerRange = 40f;
-
-    [Header("Home")]
-    [SerializeField] private float homeRadius = 8f;
+    [SerializeField, HideInInspector] private float leaderRespawnDelay = 6f;
+    [SerializeField, HideInInspector] private int spawnRadius = 4;
+    [SerializeField, HideInInspector] private bool keepChasingWolvesOnUnload = true;
+    [SerializeField, HideInInspector] private float keepChaseIfWithinPlayerRange = 40f;
+    [SerializeField, HideInInspector] private float homeRadius = 8f;
+    [SerializeField, HideInInspector] private bool occupantPolicyMigrated;
 
     [Header("Den Alert")]
     [SerializeField] private float denAlertDuration = 4f;
@@ -41,14 +38,14 @@ public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig
 
     public Wolf LeaderPrefab => leaderPrefab;
     public Wolf MinionPrefab => minionPrefab;
-
-    public float LeaderRespawnDelay => leaderRespawnDelay;
-    public int SpawnRadius => spawnRadius;
-
-    public bool KeepChasingWolvesOnUnload => keepChasingWolvesOnUnload;
-    public float KeepChaseIfWithinPlayerRange => keepChaseIfWithinPlayerRange;
-
-    public float HomeRadius => homeRadius;
+    public WorldEncounterOccupantPolicy OccupantPolicy
+    {
+        get
+        {
+            EnsureOccupantPolicy();
+            return occupantPolicy;
+        }
+    }
 
     public float DenAlertDuration => denAlertDuration;
     public float AlertLevelDecayDelay => alertLevelDecayDelay;
@@ -63,4 +60,28 @@ public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig
 
     public bool HowlAtMaxAlert => howlAtMaxAlert;
     public float AlertLevelAfterHowl => alertLevelAfterHowl;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        EnsureOccupantPolicy();
+        occupantPolicy.Validate();
+    }
+#endif
+
+    private void EnsureOccupantPolicy()
+    {
+        occupantPolicy ??= new WorldEncounterOccupantPolicy();
+        if (occupantPolicyMigrated)
+            return;
+
+        occupantPolicy.ApplyLegacyValues(
+            leaderRespawnDelay,
+            spawnRadius,
+            keepChasingWolvesOnUnload,
+            keepChaseIfWithinPlayerRange,
+            homeRadius);
+
+        occupantPolicyMigrated = true;
+    }
 }

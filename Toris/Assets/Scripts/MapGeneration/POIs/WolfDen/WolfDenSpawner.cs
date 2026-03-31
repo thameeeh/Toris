@@ -5,6 +5,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     [SerializeField] private MonoBehaviour encounterSiteComponent;
 
     private WolfDenEncounterConfig encounterConfig;
+    private WorldEncounterOccupantPolicy occupantPolicy;
     private IWorldEncounterSite denSite;
     private WorldEncounterServices encounterServices;
 
@@ -21,6 +22,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     public void Initialize(WorldSiteContext siteContext)
     {
         encounterConfig = siteContext.GetRuntimeConfig<WolfDenEncounterConfig>();
+        occupantPolicy = encounterConfig != null ? encounterConfig.OccupantPolicy : null;
         encounterServices = siteContext.EncounterServices;
     }
 
@@ -60,7 +62,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         UnsubscribeFromDen();
 
-        if (encounterConfig.KeepChasingWolvesOnUnload)
+        if (occupantPolicy != null && occupantPolicy.KeepOccupantsOnUnloadIfChasingPlayer)
             DespawnTrackedExceptActiveChasers();
         else
             ForceDespawnAllTracked();
@@ -135,7 +137,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (leader == null)
         {
             respawnTimer += Time.deltaTime;
-            if (respawnTimer >= encounterConfig.LeaderRespawnDelay)
+            if (respawnTimer >= occupantPolicy.RespawnDelay)
             {
                 respawnTimer = 0f;
                 EnsureLeader();
@@ -257,7 +259,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
         Vector2Int currentCell = denCenterCell;
 
-        int maxSteps = Mathf.Max(2, Mathf.CeilToInt(encounterConfig.HomeRadius) + encounterConfig.InvestigatePointSearchRadius + 4);
+        int maxSteps = Mathf.Max(2, Mathf.CeilToInt(occupantPolicy.HomeRadius) + encounterConfig.InvestigatePointSearchRadius + 4);
 
         bool foundBoundaryWalkable = false;
 
@@ -381,11 +383,11 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private bool ShouldKeepAliveOnUnload(Wolf w, Transform player)
     {
-        if (!encounterConfig.KeepChasingWolvesOnUnload) return false;
+        if (!occupantPolicy.KeepOccupantsOnUnloadIfChasingPlayer) return false;
         if (w == null) return false;
         if (player == null) return false;
 
-        float maxDistance = encounterConfig.KeepChaseIfWithinPlayerRange;
+        float maxDistance = occupantPolicy.KeepChaseIfWithinPlayerRange;
         float maxDistanceSqr = maxDistance * maxDistance;
         Vector3 offset = w.transform.position - player.position;
         if (offset.sqrMagnitude > maxDistanceSqr) return false;
@@ -406,7 +408,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (home != null)
         {
             home.Center = w.transform.position;
-            home.Radius = encounterConfig.HomeRadius;
+            home.Radius = occupantPolicy.HomeRadius;
         }
     }
 
@@ -454,8 +456,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private Wolf SpawnWolf(Wolf prefab)
     {
-        Vector3 pos = denSite.WorldPosition + (Vector3)(Random.insideUnitCircle * encounterConfig.SpawnRadius);
-        pos = FindNearestWalkableSpawn(pos, maxTileRadius: encounterConfig.SpawnRadius);
+        Vector3 pos = denSite.WorldPosition + (Vector3)(Random.insideUnitCircle * occupantPolicy.SpawnRadius);
+        pos = FindNearestWalkableSpawn(pos, maxTileRadius: occupantPolicy.SpawnRadius);
 
         if (encounterServices == null || encounterServices.EnemySpawnService == null)
             return null;
@@ -470,7 +472,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
             home = w.gameObject.AddComponent<HomeAnchor>();
 
         home.Center = denSite.WorldPosition;
-        home.Radius = encounterConfig.HomeRadius;
+        home.Radius = occupantPolicy.HomeRadius;
 
         occupants.Track(w, OnWolfDespawned);
 
@@ -527,7 +529,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private bool HasEncounterConfig()
     {
-        return encounterConfig != null;
+        return encounterConfig != null && occupantPolicy != null;
     }
 
     private IWorldEncounterSite ResolveDenSite()

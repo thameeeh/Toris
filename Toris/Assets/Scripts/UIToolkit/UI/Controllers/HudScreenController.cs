@@ -10,13 +10,17 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private VisualTreeAsset _buttonTemplate;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
+        [SerializeField] private PlayerProgressionAnchorSO _playerAnchor;
+        [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
 
         private HUDView _view;
         private UIManager _uiManager;
+        private PlayerHUDBridge _playerHudBridge;
 
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
+            _playerHudBridge = FindFirstObjectByType<PlayerHUDBridge>();
         }
 
         private void OnEnable()
@@ -35,8 +39,13 @@ namespace OutlandHaven.UIToolkit
             // 1. Instantiate the UI from the asset
             TemplateContainer hudInstance = _hudMainTemplate.Instantiate();
 
+            if (_playerHudBridge == null)
+            {
+                Debug.LogWarning("HudScreenController: Could not find PlayerHUDBridge in scene. HUD may not update correctly.");
+            }
+
             // 2. Pass the INSTANCE to the View
-            _view = new HUDView(hudInstance, _gameSession.PlayerData, _uiEvents, _buttonTemplate);
+            _view = new HUDView(hudInstance, _playerHudBridge, _uiEvents, _buttonTemplate);
             _view.Initialize();
 
             // 3. Register to the HUD Zone

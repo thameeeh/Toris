@@ -11,6 +11,7 @@ public class PlayerStats : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerEffectSourceController _effectSourceController;
+    [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
 
     [Header("Runtime")]
     [SerializeField] private bool _fillResourcesToMaximumOnAwake = true;
@@ -64,6 +65,11 @@ public class PlayerStats : MonoBehaviour
         {
             _effectSourceController.OnResolvedEffectsChanged += HandleResolvedEffectsChanged;
         }
+
+        if (_playerStatsAnchor != null)
+        {
+            _playerStatsAnchor.Provide(this);
+        }
     }
 
     private void OnDisable()
@@ -71,6 +77,11 @@ public class PlayerStats : MonoBehaviour
         if (_effectSourceController != null)
         {
             _effectSourceController.OnResolvedEffectsChanged -= HandleResolvedEffectsChanged;
+        }
+
+        if (_playerStatsAnchor != null)
+        {
+            _playerStatsAnchor.Clear();
         }
     }
 

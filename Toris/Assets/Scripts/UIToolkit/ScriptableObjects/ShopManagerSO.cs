@@ -8,6 +8,7 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Dependencies")]
         public GameSessionSO SessionData;
+        public PlayerProgressionAnchorSO PlayerAnchor;
         public UIInventoryEventsSO InventoryEvents;
         public UIEventsSO UIEvents; // Dependency for global UI events like screen open
 
@@ -59,13 +60,14 @@ namespace OutlandHaven.UIToolkit
         private void HandleRequestBuy(ItemInstance item, int quantity)
         {
             if (item == null || item.BaseItem == null || quantity <= 0) return;
-            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
+            if (SessionData == null || SessionData.PlayerInventory == null) return;
+            if (PlayerAnchor == null || !PlayerAnchor.IsReady) return;
             if (CurrentShopInventory == null) return;
 
             int totalCost = item.BaseItem.GoldValue * quantity;
 
             // Check if player has enough gold
-            if (SessionData.PlayerData.Gold >= totalCost)
+            if (PlayerAnchor.Instance.CurrentGold >= totalCost)
             {
                 // First check if the shop actually has enough items to sell
                 bool removedFromShop = CurrentShopInventory.RemoveItem(item, quantity);
@@ -78,13 +80,13 @@ namespace OutlandHaven.UIToolkit
                     if (added)
                     {
                         // Deduct gold
-                        SessionData.PlayerData.ModifyGold(-totalCost);
+                        PlayerAnchor.Instance.TrySpendGold(totalCost);
 
-                        InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
+                        InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                         InventoryEvents?.OnShopInventoryUpdated?.Invoke();
 
 #if UNITY_EDITOR
-                        Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {SessionData.PlayerData.Gold}");
+                        Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {PlayerAnchor.Instance.CurrentGold}");
 #endif
                     }
                     else
@@ -114,7 +116,8 @@ namespace OutlandHaven.UIToolkit
         private void HandleRequestSell(ItemInstance item, int quantity)
         {
             if (item == null || item.BaseItem == null || quantity <= 0) return;
-            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
+            if (SessionData == null || SessionData.PlayerInventory == null) return;
+            if (PlayerAnchor == null || !PlayerAnchor.IsReady) return;
             if (CurrentShopInventory == null) return;
 
             int totalValue = item.BaseItem.GoldValue * quantity;
@@ -126,8 +129,8 @@ namespace OutlandHaven.UIToolkit
                 // Add the item to the shop's inventory so the NPC can resell it
                 bool addedToShop = CurrentShopInventory.AddItem(item, quantity);
 
-                SessionData.PlayerData.ModifyGold(totalValue);
-                InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
+                PlayerAnchor.Instance.AddGold(totalValue);
+                InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                 InventoryEvents?.OnInventoryUpdated?.Invoke();
 
                 if (addedToShop)
@@ -136,7 +139,7 @@ namespace OutlandHaven.UIToolkit
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"Sold {quantity} {item.BaseItem.ItemName} for {totalValue} gold. Total Gold: {SessionData.PlayerData.Gold}");
+                Debug.Log($"Sold {quantity} {item.BaseItem.ItemName} for {totalValue} gold. Total Gold: {PlayerAnchor.Instance.CurrentGold}");
 #endif
             }
             else

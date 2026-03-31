@@ -8,6 +8,7 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Dependencies")]
         public GameSessionSO SessionData;
+        public PlayerProgressionAnchorSO PlayerAnchor;
         public UIInventoryEventsSO InventoryEvents;
         public CraftingRegistrySO Registry;
 
@@ -53,10 +54,11 @@ namespace OutlandHaven.UIToolkit
                 if (matReq.Material != null) slot1Req = matReq.Quantity;
             }
 
-            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return false;
+            if (SessionData == null || SessionData.PlayerInventory == null) return false;
+            if (PlayerAnchor == null || !PlayerAnchor.IsReady) return false;
 
             // Check if player has enough gold
-            bool hasGold = SessionData.PlayerData.Gold >= recipe.GoldCost;
+            bool hasGold = PlayerAnchor.Instance.CurrentGold >= recipe.GoldCost;
             if (!hasGold) return false;
 
             // Count total available for slot 1 item
@@ -89,7 +91,8 @@ namespace OutlandHaven.UIToolkit
         private void HandleRequestForge(InventorySlot slot1, InventorySlot slot2)
         {
             if (slot1 == null || slot1.IsEmpty || slot2 == null || slot2.IsEmpty) return;
-            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
+            if (SessionData == null || SessionData.PlayerInventory == null) return;
+            if (PlayerAnchor == null || !PlayerAnchor.IsReady) return;
             if (Registry == null) return;
 
             // Cache items before doing anything that could invalidate references
@@ -107,10 +110,10 @@ namespace OutlandHaven.UIToolkit
             }
 
             // Check if player has enough gold
-            if (SessionData.PlayerData.Gold < recipe.GoldCost)
+            if (PlayerAnchor.Instance.CurrentGold < recipe.GoldCost)
             {
 #if UNITY_EDITOR
-                Debug.LogWarning($"Forge failed: Not enough gold. Need {recipe.GoldCost}, have {SessionData.PlayerData.Gold}.");
+                Debug.LogWarning($"Forge failed: Not enough gold. Need {recipe.GoldCost}, have {PlayerAnchor.Instance.CurrentGold}.");
 #endif
                 return;
             }
@@ -143,8 +146,8 @@ namespace OutlandHaven.UIToolkit
                     {
                         
                         // Deduct gold
-                        SessionData.PlayerData.ModifyGold(-recipe.GoldCost);
-                        InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
+                        PlayerAnchor.Instance.TrySpendGold(recipe.GoldCost);
+                        InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                         InventoryEvents?.OnInventoryUpdated?.Invoke();
 #if UNITY_EDITOR
                         Debug.Log($"Forged {recipe.OutputItem.ItemName} successfully.");

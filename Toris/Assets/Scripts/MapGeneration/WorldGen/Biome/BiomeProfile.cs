@@ -37,11 +37,6 @@ public sealed class BiomeProfile : ScriptableObject
     [Range(3, 5)] public int roadWidthMin = 3;
     [Range(3, 5)] public int roadWidthMax = 5;
     public int maxRoadScanTiles = 4000;
-
-    [Header("Persistent Biome Features")]
-    [SerializeField] private PersistentBiomeFeatureDefinition[] persistentFeatures;
-
-    public PersistentBiomeFeatureDefinition[] PersistentFeatures => persistentFeatures;
     public TileBase platformGroundTile;
 
     #endregion

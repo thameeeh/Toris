@@ -1,4 +1,16 @@
-## [Current/Recent] - Grouped World Diagnostics Snapshots
+## [Current/Recent] - Debug HUD Readability Trim
+This update simplifies the default world debug HUD so it stays readable at larger font sizes while keeping deeper diagnostics available behind an advanced toggle.
+
+### 1. Simplified The Default HUD
+* The default HUD now focuses on visual toggles, biome, tile position, and the core sampled world signals.
+
+### 2. Kept Deeper Diagnostics Available On Demand
+* Grouped subsystem diagnostics remain available through an in-HUD advanced-stats toggle instead of crowding the default layout.
+
+### 3. Preserved Existing Debug Utility
+* Verified compact HUD readability and the continued behavior of chunk-border and streaming-rectangle toggles.
+
+---## [Current/Recent] - Grouped World Diagnostics Snapshots
 This update restructures world diagnostics into grouped subsystem snapshots so the debug HUD reads from intentional read models instead of one large flat payload.
 
 ### 1. Added Subsystem Diagnostics Shapes
@@ -106,5 +118,6 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
+
 
 

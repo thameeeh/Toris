@@ -1,4 +1,19 @@
-## [Current/Recent] - Grouped World Diagnostics Snapshots
+## [Current/Recent] - Debug HUD Readability Trim
+This update keeps the new grouped diagnostics model in code while simplifying the default F3 surface so it stays readable at larger font sizes and remains focused on quick world and chunk-debug visibility.
+
+### 1. Reduced The Default HUD To High-Signal World Info
+* Kept visuals toggles, biome, tile position, and the core signal readouts visible by default.
+* This keeps the HUD usable as a quick chunk-visualization and world-sampling tool instead of trying to display every subsystem stat at once.
+
+### 2. Hid Verbose Diagnostics Behind An Explicit Toggle
+* Kept grouped streaming, lifecycle, build-output, navigation, and transition sections in code behind showAdvancedStats instead of deleting them.
+* Added an in-HUD toggle for advanced stats so the deeper diagnostics remain available when needed without crowding the default view.
+
+### 3. Preserved Existing Debug Functionality While Improving Readability
+* Verified the compact HUD layout at larger font sizes and confirmed chunk-border and streaming-rect toggles still work.
+* This keeps the diagnostics cleanup practical without throwing away the newer snapshot boundaries.
+
+---## [Current/Recent] - Grouped World Diagnostics Snapshots
 This update turns the world diagnostics model into grouped subsystem read models so build output, streaming, lifecycle, navigation, and transition state each expose intentional snapshot data instead of one flat aggregate field bag.
 
 ### 1. Added Subsystem Diagnostics Snapshots
@@ -586,6 +601,7 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
 
 
 

@@ -11,11 +11,7 @@ public sealed class WorldContext
     public NoiseContext Noise { get; private set; }
     public BiomeMask Mask { get; private set; }
     public WorldBuildOutput BuildOutput { get; private set; }
-    public FeatureStamps Stamps => BuildOutput != null ? BuildOutput.TerrainOverrides : null;
-    public SiteBlockerMap SiteBlockers => BuildOutput != null ? BuildOutput.SiteBlockers : null;
     public ITileNavigationContributionSource NavigationContributions => BuildOutput != null ? BuildOutput.NavigationContributions : null;
-    public RoadAnchorMap RoadAnchors => BuildOutput != null ? BuildOutput.RoadAnchors : null;
-    public SitePlacementIndex SitePlacements => BuildOutput != null ? BuildOutput.SitePlacements : null;
 
     public AnimationCurve DangerCurve => World.dangerCurve;
 
@@ -39,18 +35,6 @@ public sealed class WorldContext
         BuildOutput.Clear();
 
         ActiveDef?.BuildFeatures(this);
-    }
-
-    public void RegisterSite(
-        WorldSiteDefinition siteDefinition,
-        Vector2Int centerTile,
-        SitePlacementLifecycleScope lifecycleScope = SitePlacementLifecycleScope.Chunk)
-    {
-        if (BuildOutput == null)
-            return;
-
-        int chunkSize = Mathf.Max(1, World.chunkSize);
-        BuildOutput.RegisterSite(siteDefinition, centerTile, chunkSize, lifecycleScope);
     }
 }
 

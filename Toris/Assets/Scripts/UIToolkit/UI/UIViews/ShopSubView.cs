@@ -73,6 +73,7 @@ namespace OutlandHaven.UIToolkit
             {
                 _uiInventoryEvents.OnCurrencyChanged += UpdateGoldAmount;
                 _uiInventoryEvents.OnShopInventoryUpdated += HandleShopInventoryUpdated;
+                _uiInventoryEvents.OnItemRightClicked += HandleItemRightClicked;
                 _eventsBound = true;
             }
         }
@@ -84,6 +85,7 @@ namespace OutlandHaven.UIToolkit
             {
                 _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
                 _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
+                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
                 _eventsBound = false;
             }
         }
@@ -105,23 +107,28 @@ namespace OutlandHaven.UIToolkit
 
                 slotView.Update(slotData);
                 _slotViews.Add(slotView);
+            }
+        }
 
-                // Register buy interaction on Right Click (ContextClickEvent)
-                var currentSlotData = slotData; // Capture variable for lambda
+        private void HandleItemRightClicked(InventorySlot slotData)
+        {
+            if (slotData == null || slotData.IsEmpty) return;
 
-                // We register on the slot instance root so the player can click anywhere in the slot
-                slotInstance.RegisterCallback<MouseUpEvent>(evt =>
-                {
-                    if (evt.button == 1)
-                    {
-                        if (currentSlotData != null && !currentSlotData.IsEmpty)
-                        {
-                            int amount = evt.shiftKey ? BULK_BUY_AMOUNT : 1;
-                            // Only request buy, let the manager handle logic and update UI
-                            _uiInventoryEvents?.OnRequestBuy?.Invoke(currentSlotData.HeldItem, amount);
-                        }
-                    }
-                });
+            bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            int amount = isShiftHeld ? BULK_BUY_AMOUNT : 1;
+
+            // Check if clicking an item in the shop
+            if (_shopContainer != null && _shopContainer.LiveSlots.Contains(slotData))
+            {
+                _uiInventoryEvents?.OnRequestBuy?.Invoke(slotData.HeldItem, amount);
+                return;
+            }
+
+            // Check if clicking an item in the player inventory
+            if (_gameSession != null && _gameSession.PlayerInventory != null && _gameSession.PlayerInventory.LiveSlots.Contains(slotData))
+            {
+                _uiInventoryEvents?.OnRequestSell?.Invoke(slotData.HeldItem, amount);
+                return;
             }
         }
 
@@ -147,6 +154,7 @@ namespace OutlandHaven.UIToolkit
             {
                 _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
                 _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
+                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
                 _eventsBound = false;
             }
             base.Dispose();

@@ -17,6 +17,7 @@ namespace OutlandHaven.Inventory
 
         [Header("Crafting Events")]
         public UnityAction<InventorySlot> OnItemClicked;
+        public UnityAction<InventorySlot> OnItemRightClicked;
         public UnityAction<InventorySlot, SalvageType> OnRequestSalvage;
         public UnityAction<InventorySlot, InventorySlot> OnRequestForge;
 

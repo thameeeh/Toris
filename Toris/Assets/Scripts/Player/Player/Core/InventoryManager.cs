@@ -21,12 +21,40 @@ namespace OutlandHaven.Inventory
             // Initialize the live slots based on the SO's rules when the object spawns
             if (ContainerBlueprint != null)
             {
-                for (int i = 0; i < ContainerBlueprint.SlotCount; i++)
+                // Ensure LiveSlots count exactly matches the Blueprint's SlotCount
+                while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
                     LiveSlots.Add(new InventorySlot());
                 }
+                while (LiveSlots.Count > ContainerBlueprint.SlotCount)
+                {
+                    LiveSlots.RemoveAt(LiveSlots.Count - 1);
+                }
             }
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            // Keep the LiveSlots count synchronized with the Blueprint's SlotCount in the Editor
+            if (ContainerBlueprint != null)
+            {
+                if (LiveSlots == null)
+                {
+                    LiveSlots = new List<InventorySlot>();
+                }
+
+                while (LiveSlots.Count < ContainerBlueprint.SlotCount)
+                {
+                    LiveSlots.Add(new InventorySlot());
+                }
+                while (LiveSlots.Count > ContainerBlueprint.SlotCount)
+                {
+                    LiveSlots.RemoveAt(LiveSlots.Count - 1);
+                }
+            }
+        }
+#endif
 
         private void OnEnable()
         {

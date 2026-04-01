@@ -7,7 +7,18 @@
 
 ---
 
-## [Current/Recent] - Refactor Player Data Architecture
+## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
+
+### 1. Updated Initialization Logic
+* Modified `Awake()` in `InventoryManager.cs` to explicitly synchronize the `LiveSlots` count with the `ContainerBlueprint.SlotCount`. It now pads missing slots or trims excess ones, preventing the list from blindly appending slots.
+
+### 2. Added Editor Validation
+* Added an `OnValidate()` method wrapped in `#if UNITY_EDITOR` to `InventoryManager.cs`. This ensures that any manual changes in the Unity Inspector immediately reflect the correct, constrained slot count defined by the `ContainerBlueprint`.
+
+---
+
+## [Previous] - Refactor Player Data Architecture
 This update refactors how global managers and the HUD access player progression and stats, removing the deprecated `PlayerDataSO` in favor of a Hybrid Architecture using Runtime Anchors and a UI Bridge.
 
 ### 1. Created Anchors

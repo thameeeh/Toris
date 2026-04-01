@@ -39,7 +39,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 2 close-out is complete for the current chunk streaming extraction scope.
 - Phase 3 close-out is complete for unified site lifecycle ownership.
 - Phase 4 has landed an explicit ISceneTransitionService boundary for run gates; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than direct runtime singleton access.
-- Phase 5 has landed its first encounter-site seam through `IWorldEncounterSite`, a reusable occupant-tracking boundary through `WorldEncounterOccupantCollection`, a reusable lifecycle config boundary through `WorldEncounterOccupantPolicy`, an explicit encounter-package API through `WorldEncounterPackage`, reusable activation/persistence hooks through `WorldEncounterPackageBinding` and `WorldEncounterPackageState`, and a reusable alert-state runtime through `WorldEncounterAlertRuntime`, but encounter orchestration is still wolf-den-specific and not yet packaged as a reusable subsystem.
+- Phase 5 close-out is complete for the current site-versus-encounter split scope through `IWorldEncounterSite`, `WorldEncounterOccupantCollection`, `WorldEncounterOccupantPolicy`, `WorldEncounterPackage`, `WorldEncounterPackageBinding`, `WorldEncounterPackageState`, `WorldEncounterAlertRuntime`, and `WolfEncounterCommandController`.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -59,7 +59,7 @@ The codebase already contains meaningful refactor progress.
 - `WorldGenRunner` still acts as the composition root and the top-level frame orchestrator.
 - Chunk load policy still depends on camera math and frame-budget logic living in `WorldGenRunner`.
 - Build output is only partly normalized; terrain output is still mostly transient chunk tile data plus stamp maps.
-- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem, even though occupant tracking, unload release policy, encounter lifecycle tuning, package selection, package activation state, and alert-state bookkeeping now have reusable helper boundaries.
+- Encounter boundaries are now explicit for the current wolf-den scope, but future multi-encounter reuse remains a later expansion rather than a blocking refactor pressure point.
 - Run-scene transitions now accept `ISceneTransitionService` in the world-site path, but static-scene gate usage still depends on scene-level service availability and should eventually move onto a clearer composition path.
 - Asset migration is incomplete; not all biome assets are wired into the new build-step pipeline.
 
@@ -328,7 +328,7 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 - encounter-package selection now exists through `WorldEncounterPackage` and `TryGetEncounterPackage(...)`
 - package activation and namespaced package persistence now exist through `WorldEncounterPackageBinding` and `WorldEncounterPackageState`
 - alert accumulation, decay, and max-alert gating now exist through `WorldEncounterAlertRuntime`
-- howl execution, investigation commands, and other encounter-specific tuning are still highly wolf-den-shaped and not yet packaged for reuse
+- wolf-specific command behavior now sits behind `WolfEncounterCommandController`, which completes the current site-versus-encounter split for the wolf-den scope
 
 ### Scope
 - define an encounter package model or service boundary
@@ -337,9 +337,9 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 
 ### Key Work Items
 
-- continue extracting the remaining wolf-specific orchestration out of the howl and occupant-command layer now that package selection, activation ownership, persistence hooks, and alert-state bookkeeping are explicit
-- define what encounter configuration lives in site runtime config versus encounter-specific config
-- decide how a future camp, shrine, nest, or patrol point would request an encounter package
+- validate that the current wolf-den encounter package boundary is stable enough to stand as the Phase 5 reference implementation
+- document which parts of the current encounter package are intentionally reusable versus still wolf-specific by design
+- leave broader multi-encounter reuse and future host expansion as post-close-out follow-up instead of reopening the current refactor phase
 
 ### Forbidden Shortcuts
 
@@ -528,7 +528,7 @@ Do not merge all four passes into one large opaque change unless the scope is ge
 
 ## 10. Immediate Next Move
 
-The next implementation step should be the next Phase 5 close-out slice.
+The next implementation step should be the first Phase 6 close-out slice.
 
 Specifically:
 
@@ -569,6 +569,8 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
+
 
 
 

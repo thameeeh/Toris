@@ -16,6 +16,7 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
+        [SerializeField] private PlayerProgressionAnchorSO _playerAnchor;
         [SerializeField] private ShopManagerSO _shopManagerSO;
         [SerializeField] private CraftingManagerSO _craftingManagerSO;
         [SerializeField] private SalvageManagerSO _salvageManagerSO;
@@ -82,7 +83,7 @@ namespace OutlandHaven.UIToolkit
             if (_smithMainTemplate == null || _slotTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
-            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _craftingManagerSO, _salvageManagerSO);
+            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _playerAnchor, _craftingManagerSO, _salvageManagerSO);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

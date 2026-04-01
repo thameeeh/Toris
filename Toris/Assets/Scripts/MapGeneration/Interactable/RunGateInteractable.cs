@@ -38,12 +38,12 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
         if (runGateTransitionServiceOverride is IRunGateTransitionService overrideService)
             return overrideService;
 
-        MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        for (int i = 0; i < behaviours.Length; i++)
-        {
-            if (behaviours[i] is IRunGateTransitionService runGateService)
-                return runGateService;
-        }
+        if (SceneTransitionService.Instance is IRunGateTransitionService instanceService)
+            return instanceService;
+
+        SceneTransitionService localSceneTransitionService = FindFirstObjectByType<SceneTransitionService>();
+        if (localSceneTransitionService is IRunGateTransitionService localRunGateService)
+            return localRunGateService;
 
         return null;
     }

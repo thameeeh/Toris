@@ -22,7 +22,6 @@ public readonly struct WorldGenDiagnosticsSnapshot
     public readonly int CurrentBiomeIndex;
     public readonly float GateCooldownRemainingSeconds;
     public readonly bool SceneTransitionLoading;
-    public readonly Camera StreamCamera;
     public readonly WorldProfile Profile;
 
     public WorldGenDiagnosticsSnapshot(
@@ -45,7 +44,6 @@ public readonly struct WorldGenDiagnosticsSnapshot
         int currentBiomeIndex,
         float gateCooldownRemainingSeconds,
         bool sceneTransitionLoading,
-        Camera streamCamera,
         WorldProfile profile)
     {
         LoadedChunks = loadedChunks;
@@ -67,7 +65,6 @@ public readonly struct WorldGenDiagnosticsSnapshot
         CurrentBiomeIndex = currentBiomeIndex;
         GateCooldownRemainingSeconds = gateCooldownRemainingSeconds;
         SceneTransitionLoading = sceneTransitionLoading;
-        StreamCamera = streamCamera;
         Profile = profile;
     }
 }

@@ -4,7 +4,7 @@ public sealed class WorldSiteActivationPipeline
 {
     private readonly WorldSceneServices worldSceneServices;
     private readonly WorldEncounterServices worldEncounterServices;
-    private readonly WorldRuntimeState worldRuntimeState;
+    private readonly ChunkStateStore chunkStateStore;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly IGateTransitionService gateTransitionService;
     private readonly IRunGateTransitionService runGateTransitionService;
@@ -13,19 +13,19 @@ public sealed class WorldSiteActivationPipeline
     public WorldSiteActivationPipeline(
         WorldSceneServices worldSceneServices,
         WorldEncounterServices worldEncounterServices,
-        WorldRuntimeState worldRuntimeState,
+        ChunkStateStore chunkStateStore,
         WorldPoiPoolManager poiPoolManager,
         IGateTransitionService gateTransitionService,
         IRunGateTransitionService runGateTransitionService)
     {
         this.worldSceneServices = worldSceneServices;
         this.worldEncounterServices = worldEncounterServices;
-        this.worldRuntimeState = worldRuntimeState;
+        this.chunkStateStore = chunkStateStore;
         this.poiPoolManager = poiPoolManager;
         this.gateTransitionService = gateTransitionService;
         this.runGateTransitionService = runGateTransitionService;
 
-        worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
+        worldSiteStateService = new WorldSiteStateServiceAdapter(chunkStateStore);
     }
 
     public GameObject ActivateSite(
@@ -41,7 +41,7 @@ public sealed class WorldSiteActivationPipeline
         if (prefab == null || worldSceneServices == null || poiPoolManager == null)
             return null;
 
-        int spawnId = worldRuntimeState.ChunkStates.MakeSpawnId(
+        int spawnId = chunkStateStore.MakeSpawnId(
             biomeSeed,
             placement.ChunkCoord,
             placement.LocalIndex,

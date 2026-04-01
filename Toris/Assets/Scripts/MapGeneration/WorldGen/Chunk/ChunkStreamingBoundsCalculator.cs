@@ -2,31 +2,6 @@ using UnityEngine;
 
 public static class ChunkStreamingBoundsCalculator
 {
-    public static bool TryCalculate(
-        Grid grid,
-        Camera camera,
-        WorldProfile worldProfile,
-        int preloadChunks,
-        int unloadHysteresisChunks,
-        out ChunkStreamingBounds bounds)
-    {
-        bounds = default;
-
-        if (!TryCalculateView(
-                grid,
-                camera,
-                worldProfile,
-                preloadChunks,
-                unloadHysteresisChunks,
-                out ChunkStreamingView view))
-        {
-            return false;
-        }
-
-        bounds = view.Bounds;
-        return true;
-    }
-
     public static bool TryCalculateView(
         Grid grid,
         Camera camera,

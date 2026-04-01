@@ -24,18 +24,6 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
     private readonly TileResolver resolver = new TileResolver();
     private GUIStyle style;
-
-    private bool TryGetDiagnosticsSnapshot(out WorldGenDiagnosticsSnapshot diagnosticsSnapshot)
-    {
-        if (runner == null)
-        {
-            diagnosticsSnapshot = default;
-            return false;
-        }
-
-        diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
-        return true;
-    }
     // ---------- runtime line rendering ----------
     private Material lineMat;
 
@@ -120,15 +108,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
             return;
         }
 
-        if (!TryGetDiagnosticsSnapshot(out WorldGenDiagnosticsSnapshot diagnosticsSnapshot))
-        {
-            GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60f), "WorldGen Debug");
-            GUI.Label(
-                new Rect(panelPos.x + 10f, panelPos.y + 25f, panelSize.x - 20f, 20f),
-                "diagnostics unavailable",
-                style);
-            return;
-        }
+        WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
 
         Vector2 focusWorldPosition = followTarget != null ? (Vector2)followTarget.position : Vector2.zero;
 
@@ -226,8 +206,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         if (cam.cameraType != CameraType.Game && cam.cameraType != CameraType.SceneView)
             return;
 
-        if (!TryGetDiagnosticsSnapshot(out WorldGenDiagnosticsSnapshot diagnosticsSnapshot))
-            return;
+        WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
 
         WorldProfile worldProfile = diagnosticsSnapshot.Profile;
         if (worldProfile == null)

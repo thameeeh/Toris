@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ public sealed class ChunkProcessingPipeline
     private readonly ChunkGenerator chunkGenerator;
     private readonly TilemapApplier tilemapApplier;
     private readonly WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
-    private readonly WorldRuntimeState worldRuntimeState;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
 
     public ChunkProcessingPipeline(
@@ -18,7 +16,6 @@ public sealed class ChunkProcessingPipeline
         ChunkGenerator chunkGenerator,
         TilemapApplier tilemapApplier,
         WorldFeatureLifecycleSystem worldFeatureLifecycleSystem,
-        WorldRuntimeState worldRuntimeState,
         ChunkStreamingSystem chunkStreamingSystem)
     {
         this.worldProfile = worldProfile;
@@ -26,7 +23,6 @@ public sealed class ChunkProcessingPipeline
         this.chunkGenerator = chunkGenerator;
         this.tilemapApplier = tilemapApplier;
         this.worldFeatureLifecycleSystem = worldFeatureLifecycleSystem;
-        this.worldRuntimeState = worldRuntimeState;
         this.chunkStreamingSystem = chunkStreamingSystem;
     }
 
@@ -37,9 +33,7 @@ public sealed class ChunkProcessingPipeline
         Vector2Int unloadMaxChunk,
         double generationBudgetMs,
         int maxChunksPerFrame,
-        int maxUnloadRemovalsPerFrame,
-        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkLoaded,
-        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkUnloading)
+        int maxUnloadRemovalsPerFrame)
     {
         if (worldProfile == null || chunkGenerator == null || tilemapApplier == null || chunkStreamingSystem == null)
             return default;
@@ -92,12 +86,6 @@ public sealed class ChunkProcessingPipeline
 
             chunkStreamingSystem.MarkChunkLoaded(chunkCoord);
 
-            if (worldRuntimeState != null)
-            {
-                ChunkStateStore.ChunkState chunkState = worldRuntimeState.ChunkStates.GetChunkState(chunkCoord);
-                onChunkLoaded?.Invoke(chunkCoord, chunkState);
-            }
-
             totalGenerationTicks += (generationEndTicks - generationStartTicks);
             totalApplyTicks += (applyEndTicks - generationEndTicks);
             generatedChunkCount++;
@@ -108,8 +96,7 @@ public sealed class ChunkProcessingPipeline
         UnloadChunksOutside(
             unloadMinChunk,
             unloadMaxChunk,
-            maxUnloadRemovalsPerFrame,
-            onChunkUnloading);
+            maxUnloadRemovalsPerFrame);
 
         long unloadEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
 
@@ -144,8 +131,7 @@ public sealed class ChunkProcessingPipeline
     private void UnloadChunksOutside(
         Vector2Int keepMinChunk,
         Vector2Int keepMaxChunk,
-        int maxUnloadRemovalsPerFrame,
-        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkUnloading)
+        int maxUnloadRemovalsPerFrame)
     {
         if (chunkStreamingSystem == null)
             return;
@@ -161,12 +147,6 @@ public sealed class ChunkProcessingPipeline
         for (int i = 0; i < chunksToUnload.Count; i++)
         {
             Vector2Int chunkCoord = chunksToUnload[i];
-
-            if (worldRuntimeState != null)
-            {
-                ChunkStateStore.ChunkState chunkState = worldRuntimeState.ChunkStates.GetChunkState(chunkCoord);
-                onChunkUnloading?.Invoke(chunkCoord, chunkState);
-            }
 
             worldFeatureLifecycleSystem?.DeactivateChunk(chunkCoord);
             tilemapApplier.ClearChunk(chunkCoord, worldProfile.chunkSize);

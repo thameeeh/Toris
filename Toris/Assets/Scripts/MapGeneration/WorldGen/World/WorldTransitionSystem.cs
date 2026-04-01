@@ -6,7 +6,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     private readonly BiomeDatabase biomeDatabase;
     private readonly WorldNavigationLifecycle worldNavigationLifecycle;
     private readonly WorldContext worldContext;
-    private readonly WorldRuntimeState worldRuntimeState;
+    private readonly ChunkStateStore chunkStateStore;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
     private readonly float gateCooldownSeconds;
 
@@ -31,7 +31,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         BiomeDatabase biomeDatabase,
         WorldNavigationLifecycle worldNavigationLifecycle,
         WorldContext worldContext,
-        WorldRuntimeState worldRuntimeState,
+        ChunkStateStore chunkStateStore,
         ChunkStreamingSystem chunkStreamingSystem,
         float gateCooldownSeconds)
     {
@@ -39,7 +39,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         this.biomeDatabase = biomeDatabase;
         this.worldNavigationLifecycle = worldNavigationLifecycle;
         this.worldContext = worldContext;
-        this.worldRuntimeState = worldRuntimeState;
+        this.chunkStateStore = chunkStateStore;
         this.chunkStreamingSystem = chunkStreamingSystem;
         this.gateCooldownSeconds = gateCooldownSeconds;
     }
@@ -94,7 +94,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         );
 
         worldContext.BindBiome(biomeDefinition, biomeInstance);
-        worldRuntimeState?.Clear();
+        chunkStateStore?.Clear();
 
         worldNavigationLifecycle?.SetNavigationContributions(worldContext.NavigationContributions);
         worldFeatureLifecycleSystem?.RebuildForCurrentBiome();

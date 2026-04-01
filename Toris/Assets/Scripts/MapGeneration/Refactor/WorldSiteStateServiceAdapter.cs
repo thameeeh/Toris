@@ -2,18 +2,18 @@ using UnityEngine;
 
 public sealed class WorldSiteStateServiceAdapter : IWorldSiteStateService
 {
-    private readonly WorldRuntimeState worldRuntimeState;
+    private readonly ChunkStateStore chunkStateStore;
 
-    public WorldSiteStateServiceAdapter(WorldRuntimeState worldRuntimeState)
+    public WorldSiteStateServiceAdapter(ChunkStateStore chunkStateStore)
     {
-        this.worldRuntimeState = worldRuntimeState;
+        this.chunkStateStore = chunkStateStore;
     }
 
     public WorldSiteStateHandle GetSiteState(Vector2Int chunkCoord, int spawnId)
     {
-        if (worldRuntimeState == null)
+        if (chunkStateStore == null)
             return default;
 
-        return worldRuntimeState.ChunkStates.GetSiteState(chunkCoord, spawnId);
+        return chunkStateStore.GetSiteState(chunkCoord, spawnId);
     }
 }

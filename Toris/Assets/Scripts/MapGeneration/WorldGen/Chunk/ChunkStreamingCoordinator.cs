@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public sealed class ChunkStreamingCoordinator
@@ -7,8 +6,6 @@ public sealed class ChunkStreamingCoordinator
     private readonly Grid grid;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
     private readonly ChunkProcessingPipeline chunkProcessingPipeline;
-    private ChunkStreamingFrameResult lastFrameResult;
-    private bool hasLastFrameResult;
 
     public ChunkStreamingCoordinator(
         WorldProfile worldProfile,
@@ -22,16 +19,8 @@ public sealed class ChunkStreamingCoordinator
         this.chunkProcessingPipeline = chunkProcessingPipeline;
     }
 
-    public bool TryGetLastFrameResult(out ChunkStreamingFrameResult frameResult)
-    {
-        frameResult = lastFrameResult;
-        return hasLastFrameResult;
-    }
-
     public ChunkStreamingFrameResult ProcessFrame(
-        ChunkStreamingRequest request,
-        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkLoaded,
-        Action<Vector2Int, ChunkStateStore.ChunkState> onChunkUnloading)
+        ChunkStreamingRequest request)
     {
         if (chunkStreamingSystem == null || chunkProcessingPipeline == null)
             return default;
@@ -57,17 +46,12 @@ public sealed class ChunkStreamingCoordinator
             view.Bounds.UnloadMaxChunk,
             request.Settings.GenerationBudgetMs,
             request.Settings.MaxChunksPerFrame,
-            request.Settings.MaxUnloadRemovalsPerFrame,
-            onChunkLoaded,
-            onChunkUnloading);
+            request.Settings.MaxUnloadRemovalsPerFrame);
 
         ChunkStreamingFrameResult frameResult = new ChunkStreamingFrameResult(
             true,
             view,
             processingFrameStats);
-
-        lastFrameResult = frameResult;
-        hasLastFrameResult = true;
 
         return frameResult;
     }

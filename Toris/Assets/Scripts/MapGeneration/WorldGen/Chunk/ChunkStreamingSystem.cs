@@ -33,11 +33,6 @@ public sealed class ChunkStreamingSystem
         anchorInitialized = true;
     }
 
-    public bool IsChunkLoaded(Vector2Int chunkCoord)
-    {
-        return loadedChunks.Contains(chunkCoord);
-    }
-
     public void MarkChunkLoaded(Vector2Int chunkCoord)
     {
         loadedChunks.Add(chunkCoord);

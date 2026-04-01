@@ -1,3 +1,99 @@
+## [Current/Recent] - Phase 8 Slice: Streaming Frame Result Alias Cleanup
+This update continues the Phase 8 deletion pass by removing one more redundant alias from the streaming diagnostics path, so the frame-result type exposes only the state that still has distinct meaning.
+
+### 1. Removed A Redundant Frame-Result Alias
+* Deleted the HasView field from ChunkStreamingFrameResult.
+* That field was only mirroring ProcessedFrame, so it carried no separate state and only preserved dead compatibility surface.
+
+### 2. Tightened The Runner HUD Snapshot Path To The Real Field
+* Updated WorldGenRunner to use ProcessedFrame directly when building streaming bounds for diagnostics.
+* This keeps the HUD path aligned with the actual frame-result contract instead of relying on an unnecessary alias.
+
+### 3. Verified No-Behavior Change After The Cleanup
+* Verified startup, chunk loading and unloading, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the Phase 8 deletion work focused on proven redundant surface instead of speculative refactoring.
+
+---
+## [Current/Recent] - Phase 8 Slice: Diagnostics Snapshot Surface Cleanup
+This update continues the Phase 8 deletion pass by trimming one more dead field from the diagnostics snapshot so the HUD-facing read model only carries values that still have live consumers.
+
+### 1. Removed A Dead Snapshot Field
+* Deleted the unused StreamCamera field from WorldGenDiagnosticsSnapshot.
+* This keeps the debug snapshot aligned with the actual HUD and runtime readers instead of preserving stale payload.
+
+### 2. Trimmed The Matching Runner Snapshot Write Path
+* Updated WorldGenRunner so it no longer passes an unused camera reference into the diagnostics snapshot constructor.
+* This keeps the diagnostics composition path honest without changing how streaming camera selection works at runtime.
+
+### 3. Verified No-Behavior Change After The Cleanup
+* Verified startup, chunk loading and unloading, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the Phase 8 deletion work focused on proven dead diagnostics surface instead of speculative refactors.
+
+---
+## [Current/Recent] - Phase 8 Slice: Streaming Diagnostics Cache Cleanup
+This update continues the Phase 8 deletion pass by moving last-frame streaming diagnostics ownership into the runner, so the streaming coordinator no longer keeps extra cached frame state just for the HUD path.
+
+### 1. Moved Last-Frame Streaming Diagnostics Into WorldGenRunner
+* WorldGenRunner now caches the most recent processed streaming frame result directly after coordinator processing.
+* This keeps the diagnostics snapshot owned by the same top-level runtime that already builds the HUD snapshot.
+
+### 2. Deleted Extra Cached Coordinator Surface
+* Removed the coordinator-owned last-frame cache and its TryGetLastFrameResult(...) helper.
+* This trims one more dead read-back surface from the streaming layer without changing the runtime processing flow.
+
+### 3. Verified No-Behavior Change After The Cleanup
+* Verified startup, chunk loading and unloading, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the Phase 8 deletion work grounded in verified parity checks instead of preserving unused coordinator state.
+
+---
+## [Current/Recent] - Phase 8 Slice: Chunk-State And Streaming Plumbing Cleanup
+This update continues the Phase 8 deletion pass by removing an empty runtime-state wrapper and deleting the last dead chunk callback plumbing from the streaming path, so chunk persistence and streaming flow reflect the real runtime ownership more directly.
+
+### 1. Deleted The Empty WorldRuntimeState Wrapper
+* Deleted WorldRuntimeState and moved ChunkStateStore ownership directly into WorldGenRunner.
+* Updated WorldTransitionSystem to clear ChunkStateStore directly instead of going through an empty wrapper object.
+
+### 2. Deleted Dead Chunk Callback Plumbing
+* Removed chunk loaded/unloading callback parameters from ChunkStreamingCoordinator and ChunkProcessingPipeline.
+* This also removed the last dead ChunkProcessingPipeline dependency that only existed to support those callbacks.
+
+### 3. Verified No-Behavior Change After The Deletion
+* Verified startup, chunk streaming, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the Phase 8 close-out grounded in deleting proven dead plumbing instead of preserving stale extension points.
+
+---
+## [Current/Recent] - Phase 8 Slice: Runner Public Surface Cleanup
+This update continues the Phase 8 deletion pass by trimming dead public runner surface and empty callback wrappers so WorldGenRunner exposes only the runtime entry points that still have real consumers.
+
+### 1. Removed Dead Public Runner Surface
+* Deleted unused public getters for preload and hysteresis settings, streaming camera, world profile, loaded chunk state, and chunk-loaded queries.
+* This keeps the runner from advertising read access patterns that the current diagnostics and gameplay code no longer use.
+
+### 2. Deleted Empty Chunk Callback Wrappers
+* Removed the unused chunk loaded and chunk unloading callback actions along with their empty wrapper methods.
+* This clears out one more leftover extension path after the streaming pipeline stopped using runner-owned callback plumbing.
+
+### 3. Verified No-Behavior Change After Surface Cleanup
+* Verified startup, chunk streaming, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the runner cleanup grounded in verified parity instead of preserving dead public scaffolding.
+---
+## [Current/Recent] - Phase 8 Slice: Site Activation Persistence Boundary Cleanup
+This update continues the Phase 8 deletion pass by narrowing site activation down to the exact persistence boundary it actually needs, so the activation path no longer receives a broader runtime-state object just to reach chunk-site state.
+
+### 1. Narrowed Site Activation To Chunk-State Persistence
+* Updated WorldSiteActivationPipeline to depend on ChunkStateStore instead of the broader WorldRuntimeState.
+* This makes the activation boundary reflect its real responsibility: deterministic site spawn ids and per-site chunk persistence.
+
+### 2. Narrowed The Site-State Adapter To Match
+* Updated WorldSiteStateServiceAdapter to wrap ChunkStateStore directly.
+* This keeps the adapter aligned with the smaller persistence surface instead of preserving a broader dependency than it needs.
+
+### 3. Verified No-Behavior Change After The Boundary Trim
+* Verified startup, chunk streaming, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the Phase 8 cleanup work focused on honest dependency boundaries without changing the authored runtime behavior.
+
+---
+
 ## [Current/Recent] - Phase 8 Slice: Service Boundary Surface Cleanup
 This update continues the Phase 8 deletion pass by removing one more unnecessary peek-through on the world-scene service boundary, so callers rely on the service behavior they actually need instead of reaching through it for internal state.
 
@@ -13,7 +109,8 @@ This update continues the Phase 8 deletion pass by removing one more unnecessary
 * Verified startup, chunk streaming, wolf den behavior, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
 * This keeps the cleanup work focused on deleting unnecessary surfaces while preserving the already-verified runtime behavior.
 
----## [Current/Recent] - Phase 8 Slice: Runner Composition State Cleanup
+---
+## [Current/Recent] - Phase 8 Slice: Runner Composition State Cleanup
 This update continues the Phase 8 deletion pass by shrinking WorldGenRunner down to the runtime state it actually needs after startup, so one-shot composition helpers no longer live as long-lived runner fields.
 
 ### 1. Localized Startup-Only Composition Helpers
@@ -28,7 +125,8 @@ This update continues the Phase 8 deletion pass by shrinking WorldGenRunner down
 * Verified startup, chunk streaming, wolf den behavior, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
 * This keeps the Phase 8 deletion work grounded in parity checks rather than speculative cleanup.
 
----## [Current/Recent] - Phase 8 Slice: Runner Scaffold Cleanup
+---
+## [Current/Recent] - Phase 8 Slice: Runner Scaffold Cleanup
 This update continues the Phase 8 deletion pass by removing a pair of no-behavior leftovers from WorldGenRunner so the composition root keeps one clear startup path instead of carrying duplicate bootstrap code and dead migration comments.
 
 ### 1. Removed Duplicate POI Pool Bootstrap
@@ -43,7 +141,8 @@ This update continues the Phase 8 deletion pass by removing a pair of no-behavio
 * Verified startup, chunk streaming, wolf den behavior, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
 * This keeps Phase 8 moving through small deletions with parity checks instead of broad cleanup guesses.
 
----## [Current/Recent] - Phase 8 Slice: Transition And Navigation Scaffold Cleanup
+---
+## [Current/Recent] - Phase 8 Slice: Transition And Navigation Scaffold Cleanup
 This update continues the Phase 8 deletion pass by removing dead transition and navigation compatibility layers, trimming a few no-behavior helper surfaces, and keeping the current diagnostics as the verification safety net.
 
 ### 1. Deleted Dead Transition Compatibility Paths
@@ -424,6 +523,13 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
+
+
+
+
+
+
 
 
 

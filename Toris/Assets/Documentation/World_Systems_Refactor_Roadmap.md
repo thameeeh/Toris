@@ -61,7 +61,7 @@ The codebase already contains meaningful refactor progress.
 
 - `WorldGenRunner` still acts as the composition root and the top-level frame orchestrator.
 - Chunk load policy still depends on camera math and frame-budget logic living in `WorldGenRunner`.
-- Build output is only partly normalized; terrain output is still mostly transient chunk tile data plus stamp maps.
+- Build output is now authoritative for the active content set, but WorldGenRunner still owns too much streaming policy and diagnostics aggregation to count as a thin shell.
 - Encounter boundaries are now explicit for the current wolf-den scope, but future multi-encounter reuse remains a later expansion rather than a blocking refactor pressure point.
 - Major service boundaries are now in place; the main remaining pressure is cleanup and deletion of leftover migration scaffolding rather than missing transition or nav architecture.
 - Asset migration is incomplete; not all biome assets are wired into the new build-step pipeline.
@@ -572,6 +572,10 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
+
+
+
 
 
 

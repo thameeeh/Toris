@@ -13,7 +13,11 @@ public static class SiteStamping
             return;
 
         int resolvedSize = Mathf.Max(1, size);
-        worldContext.Stamps.StampRectGround(centerTile, resolvedSize, resolvedSize, groundTile);
+        WorldBuildOutput buildOutput = worldContext.BuildOutput;
+        if (buildOutput == null)
+            return;
+
+        buildOutput.TerrainOverrides.StampRectGround(centerTile, resolvedSize, resolvedSize, groundTile);
     }
 
     public static void AddSquareBlocker(
@@ -25,6 +29,10 @@ public static class SiteStamping
             return;
 
         int resolvedSize = Mathf.Max(1, size);
-        worldContext.SiteBlockers.AddSquareFootprint(centerTile, resolvedSize);
+        WorldBuildOutput buildOutput = worldContext.BuildOutput;
+        if (buildOutput == null)
+            return;
+
+        buildOutput.SiteBlockers.AddSquareFootprint(centerTile, resolvedSize);
     }
 }

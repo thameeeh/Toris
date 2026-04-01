@@ -21,7 +21,8 @@ public sealed class WorldFeatureLifecycleSystem
         chunkFeatureLifecycle?.ClearAll();
         chunkFeatureLifecycle?.RebuildPlacements();
         persistentFeatureLifecycle?.ClearAll();
-        ActivatePersistentFeaturesForCurrentBiome();
+        persistentFeatureLifecycle?.RebuildPlacements();
+        persistentFeatureLifecycle?.ActivatePersistentSites();
     }
 
     public void ClearAll()
@@ -63,29 +64,5 @@ public sealed class WorldFeatureLifecycleSystem
     public int GetTotalPlacedSiteCount()
     {
         return chunkFeatureLifecycle != null ? chunkFeatureLifecycle.GetTotalPlacedSiteCount() : 0;
-    }
-
-    private void ActivatePersistentFeaturesForCurrentBiome()
-    {
-        if (worldContext?.Biome == null || persistentFeatureLifecycle == null)
-            return;
-
-        PersistentBiomeFeatureDefinition[] persistentFeatures = worldContext.Biome.PersistentFeatures;
-        if (persistentFeatures == null || persistentFeatures.Length == 0)
-            return;
-
-        Vector2Int biomeOriginTile = worldContext.ActiveBiome.OriginTile;
-
-        for (int i = 0; i < persistentFeatures.Length; i++)
-        {
-            PersistentBiomeFeatureDefinition persistentFeature = persistentFeatures[i];
-            if (!persistentFeature.IsValid)
-                continue;
-
-            Vector2Int centerTile = biomeOriginTile + persistentFeature.TileOffsetFromBiomeOrigin;
-            persistentFeatureLifecycle.ActivatePersistentSite(
-                persistentFeature.SiteDefinition,
-                centerTile);
-        }
     }
 }

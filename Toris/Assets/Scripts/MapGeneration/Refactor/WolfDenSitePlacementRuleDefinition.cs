@@ -30,6 +30,10 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
         if (wolfDenSiteDefinition == null || !wolfDenSiteDefinition.IsValid)
             return;
 
+        WorldBuildOutput buildOutput = ctx.BuildOutput;
+        if (buildOutput == null)
+            return;
+
         int targetMin = Mathf.Max(0, minWolfDenCount);
         if (targetMin == 0)
             return;
@@ -75,7 +79,7 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
                 centerTile,
                 stampSize);
 
-            ctx.RegisterSite(wolfDenSiteDefinition, centerTile);
+            buildOutput.RegisterSite(wolfDenSiteDefinition, centerTile, ctx.World.chunkSize);
         }
 
         if (chosenCenters.Count < targetMin)

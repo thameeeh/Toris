@@ -4,6 +4,8 @@ using UnityEngine.Rendering;
 
 public sealed class WorldGenDebugHUD : MonoBehaviour
 {
+    private const float MinimumPanelHeightWithBuildOutputDiagnostics = 450f;
+
     [Header("References")]
     [SerializeField] private WorldGenRunner runner;
     [SerializeField] private Grid grid;
@@ -109,6 +111,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         }
 
         WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
+        BuildOutputDiagnosticsSnapshot buildOutputDiagnostics = diagnosticsSnapshot.BuildOutputDiagnostics;
 
         Vector2 focusWorldPosition = followTarget != null ? (Vector2)followTarget.position : Vector2.zero;
 
@@ -128,7 +131,8 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         WorldSignals worldSignals = resolver.sampler.Compute(focusTile, worldContext);
         string biomeName = worldContext.Biome != null ? worldContext.Biome.displayName : "(null biome)";
 
-        Rect panelRect = new Rect(panelPos.x, panelPos.y, panelSize.x, panelSize.y);
+        float panelHeight = Mathf.Max(panelSize.y, MinimumPanelHeightWithBuildOutputDiagnostics);
+        Rect panelRect = new Rect(panelPos.x, panelPos.y, panelSize.x, panelHeight);
         GUI.Box(panelRect, $"WorldGen Debug ({toggleKey})");
 
         GUILayout.BeginArea(new Rect(panelRect.x + 10f, panelRect.y + 24f, panelRect.width - 20f, panelRect.height - 34f));
@@ -158,6 +162,12 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GUILayout.Label($"Persistent sites: {diagnosticsSnapshot.ActivePersistentSiteCount}", style);
         GUILayout.Label($"Active sites total: {diagnosticsSnapshot.ActiveSiteCount}", style);
         GUILayout.Label($"Placed sites: {diagnosticsSnapshot.TotalPlacedSiteCount}", style);
+        GUILayout.Label($"Build overrides: {buildOutputDiagnostics.TerrainOverrideCount}", style);
+        GUILayout.Label($"Build placements: {buildOutputDiagnostics.TotalPlacementCount}", style);
+        GUILayout.Label($"Chunk placements: {buildOutputDiagnostics.ChunkPlacementCount}", style);
+        GUILayout.Label($"Persistent placements: {buildOutputDiagnostics.PersistentPlacementCount}", style);
+        GUILayout.Label($"Nav contributions: {buildOutputDiagnostics.NavigationContributionCount}", style);
+        GUILayout.Label($"Road anchors: {buildOutputDiagnostics.RoadAnchorCount}", style);
         GUILayout.Label($"Nav chunks: {diagnosticsSnapshot.LoadedNavChunkCount}", style);
         GUILayout.Label(
             diagnosticsSnapshot.NavigationContributionsBound

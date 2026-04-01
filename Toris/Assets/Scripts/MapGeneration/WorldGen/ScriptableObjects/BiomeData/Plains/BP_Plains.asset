@@ -35,7 +35,5 @@ MonoBehaviour:
   roadWidthMin: 3
   roadWidthMax: 5
   maxRoadScanTiles: 4000
-  persistentFeatures:
-  - siteDefinition: {fileID: 11400000, guid: 1fe986f554b2df640abe69e774afe6cd, type: 2}
-    tileOffsetFromBiomeOrigin: {x: 0, y: 0}
+  persistentFeatures: []
   platformGroundTile: {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}

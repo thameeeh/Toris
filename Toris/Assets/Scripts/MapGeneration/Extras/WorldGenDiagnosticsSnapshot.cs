@@ -17,6 +17,7 @@ public readonly struct WorldGenDiagnosticsSnapshot
     public readonly int ActivePersistentSiteCount;
     public readonly int ActiveSiteCount;
     public readonly int TotalPlacedSiteCount;
+    public readonly BuildOutputDiagnosticsSnapshot BuildOutputDiagnostics;
     public readonly int LoadedNavChunkCount;
     public readonly bool NavigationContributionsBound;
     public readonly int CurrentBiomeIndex;
@@ -39,6 +40,7 @@ public readonly struct WorldGenDiagnosticsSnapshot
         int activePersistentSiteCount,
         int activeSiteCount,
         int totalPlacedSiteCount,
+        BuildOutputDiagnosticsSnapshot buildOutputDiagnostics,
         int loadedNavChunkCount,
         bool navigationContributionsBound,
         int currentBiomeIndex,
@@ -60,6 +62,7 @@ public readonly struct WorldGenDiagnosticsSnapshot
         ActivePersistentSiteCount = activePersistentSiteCount;
         ActiveSiteCount = activeSiteCount;
         TotalPlacedSiteCount = totalPlacedSiteCount;
+        BuildOutputDiagnostics = buildOutputDiagnostics;
         LoadedNavChunkCount = loadedNavChunkCount;
         NavigationContributionsBound = navigationContributionsBound;
         CurrentBiomeIndex = currentBiomeIndex;

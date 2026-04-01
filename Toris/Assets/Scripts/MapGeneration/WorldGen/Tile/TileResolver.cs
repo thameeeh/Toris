@@ -10,7 +10,8 @@ public sealed class TileResolver
     public TileResult Resolve(Vector2Int tilePos, WorldContext ctx)
     {
         // 0) Guaranteed stamps
-        if (ctx.Stamps.TryGet(tilePos, out TileResult stamped))
+        FeatureStamps terrainOverrides = ctx.BuildOutput != null ? ctx.BuildOutput.TerrainOverrides : null;
+        if (terrainOverrides != null && terrainOverrides.TryGet(tilePos, out TileResult stamped))
             return stamped;
 
         // 0.5) Biome-specific override

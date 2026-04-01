@@ -1,3 +1,35 @@
+## [Current/Recent] - Persistent Site Authoring Through Shared Placements
+This update moves persistent biome sites for the active content set onto the same authored placement pipeline as chunk sites, so persistent site activation now consumes shared generated placement data instead of inventing placements later at runtime.
+
+### 1. Added A Persistent Site Build Step
+* Added PersistentSitePlacementBuildStepDefinition and wired Plains and Forest to use it during biome build.
+* Persistent biome site authoring now happens through build-step assets instead of only through BiomeProfile runtime reads.
+
+### 2. Moved Persistent Lifecycle Activation Onto Shared Placement Data
+* Updated PersistentWorldFeatureLifecycle and WorldFeatureLifecycleSystem so persistent activation rebuilds from SitePlacementIndex.PersistentBiomePlacements.
+* This removes the ad hoc placement-construction path and makes persistent sites obey the same placement-model rule as chunk sites.
+
+### 3. Preserved Persistent Site Behavior While Making It Observable
+* Cleared the old active-biome profile arrays for Plains and Forest after migrating that authored data into build-step assets.
+* Verified startup, biome switching, persistent site appearance, and the Persistent placements HUD counter after the migration.
+
+---
+## [Current/Recent] - Build Output Ownership And Diagnostics
+This update introduces a named generated-world artifact for terrain overrides, authored site placements, navigation contributions, and road anchors, so world build data is visible and centralized before persistent feature migration continues.
+
+### 1. Introduced A Named World Build Output Artifact
+* Added WorldBuildOutput, BuildOutputDiagnosticsSnapshot, and SitePlacementLifecycleScope.
+* WorldContext now owns a single BuildOutput object that groups terrain overrides, site placements, navigation contributions, and road anchors under one explicit build-data surface.
+
+### 2. Moved Current Build Writers Onto The Build Output Path
+* Updated road generation, site stamping, gate placement, wolf den placement, and tile resolution to write and read through WorldBuildOutput instead of treating the old world-context buckets as the authored path.
+* This keeps the current stamp-based terrain model intact while making the generated-world artifact explicit and centralized.
+
+### 3. Exposed Build Output Through Runtime Diagnostics
+* Extended WorldGenDiagnosticsSnapshot, WorldGenRunner, and WorldGenDebugHUD to report build overrides, total placements, chunk placements, persistent placements, navigation contributions, and road anchors.
+* Verified startup, biome transitions, gate and den placement, nav-affecting den blockers, and the new HUD counters after the ownership shift.
+
+---
 ## [Current/Recent] - Phase 8 Slice: Streaming Frame Result Alias Cleanup
 This update continues the Phase 8 deletion pass by removing one more redundant alias from the streaming diagnostics path, so the frame-result type exposes only the state that still has distinct meaning.
 
@@ -523,6 +555,10 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
+
+
+
 
 
 

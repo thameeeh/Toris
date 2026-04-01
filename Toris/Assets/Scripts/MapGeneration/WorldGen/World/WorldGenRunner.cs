@@ -3,6 +3,10 @@ using UnityEngine.Tilemaps;
 
 public sealed class WorldGenRunner : MonoBehaviour
 {
+    private const double WarnUnloadMs = 2.0;
+    private const double WarnGenerationMs = 10.0;
+    private const double WarnApplyMs = 2.0;
+
     #region Inspector
 
     [Header("Assets")]
@@ -195,10 +199,6 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         ChunkProcessingFrameStats processingFrameStats = streamingFrameResult.ProcessingStats;
 
-        const double WarnUnloadMs = 2.0;
-        const double WarnGenerationMs = 10.0;
-        const double WarnApplyMs = 2.0;
-
         if (processingFrameStats.UnloadMs >= WarnUnloadMs ||
             processingFrameStats.GenerationMsTotal >= WarnGenerationMs ||
             processingFrameStats.ApplyMsTotal >= WarnApplyMs)
@@ -271,6 +271,11 @@ public sealed class WorldGenRunner : MonoBehaviour
             ? worldFeatureLifecycleSystem.GetTotalPlacedSiteCount()
             : 0;
 
+        BuildOutputDiagnosticsSnapshot buildOutputDiagnostics =
+            ctx != null && ctx.BuildOutput != null
+                ? ctx.BuildOutput.CreateDiagnosticsSnapshot()
+                : default;
+
         int loadedNavChunkCount = worldNavigationLifecycle != null
             ? worldNavigationLifecycle.LoadedNavChunkCount
             : 0;
@@ -328,6 +333,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             activePersistentSiteCount,
             activeSiteCount,
             totalPlacedSiteCount,
+            buildOutputDiagnostics,
             loadedNavChunkCount,
             navigationContributionsBound,
             currentBiomeIndex,

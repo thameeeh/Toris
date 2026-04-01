@@ -33,7 +33,7 @@ public static class RoadSurfaceBuilder
         if (ctx.Biome == null || ctx.Biome.platformGroundTile == null)
             return;
 
-        ctx.Stamps.StampRectGround(
+        ctx.BuildOutput.TerrainOverrides.StampRectGround(
             ctx.ActiveBiome.OriginTile,
             PlatformWidth,
             PlatformHeight,
@@ -67,7 +67,7 @@ public static class RoadSurfaceBuilder
             currentTile += stepDirection;
         }
 
-        ctx.RoadAnchors.AddGateAnchor(lastLandTile);
+        ctx.BuildOutput.RoadAnchors.AddGateAnchor(lastLandTile);
     }
 
     private static void StampRoadAt(WorldContext ctx, Vector2Int centerTile, Vector2Int perpendicularDirection)
@@ -95,7 +95,9 @@ public static class RoadSurfaceBuilder
 
         for (int i = -halfWidth; i <= halfWidth; i++)
         {
-            ctx.Stamps.SetGround(centerTile + perpendicularDirection * i, ctx.Biome.roadTile);
+            ctx.BuildOutput.TerrainOverrides.SetGround(
+                centerTile + perpendicularDirection * i,
+                ctx.Biome.roadTile);
         }
     }
 

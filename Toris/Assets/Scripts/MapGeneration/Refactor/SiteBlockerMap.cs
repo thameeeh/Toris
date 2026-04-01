@@ -4,6 +4,7 @@ using UnityEngine;
 public sealed class SiteBlockerMap : ITileNavigationContributionSource
 {
     private readonly HashSet<Vector2Int> blockedTiles = new HashSet<Vector2Int>();
+    public int BlockedTileCount => blockedTiles.Count;
 
     public void Clear()
     {

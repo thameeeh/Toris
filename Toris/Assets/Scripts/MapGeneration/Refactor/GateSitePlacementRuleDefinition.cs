@@ -17,7 +17,11 @@ public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinitio
 
         int resolvedGateSize = Mathf.Max(1, gateSize);
 
-        var gateAnchorTiles = ctx.RoadAnchors.GateAnchorTiles;
+        WorldBuildOutput buildOutput = ctx.BuildOutput;
+        if (buildOutput == null)
+            return;
+
+        var gateAnchorTiles = buildOutput.RoadAnchors.GateAnchorTiles;
         for (int i = 0; i < gateAnchorTiles.Count; i++)
         {
             Vector2Int gateCenterTile = gateAnchorTiles[i];
@@ -28,7 +32,7 @@ public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinitio
                 resolvedGateSize,
                 gateGroundTile);
 
-            ctx.RegisterSite(gateSiteDefinition, gateCenterTile);
+            buildOutput.RegisterSite(gateSiteDefinition, gateCenterTile, ctx.World.chunkSize);
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 public sealed class FeatureStamps
 {
     private readonly Dictionary<Vector2Int, TileResult> overrides = new Dictionary<Vector2Int, TileResult>(8192);
+    public int OverrideCount => overrides.Count;
 
     public void Clear() => overrides.Clear();
 

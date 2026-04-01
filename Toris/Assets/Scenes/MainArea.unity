@@ -39165,14 +39165,14 @@ MonoBehaviour:
   LiveSlots:
   - HeldItem:
       InstanceID: a000894a-992a-4af0-87cf-cd2166d73c6f
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: c084c4fee7e1e0f4fa738a67023be54e, type: 2}
       States: []
-    Count: 0
+    Count: 5
   - HeldItem:
       InstanceID: 92ab1767-2928-451b-99d4-b9a3691c0377
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: 48dde59f99c754c4290921ee295ea3f3, type: 2}
       States: []
-    Count: 0
+    Count: 9
   - HeldItem:
       InstanceID: b9fb0d32-f8fd-4302-992d-2b553fc55cec
       BaseItem: {fileID: 0}

@@ -21,19 +21,12 @@ namespace OutlandHaven.Inventory
 
         public InventorySlotView(VisualElement root, InventoryManager owningContainer, UIInventoryEventsSO uiInventoryEvents)
         {
-            // Set the wrapper root's picking mode to Ignore immediately to ensure it doesn't intercept
+            // Set the wrapper root's picking mode to Ignore
             root.pickingMode = PickingMode.Ignore;
 
             _root = root.Q<VisualElement>(className: "item-slot");
-
-            // Fallback to the root if we couldn't find the item-slot, though we should.
-            if (_root == null)
-                _root = root;
-            else
-            {
-                // If we found the item-slot, set its picking mode to Position
-                _root.pickingMode = PickingMode.Position;
-            }
+            if (_root == null) _root = root;
+            else _root.pickingMode = PickingMode.Position;
 
             _owningContainer = owningContainer;
             _uiInventoryEvents = uiInventoryEvents;
@@ -41,7 +34,10 @@ namespace OutlandHaven.Inventory
             _icon = _root.Q<Image>("slot-icon");
             _qtyLabel = _root.Q<Label>("slot-qty");
 
-            // Register pointer callbacks directly on the item-slot
+            // FACTUAL FIX 1: Force child elements to ignore raycasts so _root catches the click cleanly
+            if (_icon != null) _icon.pickingMode = PickingMode.Ignore;
+            if (_qtyLabel != null) _qtyLabel.pickingMode = PickingMode.Ignore;
+
             _root.RegisterCallback<PointerDownEvent>(OnPointerDown);
             _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
             _root.RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -84,6 +80,17 @@ namespace OutlandHaven.Inventory
             // Only allow left click (0) and right click (1) to capture pointer
             if (evt.button != 0 && evt.button != 1) return;
 
+            VisualElement clickedElement = evt.target as VisualElement;
+
+            // 2. (Optional) Get the element this listener is attached to
+            VisualElement listeningElement = evt.currentTarget as VisualElement;
+
+            // Example check: You can use the name or class to verify what was clicked
+            if (clickedElement != null)
+            {
+                Debug.Log($"You clicked on: {clickedElement.name}");
+            }
+
             // Do not initiate visual drag right away (wait for threshold)
             _isDragging = false;
             _dragStartPosition = evt.position;
@@ -95,24 +102,22 @@ namespace OutlandHaven.Inventory
         {
             if (!_root.HasPointerCapture(evt.pointerId)) return;
 
-            // Only left clicks can initiate dragging
-            if (evt.button != 0) return;
+            // FACTUAL FIX 2: evt.button is unreliable during a move. 
+            // Check the evt.pressedButtons bitmask instead. (1 = Left Click held down)
+            if ((evt.pressedButtons & 1) == 0) return;
 
-            // If we are not currently dragging, check distance against threshold
             if (!_isDragging)
             {
                 float distance = Vector2.Distance(_dragStartPosition, evt.position);
                 if (distance >= DragThreshold)
                 {
                     _isDragging = true;
-                    // Provide the icon dimensions as the payload for sizing the ghost layer
                     Vector2 iconSize = new Vector2(_icon.layout.width, _icon.layout.height);
                     UIDragManager.Instance?.StartDrag(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
                 }
             }
             else
             {
-                // We are already dragging, so keep updating the absolute position
                 UIDragManager.Instance?.UpdateDrag(evt.position);
             }
         }

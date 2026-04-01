@@ -4,6 +4,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 {
     [SerializeField] private MonoBehaviour encounterSiteComponent;
 
+    private WorldEncounterPackage encounterPackage;
     private WolfDenEncounterConfig encounterConfig;
     private WorldEncounterOccupantPolicy occupantPolicy;
     private IWorldEncounterSite denSite;
@@ -21,6 +22,15 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     public void Initialize(WorldSiteContext siteContext)
     {
+        if (siteContext.TryGetEncounterPackage(out encounterPackage))
+        {
+            encounterConfig = encounterPackage.GetConfig<WolfDenEncounterConfig>();
+            occupantPolicy = encounterPackage.OccupantPolicy;
+            encounterServices = encounterPackage.Services;
+            return;
+        }
+
+        encounterPackage = default;
         encounterConfig = siteContext.GetRuntimeConfig<WolfDenEncounterConfig>();
         occupantPolicy = encounterConfig != null ? encounterConfig.OccupantPolicy : null;
         encounterServices = siteContext.EncounterServices;

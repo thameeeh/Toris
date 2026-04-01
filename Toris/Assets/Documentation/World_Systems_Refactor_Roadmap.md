@@ -39,7 +39,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 2 close-out is complete for the current chunk streaming extraction scope.
 - Phase 3 close-out is complete for unified site lifecycle ownership.
 - Phase 4 has landed an explicit ISceneTransitionService boundary for run gates; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than direct runtime singleton access.
-- Phase 5 has landed its first encounter-site seam through `IWorldEncounterSite`, a reusable occupant-tracking boundary through `WorldEncounterOccupantCollection`, and a reusable lifecycle config boundary through `WorldEncounterOccupantPolicy`, but encounter orchestration is still wolf-den-specific and not yet packaged as a reusable subsystem.
+- Phase 5 has landed its first encounter-site seam through `IWorldEncounterSite`, a reusable occupant-tracking boundary through `WorldEncounterOccupantCollection`, a reusable lifecycle config boundary through `WorldEncounterOccupantPolicy`, and an explicit encounter-package API through `WorldEncounterPackage`, but encounter orchestration is still wolf-den-specific and not yet packaged as a reusable subsystem.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -59,7 +59,7 @@ The codebase already contains meaningful refactor progress.
 - `WorldGenRunner` still acts as the composition root and the top-level frame orchestrator.
 - Chunk load policy still depends on camera math and frame-budget logic living in `WorldGenRunner`.
 - Build output is only partly normalized; terrain output is still mostly transient chunk tile data plus stamp maps.
-- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem, even though occupant tracking, unload release policy, and encounter lifecycle tuning now have reusable helper boundaries.
+- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem, even though occupant tracking, unload release policy, encounter lifecycle tuning, and package selection now have reusable helper boundaries.
 - Run-scene transitions now accept `ISceneTransitionService` in the world-site path, but static-scene gate usage still depends on scene-level service availability and should eventually move onto a clearer composition path.
 - Asset migration is incomplete; not all biome assets are wired into the new build-step pipeline.
 
@@ -325,7 +325,7 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 - the first encounter-site seam now exists through `IWorldEncounterSite`
 - tracked occupant bookkeeping, despawn callback ownership, and bulk unload release now sit behind `WorldEncounterOccupantCollection`
 - respawn timing, spawn radius, home radius, and chase-on-unload rules now sit behind `WorldEncounterOccupantPolicy`
-- alert escalation, howl behavior, and encounter-specific tuning are still highly wolf-den-shaped and not yet packaged for reuse
+- encounter-package selection now exists through `WorldEncounterPackage` and `TryGetEncounterPackage(...)`\r\n- alert escalation, howl behavior, and encounter-specific tuning are still highly wolf-den-shaped and not yet packaged for reuse
 
 ### Scope
 - define an encounter package model or service boundary
@@ -334,7 +334,7 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 
 ### Key Work Items
 
-- continue extracting remaining shared encounter responsibilities such as persistence hooks and encounter-package activation from the still wolf-specific alert/howl layer
+- continue extracting remaining shared encounter responsibilities such as persistence hooks and activation ownership from the still wolf-specific alert/howl layer now that package selection is explicit
 - define what encounter configuration lives in site runtime config versus encounter-specific config
 - decide how a future camp, shrine, nest, or patrol point would request an encounter package
 
@@ -529,14 +529,34 @@ The next implementation step should be the next Phase 5 close-out slice.
 
 Specifically:
 
-- keep separating the remaining wolf-specific orchestration from the new reusable occupant lifecycle boundary
-- decide whether respawn timing and chase-on-unload policy should move into an explicit encounter package API
-- decide what future encounter hosts would need to provide beyond `IWorldEncounterSite` and shared occupant policy
+- keep separating the remaining wolf-specific orchestration from the reusable package, occupant tracking, and occupant policy boundaries
+- decide how activation ownership and persistence hooks should live on top of the new encounter package API
+- decide what future encounter hosts would need to provide beyond `IWorldEncounterSite`, shared occupant policy, and package identity
 - keep verification focused on den clear, reload, unload, leader respawn, and chase-on-unload behavior while the seam is widened
 
 That keeps the refactor moving in order without reopening earlier service-boundary work.
-## 11. Definition Of Done For The Refactor Program
 
+## 11. Deferred Post-Refactor Wolf Bug Queue
+
+These two issues are intentionally recorded for investigation immediately after the map refactor sequence is complete unless one starts blocking current phase verification.
+
+### Bug 1 - Intermittent Dead Wolf Fails To Despawn
+
+- symptom: a wolf can remain visually dead on screen while the game still treats it as alive, which then causes wolf den behavior to stop working correctly
+- current clue: the wolf appears to hold on the last frame of its death animation instead of finishing the despawn path
+- repro status: intermittent, not 100 percent reproducible
+
+### Bug 2 - Dying Leader Can Resurrect Into A Howl Loop At Max Aggro
+
+- symptom: while a wolf leader is playing its dying animation, pushing the den to max aggro can cause the dying leader to resurrect and get stuck in a howl loop
+- associated messages:
+
+```text
+'Animator' AnimationEvent 'Howl' on animation 'Wolf_Howl_SW' has no receiver! Are you missing a component?
+'Animator' AnimationEvent has no function name specified!
+```
+
+## 12. Definition Of Done For The Refactor Program
 The refactor is finished when all of the following are true:
 
 - new world content can be added without editing a central monolith
@@ -546,6 +566,8 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
+
 
 
 

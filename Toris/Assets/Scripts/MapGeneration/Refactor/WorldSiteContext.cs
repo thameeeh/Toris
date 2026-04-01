@@ -31,4 +31,21 @@ public readonly struct WorldSiteContext
     {
         return RuntimeConfig as T;
     }
+
+    public bool TryGetEncounterPackage(out WorldEncounterPackage encounterPackage)
+    {
+        if (RuntimeConfig is IWorldEncounterPackageConfig encounterPackageConfig)
+        {
+            encounterPackage = new WorldEncounterPackage(
+                encounterPackageConfig.PackageId,
+                EncounterServices,
+                encounterPackageConfig.OccupantPolicy,
+                RuntimeConfig);
+
+            return encounterPackage.IsValid;
+        }
+
+        encounterPackage = default;
+        return false;
+    }
 }

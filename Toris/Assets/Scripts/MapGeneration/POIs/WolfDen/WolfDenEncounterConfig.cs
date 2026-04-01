@@ -3,8 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(
     menuName = "WorldGen/Encounters/Wolf Den Encounter Config",
     fileName = "WolfDenEncounterConfig")]
-public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig
+public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig, IWorldEncounterPackageConfig
 {
+    private const string DefaultPackageId = "wolf_den";
+
     [Header("Prefabs")]
     [SerializeField] private Wolf leaderPrefab;
     [SerializeField] private Wolf minionPrefab;
@@ -38,6 +40,7 @@ public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig
 
     public Wolf LeaderPrefab => leaderPrefab;
     public Wolf MinionPrefab => minionPrefab;
+    public string PackageId => DefaultPackageId;
     public WorldEncounterOccupantPolicy OccupantPolicy
     {
         get

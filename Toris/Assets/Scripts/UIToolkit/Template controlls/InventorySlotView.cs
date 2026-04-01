@@ -203,6 +203,16 @@ namespace OutlandHaven.Inventory
             }
             return null;
         }
+
+        public void Dispose()
+        {
+            if (_root != null)
+            {
+                _root.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+                _root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+                _root.UnregisterCallback<PointerUpEvent>(OnPointerUp);
+            }
+        }
     }
 
     public class SlotDropData

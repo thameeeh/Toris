@@ -17,6 +17,11 @@ public readonly struct WorldGenDiagnosticsSnapshot
     public readonly int ActivePersistentSiteCount;
     public readonly int ActiveSiteCount;
     public readonly int TotalPlacedSiteCount;
+    public readonly int LoadedNavChunkCount;
+    public readonly bool NavigationContributionsBound;
+    public readonly int CurrentBiomeIndex;
+    public readonly float GateCooldownRemainingSeconds;
+    public readonly bool SceneTransitionLoading;
     public readonly Camera StreamCamera;
     public readonly WorldProfile Profile;
 
@@ -35,6 +40,11 @@ public readonly struct WorldGenDiagnosticsSnapshot
         int activePersistentSiteCount,
         int activeSiteCount,
         int totalPlacedSiteCount,
+        int loadedNavChunkCount,
+        bool navigationContributionsBound,
+        int currentBiomeIndex,
+        float gateCooldownRemainingSeconds,
+        bool sceneTransitionLoading,
         Camera streamCamera,
         WorldProfile profile)
     {
@@ -52,6 +62,11 @@ public readonly struct WorldGenDiagnosticsSnapshot
         ActivePersistentSiteCount = activePersistentSiteCount;
         ActiveSiteCount = activeSiteCount;
         TotalPlacedSiteCount = totalPlacedSiteCount;
+        LoadedNavChunkCount = loadedNavChunkCount;
+        NavigationContributionsBound = navigationContributionsBound;
+        CurrentBiomeIndex = currentBiomeIndex;
+        GateCooldownRemainingSeconds = gateCooldownRemainingSeconds;
+        SceneTransitionLoading = sceneTransitionLoading;
         StreamCamera = streamCamera;
         Profile = profile;
     }

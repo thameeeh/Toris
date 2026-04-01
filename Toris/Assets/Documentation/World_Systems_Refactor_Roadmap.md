@@ -41,6 +41,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 4 and Phase 7 now cover explicit `ISceneTransitionService`, `IRunGateTransitionService`, and `IGateTransitionService` boundaries, and the current transition cleanup scope is complete through explicit bootstrap fallback for static-scene run gates.
 - Phase 5 close-out is complete for the current site-versus-encounter split scope through `IWorldEncounterSite`, `WorldEncounterOccupantCollection`, `WorldEncounterOccupantPolicy`, `WorldEncounterPackage`, `WorldEncounterPackageBinding`, `WorldEncounterPackageState`, `WorldEncounterAlertRuntime`, and `WolfEncounterCommandController`.
 - Phase 6 now has `ITileNavigationBlockerSource`, `ITileNavigationContributionSource`, and `WorldNavigationLifecycle`, which move navigation input and nav chunk ownership onto explicit neutral boundaries while keeping `SiteBlockerMap` as the current blocker-only producer.
+- Phase 8 has started with expanded nav lifecycle and transition diagnostics in `WorldGenDiagnosticsSnapshot` and `WorldGenDebugHUD`.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -61,7 +62,7 @@ The codebase already contains meaningful refactor progress.
 - Chunk load policy still depends on camera math and frame-budget logic living in `WorldGenRunner`.
 - Build output is only partly normalized; terrain output is still mostly transient chunk tile data plus stamp maps.
 - Encounter boundaries are now explicit for the current wolf-den scope, but future multi-encounter reuse remains a later expansion rather than a blocking refactor pressure point.
-- Run-scene transitions now accept `ISceneTransitionService` in the world-site path, but static-scene gate usage still depends on scene-level service availability and should eventually move onto a clearer composition path.
+- Major service boundaries are now in place; the main remaining pressure is cleanup and deletion of leftover migration scaffolding rather than missing transition or nav architecture.
 - Asset migration is incomplete; not all biome assets are wired into the new build-step pipeline.
 
 ### 3.3 Refactor Status Summary
@@ -570,6 +571,7 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
 
 
 

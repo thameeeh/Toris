@@ -7,6 +7,9 @@ public sealed class WorldNavigationLifecycle
     private readonly Tilemap groundMap;
     private readonly Tilemap waterMap;
 
+    public int LoadedNavChunkCount => tileNavWorld != null ? tileNavWorld.LoadedNavChunkCount : 0;
+    public bool HasNavigationContributions => tileNavWorld != null && tileNavWorld.HasNavigationContributions;
+
     public WorldNavigationLifecycle(TileNavWorld tileNavWorld, Tilemap groundMap, Tilemap waterMap)
     {
         this.tileNavWorld = tileNavWorld;

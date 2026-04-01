@@ -12,7 +12,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     [Header("UI")]
     [SerializeField] private bool visible = true;
     [SerializeField] private Vector2 panelPos = new Vector2(12, 12);
-    [SerializeField] private Vector2 panelSize = new Vector2(360, 270);
+    [SerializeField] private Vector2 panelSize = new Vector2(380, 330);
     [SerializeField] private int fontSize = 14;
 
     [Header("Gameplay Debug Visuals")]
@@ -158,7 +158,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         drawStreamingRects = GUILayout.Toggle(drawStreamingRects, " Streaming rects (load/unload)");
         GUILayout.Space(6f);
 
-        GUILayout.Label($"Biome: {biomeName} (idx {worldContext.ActiveBiome.Index})", style);
+        GUILayout.Label($"Biome: {biomeName} (idx {diagnosticsSnapshot.CurrentBiomeIndex})", style);
         GUILayout.Label($"Tile: {focusTile}", style);
         GUILayout.Label($"dist01: {worldSignals.dist01:F2}", style);
         GUILayout.Label($"danger01: {worldSignals.danger01:F2}", style);
@@ -178,8 +178,20 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GUILayout.Label($"Persistent sites: {diagnosticsSnapshot.ActivePersistentSiteCount}", style);
         GUILayout.Label($"Active sites total: {diagnosticsSnapshot.ActiveSiteCount}", style);
         GUILayout.Label($"Placed sites: {diagnosticsSnapshot.TotalPlacedSiteCount}", style);
+        GUILayout.Label($"Nav chunks: {diagnosticsSnapshot.LoadedNavChunkCount}", style);
+        GUILayout.Label(
+            diagnosticsSnapshot.NavigationContributionsBound
+                ? "Nav contributions: bound"
+                : "Nav contributions: (unbound)",
+            style);
         GUILayout.Label($"Preload chunks: {diagnosticsSnapshot.PreloadChunks}", style);
         GUILayout.Label($"Unload hysteresis: {diagnosticsSnapshot.UnloadHysteresisChunks}", style);
+        GUILayout.Label($"Gate cooldown: {diagnosticsSnapshot.GateCooldownRemainingSeconds:F2}s", style);
+        GUILayout.Label(
+            diagnosticsSnapshot.SceneTransitionLoading
+                ? "Scene transition: loading"
+                : "Scene transition: idle",
+            style);
 
         GUILayout.EndArea();
     }

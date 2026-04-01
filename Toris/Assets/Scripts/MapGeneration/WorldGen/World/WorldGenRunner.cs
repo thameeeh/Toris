@@ -315,6 +315,13 @@ public sealed class WorldGenRunner : MonoBehaviour
             ? worldFeatureLifecycleSystem.GetTotalPlacedSiteCount()
             : 0;
 
+        int loadedNavChunkCount = worldNavigationLifecycle != null
+            ? worldNavigationLifecycle.LoadedNavChunkCount
+            : 0;
+
+        bool navigationContributionsBound = worldNavigationLifecycle != null &&
+            worldNavigationLifecycle.HasNavigationContributions;
+
         int generationQueueCount = chunkStreamingSystem != null
             ? chunkStreamingSystem.GenerationQueueCount
             : 0;
@@ -344,6 +351,16 @@ public sealed class WorldGenRunner : MonoBehaviour
             streamingAnchorChunk = lastStreamingFrameResult.View.FocusChunk;
         }
 
+        int currentBiomeIndex = worldTransitionSystem != null
+            ? worldTransitionSystem.CurrentBiomeIndex
+            : -1;
+
+        float gateCooldownRemainingSeconds = worldTransitionSystem != null
+            ? worldTransitionSystem.GateCooldownRemainingSeconds
+            : 0f;
+
+        bool sceneTransitionLoading = sceneTransitionService != null && sceneTransitionService.IsLoading;
+
         return new WorldGenDiagnosticsSnapshot(
             LoadedChunks,
             LoadedChunkCount,
@@ -359,6 +376,11 @@ public sealed class WorldGenRunner : MonoBehaviour
             activePersistentSiteCount,
             activeSiteCount,
             totalPlacedSiteCount,
+            loadedNavChunkCount,
+            navigationContributionsBound,
+            currentBiomeIndex,
+            gateCooldownRemainingSeconds,
+            sceneTransitionLoading,
             streamCamera != null ? streamCamera : Camera.main,
             profile);
     }

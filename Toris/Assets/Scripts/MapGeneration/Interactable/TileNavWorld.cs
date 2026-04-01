@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 public class TileNavWorld : MonoBehaviour
 {
     public static TileNavWorld Instance { get; private set; }
+    public int LoadedNavChunkCount => _navChunks.Count;
+    public bool HasNavigationContributions => navigationContributions != null;
 
     [Header("Tilemap used for navigation")]
     [SerializeField] private Tilemap groundMap;

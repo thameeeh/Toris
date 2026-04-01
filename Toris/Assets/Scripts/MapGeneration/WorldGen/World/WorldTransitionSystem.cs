@@ -16,6 +16,15 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     private float lastGateTime = -999f;
 
     public int CurrentBiomeIndex => biomeIndex;
+    public float GateCooldownRemainingSeconds
+    {
+        get
+        {
+            float elapsed = Time.time - lastGateTime;
+            float remaining = gateCooldownSeconds - elapsed;
+            return Mathf.Max(0f, remaining);
+        }
+    }
 
     public WorldTransitionSystem(
         WorldProfile worldProfile,

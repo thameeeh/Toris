@@ -61,7 +61,7 @@ namespace OutlandHaven.Inventory
 
         protected override void SetVisualElements()
         {
-            // Find the grids where slots live
+            // Find the grid where slots live directly (ScrollView removed in favor of static Flexbox grid)
             _playerGrid = m_TopElement.Q<VisualElement>("grid-player");
         }
 
@@ -86,14 +86,16 @@ namespace OutlandHaven.Inventory
 
             if (data == null || data.LiveSlots == null) return;
 
-            // Loop through data and create visuals
-            foreach (var slotData in data.LiveSlots)
+            // Loop through data and dynamically instantiate exactly 21 slots to form a 3x7 static grid
+            for (int i = 0; i < data.LiveSlots.Count; i++)
             {
-                // Instantiate the UXML Template
+                var slotData = data.LiveSlots[i];
+
+                // Instantiate the UI Toolkit slot template dynamically, rather than relying on hardcoded UXML slots
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
                 gridRoot.Add(slotInstance);
 
-                // Initialize the wrapper and update it
+                // Initialize the wrapper and update it with actual slot data
                 // We pass in the owning InventoryManager (data) and the UI events
                 var slotView = new InventorySlotView(slotInstance, data, _uiInventoryEvents);
                 slotView.Update(slotData);

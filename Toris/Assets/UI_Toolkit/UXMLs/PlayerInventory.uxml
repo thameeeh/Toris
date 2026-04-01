@@ -14,31 +14,8 @@
                 <ui:VisualElement name="slot-chest" class="item-slot" style="position: absolute; top: 22%; left: 2%;"/>
             </ui:VisualElement>
             <ui:VisualElement name="Inventory__Slots--Panel" class="inventory-grid" style="flex-grow: 0; margin-bottom: 0; height: 20%; min-height: 246px;">
-                <ui:ScrollView style="flex-grow: 1; height: 100%;">
-                    <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                        <ui:VisualElement class="item-slot"/>
-                    </ui:VisualElement>
-                </ui:ScrollView>
+                <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: flex-start;">
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

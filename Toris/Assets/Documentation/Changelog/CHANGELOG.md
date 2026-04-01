@@ -1,3 +1,9 @@
+## [Unreleased]
+### Changed
+- Removed ScrollView container from `PlayerInventory.uxml` to fix unwanted vertical scrollbars and layout glitches when toggling the inventory visibility.
+- Replaced the ScrollView with a simple static Flexbox grid `grid-player` configured with wrap and flex-start to house the 21 slots.
+- Updated `PlayerInventoryView.cs` to explicitly ensure 21 empty item slot templates are dynamically instantiated via C# rather than relying on hardcoded `<ui:VisualElement class="item-slot"/>` items in the UI Builder.
+
 # General Project Changelog
 
 **Rules:**

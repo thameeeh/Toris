@@ -27,7 +27,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_hudMainTemplate == null)
             {
-                Debug.LogError("HudScreenController: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject<color/>");
+                Debug.LogError("HudScreenController: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject</color>");
                 return;
             }
         }
@@ -41,7 +41,7 @@ namespace OutlandHaven.UIToolkit
 
             if (_playerHudBridge == null)
             {
-                Debug.LogWarning("HudScreenController: Could not find PlayerHUDBridge in scene. HUD may not update correctly.");
+                Debug.LogWarning("<b><color=yellow>HudScreenController</color></b> must be on active <b><color=green>GameObject</color></b>");
             }
 
             // 2. Pass the INSTANCE to the View

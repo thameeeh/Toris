@@ -12,7 +12,7 @@ public sealed class WorldContext
     public BiomeMask Mask { get; private set; }
     public FeatureStamps Stamps { get; private set; }
     public SiteBlockerMap SiteBlockers { get; private set; }
-    public ITileNavigationBlockerSource NavigationBlockers => SiteBlockers;
+    public ITileNavigationContributionSource NavigationContributions => SiteBlockers;
     public RoadAnchorMap RoadAnchors { get; private set; }
     public SitePlacementIndex SitePlacements { get; private set; }
 

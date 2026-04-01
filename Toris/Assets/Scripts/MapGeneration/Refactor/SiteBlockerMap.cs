@@ -33,4 +33,11 @@ public sealed class SiteBlockerMap : ITileNavigationBlockerSource
     {
         return IsBlocked(tile);
     }
+
+    public TileNavigationContribution GetNavigationContribution(Vector2Int tile)
+    {
+        return IsBlocked(tile)
+            ? TileNavigationContribution.Blocked
+            : TileNavigationContribution.None;
+    }
 }

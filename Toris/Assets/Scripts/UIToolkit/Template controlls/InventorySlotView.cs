@@ -21,14 +21,27 @@ namespace OutlandHaven.Inventory
 
         public InventorySlotView(VisualElement root, InventoryManager owningContainer, UIInventoryEventsSO uiInventoryEvents)
         {
-            _root = root;
+            // Set the wrapper root's picking mode to Ignore immediately to ensure it doesn't intercept
+            root.pickingMode = PickingMode.Ignore;
+
+            _root = root.Q<VisualElement>(className: "item-slot");
+
+            // Fallback to the root if we couldn't find the item-slot, though we should.
+            if (_root == null)
+                _root = root;
+            else
+            {
+                // If we found the item-slot, set its picking mode to Position
+                _root.pickingMode = PickingMode.Position;
+            }
+
             _owningContainer = owningContainer;
             _uiInventoryEvents = uiInventoryEvents;
 
-            _icon = root.Q<Image>("slot-icon");
-            _qtyLabel = root.Q<Label>("slot-qty");
+            _icon = _root.Q<Image>("slot-icon");
+            _qtyLabel = _root.Q<Label>("slot-qty");
 
-            // Register pointer callbacks
+            // Register pointer callbacks directly on the item-slot
             _root.RegisterCallback<PointerDownEvent>(OnPointerDown);
             _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
             _root.RegisterCallback<PointerUpEvent>(OnPointerUp);

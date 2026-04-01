@@ -1,3 +1,28 @@
+## [Current/Recent] - Grouped World Diagnostics Snapshots
+This update restructures world diagnostics into grouped subsystem snapshots so the debug HUD reads from intentional read models instead of one large flat payload.
+
+### 1. Added Subsystem Diagnostics Shapes
+* Added separate snapshot types for streaming, lifecycle, navigation, and transitions.
+
+### 2. Simplified The Aggregate Diagnostics Model
+* WorldGenDiagnosticsSnapshot now groups subsystem snapshots instead of exposing every field directly.
+
+### 3. Preserved Existing Debug Behavior
+* Verified the HUD, chunk streaming, biome transitions, run gates, and den behavior after the diagnostics-model refactor.
+
+---## [Current/Recent] - World Streaming Runtime Extraction
+This update moves the per-frame world streaming manager responsibilities into a dedicated runtime object so the world runner stays closer to a thin orchestration shell.
+
+### 1. Added WorldStreamingRuntime
+* Streaming camera resolution, frame settings, coordinator invocation, last-frame cache ownership, reset behavior, and warning logging now live in WorldStreamingRuntime.
+
+### 2. Reduced WorldGenRunner Streaming Ownership
+* WorldGenRunner.Update() now delegates streaming work through the runtime instead of constructing and managing the full streaming path itself.
+
+### 3. Preserved Existing World Behavior
+* Verified world startup, chunk streaming, debug HUD streaming data, biome transitions, run gates, and wolf den behavior after the extraction.
+
+---
 # General Project Changelog
 
 **Rules:**
@@ -81,3 +106,5 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
+
+

@@ -1,3 +1,34 @@
+## [Current/Recent] - Grouped World Diagnostics Snapshots
+This update turns the world diagnostics model into grouped subsystem read models so build output, streaming, lifecycle, navigation, and transition state each expose intentional snapshot data instead of one flat aggregate field bag.
+
+### 1. Added Subsystem Diagnostics Snapshots
+* Added StreamingDiagnosticsSnapshot, LifecycleDiagnosticsSnapshot, NavigationDiagnosticsSnapshot, and TransitionDiagnosticsSnapshot.
+* Each major subsystem now has a clearer read-only diagnostics shape instead of contributing raw fields directly to one large flat snapshot.
+
+### 2. Reduced The Aggregate Snapshot To A Wrapper
+* Updated WorldGenDiagnosticsSnapshot to become an aggregate wrapper over subsystem snapshots rather than a flat all-fields payload.
+* Updated WorldStreamingRuntime, WorldFeatureLifecycleSystem, WorldNavigationLifecycle, and WorldTransitionSystem to create their own diagnostics snapshots intentionally.
+
+### 3. Preserved Existing Debug Visibility And Runtime Behavior
+* Updated WorldGenDebugHUD to read the grouped diagnostics model and verified startup, chunk streaming, lifecycle counts, build-output counters, biome transitions, run gates, and den behavior after the read-model refactor.
+* This keeps the diagnostics cleanup structural rather than gameplay-facing.
+
+---## [Current/Recent] - Streaming Runtime Ownership Extraction
+This update moves the frame-by-frame streaming manager responsibilities out of the runner and into a dedicated runtime object, so streaming camera resolution, frame settings, last-frame caching, reset, and warning logging all live behind one explicit boundary.
+
+### 1. Added A Dedicated Streaming Runtime
+* Added WorldStreamingRuntime to own camera resolution, frame settings, streaming coordinator invocation, warning logging, last processed frame caching, and runtime reset behavior.
+* This reduces WorldGenRunner.Update() to a thin delegation point instead of a streaming manager.
+
+### 2. Moved Streaming Diagnostics Reads Onto The Runtime Boundary
+* Updated WorldGenRunner.CreateDiagnosticsSnapshot() to pull loaded chunks, queue counts, streaming anchor state, and last-frame bounds from the streaming runtime.
+* This keeps the HUD on the same explicit runtime boundary that now owns per-frame streaming behavior.
+
+### 3. Preserved Existing Streaming And Gameplay Behavior
+* Verified startup, chunk streaming, HUD streaming diagnostics, wolf den behavior, biome transitions, and run gates after the extraction.
+* This keeps the change focused on ownership and structure rather than gameplay changes.
+
+---
 ## [Current/Recent] - Persistent Site Authoring Through Shared Placements
 This update moves persistent biome sites for the active content set onto the same authored placement pipeline as chunk sites, so persistent site activation now consumes shared generated placement data instead of inventing placements later at runtime.
 
@@ -555,6 +586,8 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
+
 
 
 

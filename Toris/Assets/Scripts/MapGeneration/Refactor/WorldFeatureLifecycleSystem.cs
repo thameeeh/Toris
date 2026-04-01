@@ -65,4 +65,13 @@ public sealed class WorldFeatureLifecycleSystem
     {
         return chunkFeatureLifecycle != null ? chunkFeatureLifecycle.GetTotalPlacedSiteCount() : 0;
     }
+
+    public LifecycleDiagnosticsSnapshot CreateDiagnosticsSnapshot()
+    {
+        return new LifecycleDiagnosticsSnapshot(
+            GetActiveSiteChunkCount(),
+            GetActivePersistentSiteCount(),
+            GetActiveSiteCount(),
+            GetTotalPlacedSiteCount());
+    }
 }

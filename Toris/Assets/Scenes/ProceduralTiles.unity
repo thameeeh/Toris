@@ -1424,8 +1424,8 @@ MonoBehaviour:
   followTarget: {fileID: 7797051013246395996}
   visible: 0
   panelPos: {x: 12, y: 12}
-  panelSize: {x: 320, y: 830}
-  fontSize: 20
+  panelSize: {x: 900, y: 1500}
+  fontSize: 16
   drawChunkBorders: 0
   drawStreamingRects: 0
   zOffset: -0.1
@@ -1450,6 +1450,7 @@ MonoBehaviour:
   decorMap: {fileID: 875006850}
   followTarget: {fileID: 7797051013246395996}
   gameplayPoolManager: {fileID: 2118321077}
+  sceneTransitionService: {fileID: 0}
   streamCamera: {fileID: 506412731}
   unloadHysteresisChunks: 1
   maxChunksPerFrame: 6

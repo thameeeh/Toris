@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 public sealed class WorldGenDebugHUD : MonoBehaviour
 {
-    private const float MinimumPanelHeightWithBuildOutputDiagnostics = 450f;
+    private const float MinimumPanelHeightWithGroupedDiagnostics = 510f;
 
     [Header("References")]
     [SerializeField] private WorldGenRunner runner;
@@ -111,7 +111,11 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         }
 
         WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
+        StreamingDiagnosticsSnapshot streamingDiagnostics = diagnosticsSnapshot.Streaming;
+        LifecycleDiagnosticsSnapshot lifecycleDiagnostics = diagnosticsSnapshot.Lifecycle;
         BuildOutputDiagnosticsSnapshot buildOutputDiagnostics = diagnosticsSnapshot.BuildOutputDiagnostics;
+        NavigationDiagnosticsSnapshot navigationDiagnostics = diagnosticsSnapshot.Navigation;
+        TransitionDiagnosticsSnapshot transitionDiagnostics = diagnosticsSnapshot.Transition;
 
         Vector2 focusWorldPosition = followTarget != null ? (Vector2)followTarget.position : Vector2.zero;
 
@@ -131,7 +135,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         WorldSignals worldSignals = resolver.sampler.Compute(focusTile, worldContext);
         string biomeName = worldContext.Biome != null ? worldContext.Biome.displayName : "(null biome)";
 
-        float panelHeight = Mathf.Max(panelSize.y, MinimumPanelHeightWithBuildOutputDiagnostics);
+        float panelHeight = Mathf.Max(panelSize.y, MinimumPanelHeightWithGroupedDiagnostics);
         Rect panelRect = new Rect(panelPos.x, panelPos.y, panelSize.x, panelHeight);
         GUI.Box(panelRect, $"WorldGen Debug ({toggleKey})");
 
@@ -142,7 +146,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         drawStreamingRects = GUILayout.Toggle(drawStreamingRects, " Streaming rects (load/unload)");
         GUILayout.Space(6f);
 
-        GUILayout.Label($"Biome: {biomeName} (idx {diagnosticsSnapshot.CurrentBiomeIndex})", style);
+        GUILayout.Label($"Biome: {biomeName} (idx {transitionDiagnostics.CurrentBiomeIndex})", style);
         GUILayout.Label($"Tile: {focusTile}", style);
         GUILayout.Label($"dist01: {worldSignals.dist01:F2}", style);
         GUILayout.Label($"danger01: {worldSignals.danger01:F2}", style);
@@ -150,35 +154,48 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GUILayout.Label($"lake01: {worldSignals.lake01:F2}", style);
         GUILayout.Space(6f);
 
-        GUILayout.Label($"Loaded chunks: {diagnosticsSnapshot.LoadedChunkCount}", style);
-        GUILayout.Label($"Queue entries: {diagnosticsSnapshot.GenerationQueueCount}", style);
-        GUILayout.Label($"Queued chunks: {diagnosticsSnapshot.QueuedChunkCount}", style);
+        GUILayout.Label("Streaming:", style);
+        GUILayout.Label($"Loaded chunks: {streamingDiagnostics.LoadedChunkCount}", style);
+        GUILayout.Label($"Queue entries: {streamingDiagnostics.GenerationQueueCount}", style);
+        GUILayout.Label($"Queued chunks: {streamingDiagnostics.QueuedChunkCount}", style);
         GUILayout.Label(
-            diagnosticsSnapshot.StreamingAnchorInitialized
-                ? $"Streaming anchor: {diagnosticsSnapshot.StreamingAnchorChunk}"
+            streamingDiagnostics.StreamingAnchorInitialized
+                ? $"Streaming anchor: {streamingDiagnostics.StreamingAnchorChunk}"
                 : "Streaming anchor: (uninitialized)",
             style);
-        GUILayout.Label($"Active site chunks: {diagnosticsSnapshot.ActiveSiteChunkCount}", style);
-        GUILayout.Label($"Persistent sites: {diagnosticsSnapshot.ActivePersistentSiteCount}", style);
-        GUILayout.Label($"Active sites total: {diagnosticsSnapshot.ActiveSiteCount}", style);
-        GUILayout.Label($"Placed sites: {diagnosticsSnapshot.TotalPlacedSiteCount}", style);
+        GUILayout.Label($"Preload chunks: {streamingDiagnostics.PreloadChunks}", style);
+        GUILayout.Label($"Unload hysteresis: {streamingDiagnostics.UnloadHysteresisChunks}", style);
+        GUILayout.Space(6f);
+
+        GUILayout.Label("Lifecycle:", style);
+        GUILayout.Label($"Active site chunks: {lifecycleDiagnostics.ActiveSiteChunkCount}", style);
+        GUILayout.Label($"Persistent sites: {lifecycleDiagnostics.ActivePersistentSiteCount}", style);
+        GUILayout.Label($"Active sites total: {lifecycleDiagnostics.ActiveSiteCount}", style);
+        GUILayout.Label($"Placed sites: {lifecycleDiagnostics.TotalPlacedSiteCount}", style);
+        GUILayout.Space(6f);
+
+        GUILayout.Label("Build Output:", style);
         GUILayout.Label($"Build overrides: {buildOutputDiagnostics.TerrainOverrideCount}", style);
         GUILayout.Label($"Build placements: {buildOutputDiagnostics.TotalPlacementCount}", style);
         GUILayout.Label($"Chunk placements: {buildOutputDiagnostics.ChunkPlacementCount}", style);
         GUILayout.Label($"Persistent placements: {buildOutputDiagnostics.PersistentPlacementCount}", style);
-        GUILayout.Label($"Nav contributions: {buildOutputDiagnostics.NavigationContributionCount}", style);
         GUILayout.Label($"Road anchors: {buildOutputDiagnostics.RoadAnchorCount}", style);
-        GUILayout.Label($"Nav chunks: {diagnosticsSnapshot.LoadedNavChunkCount}", style);
+        GUILayout.Space(6f);
+
+        GUILayout.Label("Navigation:", style);
+        GUILayout.Label($"Nav contributions: {buildOutputDiagnostics.NavigationContributionCount}", style);
+        GUILayout.Label($"Nav chunks: {navigationDiagnostics.LoadedNavChunkCount}", style);
         GUILayout.Label(
-            diagnosticsSnapshot.NavigationContributionsBound
+            navigationDiagnostics.NavigationContributionsBound
                 ? "Nav contributions: bound"
                 : "Nav contributions: (unbound)",
             style);
-        GUILayout.Label($"Preload chunks: {diagnosticsSnapshot.PreloadChunks}", style);
-        GUILayout.Label($"Unload hysteresis: {diagnosticsSnapshot.UnloadHysteresisChunks}", style);
-        GUILayout.Label($"Gate cooldown: {diagnosticsSnapshot.GateCooldownRemainingSeconds:F2}s", style);
+        GUILayout.Space(6f);
+
+        GUILayout.Label("Transitions:", style);
+        GUILayout.Label($"Gate cooldown: {transitionDiagnostics.GateCooldownRemainingSeconds:F2}s", style);
         GUILayout.Label(
-            diagnosticsSnapshot.SceneTransitionLoading
+            transitionDiagnostics.SceneTransitionLoading
                 ? "Scene transition: loading"
                 : "Scene transition: idle",
             style);
@@ -217,9 +234,9 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
             return;
 
         WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
+        StreamingDiagnosticsSnapshot streamingDiagnostics = diagnosticsSnapshot.Streaming;
 
-        WorldProfile worldProfile = diagnosticsSnapshot.Profile;
-        if (worldProfile == null)
+        if (streamingDiagnostics.ChunkSize <= 0)
             return;
 
         EnsureLineMaterial();
@@ -232,11 +249,11 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GL.MultMatrix(Matrix4x4.identity);
         GL.Begin(GL.LINES);
 
-        int chunkSize = worldProfile.chunkSize;
+        int chunkSize = streamingDiagnostics.ChunkSize;
 
         if (drawChunkBorders)
         {
-            IReadOnlyCollection<Vector2Int> loadedChunks = diagnosticsSnapshot.LoadedChunks;
+            IReadOnlyCollection<Vector2Int> loadedChunks = streamingDiagnostics.LoadedChunks;
             if (loadedChunks != null)
             {
                 GL.Color(new Color(0f, 1f, 0f, 0.75f));
@@ -249,9 +266,9 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
 
         if (drawStreamingRects)
         {
-            if (diagnosticsSnapshot.HasStreamingBounds)
+            if (streamingDiagnostics.HasStreamingBounds)
             {
-                ChunkStreamingBounds streamingBounds = diagnosticsSnapshot.StreamingBounds;
+                ChunkStreamingBounds streamingBounds = streamingDiagnostics.StreamingBounds;
 
                 GL.Color(new Color(0f, 0.6f, 1f, 0.9f));
                 DrawChunkRangeRectGL(

@@ -40,4 +40,11 @@ public sealed class WorldNavigationLifecycle
     {
         tileNavWorld?.ClearNavChunk(chunkCoord);
     }
+
+    public NavigationDiagnosticsSnapshot CreateDiagnosticsSnapshot()
+    {
+        return new NavigationDiagnosticsSnapshot(
+            LoadedNavChunkCount,
+            HasNavigationContributions);
+    }
 }

@@ -3,10 +3,6 @@ using UnityEngine.Tilemaps;
 
 public sealed class WorldGenRunner : MonoBehaviour
 {
-    private const double WarnUnloadMs = 2.0;
-    private const double WarnGenerationMs = 10.0;
-    private const double WarnApplyMs = 2.0;
-
     #region Inspector
 
     [Header("Assets")]
@@ -50,11 +46,10 @@ public sealed class WorldGenRunner : MonoBehaviour
     private ChunkStreamingSystem chunkStreamingSystem;
     private ChunkProcessingPipeline chunkProcessingPipeline;
     private ChunkStreamingCoordinator chunkStreamingCoordinator;
+    private WorldStreamingRuntime worldStreamingRuntime;
     private WorldTransitionSystem worldTransitionSystem;
     private WorldNavigationLifecycle worldNavigationLifecycle;
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
-    private ChunkStreamingFrameResult lastStreamingFrameResult;
-    private bool hasLastStreamingFrameResult;
 
     #endregion
 
@@ -166,6 +161,17 @@ public sealed class WorldGenRunner : MonoBehaviour
             chunkStreamingSystem,
             chunkProcessingPipeline);
 
+        worldStreamingRuntime = new WorldStreamingRuntime(
+            profile,
+            chunkStreamingSystem,
+            chunkStreamingCoordinator,
+            chunkProcessingPipeline,
+            streamCamera,
+            preloadChunks,
+            unloadHysteresisChunks,
+            maxChunksPerFrame,
+            genBudgetMs);
+
         worldTransitionSystem.AttachLifecycleSystem(worldFeatureLifecycleSystem);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
@@ -174,46 +180,10 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     private void Update()
     {
-        if (profile == null || groundMap == null || waterMap == null || decorMap == null)
+        if (groundMap == null || waterMap == null || decorMap == null)
             return;
 
-        Camera cam = streamCamera != null ? streamCamera : Camera.main;
-        if (cam == null)
-            return;
-
-        ChunkStreamingFrameSettings streamingSettings = new ChunkStreamingFrameSettings(
-            preloadChunks,
-            unloadHysteresisChunks,
-            genBudgetMs,
-            maxChunksPerFrame,
-            maxUnloadRemovalsPerFrame: 1);
-
-        ChunkStreamingRequest streamingRequest = new ChunkStreamingRequest(cam, streamingSettings);
-        ChunkStreamingFrameResult streamingFrameResult = chunkStreamingCoordinator.ProcessFrame(streamingRequest);
-
-        if (!streamingFrameResult.ProcessedFrame)
-            return;
-
-        lastStreamingFrameResult = streamingFrameResult;
-        hasLastStreamingFrameResult = true;
-
-        ChunkProcessingFrameStats processingFrameStats = streamingFrameResult.ProcessingStats;
-
-        if (processingFrameStats.UnloadMs >= WarnUnloadMs ||
-            processingFrameStats.GenerationMsTotal >= WarnGenerationMs ||
-            processingFrameStats.ApplyMsTotal >= WarnApplyMs)
-        {
-            Debug.Log(
-                $"[WorldGen] unload={(int)processingFrameStats.UnloadMs}ms, " +
-                $"genChunks={processingFrameStats.GeneratedChunkCount}/{Mathf.Max(0, maxChunksPerFrame)} " +
-                $"budget={Mathf.Max(0.1f, genBudgetMs):F1}ms " +
-                $"gen={processingFrameStats.GenerationMsTotal:F2}ms " +
-                $"apply={processingFrameStats.ApplyMsTotal:F2}ms, " +
-                $"queue={(chunkStreamingSystem != null ? chunkStreamingSystem.GenerationQueueCount : 0)} " +
-                $"loaded={(chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunkCount : 0)} " +
-                $"chunkSize={profile.chunkSize}"
-            );
-        }
+        worldStreamingRuntime?.ProcessFrame();
     }
     private void OnDisable()
     {
@@ -222,8 +192,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         worldFeatureLifecycleSystem?.ClearAll();
         worldTransitionSystem?.ResetTransitionArtifacts();
-        chunkProcessingPipeline?.ClearLoadedChunks();
-        chunkStreamingSystem?.Reset();
+        worldStreamingRuntime?.Reset();
     }
     #endregion
 
@@ -255,91 +224,38 @@ public sealed class WorldGenRunner : MonoBehaviour
     // diagnostics
     public WorldGenDiagnosticsSnapshot CreateDiagnosticsSnapshot()
     {
-        int activeSiteChunkCount = worldFeatureLifecycleSystem != null
-            ? worldFeatureLifecycleSystem.GetActiveSiteChunkCount()
-            : 0;
+        StreamingDiagnosticsSnapshot streamingDiagnostics =
+            worldStreamingRuntime != null
+                ? worldStreamingRuntime.CreateDiagnosticsSnapshot()
+                : default;
 
-        int activePersistentSiteCount = worldFeatureLifecycleSystem != null
-            ? worldFeatureLifecycleSystem.GetActivePersistentSiteCount()
-            : 0;
-
-        int activeSiteCount = worldFeatureLifecycleSystem != null
-            ? worldFeatureLifecycleSystem.GetActiveSiteCount()
-            : 0;
-
-        int totalPlacedSiteCount = worldFeatureLifecycleSystem != null
-            ? worldFeatureLifecycleSystem.GetTotalPlacedSiteCount()
-            : 0;
+        LifecycleDiagnosticsSnapshot lifecycleDiagnostics =
+            worldFeatureLifecycleSystem != null
+                ? worldFeatureLifecycleSystem.CreateDiagnosticsSnapshot()
+                : default;
 
         BuildOutputDiagnosticsSnapshot buildOutputDiagnostics =
             ctx != null && ctx.BuildOutput != null
                 ? ctx.BuildOutput.CreateDiagnosticsSnapshot()
                 : default;
 
-        int loadedNavChunkCount = worldNavigationLifecycle != null
-            ? worldNavigationLifecycle.LoadedNavChunkCount
-            : 0;
-
-        bool navigationContributionsBound = worldNavigationLifecycle != null &&
-            worldNavigationLifecycle.HasNavigationContributions;
-
-        int generationQueueCount = chunkStreamingSystem != null
-            ? chunkStreamingSystem.GenerationQueueCount
-            : 0;
-
-        int queuedChunkCount = chunkStreamingSystem != null
-            ? chunkStreamingSystem.QueuedChunkCount
-            : 0;
-
-        bool streamingAnchorInitialized = chunkStreamingSystem != null && chunkStreamingSystem.AnchorInitialized;
-
-        Vector2Int streamingAnchorChunk = chunkStreamingSystem != null
-            ? chunkStreamingSystem.StreamingAnchorChunk
-            : default;
-
-        bool hasStreamingBounds = hasLastStreamingFrameResult && lastStreamingFrameResult.ProcessedFrame;
-        ChunkStreamingBounds streamingBounds = hasStreamingBounds
-            ? lastStreamingFrameResult.View.Bounds
-            : default;
-
-        if (!streamingAnchorInitialized && hasLastStreamingFrameResult && lastStreamingFrameResult.ProcessedFrame)
-        {
-            streamingAnchorInitialized = true;
-            streamingAnchorChunk = lastStreamingFrameResult.View.FocusChunk;
-        }
-
-        int currentBiomeIndex = worldTransitionSystem != null
-            ? worldTransitionSystem.CurrentBiomeIndex
-            : -1;
-
-        float gateCooldownRemainingSeconds = worldTransitionSystem != null
-            ? worldTransitionSystem.GateCooldownRemainingSeconds
-            : 0f;
-
         bool sceneTransitionLoading = sceneTransitionService != null && sceneTransitionService.IsLoading;
+        NavigationDiagnosticsSnapshot navigationDiagnostics =
+            worldNavigationLifecycle != null
+                ? worldNavigationLifecycle.CreateDiagnosticsSnapshot()
+                : default;
+
+        TransitionDiagnosticsSnapshot transitionDiagnostics =
+            worldTransitionSystem != null
+                ? worldTransitionSystem.CreateDiagnosticsSnapshot(sceneTransitionLoading)
+                : new TransitionDiagnosticsSnapshot(-1, 0f, sceneTransitionLoading);
 
         return new WorldGenDiagnosticsSnapshot(
-            chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunks : null,
-            chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunkCount : 0,
-            generationQueueCount,
-            queuedChunkCount,
-            preloadChunks,
-            unloadHysteresisChunks,
-            hasStreamingBounds,
-            streamingBounds,
-            streamingAnchorInitialized,
-            streamingAnchorChunk,
-            activeSiteChunkCount,
-            activePersistentSiteCount,
-            activeSiteCount,
-            totalPlacedSiteCount,
+            streamingDiagnostics,
+            lifecycleDiagnostics,
             buildOutputDiagnostics,
-            loadedNavChunkCount,
-            navigationContributionsBound,
-            currentBiomeIndex,
-            gateCooldownRemainingSeconds,
-            sceneTransitionLoading,
-            profile);
+            navigationDiagnostics,
+            transitionDiagnostics);
     }
     // Tile nav
     private void EnsureNavWorld()

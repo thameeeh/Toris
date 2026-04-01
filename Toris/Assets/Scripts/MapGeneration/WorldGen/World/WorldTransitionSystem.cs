@@ -73,6 +73,14 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         lastGateTime = -999f;
     }
 
+    public TransitionDiagnosticsSnapshot CreateDiagnosticsSnapshot(bool sceneTransitionLoading)
+    {
+        return new TransitionDiagnosticsSnapshot(
+            biomeIndex,
+            GateCooldownRemainingSeconds,
+            sceneTransitionLoading);
+    }
+
     private void StartBiome(int nextBiomeIndex, Vector2Int originTile)
     {
         biomeIndex = nextBiomeIndex;

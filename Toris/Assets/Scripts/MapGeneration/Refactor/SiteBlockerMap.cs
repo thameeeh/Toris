@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class SiteBlockerMap
+public sealed class SiteBlockerMap : ITileNavigationBlockerSource
 {
     private readonly HashSet<Vector2Int> blockedTiles = new HashSet<Vector2Int>();
 
@@ -27,5 +27,10 @@ public sealed class SiteBlockerMap
     public bool IsBlocked(Vector2Int tile)
     {
         return blockedTiles.Contains(tile);
+    }
+
+    public bool IsNavigationBlocked(Vector2Int tile)
+    {
+        return IsBlocked(tile);
     }
 }

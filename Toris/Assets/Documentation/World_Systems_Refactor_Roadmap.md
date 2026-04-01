@@ -40,6 +40,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 3 close-out is complete for unified site lifecycle ownership.
 - Phase 4 has landed an explicit ISceneTransitionService boundary for run gates; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than direct runtime singleton access.
 - Phase 5 close-out is complete for the current site-versus-encounter split scope through `IWorldEncounterSite`, `WorldEncounterOccupantCollection`, `WorldEncounterOccupantPolicy`, `WorldEncounterPackage`, `WorldEncounterPackageBinding`, `WorldEncounterPackageState`, `WorldEncounterAlertRuntime`, and `WolfEncounterCommandController`.
+- Phase 6 has started with `ITileNavigationBlockerSource`, which moves navigation input onto a neutral blocker-source contract while keeping `SiteBlockerMap` as the current producer.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -569,6 +570,7 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
 
 
 

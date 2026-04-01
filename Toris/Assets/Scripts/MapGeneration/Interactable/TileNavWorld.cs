@@ -22,7 +22,7 @@ public class TileNavWorld : MonoBehaviour
     private HashSet<TileBase> _walkableSet;
     private HashSet<TileBase> _blockingSet;
 
-    private SiteBlockerMap siteBlockers;
+    private ITileNavigationBlockerSource navigationBlockers;
 
     // We assume one global chunk size for nav; set from first BuildNavChunk call
     private int _chunkSize;
@@ -108,9 +108,9 @@ public class TileNavWorld : MonoBehaviour
 
 
     // --- Public API: used by pathfinding / AI ---
-    private bool IsBlockedBySite(Vector2Int tile)
+    private bool IsBlockedByNavigationSource(Vector2Int tile)
     {
-        return siteBlockers != null && siteBlockers.IsBlocked(tile);
+        return navigationBlockers != null && navigationBlockers.IsNavigationBlocked(tile);
     }
     /// <summary>
     /// Convert world position to tile coordinates.
@@ -159,7 +159,7 @@ public class TileNavWorld : MonoBehaviour
         if (!navChunk.GetWalkable(localX, localY))
             return false;
 
-        if (IsBlockedBySite(worldCell))
+        if (IsBlockedByNavigationSource(worldCell))
             return false;
 
         return true;
@@ -216,9 +216,9 @@ public class TileNavWorld : MonoBehaviour
         }
     }
 
-    public void SetSiteBlockers(SiteBlockerMap siteBlockers)
+    public void SetNavigationBlockers(ITileNavigationBlockerSource navigationBlockers)
     {
-        this.siteBlockers = siteBlockers;
+        this.navigationBlockers = navigationBlockers;
     }
 
 #if UNITY_EDITOR

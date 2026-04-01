@@ -29,9 +29,9 @@ public sealed class WorldSceneServices : IWorldNavigationService
         TileNavWorld?.ClearNavChunk(chunkCoord);
     }
 
-    public void SetSiteBlockers(SiteBlockerMap siteBlockers)
+    public void SetNavigationBlockers(ITileNavigationBlockerSource navigationBlockers)
     {
-        TileNavWorld?.SetSiteBlockers(siteBlockers);
+        TileNavWorld?.SetNavigationBlockers(navigationBlockers);
     }
 
     public Vector2Int WorldToCell(Vector3 worldPosition)

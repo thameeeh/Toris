@@ -370,6 +370,6 @@ public sealed class WorldGenRunner : MonoBehaviour
         }
 
         nav.Initialize(groundMap, waterMap);
-        nav.SetSiteBlockers(ctx.SiteBlockers);
+        nav.SetNavigationBlockers(ctx.NavigationBlockers);
     }
 }

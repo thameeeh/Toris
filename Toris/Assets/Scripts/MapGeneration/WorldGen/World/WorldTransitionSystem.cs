@@ -87,7 +87,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         worldContext.BindBiome(biomeDefinition, biomeInstance);
         worldRuntimeState?.Clear();
 
-        worldSceneServices?.SetSiteBlockers(worldContext.SiteBlockers);
+        worldSceneServices?.SetNavigationBlockers(worldContext.NavigationBlockers);
         worldFeatureLifecycleSystem?.RebuildForCurrentBiome();
 
         chunkStreamingSystem?.Reset();

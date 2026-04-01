@@ -38,7 +38,7 @@ public sealed class WorldSiteActivationPipeline
             return null;
 
         GameObject prefab = siteDefinition.Prefab;
-        if (prefab == null || worldSceneServices == null || worldSceneServices.Grid == null || poiPoolManager == null)
+        if (prefab == null || worldSceneServices == null || poiPoolManager == null)
             return null;
 
         int spawnId = worldRuntimeState.ChunkStates.MakeSpawnId(

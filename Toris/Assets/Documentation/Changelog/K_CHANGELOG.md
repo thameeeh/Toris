@@ -1,4 +1,49 @@
-## [Current/Recent] - Phase 8 Slice: Transition And Navigation Scaffold Cleanup
+## [Current/Recent] - Phase 8 Slice: Service Boundary Surface Cleanup
+This update continues the Phase 8 deletion pass by removing one more unnecessary peek-through on the world-scene service boundary, so callers rely on the service behavior they actually need instead of reaching through it for internal state.
+
+### 1. Removed Public Grid Peek-Through From WorldSceneServices
+* Kept Grid private inside WorldSceneServices instead of exposing it as a public property.
+* This narrows the service back toward its intended job: providing scene and navigation behavior, not leaking implementation details.
+
+### 2. Tightened Site Activation To Use The Service Boundary Directly
+* Updated WorldSiteActivationPipeline so it no longer null-checks WorldSceneServices.Grid before requesting a world-space cell center.
+* The activation path now depends on GetCellCenterWorld(...) directly instead of peeking through the service boundary.
+
+### 3. Verified No-Behavior Change After Narrowing The Surface
+* Verified startup, chunk streaming, wolf den behavior, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the cleanup work focused on deleting unnecessary surfaces while preserving the already-verified runtime behavior.
+
+---## [Current/Recent] - Phase 8 Slice: Runner Composition State Cleanup
+This update continues the Phase 8 deletion pass by shrinking WorldGenRunner down to the runtime state it actually needs after startup, so one-shot composition helpers no longer live as long-lived runner fields.
+
+### 1. Localized Startup-Only Composition Helpers
+* Moved ChunkGenerator, TilemapApplier, WorldSceneServices, WorldEncounterServices, and WorldSiteActivationPipeline to local variables inside Awake().
+* This keeps the runner focused on long-lived runtime systems instead of retaining startup-only composition objects as member state.
+
+### 2. Preserved The Existing Runtime Ownership Boundaries
+* The same systems are still composed in the same order and passed into the same lifecycle, streaming, transition, and encounter boundaries.
+* This is a pure ownership cleanup, not a change to world-generation or gameplay behavior.
+
+### 3. Verified No-Behavior Change After Localization
+* Verified startup, chunk streaming, wolf den behavior, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps the Phase 8 deletion work grounded in parity checks rather than speculative cleanup.
+
+---## [Current/Recent] - Phase 8 Slice: Runner Scaffold Cleanup
+This update continues the Phase 8 deletion pass by removing a pair of no-behavior leftovers from WorldGenRunner so the composition root keeps one clear startup path instead of carrying duplicate bootstrap code and dead migration comments.
+
+### 1. Removed Duplicate POI Pool Bootstrap
+* Deleted the inline poiPool get-or-add block from Awake() and left EnsurePoiPool() as the single startup owner of POI pool creation.
+* This keeps pool bootstrap logic in one place instead of maintaining two equivalent setup paths in the runner.
+
+### 2. Deleted Dead Streaming Migration Scaffold
+* Removed the commented nchorShiftThreshold field that was left behind from the earlier streaming extraction work.
+* This trims one more stale migration artifact from the runner without affecting runtime behavior.
+
+### 3. Verified No-Behavior Change After Cleanup
+* Verified startup, chunk streaming, wolf den behavior, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
+* This keeps Phase 8 moving through small deletions with parity checks instead of broad cleanup guesses.
+
+---## [Current/Recent] - Phase 8 Slice: Transition And Navigation Scaffold Cleanup
 This update continues the Phase 8 deletion pass by removing dead transition and navigation compatibility layers, trimming a few no-behavior helper surfaces, and keeping the current diagnostics as the verification safety net.
 
 ### 1. Deleted Dead Transition Compatibility Paths
@@ -379,6 +424,9 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
+
+
 
 
 

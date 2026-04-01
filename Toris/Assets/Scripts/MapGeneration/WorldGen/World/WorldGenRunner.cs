@@ -29,7 +29,6 @@ public sealed class WorldGenRunner : MonoBehaviour
     [SerializeField] private int unloadHysteresisChunks = 1;
     [SerializeField] private int maxChunksPerFrame = 2;
     [SerializeField] private int preloadChunks = 1;
-    //[SerializeField] private int anchorShiftThreshold = 1; // currently unused kept for future/compat
     [SerializeField] private float genBudgetMs = 1f;
 
     [SerializeField] private bool clearOnDisable = false;
@@ -46,17 +45,12 @@ public sealed class WorldGenRunner : MonoBehaviour
 
     private WorldContext ctx;
     private WorldRuntimeState runtimeState;
-    private ChunkGenerator generator;
-    private TilemapApplier applier;
     private ChunkStreamingSystem chunkStreamingSystem;
     private ChunkProcessingPipeline chunkProcessingPipeline;
     private ChunkStreamingCoordinator chunkStreamingCoordinator;
     private WorldTransitionSystem worldTransitionSystem;
     private WorldNavigationLifecycle worldNavigationLifecycle;
-    private WorldSceneServices worldSceneServices;
-    private WorldEncounterServices worldEncounterServices;
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
-    private WorldSiteActivationPipeline worldSiteActivationPipeline;
 
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkLoaded;
     public System.Action<Vector2Int, ChunkStateStore.ChunkState> OnChunkUnloading;
@@ -100,13 +94,6 @@ public sealed class WorldGenRunner : MonoBehaviour
             return;
         }
 
-        if (poiPool == null)
-        {
-            poiPool = gameObject.GetComponent<WorldPoiPoolManager>();
-            if (poiPool == null)
-                poiPool = gameObject.AddComponent<WorldPoiPoolManager>();
-        }
-
         if (followTarget == null)
         {
             Debug.LogWarning($"{nameof(WorldGenRunner)} has no followTarget assigned. PlayerLocatorService will return null.", this);
@@ -131,18 +118,18 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         ctx = new WorldContext(profile);
         runtimeState = new WorldRuntimeState();
-        generator = new ChunkGenerator(ctx);
-        applier = new TilemapApplier(groundMap, waterMap, decorMap);
+        ChunkGenerator generator = new ChunkGenerator(ctx);
+        TilemapApplier applier = new TilemapApplier(groundMap, waterMap, decorMap);
 
         EnsurePoiPool();
         EnsureNavWorld();
 
         worldNavigationLifecycle = new WorldNavigationLifecycle(TileNavWorld.Instance, groundMap, waterMap);
         worldNavigationLifecycle.Initialize(ctx.NavigationContributions);
-        worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
+        WorldSceneServices worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
         chunkStreamingSystem = new ChunkStreamingSystem();
 
-        worldEncounterServices = new WorldEncounterServices(
+        WorldEncounterServices worldEncounterServices = new WorldEncounterServices(
             worldSceneServices,
             new PlayerLocatorService(followTarget),
             new EnemySpawnService(gameplayPoolManager));
@@ -156,7 +143,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             chunkStreamingSystem,
             gateCooldownSeconds);
 
-        worldSiteActivationPipeline = new WorldSiteActivationPipeline(
+        WorldSiteActivationPipeline worldSiteActivationPipeline = new WorldSiteActivationPipeline(
             worldSceneServices,
             worldEncounterServices,
             runtimeState,

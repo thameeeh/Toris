@@ -2,21 +2,21 @@ using UnityEngine;
 
 public sealed class WorldSceneServices : IWorldNavigationService
 {
-    public Grid Grid { get; }
+    private readonly Grid grid;
     private readonly TileNavWorld tileNavWorld;
 
     public WorldSceneServices(Grid grid, TileNavWorld tileNavWorld)
     {
-        Grid = grid;
+        this.grid = grid;
         this.tileNavWorld = tileNavWorld;
     }
 
     public Vector3 GetCellCenterWorld(Vector2Int tile)
     {
-        if (Grid == null)
+        if (grid == null)
             return Vector3.zero;
 
-        return Grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));
+        return grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));
     }
 
     public Vector2Int WorldToCell(Vector3 worldPosition)

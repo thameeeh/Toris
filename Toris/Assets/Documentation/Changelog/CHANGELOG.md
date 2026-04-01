@@ -137,6 +137,7 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ## [Unreleased]
 ### Changed
+- **UI Architecture:** Fixed broken drag-and-drop and click interactions on dynamically instantiated UI Toolkit inventory slots by updating the `TemplateContainer` wrapper's picking mode to `Ignore` and correctly registering pointer events directly onto the inner `.item-slot` element in `InventorySlotView.cs`.
 - **UI Architecture:** Refactored the UI Toolkit inventory assets (`PlayerInventory`, `Mage`, `Smith`, `ShopSubView`, `ForgeSubView_Smith`, `SalvageSubView_Smith`, `Slot`) to strictly follow BEM naming conventions.
 - **UI Architecture:** Extracted all inline UXML styles into a new `GlobalStyles.uss` file using `:root` CSS variables and applied them correctly across the project in `Inventory.uss`.
 - **UI Architecture:** Removed hardcoded dummy slot instances from `PlayerInventory.uxml` grid, ensuring a purely data-driven template instantiation approach.

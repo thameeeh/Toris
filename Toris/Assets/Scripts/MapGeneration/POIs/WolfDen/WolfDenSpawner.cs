@@ -15,11 +15,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private Wolf leader;
     private PackController pack;
     private readonly WorldEncounterOccupantCollection<Wolf> occupants = new();
+    private readonly WorldEncounterAlertRuntime alertRuntime = new();
     private float respawnTimer;
-
-    private float alertLevel;
-    private float alertDecayDelayTimer;
-    private bool hasTriggeredMaxAlertHowl;
 
     public void Initialize(WorldSiteContext siteContext)
     {
@@ -89,10 +86,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         leader = null;
         pack = null;
         respawnTimer = 0f;
-
-        alertLevel = 0f;
-        alertDecayDelayTimer = 0f;
-        hasTriggeredMaxAlertHowl = false;
+        alertRuntime.Reset();
     }
 
     private void SubscribeToDen()
@@ -145,19 +139,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
             }
         }
 
-        if (alertDecayDelayTimer > 0f)
-        {
-            alertDecayDelayTimer -= Time.deltaTime;
-        }
-        else if (alertLevel > 0f)
-        {
-            alertLevel = Mathf.Max(0f, alertLevel - encounterConfig.AlertLevelDecayRate * Time.deltaTime);
-        }
-
-        if (alertLevel < encounterConfig.MaxAlertLevel)
-        {
-            hasTriggeredMaxAlertHowl = false;
-        }
+        alertRuntime.Tick(
+            Time.deltaTime,
+            encounterConfig.AlertLevelDecayRate,
+            encounterConfig.MaxAlertLevel);
     }
 
     private void HandleDenCleared()
@@ -179,15 +164,17 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (!ready) return;
         if (denSite == null || denSite.IsCleared) return;
 
-        alertLevel = Mathf.Min(encounterConfig.MaxAlertLevel, alertLevel + encounterConfig.AlertLevelPerHit);
-        alertDecayDelayTimer = encounterConfig.AlertLevelDecayDelay;
+        alertRuntime.Raise(
+            encounterConfig.AlertLevelPerHit,
+            encounterConfig.MaxAlertLevel,
+            encounterConfig.AlertLevelDecayDelay);
 
         if (TryTriggerMaxAlertHowl())
             return;
 
         Vector3 investigatePoint = BuildDenInvestigationPoint();
-        float investigateDuration = encounterConfig.DenAlertDuration + alertLevel;
-        float standBonus = alertLevel * encounterConfig.InvestigateStandBonusPerAlert;
+        float investigateDuration = encounterConfig.DenAlertDuration + alertRuntime.Level;
+        float standBonus = alertRuntime.Level * encounterConfig.InvestigateStandBonusPerAlert;
 
         if (leader != null)
             leader.SetInvestigationTarget(investigatePoint, investigateDuration, standBonus);
@@ -208,10 +195,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (!encounterConfig.HowlAtMaxAlert)
             return false;
 
-        if (alertLevel < encounterConfig.MaxAlertLevel)
-            return false;
-
-        if (hasTriggeredMaxAlertHowl)
+        if (!alertRuntime.TryConsumeMaxAlert(encounterConfig.MaxAlertLevel))
             return false;
 
         if (leader == null)
@@ -226,14 +210,14 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (!leader.pack.EnsureLeader(leader))
             return false;
 
-        hasTriggeredMaxAlertHowl = true;
-
         leader.ClearInvestigationTarget();
         leader.SetAggroStatus(true);
         leader.StateMachine.ChangeState(leader.HowlState);
 
-        alertLevel = Mathf.Clamp(encounterConfig.AlertLevelAfterHowl, 0f, encounterConfig.MaxAlertLevel);
-        alertDecayDelayTimer = encounterConfig.AlertLevelDecayDelay;
+        alertRuntime.ApplyPostMaxAlertResponse(
+            encounterConfig.AlertLevelAfterHowl,
+            encounterConfig.MaxAlertLevel,
+            encounterConfig.AlertLevelDecayDelay);
 
         return true;
     }
@@ -280,7 +264,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
         int outwardSteps = Mathf.Max(
             1,
-            Mathf.RoundToInt(encounterConfig.InvestigateBaseStepsFromDen + alertLevel * encounterConfig.InvestigateExtraStepsPerAlert)
+            Mathf.RoundToInt(
+                encounterConfig.InvestigateBaseStepsFromDen +
+                alertRuntime.Level * encounterConfig.InvestigateExtraStepsPerAlert)
         );
 
         for (int i = 1; i < outwardSteps; i++)

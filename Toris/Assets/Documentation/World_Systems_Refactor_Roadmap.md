@@ -39,7 +39,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 2 close-out is complete for the current chunk streaming extraction scope.
 - Phase 3 close-out is complete for unified site lifecycle ownership.
 - Phase 4 has landed an explicit ISceneTransitionService boundary for run gates; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than direct runtime singleton access.
-- Phase 5 has landed its first encounter-site seam through `IWorldEncounterSite`, a reusable occupant-tracking boundary through `WorldEncounterOccupantCollection`, a reusable lifecycle config boundary through `WorldEncounterOccupantPolicy`, an explicit encounter-package API through `WorldEncounterPackage`, and reusable activation/persistence hooks through `WorldEncounterPackageBinding` and `WorldEncounterPackageState`, but encounter orchestration is still wolf-den-specific and not yet packaged as a reusable subsystem.
+- Phase 5 has landed its first encounter-site seam through `IWorldEncounterSite`, a reusable occupant-tracking boundary through `WorldEncounterOccupantCollection`, a reusable lifecycle config boundary through `WorldEncounterOccupantPolicy`, an explicit encounter-package API through `WorldEncounterPackage`, reusable activation/persistence hooks through `WorldEncounterPackageBinding` and `WorldEncounterPackageState`, and a reusable alert-state runtime through `WorldEncounterAlertRuntime`, but encounter orchestration is still wolf-den-specific and not yet packaged as a reusable subsystem.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -59,7 +59,7 @@ The codebase already contains meaningful refactor progress.
 - `WorldGenRunner` still acts as the composition root and the top-level frame orchestrator.
 - Chunk load policy still depends on camera math and frame-budget logic living in `WorldGenRunner`.
 - Build output is only partly normalized; terrain output is still mostly transient chunk tile data plus stamp maps.
-- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem, even though occupant tracking, unload release policy, encounter lifecycle tuning, package selection, and package activation state now have reusable helper boundaries.
+- Encounter logic is still largely wolf-den-specific rather than a reusable subsystem, even though occupant tracking, unload release policy, encounter lifecycle tuning, package selection, package activation state, and alert-state bookkeeping now have reusable helper boundaries.
 - Run-scene transitions now accept `ISceneTransitionService` in the world-site path, but static-scene gate usage still depends on scene-level service availability and should eventually move onto a clearer composition path.
 - Asset migration is incomplete; not all biome assets are wired into the new build-step pipeline.
 
@@ -327,7 +327,8 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 - respawn timing, spawn radius, home radius, and chase-on-unload rules now sit behind `WorldEncounterOccupantPolicy`
 - encounter-package selection now exists through `WorldEncounterPackage` and `TryGetEncounterPackage(...)`
 - package activation and namespaced package persistence now exist through `WorldEncounterPackageBinding` and `WorldEncounterPackageState`
-- alert escalation, howl behavior, and encounter-specific tuning are still highly wolf-den-shaped and not yet packaged for reuse
+- alert accumulation, decay, and max-alert gating now exist through `WorldEncounterAlertRuntime`
+- howl execution, investigation commands, and other encounter-specific tuning are still highly wolf-den-shaped and not yet packaged for reuse
 
 ### Scope
 - define an encounter package model or service boundary
@@ -336,7 +337,7 @@ The den and gate site runtimes are already on service boundaries. That makes thi
 
 ### Key Work Items
 
-- continue extracting the remaining wolf-specific orchestration out of the alert/howl layer now that package selection, activation ownership, and persistence hooks are explicit
+- continue extracting the remaining wolf-specific orchestration out of the howl and occupant-command layer now that package selection, activation ownership, persistence hooks, and alert-state bookkeeping are explicit
 - define what encounter configuration lives in site runtime config versus encounter-specific config
 - decide how a future camp, shrine, nest, or patrol point would request an encounter package
 
@@ -531,10 +532,10 @@ The next implementation step should be the next Phase 5 close-out slice.
 
 Specifically:
 
-- keep separating the remaining wolf-specific orchestration from the reusable package, occupant tracking, occupant policy, and package-binding boundaries
-- decide which alert, howl, and occupant-command behaviors belong in a reusable encounter controller versus a wolf-specific layer
-- decide what future encounter hosts would need to provide beyond `IWorldEncounterSite`, shared occupant policy, package identity, and package activation state
-- keep verification focused on den clear, reload, unload, leader respawn, and chase-on-unload behavior while the seam is widened
+- keep separating the remaining wolf-specific orchestration from the reusable package, occupant tracking, occupant policy, package-binding, and alert-runtime boundaries
+- decide which howl and occupant-command behaviors belong in a reusable encounter controller versus a wolf-specific layer
+- decide what future encounter hosts would need to provide beyond `IWorldEncounterSite`, shared occupant policy, package identity, package activation state, and alert input
+- keep verification focused on den clear, reload, unload, leader respawn, max-alert response, and chase-on-unload behavior while the seam is widened
 
 That keeps the refactor moving in order without reopening earlier service-boundary work.
 
@@ -568,6 +569,7 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
 
 
 

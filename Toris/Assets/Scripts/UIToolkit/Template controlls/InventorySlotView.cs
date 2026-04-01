@@ -67,7 +67,9 @@ namespace OutlandHaven.Inventory
 
         private void OnPointerDown(PointerDownEvent evt)
         {
-            if (_slotData == null || _slotData.IsEmpty || evt.button != 0) return;
+            if (_slotData == null || _slotData.IsEmpty) return;
+            // Only allow left click (0) and right click (1) to capture pointer
+            if (evt.button != 0 && evt.button != 1) return;
 
             // Do not initiate visual drag right away (wait for threshold)
             _isDragging = false;
@@ -79,6 +81,9 @@ namespace OutlandHaven.Inventory
         private void OnPointerMove(PointerMoveEvent evt)
         {
             if (!_root.HasPointerCapture(evt.pointerId)) return;
+
+            // Only left clicks can initiate dragging
+            if (evt.button != 0) return;
 
             // If we are not currently dragging, check distance against threshold
             if (!_isDragging)
@@ -104,6 +109,20 @@ namespace OutlandHaven.Inventory
             if (!_root.HasPointerCapture(evt.pointerId)) return;
 
             _root.ReleasePointer(evt.pointerId);
+
+            if (evt.button == 1)
+            {
+                // Stop dragging state and clear visual ghost if any
+                _isDragging = false;
+                UIDragManager.Instance?.StopDrag();
+
+                // Fire right click event
+                if (_slotData != null && !_slotData.IsEmpty)
+                {
+                    _uiInventoryEvents?.OnItemRightClicked?.Invoke(_slotData);
+                }
+                return;
+            }
 
             if (_isDragging)
             {

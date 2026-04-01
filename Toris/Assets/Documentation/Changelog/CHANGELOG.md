@@ -7,7 +7,25 @@
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Current/Recent] - Documentation Updates
+This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
+
+### 1. Centralized Event Documentation
+* Moved `Inventory_Event_System_Documentation.md` from the Scripts folder to the centralized `Toris/Assets/Documentation/` directory.
+
+### 2. Added UI Interactions Documentation
+* Created `UI_Interactions_Documentation.md` detailing the Drag-and-Drop system, Ghost Icon instantiation, Drag Thresholds, and the abstraction of raw hardware inputs into semantic events via `UIInventoryEventsSO`.
+
+### 3. Added Equipment System Documentation
+* Created `Equipment_System_Documentation.md` detailing the architecture of the Equipment UI and the stat connection flow (from `InventoryManager` via `PlayerEquipmentController` to `PlayerEffectResolver`).
+
+### 4. Updated Script Dependencies
+* Updated `script dependency documentation.md` to format relationships as proper dependency chains (A -> B -> C) rather than nested lists.
+* Added cross-references to the newly created documentation files.
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

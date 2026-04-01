@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public sealed class WorldGenRunner : MonoBehaviour
+public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 {
     #region Inspector
 

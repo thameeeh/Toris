@@ -42,7 +42,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 5 close-out is complete for the current site-versus-encounter split scope through `IWorldEncounterSite`, `WorldEncounterOccupantCollection`, `WorldEncounterOccupantPolicy`, `WorldEncounterPackage`, `WorldEncounterPackageBinding`, `WorldEncounterPackageState`, `WorldEncounterAlertRuntime`, and `WolfEncounterCommandController`.
 - Phase 6 now has `ITileNavigationContributionSource` and `WorldNavigationLifecycle`, which move navigation input and nav chunk ownership onto explicit neutral boundaries while keeping `SiteBlockerMap` as the current navigation-contribution producer.
 - Phase 8 has started with expanded nav lifecycle and transition diagnostics in `WorldGenDiagnosticsSnapshot` and `WorldGenDebugHUD`.
-- Phase 8 cleanup has already removed stale transition and blocker compatibility layers, trimmed smaller redundant nav and run-gate scaffolding, localized startup-only runner composition state, narrowed site activation and biome-transition persistence ownership to `ChunkStateStore`, removed dead public runner surface, deleted the obsolete chunk callback plus `WorldRuntimeState` wrapper plumbing, trimmed dead helper and redundant alias surface from the streaming bounds, system, frame-result, and diagnostics snapshot types, and moved per-frame streaming ownership into `WorldStreamingRuntime`.
+- Phase 8 cleanup has already removed stale transition and blocker compatibility layers, trimmed smaller redundant nav and run-gate scaffolding, localized startup-only runner composition state, narrowed site activation and biome-transition persistence ownership to `ChunkStateStore`, removed dead public runner surface, deleted the obsolete chunk callback plus `WorldRuntimeState` wrapper plumbing, trimmed dead helper and redundant alias surface from the streaming bounds, system, frame-result, and diagnostics snapshot types, moved per-frame streaming ownership into `WorldStreamingRuntime`, and replaced the debug HUD's direct `WorldGenRunner` dependency with the narrow `IWorldDiagnosticsSource` boundary.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -59,8 +59,8 @@ The codebase already contains meaningful refactor progress.
 
 ### 3.2 Main Remaining Pressure Points
 
-- `WorldGenRunner` is now much closer to a thin shell, but it still aggregates diagnostics and remains the composition root for the world stack.
-- The next cleanup pressure is trimming or deleting any now-redundant flat diagnostics scaffolding and keeping the HUD focused on high-signal runtime visibility.
+- `WorldGenRunner` is now functioning as a thin composition root plus diagnostics provider for the world stack; the main remaining work is verifying whether any further extraction is still structurally justified.
+- The next close-out pressure is a final audit for any remaining dead-path deletions or boundary leaks rather than another known major subsystem extraction.
 - Build output is now authoritative for the active content set, but WorldGenRunner still owns too much streaming policy and diagnostics aggregation to count as a thin shell.
 - Encounter boundaries are now explicit for the current wolf-den scope, but future multi-encounter reuse remains a later expansion rather than a blocking refactor pressure point.
 - Major service boundaries are now in place; the main remaining pressure is cleanup and deletion of leftover migration scaffolding rather than missing transition or nav architecture.
@@ -572,6 +572,8 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
+
 
 
 

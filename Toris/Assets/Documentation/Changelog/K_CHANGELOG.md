@@ -1,3 +1,34 @@
+## [Current/Recent] - Decouple The Debug HUD From WorldGenRunner
+This update removes the last direct runtime dependency from the debug HUD onto the world runner while preserving the same HUD behavior, toggles, and chunk-visualization workflow.
+
+### 1. Added A Narrow Diagnostics Source Boundary
+* Added IWorldDiagnosticsSource as the read-only contract for world diagnostics context and aggregate snapshot reads.
+* This keeps debug consumers tied to the diagnostics boundary they actually need instead of a broader orchestration component.
+
+### 2. Rewired The Debug HUD To The Diagnostics Boundary
+* Updated WorldGenDebugHUD to consume a serialized diagnostics source component through the new interface.
+* Preserved existing scene wiring with FormerlySerializedAs("runner") so the HUD can keep working without manual reassignment.
+
+### 3. Preserved Existing HUD And Visualization Behavior
+* Verified the compact HUD, advanced toggle, chunk-border drawing, streaming rect drawing, biome transitions, and run gates after the boundary cleanup.
+* This leaves the HUD behavior intact while removing the direct runtime dependency on WorldGenRunner.
+
+---## [Current/Recent] - Delete Legacy Build-Path Compatibility Surface
+This update removes old compatibility aliases and dead authoring fields now that generated sites, blockers, and persistent content all flow through the authoritative build-output path.
+
+### 1. Deleted Old WorldContext Build Aliases
+* Removed the old Stamps, SiteBlockers, RoadAnchors, SitePlacements, and RegisterSite(...) compatibility surface from WorldContext.
+* This leaves BuildOutput as the only real generated-world ownership path instead of preserving parallel names for the same data.
+
+### 2. Rewired Remaining Lifecycle Readers To The Authoritative Path
+* Updated chunk and persistent lifecycle rebuild paths to read placements directly from WorldBuildOutput.SitePlacements.
+* This keeps site activation aligned with the same authoritative placement model used by build-time writers.
+
+### 3. Deleted The Obsolete Persistent Profile Authoring Field
+* Removed the dead persistent-site authoring field from BiomeProfile after the earlier build-step migration made it unused.
+* Verified startup, biome switching, persistent site appearance, gates, dens, and the compact HUD after the cleanup.
+
+---
 ## [Current/Recent] - Debug HUD Readability Trim
 This update keeps the new grouped diagnostics model in code while simplifying the default F3 surface so it stays readable at larger font sizes and remains focused on quick world and chunk-debug visibility.
 
@@ -13,7 +44,8 @@ This update keeps the new grouped diagnostics model in code while simplifying th
 * Verified the compact HUD layout at larger font sizes and confirmed chunk-border and streaming-rect toggles still work.
 * This keeps the diagnostics cleanup practical without throwing away the newer snapshot boundaries.
 
----## [Current/Recent] - Grouped World Diagnostics Snapshots
+---
+## [Current/Recent] - Grouped World Diagnostics Snapshots
 This update turns the world diagnostics model into grouped subsystem read models so build output, streaming, lifecycle, navigation, and transition state each expose intentional snapshot data instead of one flat aggregate field bag.
 
 ### 1. Added Subsystem Diagnostics Snapshots
@@ -28,7 +60,8 @@ This update turns the world diagnostics model into grouped subsystem read models
 * Updated WorldGenDebugHUD to read the grouped diagnostics model and verified startup, chunk streaming, lifecycle counts, build-output counters, biome transitions, run gates, and den behavior after the read-model refactor.
 * This keeps the diagnostics cleanup structural rather than gameplay-facing.
 
----## [Current/Recent] - Streaming Runtime Ownership Extraction
+---
+## [Current/Recent] - Streaming Runtime Ownership Extraction
 This update moves the frame-by-frame streaming manager responsibilities out of the runner and into a dedicated runtime object, so streaming camera resolution, frame settings, last-frame caching, reset, and warning logging all live behind one explicit boundary.
 
 ### 1. Added A Dedicated Streaming Runtime
@@ -601,6 +634,8 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
+
 
 
 

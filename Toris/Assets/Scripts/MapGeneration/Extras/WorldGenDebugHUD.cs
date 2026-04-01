@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 public sealed class WorldGenDebugHUD : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     private const float MinimumPanelHeightWithAdvancedDiagnostics = 510f;
 
     [Header("References")]
-    [SerializeField] private WorldGenRunner runner;
+    [FormerlySerializedAs("runner")]
+    [SerializeField] private MonoBehaviour diagnosticsSourceComponent;
     [SerializeField] private Grid grid;
     [SerializeField] private Transform followTarget;
 
@@ -91,28 +93,29 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
             style.fontSize = fontSize;
         }
 
-        if (runner == null)
+        IWorldDiagnosticsSource diagnosticsSource = diagnosticsSourceComponent as IWorldDiagnosticsSource;
+        if (diagnosticsSource == null)
         {
             GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60f), "WorldGen Debug");
             GUI.Label(
                 new Rect(panelPos.x + 10f, panelPos.y + 25f, panelSize.x - 20f, 20f),
-                "runner == null",
+                "diagnostics source == null",
                 style);
             return;
         }
 
-        WorldContext worldContext = runner.Context;
+        WorldContext worldContext = diagnosticsSource.Context;
         if (worldContext == null)
         {
             GUI.Box(new Rect(panelPos.x, panelPos.y, panelSize.x, 60f), "WorldGen Debug");
             GUI.Label(
                 new Rect(panelPos.x + 10f, panelPos.y + 25f, panelSize.x - 20f, 20f),
-                "runner.Context == null",
+                "diagnostics source context == null",
                 style);
             return;
         }
 
-        WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
+        WorldGenDiagnosticsSnapshot diagnosticsSnapshot = diagnosticsSource.CreateDiagnosticsSnapshot();
         StreamingDiagnosticsSnapshot streamingDiagnostics = diagnosticsSnapshot.Streaming;
         LifecycleDiagnosticsSnapshot lifecycleDiagnostics = diagnosticsSnapshot.Lifecycle;
         BuildOutputDiagnosticsSnapshot buildOutputDiagnostics = diagnosticsSnapshot.BuildOutputDiagnostics;
@@ -230,7 +233,8 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         if (!drawChunkBorders && !drawStreamingRects)
             return;
 
-        if (runner == null || runner.Context == null)
+        IWorldDiagnosticsSource diagnosticsSource = diagnosticsSourceComponent as IWorldDiagnosticsSource;
+        if (diagnosticsSource == null || diagnosticsSource.Context == null)
             return;
 
         if (grid == null)
@@ -242,7 +246,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         if (cam.cameraType != CameraType.Game && cam.cameraType != CameraType.SceneView)
             return;
 
-        WorldGenDiagnosticsSnapshot diagnosticsSnapshot = runner.CreateDiagnosticsSnapshot();
+        WorldGenDiagnosticsSnapshot diagnosticsSnapshot = diagnosticsSource.CreateDiagnosticsSnapshot();
         StreamingDiagnosticsSnapshot streamingDiagnostics = diagnosticsSnapshot.Streaming;
 
         if (streamingDiagnostics.ChunkSize <= 0)

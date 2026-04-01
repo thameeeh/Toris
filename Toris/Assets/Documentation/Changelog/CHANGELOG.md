@@ -1,3 +1,29 @@
+## [Current/Recent] - Decouple The World Debug HUD From The Runner
+This update removes the world debug HUD's direct dependency on WorldGenRunner and replaces it with a narrow diagnostics contract.
+
+### 1. Added A Dedicated Diagnostics Interface
+* Added IWorldDiagnosticsSource so debug consumers read only the world context and diagnostics snapshot they actually need.
+
+### 2. Rewired The HUD To The Narrow Boundary
+* Updated WorldGenDebugHUD to use a serialized diagnostics source component through the new interface.
+* Preserved existing scene serialization with FormerlySerializedAs("runner").
+
+### 3. Preserved Existing Debug Behavior
+* Verified compact HUD behavior, advanced diagnostics toggle, chunk visuals, biome transitions, and run gates after the change.
+
+---## [Current/Recent] - Delete Legacy Build-Path Compatibility Surface
+This update removes old world-build compatibility aliases and a dead persistent profile field now that build output is the authoritative generated-world path.
+
+### 1. Removed Old WorldContext Build Aliases
+* The world context no longer exposes duplicate aliases for generated stamps, blockers, anchors, placements, or site registration.
+
+### 2. Kept Lifecycle Readers On The Authoritative Build Path
+* Site lifecycle rebuild paths now read placement data directly from WorldBuildOutput.
+
+### 3. Removed Dead Persistent Profile Authoring Data
+* The obsolete persistent-site field was removed from BiomeProfile after persistent site authoring moved into build-step assets.
+
+---
 ## [Current/Recent] - Debug HUD Readability Trim
 This update simplifies the default world debug HUD so it stays readable at larger font sizes while keeping deeper diagnostics available behind an advanced toggle.
 
@@ -10,7 +36,8 @@ This update simplifies the default world debug HUD so it stays readable at large
 ### 3. Preserved Existing Debug Utility
 * Verified compact HUD readability and the continued behavior of chunk-border and streaming-rectangle toggles.
 
----## [Current/Recent] - Grouped World Diagnostics Snapshots
+---
+## [Current/Recent] - Grouped World Diagnostics Snapshots
 This update restructures world diagnostics into grouped subsystem snapshots so the debug HUD reads from intentional read models instead of one large flat payload.
 
 ### 1. Added Subsystem Diagnostics Shapes
@@ -22,7 +49,8 @@ This update restructures world diagnostics into grouped subsystem snapshots so t
 ### 3. Preserved Existing Debug Behavior
 * Verified the HUD, chunk streaming, biome transitions, run gates, and den behavior after the diagnostics-model refactor.
 
----## [Current/Recent] - World Streaming Runtime Extraction
+---
+## [Current/Recent] - World Streaming Runtime Extraction
 This update moves the per-frame world streaming manager responsibilities into a dedicated runtime object so the world runner stays closer to a thin orchestration shell.
 
 ### 1. Added WorldStreamingRuntime
@@ -118,6 +146,8 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
+
+
 
 
 

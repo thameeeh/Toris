@@ -92,6 +92,12 @@ namespace OutlandHaven.UIToolkit
 
         private void CreateSlots()
         {
+            // Clean up old subscriptions to prevent memory leaks and ghost updates
+            foreach (var view in _slotViews)
+            {
+                view.Dispose();
+            }
+
             _shopGrid.Clear();
             _slotViews.Clear();
 

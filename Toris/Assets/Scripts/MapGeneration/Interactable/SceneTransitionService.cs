@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public sealed class SceneTransitionService : MonoBehaviour, ISceneTransitionService
+public sealed class SceneTransitionService : MonoBehaviour, ISceneTransitionService, IRunGateTransitionService
 {
     public static SceneTransitionService Instance { get; private set; }
 
@@ -36,6 +36,27 @@ public sealed class SceneTransitionService : MonoBehaviour, ISceneTransitionServ
     {
         if (_isLoading) return;
         StartCoroutine(LoadRoutine(sceneName, mode));
+    }
+
+    public void UseRunGate(string sceneA, string sceneB)
+    {
+        string current = SceneManager.GetActiveScene().name;
+
+        if (current == sceneA)
+        {
+            LoadScene(sceneB);
+            return;
+        }
+
+        if (current == sceneB)
+        {
+            LoadScene(sceneA);
+            return;
+        }
+
+        Debug.LogWarning(
+            $"[SceneTransitionService] Current scene '{current}' does not match '{sceneA}' or '{sceneB}'.",
+            this);
     }
 
     private IEnumerator LoadRoutine(string sceneName, LoadSceneMode mode)

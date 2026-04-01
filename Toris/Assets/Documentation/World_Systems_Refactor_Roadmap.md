@@ -38,7 +38,7 @@ The codebase already contains meaningful refactor progress.
 - Phase 1 close-out is complete for the current active-biome migration scope.
 - Phase 2 close-out is complete for the current chunk streaming extraction scope.
 - Phase 3 close-out is complete for unified site lifecycle ownership.
-- Phase 4 has landed an explicit ISceneTransitionService boundary for run gates; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than direct runtime singleton access.
+- Phase 4 and Phase 7 now cover explicit `ISceneTransitionService`, `IRunGateTransitionService`, and `IGateTransitionService` boundaries; the remaining transition cleanup is now mostly about composition and bootstrap consistency rather than caller-owned transition logic.
 - Phase 5 close-out is complete for the current site-versus-encounter split scope through `IWorldEncounterSite`, `WorldEncounterOccupantCollection`, `WorldEncounterOccupantPolicy`, `WorldEncounterPackage`, `WorldEncounterPackageBinding`, `WorldEncounterPackageState`, `WorldEncounterAlertRuntime`, and `WolfEncounterCommandController`.
 - Phase 6 now has `ITileNavigationBlockerSource`, `ITileNavigationContributionSource`, and `WorldNavigationLifecycle`, which move navigation input and nav chunk ownership onto explicit neutral boundaries while keeping `SiteBlockerMap` as the current blocker-only producer.
 
@@ -529,7 +529,7 @@ Do not merge all four passes into one large opaque change unless the scope is ge
 
 ## 10. Immediate Next Move
 
-The next implementation step should be the first Phase 6 close-out slice.
+The next implementation step should be the next Phase 7 close-out slice.
 
 Specifically:
 
@@ -570,6 +570,7 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
 
 
 

@@ -7,6 +7,7 @@ public sealed class WorldSiteActivationPipeline
     private readonly WorldRuntimeState worldRuntimeState;
     private readonly WorldPoiPoolManager poiPoolManager;
     private readonly IGateTransitionService gateTransitionService;
+    private readonly IRunGateTransitionService runGateTransitionService;
     private readonly ISceneTransitionService sceneTransitionService;
     private readonly IWorldSiteStateService worldSiteStateService;
 
@@ -16,6 +17,7 @@ public sealed class WorldSiteActivationPipeline
         WorldRuntimeState worldRuntimeState,
         WorldPoiPoolManager poiPoolManager,
         IGateTransitionService gateTransitionService,
+        IRunGateTransitionService runGateTransitionService,
         ISceneTransitionService sceneTransitionService)
     {
         this.worldSceneServices = worldSceneServices;
@@ -23,6 +25,7 @@ public sealed class WorldSiteActivationPipeline
         this.worldRuntimeState = worldRuntimeState;
         this.poiPoolManager = poiPoolManager;
         this.gateTransitionService = gateTransitionService;
+        this.runGateTransitionService = runGateTransitionService;
         this.sceneTransitionService = sceneTransitionService;
 
         worldSiteStateService = new WorldSiteStateServiceAdapter(worldRuntimeState);
@@ -58,6 +61,7 @@ public sealed class WorldSiteActivationPipeline
             placement,
             spawnId,
             gateTransitionService,
+            runGateTransitionService,
             sceneTransitionService,
             worldSiteStateService,
             worldEncounterServices,

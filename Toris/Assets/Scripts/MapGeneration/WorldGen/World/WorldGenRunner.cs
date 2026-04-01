@@ -162,6 +162,7 @@ public sealed class WorldGenRunner : MonoBehaviour
             runtimeState,
             poiPool,
             worldTransitionSystem,
+            sceneTransitionService,
             sceneTransitionService);
 
         WorldFeatureLifecycle chunkFeatureLifecycle = new WorldFeatureLifecycle(

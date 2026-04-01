@@ -1,61 +1,60 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridge
 {
     [Header("Scene Connection")]
     [SerializeField] private string sceneA;
     [SerializeField] private string sceneB;
-    [SerializeField] private SceneTransitionService sceneTransitionServiceOverride;
+    [FormerlySerializedAs("sceneTransitionServiceOverride")]
+    [SerializeField] private MonoBehaviour runGateTransitionServiceOverride;
 
-    private ISceneTransitionService sceneTransitionService;
+    private IRunGateTransitionService runGateTransitionService;
 
     private void Awake()
     {
-        sceneTransitionService = ResolveSceneTransitionService();
+        runGateTransitionService = ResolveRunGateTransitionService();
     }
 
     public void Interact(GameObject interactor)
     {
-        sceneTransitionService ??= ResolveSceneTransitionService();
-        if (sceneTransitionService == null)
+        runGateTransitionService ??= ResolveRunGateTransitionService();
+        if (runGateTransitionService == null)
         {
-            Debug.LogWarning("RunGateInteractable: scene transition service unavailable.", this);
+            Debug.LogWarning("RunGateInteractable: run gate transition service unavailable.", this);
             return;
         }
 
-        string current = SceneManager.GetActiveScene().name;
-
-        if (current == sceneA)
-        {
-            sceneTransitionService.LoadScene(sceneB);
-        }
-        else if (current == sceneB)
-        {
-            sceneTransitionService.LoadScene(sceneA);
-        }
-        else
-        {
-            Debug.LogWarning(
-                $"RunGateInteractable: Current scene '{current}' " +
-                $"does not match '{sceneA}' or '{sceneB}'.",
-                this
-            );
-        }
+        runGateTransitionService.UseRunGate(sceneA, sceneB);
     }
+
     public void Initialize(WorldSiteContext siteContext)
     {
-        sceneTransitionService = siteContext.SceneTransitionService ?? ResolveSceneTransitionService();
+        runGateTransitionService = siteContext.RunGateTransitionService ?? ResolveRunGateTransitionService();
     }
 
-    private ISceneTransitionService ResolveSceneTransitionService()
+    private IRunGateTransitionService ResolveRunGateTransitionService()
     {
-        if (sceneTransitionServiceOverride != null)
-            return sceneTransitionServiceOverride;
+        if (runGateTransitionServiceOverride is IRunGateTransitionService overrideService)
+            return overrideService;
 
-        if (SceneTransitionService.Instance != null)
-            return SceneTransitionService.Instance;
+        MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        for (int i = 0; i < behaviours.Length; i++)
+        {
+            if (behaviours[i] is IRunGateTransitionService runGateService)
+                return runGateService;
+        }
 
-        return FindFirstObjectByType<SceneTransitionService>();
+        return null;
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (runGateTransitionServiceOverride != null && runGateTransitionServiceOverride is not IRunGateTransitionService)
+        {
+            runGateTransitionServiceOverride = null;
+        }
+    }
+#endif
 }

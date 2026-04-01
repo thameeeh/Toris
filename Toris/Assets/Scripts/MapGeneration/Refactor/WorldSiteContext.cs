@@ -36,10 +36,15 @@ public readonly struct WorldSiteContext
     {
         if (RuntimeConfig is IWorldEncounterPackageConfig encounterPackageConfig)
         {
+            WorldSiteStateHandle siteState = WorldSiteStateService != null
+                ? WorldSiteStateService.GetSiteState(Placement.ChunkCoord, SpawnId)
+                : default;
+
             encounterPackage = new WorldEncounterPackage(
                 encounterPackageConfig.PackageId,
                 EncounterServices,
                 encounterPackageConfig.OccupantPolicy,
+                new WorldEncounterPackageState(encounterPackageConfig.PackageId, siteState),
                 RuntimeConfig);
 
             return encounterPackage.IsValid;

@@ -9,6 +9,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private WorldEncounterOccupantPolicy occupantPolicy;
     private IWorldEncounterSite denSite;
     private WorldEncounterServices encounterServices;
+    private readonly WorldEncounterPackageBinding packageBinding = new();
 
     private bool ready;
     private Wolf leader;
@@ -99,27 +100,17 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         if (denSite == null)
             denSite = ResolveDenSite();
 
-        if (denSite != null)
-        {
-            denSite.Initialized -= HandleDenInitialized;
-            denSite.Initialized += HandleDenInitialized;
-
-            denSite.Cleared -= HandleDenCleared;
-            denSite.Cleared += HandleDenCleared;
-
-            denSite.DamagedAlert -= OnDenDamaged;
-            denSite.DamagedAlert += OnDenDamaged;
-        }
+        packageBinding.Bind(
+            denSite,
+            encounterPackage,
+            HandleDenInitialized,
+            HandleDenCleared,
+            OnDenDamaged);
     }
 
     private void UnsubscribeFromDen()
     {
-        if (denSite != null)
-        {
-            denSite.Initialized -= HandleDenInitialized;
-            denSite.Cleared -= HandleDenCleared;
-            denSite.DamagedAlert -= OnDenDamaged;
-        }
+        packageBinding.Unbind();
     }
 
     private void HandleDenInitialized()

@@ -19,21 +19,6 @@ public sealed class WorldSceneServices : IWorldNavigationService
         return Grid.GetCellCenterWorld(new Vector3Int(tile.x, tile.y, 0));
     }
 
-    public void BuildNavChunk(Vector2Int chunkCoord, int chunkSize)
-    {
-        TileNavWorld?.BuildNavChunk(chunkCoord, chunkSize);
-    }
-
-    public void ClearNavChunk(Vector2Int chunkCoord)
-    {
-        TileNavWorld?.ClearNavChunk(chunkCoord);
-    }
-
-    public void SetNavigationContributions(ITileNavigationContributionSource navigationContributions)
-    {
-        TileNavWorld?.SetNavigationContributions(navigationContributions);
-    }
-
     public Vector2Int WorldToCell(Vector3 worldPosition)
     {
         if (TileNavWorld == null)

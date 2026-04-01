@@ -52,6 +52,7 @@ public sealed class WorldGenRunner : MonoBehaviour
     private ChunkProcessingPipeline chunkProcessingPipeline;
     private ChunkStreamingCoordinator chunkStreamingCoordinator;
     private WorldTransitionSystem worldTransitionSystem;
+    private WorldNavigationLifecycle worldNavigationLifecycle;
     private WorldSceneServices worldSceneServices;
     private WorldEncounterServices worldEncounterServices;
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
@@ -136,6 +137,8 @@ public sealed class WorldGenRunner : MonoBehaviour
         EnsurePoiPool();
         EnsureNavWorld();
 
+        worldNavigationLifecycle = new WorldNavigationLifecycle(TileNavWorld.Instance, groundMap, waterMap);
+        worldNavigationLifecycle.Initialize(ctx.NavigationContributions);
         worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
         chunkStreamingSystem = new ChunkStreamingSystem();
 
@@ -147,7 +150,7 @@ public sealed class WorldGenRunner : MonoBehaviour
         worldTransitionSystem = new WorldTransitionSystem(
             profile,
             biomeDb,
-            worldSceneServices,
+            worldNavigationLifecycle,
             ctx,
             runtimeState,
             chunkStreamingSystem,
@@ -178,7 +181,7 @@ public sealed class WorldGenRunner : MonoBehaviour
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(
             profile,
-            worldSceneServices,
+            worldNavigationLifecycle,
             generator,
             applier,
             worldFeatureLifecycleSystem,
@@ -368,8 +371,5 @@ public sealed class WorldGenRunner : MonoBehaviour
             nav = go.AddComponent<TileNavWorld>();
             DontDestroyOnLoad(go);
         }
-
-        nav.Initialize(groundMap, waterMap);
-        nav.SetNavigationContributions(ctx.NavigationContributions);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class ChunkProcessingPipeline
 {
     private readonly WorldProfile worldProfile;
-    private readonly WorldSceneServices worldSceneServices;
+    private readonly WorldNavigationLifecycle worldNavigationLifecycle;
     private readonly ChunkGenerator chunkGenerator;
     private readonly TilemapApplier tilemapApplier;
     private readonly WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
@@ -14,7 +14,7 @@ public sealed class ChunkProcessingPipeline
 
     public ChunkProcessingPipeline(
         WorldProfile worldProfile,
-        WorldSceneServices worldSceneServices,
+        WorldNavigationLifecycle worldNavigationLifecycle,
         ChunkGenerator chunkGenerator,
         TilemapApplier tilemapApplier,
         WorldFeatureLifecycleSystem worldFeatureLifecycleSystem,
@@ -22,7 +22,7 @@ public sealed class ChunkProcessingPipeline
         ChunkStreamingSystem chunkStreamingSystem)
     {
         this.worldProfile = worldProfile;
-        this.worldSceneServices = worldSceneServices;
+        this.worldNavigationLifecycle = worldNavigationLifecycle;
         this.chunkGenerator = chunkGenerator;
         this.tilemapApplier = tilemapApplier;
         this.worldFeatureLifecycleSystem = worldFeatureLifecycleSystem;
@@ -85,7 +85,7 @@ public sealed class ChunkProcessingPipeline
 
             tilemapApplier.Apply(chunkResult);
 
-            worldSceneServices?.BuildNavChunk(chunkCoord, worldProfile.chunkSize);
+            worldNavigationLifecycle?.BuildChunk(chunkCoord, worldProfile.chunkSize);
             worldFeatureLifecycleSystem?.ActivateChunk(chunkCoord);
 
             long applyEndTicks = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -170,7 +170,7 @@ public sealed class ChunkProcessingPipeline
 
             worldFeatureLifecycleSystem?.DeactivateChunk(chunkCoord);
             tilemapApplier.ClearChunk(chunkCoord, worldProfile.chunkSize);
-            worldSceneServices?.ClearNavChunk(chunkCoord);
+            worldNavigationLifecycle?.ClearChunk(chunkCoord);
 
             chunkStreamingSystem.MarkChunkUnloaded(chunkCoord);
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public sealed class SceneTransitionService : MonoBehaviour, ISceneTransitionService, IRunGateTransitionService
+public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionService
 {
     public static SceneTransitionService Instance { get; private set; }
 

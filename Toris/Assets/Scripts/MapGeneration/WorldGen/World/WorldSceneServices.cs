@@ -3,12 +3,12 @@ using UnityEngine;
 public sealed class WorldSceneServices : IWorldNavigationService
 {
     public Grid Grid { get; }
-    public TileNavWorld TileNavWorld { get; }
+    private readonly TileNavWorld tileNavWorld;
 
     public WorldSceneServices(Grid grid, TileNavWorld tileNavWorld)
     {
         Grid = grid;
-        TileNavWorld = tileNavWorld;
+        this.tileNavWorld = tileNavWorld;
     }
 
     public Vector3 GetCellCenterWorld(Vector2Int tile)
@@ -21,22 +21,22 @@ public sealed class WorldSceneServices : IWorldNavigationService
 
     public Vector2Int WorldToCell(Vector3 worldPosition)
     {
-        if (TileNavWorld == null)
+        if (tileNavWorld == null)
             return default;
 
-        return TileNavWorld.WorldToCell(worldPosition);
+        return tileNavWorld.WorldToCell(worldPosition);
     }
 
     public Vector3 CellToWorldCenter(Vector2Int cell)
     {
-        if (TileNavWorld == null)
+        if (tileNavWorld == null)
             return Vector3.zero;
 
-        return TileNavWorld.CellToWorldCenter(cell);
+        return tileNavWorld.CellToWorldCenter(cell);
     }
 
     public bool IsWalkableCell(Vector2Int cell)
     {
-        return TileNavWorld != null && TileNavWorld.IsWalkableCell(cell);
+        return tileNavWorld != null && tileNavWorld.IsWalkableCell(cell);
     }
 }

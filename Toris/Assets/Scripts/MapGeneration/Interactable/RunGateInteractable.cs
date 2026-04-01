@@ -11,11 +11,6 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
 
     private IRunGateTransitionService runGateTransitionService;
 
-    private void Awake()
-    {
-        runGateTransitionService = ResolveRunGateTransitionService();
-    }
-
     public void Interact(GameObject interactor)
     {
         runGateTransitionService ??= ResolveRunGateTransitionService();
@@ -38,12 +33,12 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
         if (runGateTransitionServiceOverride is IRunGateTransitionService overrideService)
             return overrideService;
 
-        if (SceneTransitionService.Instance is IRunGateTransitionService instanceService)
-            return instanceService;
+        if (SceneTransitionService.Instance != null)
+            return SceneTransitionService.Instance;
 
         SceneTransitionService localSceneTransitionService = FindFirstObjectByType<SceneTransitionService>();
-        if (localSceneTransitionService is IRunGateTransitionService localRunGateService)
-            return localRunGateService;
+        if (localSceneTransitionService != null)
+            return localSceneTransitionService;
 
         return null;
     }

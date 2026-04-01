@@ -6,7 +6,6 @@ public readonly struct WorldSiteContext
     public readonly int SpawnId;
     public readonly IGateTransitionService GateTransitionService;
     public readonly IRunGateTransitionService RunGateTransitionService;
-    public readonly ISceneTransitionService SceneTransitionService;
     public readonly IWorldSiteStateService WorldSiteStateService;
     public readonly WorldEncounterServices EncounterServices;
     public readonly WorldSiteRuntimeConfig RuntimeConfig;
@@ -16,7 +15,6 @@ public readonly struct WorldSiteContext
         int spawnId,
         IGateTransitionService gateTransitionService,
         IRunGateTransitionService runGateTransitionService,
-        ISceneTransitionService sceneTransitionService,
         IWorldSiteStateService worldSiteStateService,
         WorldEncounterServices encounterServices,
         WorldSiteRuntimeConfig runtimeConfig)
@@ -25,7 +23,6 @@ public readonly struct WorldSiteContext
         SpawnId = spawnId;
         GateTransitionService = gateTransitionService;
         RunGateTransitionService = runGateTransitionService;
-        SceneTransitionService = sceneTransitionService;
         WorldSiteStateService = worldSiteStateService;
         EncounterServices = encounterServices;
         RuntimeConfig = runtimeConfig;

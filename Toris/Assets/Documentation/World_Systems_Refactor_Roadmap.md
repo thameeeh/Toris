@@ -38,10 +38,11 @@ The codebase already contains meaningful refactor progress.
 - Phase 1 close-out is complete for the current active-biome migration scope.
 - Phase 2 close-out is complete for the current chunk streaming extraction scope.
 - Phase 3 close-out is complete for unified site lifecycle ownership.
-- Phase 4 and Phase 7 now cover explicit `ISceneTransitionService`, `IRunGateTransitionService`, and `IGateTransitionService` boundaries, and the current transition cleanup scope is complete through explicit bootstrap fallback for static-scene run gates.
+- Phase 4 and Phase 7 now cover explicit `IRunGateTransitionService` and `IGateTransitionService` boundaries, the old `ISceneTransitionService` migration path has been deleted, and the current transition cleanup scope is complete through explicit bootstrap fallback for static-scene run gates.
 - Phase 5 close-out is complete for the current site-versus-encounter split scope through `IWorldEncounterSite`, `WorldEncounterOccupantCollection`, `WorldEncounterOccupantPolicy`, `WorldEncounterPackage`, `WorldEncounterPackageBinding`, `WorldEncounterPackageState`, `WorldEncounterAlertRuntime`, and `WolfEncounterCommandController`.
-- Phase 6 now has `ITileNavigationBlockerSource`, `ITileNavigationContributionSource`, and `WorldNavigationLifecycle`, which move navigation input and nav chunk ownership onto explicit neutral boundaries while keeping `SiteBlockerMap` as the current blocker-only producer.
+- Phase 6 now has `ITileNavigationContributionSource` and `WorldNavigationLifecycle`, which move navigation input and nav chunk ownership onto explicit neutral boundaries while keeping `SiteBlockerMap` as the current navigation-contribution producer.
 - Phase 8 has started with expanded nav lifecycle and transition diagnostics in `WorldGenDiagnosticsSnapshot` and `WorldGenDebugHUD`.
+- Phase 8 cleanup has already removed the stale scene-transition site-context path, deleted the dead `ISceneTransitionService` and `ITileNavigationBlockerSource` compatibility layers, and trimmed smaller redundant nav and run-gate scaffolding.
 
 ### 3.1 Boundaries That Already Exist In Code
 
@@ -52,9 +53,9 @@ The codebase already contains meaningful refactor progress.
 - Site activation is routed through `WorldSiteActivationPipeline`.
 - Site runtimes consume a `WorldSiteContext` and narrow services instead of directly receiving `WorldGenRunner`.
 - Chunk streaming and frame processing are partially extracted through `ChunkStreamingSystem` and `ChunkProcessingPipeline`.
-- Transitions are partially extracted through `WorldTransitionSystem`.
-- Navigation consumes generic site blockers through `TileNavWorld.SetSiteBlockers`.
-- Diagnostics are partially formalized through `WorldGenDiagnosticsSnapshot` and `WorldGenDebugHUD`.
+- Transitions are routed through explicit services via `WorldTransitionSystem`, `SceneTransitionService`, `IRunGateTransitionService`, and `IGateTransitionService`.
+- Navigation consumes generic contribution data through `TileNavWorld.SetNavigationContributions`.
+- Diagnostics now expose streaming, lifecycle, navigation, and transition state through `WorldGenDiagnosticsSnapshot` and `WorldGenDebugHUD`.
 
 ### 3.2 Main Remaining Pressure Points
 
@@ -530,16 +531,16 @@ Do not merge all four passes into one large opaque change unless the scope is ge
 
 ## 10. Immediate Next Move
 
-The next implementation step should be the first Phase 8 close-out slice.
+The next implementation step should stay inside Phase 8 cleanup and target one more small dead-path deletion.
 
 Specifically:
 
-- keep separating the remaining wolf-specific orchestration from the reusable package, occupant tracking, occupant policy, package-binding, and alert-runtime boundaries
-- decide which howl and occupant-command behaviors belong in a reusable encounter controller versus a wolf-specific layer
-- decide what future encounter hosts would need to provide beyond `IWorldEncounterSite`, shared occupant policy, package identity, package activation state, and alert input
-- keep verification focused on den clear, reload, unload, leader respawn, max-alert response, and chase-on-unload behavior while the seam is widened
+- audit `WorldGenRunner`, `WorldSceneServices`, and `TileNavWorld` for any remaining scaffolding-only comments, redundant fallback lookups, or dead helper surfaces
+- prefer no-behavior deletions that can be verified through the existing HUD parity checks
+- keep using the expanded nav and transition diagnostics as the safety net for each cleanup slice
+- leave the deferred wolf bugs in the post-refactor queue unless one starts blocking Phase 8 verification
 
-That keeps the refactor moving in order without reopening earlier service-boundary work.
+That keeps the program in close-out mode instead of reopening already-verified phase work.
 
 ## 11. Deferred Post-Refactor Wolf Bug Queue
 
@@ -571,6 +572,7 @@ The refactor is finished when all of the following are true:
 - navigation remains feature-agnostic
 - diagnostics are intentional enough that future refactors do not require code archaeology
 - `WorldGenRunner` is reduced to a thin bootstrap and orchestration shell rather than a pressure point
+
 
 
 

@@ -137,7 +137,8 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ## [Unreleased]
 ### Changed
+- **UI Architecture:** Fixed vertical scrollbar bug in the player inventory UI (`PlayerInventory.uxml`) by forcing the `vertical-scroller-visibility` to `Hidden`, correctly addressing the layout calculation bug on subsequent openings for the fixed 21-slot grid.
+- **UI Architecture:** Removed hardcoded dummy slot instances from `PlayerInventory.uxml` grid, ensuring a purely data-driven template instantiation approach in compliance with project architectural directives.
 - **UI Architecture:** Refactored the UI Toolkit inventory assets (`PlayerInventory`, `Mage`, `Smith`, `ShopSubView`, `ForgeSubView_Smith`, `SalvageSubView_Smith`, `Slot`) to strictly follow BEM naming conventions.
 - **UI Architecture:** Extracted all inline UXML styles into a new `GlobalStyles.uss` file using `:root` CSS variables and applied them correctly across the project in `Inventory.uss`.
-- **UI Architecture:** Removed hardcoded dummy slot instances from `PlayerInventory.uxml` grid, ensuring a purely data-driven template instantiation approach.
 - **UI Controllers:** Updated C# View controllers (`InventorySlotView`, `PlayerEquipmentView`) to query the newly named BEM classes, preventing runtime query failures.

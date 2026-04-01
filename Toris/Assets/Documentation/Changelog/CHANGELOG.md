@@ -1,4 +1,50 @@
-## [Current/Recent] - Decouple The World Debug HUD From The Runner
+## [Current/Recent] - Reorganize MapGeneration into clearer runtime folders
+This update reshapes the MapGeneration script tree into a smaller set of human-readable folders so generation, runtime, sites, streaming, navigation, and diagnostics are easier to navigate without changing intended gameplay behavior.
+
+### 1. Reorganized The Top-Level Structure
+* Replaced the old mixed Extras, Interactable, POIs, Refactor, and WorldGen split with Diagnostics, Generation, Navigation, Runtime, Sites, and Streaming.
+
+### 2. Kept Concrete Content Grouped
+* Kept gate content under Sites/Gate and wolf-den content under Sites/WolfDen so authored site logic and prefabs remain easy to find.
+
+### 3. Matched Shared Systems To Their Real Responsibilities
+* Grouped build steps, generated output, tile generation, transitions, runtime site plumbing, nav systems, and streaming systems under folders that reflect what they actually own now.
+
+### 4. Updated Documentation To Match
+* Updated the world generation architecture guide to reference the new folder layout.
+* Verified startup, chunk streaming, den behavior, persistence, biome gates, run gates, and the debug HUD after the reorganization.
+
+---## [Current/Recent] - Conservative dead-code cleanup in MapGeneration
+This update removes dead helper surfaces, stale commented scaffolding, and unused lifecycle bookkeeping from the map-generation stack without changing intended runtime behavior.
+
+### 1. Removed Unused Lifecycle Bookkeeping
+* Deleted ActiveSiteHandle and simplified chunk-site activation tracking to store active counts directly instead of carrying dead handle objects.
+* Removed unused stored dependencies from lifecycle classes that were no longer read.
+
+### 2. Removed Dead Helper Surface
+* Removed unused APIs from pooled site ownership, POI pooling, home-anchor, and streaming runtime classes where no callers remained.
+* Updated the world runner to match the simplified lifecycle construction path.
+
+### 3. Removed Stale Commented Scaffolding
+* Deleted obsolete commented debug lines, placeholder comments, and dead TODO-style notes that no longer reflected the current architecture.
+
+### 4. Preserved Intentional Migration Paths
+* Kept the wolf encounter legacy migration fields and policy transfer code because the live config asset still serializes those values.
+* Verified startup, chunk streaming, den behavior, persistence, biome gates, run gates, and the debug HUD after the cleanup.
+
+---## [Current/Recent] - Add World Generation Architecture Guide
+This update adds a dedicated documentation guide for the current map-generation stack so future feature work can follow the live architecture instead of relying on refactor history alone.
+
+### 1. Documented The Current Runtime World Stack
+* Added a structured guide covering build output, streaming, lifecycle, activation, navigation, transitions, diagnostics, and the wolf-den reference implementation.
+
+### 2. Documented The Extension Path For New World Content
+* Added step-by-step instructions for passive structures, persistent structures, encounter structures, and new supporting systems.
+
+### 3. Captured The Architectural Rules For Future Additions
+* Documented the intended seams and anti-patterns so new world features can be added surgically instead of reopening monolithic runtime code.
+
+---## [Current/Recent] - Decouple The World Debug HUD From The Runner
 This update removes the world debug HUD's direct dependency on WorldGenRunner and replaces it with a narrow diagnostics contract.
 
 ### 1. Added A Dedicated Diagnostics Interface
@@ -11,7 +57,8 @@ This update removes the world debug HUD's direct dependency on WorldGenRunner an
 ### 3. Preserved Existing Debug Behavior
 * Verified compact HUD behavior, advanced diagnostics toggle, chunk visuals, biome transitions, and run gates after the change.
 
----## [Current/Recent] - Delete Legacy Build-Path Compatibility Surface
+---
+## [Current/Recent] - Delete Legacy Build-Path Compatibility Surface
 This update removes old world-build compatibility aliases and a dead persistent profile field now that build output is the authoritative generated-world path.
 
 ### 1. Removed Old WorldContext Build Aliases
@@ -146,6 +193,9 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
+
+
+
 
 
 

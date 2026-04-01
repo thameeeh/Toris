@@ -4,7 +4,8 @@ using UnityEngine.Rendering;
 
 public sealed class WorldGenDebugHUD : MonoBehaviour
 {
-    private const float MinimumPanelHeightWithGroupedDiagnostics = 510f;
+    private const float MinimumPanelHeightDefault = 330f;
+    private const float MinimumPanelHeightWithAdvancedDiagnostics = 510f;
 
     [Header("References")]
     [SerializeField] private WorldGenRunner runner;
@@ -16,6 +17,7 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
     [SerializeField] private Vector2 panelPos = new Vector2(12, 12);
     [SerializeField] private Vector2 panelSize = new Vector2(380, 330);
     [SerializeField] private int fontSize = 14;
+    [SerializeField] private bool showAdvancedStats = false;
 
     [Header("Gameplay Debug Visuals")]
     [SerializeField] private bool drawChunkBorders = true;
@@ -135,7 +137,10 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         WorldSignals worldSignals = resolver.sampler.Compute(focusTile, worldContext);
         string biomeName = worldContext.Biome != null ? worldContext.Biome.displayName : "(null biome)";
 
-        float panelHeight = Mathf.Max(panelSize.y, MinimumPanelHeightWithGroupedDiagnostics);
+        float minimumPanelHeight = showAdvancedStats
+            ? MinimumPanelHeightWithAdvancedDiagnostics
+            : MinimumPanelHeightDefault;
+        float panelHeight = Mathf.Max(panelSize.y, minimumPanelHeight);
         Rect panelRect = new Rect(panelPos.x, panelPos.y, panelSize.x, panelHeight);
         GUI.Box(panelRect, $"WorldGen Debug ({toggleKey})");
 
@@ -144,61 +149,65 @@ public sealed class WorldGenDebugHUD : MonoBehaviour
         GUILayout.Label("Visuals:", style);
         drawChunkBorders = GUILayout.Toggle(drawChunkBorders, " Chunk borders");
         drawStreamingRects = GUILayout.Toggle(drawStreamingRects, " Streaming rects (load/unload)");
+        showAdvancedStats = GUILayout.Toggle(showAdvancedStats, " Advanced stats");
         GUILayout.Space(6f);
 
-        GUILayout.Label($"Biome: {biomeName} (idx {transitionDiagnostics.CurrentBiomeIndex})", style);
+        GUILayout.Label($"Biome: {biomeName}", style);
         GUILayout.Label($"Tile: {focusTile}", style);
-        GUILayout.Label($"dist01: {worldSignals.dist01:F2}", style);
-        GUILayout.Label($"danger01: {worldSignals.danger01:F2}", style);
-        GUILayout.Label($"veg01: {worldSignals.vegetation01:F2}", style);
-        GUILayout.Label($"lake01: {worldSignals.lake01:F2}", style);
-        GUILayout.Space(6f);
+        GUILayout.Label($"dist/danger: {worldSignals.dist01:F2} / {worldSignals.danger01:F2}", style);
+        GUILayout.Label($"veg/lake: {worldSignals.vegetation01:F2} / {worldSignals.lake01:F2}", style);
 
-        GUILayout.Label("Streaming:", style);
-        GUILayout.Label($"Loaded chunks: {streamingDiagnostics.LoadedChunkCount}", style);
-        GUILayout.Label($"Queue entries: {streamingDiagnostics.GenerationQueueCount}", style);
-        GUILayout.Label($"Queued chunks: {streamingDiagnostics.QueuedChunkCount}", style);
-        GUILayout.Label(
-            streamingDiagnostics.StreamingAnchorInitialized
-                ? $"Streaming anchor: {streamingDiagnostics.StreamingAnchorChunk}"
-                : "Streaming anchor: (uninitialized)",
-            style);
-        GUILayout.Label($"Preload chunks: {streamingDiagnostics.PreloadChunks}", style);
-        GUILayout.Label($"Unload hysteresis: {streamingDiagnostics.UnloadHysteresisChunks}", style);
-        GUILayout.Space(6f);
+        if (showAdvancedStats)
+        {
+            GUILayout.Space(6f);
 
-        GUILayout.Label("Lifecycle:", style);
-        GUILayout.Label($"Active site chunks: {lifecycleDiagnostics.ActiveSiteChunkCount}", style);
-        GUILayout.Label($"Persistent sites: {lifecycleDiagnostics.ActivePersistentSiteCount}", style);
-        GUILayout.Label($"Active sites total: {lifecycleDiagnostics.ActiveSiteCount}", style);
-        GUILayout.Label($"Placed sites: {lifecycleDiagnostics.TotalPlacedSiteCount}", style);
-        GUILayout.Space(6f);
+            GUILayout.Label("Streaming:", style);
+            GUILayout.Label($"Loaded chunks: {streamingDiagnostics.LoadedChunkCount}", style);
+            GUILayout.Label($"Queue entries: {streamingDiagnostics.GenerationQueueCount}", style);
+            GUILayout.Label($"Queued chunks: {streamingDiagnostics.QueuedChunkCount}", style);
+            GUILayout.Label(
+                streamingDiagnostics.StreamingAnchorInitialized
+                    ? $"Streaming anchor: {streamingDiagnostics.StreamingAnchorChunk}"
+                    : "Streaming anchor: (uninitialized)",
+                style);
+            GUILayout.Label($"Preload chunks: {streamingDiagnostics.PreloadChunks}", style);
+            GUILayout.Label($"Unload hysteresis: {streamingDiagnostics.UnloadHysteresisChunks}", style);
+            GUILayout.Space(6f);
 
-        GUILayout.Label("Build Output:", style);
-        GUILayout.Label($"Build overrides: {buildOutputDiagnostics.TerrainOverrideCount}", style);
-        GUILayout.Label($"Build placements: {buildOutputDiagnostics.TotalPlacementCount}", style);
-        GUILayout.Label($"Chunk placements: {buildOutputDiagnostics.ChunkPlacementCount}", style);
-        GUILayout.Label($"Persistent placements: {buildOutputDiagnostics.PersistentPlacementCount}", style);
-        GUILayout.Label($"Road anchors: {buildOutputDiagnostics.RoadAnchorCount}", style);
-        GUILayout.Space(6f);
+            GUILayout.Label("Lifecycle:", style);
+            GUILayout.Label($"Active site chunks: {lifecycleDiagnostics.ActiveSiteChunkCount}", style);
+            GUILayout.Label($"Persistent sites: {lifecycleDiagnostics.ActivePersistentSiteCount}", style);
+            GUILayout.Label($"Active sites total: {lifecycleDiagnostics.ActiveSiteCount}", style);
+            GUILayout.Label($"Placed sites: {lifecycleDiagnostics.TotalPlacedSiteCount}", style);
+            GUILayout.Space(6f);
 
-        GUILayout.Label("Navigation:", style);
-        GUILayout.Label($"Nav contributions: {buildOutputDiagnostics.NavigationContributionCount}", style);
-        GUILayout.Label($"Nav chunks: {navigationDiagnostics.LoadedNavChunkCount}", style);
-        GUILayout.Label(
-            navigationDiagnostics.NavigationContributionsBound
-                ? "Nav contributions: bound"
-                : "Nav contributions: (unbound)",
-            style);
-        GUILayout.Space(6f);
+            GUILayout.Label("Build Output:", style);
+            GUILayout.Label($"Build overrides: {buildOutputDiagnostics.TerrainOverrideCount}", style);
+            GUILayout.Label($"Build placements: {buildOutputDiagnostics.TotalPlacementCount}", style);
+            GUILayout.Label($"Chunk placements: {buildOutputDiagnostics.ChunkPlacementCount}", style);
+            GUILayout.Label($"Persistent placements: {buildOutputDiagnostics.PersistentPlacementCount}", style);
+            GUILayout.Label($"Road anchors: {buildOutputDiagnostics.RoadAnchorCount}", style);
+            GUILayout.Space(6f);
 
-        GUILayout.Label("Transitions:", style);
-        GUILayout.Label($"Gate cooldown: {transitionDiagnostics.GateCooldownRemainingSeconds:F2}s", style);
-        GUILayout.Label(
-            transitionDiagnostics.SceneTransitionLoading
-                ? "Scene transition: loading"
-                : "Scene transition: idle",
-            style);
+            GUILayout.Label("Navigation:", style);
+            GUILayout.Label($"Nav contributions: {buildOutputDiagnostics.NavigationContributionCount}", style);
+            GUILayout.Label($"Nav chunks: {navigationDiagnostics.LoadedNavChunkCount}", style);
+            GUILayout.Label(
+                navigationDiagnostics.NavigationContributionsBound
+                    ? "Nav contributions: bound"
+                    : "Nav contributions: (unbound)",
+                style);
+            GUILayout.Space(6f);
+
+            GUILayout.Label("Transitions:", style);
+            GUILayout.Label($"Biome idx: {transitionDiagnostics.CurrentBiomeIndex}", style);
+            GUILayout.Label($"Gate cooldown: {transitionDiagnostics.GateCooldownRemainingSeconds:F2}s", style);
+            GUILayout.Label(
+                transitionDiagnostics.SceneTransitionLoading
+                    ? "Scene transition: loading"
+                    : "Scene transition: idle",
+                style);
+        }
 
         GUILayout.EndArea();
     }

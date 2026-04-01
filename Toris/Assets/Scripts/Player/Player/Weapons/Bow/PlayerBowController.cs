@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using OutlandHaven.Inventory;
 
 public class PlayerBowController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private GameplayPoolManager _poolManager;
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private PlayerFacing _playerFacing;
+    [SerializeField] private PlayerEquipmentController _equipment;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
@@ -117,26 +119,54 @@ public class PlayerBowController : MonoBehaviour
         drawing = false;
         _motor?.SetMovementLocked(false);
 
-        if (_bow == null) return;
-
-        float held = Time.time - drawStartTime;
-
-        if (held < _bow.nockTime)
+        if (_bow == null)
         {
-            lastShotTime = Time.time;
             DryReleased?.Invoke();
-            ShotReleased?.Invoke();
             return;
         }
 
-        float overHoldExtra = Mathf.Max(0f, held - _bow.overHoldStartsAt);
-        BowSO.ShotStats stats = _bow.BuildShotStats(held, overHoldExtra);
+        float heldTime = Mathf.Max(0f, Time.time - drawStartTime);
+        BowSO.ShotStats shot = _bow.BuildShotStats(heldTime, 0f);
 
-        FireArrow(stats);
+        Vector2 aimDirection = GetAimDirection();
+        if (aimDirection.sqrMagnitude < 0.0001f)
+        {
+            DryReleased?.Invoke();
+            return;
+        }
+
+        _playerFacing?.SetFacing(aimDirection);
+
+        ItemInstance equippedWeapon = _equipment != null
+            ? _equipment.GetEquippedItem(EquipmentSlot.Weapon)
+            : null;
+
+        float finalShotDamage = shot.damage;
+
+        if (equippedWeapon != null && _stats != null)
+        {
+            PlayerAttackComputedStats attackStats =
+                PlayerCombatCalculator.CalculateAttack(equippedWeapon, _stats, shot.damage);
+
+            if (attackStats.IsValid)
+            {
+                finalShotDamage = attackStats.FinalAttackDamage;
+            }
+        }
+
+        BowSO.ShotStats finalShot = new BowSO.ShotStats
+        {
+            power = shot.power,
+            speed = shot.speed,
+            damage = finalShotDamage,
+            spreadDeg = shot.spreadDeg
+        };
+
+        FireArrow(finalShot);
 
         lastShotTime = Time.time;
-        ShotFired?.Invoke();
         ShotReleased?.Invoke();
+        ShotFired?.Invoke();
     }
 
     public void FireArrow(BowSO.ShotStats stats)

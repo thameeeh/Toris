@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945379faa91c55c419c18bc7fc9a5a1d, type: 3}
+  m_Name: WolfDenSitePlacementRuleDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::WolfDenSitePlacementRuleDefinition
+  wolfDenSiteDefinition: {fileID: 11400000, guid: ae66dab130fa45344898bcee7f658562, type: 2}
+  minWolfDenCount: 4
+  wolfDenMinSpacingTiles: 40
+  wolfDenGroundTile: {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
+  wolfDenStampSize: 3

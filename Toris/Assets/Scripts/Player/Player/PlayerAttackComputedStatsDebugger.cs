@@ -33,6 +33,7 @@ public class PlayerAttackComputedStatsDebugger : MonoBehaviour
 
         Debug.Log(
             $"[PlayerAttackComputedStatsDebugger]\n" +
+            $"BowDamage: {attackStats.BowDamage}\n" +
             $"WeaponDamage: {attackStats.WeaponDamage}\n" +
             $"OutgoingDamageMultiplier: {attackStats.OutgoingDamageMultiplier}\n" +
             $"FinalAttackDamage: {attackStats.FinalAttackDamage}"

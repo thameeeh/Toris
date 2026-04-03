@@ -7,7 +7,19 @@
 
 ---
 
-## [Current/Recent] - USS and UXML Styling Cleanup
+## [Current/Recent] - Added Context-Dense Metadata Summary for UIManager
+This update generates a context-dense metadata summary for `UIManager.cs` to assist AI agents in understanding the script's role without reading the full source code.
+
+### 1. Created Script_Descriptions Directory
+* Created `Toris/Assets/Documentation/Script_Descriptions` directory to hold metadata summaries.
+
+### 2. Generated UIManager Metadata Summary
+* Generated `UIManager.md` with structured key-value style fields.
+* Populated fields: Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle.
+
+---
+
+## [Previous] - USS and UXML Styling Cleanup
 This update refactors the UI styling to consistently use global variables and BEM naming conventions across all UI Toolkit assets.
 
 ### 1. Updated Global Styles

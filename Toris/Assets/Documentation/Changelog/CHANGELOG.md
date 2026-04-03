@@ -17,6 +17,12 @@ This update adds structured context-dense metadata summaries for UI Toolkit scre
   * `MageScreenController.md`
   * `MainMenuScreenController.md`
   * `SmithScreenController.md`
+## [Current/Recent] - Script Metadata Summaries Added
+This update adds Context-Dense Metadata Summaries for several UI-related scripts to serve as primary references for AI agents, following a highly structured format.
+
+### 1. Created Script Descriptions
+* Created `ForgeSubView.md`, `GameView.md`, `HUDView.md`, and `MageView.md` inside `Toris/Assets/Documentation/Script_Descriptions/`.
+* Each summary outlines the script's Architectural Role, Core Logic (Abstract/Virtual Methods, Public API), Dependency Graph, Data Schema, and Side Effects & Lifecycle using key-value bulleted formats.
 
 ---
 
@@ -178,7 +184,22 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Current/Recent] - Documentation Updates
+This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
+
+### 1. Generated Summaries
+* Created `UIInventoryEventsSO.md` detailing the decoupled event channel for UI inventory interactions.
+* Created `SystemBootstrapper.md` detailing the global entry point for persistent manager initialization.
+* Created `UIDragManager.md` detailing the UI pointer tracking and global drag visual layer.
+This update introduces Context-Dense Metadata Summaries for critical UI components to aid AI-assisted development and architectural comprehension.
+
+### 1. Created Script Descriptions
+* Added `PlayerEquipmentView.md` in `Documentation/Script_Descriptions/` detailing its architecture, dependencies, and lifecycle.
+* Added `PlayerInventoryView.md` in `Documentation/Script_Descriptions/` mapping its role as a screen controller, data dependencies, and state management.
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

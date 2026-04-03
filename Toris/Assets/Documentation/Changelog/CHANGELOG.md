@@ -203,6 +203,20 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
+## [Current/Recent] - Script Metadata Summaries
+This update adds structured context-dense metadata summaries for item entity modules to aid in scaling and dependency tracking.
+
+### 1. EquipableModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/EquipableModule.md`.
+* Documented `EquipableComponent` as an abstract blueprint, listing its schema (`TargetSlot`, `StrengthBonus`, `DefenceBonus`) and its downstream UI/Effect system dependencies.
+
+### 2. EvolvingItemModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/EvolvingItemModule.md`.
+* Documented both the static blueprint (`EvolvingComponent`) and its dynamic runtime tracker (`EvolvingState`), including abstract method overrides for stacking and cloning.
+
+### 3. OffensiveModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/OffensiveModule.md`.
+* Documented `OffensiveComponent` emphasizing its static nature (no runtime state needed) and data schema (`BaseDamage`, `AttackSpeed`).
 ## [Current/Recent] - Script Metadata Documentation
 This update adds Context-Dense Metadata Summaries for several script files as part of expanding the AI assistant documentation context.
 

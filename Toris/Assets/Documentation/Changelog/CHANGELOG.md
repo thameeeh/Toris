@@ -7,7 +7,7 @@
 
 ---
 
-## [Current/Recent] - Documentation Updates
+## [Previous] - Documentation Updates
 This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
 
 ### 1. Centralized Event Documentation
@@ -165,7 +165,24 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Current/Recent] - Script Metadata Summaries
+This update adds structured context-dense metadata summaries for item entity modules to aid in scaling and dependency tracking.
+
+### 1. EquipableModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/EquipableModule.md`.
+* Documented `EquipableComponent` as an abstract blueprint, listing its schema (`TargetSlot`, `StrengthBonus`, `DefenceBonus`) and its downstream UI/Effect system dependencies.
+
+### 2. EvolvingItemModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/EvolvingItemModule.md`.
+* Documented both the static blueprint (`EvolvingComponent`) and its dynamic runtime tracker (`EvolvingState`), including abstract method overrides for stacking and cloning.
+
+### 3. OffensiveModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/OffensiveModule.md`.
+* Documented `OffensiveComponent` emphasizing its static nature (no runtime state needed) and data schema (`BaseDamage`, `AttackSpeed`).
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

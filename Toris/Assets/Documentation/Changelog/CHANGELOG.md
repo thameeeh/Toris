@@ -166,6 +166,12 @@ This update implements click-to-equip and click-to-unequip functionality for the
 ---
 
 ## [Current/Recent] - Documentation Updates
+This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
+
+### 1. Generated Summaries
+* Created `UIInventoryEventsSO.md` detailing the decoupled event channel for UI inventory interactions.
+* Created `SystemBootstrapper.md` detailing the global entry point for persistent manager initialization.
+* Created `UIDragManager.md` detailing the UI pointer tracking and global drag visual layer.
 This update introduces Context-Dense Metadata Summaries for critical UI components to aid AI-assisted development and architectural comprehension.
 
 ### 1. Created Script Descriptions

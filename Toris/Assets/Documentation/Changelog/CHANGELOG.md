@@ -7,6 +7,13 @@
 
 ---
 
+## [Current/Recent] - Script Documentation Summaries
+This update adds Context-Dense Metadata Summaries for several scriptable object scripts to improve project documentation and architecture visibility for AI agents.
+
+### 1. Added Script Descriptions
+* Generated detailed metadata summaries for `CraftingManagerSO`, `CraftingRecipeSO`, `CraftingRegistrySO`, `GameSessionSO`, `InventoryContainerSO`, and `InventoryItemSO`.
+* Each summary outlines the Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle using a structured key-value format.
+* Added all new files to `Toris/Assets/Documentation/Script_Descriptions/`.
 ## [Current/Recent] - Script Metadata Documentation
 This update adds Context-Dense Metadata Summaries for various core scripts to facilitate quick architectural understanding.
 

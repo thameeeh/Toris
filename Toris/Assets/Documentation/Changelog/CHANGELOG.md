@@ -7,6 +7,13 @@
 
 ---
 
+## [Current/Recent] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files to act as primary references for AI agents.
+
+### 1. Created Script Summaries
+* Created `IContainerInteractable.md` detailing the Interface architecture for interactive containers.
+* Created `ConsumableModule.md` detailing the Abstract Blueprint and Runtime State architecture for consumable items.
+* Created `DefensiveModule.md` detailing the Data Container architecture for defensive item stats.
 ## [Current/Recent] - Added Script Metadata Summaries
 This update adds structured context-dense metadata summaries for UI Toolkit screen controllers to aid AI agents and developers in understanding the codebase architecture.
 

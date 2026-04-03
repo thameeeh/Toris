@@ -7,7 +7,17 @@
 
 ---
 
-## [Current/Recent] - Documentation Updates
+## [Current/Recent] - Script Documentation Summaries
+This update adds Context-Dense Metadata Summaries for several scriptable object scripts to improve project documentation and architecture visibility for AI agents.
+
+### 1. Added Script Descriptions
+* Generated detailed metadata summaries for `CraftingManagerSO`, `CraftingRecipeSO`, `CraftingRegistrySO`, `GameSessionSO`, `InventoryContainerSO`, and `InventoryItemSO`.
+* Each summary outlines the Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle using a structured key-value format.
+* Added all new files to `Toris/Assets/Documentation/Script_Descriptions/`.
+
+---
+
+## [Previous] - Documentation Updates
 This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
 
 ### 1. Centralized Event Documentation
@@ -165,7 +175,7 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

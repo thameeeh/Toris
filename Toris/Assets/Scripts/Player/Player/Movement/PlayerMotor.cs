@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,6 +14,8 @@ public class PlayerMotor : MonoBehaviour
 
     private Vector2 _moveInput;
     private bool _movementLocked;
+
+    public event Action<Vector2> DashStarted;
 
     public Vector2 CurrentMoveInput => _moveInput;
     public DashAbility DashAbility => _dashAbility;
@@ -54,7 +57,13 @@ public class PlayerMotor : MonoBehaviour
         if (_dashAbility == null)
             return false;
 
-        return _dashAbility.TryActivate(direction);
+        bool started = _dashAbility.TryActivate(direction);
+        if (started)
+        {
+            DashStarted?.Invoke(direction);
+        }
+
+        return started;
     }
 
     private void Reset()

@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class ArrowProjectile : Projectile
@@ -142,6 +143,7 @@ public class ArrowProjectile : Projectile
         var dmgTarget = target.GetComponentInParent<IDamageable>();
         if (dmgTarget != null)
         {
+            Debug.Log($"[ArrowProjectile] Applying dmg: {damage}");
             dmgTarget.Damage(damage);
             SpawnHitEffect(transform.position);
         }

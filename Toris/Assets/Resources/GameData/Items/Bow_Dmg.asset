@@ -21,9 +21,14 @@ MonoBehaviour:
   - rid: 7555927880013971589
   - rid: 7555927880013971590
   - rid: 7555927880013971599
+  - rid: 6394788793107611748
   references:
     version: 2
     RefIds:
+    - rid: 6394788793107611748
+      type: {class: UpgradeableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        MaxLevel: 5
     - rid: 7555927880013971589
       type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:

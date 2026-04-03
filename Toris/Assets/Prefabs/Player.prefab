@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1017476828099549738, guid: 21c8af7f3e30baf42bf2f90962939fec, type: 3}
+  m_Sprite: {fileID: 6638902558152341341, guid: fb78fea27878e2c418a3b28868b6214c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,7 +104,7 @@ Animator:
   m_GameObject: {fileID: 5202819289707330108}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 54a5c999c5c99d44497368637527429d, type: 2}
+  m_Controller: {fileID: 9100000, guid: b652cc0cbb7c70044bbc875e8bc82bcb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -307,6 +307,7 @@ MonoBehaviour:
   _poolManager: {fileID: 0}
   _stats: {fileID: 8137892244548921797}
   _playerFacing: {fileID: 1884929689371088939}
+  _equipment: {fileID: 0}
   spawnOffsetFromCenter: 0.35
 --- !u!61 &5599079654927792221
 BoxCollider2D:
@@ -437,7 +438,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3b2dfeac57f37840849ad39a19a19d3, type: 3}
   m_Name: 
@@ -479,7 +480,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06a860f3d090e1444bd6fa027ebb6578, type: 3}
   m_Name: 

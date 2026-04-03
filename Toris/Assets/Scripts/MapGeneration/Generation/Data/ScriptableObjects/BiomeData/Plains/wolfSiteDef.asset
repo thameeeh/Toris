@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce87f17e7b9b1404cb0a619e13b3006f, type: 3}
+  m_Name: wolfSiteDef
+  m_EditorClassIdentifier: Assembly-CSharp::WorldSiteDefinition
+  siteId: wolf_den
+  prefab: {fileID: 5145460778764920192, guid: b3a67880993d31649b6f38f893c67ee1, type: 3}
+  skipIfConsumed: 0
+  spawnSalt: 3
+  runtimeConfig: {fileID: 11400000, guid: 05f638bd5020f5a4d8edbd1ea702d5ab, type: 2}

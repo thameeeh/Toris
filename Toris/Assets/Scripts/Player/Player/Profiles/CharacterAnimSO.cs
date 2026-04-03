@@ -23,6 +23,7 @@ public class CharacterAnimSO : ScriptableObject
         new NameMap{ actionKey="Shoot", defaultSuffix="Shoot"},
         new NameMap{ actionKey="Hurt", defaultSuffix="Hurt"},
         new NameMap{ actionKey="Death", defaultSuffix="Death"},
+        new NameMap{ actionKey="Dash", defaultSuffix="Dash"},
     };
 
     [Header("Animator Tags")]

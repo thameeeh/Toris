@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e2f61748acf6a4b807de18debf84f2, type: 3}
+  m_Name: WolfDenEncounterConfig
+  m_EditorClassIdentifier: Assembly-CSharp::WolfDenEncounterConfig
+  leaderPrefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
+  minionPrefab: {fileID: 7255815159274722986, guid: 68112641f8cb2f54c894da2c8fe35c71, type: 3}
+  leaderRespawnDelay: 3
+  spawnRadius: 6
+  keepChasingWolvesOnUnload: 1
+  keepChaseIfWithinPlayerRange: 40
+  homeRadius: 8
+  denAlertDuration: 4
+  alertLevelDecayDelay: 2.5
+  alertLevelDecayRate: 0.35
+  alertLevelPerHit: 1
+  maxAlertLevel: 4
+  investigateStandBonusPerAlert: 0.35
+  investigateBaseStepsFromDen: 1
+  investigateExtraStepsPerAlert: 1
+  investigatePointSearchRadius: 6
+  howlAtMaxAlert: 1
+  alertLevelAfterHowl: 0

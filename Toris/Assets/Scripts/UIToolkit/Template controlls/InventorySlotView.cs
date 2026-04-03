@@ -80,17 +80,6 @@ namespace OutlandHaven.Inventory
             // Only allow left click (0) and right click (1) to capture pointer
             if (evt.button != 0 && evt.button != 1) return;
 
-            VisualElement clickedElement = evt.target as VisualElement;
-
-            // 2. (Optional) Get the element this listener is attached to
-            VisualElement listeningElement = evt.currentTarget as VisualElement;
-
-            // Example check: You can use the name or class to verify what was clicked
-            if (clickedElement != null)
-            {
-                Debug.Log($"You clicked on: {clickedElement.name}");
-            }
-
             // Do not initiate visual drag right away (wait for threshold)
             _isDragging = false;
             _dragStartPosition = evt.position;

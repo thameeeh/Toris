@@ -165,7 +165,16 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Current/Recent] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files as part of expanding the AI assistant documentation context.
+
+### 1. Created Script Descriptions
+* Added `SalvageManagerSO.md`, `SalvageRecipeSO.md`, `ShopManagerSO.md`, `UpgradeSalvageManagerSO.md`, and `ItemTestDebugger.md` to `Toris/Assets/Documentation/Script_Descriptions/`.
+* Ensured summaries are highly token-efficient and use a structured key-value format without conversational language.
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

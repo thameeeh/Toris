@@ -165,7 +165,17 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Current/Recent] - Documentation Updates
+This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
+
+### 1. Generated Summaries
+* Created `UIInventoryEventsSO.md` detailing the decoupled event channel for UI inventory interactions.
+* Created `SystemBootstrapper.md` detailing the global entry point for persistent manager initialization.
+* Created `UIDragManager.md` detailing the UI pointer tracking and global drag visual layer.
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

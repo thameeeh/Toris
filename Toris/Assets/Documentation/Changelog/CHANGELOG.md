@@ -7,6 +7,16 @@
 
 ---
 
+## [Current/Recent] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for various core scripts to facilitate quick architectural understanding.
+
+### 1. Added Script Descriptions
+* Generated structured, key-value metadata `.md` files in `Toris/Assets/Documentation/Script_Descriptions/` for the following scripts:
+  * `InventoryActionController`
+  * `InventoryActionControllerDebugger`
+  * `PlayerHUDBridge`
+  * `ItemPickEventSO`
+  * `InventorySlotTests`
 ## [Current/Recent] - Script Documentation Generation
 This update adds Context-Dense Metadata Summaries for four core scripts within the Inventory Item Architecture, adhering strictly to the structured key-value format required by the project directives.
 

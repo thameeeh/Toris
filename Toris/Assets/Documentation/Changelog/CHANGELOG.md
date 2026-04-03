@@ -7,7 +7,20 @@
 
 ---
 
-## [Current/Recent] - Documentation Updates
+## [Current/Recent] - Added Script Metadata Summaries
+This update adds structured context-dense metadata summaries for UI Toolkit screen controllers to aid AI agents and developers in understanding the codebase architecture.
+
+### 1. Created Metadata Summaries
+* Generated context-dense key-value documentation in `Toris/Assets/Documentation/Script_Descriptions/` for:
+  * `HudScreenController.md`
+  * `InventoryScreenController.md`
+  * `MageScreenController.md`
+  * `MainMenuScreenController.md`
+  * `SmithScreenController.md`
+
+---
+
+## [Previous] - Documentation Updates
 This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
 
 ### 1. Centralized Event Documentation

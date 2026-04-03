@@ -7,6 +7,44 @@
 
 ---
 
+## [Current/Recent] - Script Documentation Generation
+This update adds Context-Dense Metadata Summaries for four core scripts within the Inventory Item Architecture, adhering strictly to the structured key-value format required by the project directives.
+
+### 1. Generated Documentation Summaries
+* Created `ProgressionModule.md` documenting `ProgressionComponent`.
+* Created `UpgradeableModule.md` documenting `UpgradeableComponent` and `UpgradeableState`.
+* Created `ItemComponent.md` documenting the abstract base `ItemComponent` class.
+* Created `ItemComponentState.md` documenting the abstract base `ItemComponentState` class.
+
+### 2. Standardization
+* Ensured all generated files adhere to the strict key-value formatting rules: Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle.
+* Omitted conversational language and used technical shorthand with bullet points.
+## [Current/Recent] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files to act as primary references for AI agents.
+
+### 1. Created Script Summaries
+* Created `IContainerInteractable.md` detailing the Interface architecture for interactive containers.
+* Created `ConsumableModule.md` detailing the Abstract Blueprint and Runtime State architecture for consumable items.
+* Created `DefensiveModule.md` detailing the Data Container architecture for defensive item stats.
+## [Current/Recent] - Added Script Metadata Summaries
+This update adds structured context-dense metadata summaries for UI Toolkit screen controllers to aid AI agents and developers in understanding the codebase architecture.
+
+### 1. Created Metadata Summaries
+* Generated context-dense key-value documentation in `Toris/Assets/Documentation/Script_Descriptions/` for:
+  * `HudScreenController.md`
+  * `InventoryScreenController.md`
+  * `MageScreenController.md`
+  * `MainMenuScreenController.md`
+  * `SmithScreenController.md`
+## [Current/Recent] - Script Metadata Summaries Added
+This update adds Context-Dense Metadata Summaries for several UI-related scripts to serve as primary references for AI agents, following a highly structured format.
+
+### 1. Created Script Descriptions
+* Created `ForgeSubView.md`, `GameView.md`, `HUDView.md`, and `MageView.md` inside `Toris/Assets/Documentation/Script_Descriptions/`.
+* Each summary outlines the script's Architectural Role, Core Logic (Abstract/Virtual Methods, Public API), Dependency Graph, Data Schema, and Side Effects & Lifecycle using key-value bulleted formats.
+
+---
+
 ## [Previous] - Documentation Updates
 This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
 
@@ -179,6 +217,24 @@ This update adds structured context-dense metadata summaries for item entity mod
 ### 3. OffensiveModule Summary
 * Added `Toris/Assets/Documentation/Script_Descriptions/OffensiveModule.md`.
 * Documented `OffensiveComponent` emphasizing its static nature (no runtime state needed) and data schema (`BaseDamage`, `AttackSpeed`).
+## [Current/Recent] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files as part of expanding the AI assistant documentation context.
+
+### 1. Created Script Descriptions
+* Added `SalvageManagerSO.md`, `SalvageRecipeSO.md`, `ShopManagerSO.md`, `UpgradeSalvageManagerSO.md`, and `ItemTestDebugger.md` to `Toris/Assets/Documentation/Script_Descriptions/`.
+* Ensured summaries are highly token-efficient and use a structured key-value format without conversational language.
+## [Current/Recent] - Documentation Updates
+This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
+
+### 1. Generated Summaries
+* Created `UIInventoryEventsSO.md` detailing the decoupled event channel for UI inventory interactions.
+* Created `SystemBootstrapper.md` detailing the global entry point for persistent manager initialization.
+* Created `UIDragManager.md` detailing the UI pointer tracking and global drag visual layer.
+This update introduces Context-Dense Metadata Summaries for critical UI components to aid AI-assisted development and architectural comprehension.
+
+### 1. Created Script Descriptions
+* Added `PlayerEquipmentView.md` in `Documentation/Script_Descriptions/` detailing its architecture, dependencies, and lifecycle.
+* Added `PlayerInventoryView.md` in `Documentation/Script_Descriptions/` mapping its role as a screen controller, data dependencies, and state management.
 
 ---
 

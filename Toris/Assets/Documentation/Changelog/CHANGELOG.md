@@ -7,7 +7,16 @@
 
 ---
 
-## [Current/Recent] - Documentation Updates
+## [Current/Recent] - Script Metadata Summaries Added
+This update adds Context-Dense Metadata Summaries for several UI-related scripts to serve as primary references for AI agents, following a highly structured format.
+
+### 1. Created Script Descriptions
+* Created `ForgeSubView.md`, `GameView.md`, `HUDView.md`, and `MageView.md` inside `Toris/Assets/Documentation/Script_Descriptions/`.
+* Each summary outlines the script's Architectural Role, Core Logic (Abstract/Virtual Methods, Public API), Dependency Graph, Data Schema, and Side Effects & Lifecycle using key-value bulleted formats.
+
+---
+
+## [Previous] - Documentation Updates
 This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
 
 ### 1. Centralized Event Documentation

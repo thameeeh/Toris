@@ -184,6 +184,12 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
+## [Current/Recent] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files as part of expanding the AI assistant documentation context.
+
+### 1. Created Script Descriptions
+* Added `SalvageManagerSO.md`, `SalvageRecipeSO.md`, `ShopManagerSO.md`, `UpgradeSalvageManagerSO.md`, and `ItemTestDebugger.md` to `Toris/Assets/Documentation/Script_Descriptions/`.
+* Ensured summaries are highly token-efficient and use a structured key-value format without conversational language.
 ## [Current/Recent] - Documentation Updates
 This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
 

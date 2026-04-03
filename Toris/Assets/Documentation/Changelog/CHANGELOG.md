@@ -52,6 +52,15 @@ This update refactors how global managers and the HUD access player progression 
 
 ### 4. Removed Deprecated Assets
 * Deleted `PlayerDataSO.cs` entirely and cleaned up its references in `GameSessionSO` and `Wolf.cs`.
+## [Current/Recent] - Added Context-Dense Metadata Summary for UIManager
+This update generates a context-dense metadata summary for `UIManager.cs` to assist AI agents in understanding the script's role without reading the full source code.
+
+### 1. Created Script_Descriptions Directory
+* Created `Toris/Assets/Documentation/Script_Descriptions` directory to hold metadata summaries.
+
+### 2. Generated UIManager Metadata Summary
+* Generated `UIManager.md` with structured key-value style fields.
+* Populated fields: Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle.
 
 ---
 

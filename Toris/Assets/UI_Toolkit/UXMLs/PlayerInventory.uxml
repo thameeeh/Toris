@@ -7,6 +7,10 @@
                 <ui:Label text="Inventory" style="color: rgb(255, 255, 255); font-size: 40px;"/>
             </ui:VisualElement>
             <ui:VisualElement name="PlayerEquipment__Panel" style="background-color: rgb(32, 32, 32); background-image: url(&quot;project://database/Assets/UI_Toolkit/BowGuy007.png?fileID=2800000&amp;guid=d2a0ea75174bdc740a7b12c0072b8de5&amp;type=3#BowGuy007&quot;); -unity-background-scale-mode: scale-to-fit; flex-grow: 1; background-size: contain; background-position-x: center; background-position-y: top 50px;">
+                <ui:VisualElement name="Consumables__Player--Inventory" class="potion-slot-group" style="position: absolute; right: 15px; bottom: 15px;">
+                    <ui:VisualElement class="potion-slot" style="flex-grow: 1;"/>
+                    <ui:VisualElement class="potion-slot" style="flex-grow: 1;"/>
+                </ui:VisualElement>
                 <ui:VisualElement name="slot-head" class="item-slot" style="position: absolute; top: 5%; left: 2%;"/>
                 <ui:VisualElement name="slot-arms" class="item-slot" style="position: absolute; left: 2%; top: 39%;"/>
                 <ui:VisualElement name="slot-legs" class="item-slot" style="position: absolute; left: 2%; top: 56%;"/>
@@ -15,8 +19,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="Inventory__Slots--Panel" class="inventory-grid" style="flex-grow: 0; margin-bottom: 0; height: 20%; min-height: 246px;">
                 <ui:ScrollView vertical-scroller-visibility="Hidden" style="flex-grow: 1; height: 100%;">
-                    <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;">
-                    </ui:VisualElement>
+                    <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;"/>
                 </ui:ScrollView>
             </ui:VisualElement>
         </ui:VisualElement>

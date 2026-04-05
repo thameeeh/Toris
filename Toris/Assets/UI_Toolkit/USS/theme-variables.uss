@@ -17,4 +17,10 @@
     --font-size-h3: 30px;
     --font-size-body: 18px;
     --font-size-small: 12px;
+
+    /* Commerce Specific Colors | Smith Shop*/
+    --color-bg-shop: rgba(35, 25, 20, 0.98);
+    --color-shop-slot-bg: rgba(15, 15, 15, 0.8);
+    --color-shop-slot-border: rgb(150, 120, 60);
+    --color-coin-gold: rgb(255, 220, 100);
 }

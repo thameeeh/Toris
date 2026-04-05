@@ -103,3 +103,71 @@
 .panel-tab--active .panel-tab-label {
     color: rgb(255, 255, 255); 
 }
+
+/* --- POTION QUICKBAR COMPONENTS --- */
+
+.potion-slot-group {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.potion-slot {
+    /* Slightly smaller than your standard 82x82 item slots to fit better on a HUD */
+    width: 70px;  
+    height: 70px;
+    
+    /* A slightly darker background than standard inventory slots */
+    background-color: rgb(40, 40, 40);
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    
+    /* A radius of half the width/height creates a perfect circle */
+    border-radius: 35px; 
+    
+    /* Creates the requested gap between slots */
+    margin-right: 15px; 
+    transition-duration: 0.1s;
+}
+
+/* Pseudo-class to ensure the last slot doesn't add unnecessary margin that throws off centering */
+.potion-slot-group > .potion-slot:last-child {
+    margin-right: 0;
+}
+
+.potion-slot:hover {
+    border-color: var(--color-border-highlight);
+    scale: 1.05;
+}
+
+    /* --- COMMERCE COMPONENTS --- */
+
+.shop-item-slot {
+    width: 82px;
+    height: 82px;
+    background-color: var(--color-shop-slot-bg);
+    border-width: 1px;
+    border-color: var(--color-shop-slot-border);
+    border-radius: 4px;
+    margin: 4px;
+    transition-duration: 0.15s;
+}
+
+.shop-item-slot:hover {
+    background-color: rgb(40, 40, 40);
+    border-color: var(--color-border-highlight);
+    scale: 1.05;
+}
+
+.shop-item-price {
+    position: absolute;
+    bottom: 2px;
+    right: 4px; 
+    
+    color: var(--color-coin-gold);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    picking-mode: Ignore; 
+}

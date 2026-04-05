@@ -83,6 +83,9 @@ namespace OutlandHaven.UIToolkit
             if (_smithMainTemplate == null || _slotTemplate == null) return;
 
             TemplateContainer smithInstance = _smithMainTemplate.Instantiate();
+
+            smithInstance.style.flexGrow = 1; // Make it fill the available space
+
             _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _playerAnchor, _craftingManagerSO, _salvageManagerSO);
             _view.Initialize();
 

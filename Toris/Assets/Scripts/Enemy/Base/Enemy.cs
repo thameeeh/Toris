@@ -125,7 +125,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         rb.linearVelocity = velocity;
         if(velocity != Vector2.zero) UpdateAnimationDirection(velocity);
     }
-    public void UpdateAnimationDirection(Vector2 direction)
+    public virtual void UpdateAnimationDirection(Vector2 direction)
     {
         direction = direction.normalized;
         animator.SetFloat("DirectionX", direction.x);

@@ -1,22 +1,7 @@
 fileFormatVersion: 2
-guid: b0f26f377df1c7443b98ad9f8d9c2973
+guid: 65bbe8382ae78c94daa278ef48051a90
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -1411704899896429253
-    second: Structures2_0
-  - first:
-      213: -1685911686017853808
-    second: Structures2_1
-  - first:
-      213: 6131645226013114349
-    second: Structures2_2
-  - first:
-      213: 8184156557032244628
-    second: Structures2_3
-  - first:
-      213: -6511518881857909183
-    second: Structures2_4
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -80,14 +65,14 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -109,11 +94,63 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -125,133 +162,133 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Structures2_0
+      name: EarthShield_0
       rect:
         serializedVersion: 2
-        x: 3
+        x: 0
+        y: 320
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37ff94671bd87704bb7efc03806d03f5
+      internalID: -2028078695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EarthShield_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4a96b19940f70f46a93b243192a8f5f
+      internalID: -93745403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EarthShield_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02bc51fe18a75034cb7640c6a7aa147e
+      internalID: -851423065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EarthShield_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0af840e54f8cd134e9c721af0368227d
+      internalID: -86633310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EarthShield_4
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 64
-        width: 90
-        height: 91
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape:
-      - - {x: 43, y: -29.5}
-        - {x: 5, y: -10.5}
-        - {x: -43, y: -32.5}
-        - {x: -18, y: -44.5}
-        - {x: 3, y: -34.5}
-        - {x: 18, y: -42.5}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b35bef18fdd986ce0800000000000000
-      internalID: -1411704899896429253
+      spriteID: 160a51e7be034c7429d9eaa973f644b7
+      internalID: 1601167771
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Structures2_1
+      name: EarthShield_5
       rect:
         serializedVersion: 2
-        x: 97
-        y: 96
-        width: 30
-        height: 22
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape:
-      - - {x: 12, y: -1.5}
-        - {x: 3, y: 3.5}
-        - {x: -9, y: -2.5}
-        - {x: 1, y: -7.5}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 096d93001407a98e0800000000000000
-      internalID: -1685911686017853808
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Structures2_2
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 96
-        width: 30
-        height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape:
-      - - {x: 9, y: -2.5}
-        - {x: -3, y: 3.5}
-        - {x: -13, y: -0.5}
-        - {x: 0, y: -7.5}
-      tessellationDetail: 0
-      bones: []
-      spriteID: def3b31a8daf71550800000000000000
-      internalID: 6131645226013114349
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Structures2_3
-      rect:
-        serializedVersion: 2
-        x: 97
-        y: 64
-        width: 30
-        height: 21
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape:
-      - - {x: 12, y: -1.5}
-        - {x: 3, y: 3.5}
-        - {x: -9, y: -2.5}
-        - {x: 1, y: -7.5}
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4954710f607f39170800000000000000
-      internalID: 8184156557032244628
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Structures2_4
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 64
-        width: 30
-        height: 21
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape:
-      - - {x: 9, y: -2.5}
-        - {x: -3, y: 3.5}
-        - {x: -13, y: -0.5}
-        - {x: 0, y: -7.5}
-      tessellationDetail: 0
-      bones: []
-      spriteID: 14e4c92931072a5a0800000000000000
-      internalID: -6511518881857909183
+      spriteID: 393140648bf143441ab02f2fb740a7b9
+      internalID: 1239867585
       vertices: []
       indices: 
       edges: []
@@ -260,7 +297,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ee2c011989919c844bced6da74392361
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -270,11 +307,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Structures2_0: -1411704899896429253
-      Structures2_1: -1685911686017853808
-      Structures2_2: 6131645226013114349
-      Structures2_3: 8184156557032244628
-      Structures2_4: -6511518881857909183
+      EarthShield_0: -2028078695
+      EarthShield_1: -93745403
+      EarthShield_2: -851423065
+      EarthShield_3: -86633310
+      EarthShield_4: 1601167771
+      EarthShield_5: 1239867585
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

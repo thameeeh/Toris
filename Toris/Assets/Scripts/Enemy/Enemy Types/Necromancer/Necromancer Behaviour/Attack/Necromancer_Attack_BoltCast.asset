@@ -15,3 +15,10 @@ MonoBehaviour:
   castCooldown: 1.5
   panicSwingCooldown: 1
   summonCooldown: 8
+  spellProjectilePrefab: {fileID: 15201539819315284, guid: e81e4808d2e279047b1781ae64241c12, type: 3}
+  spellProjectileDamageMultiplier: 1
+  spellProjectileKnockback: 2
+  spellProjectileSpeed: 8
+  spellProjectileLifetime: 3
+  spellCastRepositionSpeedMultiplier: 1.5
+  panicSwingRepositionSpeedMultiplier: 2.5

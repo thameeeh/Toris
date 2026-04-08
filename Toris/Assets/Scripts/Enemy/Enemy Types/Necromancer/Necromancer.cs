@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Necromancer : Enemy
@@ -7,13 +8,11 @@ public class Necromancer : Enemy
     private const string FloaterIdleAnimatorState = "Necromancer_Floater_Idle";
     private const string FloaterToHumanAnimatorState = "Necromancer_Floater_To_Human";
     private const string RunAnimatorState = "Necromancer_Run";
-    private const string AttackAnimatorState = "Necromancer_Attack";
     private const string ProjectileAttackAnimatorState = "Necromancer_Projectile";
     private const string PanicSwingAnimatorState = "Necromancer_Air_Slash";
     private const string SummonAnimatorState = "Necromancer_Summon";
     private const string HumanDeadAnimatorState = "Necromancer_Human_Dead";
     private const string FloaterDeadAnimatorState = "Necromancer_Floater_Dead";
-    private const string LegacyAttackTrigger = "Attack";
     private const string SpellCastTrigger = "SpellCast";
     private const string PanicSwingTrigger = "PanicSwing";
     private const string SummonTrigger = "Summon";
@@ -23,6 +22,7 @@ public class Necromancer : Enemy
     private const string IsMovingParameter = "IsMoving";
     private const string AnimatorChildName = "Animator";
     private const string ShadowChildName = "Shadow";
+    private const string ShieldVisualChildName = "ShieldVisual";
     private const float MinDirectionSqr = 0.0001f;
     private const float DifficultyTierScale = 0.2f;
 
@@ -34,9 +34,14 @@ public class Necromancer : Enemy
     [Header("Casting")]
     [SerializeField] private Transform castPoint;
 
+    [Header("Projectile Aim")]
+    [SerializeField] private Collider2D playerAimCollider;
+    [SerializeField] private Vector2 projectileAimOffset = Vector2.zero;
+
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer bodySpriteRenderer;
     [SerializeField] private SpriteRenderer shadowSpriteRenderer;
+    [SerializeField] private NecromancerSummonProtectionVisual summonProtectionVisual;
     [SerializeField] private bool hideShadowInHumanForm = true;
     [SerializeField] private bool flipSpriteHorizontally = true;
     [SerializeField] private float horizontalFlipThreshold = 0.01f;
@@ -49,6 +54,9 @@ public class Necromancer : Enemy
     [Header("Summon")]
     [SerializeField] private bool enableHealthThresholdSummon = true;
     [SerializeField, Range(0f, 1f)] private float summonHealthThreshold = 0.5f;
+
+    [Header("Summon Protection")]
+    [SerializeField] private bool enableBloodMageSummonProtection = true;
 
 #if UNITY_EDITOR
     [Header("Debug")]
@@ -71,15 +79,29 @@ public class Necromancer : Enemy
     private float _baseAttackDamage;
     private bool _hasStarted;
     private bool _requiresPostCastReposition;
+    private float _postAttackRepositionSpeedMultiplier = 1f;
+    private bool _prioritizePostAttackReposition;
     private bool _hasResolvedAggroTransition;
     private bool _isHumanRescueVariant;
     private bool _hasEnteredDeadState;
+    private Collider2D[] _projectileIgnoreColliders = Array.Empty<Collider2D>();
+    private readonly NecromancerSummonProtectionState _summonProtectionState = new NecromancerSummonProtectionState();
 
     public Transform CastPoint => castPoint != null ? castPoint : transform;
     public bool RequiresPostCastReposition => _requiresPostCastReposition;
+    public float PostAttackRepositionSpeedMultiplier => _postAttackRepositionSpeedMultiplier;
+    public bool ShouldPrioritizePostAttackReposition => _requiresPostCastReposition && _prioritizePostAttackReposition;
     public bool IsWithinCastingRange { get; private set; }
     public bool IsHumanRescueVariant => _isHumanRescueVariant;
     public NecromancerAttackType PendingAttackType { get; private set; } = NecromancerAttackType.SpellCast;
+    public Collider2D[] ProjectileIgnoreColliders => _projectileIgnoreColliders;
+    public int ActiveBloodMageCount => _summonProtectionState.ActiveBloodMageCount;
+    public bool IsAwaitingSummonedBloodMages => _summonProtectionState.IsAwaitingSummonedBloodMages;
+    public bool HasActiveSummonProtection => _summonProtectionState.HasActiveProtection;
+    public bool HasSummonProtectionShield =>
+        enableBloodMageSummonProtection
+        && (HasActiveSummonProtection || IsAwaitingSummonedBloodMages);
+    public bool ShouldDisplaySummonProtectionVisual => HasSummonProtectionShield;
     public bool IsPhaseTwoSummonUnlocked =>
         enableHealthThresholdSummon
         && CurrentHealth <= MaxHealth * summonHealthThreshold;
@@ -106,13 +128,15 @@ public class Necromancer : Enemy
     #endregion
 
     public bool CanStartAnyAttack =>
-        NecromancerAttackBaseInstance != null
-        && (NecromancerAttackBaseInstance.CanUseAttack(NecromancerAttackType.SpellCast)
-            || NecromancerAttackBaseInstance.CanUseAttack(NecromancerAttackType.PanicSwing)
-            || (IsPhaseTwoSummonUnlocked && NecromancerAttackBaseInstance.CanUseAttack(NecromancerAttackType.Summon)));
+        CanStartAttack(NecromancerAttackType.SpellCast)
+        || CanStartAttack(NecromancerAttackType.PanicSwing)
+        || (IsPhaseTwoSummonUnlocked && CanStartAttack(NecromancerAttackType.Summon));
 
     public bool CanStartAttack(NecromancerAttackType attackType)
     {
+        if (attackType == NecromancerAttackType.Summon && HasSummonProtectionShield)
+            return false;
+
         return NecromancerAttackBaseInstance != null
             && NecromancerAttackBaseInstance.CanUseAttack(attackType);
     }
@@ -149,7 +173,6 @@ public class Necromancer : Enemy
 
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             return stateInfo.IsName(FloaterIdleAnimatorState)
-                || stateInfo.IsName(AttackAnimatorState)
                 || stateInfo.IsName(ProjectileAttackAnimatorState)
                 || stateInfo.IsName(PanicSwingAnimatorState)
                 || stateInfo.IsName(SummonAnimatorState);
@@ -179,6 +202,7 @@ public class Necromancer : Enemy
         _baseAttackDamage = AttackDamage;
         CacheCastPoint();
         CacheVisualRenderers();
+        CacheProjectileIgnoreColliders();
 
         if (NecromancerIdleBase != null)
             NecromancerIdleBaseInstance = Instantiate(NecromancerIdleBase);
@@ -208,6 +232,7 @@ public class Necromancer : Enemy
         NecromancerDeadBaseInstance?.Initialize(gameObject, this, PlayerTransform);
 
         ApplyScaling();
+        CachePlayerAimCollider();
         InitializeRuntimeState();
         _hasStarted = true;
     }
@@ -229,6 +254,8 @@ public class Necromancer : Enemy
         if (CurrentHealth <= 0f && StateMachine.CurrentEnemyState != DeadState)
             Die();
 
+        ResetSummonProtectionOnHumanForm();
+
 #if UNITY_EDITOR
         DebugAnimatorStateChanges();
 #endif
@@ -239,6 +266,7 @@ public class Necromancer : Enemy
     {
         ApplyScaling();
         CacheVisualRenderers();
+        CacheProjectileIgnoreColliders();
         base.OnSpawned();
 
         if (!_hasStarted)
@@ -283,11 +311,26 @@ public class Necromancer : Enemy
 
     public Vector2 GetDirectionToPlayer()
     {
-        if (PlayerTransform == null)
-            return IsFacingRight ? Vector2.right : Vector2.left;
+        return GetDirectionToPlayer(transform.position);
+    }
 
-        Vector2 direction = PlayerTransform.position - transform.position;
+    public Vector2 GetDirectionToPlayer(Vector3 origin)
+    {
+        Vector2 direction = GetPlayerAimPosition() - origin;
         return direction.sqrMagnitude > MinDirectionSqr ? direction.normalized : Vector2.zero;
+    }
+
+    public Vector3 GetPlayerAimPosition()
+    {
+        CachePlayerAimCollider();
+
+        if (playerAimCollider != null)
+            return playerAimCollider.bounds.center + (Vector3)projectileAimOffset;
+
+        if (PlayerTransform == null)
+            return transform.position + (IsFacingRight ? Vector3.right : Vector3.left);
+
+        return PlayerTransform.position + (Vector3)projectileAimOffset;
     }
 
     public void DestroyGameObject()
@@ -298,6 +341,9 @@ public class Necromancer : Enemy
     protected override bool CanTakeDamage()
     {
         if (_isHumanRescueVariant && humanRescueVariantInvincible)
+            return false;
+
+        if (enableBloodMageSummonProtection && HasActiveSummonProtection)
             return false;
 
         return base.CanTakeDamage();
@@ -326,7 +372,7 @@ public class Necromancer : Enemy
         _hasResolvedAggroTransition = true;
         _isHumanRescueVariant = enableHumanRescueVariant
             && IsHumanForm
-            && Random.value < humanRescueVariantChance;
+            && UnityEngine.Random.value < humanRescueVariantChance;
 
 #if UNITY_EDITOR
         DebugAnimationLog(_isHumanRescueVariant
@@ -399,12 +445,16 @@ public class Necromancer : Enemy
         animator.SetTrigger(DeadTrigger);
     }
 
-    public void RequirePostCastReposition()
+    public void RequirePostCastReposition(float speedMultiplier = 1f, bool prioritizeBeforePanicRange = false)
     {
         _requiresPostCastReposition = true;
+        _postAttackRepositionSpeedMultiplier = Mathf.Max(1f, speedMultiplier);
+        _prioritizePostAttackReposition = prioritizeBeforePanicRange;
 
 #if UNITY_EDITOR
-        DebugAnimationLog("Post-cast reposition required.");
+        DebugAnimationLog(
+            $"Post-attack reposition required. Speed multiplier={_postAttackRepositionSpeedMultiplier:0.##}, " +
+            $"priorityBeforePanic={_prioritizePostAttackReposition}.");
 #endif
     }
 
@@ -414,9 +464,70 @@ public class Necromancer : Enemy
             return;
 
         _requiresPostCastReposition = false;
+        _postAttackRepositionSpeedMultiplier = 1f;
+        _prioritizePostAttackReposition = false;
 
 #if UNITY_EDITOR
         DebugAnimationLog("Post-cast reposition completed.");
+#endif
+    }
+
+    public void MarkSummonProtectionPending()
+    {
+        if (!enableBloodMageSummonProtection)
+            return;
+
+        _summonProtectionState.MarkPending();
+
+#if UNITY_EDITOR
+        DebugAnimationLog("Summon resolved -> waiting for Blood Mages to register summon protection.");
+#endif
+    }
+
+    public void RegisterSummonedBloodMage()
+    {
+        if (!enableBloodMageSummonProtection)
+            return;
+
+        _summonProtectionState.RegisterBloodMage();
+
+#if UNITY_EDITOR
+        DebugAnimationLog($"Blood Mage registered. Active Blood Mages={ActiveBloodMageCount}. Summon protection active.");
+#endif
+    }
+
+    public void UnregisterSummonedBloodMage()
+    {
+        if (!enableBloodMageSummonProtection)
+            return;
+
+        int previousCount = ActiveBloodMageCount;
+        _summonProtectionState.UnregisterBloodMage();
+
+#if UNITY_EDITOR
+        if (previousCount != ActiveBloodMageCount)
+        {
+            DebugAnimationLog(HasActiveSummonProtection
+                ? $"Blood Mage removed. Active Blood Mages={ActiveBloodMageCount}. Summon protection still active."
+                : "Blood Mage removed. No Blood Mages remain; summon protection ended.");
+        }
+#endif
+    }
+
+    public void ClearSummonProtection()
+    {
+        _summonProtectionState.Reset();
+    }
+
+    private void ResetSummonProtectionOnHumanForm()
+    {
+        if (!HasSummonProtectionShield || !IsHumanForm)
+            return;
+
+        ClearSummonProtection();
+
+#if UNITY_EDITOR
+        DebugAnimationLog("Human form reached -> clearing summon protection state back to baseline.");
 #endif
     }
 
@@ -430,19 +541,44 @@ public class Necromancer : Enemy
             castPoint = foundCastPoint;
     }
 
+    private void CacheProjectileIgnoreColliders()
+    {
+        _projectileIgnoreColliders = GetComponentsInChildren<Collider2D>(true);
+    }
+
+    private void CachePlayerAimCollider()
+    {
+        if (playerAimCollider != null || PlayerTransform == null)
+            return;
+
+        PlayerHurtbox playerHurtbox = PlayerTransform.GetComponentInChildren<PlayerHurtbox>();
+        if (playerHurtbox != null)
+            playerHurtbox.TryGetComponent(out playerAimCollider);
+
+        if (playerAimCollider == null)
+            PlayerTransform.TryGetComponent(out playerAimCollider);
+    }
+
     private void CacheVisualRenderers()
     {
         if (bodySpriteRenderer == null && animator != null)
             animator.TryGetComponent(out bodySpriteRenderer);
 
-        if (shadowSpriteRenderer != null)
-            return;
-
         Transform animatorTransform = animator != null ? animator.transform : transform.Find(AnimatorChildName);
-        Transform shadowTransform = animatorTransform != null ? animatorTransform.Find(ShadowChildName) : null;
 
-        if (shadowTransform != null)
-            shadowTransform.TryGetComponent(out shadowSpriteRenderer);
+        if (shadowSpriteRenderer == null)
+        {
+            Transform shadowTransform = animatorTransform != null ? animatorTransform.Find(ShadowChildName) : null;
+            if (shadowTransform != null)
+                shadowTransform.TryGetComponent(out shadowSpriteRenderer);
+        }
+
+        if (summonProtectionVisual == null)
+        {
+            Transform shieldVisualTransform = animatorTransform != null ? animatorTransform.Find(ShieldVisualChildName) : null;
+            if (shieldVisualTransform != null)
+                shieldVisualTransform.TryGetComponent(out summonProtectionVisual);
+        }
     }
 
     private void UpdateHorizontalFacing(Vector2 direction)
@@ -459,10 +595,11 @@ public class Necromancer : Enemy
 
     private void UpdateVisualState()
     {
-        if (shadowSpriteRenderer == null)
-            return;
+        if (shadowSpriteRenderer != null)
+            shadowSpriteRenderer.enabled = !hideShadowInHumanForm || !IsHumanForm;
 
-        shadowSpriteRenderer.enabled = !hideShadowInHumanForm || !IsHumanForm;
+        if (summonProtectionVisual != null)
+            summonProtectionVisual.SetVisible(ShouldDisplaySummonProtectionVisual);
     }
 
     private void ApplyScaling()
@@ -485,6 +622,7 @@ public class Necromancer : Enemy
         _hasResolvedAggroTransition = false;
         _isHumanRescueVariant = false;
         _hasEnteredDeadState = false;
+        ClearSummonProtection();
         PendingAttackType = NecromancerAttackType.SpellCast;
         ResetAnimatorRequests();
         if (rb != null)
@@ -503,7 +641,6 @@ public class Necromancer : Enemy
 
         animator.ResetTrigger(BecomeFloaterTrigger);
         animator.ResetTrigger(BecomeHumanTrigger);
-        animator.ResetTrigger(LegacyAttackTrigger);
         animator.ResetTrigger(SpellCastTrigger);
         animator.ResetTrigger(PanicSwingTrigger);
         animator.ResetTrigger(SummonTrigger);
@@ -643,9 +780,6 @@ public class Necromancer : Enemy
 
         if (stateInfo.IsName(RunAnimatorState))
             return RunAnimatorState;
-
-        if (stateInfo.IsName(AttackAnimatorState))
-            return AttackAnimatorState;
 
         if (stateInfo.IsName(ProjectileAttackAnimatorState))
             return ProjectileAttackAnimatorState;

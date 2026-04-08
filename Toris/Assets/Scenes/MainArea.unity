@@ -1498,7 +1498,7 @@ Transform:
   m_GameObject: {fileID: 291675225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.1000023, y: 0.10000014, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40665,9 +40665,65 @@ PrefabInstance:
       propertyPath: summonHealthThreshold
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: enableHumanRescueVariant
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: debugAnimationTransitions
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: enableHealthThresholdSummon
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765281039746215501, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.09516
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765281039746215501, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.069
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765281039746215501, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.778
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392851402248934741, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: activeTint.a
+      value: 0.59607846
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392851402248934741, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: activeTint.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392851402248934741, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: activeTint.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392851402248934741, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: activeTint.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7028104305884219924, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_Name
       value: Necromancer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946406010711142750, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_Color.a
+      value: 0.56078434
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946406010711142750, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946406010711142750, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946406010711142750, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40692,11 +40748,11 @@ PrefabInstance:
       objectReference: {fileID: 494592622}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.1000023
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.10000014
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -61442,7 +61498,7 @@ Transform:
   m_GameObject: {fileID: 1924643740}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.1000023, y: 0.10000014, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

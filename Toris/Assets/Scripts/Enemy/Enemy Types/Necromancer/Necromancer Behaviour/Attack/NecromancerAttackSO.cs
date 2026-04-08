@@ -8,6 +8,17 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
     [SerializeField] private float panicSwingCooldown = 1f;
     [SerializeField] private float summonCooldown = 8f;
 
+    [Header("Spell Projectile")]
+    [SerializeField] private NecromancerShotProjectile spellProjectilePrefab;
+    [SerializeField, Min(0f)] private float spellProjectileDamageMultiplier = 1f;
+    [SerializeField, Min(0f)] private float spellProjectileKnockback = 2f;
+    [SerializeField, Min(0.01f)] private float spellProjectileSpeed = 6f;
+    [SerializeField, Min(0.05f)] private float spellProjectileLifetime = 3f;
+
+    [Header("Reposition")]
+    [SerializeField, Min(1f)] private float spellCastRepositionSpeedMultiplier = 1f;
+    [SerializeField, Min(1f)] private float panicSwingRepositionSpeedMultiplier = 2f;
+
     public bool IsComplete { get; private set; }
 
     private float _nextAllowedCastTime;
@@ -62,6 +73,12 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 #if UNITY_EDITOR
             enemy.DebugAnimationLog($"Animation event -> Anim_AttackHit for {enemy.PendingAttackType}. Starting cooldown.");
 #endif
+            if (enemy.PendingAttackType == NecromancerAttackType.SpellCast)
+                SpawnSpellProjectile();
+
+            if (enemy.PendingAttackType == NecromancerAttackType.Summon)
+                enemy.MarkSummonProtectionPending();
+
             StartCooldown(enemy.PendingAttackType);
         }
 
@@ -71,7 +88,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             enemy.DebugAnimationLog("Animation event -> Anim_AttackFinished. Marking attack complete.");
 #endif
             if (enemy.PendingAttackType == NecromancerAttackType.SpellCast)
-                enemy.RequirePostCastReposition();
+                enemy.RequirePostCastReposition(spellCastRepositionSpeedMultiplier);
+
+            if (enemy.PendingAttackType == NecromancerAttackType.PanicSwing)
+                enemy.RequirePostCastReposition(panicSwingRepositionSpeedMultiplier, true);
 
             IsComplete = true;
         }
@@ -120,5 +140,49 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             default:
                 return castCooldown;
         }
+    }
+
+    private void SpawnSpellProjectile()
+    {
+        if (spellProjectilePrefab == null)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAnimationDecision("SpellCast hit event fired, but no spell projectile prefab is assigned.");
+#endif
+            return;
+        }
+
+        Vector3 spawnPosition = enemy.CastPoint.position;
+        Vector2 direction = enemy.GetDirectionToPlayer(spawnPosition);
+        Quaternion spawnRotation = Quaternion.identity;
+        NecromancerShotProjectile spawnedProjectile = null;
+
+        if (GameplayPoolManager.Instance != null)
+        {
+            spawnedProjectile = GameplayPoolManager.Instance.SpawnProjectile(
+                spellProjectilePrefab,
+                spawnPosition,
+                spawnRotation) as NecromancerShotProjectile;
+        }
+
+        if (spawnedProjectile == null)
+        {
+            spawnedProjectile = Instantiate(spellProjectilePrefab, spawnPosition, spawnRotation);
+            spawnedProjectile.OnSpawned();
+        }
+
+        spawnedProjectile.Initialize(
+            direction,
+            spellProjectileSpeed,
+            enemy.AttackDamage * spellProjectileDamageMultiplier,
+            spellProjectileLifetime,
+            spellProjectileKnockback,
+            enemy.ProjectileIgnoreColliders);
+
+#if UNITY_EDITOR
+        enemy.DebugAnimationLog(
+            $"Spawned spell projectile at {spawnPosition} with speed={spellProjectileSpeed:0.##}, " +
+            $"lifetime={spellProjectileLifetime:0.##}, damage={enemy.AttackDamage * spellProjectileDamageMultiplier:0.##}.");
+#endif
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 15201539819315284}
   - component: {fileID: 4209070447263494290}
   - component: {fileID: 5464171239517160616}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Necromancer_Shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,6 +100,16 @@ MonoBehaviour:
   rotateTowardVelocity: 1
   rotateOffsetDegrees: 0
   despawnOnFirstImpact: 0
+  enableSustainContactDamage: 1
+  sustainDamageInterval: 0.25
+  sustainDamageMultiplier: 0.35
+  sustainKnockbackMultiplier: 0
+  sustainDamageBypassesIFrames: 0
+  useBurstDecaySpeedProfile: 1
+  launchSpeedMultiplier: 3
+  burstTravelDistance: 3
+  exponentialDecayRate: 1.5
+  minimumSpeedMultiplier: 0.15
 --- !u!212 &4209070447263494290
 SpriteRenderer:
   serializedVersion: 2

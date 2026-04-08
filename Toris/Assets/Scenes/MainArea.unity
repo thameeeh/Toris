@@ -40663,7 +40663,7 @@ PrefabInstance:
       objectReference: {fileID: 1658641785}
     - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: summonHealthThreshold
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: enableHumanRescueVariant
@@ -40672,6 +40672,10 @@ PrefabInstance:
     - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: debugAnimationTransitions
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
+      propertyPath: <MaxHealth>k__BackingField
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: enableHealthThresholdSummon
@@ -40818,6 +40822,10 @@ PrefabInstance:
       propertyPath: _equipmentInventory
       value: 
       objectReference: {fileID: 494592622}
+    - target: {fileID: 8065209757393096214, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: damagingLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

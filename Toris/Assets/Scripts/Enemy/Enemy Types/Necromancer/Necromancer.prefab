@@ -656,19 +656,21 @@ MonoBehaviour:
   AttackDamage: 16
   MovementSpeed: 1.5
   castPoint: {fileID: 6703678301246532537}
+  playerAimCollider: {fileID: 0}
+  projectileAimOffset: {x: 0, y: 0}
   bodySpriteRenderer: {fileID: 0}
   shadowSpriteRenderer: {fileID: 0}
   summonProtectionVisual: {fileID: 5392851402248934741}
   hideShadowInHumanForm: 1
   flipSpriteHorizontally: 1
   horizontalFlipThreshold: 0.01
-  enableHumanRescueVariant: 1
+  enableHumanRescueVariant: 0
   humanRescueVariantChance: 0.05
   humanRescueVariantInvincible: 1
   enableHealthThresholdSummon: 1
   summonHealthThreshold: 0.5
   enableBloodMageSummonProtection: 1
-  debugAnimationTransitions: 1
+  debugAnimationTransitions: 0
   debugDecisionLogInterval: 0.75
   NecromancerIdleBase: {fileID: 11400000, guid: 2686afbfd8292b74ba5f1d1e1fcc7ec6, type: 2}
   NecromancerChaseBase: {fileID: 11400000, guid: 9e77c432e9d247a4380a779217600d31, type: 2}

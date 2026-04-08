@@ -15,6 +15,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
     [SerializeField, Min(0.01f)] private float spellProjectileSpeed = 6f;
     [SerializeField, Min(0.05f)] private float spellProjectileLifetime = 3f;
 
+    [Header("Panic Swing")]
+    [SerializeField, Min(0f)] private float panicSwingDamageMultiplier = 1f;
+    [SerializeField, Min(0f)] private float panicSwingKnockback = 2f;
+
     [Header("Reposition")]
     [SerializeField, Min(1f)] private float spellCastRepositionSpeedMultiplier = 1f;
     [SerializeField, Min(1f)] private float panicSwingRepositionSpeedMultiplier = 2f;
@@ -75,6 +79,9 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 #endif
             if (enemy.PendingAttackType == NecromancerAttackType.SpellCast)
                 SpawnSpellProjectile();
+
+            if (enemy.PendingAttackType == NecromancerAttackType.PanicSwing)
+                ApplyPanicSwingDamage();
 
             if (enemy.PendingAttackType == NecromancerAttackType.Summon)
                 enemy.MarkSummonProtectionPending();
@@ -183,6 +190,25 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         enemy.DebugAnimationLog(
             $"Spawned spell projectile at {spawnPosition} with speed={spellProjectileSpeed:0.##}, " +
             $"lifetime={spellProjectileLifetime:0.##}, damage={enemy.AttackDamage * spellProjectileDamageMultiplier:0.##}.");
+#endif
+    }
+
+    private void ApplyPanicSwingDamage()
+    {
+        Vector2 hitDirection = enemy.GetDirectionToPlayer(enemy.transform.position);
+        float damageAmount = enemy.AttackDamage * panicSwingDamageMultiplier;
+        HitData hitData = new HitData(
+            enemy.transform.position,
+            hitDirection,
+            damageAmount,
+            panicSwingKnockback,
+            enemy.gameObject);
+
+        enemy.DamagePlayer(damageAmount, hitData);
+
+#if UNITY_EDITOR
+        enemy.DebugAnimationLog(
+            $"Applied PanicSwing damage={damageAmount:0.##}, knockback={panicSwingKnockback:0.##}.");
 #endif
     }
 }

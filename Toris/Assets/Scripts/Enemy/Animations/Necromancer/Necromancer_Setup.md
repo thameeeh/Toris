@@ -53,6 +53,7 @@ Current first-pass radii:
 - `PanicSwing`
   - selected in `StrikingDist`
   - intended as a panic response when the player pushes too close
+  - now applies real close-range damage on `Anim_AttackHit()`
 - `Summon`
   - phase-two ability
   - unlocked at the configured health threshold
@@ -91,7 +92,9 @@ Current first-pass radii:
 
 - if the player enters `StrikingDist`, the Necromancer selects `PanicSwing`
 - if the Necromancer is still human when close-range combat pressure begins, it also respects the adjustable combat human-to-floater delay before starting the transformation
-- after the swing finishes, it retreats quickly before normal close-range logic can immediately retrigger the swing
+- after the swing finishes, it retreats quickly
+- while still under close-range pressure, it can keep re-swinging on cooldown instead of waiting to fully complete the retreat
+- if the player is still within `StrikingDist` when the panic swing hit event fires, the player can now take damage and knockback
 
 ### Death
 
@@ -187,12 +190,13 @@ Runtime-only visual children under `Animator`:
 - [NecromancerAttackSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/Necromancer%20Behaviour/Attack/NecromancerAttackSO.cs)
   - cooldowns
   - projectile spawn
+  - panic swing damage
   - post-attack reposition requests
 - [NecromancerDeadSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/Necromancer%20Behaviour/Dead/NecromancerDeadSO.cs)
   - death-state movement shutdown / dead trigger flow
 - [NecromancerShotProjectile.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/NecromancerShotProjectile.cs)
   - pooled spell projectile
-  - player hit payload provider
+  - direct player-damage projectile
 - [NecromancerSummonProtectionState.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/NecromancerSummonProtectionState.cs)
   - pending / active summon-protection runtime state
 - [NecromancerSummonProtectionVisual.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/NecromancerSummonProtectionVisual.cs)
@@ -209,13 +213,21 @@ Runtime-only visual children under `Animator`:
   - [Necromancer_Attack_BoltCast.asset](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/Necromancer%20Behaviour/Attack/Necromancer_Attack_BoltCast.asset)
 - `SpellCast` now spawns the shot on `Anim_AttackHit()`
 - the projectile prefers `GameplayPoolManager` and falls back to instantiate if no gameplay pool manager exists in the scene
-- the projectile builds `HitData` through `IHitPayloadProvider`
+- the projectile now applies damage directly to `PlayerDamageReceiver` on contact, similar to the melee hit path
+- the shot prefab now uses the `Projectiles` layer
+- the shot can now use a burst-decay travel profile:
+  - launch at a higher initial multiplier
+  - hold that burst for a short travel distance
+  - then decay exponentially toward a minimum speed
+- the shot can optionally keep damaging the player while the player remains inside its hit area
+- sustained contact damage is throttled by a serialized interval so it does not tick every frame
+- projectile impact-despawn behavior is controlled on the projectile prefab
 
 ### What Still Needs Manual Unity Hookup
 
 - add `Necromancer_Shot` to `GameplayPoolConfiguration.asset`
 - verify the shot layer is correct for player damage
-- verify `PlayerHurtbox.damagingLayers` includes that layer
+- keep `Projectiles` out of the player hurtbox damage path if player-owned arrows share that same layer
 - tune projectile collider size, layer, sorting, and impact behavior
 
 ## Tuning Surfaces
@@ -254,6 +266,8 @@ Runtime-only visual children under `Animator`:
 
 - `castCooldown`
 - `panicSwingCooldown`
+- `panicSwingDamageMultiplier`
+- `panicSwingKnockback`
 - `summonCooldown`
 - `spellProjectileDamageMultiplier`
 - `spellProjectileKnockback`
@@ -267,12 +281,27 @@ Runtime-only visual children under `Animator`:
 - `activeTint`
 - `hideRendererWhenInactive`
 
+### Necromancer Shot Projectile
+
+- `rotateTowardVelocity`
+- `rotateOffsetDegrees`
+- `despawnOnFirstImpact`
+- `enableSustainContactDamage`
+- `sustainDamageInterval`
+- `sustainDamageMultiplier`
+- `sustainKnockbackMultiplier`
+- `sustainDamageBypassesIFrames`
+- `useBurstDecaySpeedProfile`
+- `launchSpeedMultiplier`
+- `burstTravelDistance`
+- `exponentialDecayRate`
+- `minimumSpeedMultiplier`
+
 ## What Needs To Be Done
 
 - register `Necromancer_Shot` in the gameplay projectile pool config
 - register `Necromancer` itself in the enemy pool config if it is meant to use gameplay pooling
-- finish projectile-to-player damage hookup by setting the correct projectile layer and player hurtbox mask
-- implement actual `PanicSwing` damage / hit logic
+- finish projectile-to-player damage hookup using direct player collision / receiver contact
 - implement Blood Mage spawning from `Summon`
 - connect Blood Mage death/despawn back into summon protection removal
 - replace or finalize the temporary summon shield presentation if needed
@@ -290,7 +319,6 @@ Runtime-only visual children under `Animator`:
 
 ## Not Implemented Yet
 
-- `PanicSwing` damage payload
 - Blood Mage enemy and summon-spawn flow
 - Blood Mage owner registration / unregister-on-death flow
 - final summon shield rules tied to Blood Mage life state
@@ -300,4 +328,98 @@ Runtime-only visual children under `Animator`:
 - rescue NPC conversion / rescue reward flow
 - verified gameplay-pool registration for the Necromancer enemy prefab
 - verified gameplay-pool registration for the Necromancer shot prefab
-- verified player hurtbox layer-mask hookup for enemy projectiles
+- finalized layer-matrix setup for enemy projectiles vs player-owned arrows
+
+## Next Implementation Plan
+
+### Phase 1: Finish SpellCast End-To-End
+
+Goal:
+- make the projectile fully real in gameplay rather than just visually spawning
+
+Tasks:
+- register `Necromancer_Shot` in `GameplayPoolConfiguration.asset`
+- confirm whether `Necromancer` itself should also be registered in the enemy pool config
+- set the projectile to the intended gameplay layer
+- verify the shot damages the player through direct `PlayerDamageReceiver` contact
+- verify shot lifetime, collision, and despawn behavior
+- decide whether `despawnOnFirstImpact` should be enabled
+
+Done when:
+- a spell cast consistently spawns a pooled shot
+- the shot damages the player
+- the shot does not collide with the Necromancer's own trigger rings
+- the shot despawns correctly on timeout and/or impact
+- the player does not need `Projectiles` enabled on `PlayerHurtbox` for the Necromancer shot to work
+
+### Phase 2: Validate And Tune PanicSwing Damage
+
+Goal:
+- make sure the close-range panic response feels correct in actual play
+
+Tasks:
+- verify the current attack-event damage timing feels right
+- verify the swing only damages when the player is actually inside `StrikingDist`
+- tune damage and knockback values
+- prevent repeated multi-hit spam from one swing unless explicitly desired
+- keep the current fast retreat after the swing
+
+Done when:
+- entering `StrikingDist` can cause a real damaging panic swing
+- the player cannot stand inside the Necromancer without consequence
+- the swing still transitions into the faster reposition behavior
+
+### Phase 3: Add Combat Readability
+
+Goal:
+- make current phase-one combat readable without changing the core brain
+
+Tasks:
+- add projectile hit VFX
+- add optional summon cast VFX
+- add optional shield break / shield end feedback
+- tune projectile visuals, collider size, sorting, and impact readability
+
+Done when:
+- projectile hits are readable
+- summon/shield state transitions are readable
+- combat feedback is clear without relying only on debug logs
+
+### Phase 4: Build The Real Phase-Two Summon
+
+Goal:
+- replace the current summon scaffold with the intended Blood Mage mechanic
+
+Tasks:
+- implement Blood Mage enemy/prefab
+- spawn Blood Mages from `Summon`
+- register spawned Blood Mages back to the Necromancer
+- unregister them on death/despawn
+- make summon protection last only while registered Blood Mages remain alive
+- remove reliance on the current human-form fallback reset once the full loop is stable
+
+Done when:
+- phase two summons real Blood Mages
+- summon protection is tied to Blood Mage survival
+- the Necromancer loses protection when the summoned Blood Mages are gone
+
+### Phase 5: Revisit Optional Branches
+
+Goal:
+- return to lower-priority branches after the core enemy is fully playable
+
+Tasks:
+- decide whether the rescue variant remains part of the design
+- if yes, define friendly NPC conversion / rescue outcome
+- if no, remove the rescue scaffold cleanly
+
+Done when:
+- the human rescue branch is either fully defined or cleanly removed
+
+### Recommended Order
+
+1. finish `SpellCast` damage and pooling
+2. validate and tune `PanicSwing`
+3. add combat readability/VFX
+4. build Blood Mage summon flow
+5. revisit rescue-variant behavior

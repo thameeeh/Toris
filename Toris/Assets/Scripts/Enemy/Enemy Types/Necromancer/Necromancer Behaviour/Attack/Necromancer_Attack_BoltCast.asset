@@ -20,5 +20,7 @@ MonoBehaviour:
   spellProjectileKnockback: 2
   spellProjectileSpeed: 8
   spellProjectileLifetime: 3
+  panicSwingDamageMultiplier: 1.5
+  panicSwingKnockback: 2
   spellCastRepositionSpeedMultiplier: 1.5
   panicSwingRepositionSpeedMultiplier: 2.5

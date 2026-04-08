@@ -98,26 +98,38 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             return;
         }
 
-        if (enemy.ShouldPrioritizePostAttackReposition && UpdatePostCastReposition(toPlayer, distanceToPlayerSqr))
-        {
-            ResetHumanToFloaterDelay();
-            return;
-        }
+        EnsurePostCastRepositionStarted();
 
         if (enemy.IsWithinStrikingDistance)
         {
             IsInPanicRange = true;
-            StopMoving();
-            enemy.FacePlayer();
 
             if (enemy.IsHumanForm)
             {
+                StopMoving();
+                enemy.FacePlayer();
                 TryRequestHumanToFloater();
                 return;
             }
 
+            if (enemy.IsReadyToCastAnimation && enemy.CanStartAttack(NecromancerAttackType.PanicSwing))
+            {
+                StopMoving();
+                enemy.FacePlayer();
+                ResetHumanToFloaterDelay();
+                SelectAttack(NecromancerAttackType.PanicSwing);
+                return;
+            }
+
             ResetHumanToFloaterDelay();
-            SelectAttack(NecromancerAttackType.PanicSwing);
+            MoveAwayFromPlayer(toPlayer);
+            AdvancePostCastReposition(distanceToPlayerSqr);
+            return;
+        }
+
+        if (enemy.ShouldPrioritizePostAttackReposition && UpdatePostCastReposition(toPlayer, distanceToPlayerSqr))
+        {
+            ResetHumanToFloaterDelay();
             return;
         }
 
@@ -215,23 +227,13 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
     private bool UpdatePostCastReposition(Vector2 toPlayer, float distanceToPlayerSqr)
     {
-        if (!_isPostCastRepositioning && enemy.RequiresPostCastReposition)
-        {
-            _isPostCastRepositioning = true;
-            _postCastRepositionTimer = postCastRepositionDuration;
-        }
+        EnsurePostCastRepositionStarted();
 
         if (!_isPostCastRepositioning)
             return false;
 
-        _postCastRepositionTimer -= Time.deltaTime;
         MoveAwayFromPlayer(toPlayer);
-
-        if (_postCastRepositionTimer <= 0f && distanceToPlayerSqr >= _preferredDistanceSqr)
-        {
-            _isPostCastRepositioning = false;
-            enemy.ClearPostCastReposition();
-        }
+        AdvancePostCastReposition(distanceToPlayerSqr);
 
         return true;
     }
@@ -255,6 +257,29 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
     {
         _preferredDistanceSqr = preferredDistance * preferredDistance;
         _retreatDistanceSqr = retreatDistance * retreatDistance;
+    }
+
+    private void EnsurePostCastRepositionStarted()
+    {
+        if (_isPostCastRepositioning || !enemy.RequiresPostCastReposition)
+            return;
+
+        _isPostCastRepositioning = true;
+        _postCastRepositionTimer = postCastRepositionDuration;
+    }
+
+    private void AdvancePostCastReposition(float distanceToPlayerSqr)
+    {
+        if (!_isPostCastRepositioning)
+            return;
+
+        _postCastRepositionTimer -= Time.deltaTime;
+
+        if (_postCastRepositionTimer <= 0f && distanceToPlayerSqr >= _preferredDistanceSqr)
+        {
+            _isPostCastRepositioning = false;
+            enemy.ClearPostCastReposition();
+        }
     }
 
     private void TryRequestHumanToFloater()

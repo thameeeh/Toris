@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
+public class NecromancerShotProjectile : Projectile
 {
     private const float MinDirectionSqr = 0.0001f;
 
@@ -11,6 +11,20 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
     [Header("Hit Behavior")]
     [SerializeField] private bool despawnOnFirstImpact = true;
 
+    [Header("Sustain Contact Damage")]
+    [SerializeField] private bool enableSustainContactDamage = false;
+    [SerializeField, Min(0.05f)] private float sustainDamageInterval = 0.4f;
+    [SerializeField, Min(0f)] private float sustainDamageMultiplier = 0.35f;
+    [SerializeField, Min(0f)] private float sustainKnockbackMultiplier = 0f;
+    [SerializeField] private bool sustainDamageBypassesIFrames = false;
+
+    [Header("Speed Profile")]
+    [SerializeField] private bool useBurstDecaySpeedProfile = true;
+    [SerializeField, Min(1f)] private float launchSpeedMultiplier = 3f;
+    [SerializeField, Min(0f)] private float burstTravelDistance = 1.5f;
+    [SerializeField, Min(0f)] private float exponentialDecayRate = 1.5f;
+    [SerializeField, Min(0f)] private float minimumSpeedMultiplier = 0.15f;
+
     private Rigidbody2D _rb;
     private Collider2D _hitCollider;
     private Animator _animator;
@@ -19,8 +33,11 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
     private float _damage;
     private float _knockback;
     private float _despawnAtTime = float.PositiveInfinity;
+    private float _baseSpeed;
     private Vector2 _lastTravelDirection = Vector2.right;
+    private Vector2 _spawnPosition;
     private bool _pendingDespawn;
+    private float _nextAllowedSustainDamageTime = float.PositiveInfinity;
 
     private void Awake()
     {
@@ -45,6 +62,11 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
             Despawn();
     }
 
+    private void FixedUpdate()
+    {
+        UpdateTravelVelocity();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         HandleImpact(other);
@@ -53,6 +75,16 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
     private void OnCollisionEnter2D(Collision2D collision)
     {
         HandleImpact(collision.collider);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        TryApplySustainDamage(other);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        TryApplySustainDamage(collision.collider);
     }
 
     public override void OnSpawned()
@@ -75,9 +107,12 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
         _ignoredOwnerColliders = null;
         _damage = 0f;
         _knockback = 0f;
+        _baseSpeed = 0f;
         _despawnAtTime = float.PositiveInfinity;
         _lastTravelDirection = Vector2.right;
+        _spawnPosition = transform.position;
         _pendingDespawn = false;
+        _nextAllowedSustainDamageTime = float.PositiveInfinity;
     }
 
     public override void OnDespawned()
@@ -96,9 +131,12 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
         _ignoredOwnerColliders = null;
         _damage = 0f;
         _knockback = 0f;
+        _baseSpeed = 0f;
         _despawnAtTime = float.PositiveInfinity;
         _lastTravelDirection = Vector2.right;
+        _spawnPosition = transform.position;
         _pendingDespawn = false;
+        _nextAllowedSustainDamageTime = float.PositiveInfinity;
     }
 
     public override void Despawn()
@@ -123,27 +161,20 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
     {
         _damage = damage;
         _knockback = knockback;
+        _baseSpeed = speed;
         _despawnAtTime = Time.time + lifetimeSeconds;
         _lastTravelDirection = direction.sqrMagnitude > MinDirectionSqr ? direction.normalized : Vector2.right;
+        _spawnPosition = transform.position;
         _ignoredOwnerColliders = ownerColliders;
+        _nextAllowedSustainDamageTime = Time.time + sustainDamageInterval;
 
         SetOwnerIgnore(true);
 
         if (_rb != null)
-            _rb.linearVelocity = _lastTravelDirection * speed;
+            _rb.linearVelocity = _lastTravelDirection * GetCurrentSpeed();
 
         if (rotateTowardVelocity)
             RotateTowardVelocity();
-    }
-
-    public HitData BuildHitData(Vector3 targetPosition)
-    {
-        Vector2 origin = _hitCollider != null
-            ? _hitCollider.bounds.ClosestPoint(targetPosition)
-            : transform.position;
-
-        Vector2 hitDirection = GetCurrentTravelDirection(targetPosition);
-        return new HitData(origin, hitDirection, _damage, _knockback, gameObject);
     }
 
     private void HandleImpact(Collider2D other)
@@ -154,10 +185,57 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
         if (IsIgnoredOwnerCollider(other))
             return;
 
+        if (TryApplyPlayerDamage(other, _damage, _knockback, false))
+            return;
+
         if (!despawnOnFirstImpact)
             return;
 
         _pendingDespawn = true;
+    }
+
+    private void TryApplySustainDamage(Collider2D other)
+    {
+        if (!enableSustainContactDamage || despawnOnFirstImpact || _pendingDespawn)
+            return;
+
+        if (other == null || IsIgnoredOwnerCollider(other))
+            return;
+
+        if (Time.time < _nextAllowedSustainDamageTime)
+            return;
+
+        float sustainDamage = _damage * sustainDamageMultiplier;
+        float sustainKnockback = _knockback * sustainKnockbackMultiplier;
+        if (!TryApplyPlayerDamage(other, sustainDamage, sustainKnockback, sustainDamageBypassesIFrames))
+            return;
+
+        _nextAllowedSustainDamageTime = Time.time + sustainDamageInterval;
+    }
+
+    private bool TryApplyPlayerDamage(
+        Collider2D other,
+        float damageAmount,
+        float knockbackAmount,
+        bool bypassIFrames)
+    {
+        PlayerDamageReceiver playerDamageReceiver = other.GetComponentInParent<PlayerDamageReceiver>();
+        if (playerDamageReceiver == null)
+            return false;
+
+        Vector2 targetPosition = other.bounds.center;
+        Vector2 origin = _hitCollider != null
+            ? _hitCollider.bounds.ClosestPoint(targetPosition)
+            : transform.position;
+
+        Vector2 hitDirection = GetCurrentTravelDirection(targetPosition);
+        HitData hitData = new HitData(origin, hitDirection, damageAmount, knockbackAmount, gameObject, bypassIFrames);
+        playerDamageReceiver.ReceiveHit(hitData);
+
+        if (despawnOnFirstImpact)
+            _pendingDespawn = true;
+
+        return true;
     }
 
     private Vector2 GetCurrentTravelDirection(Vector3 targetPosition)
@@ -211,5 +289,38 @@ public class NecromancerShotProjectile : Projectile, IHitPayloadProvider
         _lastTravelDirection = velocity.normalized;
         float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg + rotateOffsetDegrees;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    private void UpdateTravelVelocity()
+    {
+        if (_rb == null || _lastTravelDirection.sqrMagnitude <= MinDirectionSqr || _baseSpeed <= 0f)
+            return;
+
+        _rb.linearVelocity = _lastTravelDirection * GetCurrentSpeed();
+    }
+
+    private float GetCurrentSpeed()
+    {
+        if (!useBurstDecaySpeedProfile)
+            return _baseSpeed;
+
+        float traveledDistanceSqr = GetTraveledDistanceSqr();
+        float burstTravelDistanceSqr = burstTravelDistance * burstTravelDistance;
+        if (traveledDistanceSqr <= burstTravelDistanceSqr)
+            return _baseSpeed * launchSpeedMultiplier;
+
+        float traveledDistance = Mathf.Sqrt(traveledDistanceSqr);
+        float distancePastBurst = traveledDistance - burstTravelDistance;
+        float decayBlend = 1f - Mathf.Exp(-exponentialDecayRate * distancePastBurst);
+        float clampedMinimumMultiplier = Mathf.Min(launchSpeedMultiplier, minimumSpeedMultiplier);
+        float speedMultiplier = Mathf.Lerp(launchSpeedMultiplier, clampedMinimumMultiplier, decayBlend);
+        return _baseSpeed * speedMultiplier;
+    }
+
+    private float GetTraveledDistanceSqr()
+    {
+        Vector2 currentPosition = _rb != null ? _rb.position : (Vector2)transform.position;
+        Vector2 traveledVector = currentPosition - _spawnPosition;
+        return traveledVector.sqrMagnitude;
     }
 }

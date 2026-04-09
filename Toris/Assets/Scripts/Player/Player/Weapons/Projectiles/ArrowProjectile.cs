@@ -120,7 +120,6 @@ public class ArrowProjectile : Projectile
         SetOwnerIgnore(true);
         RotateTowardVelocity();
     }
-
     /// <summary>Return to pool (or disable/destroy if no pool available).</summary>
     public override void Despawn() => base.Despawn();
 

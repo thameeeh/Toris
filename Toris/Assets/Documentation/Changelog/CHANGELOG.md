@@ -1,4 +1,7 @@
-## [Current/Recent] - Implemented Skills Screen UI Framework
+## [Current/Recent] - Assign Skill Screen to Input Key
+- Created `SkillMenuController.cs` to instantiate `InputSystem_Actions`, subscribe to the `ToggleSkills` performed event, and dispatch `UIEvents.OnRequestOpen` for the `SkillScreen`.
+
+## [Previous] - Implemented Skills Screen UI Framework
 - Created UXML and USS presentation assets for the new full-screen Skills interface.
 - Implemented `SkillsView.cs` conforming to `GameView` principles (data-agnostic, delegates closing via events).
 - Added `SkillsScreenController.cs` to instantiate the UI, bind the view, and register it to the `FullScreen` screen zone dynamically.

@@ -77,12 +77,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1955881683157793124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a997015f6b11b468a8ed1f87eae870, type: 3}
+  m_Script: {fileID: 11500000, guid: a377fd0b343e8a24a8de0680a64ac444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SkillsScreenController
-  _skillsMainTemplate: {fileID: 9197481963319205126, guid: 2e939eb6012a39f4ea1cc6bf9dc7ec56, type: 3}
+  _skillsMainTemplate: {fileID: 9197481963319205126, guid: 4ab31f785c3e7614daecfda9464c00ab, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  _playerHudBridge: {fileID: 0}
+  _playerHudBridge: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
 --- !u!1 &2133382981164659825
 GameObject:
   m_ObjectHideFlags: 0

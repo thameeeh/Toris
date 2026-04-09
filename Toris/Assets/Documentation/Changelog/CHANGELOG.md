@@ -1,20 +1,16 @@
-# General Project Changelog
+## [Current/Recent] - Implemented Skills Screen UI Framework
+- Created UXML and USS presentation assets for the new full-screen Skills interface.
+- Implemented `SkillsView.cs` conforming to `GameView` principles (data-agnostic, delegates closing via events).
+- Added `SkillsScreenController.cs` to instantiate the UI, bind the view, and register it to the `FullScreen` screen zone dynamically.
 
-**Rules:**
-* Archive previous changes and add new ones at the top to continue the log.
-* Shortly describe what was done.
-* Enumerate or mark different changes; if changes are too big, divide them into smaller ones.
-
----
-
-## [Current/Recent] - Script Documentation Summaries
+## [Previous] - Script Documentation Summaries
 This update adds Context-Dense Metadata Summaries for several scriptable object scripts to improve project documentation and architecture visibility for AI agents.
 
 ### 1. Added Script Descriptions
 * Generated detailed metadata summaries for `CraftingManagerSO`, `CraftingRecipeSO`, `CraftingRegistrySO`, `GameSessionSO`, `InventoryContainerSO`, and `InventoryItemSO`.
 * Each summary outlines the Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle using a structured key-value format.
 * Added all new files to `Toris/Assets/Documentation/Script_Descriptions/`.
-## [Current/Recent] - Script Metadata Documentation
+## [Previous] - Script Metadata Documentation
 This update adds Context-Dense Metadata Summaries for various core scripts to facilitate quick architectural understanding.
 
 ### 1. Added Script Descriptions
@@ -24,7 +20,7 @@ This update adds Context-Dense Metadata Summaries for various core scripts to fa
   * `PlayerHUDBridge`
   * `ItemPickEventSO`
   * `InventorySlotTests`
-## [Current/Recent] - Script Documentation Generation
+## [Previous] - Script Documentation Generation
 This update adds Context-Dense Metadata Summaries for four core scripts within the Inventory Item Architecture, adhering strictly to the structured key-value format required by the project directives.
 
 ### 1. Generated Documentation Summaries
@@ -36,14 +32,14 @@ This update adds Context-Dense Metadata Summaries for four core scripts within t
 ### 2. Standardization
 * Ensured all generated files adhere to the strict key-value formatting rules: Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle.
 * Omitted conversational language and used technical shorthand with bullet points.
-## [Current/Recent] - Script Metadata Documentation
+## [Previous] - Script Metadata Documentation
 This update adds Context-Dense Metadata Summaries for several script files to act as primary references for AI agents.
 
 ### 1. Created Script Summaries
 * Created `IContainerInteractable.md` detailing the Interface architecture for interactive containers.
 * Created `ConsumableModule.md` detailing the Abstract Blueprint and Runtime State architecture for consumable items.
 * Created `DefensiveModule.md` detailing the Data Container architecture for defensive item stats.
-## [Current/Recent] - Added Script Metadata Summaries
+## [Previous] - Added Script Metadata Summaries
 This update adds structured context-dense metadata summaries for UI Toolkit screen controllers to aid AI agents and developers in understanding the codebase architecture.
 
 ### 1. Created Metadata Summaries
@@ -53,7 +49,7 @@ This update adds structured context-dense metadata summaries for UI Toolkit scre
   * `MageScreenController.md`
   * `MainMenuScreenController.md`
   * `SmithScreenController.md`
-## [Current/Recent] - Script Metadata Summaries Added
+## [Previous] - Script Metadata Summaries Added
 This update adds Context-Dense Metadata Summaries for several UI-related scripts to serve as primary references for AI agents, following a highly structured format.
 
 ### 1. Created Script Descriptions
@@ -220,7 +216,7 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Script Metadata Summaries
+## [Previous] - Script Metadata Summaries
 This update adds structured context-dense metadata summaries for item entity modules to aid in scaling and dependency tracking.
 
 ### 1. EquipableModule Summary
@@ -234,13 +230,13 @@ This update adds structured context-dense metadata summaries for item entity mod
 ### 3. OffensiveModule Summary
 * Added `Toris/Assets/Documentation/Script_Descriptions/OffensiveModule.md`.
 * Documented `OffensiveComponent` emphasizing its static nature (no runtime state needed) and data schema (`BaseDamage`, `AttackSpeed`).
-## [Current/Recent] - Script Metadata Documentation
+## [Previous] - Script Metadata Documentation
 This update adds Context-Dense Metadata Summaries for several script files as part of expanding the AI assistant documentation context.
 
 ### 1. Created Script Descriptions
 * Added `SalvageManagerSO.md`, `SalvageRecipeSO.md`, `ShopManagerSO.md`, `UpgradeSalvageManagerSO.md`, and `ItemTestDebugger.md` to `Toris/Assets/Documentation/Script_Descriptions/`.
 * Ensured summaries are highly token-efficient and use a structured key-value format without conversational language.
-## [Current/Recent] - Documentation Updates
+## [Previous] - Documentation Updates
 This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
 
 ### 1. Generated Summaries

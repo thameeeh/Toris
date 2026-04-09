@@ -61620,6 +61620,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
+--- !u!114 &2014174153 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 1010793782}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbff2081bf5b4644970bf74846acbe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHUDBridge
 --- !u!1 &2016645130
 GameObject:
   m_ObjectHideFlags: 0
@@ -61957,6 +61968,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 998378770075437751, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerHudBridge
+      value: 
+      objectReference: {fileID: 2014174153}
     - target: {fileID: 1261419630489080757, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_Name
       value: UIControllers

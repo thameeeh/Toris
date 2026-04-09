@@ -8,6 +8,12 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
     [SerializeField] private float panicSwingCooldown = 1f;
     [SerializeField] private float summonCooldown = 8f;
 
+    [Header("Summon")]
+    [SerializeField] private BloodMage bloodMageSummonPrefab;
+    [SerializeField, Min(1)] private int bloodMageSummonCount = 3;
+    [SerializeField, Min(0.1f)] private float bloodMageSummonRadius = 1.5f;
+    [SerializeField] private float bloodMageSummonStartAngleDegrees = 90f;
+
     [Header("Spell Projectile")]
     [SerializeField] private NecromancerShotProjectile spellProjectilePrefab;
     [SerializeField, Min(0f)] private float spellProjectileDamageMultiplier = 1f;
@@ -84,9 +90,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
                 ApplyPanicSwingDamage();
 
             if (enemy.PendingAttackType == NecromancerAttackType.Summon)
-                enemy.MarkSummonProtectionPending();
+                SpawnSummonedBloodMages();
 
-            StartCooldown(enemy.PendingAttackType);
+            if (enemy.PendingAttackType != NecromancerAttackType.Summon)
+                StartCooldown(enemy.PendingAttackType);
         }
 
         if (triggerType == Enemy.AnimationTriggerType.AttackFinished)
@@ -116,6 +123,11 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         _nextAllowedCastTime = 0f;
         _nextAllowedPanicSwingTime = 0f;
         _nextAllowedSummonTime = 0f;
+    }
+
+    public void StartSummonCooldownFromProtectionLoss()
+    {
+        _nextAllowedSummonTime = Time.time + summonCooldown;
     }
 
     private void StartCooldown(NecromancerAttackType attackType)
@@ -210,5 +222,88 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         enemy.DebugAnimationLog(
             $"Applied PanicSwing damage={damageAmount:0.##}, knockback={panicSwingKnockback:0.##}.");
 #endif
+    }
+
+    private void SpawnSummonedBloodMages()
+    {
+        if (bloodMageSummonPrefab == null)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAnimationDecision("Summon hit event fired, but no Blood Mage summon prefab is assigned.");
+#endif
+            return;
+        }
+
+        if (bloodMageSummonCount <= 0)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAnimationDecision("Summon hit event fired, but summon count is zero.");
+#endif
+            return;
+        }
+
+        enemy.MarkSummonProtectionPending();
+
+        int spawnedCount = 0;
+        for (int i = 0; i < bloodMageSummonCount; i++)
+        {
+            BloodMage spawnedBloodMage = SpawnBloodMage(i);
+            if (spawnedBloodMage == null)
+                continue;
+
+            spawnedBloodMage.ConfigureSummon(enemy, i, bloodMageSummonCount);
+            spawnedCount++;
+        }
+
+        if (spawnedCount == 0)
+        {
+            enemy.ClearSummonProtection();
+
+#if UNITY_EDITOR
+            enemy.DebugAnimationDecision("Summon completed, but no Blood Mages spawned. Clearing summon protection state.");
+#endif
+            return;
+        }
+
+#if UNITY_EDITOR
+        enemy.DebugAnimationLog(
+            $"Summon spawned {spawnedCount}/{bloodMageSummonCount} Blood Mages at radius={bloodMageSummonRadius:0.##}.");
+#endif
+    }
+
+    private BloodMage SpawnBloodMage(int summonIndex)
+    {
+        Vector3 spawnPosition = GetBloodMageSpawnPosition(summonIndex);
+        Quaternion spawnRotation = Quaternion.identity;
+        BloodMage spawnedBloodMage = null;
+
+        if (GameplayPoolManager.Instance != null)
+        {
+            spawnedBloodMage = GameplayPoolManager.Instance.SpawnEnemy(
+                bloodMageSummonPrefab,
+                spawnPosition,
+                spawnRotation) as BloodMage;
+        }
+
+        if (spawnedBloodMage == null)
+        {
+            spawnedBloodMage = Instantiate(bloodMageSummonPrefab, spawnPosition, spawnRotation);
+            spawnedBloodMage.OnSpawned();
+        }
+
+        return spawnedBloodMage;
+    }
+
+    private Vector3 GetBloodMageSpawnPosition(int summonIndex)
+    {
+        float angleStep = 360f / bloodMageSummonCount;
+        float angleDegrees = bloodMageSummonStartAngleDegrees + (angleStep * summonIndex);
+        float angleRadians = angleDegrees * Mathf.Deg2Rad;
+
+        Vector2 offset = new Vector2(
+            Mathf.Cos(angleRadians),
+            Mathf.Sin(angleRadians)) * bloodMageSummonRadius;
+
+        return enemy.transform.position + (Vector3)offset;
     }
 }

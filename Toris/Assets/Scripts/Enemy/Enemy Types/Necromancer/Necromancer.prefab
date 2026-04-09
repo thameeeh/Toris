@@ -237,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 5549816897129314789}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.69, z: 0}
+  m_LocalPosition: {x: 0.06, y: 0.968, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -652,7 +652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Necromancer
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 8686878537431172334}
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   AttackDamage: 16
   MovementSpeed: 1.5
   castPoint: {fileID: 6703678301246532537}

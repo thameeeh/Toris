@@ -57,16 +57,20 @@ Current first-pass radii:
 - `Summon`
   - phase-two ability
   - unlocked at the configured health threshold
-  - currently acts as an animation/cooldown/shield hook for future Blood Mage summoning
+  - now spawns Blood Mages in an even ring around the Necromancer
+  - applies summon protection state through summoned Blood Mage registration
 
 ### Summon Protection Rules
 
-- `Summon` applies summon protection state when the summon hit event fires
+- `Summon` spawns `3` Blood Mages in an even ring around the Necromancer
+- each Blood Mage is configured with the Necromancer as owner and registers back to it
+- summon protection becomes active when the first Blood Mage registers
 - while summon protection exists, the Necromancer cannot select `Summon` again
-- current fallback rule:
-  - if the Necromancer fully returns to human form, summon protection is cleared
-- final intended rule:
-  - summon protection should remain until the summoned Blood Mages are dead
+- summon cooldown begins when summon protection ends, not at summon cast time
+- Blood Mages unregister on death/despawn
+- if a summon enters pending state but no Blood Mage actually registers, the pending shield state is cleared
+- final intended rule remains:
+  - summon protection should be treated as true invincibility while summoned Blood Mages are alive
 
 ## Current Runtime Behavior
 
@@ -191,6 +195,7 @@ Runtime-only visual children under `Animator`:
   - cooldowns
   - projectile spawn
   - panic swing damage
+  - Blood Mage summon spawn
   - post-attack reposition requests
 - [NecromancerDeadSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/Necromancer%20Behaviour/Dead/NecromancerDeadSO.cs)
   - death-state movement shutdown / dead trigger flow
@@ -302,8 +307,8 @@ Runtime-only visual children under `Animator`:
 - register `Necromancer_Shot` in the gameplay projectile pool config
 - register `Necromancer` itself in the enemy pool config if it is meant to use gameplay pooling
 - finish projectile-to-player damage hookup using direct player collision / receiver contact
-- implement Blood Mage spawning from `Summon`
-- connect Blood Mage death/despawn back into summon protection removal
+- verify Blood Mage summon flow end-to-end in play mode
+- verify summon protection/invincibility while Blood Mages are alive
 - replace or finalize the temporary summon shield presentation if needed
 - decide whether the rescue variant stays, changes, or is removed
 - add hit VFX / summon VFX / shield break feedback
@@ -312,16 +317,14 @@ Runtime-only visual children under `Animator`:
 ## Future Ideas
 
 - Blood Mage summoning as the real phase-two mechanic
-- summon protection tied strictly to living Blood Mages instead of the current human-form fallback reset
 - rescue-variant branch where the human facade can become a real NPC/rescue event
 - more readable shield presentation than the temporary `EarthShield` placeholder if needed
 - richer spell behavior beyond the current first projectile implementation
 
 ## Not Implemented Yet
 
-- Blood Mage enemy and summon-spawn flow
-- Blood Mage owner registration / unregister-on-death flow
-- final summon shield rules tied to Blood Mage life state
+- real invincibility while Blood Mages are alive
+- completed end-to-end Blood Mage summon verification
 - projectile hit VFX
 - summon VFX
 - shield break feedback
@@ -385,18 +388,17 @@ Done when:
 - summon/shield state transitions are readable
 - combat feedback is clear without relying only on debug logs
 
-### Phase 4: Build The Real Phase-Two Summon
+### Phase 4: Validate The Real Phase-Two Summon
 
 Goal:
-- replace the current summon scaffold with the intended Blood Mage mechanic
+- validate and tune the now-wired Blood Mage summon mechanic
 
 Tasks:
-- implement Blood Mage enemy/prefab
-- spawn Blood Mages from `Summon`
-- register spawned Blood Mages back to the Necromancer
-- unregister them on death/despawn
-- make summon protection last only while registered Blood Mages remain alive
-- remove reliance on the current human-form fallback reset once the full loop is stable
+- verify Blood Mages spawn from `Summon`
+- verify they register back to the Necromancer
+- verify they unregister on death/despawn
+- verify summon protection lasts only while registered Blood Mages remain alive
+- remove reliance on the current human-form fallback reset once the full loop is stable, if no longer needed
 
 Done when:
 - phase two summons real Blood Mages

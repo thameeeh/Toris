@@ -102,6 +102,11 @@ public class Necromancer : Enemy
         enableBloodMageSummonProtection
         && (HasActiveSummonProtection || IsAwaitingSummonedBloodMages);
     public bool ShouldDisplaySummonProtectionVisual => HasSummonProtectionShield;
+    public bool ShouldCommandBloodMagesToAttack =>
+        !_isHumanRescueVariant
+        && CurrentHealth > 0f
+        && PlayerTransform != null
+        && (IsWithinCastingRange || IsWithinStrikingDistance || StateMachine.CurrentEnemyState == AttackState);
     public bool IsPhaseTwoSummonUnlocked =>
         enableHealthThresholdSummon
         && CurrentHealth <= MaxHealth * summonHealthThreshold;
@@ -504,6 +509,9 @@ public class Necromancer : Enemy
         int previousCount = ActiveBloodMageCount;
         _summonProtectionState.UnregisterBloodMage();
 
+        if (previousCount > 0 && ActiveBloodMageCount == 0)
+            NecromancerAttackBaseInstance?.StartSummonCooldownFromProtectionLoss();
+
 #if UNITY_EDITOR
         if (previousCount != ActiveBloodMageCount)
         {
@@ -521,7 +529,7 @@ public class Necromancer : Enemy
 
     private void ResetSummonProtectionOnHumanForm()
     {
-        if (!HasSummonProtectionShield || !IsHumanForm)
+        if (!IsHumanForm || !IsAwaitingSummonedBloodMages || ActiveBloodMageCount > 0)
             return;
 
         ClearSummonProtection();

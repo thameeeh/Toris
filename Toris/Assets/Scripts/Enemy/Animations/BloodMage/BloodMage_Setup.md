@@ -11,8 +11,8 @@ The Blood Mage is a summoned-only phase-two support minion for the Necromancer i
 - It exists to complete the Necromancer summon loop.
 - Its main jobs are:
   - apply ranged pressure to the player
-- keep the Necromancer's summon protection active while alive
-- create a meaningful add-clear phase for the player
+  - keep the Necromancer's summon protection active while alive
+  - create a meaningful add-clear phase for the player
 
 ## Current Combat Model
 
@@ -21,10 +21,11 @@ First-pass Blood Mage behavior:
 - summoned only by the Necromancer
 - summons in a group of `3`
 - spawns in an even ring around the Necromancer
-- uses a single ranged spell
+- uses a targeted ground bubble spell
 - uses `Attack_01` only
-- performs light kiting
-- stays leashed to the Necromancer
+- stays fully command-leashed to the Necromancer
+- guards formation positions around the Necromancer while the Necromancer is not actively commanding combat
+- performs light kiting only while the Necromancer is actively commanding combat
 - registers itself back to the Necromancer on spawn
 - unregisters itself on death/despawn
 - despawns on owner human return or owner death
@@ -39,17 +40,19 @@ The Blood Mage is a ranged support minion.
 
 ### Movement
 
-- it is leashed to the Necromancer
-- it should not freely wander far away from the summoner
-- it uses light kiting when the player closes in
+- it is fully leashed to the Necromancer
+- it does not freely chase the player on its own when the Necromancer is out of attack range
+- when the Necromancer is not commanding combat, it returns to and holds a bodyguard slot around the Necromancer
+- when the Necromancer is commanding combat, it can attack, kite, and reposition while still hovering around the Necromancer
 - it does not need full Necromancer-style spacing logic in the first pass
 
 ### Attack
 
-- first-pass attack is a simple ranged spell
+- first-pass attack is a targeted blood bubble/pool placed at the player's feet
 - use `Attack_01` only
 - `Attack_02` and `Attack_03` are reserved for future expansion
-- the ranged spell should use a simple projectile or a shared enemy-projectile path
+- the bubble should appear at the player's current position and pop on its own animation timing
+- the pop should only damage the player if they are still inside the bubble when the pop event fires
 - keep the damage path simple and consistent with existing enemy-to-player direct damage flow
 
 ## Spawn And Owner Contract
@@ -61,13 +64,16 @@ When the Necromancer uses `Summon`:
 - it should spawn `3` Blood Mages
 - the Blood Mages should appear in a readable even ring around the Necromancer
 - each Blood Mage must receive an owner reference to the Necromancer
+- each Blood Mage must receive summon slot / group information for guard positioning
 - each Blood Mage must register itself with the Necromancer after a successful spawn/initialize
+- summon uses pooled enemy spawn first, then instantiate fallback if no pool is available
 
 ### Protection Contract
 
 - Necromancer summon protection becomes real on the first Blood Mage registration
 - summon protection remains active while at least one registered Blood Mage is alive
 - when the final Blood Mage is removed, summon protection ends
+- the Necromancer summon cooldown begins when summon protection ends, not when `Summon` is cast
 - if the Necromancer returns to human form, active Blood Mages despawn
 - if the Necromancer dies, active Blood Mages despawn
 
@@ -83,32 +89,37 @@ When the Necromancer uses `Summon`:
 
 ### Active First-Pass States
 
-- `Idle`
-- `Run`
-- `Attack`
-- `Dead`
+- `BloodMage_Idle`
+- `BloodMage_Run_BT`
+- `BloodMage_Attack_Bubble`
+- `BloodMage_Dead`
 
 ### Current Asset Set
 
-- `Idle.anim`
-- `Walk_Up.anim`
-- `Walk_Down.anim`
-- `Walk_Left.anim`
-- `Walk_Right.anim`
-- `Attack_01.anim`
-- `Die.anim`
+- `BloodMage_Idle.anim`
+- `BloodMage_Run_Up.anim`
+- `BloodMage_Run_Down.anim`
+- `BloodMage_Run_Left.anim`
+- `BloodMage_Run_Right.anim`
+- `BloodMage_Attack_Bubble.anim`
+- `BloodMage_Bubble.anim`
+- `BloodMage_Dead.anim`
 
 Reserved for later:
 
-- `Attack_02.anim`
-- `Attack_03.anim`
+- `BloodMage_Attack_02.anim`
+- `BloodMage_Attack_03.anim`
+- `BloodMage_Hurt.anim`
 
 ### Required Animation Events
 
-- `Attack_01.anim`
+- `BloodMage_Attack_Bubble.anim`
   - `Anim_AttackHit()`
   - `Anim_AttackFinished()`
-- `Die.anim`
+- `BloodMage_Bubble.anim`
+  - `Anim_AttackHit()` or `Anim_Pop()`
+  - `Anim_AttackFinished()` or `Anim_Finished()`
+- `BloodMage_Dead.anim`
   - `Anim_Despawn()`
 
 ## Prefab And Script Structure
@@ -118,9 +129,15 @@ Reserved for later:
 Expected child structure:
 
 - `Animator`
-- `AggroCheck`
 - `AttackRange`
 - `CastPoint`
+
+Current first-pass prefab wiring:
+
+- `BloodMage` component on the root
+- `Animator` + `EnemyAnimationEventRelay` on `Animator`
+- `CircleCollider2D` + `EnemyStrikingDistanceCheck` on `AttackRange`
+- SO assets assigned for idle, chase, attack, and dead
 
 ### Main Scripts
 
@@ -129,6 +146,7 @@ Expected child structure:
   - owner reference
   - registration/unregistration hooks
   - leash helpers
+  - spawned spell ignore handling for both Blood Mage and Necromancer colliders
 - `BloodMageIdleSO`
   - summoned settle / idle behavior
 - `BloodMageChaseSO`
@@ -137,7 +155,9 @@ Expected child structure:
   - leash-to-owner behavior
 - `BloodMageAttackSO`
   - attack cooldown
-  - projectile spawn / spell fire
+  - bubble spell spawn / spell fire
+- `BloodMageBubbleSpell`
+  - pooled ground bubble that pops under the player
 - `BloodMageDeadSO`
   - unregister from owner
   - death / despawn flow
@@ -155,6 +175,7 @@ Expected child structure:
 ### On Death / Despawn
 
 - unregister from the Necromancer exactly once
+- registration is cleared as soon as the Blood Mage enters its death flow, not only after final despawn
 - stop affecting summon protection after unregister
 - play death and despawn cleanly
 - avoid duplicate unregisters during pooled despawn/reset
@@ -171,19 +192,22 @@ Expected child structure:
 
 ### Chase SO
 
-- preferred attack distance
 - light-kite retreat threshold
 - leash radius around the Necromancer
+- leash hysteresis
+- guard radius around the Necromancer
+- guard position tolerance
+- guard movement speed
+- guard anchor start angle
 - leash return strength / movement speed
 
 ### Attack SO
 
 - cast cooldown
-- projectile prefab
-- projectile speed
-- projectile lifetime
-- projectile damage multiplier
-- projectile knockback
+- bubble spell prefab
+- bubble target offset
+- bubble damage multiplier
+- bubble knockback
 
 ## Implementation Order
 
@@ -193,22 +217,18 @@ Expected child structure:
 4. implement summon spawn flow from Necromancer
 5. implement owner registration / unregister flow
 6. implement leash logic and light kiting
-7. implement first-pass ranged spell attack
+7. implement first-pass bubble spell attack
 8. implement despawn on owner human return and owner death
 9. verify summon protection ends correctly when all Blood Mages are gone
 
 ## What Needs To Be Done
 
-- create the Blood Mage gameplay animation/controller setup
-- create the Blood Mage prefab shell
-- implement Blood Mage enemy/state/SO structure
-- implement summon spawn flow from Necromancer
-- implement owner registration / unregister flow
-- implement leash logic to keep Blood Mages near the Necromancer
-- implement first-pass ranged spell attack
-- implement despawn-on-owner-human-return
-- implement despawn-on-owner-death
+- verify the Blood Mage summon flow end-to-end from the Necromancer summon animation
+- verify Blood Mages enter chase/attack correctly once configured by the owner
+- verify Blood Mages unregister cleanly on death/despawn
+- verify owner-human-return and owner-death despawn paths in play mode
 - verify summon protection ends correctly when all Blood Mages are gone
+- tune bubble timing, radius, damage, and leash behavior
 - update the main project changelog when implementation is complete
 
 ## Future Ideas
@@ -221,13 +241,5 @@ Expected child structure:
 
 ## Not Implemented Yet
 
-- Blood Mage gameplay prefab
-- Blood Mage code/state implementation
-- Blood Mage summon spawn flow
-- Blood Mage owner registration
-- Blood Mage unregister-on-death flow
-- Blood Mage leash behavior
-- Blood Mage first-pass ranged spell
-- Necromancer real summon protection tied to living Blood Mages
-- Blood Mage pooling registration
 - Blood Mage VFX/readability pass
+- standalone/world-enemy Blood Mage behavior

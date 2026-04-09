@@ -77,9 +77,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (_player != null)
         {
             _player.TryGetComponent(out _playerDamageReceiver);
-            if (!playerTransform)
+            if (ShouldBindScenePlayerTransform(playerTransform))
                 playerTransform = _player.transform;
         }
+    }
+
+    private static bool ShouldBindScenePlayerTransform(Transform currentPlayerTransform)
+    {
+        return currentPlayerTransform == null || !currentPlayerTransform.gameObject.scene.IsValid();
     }
 
     protected virtual void Update()

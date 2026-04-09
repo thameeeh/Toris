@@ -5,6 +5,6 @@
             <ui:VisualElement name="Right_Zone" style="picking-mode: Ignore; width: 30%; height: 100%; min-width: 576px;"/>
         </ui:VisualElement>
         <ui:VisualElement name="Layer_HUD" style="picking-mode: Ignore; position: absolute; bottom: 0; height: 20%; width: 100%;"/>
-        <ui:VisualElement name="FullScreen_Zone" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;"/>
+        <ui:VisualElement name="FullScreen_Zone" picking-mode="Ignore" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;"/>
     </ui:VisualElement>
 </ui:UXML>

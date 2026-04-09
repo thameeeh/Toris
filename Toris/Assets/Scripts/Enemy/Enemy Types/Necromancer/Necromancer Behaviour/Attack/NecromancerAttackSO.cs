@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Necromancer_Attack_BoltCast", menuName = "Enemy Logic/Attack Logic/Necromancer Bolt Cast")]
 public class NecromancerAttackSO : AttackSOBase<Necromancer>
 {
+    private const float FullCircleDegrees = 360f;
+
     [Header("Timing")]
     [SerializeField] private float castCooldown = 1.5f;
     [SerializeField] private float panicSwingCooldown = 1f;
@@ -20,6 +22,21 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
     [SerializeField, Min(0f)] private float spellProjectileKnockback = 2f;
     [SerializeField, Min(0.01f)] private float spellProjectileSpeed = 6f;
     [SerializeField, Min(0.05f)] private float spellProjectileLifetime = 3f;
+
+    [Header("Phase Two Spell Volley")]
+    [SerializeField] private bool enablePhaseTwoSpellVolley = true;
+    [SerializeField, Min(1)] private int phaseTwoSpellProjectileCount = 5;
+    [SerializeField, Range(0f, 180f)] private float phaseTwoSpellSpreadAngle = 24f;
+    [SerializeField, Min(0f)] private float phaseTwoSpellProjectileDamageMultiplier = 0.6f;
+
+    [Header("Summon Projectile Burst")]
+    [SerializeField] private bool enableSummonProjectileBurst = true;
+    [SerializeField, Min(1)] private int summonProjectileBurstCount = 8;
+    [SerializeField, Min(0f)] private float summonProjectileBurstDamageMultiplier = 0.35f;
+
+    [Header("Summon Impact Hold")]
+    [SerializeField] private bool enableSummonImpactHold = true;
+    [SerializeField, Min(0f)] private float summonImpactHoldDuration = 0.15f;
 
     [Header("Panic Swing")]
     [SerializeField, Min(0f)] private float panicSwingDamageMultiplier = 1f;
@@ -84,13 +101,19 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             enemy.DebugAnimationLog($"Animation event -> Anim_AttackHit for {enemy.PendingAttackType}. Starting cooldown.");
 #endif
             if (enemy.PendingAttackType == NecromancerAttackType.SpellCast)
-                SpawnSpellProjectile();
+                SpawnSpellProjectiles();
 
             if (enemy.PendingAttackType == NecromancerAttackType.PanicSwing)
                 ApplyPanicSwingDamage();
 
             if (enemy.PendingAttackType == NecromancerAttackType.Summon)
+            {
                 SpawnSummonedBloodMages();
+                SpawnSummonProjectileBurst();
+
+                if (enableSummonImpactHold && summonImpactHoldDuration > 0f)
+                    enemy.BeginTemporaryAnimatorHold(summonImpactHoldDuration);
+            }
 
             if (enemy.PendingAttackType != NecromancerAttackType.Summon)
                 StartCooldown(enemy.PendingAttackType);
@@ -161,7 +184,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         }
     }
 
-    private void SpawnSpellProjectile()
+    private void SpawnSpellProjectiles()
     {
         if (spellProjectilePrefab == null)
         {
@@ -172,36 +195,63 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         }
 
         Vector3 spawnPosition = enemy.CastPoint.position;
-        Vector2 direction = enemy.GetDirectionToPlayer(spawnPosition);
-        Quaternion spawnRotation = Quaternion.identity;
-        NecromancerShotProjectile spawnedProjectile = null;
+        Vector2 forwardDirection = GetSpellForwardDirection(spawnPosition);
+        if (forwardDirection.sqrMagnitude <= 0f)
+            return;
 
-        if (GameplayPoolManager.Instance != null)
+        if (!ShouldUsePhaseTwoSpellVolley())
         {
-            spawnedProjectile = GameplayPoolManager.Instance.SpawnProjectile(
-                spellProjectilePrefab,
-                spawnPosition,
-                spawnRotation) as NecromancerShotProjectile;
+            SpawnProjectile(spawnPosition, forwardDirection, spellProjectileDamageMultiplier);
+            return;
         }
 
-        if (spawnedProjectile == null)
+        int projectileCount = Mathf.Max(1, phaseTwoSpellProjectileCount);
+        if (projectileCount == 1)
         {
-            spawnedProjectile = Instantiate(spellProjectilePrefab, spawnPosition, spawnRotation);
-            spawnedProjectile.OnSpawned();
+            SpawnProjectile(spawnPosition, forwardDirection, phaseTwoSpellProjectileDamageMultiplier);
+            return;
         }
 
-        spawnedProjectile.Initialize(
-            direction,
-            spellProjectileSpeed,
-            enemy.AttackDamage * spellProjectileDamageMultiplier,
-            spellProjectileLifetime,
-            spellProjectileKnockback,
-            enemy.ProjectileIgnoreColliders);
+        float halfSpread = phaseTwoSpellSpreadAngle * 0.5f;
+        float angleStep = projectileCount > 1 ? phaseTwoSpellSpreadAngle / (projectileCount - 1) : 0f;
+
+        for (int i = 0; i < projectileCount; i++)
+        {
+            float angleOffset = -halfSpread + (angleStep * i);
+            Vector2 projectileDirection = RotateDirection(forwardDirection, angleOffset);
+            SpawnProjectile(spawnPosition, projectileDirection, phaseTwoSpellProjectileDamageMultiplier);
+        }
+
+ #if UNITY_EDITOR
+        enemy.DebugAnimationLog(
+            $"Spawned phase-two spell volley count={projectileCount}, spread={phaseTwoSpellSpreadAngle:0.##}, " +
+            $"damageMult={phaseTwoSpellProjectileDamageMultiplier:0.##}.");
+#endif
+    }
+
+    private void SpawnSummonProjectileBurst()
+    {
+        if (!enableSummonProjectileBurst || spellProjectilePrefab == null)
+            return;
+
+        int projectileCount = Mathf.Max(1, summonProjectileBurstCount);
+        Vector3 spawnPosition = enemy.CastPoint.position;
+        Vector2 baseDirection = GetSpellForwardDirection(spawnPosition);
+        if (baseDirection.sqrMagnitude <= 0f)
+            return;
+
+        float angleStep = FullCircleDegrees / projectileCount;
+        for (int i = 0; i < projectileCount; i++)
+        {
+            float angleOffset = angleStep * i;
+            Vector2 projectileDirection = RotateDirection(baseDirection, angleOffset);
+            SpawnProjectile(spawnPosition, projectileDirection, summonProjectileBurstDamageMultiplier);
+        }
 
 #if UNITY_EDITOR
         enemy.DebugAnimationLog(
-            $"Spawned spell projectile at {spawnPosition} with speed={spellProjectileSpeed:0.##}, " +
-            $"lifetime={spellProjectileLifetime:0.##}, damage={enemy.AttackDamage * spellProjectileDamageMultiplier:0.##}.");
+            $"Summon released projectile burst count={projectileCount}, " +
+            $"damageMult={summonProjectileBurstDamageMultiplier:0.##}.");
 #endif
     }
 
@@ -305,5 +355,60 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             Mathf.Sin(angleRadians)) * bloodMageSummonRadius;
 
         return enemy.transform.position + (Vector3)offset;
+    }
+
+    private bool ShouldUsePhaseTwoSpellVolley()
+    {
+        return enablePhaseTwoSpellVolley
+            && enemy.IsPhaseTwoSummonUnlocked
+            && phaseTwoSpellProjectileCount > 1;
+    }
+
+    private Vector2 GetSpellForwardDirection(Vector3 spawnPosition)
+    {
+        Vector2 direction = enemy.GetDirectionToPlayer(spawnPosition);
+        if (direction.sqrMagnitude > 0.0001f)
+            return direction;
+
+        return enemy.IsFacingRight ? Vector2.right : Vector2.left;
+    }
+
+    private void SpawnProjectile(Vector3 spawnPosition, Vector2 direction, float damageMultiplier)
+    {
+        Quaternion spawnRotation = Quaternion.identity;
+        NecromancerShotProjectile spawnedProjectile = null;
+
+        if (GameplayPoolManager.Instance != null)
+        {
+            spawnedProjectile = GameplayPoolManager.Instance.SpawnProjectile(
+                spellProjectilePrefab,
+                spawnPosition,
+                spawnRotation) as NecromancerShotProjectile;
+        }
+
+        if (spawnedProjectile == null)
+        {
+            spawnedProjectile = Instantiate(spellProjectilePrefab, spawnPosition, spawnRotation);
+            spawnedProjectile.OnSpawned();
+        }
+
+        spawnedProjectile.Initialize(
+            direction,
+            spellProjectileSpeed,
+            enemy.AttackDamage * damageMultiplier,
+            spellProjectileLifetime,
+            spellProjectileKnockback,
+            enemy.ProjectileIgnoreColliders);
+    }
+
+    private static Vector2 RotateDirection(Vector2 direction, float angleDegrees)
+    {
+        float angleRadians = angleDegrees * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(angleRadians);
+        float sin = Mathf.Sin(angleRadians);
+
+        return new Vector2(
+            (direction.x * cos) - (direction.y * sin),
+            (direction.x * sin) + (direction.y * cos)).normalized;
     }
 }

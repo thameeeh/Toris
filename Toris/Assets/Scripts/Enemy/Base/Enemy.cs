@@ -46,6 +46,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private readonly List<IStatusEffect> _statusEffects = new List<IStatusEffect>();
     private bool _isReleasing;
     private float _baseMaxHealth;
+    private Collider2D[] _cachedColliders = Array.Empty<Collider2D>();
+    private bool[] _cachedColliderEnabledStates = Array.Empty<bool>();
+    private bool _collidersDisabledForDeath;
 
     public event Action<Enemy> Died;
     public event Action<Enemy> Despawned;
@@ -57,6 +60,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     {
         StateMachine = new EnemyStateMachine();
         animator = GetComponentInChildren<Animator>();
+        CacheOwnedColliders();
 
         _baseMaxHealth = MaxHealth;
         
@@ -113,12 +117,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         }
     }
 
-    protected virtual bool CanTakeDamage() => true;
+    protected virtual bool CanTakeDamage() => CurrentHealth > 0f;
 
     public virtual void Die()
     {
         //Debug.Log("Dead");
         if (CurrentHealth > 0f) return;
+        DisableCollidersForDeath();
         Died?.Invoke(this);
     }
 
@@ -212,6 +217,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public virtual void OnSpawned()
     {
         _isReleasing = false;
+        RestoreCachedColliderStates();
         CurrentHealth = MaxHealth;
         IsAggroed = false;
         IsWithinStrikingDistance = false;
@@ -279,6 +285,59 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         {
             Destroy(gameObject);
         }
+    }
+
+    private void CacheOwnedColliders()
+    {
+        _cachedColliders = GetComponentsInChildren<Collider2D>(true);
+        _cachedColliderEnabledStates = new bool[_cachedColliders.Length];
+
+        for (int i = 0; i < _cachedColliders.Length; i++)
+        {
+            Collider2D collider = _cachedColliders[i];
+            _cachedColliderEnabledStates[i] = collider != null && collider.enabled;
+        }
+    }
+
+    protected void DisableCollidersForDeath()
+    {
+        if (_collidersDisabledForDeath)
+            return;
+
+        if (_cachedColliders == null || _cachedColliders.Length == 0)
+            CacheOwnedColliders();
+
+        for (int i = 0; i < _cachedColliders.Length; i++)
+        {
+            Collider2D collider = _cachedColliders[i];
+            if (collider == null)
+                continue;
+
+            collider.enabled = false;
+        }
+
+        _collidersDisabledForDeath = true;
+        IsAggroed = false;
+        IsWithinStrikingDistance = false;
+        AlwaysAggroed = false;
+    }
+
+    private void RestoreCachedColliderStates()
+    {
+        if (_cachedColliders == null || _cachedColliders.Length == 0)
+            CacheOwnedColliders();
+
+        int colliderCount = Mathf.Min(_cachedColliders.Length, _cachedColliderEnabledStates.Length);
+        for (int i = 0; i < colliderCount; i++)
+        {
+            Collider2D collider = _cachedColliders[i];
+            if (collider == null)
+                continue;
+
+            collider.enabled = _cachedColliderEnabledStates[i];
+        }
+
+        _collidersDisabledForDeath = false;
     }
 
     #endregion

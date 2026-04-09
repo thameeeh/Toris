@@ -5,7 +5,7 @@ It is not a changelog.
 
 ## Overview
 
-The Blood Mage is a summoned-only phase-two support minion for the Necromancer in its first pass.
+The Blood Mage is a summoned-only phase-two support minion for the Necromancer in its current form.
 
 - It is not a standalone world enemy yet.
 - It exists to complete the Necromancer summon loop.
@@ -15,8 +15,6 @@ The Blood Mage is a summoned-only phase-two support minion for the Necromancer i
   - create a meaningful add-clear phase for the player
 
 ## Current Combat Model
-
-First-pass Blood Mage behavior:
 
 - summoned only by the Necromancer
 - summons in a group of `3`
@@ -44,16 +42,16 @@ The Blood Mage is a ranged support minion.
 - it does not freely chase the player on its own when the Necromancer is out of attack range
 - when the Necromancer is not commanding combat, it returns to and holds a bodyguard slot around the Necromancer
 - when the Necromancer is commanding combat, it can attack, kite, and reposition while still hovering around the Necromancer
-- it does not need full Necromancer-style spacing logic in the first pass
+- it uses leash and guard hysteresis so it does not flicker between tiny position corrections every frame
 
 ### Attack
 
 - first-pass attack is a targeted blood bubble/pool placed at the player's feet
 - use `Attack_01` only
 - `Attack_02` and `Attack_03` are reserved for future expansion
-- the bubble should appear at the player's current position and pop on its own animation timing
-- the pop should only damage the player if they are still inside the bubble when the pop event fires
-- keep the damage path simple and consistent with existing enemy-to-player direct damage flow
+- the bubble targets the player's position with optional light movement prediction and a small randomized miss radius
+- the pop only damages the player if they are still inside the bubble when the pop event fires
+- the damage path stays consistent with direct enemy-to-player damage flow
 
 ## Spawn And Owner Contract
 
@@ -61,11 +59,11 @@ The Blood Mage is a ranged support minion.
 
 When the Necromancer uses `Summon`:
 
-- it should spawn `3` Blood Mages
-- the Blood Mages should appear in a readable even ring around the Necromancer
-- each Blood Mage must receive an owner reference to the Necromancer
-- each Blood Mage must receive summon slot / group information for guard positioning
-- each Blood Mage must register itself with the Necromancer after a successful spawn/initialize
+- it spawns `3` Blood Mages
+- the Blood Mages appear in a readable even ring around the Necromancer
+- each Blood Mage receives an owner reference to the Necromancer
+- each Blood Mage receives summon slot / group information for guard positioning
+- each Blood Mage registers itself with the Necromancer after a successful spawn/initialize
 - summon uses pooled enemy spawn first, then instantiate fallback if no pool is available
 
 ### Protection Contract
@@ -79,7 +77,7 @@ When the Necromancer uses `Summon`:
 
 ## Animation And Controller Contract
 
-### Active First-Pass Parameters
+### Active Parameters
 
 - `DirectionX`
 - `DirectionY`
@@ -87,7 +85,7 @@ When the Necromancer uses `Summon`:
 - `Attack`
 - `Dead`
 
-### Active First-Pass States
+### Active States
 
 - `BloodMage_Idle`
 - `BloodMage_Run_BT`
@@ -126,6 +124,8 @@ Reserved for later:
 
 ### Main Prefab
 
+[BloodMage.prefab](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMage.prefab)
+
 Expected child structure:
 
 - `Animator`
@@ -139,26 +139,37 @@ Current first-pass prefab wiring:
 - `CircleCollider2D` + `EnemyStrikingDistanceCheck` on `AttackRange`
 - SO assets assigned for idle, chase, attack, and dead
 
+### Bubble Spell Prefab
+
+[BloodBubble.prefab](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodBubble.prefab)
+
+- spawned by `BloodMageAttackSO`
+- placed at the player's current position plus optional offset
+- uses its own animation timing to pop and despawn
+- can use `GameplayPoolManager` projectile spawning
+
 ### Main Scripts
 
-- `BloodMage.cs`
+- [BloodMage.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMage.cs)
   - shared runtime state
   - owner reference
   - registration/unregistration hooks
   - leash helpers
+  - formation-slot helpers
   - spawned spell ignore handling for both Blood Mage and Necromancer colliders
-- `BloodMageIdleSO`
+- [BloodMageIdleSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/Behavior/Idle/BloodMageIdleSO.cs)
   - summoned settle / idle behavior
-- `BloodMageChaseSO`
-  - move into attack range
-  - light kiting
+- [BloodMageChaseSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/Behavior/Chase/BloodMageChaseSO.cs)
+  - owner-commanded guard / combat behavior
   - leash-to-owner behavior
-- `BloodMageAttackSO`
+  - guard-anchor formation holding
+  - light kiting while combat is commanded
+- [BloodMageAttackSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/Behavior/Attack/BloodMageAttackSO.cs)
   - attack cooldown
   - bubble spell spawn / spell fire
-- `BloodMageBubbleSpell`
+- [BloodMageBubbleSpell.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMageBubbleSpell.cs)
   - pooled ground bubble that pops under the player
-- `BloodMageDeadSO`
+- [BloodMageDeadSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/Behavior/Dead/BloodMageDeadSO.cs)
   - unregister from owner
   - death / despawn flow
 
@@ -186,9 +197,8 @@ Current first-pass prefab wiring:
 
 - `AttackDamage`
 - `MovementSpeed`
-- owner reference
-- leash distance
-- summon ring index / spawn position
+- owner reference at runtime
+- summon ring index / group size at runtime
 
 ### Chase SO
 
@@ -197,6 +207,7 @@ Current first-pass prefab wiring:
 - leash hysteresis
 - guard radius around the Necromancer
 - guard position tolerance
+- guard position hysteresis
 - guard movement speed
 - guard anchor start angle
 - leash return strength / movement speed
@@ -206,30 +217,18 @@ Current first-pass prefab wiring:
 - cast cooldown
 - bubble spell prefab
 - bubble target offset
+- use predictive targeting
+- target lead time
+- random target radius
 - bubble damage multiplier
 - bubble knockback
 
-## Implementation Order
-
-1. create the Blood Mage gameplay animation/controller setup
-2. create the Blood Mage prefab shell
-3. implement `BloodMage`, states, and SOs
-4. implement summon spawn flow from Necromancer
-5. implement owner registration / unregister flow
-6. implement leash logic and light kiting
-7. implement first-pass bubble spell attack
-8. implement despawn on owner human return and owner death
-9. verify summon protection ends correctly when all Blood Mages are gone
-
 ## What Needs To Be Done
 
-- verify the Blood Mage summon flow end-to-end from the Necromancer summon animation
-- verify Blood Mages enter chase/attack correctly once configured by the owner
-- verify Blood Mages unregister cleanly on death/despawn
-- verify owner-human-return and owner-death despawn paths in play mode
-- verify summon protection ends correctly when all Blood Mages are gone
-- tune bubble timing, radius, damage, and leash behavior
-- update the main project changelog when implementation is complete
+- tune bubble timing, radius, damage, and leash behavior in play mode
+- validate the full Necromancer phase-two loop with multiple summon cycles
+- add clearer hit / pop / spawn feedback if needed
+- decide whether Blood Mage should eventually support standalone world spawning
 
 ## Future Ideas
 
@@ -243,3 +242,4 @@ Current first-pass prefab wiring:
 
 - Blood Mage VFX/readability pass
 - standalone/world-enemy Blood Mage behavior
+- additional Blood Mage attack variants

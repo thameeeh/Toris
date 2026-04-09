@@ -84,6 +84,8 @@ public class Necromancer : Enemy
     private bool _hasResolvedAggroTransition;
     private bool _isHumanRescueVariant;
     private bool _hasEnteredDeadState;
+    private bool _isAnimatorTemporarilyHeld;
+    private float _animatorHoldEndTime;
     private Collider2D[] _projectileIgnoreColliders = Array.Empty<Collider2D>();
     private readonly NecromancerSummonProtectionState _summonProtectionState = new NecromancerSummonProtectionState();
 
@@ -244,6 +246,8 @@ public class Necromancer : Enemy
 
     protected override void Update()
     {
+        UpdateTemporaryAnimatorHold();
+
         if (CurrentHealth <= 0f && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
@@ -401,6 +405,7 @@ public class Necromancer : Enemy
         if (animator == null || _isHumanRescueVariant || IsFloaterForm || IsChangingForm)
             return false;
 
+        EndTemporaryAnimatorHold();
         animator.ResetTrigger(BecomeHumanTrigger);
         animator.SetTrigger(BecomeFloaterTrigger);
         animator.SetBool(IsMovingParameter, false);
@@ -417,6 +422,7 @@ public class Necromancer : Enemy
         if (animator == null || IsHumanForm || IsChangingForm)
             return false;
 
+        EndTemporaryAnimatorHold();
         animator.ResetTrigger(BecomeFloaterTrigger);
         animator.SetTrigger(BecomeHumanTrigger);
         animator.SetBool(IsMovingParameter, false);
@@ -439,6 +445,7 @@ public class Necromancer : Enemy
         if (animator == null)
             return;
 
+        EndTemporaryAnimatorHold();
         animator.SetTrigger(GetAttackTrigger(PendingAttackType));
     }
 
@@ -447,7 +454,22 @@ public class Necromancer : Enemy
         if (animator == null)
             return;
 
+        EndTemporaryAnimatorHold();
         animator.SetTrigger(DeadTrigger);
+    }
+
+    public void BeginTemporaryAnimatorHold(float duration)
+    {
+        if (animator == null || duration <= 0f)
+            return;
+
+        _isAnimatorTemporarilyHeld = true;
+        _animatorHoldEndTime = Time.time + duration;
+        animator.speed = 0f;
+
+#if UNITY_EDITOR
+        DebugAnimationLog($"Animator hold started for {duration:0.##}s.");
+#endif
     }
 
     public void RequirePostCastReposition(float speedMultiplier = 1f, bool prioritizeBeforePanicRange = false)
@@ -626,6 +648,7 @@ public class Necromancer : Enemy
         SetAggroStatus(false);
         SetStrikingDistanceBool(false);
         SetCastingRangeBool(false);
+        EndTemporaryAnimatorHold();
         ClearPostCastReposition();
         _hasResolvedAggroTransition = false;
         _isHumanRescueVariant = false;
@@ -658,10 +681,48 @@ public class Necromancer : Enemy
 
     private void StopForDeath()
     {
+        EndTemporaryAnimatorHold();
         SetMovementAnimation(false);
 
         if (rb != null)
             MoveEnemy(Vector2.zero);
+    }
+
+    private void UpdateTemporaryAnimatorHold()
+    {
+        if (!_isAnimatorTemporarilyHeld || animator == null)
+            return;
+
+        if (StateMachine.CurrentEnemyState != AttackState)
+        {
+            EndTemporaryAnimatorHold();
+            return;
+        }
+
+        if (Time.time < _animatorHoldEndTime)
+            return;
+
+        EndTemporaryAnimatorHold();
+    }
+
+    private void EndTemporaryAnimatorHold()
+    {
+        if (!_isAnimatorTemporarilyHeld)
+        {
+            if (animator != null && animator.speed != 1f)
+                animator.speed = 1f;
+            return;
+        }
+
+        _isAnimatorTemporarilyHeld = false;
+        _animatorHoldEndTime = 0f;
+
+        if (animator != null)
+            animator.speed = 1f;
+
+#if UNITY_EDITOR
+        DebugAnimationLog("Animator hold ended.");
+#endif
     }
 
     private string GetAttackTrigger(NecromancerAttackType attackType)

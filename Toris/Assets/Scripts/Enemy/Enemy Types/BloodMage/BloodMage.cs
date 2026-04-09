@@ -149,6 +149,7 @@ public class BloodMage : Enemy
         _hasEnteredDeadState = true;
         UnregisterFromOwnerIfNeeded();
         StopForDeath();
+        base.Die();
 
         if (StateMachine.CurrentEnemyState == null)
         {

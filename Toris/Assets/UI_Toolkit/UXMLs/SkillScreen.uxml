@@ -1,0 +1,26 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=bb1d137eddf86fe4fa37da7b7da6155a&amp;type=3#theme-variables" />
+    <Style src="project://database/Assets/UI_Toolkit/USS/SkillScreen.uss" />
+    <ui:VisualElement name="skill-screen__root" class="skill-screen__root">
+        <ui:VisualElement name="skill-screen__container" class="skill-screen__container">
+            <ui:Label text="Character Skills" class="skill-screen__title" />
+
+            <ui:VisualElement class="skill-screen__row">
+                <ui:Label name="lbl-strength" text="Strength: 0" class="skill-screen__label" />
+                <ui:ProgressBar name="pb-strength-xp" value="0" title="0 / 100" class="skill-screen__progress-bar" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="skill-screen__row">
+                <ui:Label name="lbl-agility" text="Agility: 0" class="skill-screen__label" />
+                <ui:ProgressBar name="pb-agility-xp" value="0" title="0 / 100" class="skill-screen__progress-bar" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="skill-screen__row">
+                <ui:Label name="lbl-intelligence" text="Intelligence: 0" class="skill-screen__label" />
+                <ui:ProgressBar name="pb-intelligence-xp" value="0" title="0 / 100" class="skill-screen__progress-bar" />
+            </ui:VisualElement>
+
+            <ui:Button name="btn-close" text="Close" class="skill-screen__close-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

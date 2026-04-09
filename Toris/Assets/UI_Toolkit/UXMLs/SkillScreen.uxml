@@ -1,23 +1,34 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
-    <Style src="project://database/Assets/UI_Toolkit/USS/SkillScreen.uss?fileID=7433441132597879392&amp;guid=a5b1dc3484c4c144b84b7da273829b2e&amp;type=3#SkillScreen"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/SkillScreen.uss?fileID=7433441132597879392&amp;guid=3df4c339113f4eb4a9b0862fedb15197&amp;type=3"/>
     <ui:VisualElement name="skill-screen__root" class="skill-screen__root">
-        <ui:VisualElement name="skill-screen__container" class="skill-screen__container">
-            <ui:Label text="Character Skills" class="skill-screen__title"/>
-            <ui:VisualElement class="skill-screen__row">
-                <ui:Label name="lbl-strength" text="Strength: 0" class="skill-screen__label"/>
-                <ui:ProgressBar name="pb-strength-xp" value="0" title="0 / 100" class="skill-screen__progress-bar"/>
+        <ui:ScrollView mode="VerticalAndHorizontal" name="skill-tree__scroll-view" class="skill-tree__scroll-view">
+            <ui:VisualElement name="skill-tree__container" class="skill-tree__container">
+                <ui:VisualElement class="skill-tree__tier">
+                    <ui:Button name="node_base_jump" class="skill-node skill-node--unlocked">
+                        <ui:Label text="Base Jump" class="skill-node__label"/>
+                    </ui:Button>
+                </ui:VisualElement>
+                <ui:VisualElement class="skill-tree__tier">
+                    <ui:Button name="node_double_jump" class="skill-node skill-node--available">
+                        <ui:Label text="Double Jump" class="skill-node__label"/>
+                    </ui:Button>
+                    <ui:Button name="node_dash" class="skill-node skill-node--locked">
+                        <ui:Label text="Dash" class="skill-node__label"/>
+                    </ui:Button>
+                </ui:VisualElement>
+                <ui:VisualElement class="skill-tree__tier">
+                    <ui:Button name="node_triple_jump" class="skill-node skill-node--locked">
+                        <ui:Label text="Triple Jump" class="skill-node__label"/>
+                    </ui:Button>
+                    <ui:Button name="node_glide" class="skill-node skill-node--locked">
+                        <ui:Label text="Glide" class="skill-node__label"/>
+                    </ui:Button>
+                    <ui:Button name="node_blink_dash" class="skill-node skill-node--locked">
+                        <ui:Label text="Blink Dash" class="skill-node__label"/>
+                    </ui:Button>
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement class="skill-screen__row">
-                <ui:Label name="lbl-agility" text="Agility: 0" class="skill-screen__label"/>
-                <ui:ProgressBar name="pb-agility-xp" value="0" title="0 / 100" class="skill-screen__progress-bar"/>
-            </ui:VisualElement>
-            <ui:VisualElement class="skill-screen__row">
-                <ui:Label name="lbl-intelligence" text="Intelligence: 0" class="skill-screen__label"/>
-                <ui:ProgressBar name="pb-intelligence-xp" value="0" title="0 / 100" class="skill-screen__progress-bar"/>
-            </ui:VisualElement>
-            <ui:Button name="btn-close" text="Close" class="skill-screen__close-button"/>
-        </ui:VisualElement>
+        </ui:ScrollView>
     </ui:VisualElement>
-    <Unity.UI.Builder.UnityUIBuilderSelectionMarker/>
 </ui:UXML>

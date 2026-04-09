@@ -1,49 +1,70 @@
 .skill-screen__root {
     flex-grow: 1;
+    background-color: rgb(30, 30, 35);
+}
+
+.skill-tree__scroll-view {
+    flex-grow: 1;
     width: 100%;
-    height: 100%;
-    background-color: var(--color-bg-dark, rgba(30, 30, 30, 0.95));
+}
+
+.skill-tree__container {
+    /* Create a massive 3000x3000 pixel canvas */
+    width: 3000px;  
+    height: 3000px; 
+    
+    /* Center the nodes directly in the middle of this giant canvas */
+    align-items: center; 
+    justify-content: center; 
+}
+
+.skill-tree__tier {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.skill-node {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    border-width: 4px;
+    margin-left: 60px;
+    margin-right: 60px;
     align-items: center;
     justify-content: center;
+    transition-duration: 0.2s;
+    transition-property: scale, background-color;
 }
 
-.skill-screen__container {
-    width: 80%;
-    height: 80%;
-    background-color: var(--color-bg-panel, rgba(0, 0, 0, 0.3));
-    border-width: 2px;
-    border-color: var(--color-border-default, rgb(100, 100, 100));
-    padding: 20px;
+.skill-node:hover {
+    scale: 1.1;
 }
 
-.skill-screen__title {
-    font-size: var(--font-size-h2, 40px);
-    color: var(--color-text-light, rgb(255, 255, 255));
-    -unity-text-align: middle-center;
-    margin-bottom: 20px;
+.skill-node__label {
+    position: absolute;
+    bottom: -30px;
+    color: rgb(220, 220, 220);
+    font-size: 14px;
+    -unity-font-style: bold;
+    white-space: nowrap;
 }
 
-.skill-screen__row {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+.skill-node--unlocked {
+    background-color: rgb(70, 150, 70);
+    border-color: rgb(100, 255, 100);
 }
 
-.skill-screen__label {
-    font-size: var(--font-size-body, 18px);
-    color: var(--color-text-light, rgb(255, 255, 255));
-    width: 30%;
+.skill-node--available {
+    background-color: rgb(150, 150, 70);
+    border-color: rgb(255, 255, 100);
+    cursor: link;
 }
 
-.skill-screen__progress-bar {
-    width: 65%;
-}
-
-.skill-screen__close-button {
-    font-size: var(--font-size-body, 18px);
-    margin-top: auto;
-    align-self: center;
-    width: 200px;
-    height: 50px;
+.skill-node--locked {
+    background-color: rgb(50, 50, 50);
+    border-color: rgb(80, 80, 80);
+    opacity: 0.6;
 }

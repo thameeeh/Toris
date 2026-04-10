@@ -672,7 +672,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleSmith"",
+                    ""name"": ""ToggleSkills"",
                     ""type"": ""Button"",
                     ""id"": ""14f08f87-a2f0-4566-b31c-c76a4ec16867"",
                     ""expectedControlType"": """",
@@ -1060,7 +1060,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ToggleSmith"",
+                    ""action"": ""ToggleSkills"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1283,7 +1283,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_ToggleInventory = m_UI.FindAction("ToggleInventory", throwIfNotFound: true);
-        m_UI_ToggleSmith = m_UI.FindAction("ToggleSmith", throwIfNotFound: true);
+        m_UI_ToggleSkills = m_UI.FindAction("ToggleSkills", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
@@ -1594,7 +1594,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Submit;
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_ToggleInventory;
-    private readonly InputAction m_UI_ToggleSmith;
+    private readonly InputAction m_UI_ToggleSkills;
     private readonly InputAction m_UI_Point;
     private readonly InputAction m_UI_Click;
     private readonly InputAction m_UI_RightClick;
@@ -1634,9 +1634,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ToggleInventory => m_Wrapper.m_UI_ToggleInventory;
         /// <summary>
-        /// Provides access to the underlying input action "UI/ToggleSmith".
+        /// Provides access to the underlying input action "UI/ToggleSkills".
         /// </summary>
-        public InputAction @ToggleSmith => m_Wrapper.m_UI_ToggleSmith;
+        public InputAction @ToggleSkills => m_Wrapper.m_UI_ToggleSkills;
         /// <summary>
         /// Provides access to the underlying input action "UI/Point".
         /// </summary>
@@ -1706,9 +1706,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleInventory.started += instance.OnToggleInventory;
             @ToggleInventory.performed += instance.OnToggleInventory;
             @ToggleInventory.canceled += instance.OnToggleInventory;
-            @ToggleSmith.started += instance.OnToggleSmith;
-            @ToggleSmith.performed += instance.OnToggleSmith;
-            @ToggleSmith.canceled += instance.OnToggleSmith;
+            @ToggleSkills.started += instance.OnToggleSkills;
+            @ToggleSkills.performed += instance.OnToggleSkills;
+            @ToggleSkills.canceled += instance.OnToggleSkills;
             @Point.started += instance.OnPoint;
             @Point.performed += instance.OnPoint;
             @Point.canceled += instance.OnPoint;
@@ -1756,9 +1756,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleInventory.started -= instance.OnToggleInventory;
             @ToggleInventory.performed -= instance.OnToggleInventory;
             @ToggleInventory.canceled -= instance.OnToggleInventory;
-            @ToggleSmith.started -= instance.OnToggleSmith;
-            @ToggleSmith.performed -= instance.OnToggleSmith;
-            @ToggleSmith.canceled -= instance.OnToggleSmith;
+            @ToggleSkills.started -= instance.OnToggleSkills;
+            @ToggleSkills.performed -= instance.OnToggleSkills;
+            @ToggleSkills.canceled -= instance.OnToggleSkills;
             @Point.started -= instance.OnPoint;
             @Point.performed -= instance.OnPoint;
             @Point.canceled -= instance.OnPoint;
@@ -2013,12 +2013,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleInventory(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ToggleSmith" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ToggleSkills" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnToggleSmith(InputAction.CallbackContext context);
+        void OnToggleSkills(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Point" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

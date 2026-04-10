@@ -1,8 +1,9 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3"/>
-    <Style src="project://database/Assets/UI_Toolkit/USS/SkillScreen.uss?fileID=7433441132597879392&amp;guid=3df4c339113f4eb4a9b0862fedb15197&amp;type=3"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/SkillScreen.uss?fileID=7433441132597879392&amp;guid=3df4c339113f4eb4a9b0862fedb15197&amp;type=3#SkillScreen"/>
     <ui:VisualElement name="skill-screen__root" class="skill-screen__root">
-        <ui:ScrollView mode="VerticalAndHorizontal" name="skill-tree__scroll-view" class="skill-tree__scroll-view">
+        <ui:VisualElement style="flex-grow: 1;"/>
+        <ui:ScrollView mode="VerticalAndHorizontal" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" name="skill-tree__scroll-view" class="skill-tree__scroll-view">
             <ui:VisualElement name="skill-tree__container" class="skill-tree__container">
                 <ui:VisualElement class="skill-tree__tier">
                     <ui:Button name="node_base_jump" class="skill-node skill-node--unlocked">

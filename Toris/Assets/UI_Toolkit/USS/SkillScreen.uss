@@ -1,6 +1,7 @@
 .skill-screen__root {
     flex-grow: 1;
     background-color: rgb(30, 30, 35);
+    flex-direction: row;
 }
 
 .skill-tree__scroll-view {
@@ -9,9 +10,9 @@
 }
 
 .skill-tree__container {
-    /* Create a massive 3000x3000 pixel canvas */
-    width: 3000px;  
-    height: 3000px; 
+    /* Create a massive 1920x1080 pixel canvas */
+    width: 1920px;  
+    height: 1080px; 
     
     /* Center the nodes directly in the middle of this giant canvas */
     align-items: center; 

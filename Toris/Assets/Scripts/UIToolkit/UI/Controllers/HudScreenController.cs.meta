@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 6ede8b6770718034184452a105e4af2f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _hudMainTemplate: {fileID: 9197481963319205126, guid: 0a24cf31fdc15a34e81fa7749db4dfda, type: 3}
+  - _buttonTemplate: {fileID: 9197481963319205126, guid: 58da16bb20c30c546a4a2c542410a601, type: 3}
+  - _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  - _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  - _playerAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+  - _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

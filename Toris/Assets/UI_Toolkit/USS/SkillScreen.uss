@@ -69,3 +69,55 @@
     border-color: rgb(80, 80, 80);
     opacity: 0.6;
 }
+
+    /* --- INFO PANEL STRUCTURE --- */
+.skill-info-panel {
+    width: 400px;
+    height: 100%;
+    background-color: var(--color-bg-panel);
+    border-left-width: 2px;
+    border-color: var(--color-border-default);
+    padding: 20px;
+    justify-content: space-between; /* Pushes header to top, footer to bottom */
+}
+
+.skill-info-panel__content {
+    flex-grow: 1;
+    margin-top: 20px;
+}
+
+.skill-info-panel__footer {
+    align-items: stretch;
+    border-top-width: 1px;
+    border-color: var(--color-border-default);
+    padding-top: 20px;
+}
+
+/* --- TYPOGRAPHY BINDINGS --- */
+.info-text-h2 {
+    font-size: var(--font-size-h2);
+    color: var(--color-text-light);
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+.info-text-h3 {
+    font-size: var(--font-size-h3);
+    color: var(--color-border-highlight);
+    margin-bottom: 15px;
+    -unity-text-align: middle-center;
+}
+
+.info-text-body {
+    font-size: var(--font-size-body);
+    color: rgb(200, 200, 200);
+    margin-bottom: 15px;
+}
+
+/* --- BUTTON OVERRIDE --- */
+.skill-unlock-btn {
+    height: 50px;
+    font-size: var(--font-size-body);
+    -unity-font-style: bold;
+    /* Reusing your standard button transition logic */
+}

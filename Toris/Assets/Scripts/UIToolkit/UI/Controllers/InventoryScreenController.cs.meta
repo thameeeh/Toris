@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 5c10e5f27037a044caa24e4497cbb813
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _inventoryMainTemplate: {fileID: 9197481963319205126, guid: 2f20def441eddc04085d1e7161475f75, type: 3}
+  - _slotTemplate: {instanceID: 0}
+  - _gameSession: {instanceID: 0}
+  - _uiEvents: {instanceID: 0}
+  - _uiInventoryEvents: {instanceID: 0}
+  - _equipmentInventory: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

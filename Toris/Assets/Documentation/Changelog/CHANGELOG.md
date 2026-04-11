@@ -226,6 +226,9 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
+## [Current/Recent] - Clean up Leftover Python Scripts
+* Deleted leftover Python scripts (`*.py`) from the root directory that were accumulated during previous pull requests.
+
 ## [Previous] - Script Metadata Summaries
 This update adds structured context-dense metadata summaries for item entity modules to aid in scaling and dependency tracking.
 

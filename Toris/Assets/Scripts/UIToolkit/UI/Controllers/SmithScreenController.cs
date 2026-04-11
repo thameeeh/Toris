@@ -16,17 +16,20 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
-        [SerializeField] private PlayerProgressionAnchorSO _playerAnchor;
+        [SerializeField] private PlayerHUDBridge _playerHudBridge;
         [SerializeField] private ShopManagerSO _shopManagerSO;
         [SerializeField] private CraftingManagerSO _craftingManagerSO;
         [SerializeField] private SalvageManagerSO _salvageManagerSO;
 
         private SmithView _view;
         private UIManager _uiManager;
+        private PlayerHUDBridge _bridge;
+
 
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
+            _bridge = _playerHudBridge != null ? _playerHudBridge : FindFirstObjectByType<PlayerHUDBridge>();
 
             if(_shopManagerSO != null) _shopManagerSO.Initialize();
             if(_craftingManagerSO != null) _craftingManagerSO.Initialize();
@@ -86,7 +89,7 @@ namespace OutlandHaven.UIToolkit
 
             smithInstance.style.flexGrow = 1; // Make it fill the available space
 
-            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _playerAnchor, _craftingManagerSO, _salvageManagerSO);
+            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _bridge, _craftingManagerSO, _salvageManagerSO);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

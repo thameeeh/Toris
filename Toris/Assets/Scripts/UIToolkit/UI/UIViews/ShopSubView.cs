@@ -11,7 +11,7 @@ namespace OutlandHaven.UIToolkit
         private InventoryManager _shopContainer;
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
-        public PlayerProgressionAnchorSO PlayerAnchor;
+        private PlayerHUDBridge _playerHudBridge;
 
         private VisualElement _shopGrid;
         private Label _goldAmountLabel;
@@ -23,12 +23,13 @@ namespace OutlandHaven.UIToolkit
 
         private const int BULK_BUY_AMOUNT = 10;
 
-        public ShopSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession)
+        public ShopSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, PlayerHUDBridge playerHudBridge)
             : base(topElement)
         {
             _slotTemplate = slotTemplate;
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
+            _playerHudBridge = playerHudBridge;
         }
 
         protected override void SetVisualElements()
@@ -57,9 +58,9 @@ namespace OutlandHaven.UIToolkit
             CreateSlots();
 
             // Bind initial gold
-            if (_gameSession != null && PlayerAnchor != null)
+            if (_gameSession != null && _playerHudBridge != null)
             {
-                UpdateGoldAmount(PlayerAnchor.Instance.CurrentGold);
+                UpdateGoldAmount(_playerHudBridge.CurrentGold);
             }
 
             _isSetup = true;
@@ -71,7 +72,7 @@ namespace OutlandHaven.UIToolkit
             // Listen to Events
             if (!_eventsBound && _uiInventoryEvents != null)
             {
-                _uiInventoryEvents.OnCurrencyChanged += UpdateGoldAmount;
+                if (_playerHudBridge != null) _playerHudBridge.OnGoldChanged += HandleGoldChanged;
                 _uiInventoryEvents.OnShopInventoryUpdated += HandleShopInventoryUpdated;
                 _uiInventoryEvents.OnItemRightClicked += HandleItemRightClicked;
                 _eventsBound = true;
@@ -83,7 +84,7 @@ namespace OutlandHaven.UIToolkit
             base.Hide();
             if (_eventsBound && _uiInventoryEvents != null)
             {
-                _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
+                if (_playerHudBridge != null) _playerHudBridge.OnGoldChanged -= HandleGoldChanged;
                 _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
                 _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
                 _eventsBound = false;
@@ -146,6 +147,11 @@ namespace OutlandHaven.UIToolkit
             CreateSlots();
         }
 
+                private void HandleGoldChanged(int currentGold, int delta)
+        {
+            UpdateGoldAmount(currentGold);
+        }
+
         private void UpdateGoldAmount(int amount)
         {
             if (_goldAmountLabel != null)
@@ -158,7 +164,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_eventsBound && _uiInventoryEvents != null)
             {
-                _uiInventoryEvents.OnCurrencyChanged -= UpdateGoldAmount;
+                if (_playerHudBridge != null) _playerHudBridge.OnGoldChanged -= HandleGoldChanged;
                 _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
                 _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
                 _eventsBound = false;

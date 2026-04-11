@@ -8,7 +8,7 @@ Core Logic (The 'Contract'):
   - `Setup(object payload)`: Expects `InventoryManager` payload for the shop. Forwards to subviews and defaults to showing the Market tab.
 
 Dependency Graph (Crucial for Scaling):
-- Upstream: Depends on `GameView` base class, multiple `VisualTreeAsset` templates (slot, shop, forge, salvage), `UIEventsSO`, `UIInventoryEventsSO`, `GameSessionSO`, `PlayerProgressionAnchorSO`, `CraftingManagerSO`, `SalvageManagerSO`.
+- Upstream: Depends on `GameView` base class, multiple `VisualTreeAsset` templates (slot, shop, forge, salvage), `UIEventsSO`, `UIInventoryEventsSO`, `GameSessionSO`, `PlayerHUDBridge`, `CraftingManagerSO`, `SalvageManagerSO`.
 - Downstream: Instantiated and managed by `UIManager` (or registered dynamically).
 
 Data Schema:

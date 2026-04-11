@@ -7,7 +7,7 @@ Core Logic:
 - Public API: None
 
 Dependency Graph:
-- Upstream: Depends on UIManager, PlayerHUDBridge, VisualTreeAsset (UI templates), GameSessionSO, UIEventsSO, PlayerProgressionAnchorSO, PlayerStatsAnchorSO, HUDView.
+- Upstream: Depends on UIManager, PlayerHUDBridge, VisualTreeAsset (UI templates), GameSessionSO, UIEventsSO, PlayerHUDBridge, PlayerStatsAnchorSO, HUDView.
 - Downstream: None.
 
 Data Schema:
@@ -15,7 +15,7 @@ Data Schema:
 - VisualTreeAsset _buttonTemplate -> Reusable UI button template.
 - GameSessionSO _gameSession -> Reference to global game session state.
 - UIEventsSO _uiEvents -> Global UI event channel.
-- PlayerProgressionAnchorSO _playerAnchor -> Player progression data anchor.
+- PlayerHUDBridge _playerAnchor -> Player progression data anchor.
 - PlayerStatsAnchorSO _playerStatsAnchor -> Player stats data anchor.
 
 Side Effects & Lifecycle:

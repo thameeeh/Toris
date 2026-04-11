@@ -7,7 +7,7 @@ Core Logic:
 - Public API: None
 
 Dependency Graph:
-- Upstream: Depends on UIManager, VisualTreeAsset (UI templates), UIEventsSO, UIInventoryEventsSO, GameSessionSO, PlayerProgressionAnchorSO, ShopManagerSO, CraftingManagerSO, SalvageManagerSO, SmithView.
+- Upstream: Depends on UIManager, VisualTreeAsset (UI templates), UIEventsSO, UIInventoryEventsSO, GameSessionSO, PlayerHUDBridge, ShopManagerSO, CraftingManagerSO, SalvageManagerSO, SmithView.
 - Downstream: None.
 
 Data Schema:
@@ -15,7 +15,7 @@ Data Schema:
 - UIEventsSO _uiEvents -> Global UI event channel.
 - UIInventoryEventsSO _uiInventoryEvents -> Inventory-specific UI event channel.
 - GameSessionSO _gameSession -> Reference to global game session state.
-- PlayerProgressionAnchorSO _playerAnchor -> Player progression data anchor.
+- PlayerHUDBridge _playerAnchor -> Player progression data anchor.
 - ShopManagerSO _shopManagerSO -> Shop transaction manager.
 - CraftingManagerSO _craftingManagerSO -> Forging logic manager.
 - SalvageManagerSO _salvageManagerSO -> Salvage processing manager.

@@ -11,15 +11,15 @@ Core Logic (The 'Contract'):
   - GetMatchingRecipe(InventoryItemSO, InventoryItemSO): Finds a valid recipe from the Registry for the given item combination.
 
 Dependency Graph (Crucial for Scaling):
-- Upstream: Depends on GameSessionSO, PlayerProgressionAnchorSO, UIInventoryEventsSO, CraftingRegistrySO, InventoryItemSO, InventorySlot, ItemInstance, CraftingRecipeSO.
+- Upstream: Depends on GameSessionSO, PlayerHUDBridge, UIInventoryEventsSO, CraftingRegistrySO, InventoryItemSO, InventorySlot, ItemInstance, CraftingRecipeSO.
 - Downstream: Typically invoked via UI events (UIInventoryEventsSO.OnRequestForge).
 
 Data Schema:
 - GameSessionSO SessionData -> Access to player inventory.
-- PlayerProgressionAnchorSO PlayerAnchor -> Access to player gold/stats.
+- PlayerHUDBridge _playerHudBridge -> Access to player gold/stats.
 - UIInventoryEventsSO InventoryEvents -> Event bus for crafting requests and UI updates.
 - CraftingRegistrySO Registry -> Database of all valid recipes.
 
 Side Effects & Lifecycle:
 - Manual Initialization: Relies on external calls to Initialize() and Cleanup() to manage event subscriptions.
-- Side Effects: HandleRequestForge modifies SessionData.PlayerInventory (adds/removes items) and PlayerAnchor.Instance.CurrentGold. Invokes UIInventoryEventsSO.OnCurrencyChanged and OnInventoryUpdated. Instantiates ItemInstance objects.
+- Side Effects: HandleRequestForge modifies SessionData.PlayerInventory (adds/removes items) and PlayerAnchor.Instance.CurrentGold. Invokes UIInventoryEventsSO. and OnInventoryUpdated. Instantiates ItemInstance objects.

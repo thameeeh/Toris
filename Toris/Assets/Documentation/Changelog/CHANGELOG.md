@@ -1,4 +1,11 @@
-## [Current/Recent] - Assign Skill Screen to Input Key
+## [Current/Recent] - Refactored UI Currency Access
+* Replaced `PlayerProgressionAnchorSO` with `PlayerHUDBridge` in `ShopSubView` and related controllers (`SmithScreenController`, `MageScreenController`).
+* UI views now strictly observe `PlayerHUDBridge.OnGoldChanged` instead of global event channels for currency updates.
+* Removed redundant `OnCurrencyChanged` event from `UIInventoryEventsSO` to prevent race conditions.
+* Updated `ShopManagerSO`, `SalvageManagerSO`, and `CraftingManagerSO` to not invoke `OnCurrencyChanged`.
+* Removed unused `PlayerStatsAnchorSO` from `HudScreenController`.
+
+## [Previous] - Assign Skill Screen to Input Key
 - Created `SkillMenuController.cs` to instantiate `InputSystem_Actions`, subscribe to the `ToggleSkills` performed event, and dispatch `UIEvents.OnRequestOpen` for the `SkillScreen`.
 
 ## [Previous] - Implemented Skills Screen UI Framework

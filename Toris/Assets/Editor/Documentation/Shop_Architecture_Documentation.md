@@ -29,9 +29,8 @@ The event system handles opening and closing. When a player interacts with a Sho
 Events are used to handle the transactions securely without UI Views directly changing data:
 *   `OnRequestBuy(ItemInstance item, int quantity)`
 *   `OnRequestSell(ItemInstance item, int quantity)`
-*   `OnCurrencyChanged(int newAmount)`
 
-*Note: A centralized `ShopManagerSO` listens to these `Buy/Sell` events, verifies currency/inventory space, and updates the data containers before firing `OnInventoryUpdated` and `OnCurrencyChanged`.*
+*Note: A centralized `ShopManagerSO` listens to these `Buy/Sell` events, verifies currency/inventory space, and updates the data containers before firing `OnInventoryUpdated` and ``.*
 
 ## 3. UI Layer (View & Controller)
 
@@ -46,7 +45,7 @@ Instead of a dedicated, standalone screen, the Shop UI is a modular `VisualTreeA
 *   **Responsibilities**:
     *   Binds the shop data to visual slots.
     *   Displays the player's current currency.
-    *   Listens to `OnCurrencyChanged` to update the currency label.
+    *   Listens to `` to update the currency label.
     *   Provides public `Show()` and `Hide()` methods to be called by the parent view.
 
 ### Integration in Parent Views (e.g., `SmithView` / `SmithController`)

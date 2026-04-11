@@ -10,8 +10,6 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private VisualTreeAsset _buttonTemplate;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
-        [SerializeField] private PlayerProgressionAnchorSO _playerAnchor;
-        [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
 
         private HUDView _view;
         private UIManager _uiManager;

@@ -82,7 +82,6 @@ namespace OutlandHaven.UIToolkit
                         // Deduct gold
                         PlayerAnchor.Instance.TrySpendGold(totalCost);
 
-                        InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                         InventoryEvents?.OnShopInventoryUpdated?.Invoke();
 
 #if UNITY_EDITOR
@@ -130,7 +129,6 @@ namespace OutlandHaven.UIToolkit
                 bool addedToShop = CurrentShopInventory.AddItem(item, quantity);
 
                 PlayerAnchor.Instance.AddGold(totalValue);
-                InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                 InventoryEvents?.OnInventoryUpdated?.Invoke();
 
                 if (addedToShop)

@@ -11,18 +11,18 @@ Core Logic (The 'Contract'):
   - `Dispose()`: Unbinds remaining events and calls base `Dispose()`.
 
 Dependency Graph (Crucial for Scaling):
-- Upstream: Depends on `InventoryManager` (dynamic shop data), `VisualTreeAsset` (slot template), `UIInventoryEventsSO` (event channels), `GameSessionSO` (player inventory check), `PlayerProgressionAnchorSO` (player gold check).
+- Upstream: Depends on `InventoryManager` (dynamic shop data), `VisualTreeAsset` (slot template), `UIInventoryEventsSO` (event channels), `GameSessionSO` (player inventory check), `PlayerHUDBridge` (player gold check).
 - Downstream: Instantiated and managed by `SmithView`. (Potentially other merchant views).
 
 Data Schema:
 - `InventoryManager _shopContainer`: Reference to the active shop's inventory.
-- `PlayerProgressionAnchorSO PlayerAnchor`: Reference to read player gold.
+- `PlayerHUDBridge _playerHudBridge`: Reference to read player gold.
 - `List<InventorySlotView> _slotViews`: Tracks instantiated slot views for lifecycle management and disposal.
 - `const int BULK_BUY_AMOUNT = 10`: Hardcoded bulk transaction amount.
 
 Side Effects & Lifecycle:
 - Clears and rebuilds the `_shopGrid` dynamically during `Setup()` or when `OnShopInventoryUpdated` is fired. Instantiates `TemplateContainer` objects for every slot.
 - Disposes previous `InventorySlotView` instances before rebuilding to prevent memory leaks.
-- Subscribes to global events (`OnCurrencyChanged`, `OnShopInventoryUpdated`, `OnItemRightClicked`) upon `Show()`.
+- Subscribes to global events (``, `OnShopInventoryUpdated`, `OnItemRightClicked`) upon `Show()`.
 - Broadcasts transaction requests (`OnRequestBuy`, `OnRequestSell`) via `UIInventoryEventsSO` when items are right-clicked, depending on which container the item belongs to.
 - Does not use Unity `Update()` loop.

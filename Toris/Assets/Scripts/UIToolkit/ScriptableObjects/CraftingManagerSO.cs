@@ -147,7 +147,6 @@ namespace OutlandHaven.UIToolkit
                         
                         // Deduct gold
                         PlayerAnchor.Instance.TrySpendGold(recipe.GoldCost);
-                        InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                         InventoryEvents?.OnInventoryUpdated?.Invoke();
 #if UNITY_EDITOR
                         Debug.Log($"Forged {recipe.OutputItem.ItemName} successfully.");

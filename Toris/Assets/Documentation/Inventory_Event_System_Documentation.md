@@ -52,7 +52,7 @@ This ScriptableObject acts as the central event bus specifically for inventory a
 *   `OnShopInventoryUpdated`: Fired when a vendor's stock changes. Shop UI views listen to this.
 *   `OnRequestBuy(InventoryItemSO, int)`: Dispatched by UI Views when a player attempts to buy an item. A central `ShopManager` listens to this to process the transaction.
 *   `OnRequestSell(InventoryItemSO, int)`: Dispatched by UI views to sell an item.
-*   `OnCurrencyChanged(int)`: Fired when player gold increases/decreases. Currency displays listen to this.
+*   `(int)`: Fired when player gold increases/decreases. Currency displays listen to this.
 
 ## 4. UI View Lifecycle Example (PlayerInventoryView)
 

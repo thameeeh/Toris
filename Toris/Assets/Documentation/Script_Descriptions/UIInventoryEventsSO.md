@@ -15,7 +15,6 @@ Data Schema:
 - UnityAction OnShopInventoryUpdated -> Shop inventory state refresh.
 - UnityAction<ItemInstance, int> OnRequestBuy -> Triggers purchase transaction (item, quantity).
 - UnityAction<ItemInstance, int> OnRequestSell -> Triggers sale transaction (item, quantity).
-- UnityAction<int> OnCurrencyChanged -> Broadcaster for currency changes.
 - UnityAction<InventorySlot> OnItemClicked -> Broadcasts standard slot selection.
 - UnityAction<InventorySlot> OnItemRightClicked -> Broadcasts context actions (e.g., auto-fill, use).
 - UnityAction<InventorySlot, SalvageType> OnRequestSalvage -> Triggers item salvage logic.

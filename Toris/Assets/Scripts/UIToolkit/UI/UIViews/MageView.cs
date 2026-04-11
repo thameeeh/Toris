@@ -14,13 +14,14 @@ namespace OutlandHaven.UIToolkit
         private GameSessionSO _gameSession;
         private InventoryManager _shopContainer;
         private ShopManagerSO _shopManager;
+        private PlayerHUDBridge _playerHudBridge;
 
         private VisualElement _middlePanel;
 
         // SubViews
         private ShopSubView _shopSubView;
 
-        public MageView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, ShopManagerSO shopManager)
+        public MageView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, ShopManagerSO shopManager, PlayerHUDBridge playerHudBridge)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
@@ -28,6 +29,7 @@ namespace OutlandHaven.UIToolkit
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
             _shopManager = shopManager;
+            _playerHudBridge = playerHudBridge;
         }
 
         protected override void SetVisualElements()
@@ -62,7 +64,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     TemplateContainer shopInstance = _shopTemplate.Instantiate();
                     _middlePanel.Add(shopInstance);
-                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession);
+                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession, _playerHudBridge);
                     _shopSubView.Initialize();
                 }
             }

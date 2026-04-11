@@ -88,4 +88,4 @@ The project employs a robust event-driven architecture using ScriptableObjects t
   * **CraftingManagerSO** -[listens to]-> `OnRequestForge`
   * **SalvageManagerSO** -[listens to]-> `OnRequestSalvage`
   * **Views (e.g., `ShopSubView`, `ForgeSubView`)** -[invokes]-> Transaction Requests (`OnRequestBuy`, `OnRequestForge`, etc.)
-  * **Managers** -[invokes]-> `OnCurrencyChanged`, `OnShopInventoryUpdated`, `OnInventoryUpdated` (post-transaction)
+  * **Managers** -[invokes]-> ``, `OnShopInventoryUpdated`, `OnInventoryUpdated` (post-transaction)

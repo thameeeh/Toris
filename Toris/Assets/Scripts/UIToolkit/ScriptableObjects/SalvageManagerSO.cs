@@ -96,7 +96,6 @@ namespace OutlandHaven.UIToolkit
                 if (recipe.GoldYield > 0)
                 {
                     PlayerAnchor.Instance.AddGold(recipe.GoldYield);
-                    InventoryEvents?.OnCurrencyChanged?.Invoke(PlayerAnchor.Instance.CurrentGold);
                 }
 #if UNITY_EDITOR
                 Debug.Log($"Salvaged {itemType.ItemName} for {recipe.GoldYield} gold.");

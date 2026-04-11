@@ -14,7 +14,7 @@ namespace OutlandHaven.UIToolkit
 
     public class SkillsView : GameView
     {
-        public override ScreenType ID => ScreenType.SkillScreen;
+        public override ScreenType ID => ScreenType.Skills;
 
         private Label _lblStrength;
         private Label _lblAgility;

@@ -78,7 +78,7 @@ namespace OutlandHaven.UIToolkit
             if (_optionsContainer == null) return;
 
             CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
-            CreateMenuButton("Skills", "(U)", ScreenType.SkillScreen);
+            CreateMenuButton("Skills", "(U)", ScreenType.Skills);
             CreateMenuButton("Shop", "(T)", ScreenType.CharacterSheet);
             CreateMenuButton("Map", "(P)", ScreenType.CharacterSheet);
             // Add other buttons here

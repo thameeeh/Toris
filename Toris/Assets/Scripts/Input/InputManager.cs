@@ -144,6 +144,6 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleSkills(InputAction.CallbackContext context)
     {
-        _uiEvents.OnRequestOpen?.Invoke(ScreenType.SkillScreen, null);
+        _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
     }
 }

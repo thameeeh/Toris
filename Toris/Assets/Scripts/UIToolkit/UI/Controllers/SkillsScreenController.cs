@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Skills; // Make sure to include the namespace where PlayerSkillView and SkillData live
 
 namespace OutlandHaven.UIToolkit
 {
@@ -10,7 +11,11 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private PlayerHUDBridge _playerHudBridge;
 
-        private SkillsView _view;
+        [Header("Database")]
+        [Tooltip("Drop all your SkillData ScriptableObjects here")]
+        [SerializeField] private SkillData[] _skillDatabase;
+
+        private PlayerSkillView _view; // Updated to the new view
         private UIManager _uiManager;
 
         private void Awake()
@@ -36,8 +41,8 @@ namespace OutlandHaven.UIToolkit
             // Allow it to grow to fill the parent container completely
             skillsInstance.style.flexGrow = 1;
 
-            // 2. Pass the instance to the View
-            _view = new SkillsView(skillsInstance, _uiEvents);
+            // 2. Pass the instance, UI events, AND the new database to the View
+            _view = new PlayerSkillView(skillsInstance, _uiEvents, _skillDatabase);
             _view.Initialize();
 
             // 3. Register to the FullScreen zone
@@ -46,9 +51,6 @@ namespace OutlandHaven.UIToolkit
 
         private void OnEnable()
         {
-            // Note: Explicitly avoiding UIManager interactions here to prevent race conditions as requested.
-            // The instantiation and registration happens in Start().
-
             if (_uiEvents != null)
             {
                 _uiEvents.OnScreenOpen += HandleScreenOpen;
@@ -65,7 +67,8 @@ namespace OutlandHaven.UIToolkit
 
         private void HandleScreenOpen(ScreenType type)
         {
-            if (type == ScreenType.SkillScreen)
+            // Make sure this matches the enum you added (e.g., ScreenType.Skills)
+            if (type == ScreenType.Skills)
             {
                 // Push data to the view when the screen is opened
                 UpdateViewData();
@@ -76,8 +79,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_view == null) return;
 
-            // Currently, the PlayerHUDBridge does not have these stats,
-            // so we send placeholder data for now as per the requirements.
+            // Kept your dummy payload for future integration
             SkillsPayload dummyPayload = new SkillsPayload
             {
                 Strength = 10,
@@ -88,6 +90,7 @@ namespace OutlandHaven.UIToolkit
                 IntelligenceXpPercentage = 25f
             };
 
+            // This will pass the payload into the Setup() method of PlayerSkillView
             _view.Setup(dummyPayload);
         }
 
@@ -96,6 +99,10 @@ namespace OutlandHaven.UIToolkit
             if (_uiEvents == null)
             {
                 Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
+            }
+            if (_skillDatabase == null || _skillDatabase.Length == 0)
+            {
+                Debug.LogWarning($"<color=yellow>{name}</color> has an empty Skill Database. Don't forget to assign your ScriptableObjects!", this);
             }
         }
     }

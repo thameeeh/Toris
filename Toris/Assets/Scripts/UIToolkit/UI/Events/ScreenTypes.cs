@@ -12,7 +12,7 @@ namespace OutlandHaven.UIToolkit
         CharacterSheet,
         Smith,
         Mage,
-        SkillScreen
+        Skills
     }
     public enum ScreenZone
     {

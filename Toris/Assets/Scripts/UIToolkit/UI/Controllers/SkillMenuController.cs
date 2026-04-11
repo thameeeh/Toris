@@ -29,7 +29,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (context.performed)
             {
-                _uiEvents.OnRequestOpen?.Invoke(ScreenType.SkillScreen, null);
+                _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
             }
         }
 

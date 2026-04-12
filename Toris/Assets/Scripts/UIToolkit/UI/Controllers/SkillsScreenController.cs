@@ -10,6 +10,8 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private VisualTreeAsset _skillsMainTemplate; // <--- Drag SkillScreen.uxml here
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private PlayerHUDBridge _playerHudBridge;
+        [SerializeField] private GameSessionSO _gameSession;
+        [SerializeField] private UISkillEventsSO uiSkillEvents;
 
         [Header("Database")]
         [Tooltip("Drop all your SkillData ScriptableObjects here")]
@@ -42,7 +44,7 @@ namespace OutlandHaven.UIToolkit
             skillsInstance.style.flexGrow = 1;
 
             // 2. Pass the instance, UI events, AND the new database to the View
-            _view = new PlayerSkillView(skillsInstance, _uiEvents, _skillDatabase);
+            _view = new PlayerSkillView(skillsInstance, _uiEvents, _skillDatabase, _gameSession, uiSkillEvents);
             _view.Initialize();
 
             // 3. Register to the FullScreen zone

@@ -83,6 +83,15 @@ MonoBehaviour:
   _skillsMainTemplate: {fileID: 9197481963319205126, guid: 4ab31f785c3e7614daecfda9464c00ab, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _playerHudBridge: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  uiSkillEvents: {fileID: 11400000, guid: 0ae4c50464db5c946aa2e579312de26c, type: 2}
+  _skillDatabase:
+  - {fileID: 11400000, guid: 75d1f122348c85242b3edabd27f7cbce, type: 2}
+  - {fileID: 11400000, guid: 02dd2ca1dad48fa4ab357669965f62a0, type: 2}
+  - {fileID: 11400000, guid: 22cb9564c524fcc42bbe3491a1d58ada, type: 2}
+  - {fileID: 11400000, guid: 6852c737c84df6242b12ba3873682127, type: 2}
+  - {fileID: 11400000, guid: 6ce10e9df66392140b044c26f23870c0, type: 2}
+  - {fileID: 11400000, guid: 0fa849fe2fb0abe48b8a7235774a8b44, type: 2}
 --- !u!1 &2133382981164659825
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +142,7 @@ MonoBehaviour:
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _playerHudBridge: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   _shopManagerSO: {fileID: 11400000, guid: a1f9750d1affea14f9ef38e8b30fc7ca, type: 2}
 --- !u!1 &2765215845804869651
 GameObject:
@@ -186,7 +196,7 @@ MonoBehaviour:
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
-  _playerAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+  _playerHudBridge: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   _shopManagerSO: {fileID: 11400000, guid: a1f9750d1affea14f9ef38e8b30fc7ca, type: 2}
   _craftingManagerSO: {fileID: 11400000, guid: 5183623d120660d4788fe968e87cd1c8, type: 2}
   _salvageManagerSO: {fileID: 11400000, guid: 402cb2d0cf22d5343b29bbfef2e6fcce, type: 2}
@@ -238,8 +248,6 @@ MonoBehaviour:
   _buttonTemplate: {fileID: 9197481963319205126, guid: 58da16bb20c30c546a4a2c542410a601, type: 3}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  _playerAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
-  _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
 --- !u!1 &7378870829550814198
 GameObject:
   m_ObjectHideFlags: 0

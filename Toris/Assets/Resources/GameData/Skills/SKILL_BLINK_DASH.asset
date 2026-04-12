@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7d69a64f48c96f4ea7d509bf2df9908, type: 3}
-  m_Name: Multi-Shot
+  m_Name: SKILL_BLINK_DASH
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillID: 1
-  skillName: Multi-Shot
-  description: 
+  skillID: SKILL_BLINK_DASH
+  skillName: Blink Dash
+  description: Instantly teleport a short distance forward, bypassing physical obstacles
+    and enemies.
   costSP: 1
-  prerequisites: []
+  prerequisites:
+  - {fileID: 11400000, guid: 22cb9564c524fcc42bbe3491a1d58ada, type: 2}

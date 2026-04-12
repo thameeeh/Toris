@@ -24,3 +24,58 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+#container__player {
+    flex-grow: 1;
+    background-color: rgb(18, 18, 18);
+    picking-mode: Position;
+    flex-shrink: 0;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+#Top__Section {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+#Stats__Panel {
+    flex-grow: 3;
+    flex-basis: 0;
+    background-color: rgb(24, 24, 24);
+    border-right-width: 2px;
+    border-right-color: rgb(40, 40, 40);
+    padding: 15px;
+}
+
+.stats-scroll-view {
+    flex-grow: 1;
+}
+
+#Equipment__Wrapper {
+    flex-grow: 7;
+    flex-basis: 0;
+    display: flex;
+}
+
+#Equipment__Header {
+    padding-left: 10px;
+}
+
+#PlayerEquipment__Panel {
+    background-color: rgb(32, 32, 32);
+    -unity-background-scale-mode: scale-to-fit;
+    flex-grow: 1;
+    background-size: contain;
+    background-position-x: center;
+    background-position-y: top 50px;
+}
+
+#Inventory__Slots--Panel {
+    flex-grow: 0;
+    margin-bottom: 0;
+    height: 20%;
+    min-height: 248px;
+    border-top-width: 2px;
+    border-top-color: rgb(40, 40, 40);
+}

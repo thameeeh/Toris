@@ -26,85 +26,114 @@
 }
 
 .item-quantity {
-    /* 1. Pin it to the bottom right corner */
     position: absolute;
     bottom: 2px;
     left: 4px;
-    
-    /* 2. Typography */
     color: rgb(255, 255, 255);
     font-size: 14px;
     -unity-font-style: bold;
-    
-    /* 3. The Contrast Maker (Black Outline) */
     -unity-text-outline-width: 1.5px;
     -unity-text-outline-color: rgb(0, 0, 0);
-    
-    /* Ensure it never catches mouse clicks so drag-and-drop works smoothly */
-    picking-mode: Ignore; 
+    picking-mode: Ignore;
 }
 
 .item-icon {
     width: 70%;
     height: 70%;
-    
-    /* 2. Remove any accidental spacing that might push it off-center */
     margin: auto;
     padding: 0;
 }
 
-    /* --- THE TAB CONTAINER --- */
 .panel-tab {
     flex-grow: 1;
-    height: 50px; /* Slightly shorter than a slot looks better for tabs */
+    height: 50px;
     background-color: rgb(40, 40, 40);
-    
-    /* Create the "Folder Tab" shape */
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-width: 1px;
-    border-bottom-width: 0; /* Removes bottom border so it connects to the panel */
+    border-bottom-width: 0;
     border-color: rgb(25, 25, 25);
-    
     margin-left: 2px;
     margin-right: 2px;
     margin-top: 5px;
-    
-    /* Perfect centering for the label inside */
     justify-content: center;
     align-items: center;
-    
     transition-duration: 0.1s;
 }
 
 .panel-tab:hover {
     background-color: rgb(60, 60, 60);
-    border-color: rgb(220, 179, 92); /* Gold highlight on hover */
-}
-
-/* Modifier class for the currently selected tab */
-.panel-tab--active {
-    background-color: rgb(70, 70, 70); /* Brighter background to show it is active */
     border-color: rgb(220, 179, 92);
 }
 
-/* --- THE TAB TEXT --- */
+.panel-tab--active {
+    background-color: rgb(70, 70, 70);
+    border-color: rgb(220, 179, 92);
+}
+
 .panel-tab-label {
-    color: rgb(180, 180, 180); /* Dimmer when inactive */
+    color: rgb(180, 180, 180);
     font-size: 18px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
-    
-    /* Prevent the text from catching the mouse, ensuring the whole tab is clickable */
-    picking-mode: Ignore; 
+    picking-mode: Ignore;
 }
 
-/* Make text bright white only when the tab is active */
 .panel-tab--active .panel-tab-label {
-    color: rgb(255, 255, 255); 
+    color: rgb(255, 255, 255);
 }
 
-/* --- POTION QUICKBAR COMPONENTS --- */
+.panel-title {
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+#Equipment__Header .panel-title {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.equip-slot--head {
+    position: absolute;
+    top: 5%;
+    left: 2%;
+}
+
+.equip-slot--chest {
+    position: absolute;
+    top: 22%;
+    left: 2%;
+}
+
+.equip-slot--arms {
+    position: absolute;
+    left: 2%;
+    top: 39%;
+}
+
+.equip-slot--legs {
+    position: absolute;
+    left: 2%;
+    top: 56%;
+}
+
+.equip-slot--weapon {
+    position: absolute;
+    left: 2%;
+    bottom: 10px;
+}
+
+.potion-container--absolute {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
 
 .potion-slot-group {
     flex-direction: row;
@@ -113,24 +142,16 @@
 }
 
 .potion-slot {
-    /* Slightly smaller than your standard 82x82 item slots to fit better on a HUD */
-    width: 70px;  
+    width: 70px;
     height: 70px;
-    
-    /* A slightly darker background than standard inventory slots */
     background-color: rgb(40, 40, 40);
     border-width: 2px;
     border-color: var(--color-border-default);
-    
-    /* A radius of half the width/height creates a perfect circle */
-    border-radius: 35px; 
-    
-    /* Creates the requested gap between slots */
-    margin-right: 15px; 
+    border-radius: 35px;
+    margin-right: 15px;
     transition-duration: 0.1s;
 }
 
-/* Pseudo-class to ensure the last slot doesn't add unnecessary margin that throws off centering */
 .potion-slot-group > .potion-slot:last-child {
     margin-right: 0;
 }
@@ -139,8 +160,6 @@
     border-color: var(--color-border-highlight);
     scale: 1.05;
 }
-
-    /* --- COMMERCE COMPONENTS --- */
 
 .shop-item-slot {
     width: 82px;
@@ -162,12 +181,13 @@
 .shop-item-price {
     position: absolute;
     bottom: 2px;
-    right: 4px; 
-    
+    right: 4px;
     color: var(--color-coin-gold);
     font-size: 14px;
     -unity-font-style: bold;
     -unity-text-outline-width: 1px;
     -unity-text-outline-color: rgb(0, 0, 0);
-    picking-mode: Ignore; 
+    picking-mode: Ignore;
 }
+
+

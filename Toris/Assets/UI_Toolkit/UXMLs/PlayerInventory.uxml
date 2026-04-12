@@ -1,25 +1,38 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
-    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3"/>
     <ui:VisualElement name="VisualElement" style="picking-mode: Ignore; flex-shrink: 0; flex-grow: 1; width: 100%; height: 100%;">
-        <ui:VisualElement name="container__player" style="flex-grow: 1; background-color: rgb(18, 18, 18); picking-mode: Position; flex-shrink: 0; align-items: stretch; align-self: auto; justify-content: space-evenly;">
-            <ui:VisualElement name="">
-                <ui:Label text="Inventory" style="color: rgb(255, 255, 255); font-size: 40px;"/>
-            </ui:VisualElement>
-            <ui:VisualElement name="PlayerEquipment__Panel" style="background-color: rgb(32, 32, 32); background-image: url(&quot;project://database/Assets/UI_Toolkit/BowGuy007.png?fileID=2800000&amp;guid=d2a0ea75174bdc740a7b12c0072b8de5&amp;type=3#BowGuy007&quot;); -unity-background-scale-mode: scale-to-fit; flex-grow: 1; background-size: contain; background-position-x: center; background-position-y: top 50px;">
-                <ui:VisualElement name="Consumables__Player--Inventory" class="potion-slot-group" style="position: absolute; right: 15px; bottom: 15px;">
-                    <ui:VisualElement class="potion-slot" style="flex-grow: 1;"/>
-                    <ui:VisualElement class="potion-slot" style="flex-grow: 1;"/>
+        <ui:VisualElement name="container__player">
+            <ui:VisualElement name="Top__Section">
+                <ui:VisualElement name="Stats__Panel">
+                    <ui:Label text="Stats" class="panel-title"/>
+                    <ui:ScrollView class="stats-scroll-view">
+                        <ui:Label text="STR: 25" class="stat-label"/>
+                        <ui:Label text="DEX: 40" class="stat-label"/>
+                        <ui:Label text="INT: 15" class="stat-label"/>
+                        <ui:Label text="VIT: 200/200" class="stat-label"/>
+                    </ui:ScrollView>
                 </ui:VisualElement>
-                <ui:VisualElement name="slot-head" class="item-slot" style="position: absolute; top: 5%; left: 2%;"/>
-                <ui:VisualElement name="slot-arms" class="item-slot" style="position: absolute; left: 2%; top: 39%;"/>
-                <ui:VisualElement name="slot-legs" class="item-slot" style="position: absolute; left: 2%; top: 56%;"/>
-                <ui:VisualElement name="slot-weapon" class="item-slot" style="position: absolute; left: 2%; bottom: 10px;"/>
-                <ui:VisualElement name="slot-chest" class="item-slot" style="position: absolute; top: 22%; left: 2%;"/>
+                <ui:VisualElement name="Equipment__Wrapper">
+                    <ui:VisualElement name="Equipment__Header">
+                        <ui:Label text="Equipment" class="panel-title"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="PlayerEquipment__Panel" style="background-image: url(&quot;project://database/Assets/UI_Toolkit/BowGuy007.png?fileID=2800000&amp;guid=d2a0ea75174bdc740a7b12c0072b8de5&amp;type=3#BowGuy007&quot;);">
+                        <ui:VisualElement name="Consumables__Player--Inventory" class="potion-slot-group potion-container--absolute">
+                            <ui:VisualElement class="potion-slot"/>
+                            <ui:VisualElement class="potion-slot"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="slot-head" class="item-slot equip-slot--head"/>
+                        <ui:VisualElement name="slot-arms" class="item-slot equip-slot--arms"/>
+                        <ui:VisualElement name="slot-legs" class="item-slot equip-slot--legs"/>
+                        <ui:VisualElement name="slot-weapon" class="item-slot equip-slot--weapon"/>
+                        <ui:VisualElement name="slot-chest" class="item-slot equip-slot--chest"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="Inventory__Slots--Panel" class="inventory-grid" style="flex-grow: 0; margin-bottom: 0; height: 20%; min-height: 246px;">
+            <ui:VisualElement name="Inventory__Slots--Panel" class="inventory-grid">
                 <ui:ScrollView vertical-scroller-visibility="Hidden" style="flex-grow: 1; height: 100%;">
-                    <ui:VisualElement name="grid-player" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap;"/>
+                    <ui:VisualElement name="grid-player"/>
                 </ui:ScrollView>
             </ui:VisualElement>
         </ui:VisualElement>

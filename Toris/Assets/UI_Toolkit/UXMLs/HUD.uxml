@@ -1,30 +1,32 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
-    <ui:VisualElement name="hud__screen" style="flex-grow: 1; justify-content: flex-end; padding-bottom: 20px; padding-left: 20px; padding-right: 20px;">
-        <ui:VisualElement style="flex-grow: 0; align-items: flex-start; flex-direction: column-reverse; margin-bottom: 10px;">
-            <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&amp;guid=065e66474324a9f459577583dff2a17e&amp;type=3#Compass&quot;); width: 60px; height: 60px; -unity-background-scale-mode: scale-to-fit; background-color: rgba(0, 0, 0, 0); border-width: 0;"/>
-            <ui:VisualElement name="hud__menu-options" class="hud-menu-container" style="display: none; position: absolute; bottom: 70px; left: 0; padding-bottom: 10px; align-items: center; background-color: rgba(0, 0, 0, 0.57);">
-                <ui:VisualElement style="width: 50px; height: 50px; margin-bottom: 5px;"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/HUD.uss?fileID=7433441132597879392&amp;guid=76aca9a85a7322240ba3777a79b12751&amp;type=3#HUD"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <ui:VisualElement name="hud__screen">
+        <ui:VisualElement name="hud__menu-section">
+            <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&amp;guid=065e66474324a9f459577583dff2a17e&amp;type=3#Compass&quot;);"/>
+            <ui:VisualElement name="hud__menu-options" class="hud-menu-container">
+                <ui:VisualElement class="hud-menu-icon"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-direction: row; align-items: flex-end; width: 100%; height: 150px;">
-            <ui:VisualElement style="width: 300px; margin-right: auto; flex-shrink: 1; flex-grow: 0.1;">
-                <ui:Label text="Level" name="hud__level-label" class="HUD" style="-unity-font-style: bold; color: rgb(255, 255, 255);"/>
-                <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-                    <ui:Label text="XP" name="" class="HUD" style="-unity-font-style: bold; color: rgb(255, 255, 255); min-width: 52px;"/>
-                    <ui:ProgressBar value="0" title="" name="hud__xp-bar" style="flex-grow: 1; color: rgb(175, 147, 27);"/>
+        <ui:VisualElement name="hud__bottom-section">
+            <ui:VisualElement name="hud__left-container">
+                <ui:Label text="Level" name="hud__level-label" class="HUD"/>
+                <ui:VisualElement class="hud-bar-row">
+                    <ui:Label text="XP" class="HUD hud-label-xp"/>
+                    <ui:ProgressBar value="0" name="hud__xp-bar"/>
                 </ui:VisualElement>
-                <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-                    <ui:Label text="Health" class="HUD" style="color: white; -unity-font-style: bold;"/>
-                    <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100" style="height: 40px; color: red; flex-grow: 1;"/>
+                <ui:VisualElement class="hud-bar-row">
+                    <ui:Label text="Health" class="HUD"/>
+                    <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement style="width: 300px; margin-left: auto; align-items: flex-end; align-self: auto; align-content: auto;">
-                <ui:VisualElement style="flex-grow: 1; flex-direction: row-reverse; justify-content: space-between; align-items: auto; align-self: stretch; align-content: auto; flex-shrink: 1;">
-                    <ui:Label text="Mana" name="" class="HUD" style="color: white; -unity-font-style: bold;"/>
+            <ui:VisualElement name="hud__right-container">
+                <ui:VisualElement class="hud-bar-header">
+                    <ui:Label text="Mana" class="HUD"/>
                     <ui:Label text="Gold:" name="hud__gold-label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:ProgressBar value="20" name="hud__mana-bar" style="height: 40px; width: 100%; color: blue;"/>
+                <ui:ProgressBar value="20" name="hud__mana-bar"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

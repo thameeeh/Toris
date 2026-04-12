@@ -5,6 +5,16 @@ using OutlandHaven.UIToolkit;
 
 namespace OutlandHaven.Skills
 {
+    public struct SkillsPayload
+    {
+        public int Strength;
+        public float StrengthXpPercentage;
+        public int Agility;
+        public float AgilityXpPercentage;
+        public int Intelligence;
+        public float IntelligenceXpPercentage;
+    }
+
     public class PlayerSkillView : GameView, IDisposable
     {
         public override ScreenType ID => ScreenType.Skills;

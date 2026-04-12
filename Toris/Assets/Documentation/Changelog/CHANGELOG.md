@@ -5,6 +5,19 @@
 * Updated `ShopManagerSO`, `SalvageManagerSO`, and `CraftingManagerSO` to not invoke `OnCurrencyChanged`.
 * Removed unused `PlayerStatsAnchorSO` from `HudScreenController`.
 
+## [Current/Recent] - Cleanup redundant skill view script
+This update removes redundant scripts for the skill tree UI and consolidates its logic into the actively used views and data structures.
+
+### 1. Removed `SkillsView.cs`
+* Deleted the older, redundant `SkillsView.cs` as its UI component functionality has been entirely replaced by `PlayerSkillView.cs`.
+
+### 2. Consolidated Dependencies
+* Moved the `SkillsPayload` data struct into `PlayerSkillView.cs` to prevent compilation errors after deletion.
+* Validated `SkillsScreenController.cs` and `PlayerSkillView.cs` integration with the struct.
+
+### 3. Documentation Updated
+* Added Context-Dense Metadata Summaries in `Script_Descriptions/` for `PlayerSkillView.cs`, `SkillsScreenController.cs`, `SkillMenuController.cs`, and `SkillDataSO.cs`.
+
 ## [Previous] - Assign Skill Screen to Input Key
 - Created `SkillMenuController.cs` to instantiate `InputSystem_Actions`, subscribe to the `ToggleSkills` performed event, and dispatch `UIEvents.OnRequestOpen` for the `SkillScreen`.
 

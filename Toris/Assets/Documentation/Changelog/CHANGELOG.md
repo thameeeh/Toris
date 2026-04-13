@@ -1,11 +1,39 @@
-## [Current/Recent] - Refactored UI Currency Access
+## [Current/Recent] - Skill Screen Architecture Implementation
+This update introduces the foundational architecture for the Skill Screen, aligning with the project's MVC and Event Bus standards.
+
+### 1. UI Layout & Styling (UXML/USS)
+* **The Massive Canvas:** Utilized Flexbox inside a `ScrollView` (with hidden scrollbars) to create a large 1920x1080 panning area for the skill tree.
+* **The Info Panel:** Built a static side panel to display detailed information (name, description, cost, status) and hold the primary action button.
+* **Visual States:** Defined specific USS classes (`.skill-node--unlocked`, `--available`, `--locked`) to handle the coloring and opacity of nodes, plus pseudo-classes (`:disabled`, `:hover`) for the unlock button.
+
+### 2. Static Data (ScriptableObjects)
+* **The Blueprint:** Created `SkillData` ScriptableObjects to hold the static identity of each skill (ID, name, cost, text, and an array of prerequisite `SkillData`).
+* **The Separation:** Ensures dynamic player save files are not bloated with static text and icon references.
+
+### 3. Dynamic Data Model (Pure C#)
+* **The Tracker:** Built `PlayerSkillTracker`, a pure, serializable C# class living inside `GameSessionSO` (the ultimate source of truth).
+* **The Logic:** Securely handles deducting SP, adding unlocked IDs to a HashSet, and evaluating if prerequisites are met.
+
+### 4. Event Bus Architecture (ScriptableObjects)
+* **The Decoupling:** Created `UISkillEventsSO` to prevent the UI from directly modifying the save data.
+* **The Manager:** Established a `SkillManager` MonoBehaviour to listen for the UI's `OnRequestUnlock` event, validate the math against the `GameSessionSO`, and broadcast back the success state.
+
+### 5. The View (C# UI Logic)
+* **The Mapping:** In `PlayerSkillView.cs`, used a Dictionary to map UXML `<ui:Button>` elements directly to their respective `SkillData` IDs.
+* **Data Injection:** Injects SO data into the Info Panel labels when a node is clicked.
+* **State Updates:** Wrote `RefreshAllNodes()`, sweeping the tree every time it opens (or a skill is bought) to dynamically add or remove the USS locked/available/unlocked classes based on the Tracker's logic.
+
+### 6. The Controller (MonoBehaviour)
+* **The Initialization:** Refactored `SkillScreenController.cs` to instantiate the UXML, inject the `SkillData[]` database and the `GameSessionSO` into the View, and register it directly into the `UIManager`'s FullScreen zone.
+
+## [Previous] - Refactored UI Currency Access
 * Replaced `PlayerProgressionAnchorSO` with `PlayerHUDBridge` in `ShopSubView` and related controllers (`SmithScreenController`, `MageScreenController`).
 * UI views now strictly observe `PlayerHUDBridge.OnGoldChanged` instead of global event channels for currency updates.
 * Removed redundant `OnCurrencyChanged` event from `UIInventoryEventsSO` to prevent race conditions.
 * Updated `ShopManagerSO`, `SalvageManagerSO`, and `CraftingManagerSO` to not invoke `OnCurrencyChanged`.
 * Removed unused `PlayerStatsAnchorSO` from `HudScreenController`.
 
-## [Current/Recent] - Cleanup redundant skill view script
+## [Previous] - Cleanup redundant skill view script
 This update removes redundant scripts for the skill tree UI and consolidates its logic into the actively used views and data structures.
 
 ### 1. Removed `SkillsView.cs`

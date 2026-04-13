@@ -157,6 +157,16 @@ This update refactors how global managers and the HUD access player progression 
 
 ---
 
+## [Current/Recent] - Consolidated Item and Inventory Architecture Documentation
+### 1. Centralized Documentation
+* Created a new folder `Toris/Assets/Documentation/Item_Architecture/` to hold centralized information.
+* Created `Complete_Item_And_Inventory_Architecture.md`, consolidating information about the Item Blueprint/State pattern, Inventory Data Management, Event Systems, and Drag-and-Drop UI interactions.
+
+### 2. Cleaned Up Old Fragments
+* Deleted `Item_Architecture_Documentation.md`, `Inventory_Management_Documentation.md`, `Inventory_Event_System_Documentation.md`, and `UI_Interactions_Documentation.md` as their content is now fully integrated into the centralized document.
+
+---
+
 ## [Previous] - USS and UXML Styling Cleanup
 This update refactors the UI styling to consistently use global variables and BEM naming conventions across all UI Toolkit assets.
 

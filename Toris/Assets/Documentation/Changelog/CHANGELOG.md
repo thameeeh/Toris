@@ -1,4 +1,16 @@
-## [Current/Recent] - Skill Screen Architecture Implementation
+## [Current/Recent] - Decoupled Inventory Transfer Manager
+
+### 1. Added SlotFilterType to InventorySlot
+* Added a new `SlotFilterType` enum safely mapped to `EquipmentSlot` integer values.
+* Added `AllowedFilter` field and `CanAccept(ItemInstance)` method to `InventorySlot` to enable data-level validation of item transfers, defaulting to `SlotFilterType.Any`.
+
+### 2. Refactored InventoryTransferManagerSO
+* Removed the hardcoded `IsValidEquipmentMove` method and screen type checks from `InventoryTransferManagerSO`.
+* Updated `HandleMoveItemRequest` to cleanly execute the new `CanAccept()` checks on both the target slot and, in the case of a swap, the source slot.
+
+---
+
+## [Previous] - Skill Screen Architecture Implementation
 This update introduces the foundational architecture for the Skill Screen, aligning with the project's MVC and Event Bus standards.
 
 ### 1. UI Layout & Styling (UXML/USS)

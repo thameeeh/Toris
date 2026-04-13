@@ -1,3 +1,35 @@
+﻿## [Current/Recent] - Necromancer Plan Checklist Scaffold
+This update extends the necromancer planning document with a concrete implementation checklist so the enemy can be built in deliberate batches without reopening design decisions during implementation.
+
+### 1. Locked The First Enemy Version Decisions
+* Recorded the fixed decisions for a dedicated enemy type, four-state runtime, one ranged projectile attack, and one projectile-hit VFX path.
+* Kept the necromancer standalone for now and explicitly left POI integration and friendly-phase behavior out of the first pass.
+
+### 2. Added An Execution-Ready Build Checklist
+* Added three concrete implementation batches covering the enemy skeleton and prefab scaffold, projectile and attack setup, and runtime reset plus standalone validation.
+* Included both code work and Unity authoring work so the document can be used directly while scaffolding the enemy.
+
+### 3. Preserved The Validation And Exit Criteria
+* Added explicit done criteria and standalone validation scenarios for spawn, aggro, chase, cast timing, projectile hit, death, despawn, and pooled respawn.
+* This keeps the plan usable as a practical implementation guide instead of only an architectural note.
+
+---
+## [Current/Recent] - Necromancer Enemy Implementation Plan Documentation
+This update adds a dedicated implementation guide for building the necromancer as a standalone hostile enemy before attaching it to a world POI.
+
+### 1. Added A Dedicated Plan Document
+* Created `Assets/Documentation/Necromancer_Enemy_Implementation_Plan.md`.
+* Documented the recommended enemy architecture, mirroring the proven wolf enemy structure where appropriate.
+
+### 2. Defined The First Playable Scope Clearly
+* Scoped the first version to a standalone ranged enemy with a pooled projectile attack and one pooled VFX path.
+* Explicitly deferred the POI, friendly-to-hostile flow, summoning, and boss-style mechanics until after the enemy itself is stable.
+
+### 3. Captured The Intended Execution Order
+* Broke the work into gameplay skeleton, prefab structure, projectile attack, VFX, pooling, and standalone verification phases.
+* Anchored the plan to the existing enemy, animation-event, projectile-pooling, and effect-pooling systems already used in the project.
+
+---
 ## [Current/Recent] - Decouple The Debug HUD From WorldGenRunner
 This update removes the last direct runtime dependency from the debug HUD onto the world runner while preserving the same HUD behavior, toggles, and chunk-visualization workflow.
 
@@ -634,6 +666,8 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
+
+
 
 
 

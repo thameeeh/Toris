@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30e7f03d62498b4aa99c8cff35f5deb, type: 3}
+  m_Name: Necromancer_Attack_BoltCast
+  m_EditorClassIdentifier: Assembly-CSharp::NecromancerAttackSO
+  castCooldown: 1.5
+  panicSwingCooldown: 1
+  summonCooldown: 8
+  bloodMageSummonPrefab: {fileID: -652129463887021437, guid: 770575f5521055d4a974ac51d9a3e1ea, type: 3}
+  bloodMageSummonCount: 3
+  bloodMageSummonRadius: 1.5
+  bloodMageSummonStartAngleDegrees: 90
+  spellProjectilePrefab: {fileID: 15201539819315284, guid: e81e4808d2e279047b1781ae64241c12, type: 3}
+  spellProjectileDamageMultiplier: 1
+  spellProjectileKnockback: 2
+  spellProjectileSpeed: 8
+  spellProjectileLifetime: 3
+  panicSwingDamageMultiplier: 1.5
+  panicSwingKnockback: 2
+  spellCastRepositionSpeedMultiplier: 1.5
+  panicSwingRepositionSpeedMultiplier: 2.5

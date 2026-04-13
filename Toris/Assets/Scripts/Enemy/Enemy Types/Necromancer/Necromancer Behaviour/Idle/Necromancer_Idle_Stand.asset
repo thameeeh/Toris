@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0335a20a06ca46b43a00702f57889020, type: 3}
+  m_Name: Necromancer_Idle_Stand
+  m_EditorClassIdentifier: Assembly-CSharp::NecromancerIdleSO
+  roamRadius: 4
+  arriveDistance: 0.25
+  retargetDistance: 0.35
+  idleMoveSpeedMultiplier: 0.65
+  minHumanIdleBeforeFloat: 10
+  maxHumanIdleBeforeFloat: 15
+  floaterIdleDuration: 10
+  minMoveDirectionSqr: 0.0001
+  maxWanderTargetAttempts: 8

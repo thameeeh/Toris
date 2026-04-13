@@ -13,24 +13,12 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
     [SerializeField, Min(0f)] private float bubbleKnockback = 1f;
 
     [Header("Bubble Targeting")]
-    [SerializeField] private bool usePredictiveTargeting = true;
-    [SerializeField, Min(0f)] private float targetLeadTime = 0.18f;
     [SerializeField, Min(0f)] private float randomTargetRadius = 0.45f;
 
     private float _nextAllowedAttackTime;
-    private Rigidbody2D _playerRigidbody;
 
     public bool IsComplete { get; private set; }
     public bool CanUseAttack => Time.time >= _nextAllowedAttackTime;
-
-    public override void Initialize(GameObject gameObject, BloodMage enemy, Transform player)
-    {
-        base.Initialize(gameObject, enemy, player);
-
-        _playerRigidbody = null;
-        if (player != null)
-            player.TryGetComponent(out _playerRigidbody);
-    }
 
     public override void DoEnterLogic()
     {
@@ -99,6 +87,7 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
 
         if (spawnedSpell == null)
         {
+            // Safety fallback for scenes/tests without configured gameplay pools.
             spawnedSpell = Instantiate(bubbleSpellPrefab, targetPosition, spawnRotation);
             spawnedSpell.OnSpawned();
         }
@@ -113,9 +102,6 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
     private Vector2 GetBubbleTargetPosition()
     {
         Vector2 targetPosition = (Vector2)enemy.PlayerTransform.position;
-
-        if (usePredictiveTargeting && _playerRigidbody != null)
-            targetPosition += _playerRigidbody.linearVelocity * targetLeadTime;
 
         if (randomTargetRadius > 0f)
             targetPosition += Random.insideUnitCircle * randomTargetRadius;

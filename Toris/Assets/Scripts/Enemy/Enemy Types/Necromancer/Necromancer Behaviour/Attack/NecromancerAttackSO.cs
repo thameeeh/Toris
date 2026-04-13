@@ -12,6 +12,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
     [Header("Summon")]
     [SerializeField] private BloodMage bloodMageSummonPrefab;
+    [SerializeField] private BloodMageSpawnEffect bloodMageSpawnEffectPrefab;
     [SerializeField, Min(1)] private int bloodMageSummonCount = 3;
     [SerializeField, Min(0.1f)] private float bloodMageSummonRadius = 1.5f;
     [SerializeField] private float bloodMageSummonStartAngleDegrees = 90f;
@@ -297,11 +298,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         int spawnedCount = 0;
         for (int i = 0; i < bloodMageSummonCount; i++)
         {
-            BloodMage spawnedBloodMage = SpawnBloodMage(i);
-            if (spawnedBloodMage == null)
+            bool didStartSpawn = StartBloodMageSpawn(i);
+            if (!didStartSpawn)
                 continue;
 
-            spawnedBloodMage.ConfigureSummon(enemy, i, bloodMageSummonCount);
             spawnedCount++;
         }
 
@@ -321,9 +321,52 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 #endif
     }
 
-    private BloodMage SpawnBloodMage(int summonIndex)
+    private bool StartBloodMageSpawn(int summonIndex)
     {
         Vector3 spawnPosition = GetBloodMageSpawnPosition(summonIndex);
+        if (bloodMageSpawnEffectPrefab != null)
+            return SpawnBloodMageSpawnEffect(summonIndex, spawnPosition);
+
+        BloodMage spawnedBloodMage = SpawnBloodMageDirect(spawnPosition);
+        if (spawnedBloodMage == null)
+            return false;
+
+        spawnedBloodMage.ConfigureSummon(enemy, summonIndex, bloodMageSummonCount);
+        return true;
+    }
+
+    private bool SpawnBloodMageSpawnEffect(int summonIndex, Vector3 spawnPosition)
+    {
+        Quaternion spawnRotation = Quaternion.identity;
+        BloodMageSpawnEffect spawnedEffect = null;
+
+        if (GameplayPoolManager.Instance != null)
+        {
+            spawnedEffect = GameplayPoolManager.Instance.SpawnProjectile(
+                bloodMageSpawnEffectPrefab,
+                spawnPosition,
+                spawnRotation) as BloodMageSpawnEffect;
+        }
+
+        if (spawnedEffect == null)
+        {
+            // Safety fallback for scenes/tests without configured gameplay pools.
+            spawnedEffect = Instantiate(bloodMageSpawnEffectPrefab, spawnPosition, spawnRotation);
+            spawnedEffect.OnSpawned();
+        }
+
+        spawnedEffect.Initialize(
+            bloodMageSummonPrefab,
+            enemy,
+            spawnPosition,
+            summonIndex,
+            bloodMageSummonCount);
+
+        return true;
+    }
+
+    private BloodMage SpawnBloodMageDirect(Vector3 spawnPosition)
+    {
         Quaternion spawnRotation = Quaternion.identity;
         BloodMage spawnedBloodMage = null;
 
@@ -337,6 +380,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
         if (spawnedBloodMage == null)
         {
+            // Safety fallback for scenes/tests without configured gameplay pools.
             spawnedBloodMage = Instantiate(bloodMageSummonPrefab, spawnPosition, spawnRotation);
             spawnedBloodMage.OnSpawned();
         }
@@ -388,6 +432,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
         if (spawnedProjectile == null)
         {
+            // Safety fallback for scenes/tests without configured gameplay pools.
             spawnedProjectile = Instantiate(spellProjectilePrefab, spawnPosition, spawnRotation);
             spawnedProjectile.OnSpawned();
         }

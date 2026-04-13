@@ -147,6 +147,7 @@ public class NecromancerShotProjectile : Projectile
             return;
         }
 
+        // Safety fallback for unpooled instances; production gameplay should use GameplayPoolManager.
         OnDespawned();
         Destroy(gameObject);
     }

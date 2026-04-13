@@ -19,6 +19,7 @@ The Blood Mage is a summoned-only phase-two support minion for the Necromancer i
 - summoned only by the Necromancer
 - summons in a group of `3`
 - spawns in an even ring around the Necromancer
+- can optionally appear through a separate spawn-effect phase before the real Blood Mage becomes active
 - uses a targeted ground bubble spell
 - uses `Attack_01` only
 - stays fully command-leashed to the Necromancer
@@ -49,7 +50,7 @@ The Blood Mage is a ranged support minion.
 - first-pass attack is a targeted blood bubble/pool placed at the player's feet
 - use `Attack_01` only
 - `Attack_02` and `Attack_03` are reserved for future expansion
-- the bubble targets the player's position with optional light movement prediction and a small randomized miss radius
+- the bubble targets the player's current position with a small randomized placement radius for a more natural look
 - the pop only damages the player if they are still inside the bubble when the pop event fires
 - the damage path stays consistent with direct enemy-to-player damage flow
 
@@ -60,6 +61,8 @@ The Blood Mage is a ranged support minion.
 When the Necromancer uses `Summon`:
 
 - it spawns `3` Blood Mages
+- it can first create a temporary `BloodMageSpawnEffect` at each summon point
+- the spawn effect plays `BloodMage_Spawn` and only creates the real Blood Mage when the spawn animation completes
 - the Blood Mages appear in a readable even ring around the Necromancer
 - each Blood Mage receives an owner reference to the Necromancer
 - each Blood Mage receives summon slot / group information for guard positioning
@@ -105,6 +108,7 @@ When the Necromancer uses `Summon`:
 
 Reserved for later:
 
+- `BloodMage_Spawn.anim`
 - `BloodMage_Attack_02.anim`
 - `BloodMage_Attack_03.anim`
 - `BloodMage_Hurt.anim`
@@ -148,6 +152,22 @@ Current first-pass prefab wiring:
 - uses its own animation timing to pop and despawn
 - can use `GameplayPoolManager` projectile spawning
 
+### Spawn Effect Prefab
+
+Recommended separate summon-only prefab:
+
+- `SpriteRenderer`
+- `Animator`
+- `BloodMageSpawnEffect`
+
+Recommended flow:
+
+- uses `BloodMage_Spawn`
+- owns any bottom-to-top shader reveal
+- fires `Anim_SpawnComplete()` or `Anim_AttackFinished()` at the end
+- spawns the real Blood Mage only after the reveal completes
+- is best registered in `GameplayPoolConfiguration` under `Projectile Pools` so the spawn effect can reuse active/inactive instances
+
 ### Main Scripts
 
 - [BloodMage.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMage.cs)
@@ -169,6 +189,8 @@ Current first-pass prefab wiring:
   - bubble spell spawn / spell fire
 - [BloodMageBubbleSpell.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMageBubbleSpell.cs)
   - pooled ground bubble that pops under the player
+- [BloodMageSpawnEffect.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMageSpawnEffect.cs)
+  - temporary summon visual that plays the spawn animation and then creates the real Blood Mage
 - [BloodMageDeadSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/Behavior/Dead/BloodMageDeadSO.cs)
   - unregister from owner
   - death / despawn flow
@@ -217,8 +239,6 @@ Current first-pass prefab wiring:
 - cast cooldown
 - bubble spell prefab
 - bubble target offset
-- use predictive targeting
-- target lead time
 - random target radius
 - bubble damage multiplier
 - bubble knockback

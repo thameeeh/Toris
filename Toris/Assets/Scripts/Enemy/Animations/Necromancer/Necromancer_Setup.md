@@ -60,12 +60,14 @@ Current first-pass radii:
   - phase-two ability
   - unlocked at the configured health threshold
   - spawns Blood Mages in an even ring around the Necromancer
+  - can optionally route through separate Blood Mage spawn effects before the real Blood Mages appear
   - can release a weaker radial projectile burst on the summon hit frame
   - applies summon protection through Blood Mage registration
 
 ### Summon Protection Rules
 
 - `Summon` spawns `3` Blood Mages in an even ring around the Necromancer
+- `Summon` can optionally create a temporary spawn effect at each summon point and defer the real Blood Mage spawn until the spawn animation completes
 - each Blood Mage is configured with the Necromancer as owner and registers back to it
 - summon protection becomes active when the first Blood Mage registers
 - while summon protection is active, the Necromancer cannot take damage
@@ -203,7 +205,7 @@ Runtime-only visual children under `Animator`:
   - cooldowns
   - projectile spawn
   - panic swing damage
-  - Blood Mage summon spawn
+  - Blood Mage summon spawn / spawn-effect routing
   - summon cooldown timing
   - post-attack reposition requests
 - [NecromancerDeadSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/Necromancer/Necromancer%20Behaviour/Dead/NecromancerDeadSO.cs)
@@ -292,6 +294,7 @@ Runtime-only visual children under `Animator`:
 ### Summon SO Fields
 
 - `bloodMageSummonPrefab`
+- `bloodMageSpawnEffectPrefab`
 - `bloodMageSummonCount`
 - `bloodMageSummonRadius`
 - `bloodMageSummonStartAngleDegrees`

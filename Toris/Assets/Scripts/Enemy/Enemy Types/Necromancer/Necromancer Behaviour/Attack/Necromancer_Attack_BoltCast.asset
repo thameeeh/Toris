@@ -16,6 +16,7 @@ MonoBehaviour:
   panicSwingCooldown: 1
   summonCooldown: 8
   bloodMageSummonPrefab: {fileID: -652129463887021437, guid: 770575f5521055d4a974ac51d9a3e1ea, type: 3}
+  bloodMageSpawnEffectPrefab: {fileID: 6676908510793180760, guid: 1046d6dd97a87b3489fff07537be7075, type: 3}
   bloodMageSummonCount: 3
   bloodMageSummonRadius: 1.5
   bloodMageSummonStartAngleDegrees: 90
@@ -24,6 +25,15 @@ MonoBehaviour:
   spellProjectileKnockback: 2
   spellProjectileSpeed: 8
   spellProjectileLifetime: 3
+  enablePhaseTwoSpellVolley: 1
+  phaseTwoSpellProjectileCount: 5
+  phaseTwoSpellSpreadAngle: 24
+  phaseTwoSpellProjectileDamageMultiplier: 0.6
+  enableSummonProjectileBurst: 1
+  summonProjectileBurstCount: 8
+  summonProjectileBurstDamageMultiplier: 0.35
+  enableSummonImpactHold: 1
+  summonImpactHoldDuration: 0.15
   panicSwingDamageMultiplier: 1.5
   panicSwingKnockback: 2
   spellCastRepositionSpeedMultiplier: 1.5

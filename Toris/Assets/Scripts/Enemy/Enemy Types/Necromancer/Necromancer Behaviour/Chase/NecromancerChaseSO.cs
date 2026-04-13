@@ -100,6 +100,10 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
         EnsurePostCastRepositionStarted();
 
+        IsInCastingRange = enemy.IsWithinCastingRange;
+        if (TryStartCastingRangeAttack())
+            return;
+
         if (enemy.IsWithinStrikingDistance)
         {
             IsInPanicRange = true;
@@ -153,8 +157,6 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             MoveAwayFromPlayer(toPlayer);
             return;
         }
-
-        IsInCastingRange = enemy.IsWithinCastingRange;
 
         if (IsInCastingRange)
         {
@@ -327,6 +329,37 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
     {
         SelectedAttackType = attackType;
         CanStartSelectedAttack = enemy.IsReadyToCastAnimation && enemy.CanStartAttack(attackType);
+    }
+
+    private bool TryStartCastingRangeAttack()
+    {
+        if (!enemy.IsWithinCastingRange)
+            return false;
+
+        if (enemy.IsHumanForm)
+        {
+            StopMoving();
+            enemy.FacePlayer();
+            TryRequestHumanToFloater();
+            return true;
+        }
+
+        NecromancerAttackType rangedAttackType = GetPreferredCastingRangeAttackType();
+        if (!enemy.IsReadyToCastAnimation || !enemy.CanStartAttack(rangedAttackType))
+            return false;
+
+        ResetHumanToFloaterDelay();
+        StopMoving();
+        enemy.FacePlayer();
+        SelectAttack(rangedAttackType);
+        return true;
+    }
+
+    private NecromancerAttackType GetPreferredCastingRangeAttackType()
+    {
+        return enemy.IsPhaseTwoSummonUnlocked && enemy.CanStartAttack(NecromancerAttackType.Summon)
+            ? NecromancerAttackType.Summon
+            : NecromancerAttackType.SpellCast;
     }
 
     private void ResetAttackSelection()

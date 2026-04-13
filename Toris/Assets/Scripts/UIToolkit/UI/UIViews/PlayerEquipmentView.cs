@@ -103,7 +103,25 @@ namespace OutlandHaven.Inventory
             TemplateContainer slotInstance = _slotTemplate.Instantiate();
             containerRoot.Add(slotInstance);
 
-            var slotView = new InventorySlotView(slotInstance, _equipmentInventory, _uiInventoryEvents);
+            var slotView = new InventorySlotView(slotInstance, _equipmentInventory);
+
+            slotView.OnLocalClicked += (slot) => { if (slot != null && !slot.IsEmpty && slot.HeldItem?.BaseItem != null) {
+                    var equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+                    if (equipable != null) {
+                        _uiInventoryEvents.OnRequestUnequip?.Invoke(equipable.TargetSlot);
+                    }
+                } };
+            slotView.OnLocalRightClicked += (slot) => {
+                // The equipment system always interprets right clicks as unequips, ignoring context.
+                if (slot != null && !slot.IsEmpty && slot.HeldItem?.BaseItem != null) {
+                    var equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+                    if (equipable != null) {
+                        _uiInventoryEvents.OnRequestUnequip?.Invoke(equipable.TargetSlot);
+                    }
+                }
+            };
+            slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot);
+            slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
             slotView.Update(slotData);
 
             // Hide amount text label for equipment slots if it's there

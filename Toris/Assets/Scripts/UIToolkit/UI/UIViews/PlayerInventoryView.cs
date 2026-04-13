@@ -20,6 +20,7 @@ namespace OutlandHaven.Inventory
 
         private UIInventoryEventsSO _uiInventoryEvents;
         private bool _eventsBound = false;
+        private InventoryInteractionContext _currentContext = InventoryInteractionContext.Normal;
 
         public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, InventoryManager equipmentInventory = null)
             : base(topElement, uiEvents)
@@ -43,6 +44,7 @@ namespace OutlandHaven.Inventory
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
+                _uiInventoryEvents.OnInteractionContextChanged += HandleContextChanged;
                 _eventsBound = true;
             }
             _equipmentView?.Show();
@@ -54,6 +56,7 @@ namespace OutlandHaven.Inventory
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+                _uiInventoryEvents.OnInteractionContextChanged -= HandleContextChanged;
                 _eventsBound = false;
             }
             _equipmentView?.Hide();
@@ -95,10 +98,38 @@ namespace OutlandHaven.Inventory
 
                 // Initialize the wrapper and update it
                 // We pass in the owning InventoryManager (data) and the UI events
-                var slotView = new InventorySlotView(slotInstance, data, _uiInventoryEvents);
+                var slotView = new InventorySlotView(slotInstance, data);
+
+                slotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                slotView.OnLocalRightClicked += HandleMainInventoryRightClick;
+                slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot);
+                slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
                 slotView.Update(slotData);
 
                 // Click events are now handled natively inside InventorySlotView via PointerUpEvent
+            }
+        }
+
+
+        private void HandleContextChanged(InventoryInteractionContext newContext)
+        {
+            _currentContext = newContext;
+        }
+
+        private void HandleMainInventoryRightClick(InventorySlot dataSlot)
+        {
+            switch (_currentContext)
+            {
+                case InventoryInteractionContext.Shop:
+                    _uiInventoryEvents.OnRequestSell?.Invoke(dataSlot.HeldItem, 1);
+                    break;
+                case InventoryInteractionContext.Salvage:
+                    _uiInventoryEvents.OnRequestSalvage?.Invoke(dataSlot, SalvageType.Material); // default salvage type
+                    break;
+                case InventoryInteractionContext.Normal:
+                default:
+                    _uiInventoryEvents.OnRequestEquip?.Invoke(dataSlot);
+                    break;
             }
         }
 
@@ -107,6 +138,7 @@ namespace OutlandHaven.Inventory
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+                _uiInventoryEvents.OnInteractionContextChanged -= HandleContextChanged;
                 _eventsBound = false;
             }
             _equipmentView?.Dispose();

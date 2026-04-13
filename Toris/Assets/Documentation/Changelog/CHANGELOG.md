@@ -26,6 +26,24 @@ This update introduces the foundational architecture for the Skill Screen, align
 ### 6. The Controller (MonoBehaviour)
 * **The Initialization:** Refactored `SkillScreenController.cs` to instantiate the UXML, inject the `SkillData[]` database and the `GameSessionSO` into the View, and register it directly into the `UIManager`'s FullScreen zone.
 
+## [Current/Recent] - Localized UI Translation Layer
+This update refactors `InventorySlotView` to decouple it from the global event bus, enforcing a stricter parent-child UI architecture and introducing an enum-based context state for inventory interactions.
+
+### 1. Created `InventoryInteractionContext`
+* Added the `InventoryInteractionContext` enum (Normal, Shop, Salvage) in its own file to track the current interaction mode without creating circular dependencies.
+* Added an `OnInteractionContextChanged` action to `UIInventoryEventsSO` to allow dynamic UI views to broadcast context shifts.
+
+### 2. Localized `InventorySlotView`
+* Removed `UIInventoryEventsSO` dependency from `InventorySlotView` entirely.
+* Replaced global triggers with local C# `Action` events (`OnLocalClicked`, `OnLocalRightClicked`, `OnLocalMoveItemRequested`, `OnLocalSelectForProcessingRequested`).
+* This makes the slot view a pure, reusable component that blindly emits hardware interactions.
+
+### 3. Updated Parent Views (The Translators)
+* Updated `PlayerInventoryView`, `ShopSubView`, `SalvageSubView`, `ForgeSubView`, and `PlayerEquipmentView` to subscribe to the local slot events and act as pass-throughs to the global bus.
+* `PlayerInventoryView` now listens to `OnInteractionContextChanged`. When a player right-clicks a slot, the view translates the action based on the active context (e.g., normal -> Equip, shop -> Sell, salvage -> Salvage).
+* `PlayerEquipmentView` intentionally ignores context changes and strictly maps right-clicks to unequip actions, enforcing a safe two-step process for equipped items.
+* `ShopSubView` and `SalvageSubView` now broadcast their context entry during `Show()` and reset to `Normal` during `Hide()`.
+
 ## [Previous] - Refactored UI Currency Access
 * Replaced `PlayerProgressionAnchorSO` with `PlayerHUDBridge` in `ShopSubView` and related controllers (`SmithScreenController`, `MageScreenController`).
 * UI views now strictly observe `PlayerHUDBridge.OnGoldChanged` instead of global event channels for currency updates.

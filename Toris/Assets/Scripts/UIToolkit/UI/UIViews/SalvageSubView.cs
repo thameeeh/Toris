@@ -48,7 +48,12 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 instance.userData = "salvage-input"; // Set proxy ID
                 _inputSlotContainer.Add(instance);
-                _inputSlotView = new InventorySlotView(instance, null, _uiInventoryEvents);
+                _inputSlotView = new InventorySlotView(instance, null);
+
+                _inputSlotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                _inputSlotView.OnLocalRightClicked += HandleItemRightClicked;
+                _inputSlotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot);
+                _inputSlotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -63,7 +68,12 @@ namespace OutlandHaven.UIToolkit
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 _itemYieldContainer.Add(instance);
-                _itemYieldView = new InventorySlotView(instance, null, _uiInventoryEvents);
+                _itemYieldView = new InventorySlotView(instance, null);
+
+                _itemYieldView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                _itemYieldView.OnLocalRightClicked += HandleItemRightClicked;
+                _itemYieldView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot);
+                _itemYieldView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
             }
         }
 
@@ -76,10 +86,11 @@ namespace OutlandHaven.UIToolkit
         public override void Show()
         {
             base.Show();
+            _uiInventoryEvents?.OnInteractionContextChanged?.Invoke(InventoryInteractionContext.Salvage);
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked += HandleItemClicked;
-                _uiInventoryEvents.OnItemRightClicked += HandleItemRightClicked;
+
                 _uiInventoryEvents.OnRequestSelectForProcessing += HandleProxyDrop;
                 _eventsBound = true;
             }
@@ -90,11 +101,12 @@ namespace OutlandHaven.UIToolkit
 
         public override void Hide()
         {
+            _uiInventoryEvents?.OnInteractionContextChanged?.Invoke(InventoryInteractionContext.Normal);
             base.Hide();
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
-                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
+
                 _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }
@@ -233,7 +245,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
-                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
+
                 _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }

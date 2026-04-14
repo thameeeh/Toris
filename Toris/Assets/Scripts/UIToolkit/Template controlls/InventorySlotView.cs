@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using OutlandHaven.UIToolkit;
@@ -12,14 +13,17 @@ namespace OutlandHaven.Inventory
 
         private InventorySlot _slotData;
         private InventoryManager _owningContainer;
-        private UIInventoryEventsSO _uiInventoryEvents;
+        public event Action<InventorySlot> OnLocalClicked;
+        public event Action<InventorySlot> OnLocalRightClicked;
+        public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot> OnLocalMoveItemRequested;
+        public event Action<InventorySlot, string> OnLocalSelectForProcessingRequested;
 
         // Drag and Drop State
         private bool _isDragging = false;
         private Vector2 _dragStartPosition;
         private const float DragThreshold = 10f; // Pixels to move before initiating drag
 
-        public InventorySlotView(VisualElement root, InventoryManager owningContainer, UIInventoryEventsSO uiInventoryEvents)
+        public InventorySlotView(VisualElement root, InventoryManager owningContainer)
         {
             // Set the wrapper root's picking mode to Ignore
             root.pickingMode = PickingMode.Ignore;
@@ -29,7 +33,7 @@ namespace OutlandHaven.Inventory
             else _root.pickingMode = PickingMode.Position;
 
             _owningContainer = owningContainer;
-            _uiInventoryEvents = uiInventoryEvents;
+
 
             _icon = _root.Q<Image>("slot-icon");
             _qtyLabel = _root.Q<Label>("slot-qty");
@@ -126,7 +130,7 @@ namespace OutlandHaven.Inventory
                 // Fire right click event
                 if (_slotData != null && !_slotData.IsEmpty)
                 {
-                    _uiInventoryEvents?.OnItemRightClicked?.Invoke(_slotData);
+                    OnLocalRightClicked?.Invoke(_slotData);
                 }
                 return;
             }
@@ -173,7 +177,7 @@ namespace OutlandHaven.Inventory
                         if (targetSlotData.Slot != _slotData || targetSlotData.Container != _owningContainer)
                         {
                             // Invoke the cross-container swap logic
-                            _uiInventoryEvents?.OnRequestMoveItem?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot);
+                            OnLocalMoveItemRequested?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot);
                             Debug.Log($"FIRING EVENT: Moving {_slotData.HeldItem.BaseItem.ItemName} to new slot.");
                         }
                     }
@@ -181,7 +185,7 @@ namespace OutlandHaven.Inventory
                 else if (targetData is string proxySlotID)
                 {
                     // It's a proxy slot
-                    _uiInventoryEvents?.OnRequestSelectForProcessing?.Invoke(_slotData, proxySlotID);
+                    OnLocalSelectForProcessingRequested?.Invoke(_slotData, proxySlotID);
                 }
             }
             else
@@ -189,7 +193,7 @@ namespace OutlandHaven.Inventory
                 // Pointer did not move past the threshold, treat as a normal click
                 if (evt.button == 0 && _slotData != null && !_slotData.IsEmpty)
                 {
-                    _uiInventoryEvents?.OnItemClicked?.Invoke(_slotData);
+                    OnLocalClicked?.Invoke(_slotData);
                 }
             }
         }

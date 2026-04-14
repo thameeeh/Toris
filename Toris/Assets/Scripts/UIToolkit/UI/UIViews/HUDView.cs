@@ -19,8 +19,7 @@ namespace OutlandHaven.UIToolkit
         private VisualTreeAsset _buttonTemplate;
 
         // Data Reference
-        private PlayerDataSO _playerData;
-        private PlayerStats _playerStats; // use this for HP/Stamina
+        private PlayerHUDBridge _playerHudBridge;
         
         // Progress Bar is 0-100
         private const float PROGRESS_BAR_MAX = 100f;
@@ -28,9 +27,9 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerDataSO data, UIEventsSO uiEvents, VisualTreeAsset buttonTemplate) : base(topElement, uiEvents)
+        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, VisualTreeAsset buttonTemplate) : base(topElement, uiEvents)
         {
-            _playerData = data;
+            _playerHudBridge = data;
             _buttonTemplate = buttonTemplate;
         }
 
@@ -40,12 +39,16 @@ namespace OutlandHaven.UIToolkit
             {
                 GenerateMenuButtons();
 
-                if (_playerData != null)
+                if (_playerHudBridge != null)
                 {
-                    UpdateHealthUI(_playerData.GetHealthPercentage(), 1f);
-                    UpdateManaUI(_playerData.GetManaPercentage(), 1f);
-                    UpdateGoldUI(_playerData.Gold, 0);
-                    UpdateLevelUI(1, 0);
+                    UpdateHealthUI(_playerHudBridge.CurrentHealth, _playerHudBridge.MaxHealth);
+                    UpdateManaUI(_playerHudBridge.CurrentStamina, _playerHudBridge.MaxStamina);
+                    UpdateGoldUI(_playerHudBridge.CurrentGold, 0);
+                    UpdateLevelUI(_playerHudBridge.CurrentLevel, _playerHudBridge.CurrentExperience);
+                }
+                else 
+                {
+                    Debug.LogError("HUDView: PlayerHUDBridge data reference is null! HUD will not display player info.");
                 }
                 _isSetup = true;
             }
@@ -75,9 +78,9 @@ namespace OutlandHaven.UIToolkit
             if (_optionsContainer == null) return;
 
             CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
-            CreateMenuButton("Skills", "(K)", ScreenType.CharacterSheet);
+            CreateMenuButton("Skills", "(U)", ScreenType.Skills);
             CreateMenuButton("Shop", "(T)", ScreenType.CharacterSheet);
-            CreateMenuButton("Map", "(U)", ScreenType.CharacterSheet);
+            CreateMenuButton("Map", "(P)", ScreenType.CharacterSheet);
             // Add other buttons here
         }
 
@@ -130,14 +133,14 @@ namespace OutlandHaven.UIToolkit
         {
             base.Show();
             // Subscribe to ALL events
-            if (_playerData != null)
+            if (_playerHudBridge != null)
             {
-                _playerData.OnHealthChanged += UpdateHealthUI;
-                _playerData.OnManaChanged += UpdateManaUI;
-                _playerData.OnLevelChanged += UpdateLevelUI;
-                _playerData.OnGoldChanged += UpdateGoldUI;
+                _playerHudBridge.OnHealthChanged += UpdateHealthUI;
+                _playerHudBridge.OnStaminaChanged += UpdateManaUI;
+                _playerHudBridge.OnLevelChanged += UpdateLevelUI;
+                _playerHudBridge.OnGoldChanged += UpdateGoldUI;
 
-                _playerData.AddExperience(0); // Trigger initial level/XP update
+                _playerHudBridge.PushInitialState(); // Trigger initial level/XP update
             }
         }
 
@@ -145,12 +148,12 @@ namespace OutlandHaven.UIToolkit
         {
             base.Hide();
             // Unsubscribe from ALL events
-            if (_playerData != null)
+            if (_playerHudBridge != null)
             {
-                _playerData.OnHealthChanged -= UpdateHealthUI;
-                _playerData.OnManaChanged -= UpdateManaUI;
-                _playerData.OnLevelChanged -= UpdateLevelUI;
-                _playerData.OnGoldChanged -= UpdateGoldUI;
+                _playerHudBridge.OnHealthChanged -= UpdateHealthUI;
+                _playerHudBridge.OnStaminaChanged -= UpdateManaUI;
+                _playerHudBridge.OnLevelChanged -= UpdateLevelUI;
+                _playerHudBridge.OnGoldChanged -= UpdateGoldUI;
             }
         }
 
@@ -176,9 +179,10 @@ namespace OutlandHaven.UIToolkit
 
             if (_xpBar != null)
             {
-                float xpPercent = experience % PlayerDataSO.XP_PER_LEVEL;
-                // Convert to percentage of progress bar max scale
-                _xpBar.value = (xpPercent / PlayerDataSO.XP_PER_LEVEL) * PROGRESS_BAR_MAX;
+                if (_playerHudBridge != null)
+                {
+                    _xpBar.value = _playerHudBridge.ExperienceProgressNormalized * PROGRESS_BAR_MAX;
+                }
             }
         }
 

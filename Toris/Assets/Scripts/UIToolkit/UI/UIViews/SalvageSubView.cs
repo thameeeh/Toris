@@ -79,6 +79,7 @@ namespace OutlandHaven.UIToolkit
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked += HandleItemClicked;
+                _uiInventoryEvents.OnItemRightClicked += HandleItemRightClicked;
                 _uiInventoryEvents.OnRequestSelectForProcessing += HandleProxyDrop;
                 _eventsBound = true;
             }
@@ -93,6 +94,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
                 _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }
@@ -133,6 +135,25 @@ namespace OutlandHaven.UIToolkit
             _inputSlotView?.Update(proxySlot);
 
             UpdateYieldVisuals();
+        }
+
+        private void HandleItemRightClicked(InventorySlot slot)
+        {
+            if (slot == null || slot.IsEmpty) return;
+
+            // If we right clicked the same item that's in the salvage proxy slot (or a dummy),
+            // or if we right clicked the proxy slot itself (if that's ever possible)
+            if (_cachedSourceSlot == slot)
+            {
+                ClearInputSlot();
+                return;
+            }
+
+            // Otherwise, set it as the proxy input slot if it's salvageable
+            if (_salvageManager != null && _salvageManager.CanSalvage(slot.HeldItem.BaseItem))
+            {
+                HandleItemClicked(slot);
+            }
         }
 
         private void ClearInputSlot()
@@ -212,6 +233,7 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
+                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
                 _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
                 _eventsBound = false;
             }

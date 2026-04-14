@@ -13,9 +13,6 @@ public class Wolf : Enemy
     [Space][Space][Header("Stats")]
     public float AttackDamage = 20f;
     public float MovementSpeed = 2f;
-
-    [SerializeField]
-    public PlayerDataSO PlayerData; // old; delete once refactored
     public PlayerProgression PlayerProgression; // new
 
     public int gold = 50;
@@ -174,7 +171,6 @@ public class Wolf : Enemy
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
-            PlayerData.ModifyGold(gold); // old; delete once refactored
             
             if (PlayerProgression != null)
             {

@@ -1,0 +1,138 @@
+/* --- Root & Layout Containers --- */
+#hud__screen {
+    flex-grow: 1;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#hud__bottom-section {
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    height: 150px;
+}
+
+#hud__left-container {
+    width: 300px;
+    margin-right: auto;
+    flex-shrink: 1;
+    flex-grow: 0.1;
+}
+
+#hud__right-container {
+    width: 300px;
+    margin-left: auto;
+    align-items: flex-end;
+}
+
+/* --- Menu Button & Container --- */
+#hud__menu-section {
+    flex-grow: 0;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+    margin-bottom: 10px;
+}
+
+.hud-menu-btn {
+    width: 60px;
+    height: 60px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: transparent; 
+    border-width: 0;
+}
+
+.hud-menu-container {
+    display: none;
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    padding-bottom: 10px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.57);
+}
+
+.hud-menu-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+}
+
+/* --- Typography & Labels --- */
+.HUD {
+    color: var(--color-text-light);
+    -unity-font-style: bold;
+    font-size: 22px; /* Slightly larger */
+    letter-spacing: 2px; /* Gives it a premium feel */
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8); /* Dark outline makes it readable anywhere */
+}
+
+.hud-label-xp {
+    min-width: 60px;
+    color: var(--color-xp); /* Match label to bar color */
+}
+
+#hud__gold-label {
+    color: var(--color-coin-gold);
+    font-size: 24px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+/* --- Bars & Containers --- */
+.hud-bar-row {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center; /* Keeps text centered with the bar */
+    margin-bottom: 5px;
+}
+
+.hud-bar-header {
+    flex-grow: 1;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-self: stretch;
+    margin-bottom: 5px;
+}
+
+/* Base sizing for the bars */
+#hud__xp-bar { flex-grow: 1; height: 15px; } /* Thinner XP bar */
+#hud__health-bar { flex-grow: 1; height: 35px; } /* Thicker Health bar */
+#hud__mana-bar { width: 100%; height: 30px; }
+
+/* THE UPGRADE: Styling the container and the fill 
+*/
+
+/* 1. Remove default Unity spacing */
+.unity-progress-bar {
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Hide the default text inside the bar */
+.unity-progress-bar__title {
+    display: none;
+}
+
+/* 3. The empty background container */
+.unity-progress-bar__background {
+    background-color: rgba(15, 15, 15, 0.9);
+    border-color: rgba(0, 0, 0, 1);
+    border-width: 2px;
+    border-radius: 8px; /* Beautiful rounded corners */
+    overflow: hidden; /* Essential: Keeps the fill from spilling out of the rounded corners */
+}
+
+/* 4. The actual colored fill */
+.unity-progress-bar__progress {
+    border-radius: 5px; /* Slightly smaller than the background so it sits inside nicely */
+    margin: 1px; /* Creates a tiny inner gap */
+}
+
+/* 5. The Colors */
+#hud__xp-bar .unity-progress-bar__progress { background-color: var(--color-xp); }
+#hud__health-bar .unity-progress-bar__progress { background-color: var(--color-health); }
+#hud__mana-bar .unity-progress-bar__progress { background-color: var(--color-mana); }

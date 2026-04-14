@@ -17,6 +17,7 @@ namespace OutlandHaven.UIToolkit
         private VisualElement _hudZone; 
         private VisualElement _leftZone;
         private VisualElement _rightZone;
+        private VisualElement _fullScreen_Zone;
 
         private void Awake()
         {
@@ -25,6 +26,7 @@ namespace OutlandHaven.UIToolkit
             _hudZone = root.Q<VisualElement>("Layer_HUD");
             _leftZone = root.Q<VisualElement>("Left_Zone");
             _rightZone = root.Q<VisualElement>("Right_Zone");
+            _fullScreen_Zone = root.Q<VisualElement>("FullScreen_Zone");
 
             if (_hudZone == null || _leftZone == null || _rightZone == null)
             {
@@ -65,6 +67,7 @@ namespace OutlandHaven.UIToolkit
                 case ScreenZone.HUD: _hudZone.Add(view.Root); break;
                 case ScreenZone.Left: _leftZone.Add(view.Root); break;
                 case ScreenZone.Right: _rightZone.Add(view.Root); break;
+                case ScreenZone.FullScreen: _fullScreen_Zone.Add(view.Root); break;
             }
 
             if (view.ID == ScreenType.HUD)

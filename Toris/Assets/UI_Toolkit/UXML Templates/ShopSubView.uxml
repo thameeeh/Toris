@@ -1,14 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Shop.uss?fileID=7433441132597879392&amp;guid=1300f332d4f6fa14585c4af45625b91e&amp;type=3#Shop"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <ui:VisualElement name="shop-root" style="flex-grow: 1; flex-direction: column; background-color: rgb(30, 30, 30); padding: 10px;">
         <ui:VisualElement style="flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <ui:Label text="Shop" style="font-size: 24px; color: white; -unity-font-style: bold;"/>
+            <ui:Label text="Shop" class="shop-header" style="color: rgb(255, 255, 255);"/>
             <ui:VisualElement style="flex-direction: row; align-items: center;">
                 <ui:Label text="Gold: " style="font-size: 18px; color: gold; -unity-font-style: bold;"/>
                 <ui:Label name="gold-amount-label" text="0" style="font-size: 18px; color: white;"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:ScrollView style="flex-grow: 1;">
-            <ui:VisualElement name="shop-grid" style="flex-direction: row; flex-wrap: wrap; justify-content: flex-start;"/>
+            <ui:VisualElement name="shop-grid" style="flex-direction: row; flex-wrap: wrap; justify-content: flex-start;">
+                <ui:VisualElement class="shop-item-slot" style="flex-grow: 1;"/>
+            </ui:VisualElement>
         </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>

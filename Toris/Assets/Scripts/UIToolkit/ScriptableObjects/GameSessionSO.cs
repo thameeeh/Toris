@@ -21,12 +21,17 @@ namespace OutlandHaven.UIToolkit
     public class GameSessionSO : ScriptableObject
     {
         [Header("Data References")]
-        public PlayerDataSO PlayerData;
+        // public PlayerDataSO PlayerData; // Deprecated
         [System.NonSerialized]
         public InventoryManager PlayerInventory;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
         [SerializeField] private string targetSpawnPointID;
+
+        [Header("Skill System")]
+        [SerializeField] private PlayerSkillTracker _playerSkills = new PlayerSkillTracker();
+
+        public PlayerSkillTracker PlayerSkills => _playerSkills;
     }
 }

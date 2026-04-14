@@ -134,19 +134,16 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
     }
 
-    public void OnToggleSmith(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
-        }
-    }
-
     public void OnToggleMage(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Mage, null);
         }
+    }
+
+    public void OnToggleSkills(InputAction.CallbackContext context)
+    {
+        _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
     }
 }

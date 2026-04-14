@@ -181,12 +181,12 @@ GameObject:
   - component: {fileID: 1016723389627658535}
   - component: {fileID: 1606071663587447615}
   - component: {fileID: 7463995762502266989}
-  - component: {fileID: 7839637341784577601}
   - component: {fileID: 11460203849402894}
   - component: {fileID: 1180660247904241518}
   - component: {fileID: 3574468660349965129}
   - component: {fileID: 7812172008567482713}
   - component: {fileID: 9194752483613569355}
+  - component: {fileID: 7521690604036978262}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _effectSourceController: {fileID: 4459608157227879889}
-  _playerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
+  _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
   _fillResourcesToMaximumOnAwake: 1
   _preserveResourceRatiosWhenEffectsChange: 1
 --- !u!114 &5229613945364294266
@@ -537,6 +537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
   _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
+  _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
   _initializeFromConfigOnAwake: 1
 --- !u!114 &957290264796575780
 MonoBehaviour:
@@ -627,7 +628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
   _equipmentInventory: {fileID: 0}
-  _uiInventoryEvents: {fileID: 0}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
 --- !u!114 &1606071663587447615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,20 +656,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentEffectBridge
   _equipment: {fileID: 1016723389627658535}
   _effectSourceController: {fileID: 4459608157227879889}
---- !u!114 &7839637341784577601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e2cfe41795205488976a030b89cf9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
-  _config: {fileID: 11400000, guid: 501adcf8147a1724793d463a747d5550, type: 2}
-  _initializeFromConfigOnAwake: 1
 --- !u!114 &11460203849402894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,7 +710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventoryActionController
   _playerInventory: {fileID: 0}
   _equipmentInventory: {fileID: 0}
-  _uiInventoryEvents: {fileID: 0}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
 --- !u!114 &9194752483613569355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,6 +726,21 @@ MonoBehaviour:
   _actions: {fileID: 7812172008567482713}
   _slotIndex: 0
   _unequipSlot: 4
+--- !u!114 &7521690604036978262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbff2081bf5b4644970bf74846acbe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHUDBridge
+  _playerStats: {fileID: 8137892244548921797}
+  _playerProgression: {fileID: 5512597181503885225}
+  _playerStatusController: {fileID: 957290264796575780}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

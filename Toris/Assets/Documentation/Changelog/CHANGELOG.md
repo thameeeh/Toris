@@ -1,21 +1,159 @@
-# General Project Changelog
+## [Current/Recent] - Skill Screen Architecture Implementation
+This update introduces the foundational architecture for the Skill Screen, aligning with the project's MVC and Event Bus standards.
 
-**Rules:**
-* Archive previous changes and add new ones at the top to continue the log.
-* Shortly describe what was done.
-* Enumerate or mark different changes; if changes are too big, divide them into smaller ones.
+### 1. UI Layout & Styling (UXML/USS)
+* **The Massive Canvas:** Utilized Flexbox inside a `ScrollView` (with hidden scrollbars) to create a large 1920x1080 panning area for the skill tree.
+* **The Info Panel:** Built a static side panel to display detailed information (name, description, cost, status) and hold the primary action button.
+* **Visual States:** Defined specific USS classes (`.skill-node--unlocked`, `--available`, `--locked`) to handle the coloring and opacity of nodes, plus pseudo-classes (`:disabled`, `:hover`) for the unlock button.
+
+### 2. Static Data (ScriptableObjects)
+* **The Blueprint:** Created `SkillData` ScriptableObjects to hold the static identity of each skill (ID, name, cost, text, and an array of prerequisite `SkillData`).
+* **The Separation:** Ensures dynamic player save files are not bloated with static text and icon references.
+
+### 3. Dynamic Data Model (Pure C#)
+* **The Tracker:** Built `PlayerSkillTracker`, a pure, serializable C# class living inside `GameSessionSO` (the ultimate source of truth).
+* **The Logic:** Securely handles deducting SP, adding unlocked IDs to a HashSet, and evaluating if prerequisites are met.
+
+### 4. Event Bus Architecture (ScriptableObjects)
+* **The Decoupling:** Created `UISkillEventsSO` to prevent the UI from directly modifying the save data.
+* **The Manager:** Established a `SkillManager` MonoBehaviour to listen for the UI's `OnRequestUnlock` event, validate the math against the `GameSessionSO`, and broadcast back the success state.
+
+### 5. The View (C# UI Logic)
+* **The Mapping:** In `PlayerSkillView.cs`, used a Dictionary to map UXML `<ui:Button>` elements directly to their respective `SkillData` IDs.
+* **Data Injection:** Injects SO data into the Info Panel labels when a node is clicked.
+* **State Updates:** Wrote `RefreshAllNodes()`, sweeping the tree every time it opens (or a skill is bought) to dynamically add or remove the USS locked/available/unlocked classes based on the Tracker's logic.
+
+### 6. The Controller (MonoBehaviour)
+* **The Initialization:** Refactored `SkillScreenController.cs` to instantiate the UXML, inject the `SkillData[]` database and the `GameSessionSO` into the View, and register it directly into the `UIManager`'s FullScreen zone.
+
+## [Previous] - Refactored UI Currency Access
+* Replaced `PlayerProgressionAnchorSO` with `PlayerHUDBridge` in `ShopSubView` and related controllers (`SmithScreenController`, `MageScreenController`).
+* UI views now strictly observe `PlayerHUDBridge.OnGoldChanged` instead of global event channels for currency updates.
+* Removed redundant `OnCurrencyChanged` event from `UIInventoryEventsSO` to prevent race conditions.
+* Updated `ShopManagerSO`, `SalvageManagerSO`, and `CraftingManagerSO` to not invoke `OnCurrencyChanged`.
+* Removed unused `PlayerStatsAnchorSO` from `HudScreenController`.
+
+## [Previous] - Cleanup redundant skill view script
+This update removes redundant scripts for the skill tree UI and consolidates its logic into the actively used views and data structures.
+
+### 1. Removed `SkillsView.cs`
+* Deleted the older, redundant `SkillsView.cs` as its UI component functionality has been entirely replaced by `PlayerSkillView.cs`.
+
+### 2. Consolidated Dependencies
+* Moved the `SkillsPayload` data struct into `PlayerSkillView.cs` to prevent compilation errors after deletion.
+* Validated `SkillsScreenController.cs` and `PlayerSkillView.cs` integration with the struct.
+
+### 3. Documentation Updated
+* Added Context-Dense Metadata Summaries in `Script_Descriptions/` for `PlayerSkillView.cs`, `SkillsScreenController.cs`, `SkillMenuController.cs`, and `SkillDataSO.cs`.
+
+## [Previous] - Assign Skill Screen to Input Key
+- Created `SkillMenuController.cs` to instantiate `InputSystem_Actions`, subscribe to the `ToggleSkills` performed event, and dispatch `UIEvents.OnRequestOpen` for the `SkillScreen`.
+
+## [Previous] - Implemented Skills Screen UI Framework
+- Created UXML and USS presentation assets for the new full-screen Skills interface.
+- Implemented `SkillsView.cs` conforming to `GameView` principles (data-agnostic, delegates closing via events).
+- Added `SkillsScreenController.cs` to instantiate the UI, bind the view, and register it to the `FullScreen` screen zone dynamically.
+
+## [Previous] - Script Documentation Summaries
+This update adds Context-Dense Metadata Summaries for several scriptable object scripts to improve project documentation and architecture visibility for AI agents.
+
+### 1. Added Script Descriptions
+* Generated detailed metadata summaries for `CraftingManagerSO`, `CraftingRecipeSO`, `CraftingRegistrySO`, `GameSessionSO`, `InventoryContainerSO`, and `InventoryItemSO`.
+* Each summary outlines the Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle using a structured key-value format.
+* Added all new files to `Toris/Assets/Documentation/Script_Descriptions/`.
+## [Previous] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for various core scripts to facilitate quick architectural understanding.
+
+### 1. Added Script Descriptions
+* Generated structured, key-value metadata `.md` files in `Toris/Assets/Documentation/Script_Descriptions/` for the following scripts:
+  * `InventoryActionController`
+  * `InventoryActionControllerDebugger`
+  * `PlayerHUDBridge`
+  * `ItemPickEventSO`
+  * `InventorySlotTests`
+## [Previous] - Script Documentation Generation
+This update adds Context-Dense Metadata Summaries for four core scripts within the Inventory Item Architecture, adhering strictly to the structured key-value format required by the project directives.
+
+### 1. Generated Documentation Summaries
+* Created `ProgressionModule.md` documenting `ProgressionComponent`.
+* Created `UpgradeableModule.md` documenting `UpgradeableComponent` and `UpgradeableState`.
+* Created `ItemComponent.md` documenting the abstract base `ItemComponent` class.
+* Created `ItemComponentState.md` documenting the abstract base `ItemComponentState` class.
+
+### 2. Standardization
+* Ensured all generated files adhere to the strict key-value formatting rules: Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle.
+* Omitted conversational language and used technical shorthand with bullet points.
+## [Previous] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files to act as primary references for AI agents.
+
+### 1. Created Script Summaries
+* Created `IContainerInteractable.md` detailing the Interface architecture for interactive containers.
+* Created `ConsumableModule.md` detailing the Abstract Blueprint and Runtime State architecture for consumable items.
+* Created `DefensiveModule.md` detailing the Data Container architecture for defensive item stats.
+## [Previous] - Added Script Metadata Summaries
+This update adds structured context-dense metadata summaries for UI Toolkit screen controllers to aid AI agents and developers in understanding the codebase architecture.
+
+### 1. Created Metadata Summaries
+* Generated context-dense key-value documentation in `Toris/Assets/Documentation/Script_Descriptions/` for:
+  * `HudScreenController.md`
+  * `InventoryScreenController.md`
+  * `MageScreenController.md`
+  * `MainMenuScreenController.md`
+  * `SmithScreenController.md`
+## [Previous] - Script Metadata Summaries Added
+This update adds Context-Dense Metadata Summaries for several UI-related scripts to serve as primary references for AI agents, following a highly structured format.
+
+### 1. Created Script Descriptions
+* Created `ForgeSubView.md`, `GameView.md`, `HUDView.md`, and `MageView.md` inside `Toris/Assets/Documentation/Script_Descriptions/`.
+* Each summary outlines the script's Architectural Role, Core Logic (Abstract/Virtual Methods, Public API), Dependency Graph, Data Schema, and Side Effects & Lifecycle using key-value bulleted formats.
 
 ---
 
-## [Current/Recent] - Added Context-Dense Metadata Summary for UIManager
-This update generates a context-dense metadata summary for `UIManager.cs` to assist AI agents in understanding the script's role without reading the full source code.
+## [Previous] - Documentation Updates
+This update addresses missing UI documentation and ensures all project documentation is centralized and correctly formatted according to project conventions.
 
-### 1. Created Script_Descriptions Directory
-* Created `Toris/Assets/Documentation/Script_Descriptions` directory to hold metadata summaries.
+### 1. Centralized Event Documentation
+* Moved `Inventory_Event_System_Documentation.md` from the Scripts folder to the centralized `Toris/Assets/Documentation/` directory.
 
-### 2. Generated UIManager Metadata Summary
-* Generated `UIManager.md` with structured key-value style fields.
-* Populated fields: Identifier, Architectural Role, Core Logic, Dependency Graph, Data Schema, and Side Effects & Lifecycle.
+### 2. Added UI Interactions Documentation
+* Created `UI_Interactions_Documentation.md` detailing the Drag-and-Drop system, Ghost Icon instantiation, Drag Thresholds, and the abstraction of raw hardware inputs into semantic events via `UIInventoryEventsSO`.
+
+### 3. Added Equipment System Documentation
+* Created `Equipment_System_Documentation.md` detailing the architecture of the Equipment UI and the stat connection flow (from `InventoryManager` via `PlayerEquipmentController` to `PlayerEffectResolver`).
+
+### 4. Updated Script Dependencies
+* Updated `script dependency documentation.md` to format relationships as proper dependency chains (A -> B -> C) rather than nested lists.
+* Added cross-references to the newly created documentation files.
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
+This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
+
+### 1. Updated Initialization Logic
+* Modified `Awake()` in `InventoryManager.cs` to explicitly synchronize the `LiveSlots` count with the `ContainerBlueprint.SlotCount`. It now pads missing slots or trims excess ones, preventing the list from blindly appending slots.
+
+### 2. Added Editor Validation
+* Added an `OnValidate()` method wrapped in `#if UNITY_EDITOR` to `InventoryManager.cs`. This ensures that any manual changes in the Unity Inspector immediately reflect the correct, constrained slot count defined by the `ContainerBlueprint`.
+
+---
+
+## [Previous] - Refactor Player Data Architecture
+This update refactors how global managers and the HUD access player progression and stats, removing the deprecated `PlayerDataSO` in favor of a Hybrid Architecture using Runtime Anchors and a UI Bridge.
+
+### 1. Created Anchors
+* Added `PlayerProgressionAnchorSO` and `PlayerStatsAnchorSO` ScriptableObjects to act as global access points.
+* `PlayerProgression` and `PlayerStats` MonoBehaviours now register themselves to these anchors on `OnEnable` and clear on `OnDisable`.
+
+### 2. Refactored Global Managers
+* Updated `ShopManagerSO`, `CraftingManagerSO`, `SalvageManagerSO`, and `UpgradeSalvageManagerSO` to use `PlayerProgressionAnchorSO` for checking and deducting gold, removing their dependency on `PlayerDataSO`.
+
+### 3. Updated HUD Controller
+* Modified `HudScreenController` to find the `PlayerHUDBridge` in the scene and pass it to `HUDView` instead of `GameSessionSO.PlayerData`.
+* `HUDView` now binds to the events of `PlayerHUDBridge` (`OnHealthChanged`, `OnStaminaChanged`, `OnLevelChanged`, `OnGoldChanged`) ensuring a decoupled, event-driven update loop.
+
+### 4. Removed Deprecated Assets
+* Deleted `PlayerDataSO.cs` entirely and cleaned up its references in `GameSessionSO` and `Wolf.cs`.
 
 ---
 
@@ -119,6 +257,7 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ## [Unreleased]
 ### Changed
+- **UI Architecture:** Fixed broken drag-and-drop and click interactions on dynamically instantiated UI Toolkit inventory slots by updating the `TemplateContainer` wrapper's picking mode to `Ignore` and correctly registering pointer events directly onto the inner `.item-slot` element in `InventorySlotView.cs`.
 # General Project Changelog
 
 **Rules:**
@@ -128,7 +267,45 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Fixed Dynamic Inventory Growth Bug
+## [Current/Recent] - Clean up Leftover Python Scripts
+* Deleted leftover Python scripts (`*.py`) from the root directory that were accumulated during previous pull requests.
+
+## [Previous] - Script Metadata Summaries
+This update adds structured context-dense metadata summaries for item entity modules to aid in scaling and dependency tracking.
+
+### 1. EquipableModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/EquipableModule.md`.
+* Documented `EquipableComponent` as an abstract blueprint, listing its schema (`TargetSlot`, `StrengthBonus`, `DefenceBonus`) and its downstream UI/Effect system dependencies.
+
+### 2. EvolvingItemModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/EvolvingItemModule.md`.
+* Documented both the static blueprint (`EvolvingComponent`) and its dynamic runtime tracker (`EvolvingState`), including abstract method overrides for stacking and cloning.
+
+### 3. OffensiveModule Summary
+* Added `Toris/Assets/Documentation/Script_Descriptions/OffensiveModule.md`.
+* Documented `OffensiveComponent` emphasizing its static nature (no runtime state needed) and data schema (`BaseDamage`, `AttackSpeed`).
+## [Previous] - Script Metadata Documentation
+This update adds Context-Dense Metadata Summaries for several script files as part of expanding the AI assistant documentation context.
+
+### 1. Created Script Descriptions
+* Added `SalvageManagerSO.md`, `SalvageRecipeSO.md`, `ShopManagerSO.md`, `UpgradeSalvageManagerSO.md`, and `ItemTestDebugger.md` to `Toris/Assets/Documentation/Script_Descriptions/`.
+* Ensured summaries are highly token-efficient and use a structured key-value format without conversational language.
+## [Previous] - Documentation Updates
+This update addresses the generation of Context-Dense Metadata Summaries for several UI and systemic classes, expanding the `Script_Descriptions` folder to aid in modular code comprehension.
+
+### 1. Generated Summaries
+* Created `UIInventoryEventsSO.md` detailing the decoupled event channel for UI inventory interactions.
+* Created `SystemBootstrapper.md` detailing the global entry point for persistent manager initialization.
+* Created `UIDragManager.md` detailing the UI pointer tracking and global drag visual layer.
+This update introduces Context-Dense Metadata Summaries for critical UI components to aid AI-assisted development and architectural comprehension.
+
+### 1. Created Script Descriptions
+* Added `PlayerEquipmentView.md` in `Documentation/Script_Descriptions/` detailing its architecture, dependencies, and lifecycle.
+* Added `PlayerInventoryView.md` in `Documentation/Script_Descriptions/` mapping its role as a screen controller, data dependencies, and state management.
+
+---
+
+## [Previous] - Fixed Dynamic Inventory Growth Bug
 This update fixes an issue where the `InventoryManager`'s live slot list would grow beyond the scriptable object's defined capacity when initialized with existing items in the Unity Editor or during gameplay, which caused the UI to break.
 
 ### 1. Updated Initialization Logic

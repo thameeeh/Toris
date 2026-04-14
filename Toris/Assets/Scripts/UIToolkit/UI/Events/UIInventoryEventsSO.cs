@@ -13,10 +13,10 @@ namespace OutlandHaven.Inventory
         public UnityAction OnShopInventoryUpdated;
         public UnityAction<ItemInstance, int> OnRequestBuy;
         public UnityAction<ItemInstance, int> OnRequestSell;
-        public UnityAction<int> OnCurrencyChanged;
 
         [Header("Crafting Events")]
         public UnityAction<InventorySlot> OnItemClicked;
+        public UnityAction<InventorySlot> OnItemRightClicked;
         public UnityAction<InventorySlot, SalvageType> OnRequestSalvage;
         public UnityAction<InventorySlot, InventorySlot> OnRequestForge;
 

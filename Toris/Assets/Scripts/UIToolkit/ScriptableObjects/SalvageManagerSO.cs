@@ -14,6 +14,7 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Dependencies")]
         public GameSessionSO SessionData;
+        public PlayerProgressionAnchorSO PlayerAnchor;
         public UIInventoryEventsSO InventoryEvents;
         public CraftingRegistrySO Registry;
 
@@ -56,7 +57,8 @@ namespace OutlandHaven.UIToolkit
         private void HandleRequestSalvage(InventorySlot slot, SalvageType salvageType)
         {
             if (slot == null || slot.IsEmpty) return;
-            if (SessionData == null || SessionData.PlayerInventory == null || SessionData.PlayerData == null) return;
+            if (SessionData == null || SessionData.PlayerInventory == null) return;
+            if (PlayerAnchor == null || !PlayerAnchor.IsReady) return;
             if (Registry == null) return;
 
             // Cache item type for safety
@@ -93,8 +95,7 @@ namespace OutlandHaven.UIToolkit
             {
                 if (recipe.GoldYield > 0)
                 {
-                    SessionData.PlayerData.ModifyGold(recipe.GoldYield);
-                    InventoryEvents?.OnCurrencyChanged?.Invoke(SessionData.PlayerData.Gold);
+                    PlayerAnchor.Instance.AddGold(recipe.GoldYield);
                 }
 #if UNITY_EDITOR
                 Debug.Log($"Salvaged {itemType.ItemName} for {recipe.GoldYield} gold.");

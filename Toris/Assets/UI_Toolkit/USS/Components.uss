@@ -26,29 +26,168 @@
 }
 
 .item-quantity {
-    /* 1. Pin it to the bottom right corner */
     position: absolute;
     bottom: 2px;
     left: 4px;
-    
-    /* 2. Typography */
     color: rgb(255, 255, 255);
     font-size: 14px;
     -unity-font-style: bold;
-    
-    /* 3. The Contrast Maker (Black Outline) */
     -unity-text-outline-width: 1.5px;
     -unity-text-outline-color: rgb(0, 0, 0);
-    
-    /* Ensure it never catches mouse clicks so drag-and-drop works smoothly */
-    picking-mode: Ignore; 
+    picking-mode: Ignore;
 }
 
 .item-icon {
     width: 70%;
     height: 70%;
-    
-    /* 2. Remove any accidental spacing that might push it off-center */
     margin: auto;
     padding: 0;
 }
+
+.panel-tab {
+    flex-grow: 1;
+    height: 50px;
+    background-color: rgb(40, 40, 40);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-width: 1px;
+    border-bottom-width: 0;
+    border-color: rgb(25, 25, 25);
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.1s;
+}
+
+.panel-tab:hover {
+    background-color: rgb(60, 60, 60);
+    border-color: rgb(220, 179, 92);
+}
+
+.panel-tab--active {
+    background-color: rgb(70, 70, 70);
+    border-color: rgb(220, 179, 92);
+}
+
+.panel-tab-label {
+    color: rgb(180, 180, 180);
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    picking-mode: Ignore;
+}
+
+.panel-tab--active .panel-tab-label {
+    color: rgb(255, 255, 255);
+}
+
+.panel-title {
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+#Equipment__Header .panel-title {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.equip-slot--head {
+    position: absolute;
+    top: 5%;
+    left: 2%;
+}
+
+.equip-slot--chest {
+    position: absolute;
+    top: 22%;
+    left: 2%;
+}
+
+.equip-slot--arms {
+    position: absolute;
+    left: 2%;
+    top: 39%;
+}
+
+.equip-slot--legs {
+    position: absolute;
+    left: 2%;
+    top: 56%;
+}
+
+.equip-slot--weapon {
+    position: absolute;
+    left: 2%;
+    bottom: 10px;
+}
+
+.potion-container--absolute {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
+
+.potion-slot-group {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.potion-slot {
+    width: 70px;
+    height: 70px;
+    background-color: rgb(40, 40, 40);
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    border-radius: 35px;
+    margin-right: 15px;
+    transition-duration: 0.1s;
+}
+
+.potion-slot-group > .potion-slot:last-child {
+    margin-right: 0;
+}
+
+.potion-slot:hover {
+    border-color: var(--color-border-highlight);
+    scale: 1.05;
+}
+
+.shop-item-slot {
+    width: 82px;
+    height: 82px;
+    background-color: var(--color-shop-slot-bg);
+    border-width: 1px;
+    border-color: var(--color-shop-slot-border);
+    border-radius: 4px;
+    margin: 4px;
+    transition-duration: 0.15s;
+}
+
+.shop-item-slot:hover {
+    background-color: rgb(40, 40, 40);
+    border-color: var(--color-border-highlight);
+    scale: 1.05;
+}
+
+.shop-item-price {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    color: var(--color-coin-gold);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    picking-mode: Ignore;
+}
+
+

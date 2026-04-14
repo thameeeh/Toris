@@ -27,7 +27,6 @@ This document outlines the ScriptableObject-based Event Architecture used throug
 *   **`OnInventoryUpdated`**: Fired by `InventoryManager` when its internal list of items changes (addition, removal, count updates). UI views like `PlayerInventoryView` listen to this to refresh the grid.
 *   **`OnShopInventoryUpdated`**: Fired by `ShopManagerSO` when vendor stock changes.
 *   **`OnRequestBuy` / `OnRequestSell`**: Dispatched by the UI Views when a user clicks (e.g., right-clicking a shop item). This request is caught and processed securely by `ShopManagerSO`.
-*   **`OnCurrencyChanged`**: Fired when gold values update. Listened to by Views such as `ShopSubView`.
 *   **`OnItemClicked`**: Fired by `InventorySlotView` when an item is selected. Equipment Managers and Crafting views subscribe to this to know which item the player is targeting.
 *   **`OnRequestSalvage` / `OnRequestForge`**: Similar to buy/sell requests, these events pass data to specific processing managers (like `CraftingManagerSO` or `SalvageManagerSO`) to execute the logic behind the scenes.
 

@@ -13,17 +13,19 @@ namespace OutlandHaven.UIToolkit
 
         private HUDView _view;
         private UIManager _uiManager;
+        private PlayerHUDBridge _playerHudBridge;
 
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
+            _playerHudBridge = FindFirstObjectByType<PlayerHUDBridge>();
         }
 
         private void OnEnable()
         {
             if (_hudMainTemplate == null)
             {
-                Debug.LogError("HudScreenController: HUD Main Template is missing!");
+                Debug.LogError("HudScreenController: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject</color>");
                 return;
             }
         }
@@ -35,8 +37,13 @@ namespace OutlandHaven.UIToolkit
             // 1. Instantiate the UI from the asset
             TemplateContainer hudInstance = _hudMainTemplate.Instantiate();
 
+            if (_playerHudBridge == null)
+            {
+                Debug.LogWarning("<b><color=yellow>HudScreenController</color></b> must be on active <b><color=green>GameObject</color></b>");
+            }
+
             // 2. Pass the INSTANCE to the View
-            _view = new HUDView(hudInstance, _gameSession.PlayerData, _uiEvents, _buttonTemplate);
+            _view = new HUDView(hudInstance, _playerHudBridge, _uiEvents, _buttonTemplate);
             _view.Initialize();
 
             // 3. Register to the HUD Zone

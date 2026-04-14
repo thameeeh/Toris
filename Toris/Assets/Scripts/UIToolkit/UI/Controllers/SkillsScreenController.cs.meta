@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a377fd0b343e8a24a8de0680a64ac444
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _skillsMainTemplate: {fileID: 9197481963319205126, guid: 4ab31f785c3e7614daecfda9464c00ab, type: 3}
+  - _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  - _playerHudBridge: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -21,14 +21,23 @@ namespace OutlandHaven.Inventory
 
         public InventorySlotView(VisualElement root, InventoryManager owningContainer, UIInventoryEventsSO uiInventoryEvents)
         {
-            _root = root;
+            // Set the wrapper root's picking mode to Ignore
+            root.pickingMode = PickingMode.Ignore;
+
+            _root = root.Q<VisualElement>(className: "item-slot");
+            if (_root == null) _root = root;
+            else _root.pickingMode = PickingMode.Position;
+
             _owningContainer = owningContainer;
             _uiInventoryEvents = uiInventoryEvents;
 
-            _icon = root.Q<Image>("slot-icon");
-            _qtyLabel = root.Q<Label>("slot-qty");
+            _icon = _root.Q<Image>("slot-icon");
+            _qtyLabel = _root.Q<Label>("slot-qty");
 
-            // Register pointer callbacks
+            // FACTUAL FIX 1: Force child elements to ignore raycasts so _root catches the click cleanly
+            if (_icon != null) _icon.pickingMode = PickingMode.Ignore;
+            if (_qtyLabel != null) _qtyLabel.pickingMode = PickingMode.Ignore;
+
             _root.RegisterCallback<PointerDownEvent>(OnPointerDown);
             _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
             _root.RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -67,7 +76,9 @@ namespace OutlandHaven.Inventory
 
         private void OnPointerDown(PointerDownEvent evt)
         {
-            if (_slotData == null || _slotData.IsEmpty || evt.button != 0) return;
+            if (_slotData == null || _slotData.IsEmpty) return;
+            // Only allow left click (0) and right click (1) to capture pointer
+            if (evt.button != 0 && evt.button != 1) return;
 
             // Do not initiate visual drag right away (wait for threshold)
             _isDragging = false;
@@ -80,21 +91,22 @@ namespace OutlandHaven.Inventory
         {
             if (!_root.HasPointerCapture(evt.pointerId)) return;
 
-            // If we are not currently dragging, check distance against threshold
+            // FACTUAL FIX 2: evt.button is unreliable during a move. 
+            // Check the evt.pressedButtons bitmask instead. (1 = Left Click held down)
+            if ((evt.pressedButtons & 1) == 0) return;
+
             if (!_isDragging)
             {
                 float distance = Vector2.Distance(_dragStartPosition, evt.position);
                 if (distance >= DragThreshold)
                 {
                     _isDragging = true;
-                    // Provide the icon dimensions as the payload for sizing the ghost layer
                     Vector2 iconSize = new Vector2(_icon.layout.width, _icon.layout.height);
                     UIDragManager.Instance?.StartDrag(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
                 }
             }
             else
             {
-                // We are already dragging, so keep updating the absolute position
                 UIDragManager.Instance?.UpdateDrag(evt.position);
             }
         }
@@ -104,6 +116,20 @@ namespace OutlandHaven.Inventory
             if (!_root.HasPointerCapture(evt.pointerId)) return;
 
             _root.ReleasePointer(evt.pointerId);
+
+            if (evt.button == 1)
+            {
+                // Stop dragging state and clear visual ghost if any
+                _isDragging = false;
+                UIDragManager.Instance?.StopDrag();
+
+                // Fire right click event
+                if (_slotData != null && !_slotData.IsEmpty)
+                {
+                    _uiInventoryEvents?.OnItemRightClicked?.Invoke(_slotData);
+                }
+                return;
+            }
 
             if (_isDragging)
             {
@@ -183,6 +209,16 @@ namespace OutlandHaven.Inventory
                 element = element.parent;
             }
             return null;
+        }
+
+        public void Dispose()
+        {
+            if (_root != null)
+            {
+                _root.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+                _root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+                _root.UnregisterCallback<PointerUpEvent>(OnPointerUp);
+            }
         }
     }
 

@@ -14,6 +14,7 @@ namespace OutlandHaven.UIToolkit
         private VisualTreeAsset _salvageTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
         private GameSessionSO _gameSession;
+        private PlayerHUDBridge _playerHudBridge;
         private InventoryManager _shopContainer;
         private CraftingManagerSO _craftingManager;
         private SalvageManagerSO _salvageManager;
@@ -25,7 +26,7 @@ namespace OutlandHaven.UIToolkit
         private ForgeSubView _forgeSubView;
         private SalvageSubView _salvageSubView;
 
-        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, CraftingManagerSO craftingManager, SalvageManagerSO salvageManager)
+        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, PlayerHUDBridge playerHudBridge, CraftingManagerSO craftingManager, SalvageManagerSO salvageManager)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
@@ -34,6 +35,7 @@ namespace OutlandHaven.UIToolkit
             _salvageTemplate = salvageTemplate;
             _uiInventoryEvents = uiInventoryEvents;
             _gameSession = gameSession;
+            _playerHudBridge = playerHudBridge;
             _craftingManager = craftingManager;
             _salvageManager = salvageManager;
         }
@@ -79,7 +81,7 @@ namespace OutlandHaven.UIToolkit
                 {
                     TemplateContainer shopInstance = _shopTemplate.Instantiate();
                     _middlePanel.Add(shopInstance);
-                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession);
+                    _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession, _playerHudBridge);
                     _shopSubView.Initialize();
                 }
             }

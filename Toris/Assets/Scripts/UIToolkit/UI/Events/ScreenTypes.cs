@@ -8,16 +8,18 @@ namespace OutlandHaven.UIToolkit
         None,
         HUD,
         Inventory,
-        CharacterSheet,
         PauseMenu,
+        CharacterSheet,
         Smith,
-        Mage
+        Mage,
+        Skills
     }
     public enum ScreenZone
     {
         HUD,
         Left,
         Right,
+        FullScreen,
         Modal
     }
     public static class UIEvents

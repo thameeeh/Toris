@@ -29,7 +29,7 @@ namespace OutlandHaven.Inventory
         public UnityAction<EquipmentSlot> OnRequestUnequip;
         
         [Header("Drag and Drop Events")]
-        public UnityAction<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnRequestMoveItem;
+        public System.Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnRequestMoveItem;
 
         // Fired when an item is dropped onto a proxy visual slot (like Forge/Salvage)
         public UnityAction<InventorySlot, string> OnRequestSelectForProcessing;

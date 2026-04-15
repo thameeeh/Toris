@@ -33,15 +33,17 @@ public sealed class BiomeProfile : ScriptableObject
     public TileBase[] groundVariants;
     public TileBase waterTile;
 
-    [Header("Decor Layers")]
+    [Header("Decoration Layers")]
     public TileBase[] flowerDecorVariants;
     [Range(0f, 1f)] public float flowerBaseProb = 0.10f;
 
-    public TileBase[] vegetationDecorVariants;
-    [Range(0f, 1f)] public float vegetationMaxProb = 0.75f;
+    [Header("Small Vegetation Layers")]
+    public TileBase[] smallVegetationDecorVariants;
+    [Range(0f, 1f)] public float smallVegetationMaxProb = 0.75f;
 
     [Header("Tree Layers")]
     public BiomeTreeVariant[] treeVariants;
+    [Range(0f, 1f)] public float treeMaxProb = 0.75f;
 
     #region Stamps
     [Header("Road")]

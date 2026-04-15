@@ -46,10 +46,12 @@ public class PlayerBowController : MonoBehaviour
     public event System.Action ShotReleased;
     public event System.Action DryReleased;
     public event System.Action ShotFired;
+    public event System.Action<Vector2, bool> AbilityReleaseRequested;
 
     private float drawStartTime = -999f;
     private float lastShotTime = -999f;
     private bool drawing;
+    private bool _currentDrawNocked;
 
     private void OnEnable()
     {
@@ -70,6 +72,7 @@ public class PlayerBowController : MonoBehaviour
 
         _motor?.SetMovementLocked(false);
         drawing = false;
+        _currentDrawNocked = false;
     }
 
     private void OnValidate()
@@ -103,9 +106,18 @@ public class PlayerBowController : MonoBehaviour
         }
 
         drawing = true;
+        _currentDrawNocked = false;
         drawStartTime = Time.time;
         _motor?.SetMovementLocked(true);
         DrawStarted?.Invoke();
+    }
+
+    public void NotifyNockReached()
+    {
+        if (drawing)
+        {
+            _currentDrawNocked = true;
+        }
     }
 
     private void ReleaseShot()
@@ -121,11 +133,20 @@ public class PlayerBowController : MonoBehaviour
 
         if (_bow == null)
         {
+            _currentDrawNocked = false;
+            DryReleased?.Invoke();
+            return;
+        }
+
+        if (!_currentDrawNocked)
+        {
+            _currentDrawNocked = false;
             DryReleased?.Invoke();
             return;
         }
 
         float heldTime = Mathf.Max(0f, Time.time - drawStartTime);
+        _currentDrawNocked = false;
         BowSO.ShotStats shot = _bow.BuildShotStats(heldTime, 0f);
 
         Vector2 aimDirection = GetAimDirection();
@@ -169,7 +190,7 @@ public class PlayerBowController : MonoBehaviour
         ShotFired?.Invoke();
     }
 
-    public void FireArrow(BowSO.ShotStats stats)
+    public void FireArrow(BowSO.ShotStats stats, bool playReleaseAnimation = false, bool useShortReleaseAnimation = true)
     {
         if (_bow == null) return;
         if (_bow.arrowPrefab == null)
@@ -182,6 +203,12 @@ public class PlayerBowController : MonoBehaviour
             baseDir = Vector2.right;
 
         _playerFacing?.SetFacing(baseDir);
+
+        if (playReleaseAnimation)
+        {
+            AbilityReleaseRequested?.Invoke(baseDir, useShortReleaseAnimation);
+        }
+
         SpawnArrow(finalStats, baseDir);
     }
 
@@ -237,7 +264,7 @@ public class PlayerBowController : MonoBehaviour
         return v.sqrMagnitude > 0.0001f ? v.normalized : Vector2.right;
     }
 
-    public void FireMultiShotVolley(BowSO.ShotStats stats, int arrowCount, float totalSpreadDegrees)
+    public void FireMultiShotVolley(BowSO.ShotStats stats, int arrowCount, float totalSpreadDegrees, bool playReleaseAnimation = false, bool useShortReleaseAnimation = true)
     {
         BowSO.ShotStats finalStats = ApplyResolvedDamageModifiers(stats);
 
@@ -246,6 +273,11 @@ public class PlayerBowController : MonoBehaviour
             baseDir = Vector2.right;
 
         _playerFacing?.SetFacing(baseDir);
+
+        if (playReleaseAnimation)
+        {
+            AbilityReleaseRequested?.Invoke(baseDir, useShortReleaseAnimation);
+        }
 
         int count = Mathf.Max(1, arrowCount);
         for (int i = 0; i < count; i++)

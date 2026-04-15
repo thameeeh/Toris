@@ -57,6 +57,7 @@ public sealed class TileResolver
     // Unique deterministic salts for different layer permutations
     private const uint HASH_SALT_GROUND = 101;
     private const uint HASH_SALT_TREE = 202;
+    private const uint HASH_SALT_SMALL_VEGETATION = 252;
     private const uint HASH_SALT_FLOWER = 303;
 
     private TileBase PickGround(Vector2Int local, WorldContext ctx)
@@ -85,7 +86,7 @@ public sealed class TileResolver
 
         if (bp.treeVariants == null || bp.treeVariants.Length == 0) return false;
 
-        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.vegetationMaxProb, s.vegetation01));
+        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.treeMaxProb, s.vegetation01));
         if (prob <= 0f) return false;
 
         uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_TREE);
@@ -110,17 +111,17 @@ public sealed class TileResolver
         var bp = ctx.Biome;
         if (bp == null) return false;
 
-        if (bp.vegetationDecorVariants == null || bp.vegetationDecorVariants.Length == 0) return false;
+        if (bp.smallVegetationDecorVariants == null || bp.smallVegetationDecorVariants.Length == 0) return false;
 
-        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.vegetationMaxProb, s.vegetation01));
+        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.smallVegetationMaxProb, s.vegetation01));
         if (prob <= 0f) return false;
 
-        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_TREE);
+        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_SMALL_VEGETATION);
         if (DeterministicHash.Hash01(h) > prob) return false;
 
-        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * bp.vegetationDecorVariants.Length);
-        idx = Mathf.Clamp(idx, 0, bp.vegetationDecorVariants.Length - 1);
-        tile = bp.vegetationDecorVariants[idx];
+        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * bp.smallVegetationDecorVariants.Length);
+        idx = Mathf.Clamp(idx, 0, bp.smallVegetationDecorVariants.Length - 1);
+        tile = bp.smallVegetationDecorVariants[idx];
         return true;
     }
 

@@ -17,6 +17,11 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_animationController != null)
+        {
+            _animationController.ShootNockReached += HandleShootNockReached;
+        }
+
         if (_motor != null)
         {
             _motor.DashStarted += HandleDashStarted;
@@ -26,7 +31,8 @@ public class PlayerAnimationPresenter : MonoBehaviour
         {
             _bowController.DrawStarted += HandleDrawStarted;
             _bowController.ShotReleased += HandleShotReleased;
-            _bowController.DryReleased += HandleShotReleased;
+            _bowController.DryReleased += HandleDryReleased;
+            _bowController.AbilityReleaseRequested += HandleAbilityReleaseRequested;
         }
 
         if (_damageReceiver != null)
@@ -42,6 +48,11 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_animationController != null)
+        {
+            _animationController.ShootNockReached -= HandleShootNockReached;
+        }
+
         if (_motor != null)
         {
             _motor.DashStarted -= HandleDashStarted;
@@ -51,7 +62,8 @@ public class PlayerAnimationPresenter : MonoBehaviour
         {
             _bowController.DrawStarted -= HandleDrawStarted;
             _bowController.ShotReleased -= HandleShotReleased;
-            _bowController.DryReleased -= HandleShotReleased;
+            _bowController.DryReleased -= HandleDryReleased;
+            _bowController.AbilityReleaseRequested -= HandleAbilityReleaseRequested;
         }
 
         if (_damageReceiver != null)
@@ -95,22 +107,32 @@ public class PlayerAnimationPresenter : MonoBehaviour
         if (_animationController == null)
             return;
 
-        if (dashDirection.sqrMagnitude > 0.0001f)
-        {
-            _animationController.UpdateAim(dashDirection.normalized);
-        }
-
-        _animationController.BeginHold("Dash");
+        _animationController.PlayDash(dashDirection);
     }
 
     private void HandleDrawStarted()
     {
-        _animationController?.BeginHold();
+        _animationController?.BeginShoot();
     }
 
     private void HandleShotReleased()
     {
-        _animationController?.ReleaseHold();
+        _animationController?.ReleaseShoot();
+    }
+
+    private void HandleDryReleased()
+    {
+        _animationController?.CancelShoot();
+    }
+
+    private void HandleShootNockReached()
+    {
+        _bowController?.NotifyNockReached();
+    }
+
+    private void HandleAbilityReleaseRequested(Vector2 shotDirection, bool useShortVariant)
+    {
+        _animationController?.PlayAbilityShootRelease(shotDirection, useShortVariant);
     }
 
     private void HandleHurtReceived()

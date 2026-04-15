@@ -54,9 +54,13 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
 
         float distToPlayer = toPlayer.magnitude;
 
-        // 1. If we're in melee radius, stop to avoid tiny jitter in bite range
-        if (distToPlayer <= _stopDistance)
+        bool canHoldBitePosition = enemy.IsWithinStrikingDistance && distToPlayer <= _stopDistance;
+
+        // 1. Only stop if the wolf is actually in striking range.
+        // Otherwise it can park just outside the bite trigger and appear to run in place.
+        if (canHoldBitePosition)
         {
+            enemy.animator.SetBool("IsMoving", false);
             enemy.MoveEnemy(Vector2.zero);
             return;
         }
@@ -98,9 +102,15 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
         float speed = enemy.MovementSpeed;
 
         if (moveDir.sqrMagnitude > 0.0001f)
+        {
+            enemy.animator.SetBool("IsMoving", true);
             enemy.MoveEnemy(moveDir * speed);
+        }
         else
+        {
+            enemy.animator.SetBool("IsMoving", false);
             enemy.MoveEnemy(Vector2.zero);
+        }
     }
 
     public override void DoExitLogic() 

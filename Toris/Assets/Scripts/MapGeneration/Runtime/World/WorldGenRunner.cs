@@ -188,6 +188,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             genBudgetMs);
 
         worldTransitionSystem.AttachLifecycleSystem(worldFeatureLifecycleSystem);
+        worldTransitionSystem.AttachStreamingRuntime(worldStreamingRuntime);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
         worldTransitionSystem.StartInitialBiome(0, spawnTile);

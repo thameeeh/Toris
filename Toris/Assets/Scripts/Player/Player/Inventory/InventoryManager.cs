@@ -24,7 +24,11 @@ namespace OutlandHaven.Inventory
                 // Ensure LiveSlots count exactly matches the Blueprint's SlotCount
                 while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
-                    LiveSlots.Add(new InventorySlot());
+                    int index = LiveSlots.Count;
+                    SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
+                        ? ContainerBlueprint.PredefinedFilters[index]
+                        : SlotFilterType.Any;
+                    LiveSlots.Add(new InventorySlot(filter));
                 }
                 while (LiveSlots.Count > ContainerBlueprint.SlotCount)
                 {
@@ -46,7 +50,11 @@ namespace OutlandHaven.Inventory
 
                 while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
-                    LiveSlots.Add(new InventorySlot());
+                    int index = LiveSlots.Count;
+                    SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
+                        ? ContainerBlueprint.PredefinedFilters[index]
+                        : SlotFilterType.Any;
+                    LiveSlots.Add(new InventorySlot(filter));
                 }
                 while (LiveSlots.Count > ContainerBlueprint.SlotCount)
                 {

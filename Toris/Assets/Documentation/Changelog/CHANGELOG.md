@@ -1,4 +1,19 @@
-## [Current/Recent] - Refactored Drag-and-Drop to Event-Driven Architecture
+## [Current/Recent] - Enforce Item Type Validation for Drag-and-Drop Equipment Transfers
+
+### 1. Data-Driven Slot Filters
+* Extended `InventoryContainerSO` with an optional `PredefinedFilters` array of `SlotFilterType`.
+* Updated `InventorySlot` constructor to accept and set a default `SlotFilterType`.
+* Updated `InventoryManager` to initialize live slots using the predefined filters from its blueprint.
+
+### 2. Configured Equipment Filters
+* Updated `Container_Player-Equipments.asset` to map its 5 slots to specific filters: Head, Chest, Legs, Arms, Weapon. This ensures invalid items are blocked by `InventoryTransferManagerSO` during drag-and-drop.
+
+### 3. Error Handling
+* Added out-of-bounds error logging in `PlayerEquipmentController.ProcessSlot()` to catch configuration mismatches.
+
+---
+
+## [Previous] - Refactored Drag-and-Drop to Event-Driven Architecture
 
 ### 1. Removed Singleton Dependency
 * Removed the Singleton pattern from `UIDragManager`, completely decoupling it from `InventorySlotView`.
@@ -14,7 +29,7 @@
 
 ---
 
-## [Current/Recent] - Inventory Stack Splitting Support
+## [Previous] - Inventory Stack Splitting Support
 - Added support for stack splitting using Shift-Click in the inventory drag-and-drop system. Players can now grab half a stack and drop it onto empty slots or stack it with other similar items.
 - Refactored `InventoryTransferManagerSO` logic to dictate transfer quantity based on the UI event instead of blindly consuming the entire source slot count.
 - Updated UI event pipeline (`UIInventoryEventsSO`, `InventorySlotView` and its subscribers) to pass `amountToMove` values.

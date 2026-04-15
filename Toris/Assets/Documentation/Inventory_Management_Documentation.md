@@ -17,13 +17,17 @@ The player's inventory (and NPC inventories) are managed by dedicated `Scriptabl
 *   **Core Logic:**
     *   **Initialization (`OnEnable` & `OnValidate`)**: Ensures the `Slots` list is populated up to `SlotCount` with empty `InventorySlot` objects. It enforces basic constraints, like setting a minimum quantity of 1 if an item is manually placed via the inspector.
     *   **Player Registration**: When a player's `InventoryManager` activates (`OnEnable`), it registers itself to a global state (e.g., `GameSessionSO.PlayerInventory`) if `ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory`.
+    *   **Quantity-Based Transactions (The "Bank" Authority):** Moving away from simple binary (all-or-nothing) transfers, the system now enforces precise quantity control.
+        *   **Actual Amount Calculation:** Uses `Mathf.Min(amountToMove, maxSpaceInTargetSlot, currentStackInSourceSlot)` to explicitly calculate how many items can legally transfer. This prevents overfilling and logic errors.
+        *   **Stack Splitting:** Permits transferring partial amounts from one slot to another, satisfying standard RPG quality-of-life expectations.
+        *   **Blocking Partial-Stack Swaps:** When dragging an item onto a different item type, the transaction manager blocks partial swaps to protect the game economy from deletion bugs or duplication glitches, functioning as an authoritative validation layer before moving data.
     *   **Adding Items (`AddItem`)**:
         1.  *First Pass:* Iterates through existing slots to find stacks of the *same* item (`IsStackableWith`). It fills those stacks up to the `MaxStackSize` defined in the item's blueprint.
         2.  *Second Pass:* If quantity remains, it finds the first empty slot (`IsEmpty`) and places the remainder there.
-        3.  *Events:* Returns `true` if successful, invoking `UIInventoryEventsSO.OnInventoryUpdated`.
+        3.  *Events:* Returns `true` if successful, invoking targeted `UIInventoryEventsSO.OnSpecificSlotsUpdated` events rather than global redraws.
     *   **Removing Items (`RemoveItem`)**:
         1.  *First Pass:* Calculates the total available quantity across all stacks of that item to verify sufficiency.
-        2.  *Second Pass:* Iterates through and decreases stack counts, clearing slots if they hit 0, until the requested quantity is removed. Invokes `OnInventoryUpdated`.
+        2.  *Second Pass:* Iterates through and decreases stack counts, clearing slots if they hit 0, until the requested quantity is removed. Invokes targeted `OnSpecificSlotsUpdated` events.
 
 ## 2. Inventory Slot Logic
 

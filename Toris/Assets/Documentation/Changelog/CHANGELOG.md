@@ -1,4 +1,21 @@
-## [Current/Recent] - Skill Screen Architecture Implementation
+## [Current/Recent] - Documentation Update for Architecture Shifts
+This update refactors the core documentation to accurately reflect the current "production-ready" architecture of the inventory and drag-and-drop systems, moving away from prototyping implementations.
+
+### 1. Documented Shift from "Nuke" Redraw to Targeted Updates
+* Updated `Inventory_Event_System_Documentation.md` and `Drag_and_Drop_System_Documentation.md` to detail the removal of the parameterless `OnInventoryUpdated` event.
+* Added documentation for the new `OnSpecificSlotsUpdated(sourceSlot, targetSlot)` event.
+* Documented the `PlayerInventoryView`'s use of a Dictionary mapping for targeted UI rebuilds, eliminating GC spikes and enabling large-scale slot optimization.
+
+### 2. Documented Shift from Singleton Coupling to Event-Driven Modularity
+* Updated `UI_Interactions_Documentation.md` to remove outdated references to the rigid `UIDragManager.Instance` singleton pattern.
+* Documented the new decoupled, event-driven drag-and-drop system, highlighting how generic visual slots are now isolated and highly reusable across different contexts.
+
+### 3. Documented Shift to Quantity-Based Transactions
+* Updated `Inventory_Management_Documentation.md` and `UI_Interactions_Documentation.md` to explain the integration of an `amountToMove` integer.
+* Detailed the central validation logic within the transfer manager, emphasizing its authoritative role as a "bank" using `Mathf.Min` to calculate safe transfers, permit stack splitting, and explicitly block partial-stack swaps to preserve game economy.
+
+
+## [Previous] - Skill Screen Architecture Implementation
 This update introduces the foundational architecture for the Skill Screen, aligning with the project's MVC and Event Bus standards.
 
 ### 1. UI Layout & Styling (UXML/USS)
@@ -267,7 +284,7 @@ This update implements click-to-equip and click-to-unequip functionality for the
 
 ---
 
-## [Current/Recent] - Clean up Leftover Python Scripts
+## [Previous] - Clean up Leftover Python Scripts
 * Deleted leftover Python scripts (`*.py`) from the root directory that were accumulated during previous pull requests.
 
 ## [Previous] - Script Metadata Summaries

@@ -38,32 +38,33 @@ The process of picking up a world item is handled through a sequence of interact
 - Contains a list of `InventorySlot` classes (which hold an `InventoryItemSO` reference and a count).
 - Contains the core logic for insertion (`AddItem`) and removal (`RemoveItem`).
   - **Stacking Logic**: `AddItem` first checks if the item exists in an incomplete stack before filling an empty slot.
-- **The Crucial Event Dispatch**: Whenever `AddItem` or `RemoveItem` successfully mutates the state of the slots, the container invokes `_uiInventoryEvents.OnInventoryUpdated.Invoke()`.
+- **The Crucial Event Dispatch**: Whenever `AddItem` or `RemoveItem` successfully mutates the state of the slots, the container invokes `_uiInventoryEvents.OnSpecificSlotsUpdated.Invoke(sourceSlot, targetSlot)`.
 
 ## 3. UI Reactivity (The Event System)
 
-The UI needs to know when to redraw itself, but it should not constantly poll the `InventoryManager`.
+The UI needs to know when to redraw itself, but it should not constantly poll the `InventoryManager`. To ensure high performance and scalability, the UI employs targeted updates rather than full redraws.
 
 ### `UIInventoryEventsSO`
 This ScriptableObject acts as the central event bus specifically for inventory and economy-related UI updates.
 
 **Key Events:**
-*   `OnInventoryUpdated`: A simple `UnityAction` fired whenever any item is added or removed from the main player container. The Player's `InventoryView` listens to this to trigger a visual rebuild.
+*   `OnSpecificSlotsUpdated(InventorySlot sourceSlot, InventorySlot targetSlot)`: Fired whenever specific items are moved, added, or removed. The `PlayerInventoryView` listens to this event to trigger a visual rebuild only for the exact slots that were modified, avoiding massive Managed Heap allocations and GC spikes.
+*   `OnRequestMoveItem(InventorySlot source, InventorySlot target, int amountToMove)`: Dispatched when a UI action (like drag-and-drop or shift-click) attempts to transfer an item, including the explicit quantity requested to move.
 *   `OnShopInventoryUpdated`: Fired when a vendor's stock changes. Shop UI views listen to this.
-*   `OnRequestBuy(InventoryItemSO, int)`: Dispatched by UI Views when a player attempts to buy an item. A central `ShopManager` listens to this to process the transaction.
-*   `OnRequestSell(InventoryItemSO, int)`: Dispatched by UI views to sell an item.
+*   `OnRequestBuy(InventoryItemSO, int amount)`: Dispatched by UI Views when a player attempts to buy an item, carrying the requested quantity.
+*   `OnRequestSell(InventoryItemSO, int amount)`: Dispatched by UI views to sell an item.
 *   `(int)`: Fired when player gold increases/decreases. Currency displays listen to this.
 
 ## 4. UI View Lifecycle Example (PlayerInventoryView)
 
 1.  **Opening the UI**: A separate system (like `InputManager` or an NPC interaction) fires `UIEventsSO.OnRequestOpen(ScreenType.Inventory, containerData)`.
-2.  **Setup & Bind**: The `InventoryScreenController` instantiates the `PlayerInventoryView`. During the view's `Show()` or `Setup()` phase, it subscribes to `UIInventoryEventsSO.OnInventoryUpdated`.
+2.  **Setup & Bind**: The `InventoryScreenController` instantiates the `PlayerInventoryView`. During the view's `Show()` or `Setup()` phase, it subscribes to `UIInventoryEventsSO.OnSpecificSlotsUpdated`. The view utilizes a Dictionary to map backing data slots to visual elements.
 3.  **The Event Loop**:
     *   Player presses "E" near a sword (`ItemPickEventSO.OnItemPick` fired).
-    *   Sword added to `InventoryManager`.
-    *   `InventoryManager` fires `UIInventoryEventsSO.OnInventoryUpdated`.
-    *   `PlayerInventoryView` hears the event, clears its visual slots, and rebuilds them based on the new authoritative state of the `InventoryManager`.
-4.  **Cleanup**: When the UI is closed (`Hide()`), the view *must* unsubscribe from `OnInventoryUpdated` to prevent memory leaks and null reference errors when the UI is not active.
+    *   Sword added to `InventoryManager` at a specific index.
+    *   `InventoryManager` fires `UIInventoryEventsSO.OnSpecificSlotsUpdated(modifiedSlot, null)`.
+    *   `PlayerInventoryView` hears the event and rebuilds *only* the visual representation mapped to `modifiedSlot`.
+4.  **Cleanup**: When the UI is closed (`Hide()`), the view *must* unsubscribe from `OnSpecificSlotsUpdated` to prevent memory leaks and null reference errors when the UI is not active.
 
 ## Summary Diagram
 
@@ -77,8 +78,8 @@ This ScriptableObject acts as the central event bus specifically for inventory a
                                               [InventoryManager.AddItem()]
                                                          | (If successful, mutates data)
                                                          v
-                                              fires [UIInventoryEventsSO.OnInventoryUpdated]
+                                              fires [UIInventoryEventsSO.OnSpecificSlotsUpdated(slot, null)]
                                                          |
                                                          v
-                                              [PlayerInventoryView] (Hears event, redraws slots)
+                                              [PlayerInventoryView] (Hears event, redraws ONLY the modified slot via Dictionary lookup)
 ```

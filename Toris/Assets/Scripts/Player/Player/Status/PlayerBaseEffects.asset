@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d9d81a25a704d4cbc11a07644a8b33, type: 3}
   m_Name: PlayerBaseEffects
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBaseEffectsSO
-  maxHealth: 500
+  maxHealth: 50
   maxStamina: 488
   staminaRegenPerSecond: 50
-  moveSpeedMultiplier: 5
-  dashSpeedMultiplier: 5
+  moveSpeedMultiplier: 1
+  dashSpeedMultiplier: 1
   outgoingDamageMultiplier: 1
   incomingDamageMultiplier: 1
   isPoisonImmune: 0

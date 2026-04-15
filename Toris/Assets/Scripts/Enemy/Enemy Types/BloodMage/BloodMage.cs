@@ -18,6 +18,9 @@ public class BloodMage : Enemy
     [Header("Casting")]
     [SerializeField] private Transform castPoint;
 
+    [Header("Visuals")]
+    [SerializeField, Min(0f)] private float spawnRevealDuration = 0.35f;
+
     [Header("Summon Context")]
     [SerializeField] private Necromancer owner;
     [SerializeField] private int summonIndex = -1;
@@ -39,6 +42,7 @@ public class BloodMage : Enemy
     private bool _isRegisteredWithOwner;
     private Collider2D[] _selfColliders = Array.Empty<Collider2D>();
     private Collider2D[] _projectileIgnoreColliders = Array.Empty<Collider2D>();
+    private SpriteRevealDriver _revealDriver;
 
     public Transform CastPoint => castPoint != null ? castPoint : transform;
     public Necromancer Owner => owner;
@@ -91,6 +95,7 @@ public class BloodMage : Enemy
 
         CacheCastPoint();
         CacheSelfColliders();
+        _revealDriver = GetComponentInChildren<SpriteRevealDriver>(true);
 
         if (bloodMageIdleBase != null)
             BloodMageIdleBaseInstance = Instantiate(bloodMageIdleBase);
@@ -170,6 +175,13 @@ public class BloodMage : Enemy
 
         if (_hasStarted)
             InitializeRuntimeState();
+
+        if (_revealDriver != null)
+        {
+            _revealDriver.SetRevealImmediate(0f);
+            _revealDriver.PlayRevealIn(spawnRevealDuration);
+        }
+
     }
 
     public override void OnDespawned()

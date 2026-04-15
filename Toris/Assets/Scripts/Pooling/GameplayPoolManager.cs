@@ -22,6 +22,9 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
     [SerializeField] private int defaultEnemyCapacity = 8;
     [SerializeField] private int defaultEnemyMaxSize = 32;
 
+    [Header("Enemy Spawn Safety")]
+    [SerializeField, Min(0)] private int enemyWalkableSearchRadiusTiles = 6;
+
     // Projectiles now use SafeRuntimePool (custom) so we never get destroyed refs back.
     private readonly Dictionary<Projectile, SafeRuntimePool<Projectile>> projectilePools = new();
     private readonly Dictionary<Projectile, PoolCounters> projectileCounters = new();
@@ -184,6 +187,7 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         if (!enemy)
             return null;
 
+        position = ResolveEnemySpawnPosition(position);
         enemy.transform.SetPositionAndRotation(position, rotation);
         return enemy;
     }
@@ -477,6 +481,67 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         }
 
         return counters;
+    }
+
+    private Vector3 ResolveEnemySpawnPosition(Vector3 desiredPosition)
+    {
+        if (!TryFindNearestWalkableEnemySpawn(desiredPosition, out Vector3 resolvedPosition))
+            return desiredPosition;
+
+        return resolvedPosition;
+    }
+
+    private bool TryFindNearestWalkableEnemySpawn(Vector3 desiredPosition, out Vector3 resolvedPosition)
+    {
+        resolvedPosition = desiredPosition;
+
+        TileNavWorld navigationWorld = TileNavWorld.Instance;
+        if (navigationWorld == null)
+            return false;
+
+        Vector2Int startCell = navigationWorld.WorldToCell(desiredPosition);
+        if (navigationWorld.IsWalkableCell(startCell))
+            return false;
+
+        int maxTileRadius = enemyWalkableSearchRadiusTiles;
+        for (int radius = 1; radius <= maxTileRadius; radius++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2Int top = startCell + new Vector2Int(x, radius);
+                if (navigationWorld.IsWalkableCell(top))
+                {
+                    resolvedPosition = navigationWorld.CellToWorldCenter(top);
+                    return true;
+                }
+
+                Vector2Int bottom = startCell + new Vector2Int(x, -radius);
+                if (navigationWorld.IsWalkableCell(bottom))
+                {
+                    resolvedPosition = navigationWorld.CellToWorldCenter(bottom);
+                    return true;
+                }
+            }
+
+            for (int y = -radius + 1; y <= radius - 1; y++)
+            {
+                Vector2Int right = startCell + new Vector2Int(radius, y);
+                if (navigationWorld.IsWalkableCell(right))
+                {
+                    resolvedPosition = navigationWorld.CellToWorldCenter(right);
+                    return true;
+                }
+
+                Vector2Int left = startCell + new Vector2Int(-radius, y);
+                if (navigationWorld.IsWalkableCell(left))
+                {
+                    resolvedPosition = navigationWorld.CellToWorldCenter(left);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     // --- Data types ---

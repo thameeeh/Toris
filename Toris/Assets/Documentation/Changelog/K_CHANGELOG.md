@@ -1,4 +1,68 @@
-﻿## [Current/Recent] - Necromancer Plan Checklist Scaffold
+## [Current/Recent] - Grid Sorting Rules Documentation
+This update adds a compact rendering-rule document for the procedural world so the baseline sorting model stays consistent as more foliage, props, and world visuals are added.
+
+### 1. Locked The Procedural World Sorting Bands
+* Documented a two-band model where `Water` and `Terrain` stay in the `Ground` layer and the player, enemies, decorations, obstacles, and canopies share the same `Default` / `0` sorting band.
+* This preserves natural pivot-based front/back overlap instead of forcing tall world visuals above characters.
+
+### 2. Captured The Intent Behind The Numbers
+* Recorded why water should stay below terrain and why actor-facing world visuals should avoid fixed higher sorting orders.
+* This gives the project a clear visual rule set instead of relying on memory or ad hoc inspector tweaks.
+
+### 3. Marked Special Height Cases As Separate
+* Explicitly left elevated walls, roofs, and other true height systems out of the current procedural-world baseline.
+* This keeps the core world rules simple while leaving room for later authored exceptions.
+
+---
+## [Current/Recent] - Grid Foundation Layer Expansion
+This update starts the grid implementation work by establishing the clearer scene tilemap stack and aligning the runtime naming with `Decoration`, while deliberately keeping generator behavior unchanged for the first verified slice.
+
+### 1. Expanded The ProceduralTiles Grid Hierarchy
+* Added `Obstacle` and `Canopy` under the existing shared `Grid` and renamed the old `Interactible` tilemap to `Decoration`.
+* This creates the intended scene layering model before any blocker or generator expansion starts.
+
+### 2. Aligned Runtime Naming With The Scene Layer Model
+* Updated `WorldGenRunner` and the current generated visual output path from `decor` to `decoration`.
+* Added serialized references for `obstacleMap` and `canopyMap` so the scene and runtime now speak the same layer language.
+
+### 3. Kept The First Slice Low Risk And Verified
+* Left generation behavior unchanged so only ground, water, and decoration are actively written for now.
+* Verified startup, chunk streaming, biome gates, run gates, and the new grid hierarchy after the scene and naming cleanup.
+
+---
+## [Current/Recent] - Grid Layering Implementation Plan
+This update expands the grid layering document with a concrete phased implementation plan so the tilemap stack, blocker rules, and future choppable-tree path can be built in a deliberate order.
+
+### 1. Added A Phased Execution Plan
+* Added explicit phases for scene layer expansion, code ownership clarification, procedural output extension, blocker authoring, and future choppable-tree support.
+* This turns the document from a direction note into a practical build sequence.
+
+### 2. Locked The Key Design Rules
+* Kept one shared grid, separated visuals from blocker logic, and preserved the split between cheap decorative trees and special stateful trees.
+* This reduces the risk of drifting into a messy hybrid system while implementation is still starting.
+
+### 3. Added A Concrete Build Order And Validation Targets
+* Documented the recommended build order and acceptance criteria so the scene hierarchy, blocker path, and future tree interaction upgrades can be checked incrementally.
+* This keeps the grid document usable as a working implementation reference rather than a one-off note.
+
+---
+## [Current/Recent] - Grid Layering And Tree Blocking Plan
+This update adds a planning document for expanding the procedural grid into clearer world layers for terrain, water, decorations, obstacle bases, and optional canopies while keeping movement blocking separate from visual tiles.
+
+### 1. Defined A Recommended Tilemap Layer Stack
+* Documented a single-grid model using Terrain, Water, Decoration, Obstacle, and Canopy layers.
+* Clarified what belongs on each layer and how those layers should be used for environment art.
+
+### 2. Separated Visual Layers From Blocking Rules
+* Recorded the rule that visible obstacle tiles should not automatically imply blocking.
+* Anchored tree and obstacle blocking to the existing blocker contribution path so player and enemy navigation stay aligned.
+
+### 3. Preserved A Future Path For Choppable Trees
+* Documented how most trees should remain cheap tilemap visuals while special choppable trees can later become stateful runtime objects or sites.
+* This keeps the grid system extensible without forcing every decorative tree into a GameObject workflow.
+
+---
+## [Current/Recent] - Necromancer Plan Checklist Scaffold
 This update extends the necromancer planning document with a concrete implementation checklist so the enemy can be built in deliberate batches without reopening design decisions during implementation.
 
 ### 1. Locked The First Enemy Version Decisions
@@ -45,7 +109,8 @@ This update removes the last direct runtime dependency from the debug HUD onto t
 * Verified the compact HUD, advanced toggle, chunk-border drawing, streaming rect drawing, biome transitions, and run gates after the boundary cleanup.
 * This leaves the HUD behavior intact while removing the direct runtime dependency on WorldGenRunner.
 
----## [Current/Recent] - Delete Legacy Build-Path Compatibility Surface
+---
+## [Current/Recent] - Delete Legacy Build-Path Compatibility Surface
 This update removes old compatibility aliases and dead authoring fields now that generated sites, blockers, and persistent content all flow through the authoritative build-output path.
 
 ### 1. Deleted Old WorldContext Build Aliases
@@ -197,7 +262,7 @@ This update continues the Phase 8 deletion pass by removing an empty runtime-sta
 * Updated WorldTransitionSystem to clear ChunkStateStore directly instead of going through an empty wrapper object.
 
 ### 2. Deleted Dead Chunk Callback Plumbing
-* Removed chunk loaded/unloading callback parameters from ChunkStreamingCoordinator and ChunkProcessingPipeline.
+* Removed chunk loaded and unloading callback parameters from ChunkStreamingCoordinator and ChunkProcessingPipeline.
 * This also removed the last dead ChunkProcessingPipeline dependency that only existed to support those callbacks.
 
 ### 3. Verified No-Behavior Change After The Deletion
@@ -219,6 +284,7 @@ This update continues the Phase 8 deletion pass by trimming dead public runner s
 ### 3. Verified No-Behavior Change After Surface Cleanup
 * Verified startup, chunk streaming, wolf den behavior, den cleared-state persistence, biome gates, run gates, and the Phase 8 diagnostics HUD after the cleanup.
 * This keeps the runner cleanup grounded in verified parity instead of preserving dead public scaffolding.
+
 ---
 ## [Current/Recent] - Phase 8 Slice: Site Activation Persistence Boundary Cleanup
 This update continues the Phase 8 deletion pass by narrowing site activation down to the exact persistence boundary it actually needs, so the activation path no longer receives a broader runtime-state object just to reach chunk-site state.
@@ -236,7 +302,6 @@ This update continues the Phase 8 deletion pass by narrowing site activation dow
 * This keeps the Phase 8 cleanup work focused on honest dependency boundaries without changing the authored runtime behavior.
 
 ---
-
 ## [Current/Recent] - Phase 8 Slice: Service Boundary Surface Cleanup
 This update continues the Phase 8 deletion pass by removing one more unnecessary peek-through on the world-scene service boundary, so callers rely on the service behavior they actually need instead of reaching through it for internal state.
 
@@ -277,7 +342,7 @@ This update continues the Phase 8 deletion pass by removing a pair of no-behavio
 * This keeps pool bootstrap logic in one place instead of maintaining two equivalent setup paths in the runner.
 
 ### 2. Deleted Dead Streaming Migration Scaffold
-* Removed the commented nchorShiftThreshold field that was left behind from the earlier streaming extraction work.
+* Removed the commented anchorShiftThreshold field that was left behind from the earlier streaming extraction work.
 * This trims one more stale migration artifact from the runner without affecting runtime behavior.
 
 ### 3. Verified No-Behavior Change After Cleanup
@@ -479,7 +544,6 @@ This update introduces an explicit encounter-package API so encounter consumers 
 * This widens the Phase 5 boundary without changing the authored den experience.
 
 ---
-
 ## Deferred Investigation Queue - Wolf Bugs
 These are intentionally deferred until the current map refactor sequence is complete unless one of them starts blocking Phase 5 or later verification.
 
@@ -545,7 +609,6 @@ This update starts the den-versus-encounter split in earnest by introducing an e
 * This keeps the slice aligned with the project performance rules while preserving verified runtime behavior.
 
 ---
-
 ## [Current/Recent] - Phase 4 Slice: Run Gate Transition Service Boundary
 This update removes the direct singleton transition call from run-gate runtime behavior by introducing a narrow scene-transition service interface and threading it through world-site activation, while preserving the static-scene return-gate path used outside the procedural world.
 
@@ -562,7 +625,6 @@ This update removes the direct singleton transition call from run-gate runtime b
 * This keeps the return gate functional in non-procedural scenes while still moving the site-spawned runtime onto the intended service boundary.
 
 ---
-
 ## [Current/Recent] - Phase 3 Slice: Unified Site Lifecycle Ownership
 This update unifies chunk and persistent site ownership behind a single lifecycle system, moves site activation onto a prepared hidden-before-show path, and fixes wolf den pooled restore visuals by correcting prefab visual wiring and hardening the runtime against miswired child references.
 
@@ -666,46 +728,3 @@ This update adds a dedicated roadmap document for finishing the world systems re
 ### 3. Captured Current Refactor State
 * Recorded which boundaries are already established in code and which pressure points still remain.
 * This creates a shared reference for future refactor work so changes can be evaluated against the intended end state instead of ad hoc cleanup.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

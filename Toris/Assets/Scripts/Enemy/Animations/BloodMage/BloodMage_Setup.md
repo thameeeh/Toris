@@ -105,10 +105,10 @@ When the Necromancer uses `Summon`:
 - `BloodMage_Attack_Bubble.anim`
 - `BloodMage_Bubble.anim`
 - `BloodMage_Dead.anim`
+- `Summon.anim`
 
 Reserved for later:
 
-- `BloodMage_Spawn.anim`
 - `BloodMage_Attack_02.anim`
 - `BloodMage_Attack_03.anim`
 - `BloodMage_Hurt.anim`
@@ -123,6 +123,9 @@ Reserved for later:
   - `Anim_AttackFinished()` or `Anim_Finished()`
 - `BloodMage_Dead.anim`
   - `Anim_Despawn()`
+- `Summon.anim`
+  - `Anim_SpawnComplete()`
+  - `Anim_AttackFinished()` or `Anim_Finished()`
 
 ## Prefab And Script Structure
 
@@ -139,7 +142,9 @@ Expected child structure:
 Current first-pass prefab wiring:
 
 - `BloodMage` component on the root
+- `GridPathAgent` on the root for leash/chase pathing around blockers
 - `Animator` + `EnemyAnimationEventRelay` on `Animator`
+- optional `SpriteRevealDriver` on `Animator` for live-body summon reveal
 - `CircleCollider2D` + `EnemyStrikingDistanceCheck` on `AttackRange`
 - SO assets assigned for idle, chase, attack, and dead
 
@@ -162,7 +167,7 @@ Recommended separate summon-only prefab:
 
 Recommended flow:
 
-- uses `BloodMage_Spawn`
+- uses `Summon.anim` through the summon-only controller
 - owns any bottom-to-top shader reveal
 - fires `Anim_SpawnComplete()` or `Anim_AttackFinished()` at the end
 - spawns the real Blood Mage only after the reveal completes
@@ -191,6 +196,8 @@ Recommended flow:
   - pooled ground bubble that pops under the player
 - [BloodMageSpawnEffect.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/BloodMageSpawnEffect.cs)
   - temporary summon visual that plays the spawn animation and then creates the real Blood Mage
+- [SpriteRevealDriver.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/SpriteRevealDriver.cs)
+  - per-instance shader-property driver for live-body summon reveal
 - [BloodMageDeadSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Enemy/Enemy%20Types/BloodMage/Behavior/Dead/BloodMageDeadSO.cs)
   - unregister from owner
   - death / despawn flow
@@ -219,6 +226,7 @@ Recommended flow:
 
 - `AttackDamage`
 - `MovementSpeed`
+- `spawnRevealDuration`
 - owner reference at runtime
 - summon ring index / group size at runtime
 

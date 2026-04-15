@@ -123,9 +123,17 @@ public sealed class ChunkProcessingPipeline
         List<Vector2Int> loadedChunkCopy = new List<Vector2Int>(loadedChunks);
         foreach (Vector2Int chunkCoord in loadedChunkCopy)
         {
+            worldFeatureLifecycleSystem?.DeactivateChunk(chunkCoord);
             tilemapApplier.ClearChunk(chunkCoord, worldProfile.chunkSize);
+            worldNavigationLifecycle?.ClearChunk(chunkCoord);
             chunkStreamingSystem.MarkChunkUnloaded(chunkCoord);
         }
+    }
+
+    public void HardResetWorld()
+    {
+        ClearLoadedChunks();
+        tilemapApplier?.ClearAll();
     }
 
     private void UnloadChunksOutside(

@@ -26,6 +26,11 @@ public class WolfAttackState : EnemyState<Wolf>
     {
         enemy.EnemyAttackBaseInstance.DoFrameUpdateLogic();
 
+        // Once the bite animation has started, let it fully commit before
+        // aggro/range checks are allowed to push the wolf back out.
+        if (!enemy.EnemyAttackBaseInstance.isComplete)
+            return;
+
         if (!enemy.IsAggroed)
         {
             if (enemy.HasHome)
@@ -36,16 +41,7 @@ public class WolfAttackState : EnemyState<Wolf>
             return;
         }
 
-        if (!enemy.IsWithinStrikingDistance)
-        {
-            enemyStateMachine.ChangeState(enemy.ChaseState);
-            return;
-        }
-
-        if (enemy.EnemyAttackBaseInstance.isComplete)
-        {
-            enemyStateMachine.ChangeState(enemy.ChaseState);
-        }
+        enemyStateMachine.ChangeState(enemy.ChaseState);
     }
 
     public override void PhysicsUpdate()

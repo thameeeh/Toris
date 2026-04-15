@@ -28,7 +28,9 @@ public sealed class ChunkGenerator
                 int idx = ChunkResult.Index(lx, ly, size);
                 result.ground[idx] = t.ground;
                 result.water[idx] = t.water;
-                result.decor[idx] = t.decor;
+                result.decoration[idx] = t.decoration;
+                result.obstacle[idx] = t.obstacle;
+                result.canopy[idx] = t.canopy;
             }
 
         return result;

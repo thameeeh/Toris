@@ -293,7 +293,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   AttackDamage: 15
   MovementSpeed: 1.8
-  PlayerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
+  PlayerProgression: {fileID: 0}
   gold: 50
   role: 1
   healthMultiplier: 1
@@ -549,5 +549,5 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 2.0000029, y: 1.6000023}
+  m_Size: {x: 1.3, y: 2}
   m_Direction: 1

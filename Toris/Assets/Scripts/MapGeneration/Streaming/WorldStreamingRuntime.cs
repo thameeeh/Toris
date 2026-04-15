@@ -69,7 +69,7 @@ public sealed class WorldStreamingRuntime
 
     public void Reset()
     {
-        chunkProcessingPipeline?.ClearLoadedChunks();
+        chunkProcessingPipeline?.HardResetWorld();
         chunkStreamingSystem?.Reset();
         lastProcessedFrameResult = default;
         hasLastProcessedFrameResult = false;

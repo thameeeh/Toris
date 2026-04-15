@@ -26,10 +26,10 @@ public sealed class FeatureStamps
         overrides[worldTile] = tr;
     }
 
-    public void SetDecor(Vector2Int worldTile, TileBase decor)
+    public void SetDecoration(Vector2Int worldTile, TileBase decoration)
     {
         overrides.TryGetValue(worldTile, out TileResult tr);
-        tr.decor = decor;
+        tr.decoration = decoration;
         overrides[worldTile] = tr;
     }
 

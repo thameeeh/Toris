@@ -5,8 +5,12 @@ public struct TileResult
 {
     public TileBase ground;
     public TileBase water;
-    public TileBase decor;
+    public TileBase decoration;
+    public TileBase obstacle;
+    public TileBase canopy;
 
     public bool HasWater => water != null;
-    public bool HasDecor => decor != null;
+    public bool HasDecoration => decoration != null;
+    public bool HasObstacle => obstacle != null;
+    public bool HasCanopy => canopy != null;
 }

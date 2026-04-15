@@ -23,3 +23,5 @@ MonoBehaviour:
   initialStaminaCost: 30
   staminaPerShot: 8
   maxDuration: 10
+  playReleaseAnimation: 1
+  useShortReleaseAnimation: 1

@@ -494,6 +494,14 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
 
+## [Current/Recent] - UI Inventory Events Compilation Fix
+This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by exceeding the maximum number of type arguments supported by `UnityAction`.
+
+### 1. Fixed `OnRequestMoveItem` Delegate
+* Changed the `OnRequestMoveItem` event from `UnityAction` to `System.Action` to support 5 type arguments (`InventoryManager`, `InventorySlot`, `InventoryManager`, `InventorySlot`, `int`).
+
+---
+
 ## [Unreleased]
 ### Changed
 - **UI Architecture:** Fixed vertical scrollbar bug in the player inventory UI (`PlayerInventory.uxml`) by forcing the `vertical-scroller-visibility` to `Hidden`, correctly addressing the layout calculation bug on subsequent openings for the fixed 21-slot grid.

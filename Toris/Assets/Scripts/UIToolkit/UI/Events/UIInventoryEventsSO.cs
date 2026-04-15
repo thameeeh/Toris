@@ -22,6 +22,7 @@ namespace OutlandHaven.Inventory
         public UnityAction<InventorySlot> OnItemRightClicked;
         public UnityAction<InventorySlot, SalvageType> OnRequestSalvage;
         public UnityAction<InventorySlot, InventorySlot> OnRequestForge;
+        public UnityAction<InventorySlot> OnRequestSendToForge;
 
         [Header("Player Inventory Actions")]
         public UnityAction<InventorySlot> OnRequestEquip;

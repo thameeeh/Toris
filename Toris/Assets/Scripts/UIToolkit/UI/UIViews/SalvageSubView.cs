@@ -50,22 +50,14 @@ namespace OutlandHaven.UIToolkit
                 _inputSlotContainer.Add(instance);
                 _inputSlotView = new InventorySlotView(instance, null);
 
-                _inputSlotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
-                _inputSlotView.OnLocalRightClicked += HandleItemRightClicked;
+                _inputSlotView.OnLocalClicked += (slot) => ClearInputSlot();
+                _inputSlotView.OnLocalRightClicked += (slot) => ClearInputSlot();
                 _inputSlotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
                 _inputSlotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
 
                 _inputSlotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
                 _inputSlotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
                 _inputSlotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
-
-                instance.RegisterCallback<MouseUpEvent>(evt =>
-                {
-                    if (evt.button == 0) // Left click to remove item
-                    {
-                        ClearInputSlot();
-                    }
-                });
             }
 
             if (_itemYieldContainer != null)
@@ -74,8 +66,8 @@ namespace OutlandHaven.UIToolkit
                 _itemYieldContainer.Add(instance);
                 _itemYieldView = new InventorySlotView(instance, null);
 
-                _itemYieldView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
-                _itemYieldView.OnLocalRightClicked += HandleItemRightClicked;
+                _itemYieldView.OnLocalClicked += (slot) => { /* display only */ };
+                _itemYieldView.OnLocalRightClicked += (slot) => { /* display only */ };
                 _itemYieldView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
                 _itemYieldView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
 
@@ -157,24 +149,6 @@ namespace OutlandHaven.UIToolkit
             UpdateYieldVisuals();
         }
 
-        private void HandleItemRightClicked(InventorySlot slot)
-        {
-            if (slot == null || slot.IsEmpty) return;
-
-            // If we right clicked the same item that's in the salvage proxy slot (or a dummy),
-            // or if we right clicked the proxy slot itself (if that's ever possible)
-            if (_cachedSourceSlot == slot)
-            {
-                ClearInputSlot();
-                return;
-            }
-
-            // Otherwise, set it as the proxy input slot if it's salvageable
-            if (_salvageManager != null && _salvageManager.CanSalvage(slot.HeldItem.BaseItem))
-            {
-                HandleItemClicked(slot);
-            }
-        }
 
         private void ClearInputSlot()
         {

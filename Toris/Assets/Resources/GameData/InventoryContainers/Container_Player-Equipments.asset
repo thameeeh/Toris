@@ -14,3 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryContainerSO
   SlotCount: 5
   AssociatedView: 3
+  PredefinedFilters:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4

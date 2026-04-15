@@ -69,24 +69,26 @@ namespace OutlandHaven.UIToolkit
         public override void Show()
         {
             base.Show();
+            _uiInventoryEvents?.OnInteractionContextChanged?.Invoke(InventoryInteractionContext.Shop);
             // Listen to Events
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 if (_playerHudBridge != null) _playerHudBridge.OnGoldChanged += HandleGoldChanged;
                 _uiInventoryEvents.OnShopInventoryUpdated += HandleShopInventoryUpdated;
-                _uiInventoryEvents.OnItemRightClicked += HandleItemRightClicked;
+
                 _eventsBound = true;
             }
         }
 
         public override void Hide()
         {
+            _uiInventoryEvents?.OnInteractionContextChanged?.Invoke(InventoryInteractionContext.Normal);
             base.Hide();
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 if (_playerHudBridge != null) _playerHudBridge.OnGoldChanged -= HandleGoldChanged;
                 _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
-                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
+
                 _eventsBound = false;
             }
         }
@@ -109,7 +111,16 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
                 _shopGrid.Add(slotInstance);
 
-                var slotView = new InventorySlotView(slotInstance, _shopContainer, _uiInventoryEvents);
+                var slotView = new InventorySlotView(slotInstance, _shopContainer);
+
+                slotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                slotView.OnLocalRightClicked += HandleShopSlotRightClicked;
+                slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
+                slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
+
+                slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
+                slotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
+                slotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
                 var slotData = _shopContainer.LiveSlots[i];
 
                 slotView.Update(slotData);
@@ -117,26 +128,15 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void HandleItemRightClicked(InventorySlot slotData)
+
+        private void HandleShopSlotRightClicked(InventorySlot slotData)
         {
             if (slotData == null || slotData.IsEmpty) return;
 
             bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             int amount = isShiftHeld ? BULK_BUY_AMOUNT : 1;
 
-            // Check if clicking an item in the shop
-            if (_shopContainer != null && _shopContainer.LiveSlots.Contains(slotData))
-            {
-                _uiInventoryEvents?.OnRequestBuy?.Invoke(slotData.HeldItem, amount);
-                return;
-            }
-
-            // Check if clicking an item in the player inventory
-            if (_gameSession != null && _gameSession.PlayerInventory != null && _gameSession.PlayerInventory.LiveSlots.Contains(slotData))
-            {
-                _uiInventoryEvents?.OnRequestSell?.Invoke(slotData.HeldItem, amount);
-                return;
-            }
+            _uiInventoryEvents?.OnRequestBuy?.Invoke(slotData.HeldItem, amount);
         }
 
         private void HandleShopInventoryUpdated()
@@ -166,7 +166,7 @@ namespace OutlandHaven.UIToolkit
             {
                 if (_playerHudBridge != null) _playerHudBridge.OnGoldChanged -= HandleGoldChanged;
                 _uiInventoryEvents.OnShopInventoryUpdated -= HandleShopInventoryUpdated;
-                _uiInventoryEvents.OnItemRightClicked -= HandleItemRightClicked;
+
                 _eventsBound = false;
             }
             base.Dispose();

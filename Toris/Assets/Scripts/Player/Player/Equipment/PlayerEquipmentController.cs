@@ -57,7 +57,10 @@ public class PlayerEquipmentController : MonoBehaviour
     private void ProcessSlot(int index, EquipmentSlot slotType)
     {
         if (index >= _equipmentInventory.LiveSlots.Count)
+        {
+            Debug.LogError($"[PlayerEquipmentController] Index {index} is out of bounds for Equipment Inventory! Expected at least {index + 1} slots.");
             return;
+        }
 
         InventorySlot slotData = _equipmentInventory.LiveSlots[index];
         ItemInstance currentItemInSlot = slotData.IsEmpty ? null : slotData.HeldItem;

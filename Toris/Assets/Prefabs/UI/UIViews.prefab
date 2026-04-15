@@ -85,6 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.UIDragManager
   _uiDocument: {fileID: 8217352780333300559}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
 --- !u!114 &3385941367548579294
 MonoBehaviour:
   m_ObjectHideFlags: 0

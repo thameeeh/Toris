@@ -14,6 +14,53 @@ This update refactors the core documentation to accurately reflect the current "
 * Updated `Inventory_Management_Documentation.md` and `UI_Interactions_Documentation.md` to explain the integration of an `amountToMove` integer.
 * Detailed the central validation logic within the transfer manager, emphasizing its authoritative role as a "bank" using `Mathf.Min` to calculate safe transfers, permit stack splitting, and explicitly block partial-stack swaps to preserve game economy.
 
+## [Current/Recent] - Enforce Item Type Validation for Drag-and-Drop Equipment Transfers
+
+### 1. Data-Driven Slot Filters
+* Extended `InventoryContainerSO` with an optional `PredefinedFilters` array of `SlotFilterType`.
+* Updated `InventorySlot` constructor to accept and set a default `SlotFilterType`.
+* Updated `InventoryManager` to initialize live slots using the predefined filters from its blueprint.
+
+### 2. Configured Equipment Filters
+* Updated `Container_Player-Equipments.asset` to map its 5 slots to specific filters: Head, Chest, Legs, Arms, Weapon. This ensures invalid items are blocked by `InventoryTransferManagerSO` during drag-and-drop.
+
+### 3. Error Handling
+* Added out-of-bounds error logging in `PlayerEquipmentController.ProcessSlot()` to catch configuration mismatches.
+
+---
+
+## [Previous] - Refactored Drag-and-Drop to Event-Driven Architecture
+
+### 1. Removed Singleton Dependency
+* Removed the Singleton pattern from `UIDragManager`, completely decoupling it from `InventorySlotView`.
+
+### 2. Implemented Local Events
+* Added `OnLocalDragStarted`, `OnLocalDragUpdated`, and `OnLocalDragStopped` events to `InventorySlotView`.
+
+### 3. Updated Global Event Bus
+* Added `OnGlobalDragStarted`, `OnGlobalDragUpdated`, and `OnGlobalDragStopped` to `UIInventoryEventsSO` to act as a global channel for visual drag states.
+
+### 4. Added View Translation
+* Updated `PlayerInventoryView`, `PlayerEquipmentView`, `ForgeSubView`, `SalvageSubView`, and `ShopSubView` to act as translators, listening to local slot drag events and forwarding them to the global `UIInventoryEventsSO`.
+
+---
+
+## [Previous] - Inventory Stack Splitting Support
+- Added support for stack splitting using Shift-Click in the inventory drag-and-drop system. Players can now grab half a stack and drop it onto empty slots or stack it with other similar items.
+- Refactored `InventoryTransferManagerSO` logic to dictate transfer quantity based on the UI event instead of blindly consuming the entire source slot count.
+- Updated UI event pipeline (`UIInventoryEventsSO`, `InventorySlotView` and its subscribers) to pass `amountToMove` values.
+
+## [Previous] - Decoupled Inventory Transfer Manager
+
+### 1. Added SlotFilterType to InventorySlot
+* Added a new `SlotFilterType` enum safely mapped to `EquipmentSlot` integer values.
+* Added `AllowedFilter` field and `CanAccept(ItemInstance)` method to `InventorySlot` to enable data-level validation of item transfers, defaulting to `SlotFilterType.Any`.
+
+### 2. Refactored InventoryTransferManagerSO
+* Removed the hardcoded `IsValidEquipmentMove` method and screen type checks from `InventoryTransferManagerSO`.
+* Updated `HandleMoveItemRequest` to cleanly execute the new `CanAccept()` checks on both the target slot and, in the case of a swap, the source slot.
+
+---
 
 ## [Previous] - Skill Screen Architecture Implementation
 This update introduces the foundational architecture for the Skill Screen, aligning with the project's MVC and Event Bus standards.
@@ -42,6 +89,24 @@ This update introduces the foundational architecture for the Skill Screen, align
 
 ### 6. The Controller (MonoBehaviour)
 * **The Initialization:** Refactored `SkillScreenController.cs` to instantiate the UXML, inject the `SkillData[]` database and the `GameSessionSO` into the View, and register it directly into the `UIManager`'s FullScreen zone.
+
+## [Current/Recent] - Localized UI Translation Layer
+This update refactors `InventorySlotView` to decouple it from the global event bus, enforcing a stricter parent-child UI architecture and introducing an enum-based context state for inventory interactions.
+
+### 1. Created `InventoryInteractionContext`
+* Added the `InventoryInteractionContext` enum (Normal, Shop, Salvage) in its own file to track the current interaction mode without creating circular dependencies.
+* Added an `OnInteractionContextChanged` action to `UIInventoryEventsSO` to allow dynamic UI views to broadcast context shifts.
+
+### 2. Localized `InventorySlotView`
+* Removed `UIInventoryEventsSO` dependency from `InventorySlotView` entirely.
+* Replaced global triggers with local C# `Action` events (`OnLocalClicked`, `OnLocalRightClicked`, `OnLocalMoveItemRequested`, `OnLocalSelectForProcessingRequested`).
+* This makes the slot view a pure, reusable component that blindly emits hardware interactions.
+
+### 3. Updated Parent Views (The Translators)
+* Updated `PlayerInventoryView`, `ShopSubView`, `SalvageSubView`, `ForgeSubView`, and `PlayerEquipmentView` to subscribe to the local slot events and act as pass-throughs to the global bus.
+* `PlayerInventoryView` now listens to `OnInteractionContextChanged`. When a player right-clicks a slot, the view translates the action based on the active context (e.g., normal -> Equip, shop -> Sell, salvage -> Salvage).
+* `PlayerEquipmentView` intentionally ignores context changes and strictly maps right-clicks to unequip actions, enforcing a safe two-step process for equipped items.
+* `ShopSubView` and `SalvageSubView` now broadcast their context entry during `Show()` and reset to `Normal` during `Hide()`.
 
 ## [Previous] - Refactored UI Currency Access
 * Replaced `PlayerProgressionAnchorSO` with `PlayerHUDBridge` in `ShopSubView` and related controllers (`SmithScreenController`, `MageScreenController`).
@@ -171,6 +236,16 @@ This update refactors how global managers and the HUD access player progression 
 
 ### 4. Removed Deprecated Assets
 * Deleted `PlayerDataSO.cs` entirely and cleaned up its references in `GameSessionSO` and `Wolf.cs`.
+
+---
+
+## [Current/Recent] - Consolidated Item and Inventory Architecture Documentation
+### 1. Centralized Documentation
+* Created a new folder `Toris/Assets/Documentation/Item_Architecture/` to hold centralized information.
+* Created `Complete_Item_And_Inventory_Architecture.md`, consolidating information about the Item Blueprint/State pattern, Inventory Data Management, Event Systems, and Drag-and-Drop UI interactions.
+
+### 2. Cleaned Up Old Fragments
+* Deleted `Item_Architecture_Documentation.md`, `Inventory_Management_Documentation.md`, `Inventory_Event_System_Documentation.md`, and `UI_Interactions_Documentation.md` as their content is now fully integrated into the centralized document.
 
 ---
 
@@ -449,6 +524,14 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Replaced `Inventory_Event_System_Documentation.md` with targeted documents: `Event_Architecture_Documentation.md` and `Inventory_Management_Documentation.md`.
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
+
+## [Current/Recent] - UI Inventory Events Compilation Fix
+This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by exceeding the maximum number of type arguments supported by `UnityAction`.
+
+### 1. Fixed `OnRequestMoveItem` Delegate
+* Changed the `OnRequestMoveItem` event from `UnityAction` to `System.Action` to support 5 type arguments (`InventoryManager`, `InventorySlot`, `InventoryManager`, `InventorySlot`, `int`).
+
+---
 
 ## [Unreleased]
 ### Changed

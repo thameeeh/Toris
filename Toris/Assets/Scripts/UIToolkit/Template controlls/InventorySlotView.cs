@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using OutlandHaven.UIToolkit;
@@ -12,14 +13,22 @@ namespace OutlandHaven.Inventory
 
         private InventorySlot _slotData;
         private InventoryManager _owningContainer;
-        private UIInventoryEventsSO _uiInventoryEvents;
+        public event Action<InventorySlot> OnLocalClicked;
+        public event Action<InventorySlot> OnLocalRightClicked;
+        public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnLocalMoveItemRequested;
+        public event Action<InventorySlot, string> OnLocalSelectForProcessingRequested;
+
+        public event Action<Sprite, Vector2, Vector2> OnLocalDragStarted;
+        public event Action<Vector2> OnLocalDragUpdated;
+        public event Action OnLocalDragStopped;
 
         // Drag and Drop State
         private bool _isDragging = false;
         private Vector2 _dragStartPosition;
         private const float DragThreshold = 10f; // Pixels to move before initiating drag
+        private int _dragAmount = 0;
 
-        public InventorySlotView(VisualElement root, InventoryManager owningContainer, UIInventoryEventsSO uiInventoryEvents)
+        public InventorySlotView(VisualElement root, InventoryManager owningContainer)
         {
             // Set the wrapper root's picking mode to Ignore
             root.pickingMode = PickingMode.Ignore;
@@ -29,7 +38,7 @@ namespace OutlandHaven.Inventory
             else _root.pickingMode = PickingMode.Position;
 
             _owningContainer = owningContainer;
-            _uiInventoryEvents = uiInventoryEvents;
+
 
             _icon = _root.Q<Image>("slot-icon");
             _qtyLabel = _root.Q<Label>("slot-qty");
@@ -101,13 +110,22 @@ namespace OutlandHaven.Inventory
                 if (distance >= DragThreshold)
                 {
                     _isDragging = true;
-                    Vector2 iconSize = new Vector2(_icon.layout.width, _icon.layout.height);
-                    UIDragManager.Instance?.StartDrag(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
+                    _dragAmount = evt.shiftKey ? Mathf.CeilToInt(_slotData.Count / 2f) : _slotData.Count;
+
+                    float width = _icon.resolvedStyle.width;
+                    float height = _icon.resolvedStyle.height;
+
+                    // Failsafe: If UI Toolkit hasn't resolved the flexbox math yet, default to a standard icon size (e.g., 50x50)
+                    if (float.IsNaN(width) || width <= 0) width = 80f;
+                    if (float.IsNaN(height) || height <= 0) height = 80f;
+
+                    Vector2 iconSize = new Vector2(width, height);
+                    OnLocalDragStarted?.Invoke(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
                 }
             }
             else
             {
-                UIDragManager.Instance?.UpdateDrag(evt.position);
+                OnLocalDragUpdated?.Invoke(evt.position);
             }
         }
 
@@ -121,12 +139,12 @@ namespace OutlandHaven.Inventory
             {
                 // Stop dragging state and clear visual ghost if any
                 _isDragging = false;
-                UIDragManager.Instance?.StopDrag();
+                OnLocalDragStopped?.Invoke();
 
                 // Fire right click event
                 if (_slotData != null && !_slotData.IsEmpty)
                 {
-                    _uiInventoryEvents?.OnItemRightClicked?.Invoke(_slotData);
+                    OnLocalRightClicked?.Invoke(_slotData);
                 }
                 return;
             }
@@ -135,7 +153,7 @@ namespace OutlandHaven.Inventory
             {
                 // Stop dragging state and clear visual ghost
                 _isDragging = false;
-                UIDragManager.Instance?.StopDrag();
+                OnLocalDragStopped?.Invoke();
 
                 // 1. Perform the raycast to pick the element underneath the pointer
                 VisualElement targetElement = _root.panel.Pick(evt.position);
@@ -173,7 +191,7 @@ namespace OutlandHaven.Inventory
                         if (targetSlotData.Slot != _slotData || targetSlotData.Container != _owningContainer)
                         {
                             // Invoke the cross-container swap logic
-                            _uiInventoryEvents?.OnRequestMoveItem?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot);
+                            OnLocalMoveItemRequested?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot, _dragAmount);
                             Debug.Log($"FIRING EVENT: Moving {_slotData.HeldItem.BaseItem.ItemName} to new slot.");
                         }
                     }
@@ -181,7 +199,7 @@ namespace OutlandHaven.Inventory
                 else if (targetData is string proxySlotID)
                 {
                     // It's a proxy slot
-                    _uiInventoryEvents?.OnRequestSelectForProcessing?.Invoke(_slotData, proxySlotID);
+                    OnLocalSelectForProcessingRequested?.Invoke(_slotData, proxySlotID);
                 }
             }
             else
@@ -189,7 +207,7 @@ namespace OutlandHaven.Inventory
                 // Pointer did not move past the threshold, treat as a normal click
                 if (evt.button == 0 && _slotData != null && !_slotData.IsEmpty)
                 {
-                    _uiInventoryEvents?.OnItemClicked?.Invoke(_slotData);
+                    OnLocalClicked?.Invoke(_slotData);
                 }
             }
         }

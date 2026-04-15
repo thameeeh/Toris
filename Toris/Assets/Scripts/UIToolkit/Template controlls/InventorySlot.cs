@@ -2,18 +2,43 @@ using System;
 
 namespace OutlandHaven.Inventory
 {
+    public enum SlotFilterType
+    {
+        Any = -1,
+        Head = (int)EquipmentSlot.Head,
+        Chest = (int)EquipmentSlot.Chest,
+        Legs = (int)EquipmentSlot.Legs,
+        Arms = (int)EquipmentSlot.Arms,
+        Weapon = (int)EquipmentSlot.Weapon
+    }
+
     [Serializable]
     public class InventorySlot
     {
         public ItemInstance HeldItem;
         public int Count;
+        public SlotFilterType AllowedFilter = SlotFilterType.Any;
 
         public bool IsEmpty => HeldItem == null || HeldItem.BaseItem == null;
 
-        public InventorySlot()
+        public InventorySlot(SlotFilterType filter = SlotFilterType.Any)
         {
             HeldItem = new ItemInstance();
             Count = 0;
+            AllowedFilter = filter;
+        }
+
+        public bool CanAccept(ItemInstance item)
+        {
+            if (item == null || item.BaseItem == null) return false;
+            if (AllowedFilter == SlotFilterType.Any) return true;
+
+            // If it's a restricted slot, check the item's components
+            EquipableComponent equipable = item.BaseItem.GetComponent<EquipableComponent>();
+            if (equipable == null) return false; // Not an equippable item
+
+            // Compare the slot's filter to the item's intended slot
+            return (int)AllowedFilter == (int)equipable.TargetSlot;
         }
 
         public void Clear()

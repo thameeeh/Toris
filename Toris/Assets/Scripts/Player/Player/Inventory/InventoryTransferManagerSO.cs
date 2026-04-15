@@ -25,27 +25,39 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        private void HandleMoveItemRequest(InventoryManager sourceContainer, InventorySlot sourceSlot, InventoryManager targetContainer, InventorySlot targetSlot)
+        private void HandleMoveItemRequest(InventoryManager sourceContainer, InventorySlot sourceSlot, InventoryManager targetContainer, InventorySlot targetSlot, int amountToMove)
         {
             if (sourceContainer == null || sourceSlot == null || targetContainer == null || targetSlot == null) return;
             if (sourceSlot.IsEmpty) return; // Cannot move an empty slot
+            if (sourceSlot == targetSlot) return; // Cannot drop on the same slot
+            if (amountToMove <= 0) return; // Cannot move 0 or negative items
 
-            // --- NEW: VALIDATION STEP ---
-            if (!IsValidEquipmentMove(sourceSlot, targetContainer, targetSlot))
+            // --- NEW: SMART VALIDATION ---
+            // Ask the slot if it will accept the item. The Manager doesn't need to know WHY.
+            if (!targetSlot.CanAccept(sourceSlot.HeldItem))
             {
-                Debug.LogWarning("Drag Failed: Item does not match equipment slot requirements.");
-                return; // Abort the transfer
+                Debug.LogWarning("Drag Failed: Target slot refuses this item type.");
+                return;
+            }
+
+            // If it's a swap, ask the source slot if it will accept the target's item coming back
+            if (!targetSlot.IsEmpty && !sourceSlot.CanAccept(targetSlot.HeldItem))
+            {
+                Debug.LogWarning("Drag Swap Failed: Source slot refuses the swapped item.");
+                return;
             }
             // ----------------------------
 
-            // 1. Is the target slot empty?
+            // Ensure we don't try to move more than we actually have
+            int actualAmount = Mathf.Min(amountToMove, sourceSlot.Count);
+
+            // 1. Is the target slot empty? (Full Move or Split)
             if (targetSlot.IsEmpty)
             {
-                // Move item directly
-                targetSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
-                sourceSlot.Clear();
+                targetSlot.SetItem(sourceSlot.HeldItem, actualAmount);
+                sourceSlot.DecreaseCount(actualAmount);
             }
-            // 2. Is the target slot holding the same stackable item type?
+            // 2. Is the target slot holding the same stackable item type? (Stack)
             else if (targetSlot.HeldItem.IsStackableWith(sourceSlot.HeldItem))
             {
                 int maxStackSize = targetSlot.HeldItem.BaseItem.MaxStackSize;
@@ -53,21 +65,19 @@ namespace OutlandHaven.Inventory
 
                 if (spaceInTarget > 0)
                 {
-                    int amountToMove = Mathf.Min(spaceInTarget, sourceSlot.Count);
+                    int amountWeCanMove = Mathf.Min(spaceInTarget, actualAmount);
 
-                    targetSlot.IncreaseCount(amountToMove);
-                    sourceSlot.DecreaseCount(amountToMove);
+                    targetSlot.IncreaseCount(amountWeCanMove);
+                    sourceSlot.DecreaseCount(amountWeCanMove);
                 }
             }
             // 3. Is the target slot holding a different item? (Swap)
             else
             {
-                // --- NEW: SWAP VALIDATION ---
-                // If we are swapping, we also must ensure the item COMING BACK to the source slot is allowed!
-                // (e.g., If we drag a helmet onto a sword in the equipment screen, they can't swap).
-                if (!IsValidEquipmentMove(targetSlot, sourceContainer, sourceSlot))
+                // You cannot perform a swap if you are only moving a partial stack.
+                if (actualAmount != sourceSlot.Count)
                 {
-                    Debug.LogWarning("Drag Swap Failed: Target item cannot be moved to the Source container's slot.");
+                    Debug.LogWarning("Drag Swap Failed: Cannot swap a partial stack with a different item.");
                     return;
                 }
 
@@ -79,30 +89,14 @@ namespace OutlandHaven.Inventory
                 sourceSlot.SetItem(tempItem, tempCount);
             }
 
-            // Fire events to notify listeners that inventories have changed
-            _uiInventoryEvents.OnInventoryUpdated?.Invoke();
-        }
-
-        private bool IsValidEquipmentMove(InventorySlot sourceSlot, InventoryManager targetContainer, InventorySlot targetSlot)
-        {
-            // 1. Check if the target container is an Equipment Inventory.
-            // Assuming your Character Sheet / Equipment screen uses ScreenType.CharacterSheet or similar.
-            // Adjust this enum check to match whatever AssociatedView your Equipment container uses!
-            if (targetContainer.ContainerBlueprint == null || targetContainer.ContainerBlueprint.AssociatedView != ScreenType.CharacterSheet)
+            // Cleanup: If the source slot is now empty after a partial move or stack, clear it.
+            if (sourceSlot.Count <= 0)
             {
-                return true; // It's a normal inventory (like a chest or backpack), so it's a valid move.
+                sourceSlot.Clear();
             }
 
-            // 2. We are moving into equipment. Does the item have an EquipableComponent?
-            EquipableComponent equipable = sourceSlot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
-            if (equipable == null) return false; // Item cannot be equipped at all.
-
-            // 3. Find the index of the target slot in the container
-            int targetIndex = targetContainer.LiveSlots.IndexOf(targetSlot);
-
-            // 4. Compare the item's target slot to your hardcoded PlayerEquipmentController index mapping.
-            // Index 0 = Head, 1 = Chest, 2 = Legs, 3 = Arms, 4 = Weapon
-            return targetIndex == (int)equipable.TargetSlot;
+            // Fire events to notify listeners that inventories have changed
+            _uiInventoryEvents.OnSpecificSlotsUpdated?.Invoke(sourceSlot, targetSlot);
         }
     }
 }

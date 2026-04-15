@@ -48,7 +48,16 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 instance.userData = "forge-slot-1";
                 _slot1Container.Add(instance);
-                _slot1View = new InventorySlotView(instance, null, _uiInventoryEvents);
+                _slot1View = new InventorySlotView(instance, null);
+
+                _slot1View.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                _slot1View.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnItemRightClicked?.Invoke(slot);
+                _slot1View.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
+                _slot1View.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
+
+                _slot1View.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
+                _slot1View.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
+                _slot1View.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -64,7 +73,16 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 instance.userData = "forge-slot-2";
                 _slot2Container.Add(instance);
-                _slot2View = new InventorySlotView(instance, null, _uiInventoryEvents);
+                _slot2View = new InventorySlotView(instance, null);
+
+                _slot2View.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                _slot2View.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnItemRightClicked?.Invoke(slot);
+                _slot2View.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
+                _slot2View.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
+
+                _slot2View.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
+                _slot2View.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
+                _slot2View.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -79,7 +97,16 @@ namespace OutlandHaven.UIToolkit
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 _resultSlotContainer.Add(instance);
-                _resultSlotView = new InventorySlotView(instance, null, _uiInventoryEvents);
+                _resultSlotView = new InventorySlotView(instance, null);
+
+                _resultSlotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
+                _resultSlotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnItemRightClicked?.Invoke(slot);
+                _resultSlotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
+                _resultSlotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
+
+                _resultSlotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
+                _resultSlotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
+                _resultSlotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
             }
         }
 

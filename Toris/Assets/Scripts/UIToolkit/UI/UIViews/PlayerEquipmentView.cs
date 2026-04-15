@@ -12,6 +12,8 @@ namespace OutlandHaven.Inventory
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
 
+        private Dictionary<InventorySlot, InventorySlotView> _equipmentSlotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
+
         // Visual elements representing specific equipment slots
         private VisualElement _slotHeadContainer;
         private VisualElement _slotChestContainer;
@@ -56,6 +58,8 @@ namespace OutlandHaven.Inventory
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
+
+                _uiInventoryEvents.OnSpecificSlotsUpdated += HandleSpecificSlotsUpdated;
                 _eventsBound = true;
             }
             RefreshSlots();
@@ -66,6 +70,8 @@ namespace OutlandHaven.Inventory
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+
+                _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
                 _eventsBound = false;
             }
         }
@@ -75,12 +81,29 @@ namespace OutlandHaven.Inventory
             RefreshSlots();
         }
 
+        // NEW: Method to handle targeted updates
+        private void HandleSpecificSlotsUpdated(InventorySlot sourceSlot, InventorySlot targetSlot)
+        {
+            // Check if the source slot is an equipment slot
+            if (sourceSlot != null && _equipmentSlotDictionary.TryGetValue(sourceSlot, out var sourceView))
+            {
+                sourceView.Update(sourceSlot);
+            }
+
+            // Check if the target slot is an equipment slot
+            if (targetSlot != null && _equipmentSlotDictionary.TryGetValue(targetSlot, out var targetView))
+            {
+                targetView.Update(targetSlot);
+            }
+        }
+
         private void RefreshSlots()
         {
             if (_equipmentInventory == null || _equipmentInventory.LiveSlots == null) return;
 
+            _equipmentSlotDictionary.Clear();
+
             // Mapping from index to named container (hardcoded as specified)
-            // Index 0 = Head, 1 = Chest, 2 = Legs, 3 = Arms, 4 = Weapon
             RefreshSingleSlot(0, _slotHeadContainer);
             RefreshSingleSlot(1, _slotChestContainer);
             RefreshSingleSlot(2, _slotLegsContainer);
@@ -103,7 +126,31 @@ namespace OutlandHaven.Inventory
             TemplateContainer slotInstance = _slotTemplate.Instantiate();
             containerRoot.Add(slotInstance);
 
-            var slotView = new InventorySlotView(slotInstance, _equipmentInventory, _uiInventoryEvents);
+            var slotView = new InventorySlotView(slotInstance, _equipmentInventory);
+
+            slotView.OnLocalClicked += (slot) => { if (slot != null && !slot.IsEmpty && slot.HeldItem?.BaseItem != null) {
+                    var equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+                    if (equipable != null) {
+                        _uiInventoryEvents.OnRequestUnequip?.Invoke(equipable.TargetSlot);
+                    }
+                } 
+            };
+
+            slotView.OnLocalRightClicked += (slot) => {
+                // The equipment system always interprets right clicks as unequips, ignoring context.
+                if (slot != null && !slot.IsEmpty && slot.HeldItem?.BaseItem != null) {
+                    var equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+                    if (equipable != null) {
+                        _uiInventoryEvents.OnRequestUnequip?.Invoke(equipable.TargetSlot);
+                    }
+                }
+            };
+            slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
+            slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
+
+            slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
+            slotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
+            slotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
             slotView.Update(slotData);
 
             // Hide amount text label for equipment slots if it's there
@@ -112,8 +159,9 @@ namespace OutlandHaven.Inventory
             {
                 countLabel.style.display = DisplayStyle.None;
             }
-
             // Click events are now handled natively inside InventorySlotView via PointerUpEvent
+
+            _equipmentSlotDictionary.Add(slotData, slotView);
         }
 
         public void Dispose()
@@ -121,6 +169,8 @@ namespace OutlandHaven.Inventory
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
+
+                _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
                 _eventsBound = false;
             }
         }

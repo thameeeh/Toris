@@ -8,6 +8,9 @@ namespace OutlandHaven.Inventory
     public class UIInventoryEventsSO : ScriptableObject
     {
         public UnityAction OnInventoryUpdated;
+        
+        [Header("Targeted Updates")]
+        public UnityAction<InventorySlot, InventorySlot> OnSpecificSlotsUpdated;
 
         [Header("Shop Events")]
         public UnityAction OnShopInventoryUpdated;
@@ -26,9 +29,17 @@ namespace OutlandHaven.Inventory
         public UnityAction<EquipmentSlot> OnRequestUnequip;
         
         [Header("Drag and Drop Events")]
-        public UnityAction<InventoryManager, InventorySlot, InventoryManager, InventorySlot> OnRequestMoveItem;
+        public System.Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnRequestMoveItem;
 
         // Fired when an item is dropped onto a proxy visual slot (like Forge/Salvage)
         public UnityAction<InventorySlot, string> OnRequestSelectForProcessing;
+
+        [Header("Drag and Drop Visuals")]
+        public System.Action<Sprite, Vector2, Vector2> OnGlobalDragStarted;
+        public System.Action<Vector2> OnGlobalDragUpdated;
+        public System.Action OnGlobalDragStopped;
+
+        [Header("Context Management")]
+        public UnityAction<InventoryInteractionContext> OnInteractionContextChanged;
     }
 }

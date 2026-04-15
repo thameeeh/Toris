@@ -79,7 +79,7 @@ namespace OutlandHaven.Inventory
             }
 
             // Fire events to notify listeners that inventories have changed
-            _uiInventoryEvents.OnInventoryUpdated?.Invoke();
+            _uiInventoryEvents.OnSpecificSlotsUpdated?.Invoke(sourceSlot, targetSlot);
         }
     }
 }

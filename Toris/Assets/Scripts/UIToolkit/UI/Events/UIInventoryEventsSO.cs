@@ -8,6 +8,9 @@ namespace OutlandHaven.Inventory
     public class UIInventoryEventsSO : ScriptableObject
     {
         public UnityAction OnInventoryUpdated;
+        
+        [Header("Targeted Updates")]
+        public UnityAction<InventorySlot, InventorySlot> OnSpecificSlotsUpdated;
 
         [Header("Shop Events")]
         public UnityAction OnShopInventoryUpdated;

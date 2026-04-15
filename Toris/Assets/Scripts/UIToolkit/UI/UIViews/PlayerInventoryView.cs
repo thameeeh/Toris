@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.UIElements;
-using System.Collections.Generic;
-using System;
 using OutlandHaven.UIToolkit;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace OutlandHaven.Inventory
 {
@@ -12,6 +13,8 @@ namespace OutlandHaven.Inventory
 
         private VisualTreeAsset _slotTemplate;
         private GameSessionSO _gameSession;
+
+        private Dictionary<InventorySlot, InventorySlotView> _slotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
 
         // UI Containers
         private VisualElement _playerGrid;
@@ -45,6 +48,8 @@ namespace OutlandHaven.Inventory
             {
                 _uiInventoryEvents.OnInventoryUpdated += OnInventoryUpdated;
                 _uiInventoryEvents.OnInteractionContextChanged += HandleContextChanged;
+
+                _uiInventoryEvents.OnSpecificSlotsUpdated += HandleSpecificSlotsUpdated;
                 _eventsBound = true;
             }
             _equipmentView?.Show();
@@ -57,6 +62,8 @@ namespace OutlandHaven.Inventory
             {
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
                 _uiInventoryEvents.OnInteractionContextChanged -= HandleContextChanged;
+
+                _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
                 _eventsBound = false;
             }
             _equipmentView?.Hide();
@@ -83,9 +90,9 @@ namespace OutlandHaven.Inventory
         private void RefreshGrid(VisualElement gridRoot, InventoryManager data)
         {
             if (gridRoot == null) return;
-
-            // Clear any existing slots (visuals)
             gridRoot.Clear();
+
+            _slotDictionary.Clear();
 
             if (data == null || data.LiveSlots == null) return;
 
@@ -105,11 +112,27 @@ namespace OutlandHaven.Inventory
                 slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot);
                 slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
                 slotView.Update(slotData);
-
                 // Click events are now handled natively inside InventorySlotView via PointerUpEvent
+                
+                //view is being saved into the dictionary using the data slot as the key
+                _slotDictionary.Add(slotData, slotView);
             }
         }
 
+        private void HandleSpecificSlotsUpdated(InventorySlot sourceSlot, InventorySlot targetSlot)
+        {
+            // If the source slot belongs to this grid, update its visual
+            if (sourceSlot != null && _slotDictionary.TryGetValue(sourceSlot, out var sourceView))
+            {
+                sourceView.Update(sourceSlot);
+            }
+
+            // If the target slot belongs to this grid, update its visual
+            if (targetSlot != null && _slotDictionary.TryGetValue(targetSlot, out var targetView))
+            {
+                targetView.Update(targetSlot);
+            }
+        }
 
         private void HandleContextChanged(InventoryInteractionContext newContext)
         {

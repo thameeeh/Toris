@@ -14,7 +14,7 @@ To keep the UI views strictly separated from game logic, raw hardware inputs (e.
 Examples of abstracted events include:
 *   `OnItemClicked(InventorySlot slotData)`: Typically fired on a standard left-click (pointer up).
 *   `OnItemRightClicked(InventorySlot slotData)`: Typically fired on a standard right-click (pointer up with right mouse button). Used for auto-fill in crafting or quick-sell in shops.
-*   `OnRequestMoveItem(InventorySlot source, InventorySlot target)`: Emitted when a drag-and-drop operation successfully finishes over a valid target.
+*   `OnRequestMoveItem(InventorySlot source, InventorySlot target, int amountToMove)`: Emitted when a drag-and-drop operation successfully finishes over a valid target, explicitly stating the quantity to move (e.g., accounting for Shift key stack splitting).
 
 ## 2. Drag-and-Drop Implementation
 
@@ -34,7 +34,7 @@ A crucial rule for drag-and-drop implementations is the use of a **Drag Threshol
 ### The "Ghost" Icon and Drag Layer
 To prevent clipping issues where a dragged item disappears behind other UI panels (due to flexbox layout constraints or standard hierarchy drawing order):
 *   **Dedicated Root Layer:** A temporary "ghost" visual element is instantiated representing the dragged item.
-*   **Global Position:** This ghost icon is placed in a dedicated root-level `#Drag_Layer` managed by a separate `UIDragManager` injected at runtime. It is *not* a child of the original slot.
+*   **Global Position:** This ghost icon is placed in a dedicated root-level `#Drag_Layer` managed by an injected event-driven pattern. Visual slots no longer hard-reference global singletons (like `UIDragManager.Instance`) but instead rely on event broadcasts or controller delegation.
 *   **Picking Mode:** Crucially, the ghost icon must have `pickingMode = PickingMode.Ignore` set programmatically. If it does not, the ghost icon itself will intercept the `PointerUpEvent` raycasts, making it impossible to drop the item onto another slot.
 
 ## 3. Context Overrides and Generic Views
@@ -49,7 +49,7 @@ Context-specific windows (like `ShopSubView`, `SalvageSubView`, `ForgeSubView`) 
 
 When an item is dropped from one inventory (e.g., player) to another (e.g., chest), it involves two separate `InventoryManager` instances.
 *   **Arbitration:** To prevent hard-coupling between containers, cross-container transfers are handled by a centralized arbitrator (e.g., `InventoryTransferManagerSO`).
-*   **Execution:** This manager listens to the global `OnRequestMoveItem` event, taking both the full source context and target context. It evaluates the rules (can these merge? is there space?) and manipulates the respective managers accordingly.
+*   **Execution:** This manager listens to the global `OnRequestMoveItem` event, taking both the full source context, target context, and the `amountToMove`. It evaluates the rules (can these merge? is there space?), calculates the `actualAmount` via `Mathf.Min` logic to prevent overfilling and block partial-stack swap bugs, and then manipulates the respective managers accordingly.
 
 ## 5. Cleaning Up Event Listeners
 

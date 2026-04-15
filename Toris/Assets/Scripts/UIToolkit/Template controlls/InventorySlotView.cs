@@ -111,7 +111,15 @@ namespace OutlandHaven.Inventory
                 {
                     _isDragging = true;
                     _dragAmount = evt.shiftKey ? Mathf.CeilToInt(_slotData.Count / 2f) : _slotData.Count;
-                    Vector2 iconSize = new Vector2(_icon.layout.width, _icon.layout.height);
+
+                    float width = _icon.resolvedStyle.width;
+                    float height = _icon.resolvedStyle.height;
+
+                    // Failsafe: If UI Toolkit hasn't resolved the flexbox math yet, default to a standard icon size (e.g., 50x50)
+                    if (float.IsNaN(width) || width <= 0) width = 80f;
+                    if (float.IsNaN(height) || height <= 0) height = 80f;
+
+                    Vector2 iconSize = new Vector2(width, height);
                     OnLocalDragStarted?.Invoke(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
                 }
             }

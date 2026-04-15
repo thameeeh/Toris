@@ -83,6 +83,8 @@ namespace OutlandHaven.UIToolkit
         {
             if (_ghostIcon == null || sprite == null) return;
 
+            _dragLayer?.BringToFront();
+
             // Apply styling dynamically
             _ghostIcon.style.backgroundImage = new StyleBackground(sprite);
             _ghostIcon.style.width = size.x;

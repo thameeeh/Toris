@@ -14,6 +14,11 @@
 
 ---
 
+## [Current/Recent] - Inventory Stack Splitting Support
+- Added support for stack splitting using Shift-Click in the inventory drag-and-drop system. Players can now grab half a stack and drop it onto empty slots or stack it with other similar items.
+- Refactored `InventoryTransferManagerSO` logic to dictate transfer quantity based on the UI event instead of blindly consuming the entire source slot count.
+- Updated UI event pipeline (`UIInventoryEventsSO`, `InventorySlotView` and its subscribers) to pass `amountToMove` values.
+
 ## [Previous] - Decoupled Inventory Transfer Manager
 
 ### 1. Added SlotFilterType to InventorySlot

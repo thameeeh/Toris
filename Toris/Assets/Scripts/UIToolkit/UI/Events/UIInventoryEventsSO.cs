@@ -31,6 +31,11 @@ namespace OutlandHaven.Inventory
         // Fired when an item is dropped onto a proxy visual slot (like Forge/Salvage)
         public UnityAction<InventorySlot, string> OnRequestSelectForProcessing;
 
+        [Header("Drag and Drop Visuals")]
+        public System.Action<Sprite, Vector2, Vector2> OnGlobalDragStarted;
+        public System.Action<Vector2> OnGlobalDragUpdated;
+        public System.Action OnGlobalDragStopped;
+
         [Header("Context Management")]
         public UnityAction<InventoryInteractionContext> OnInteractionContextChanged;
     }

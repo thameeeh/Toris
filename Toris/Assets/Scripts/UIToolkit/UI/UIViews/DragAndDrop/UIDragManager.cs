@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -8,22 +9,13 @@ namespace OutlandHaven.UIToolkit
         [Tooltip("Assign the same UIDocument used by UIManager here.")]
         [SerializeField] private UIDocument _uiDocument;
 
+        [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+
         private VisualElement _dragLayer;
         private VisualElement _ghostIcon;
 
-        // Using a Singleton approach for easy global access from InventorySlotView,
-        // without needing to pass references through every view layer.
-        public static UIDragManager Instance { get; private set; }
-
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
-
             if (_uiDocument == null)
             {
                 _uiDocument = GetComponent<UIDocument>();
@@ -41,6 +33,23 @@ namespace OutlandHaven.UIToolkit
             if (_dragLayer == null && _uiDocument != null && _uiDocument.rootVisualElement != null)
             {
                 InitializeDragLayer(_uiDocument.rootVisualElement);
+            }
+
+            if (_uiInventoryEvents != null)
+            {
+                _uiInventoryEvents.OnGlobalDragStarted += StartDrag;
+                _uiInventoryEvents.OnGlobalDragUpdated += UpdateDrag;
+                _uiInventoryEvents.OnGlobalDragStopped += StopDrag;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_uiInventoryEvents != null)
+            {
+                _uiInventoryEvents.OnGlobalDragStarted -= StartDrag;
+                _uiInventoryEvents.OnGlobalDragUpdated -= UpdateDrag;
+                _uiInventoryEvents.OnGlobalDragStopped -= StopDrag;
             }
         }
 

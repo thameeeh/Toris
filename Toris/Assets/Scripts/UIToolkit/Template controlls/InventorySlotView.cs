@@ -18,6 +18,10 @@ namespace OutlandHaven.Inventory
         public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot> OnLocalMoveItemRequested;
         public event Action<InventorySlot, string> OnLocalSelectForProcessingRequested;
 
+        public event Action<Sprite, Vector2, Vector2> OnLocalDragStarted;
+        public event Action<Vector2> OnLocalDragUpdated;
+        public event Action OnLocalDragStopped;
+
         // Drag and Drop State
         private bool _isDragging = false;
         private Vector2 _dragStartPosition;
@@ -106,12 +110,12 @@ namespace OutlandHaven.Inventory
                 {
                     _isDragging = true;
                     Vector2 iconSize = new Vector2(_icon.layout.width, _icon.layout.height);
-                    UIDragManager.Instance?.StartDrag(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
+                    OnLocalDragStarted?.Invoke(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
                 }
             }
             else
             {
-                UIDragManager.Instance?.UpdateDrag(evt.position);
+                OnLocalDragUpdated?.Invoke(evt.position);
             }
         }
 
@@ -125,7 +129,7 @@ namespace OutlandHaven.Inventory
             {
                 // Stop dragging state and clear visual ghost if any
                 _isDragging = false;
-                UIDragManager.Instance?.StopDrag();
+                OnLocalDragStopped?.Invoke();
 
                 // Fire right click event
                 if (_slotData != null && !_slotData.IsEmpty)
@@ -139,7 +143,7 @@ namespace OutlandHaven.Inventory
             {
                 // Stop dragging state and clear visual ghost
                 _isDragging = false;
-                UIDragManager.Instance?.StopDrag();
+                OnLocalDragStopped?.Invoke();
 
                 // 1. Perform the raycast to pick the element underneath the pointer
                 VisualElement targetElement = _root.panel.Pick(evt.position);

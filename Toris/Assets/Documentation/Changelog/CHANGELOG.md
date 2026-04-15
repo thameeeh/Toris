@@ -1,4 +1,20 @@
-## [Current/Recent] - Decoupled Inventory Transfer Manager
+## [Current/Recent] - Refactored Drag-and-Drop to Event-Driven Architecture
+
+### 1. Removed Singleton Dependency
+* Removed the Singleton pattern from `UIDragManager`, completely decoupling it from `InventorySlotView`.
+
+### 2. Implemented Local Events
+* Added `OnLocalDragStarted`, `OnLocalDragUpdated`, and `OnLocalDragStopped` events to `InventorySlotView`.
+
+### 3. Updated Global Event Bus
+* Added `OnGlobalDragStarted`, `OnGlobalDragUpdated`, and `OnGlobalDragStopped` to `UIInventoryEventsSO` to act as a global channel for visual drag states.
+
+### 4. Added View Translation
+* Updated `PlayerInventoryView`, `PlayerEquipmentView`, `ForgeSubView`, `SalvageSubView`, and `ShopSubView` to act as translators, listening to local slot drag events and forwarding them to the global `UIInventoryEventsSO`.
+
+---
+
+## [Previous] - Decoupled Inventory Transfer Manager
 
 ### 1. Added SlotFilterType to InventorySlot
 * Added a new `SlotFilterType` enum safely mapped to `EquipmentSlot` integer values.

@@ -21,11 +21,11 @@ namespace OutlandHaven.Inventory
 
         public bool IsEmpty => HeldItem == null || HeldItem.BaseItem == null;
 
-        public InventorySlot()
+        public InventorySlot(SlotFilterType filter = SlotFilterType.Any)
         {
             HeldItem = new ItemInstance();
             Count = 0;
-            AllowedFilter = SlotFilterType.Any;
+            AllowedFilter = filter;
         }
 
         public bool CanAccept(ItemInstance item)

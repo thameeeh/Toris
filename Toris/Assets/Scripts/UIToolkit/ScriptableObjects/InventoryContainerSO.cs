@@ -8,7 +8,8 @@ namespace OutlandHaven.Inventory
     {
         public int SlotCount = 20;
         public ScreenType AssociatedView = ScreenType.None;
-        [Tooltip("Optional predefined filters for specific slots by index.")]
+
+        [Header("Optional. Predefined filters for specific slots by index.")]
         public SlotFilterType[] PredefinedFilters;
     }
 }

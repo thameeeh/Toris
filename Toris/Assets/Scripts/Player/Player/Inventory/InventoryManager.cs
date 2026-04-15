@@ -60,6 +60,25 @@ namespace OutlandHaven.Inventory
                 {
                     LiveSlots.RemoveAt(LiveSlots.Count - 1);
                 }
+
+                foreach (var slot in LiveSlots)
+                {
+                    if (slot != null)
+                    {
+                        // If an item is assigned but the count is 0 (or negative), force it to 1
+                        if (slot.HeldItem != null && slot.HeldItem.BaseItem != null && slot.Count <= 0)
+                        {
+                            // Note: Depending on how InventorySlot is written, you might need to adjust this line.
+                            // If Count is read-only, use your SetItem method:
+                            slot.SetItem(slot.HeldItem, 1);
+                        }
+                        // Optional cleanup: If the item was deleted from the inspector but the count remained, clear it
+                        else if ((slot.HeldItem == null || slot.HeldItem.BaseItem == null) && slot.Count > 0)
+                        {
+                            slot.Clear();
+                        }
+                    }
+                }
             }
         }
 #endif

@@ -28,12 +28,13 @@ MonoBehaviour:
   flowerDecorVariants:
   - {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
   flowerBaseProb: 0.104
-  vegetationDecorVariants:
-  - {fileID: 11400000, guid: 341d008024432b34884a54ea05576254, type: 2}
-  vegetationMaxProb: 0.286
+  vegetationDecorVariants: []
+  vegetationMaxProb: 0.132
+  treeVariants:
+  - obstacleTile: {fileID: 11400000, guid: a1f0b2c3d4e5f60718293a4b5c6d7e80, type: 2}
+    canopyTile: {fileID: 11400000, guid: 341d008024432b34884a54ea05576254, type: 2}
   roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
   roadWidthMin: 3
   roadWidthMax: 5
   maxRoadScanTiles: 4000
-  persistentFeatures: []
   platformGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}

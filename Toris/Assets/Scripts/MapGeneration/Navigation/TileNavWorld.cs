@@ -11,6 +11,7 @@ public class TileNavWorld : MonoBehaviour
     [Header("Tilemap used for navigation")]
     [SerializeField] private Tilemap groundMap;
     [SerializeField] private Tilemap waterMap;
+    [SerializeField] private Tilemap obstacleMap;
 
     [Header("Walkable tiles (whitelist)")]
     [SerializeField] private TileBase[] walkableTiles;
@@ -41,10 +42,11 @@ public class TileNavWorld : MonoBehaviour
 
     // --- Public API ---
 
-    public void Initialize(Tilemap ground, Tilemap water)
+    public void Initialize(Tilemap ground, Tilemap water, Tilemap obstacle)
     {
         groundMap = ground;
         waterMap = water;
+        obstacleMap = obstacle;
 
         if (!groundMap)
             Debug.LogError("[TileNavWorld] Initialize received null groundMap");
@@ -89,6 +91,15 @@ public class TileNavWorld : MonoBehaviour
                 {
                     TileBase waterTile = waterMap.GetTile(cell);
                     if (waterTile != null)
+                    {
+                        walkable = false;
+                    }
+                }
+
+                if (walkable && obstacleMap != null)
+                {
+                    TileBase obstacleTile = obstacleMap.GetTile(cell);
+                    if (obstacleTile != null)
                     {
                         walkable = false;
                     }

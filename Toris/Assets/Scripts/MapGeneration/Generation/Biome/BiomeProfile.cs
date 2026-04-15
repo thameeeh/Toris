@@ -1,6 +1,15 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[System.Serializable]
+public sealed class BiomeTreeVariant
+{
+    public TileBase obstacleTile;
+    public TileBase canopyTile;
+
+    public bool IsValid => obstacleTile != null || canopyTile != null;
+}
+
 [CreateAssetMenu(menuName = "WorldGen/Biome Profile", fileName = "BiomeProfile")]
 public sealed class BiomeProfile : ScriptableObject
 {
@@ -30,6 +39,9 @@ public sealed class BiomeProfile : ScriptableObject
 
     public TileBase[] vegetationDecorVariants;
     [Range(0f, 1f)] public float vegetationMaxProb = 0.75f;
+
+    [Header("Tree Layers")]
+    public BiomeTreeVariant[] treeVariants;
 
     #region Stamps
     [Header("Road")]

@@ -1,4 +1,18 @@
-## [Current/Recent] - Documentation Update for Architecture Shifts
+## [Current/Recent] - Resolved Broken Purchasing Functionality in Shop
+This update fixes the shop purchase pipeline which failed due to deprecated input handling and overly rigid bulk-buy validation.
+
+### 1. Fixed Modifier Key Input in UI Toolkit
+* Replaced legacy `Input.GetKey()` polling in `ShopSubView.cs` which could silently fail.
+* Added a new `OnLocalRightClickedWithShift` event in `InventorySlotView.cs` to cleanly pass the `evt.shiftKey` state from the pointer payload directly to parent views, ensuring robust UI event decoupling.
+
+### 2. Improved Transaction Validation
+* Modified `ShopManagerSO.HandleRequestBuy` to automatically clamp the requested purchase quantity against the shop's actual available stock.
+* Clamped the purchase quantity against the player's total affordable amount.
+* This prevents bulk-buy attempts (e.g., requesting 10 items) from instantly failing when the shop only holds 2 items or the player only has gold for 4.
+
+---
+
+## [Previous] - Documentation Update for Architecture Shifts
 This update refactors the core documentation to accurately reflect the current "production-ready" architecture of the inventory and drag-and-drop systems, moving away from prototyping implementations.
 
 ### 1. Documented Shift from "Nuke" Redraw to Targeted Updates

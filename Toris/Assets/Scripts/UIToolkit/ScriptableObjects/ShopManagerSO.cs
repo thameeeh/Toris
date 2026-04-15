@@ -64,9 +64,38 @@ namespace OutlandHaven.UIToolkit
             if (PlayerAnchor == null || !PlayerAnchor.IsReady) return;
             if (CurrentShopInventory == null) return;
 
+            // Clamp quantity to how much stock the shop actually has to prevent bulk buy failures
+            int shopStock = 0;
+            foreach (var slot in CurrentShopInventory.LiveSlots)
+            {
+                if (slot != null && !slot.IsEmpty && slot.HeldItem.IsStackableWith(item))
+                {
+                    shopStock += slot.Count;
+                }
+            }
+
+            quantity = Mathf.Min(quantity, shopStock);
+
+            if (quantity <= 0) return; // Shop is out of stock
+
+            // Clamp quantity to how much gold the player has
+            int affordableQuantity = item.BaseItem.GoldValue > 0
+                ? PlayerAnchor.Instance.CurrentGold / item.BaseItem.GoldValue
+                : quantity; // If free, player can afford whatever the shop has
+
+            quantity = Mathf.Min(quantity, affordableQuantity);
+
+            if (quantity <= 0)
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning("Not enough gold to buy even one item.");
+#endif
+                return;
+            }
+
             int totalCost = item.BaseItem.GoldValue * quantity;
 
-            // Check if player has enough gold
+            // Check if player has enough gold (redundant due to clamping, but safe)
             if (PlayerAnchor.Instance.CurrentGold >= totalCost)
             {
                 // First check if the shop actually has enough items to sell
@@ -103,12 +132,6 @@ namespace OutlandHaven.UIToolkit
                     Debug.LogWarning("Shop does not have enough stock of the requested item.");
 #endif
                 }
-            }
-            else
-            {
-#if UNITY_EDITOR
-                Debug.LogWarning("Not enough gold to buy item.");
-#endif
             }
         }
 

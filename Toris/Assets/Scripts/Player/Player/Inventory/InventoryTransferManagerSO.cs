@@ -25,10 +25,12 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        private void HandleMoveItemRequest(InventoryManager sourceContainer, InventorySlot sourceSlot, InventoryManager targetContainer, InventorySlot targetSlot)
+        private void HandleMoveItemRequest(InventoryManager sourceContainer, InventorySlot sourceSlot, InventoryManager targetContainer, InventorySlot targetSlot, int amountToMove)
         {
             if (sourceContainer == null || sourceSlot == null || targetContainer == null || targetSlot == null) return;
             if (sourceSlot.IsEmpty) return; // Cannot move an empty slot
+            if (sourceSlot == targetSlot) return; // Cannot drop on the same slot
+            if (amountToMove <= 0) return; // Cannot move 0 or negative items
 
             // --- NEW: SMART VALIDATION ---
             // Ask the slot if it will accept the item. The Manager doesn't need to know WHY.
@@ -46,14 +48,16 @@ namespace OutlandHaven.Inventory
             }
             // ----------------------------
 
-            // 1. Is the target slot empty?
+            // Ensure we don't try to move more than we actually have
+            int actualAmount = Mathf.Min(amountToMove, sourceSlot.Count);
+
+            // 1. Is the target slot empty? (Full Move or Split)
             if (targetSlot.IsEmpty)
             {
-                // Move item directly
-                targetSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
-                sourceSlot.Clear();
+                targetSlot.SetItem(sourceSlot.HeldItem, actualAmount);
+                sourceSlot.DecreaseCount(actualAmount);
             }
-            // 2. Is the target slot holding the same stackable item type?
+            // 2. Is the target slot holding the same stackable item type? (Stack)
             else if (targetSlot.HeldItem.IsStackableWith(sourceSlot.HeldItem))
             {
                 int maxStackSize = targetSlot.HeldItem.BaseItem.MaxStackSize;
@@ -61,21 +65,34 @@ namespace OutlandHaven.Inventory
 
                 if (spaceInTarget > 0)
                 {
-                    int amountToMove = Mathf.Min(spaceInTarget, sourceSlot.Count);
+                    int amountWeCanMove = Mathf.Min(spaceInTarget, actualAmount);
 
-                    targetSlot.IncreaseCount(amountToMove);
-                    sourceSlot.DecreaseCount(amountToMove);
+                    targetSlot.IncreaseCount(amountWeCanMove);
+                    sourceSlot.DecreaseCount(amountWeCanMove);
                 }
             }
             // 3. Is the target slot holding a different item? (Swap)
             else
             {
+                // You cannot perform a swap if you are only moving a partial stack.
+                if (actualAmount != sourceSlot.Count)
+                {
+                    Debug.LogWarning("Drag Swap Failed: Cannot swap a partial stack with a different item.");
+                    return;
+                }
+
                 // Perform a direct swap of the item instances and counts
                 ItemInstance tempItem = targetSlot.HeldItem;
                 int tempCount = targetSlot.Count;
 
                 targetSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
                 sourceSlot.SetItem(tempItem, tempCount);
+            }
+
+            // Cleanup: If the source slot is now empty after a partial move or stack, clear it.
+            if (sourceSlot.Count <= 0)
+            {
+                sourceSlot.Clear();
             }
 
             // Fire events to notify listeners that inventories have changed

@@ -15,7 +15,7 @@ namespace OutlandHaven.Inventory
         private InventoryManager _owningContainer;
         public event Action<InventorySlot> OnLocalClicked;
         public event Action<InventorySlot> OnLocalRightClicked;
-        public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot> OnLocalMoveItemRequested;
+        public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnLocalMoveItemRequested;
         public event Action<InventorySlot, string> OnLocalSelectForProcessingRequested;
 
         public event Action<Sprite, Vector2, Vector2> OnLocalDragStarted;
@@ -26,6 +26,7 @@ namespace OutlandHaven.Inventory
         private bool _isDragging = false;
         private Vector2 _dragStartPosition;
         private const float DragThreshold = 10f; // Pixels to move before initiating drag
+        private int _dragAmount = 0;
 
         public InventorySlotView(VisualElement root, InventoryManager owningContainer)
         {
@@ -109,6 +110,7 @@ namespace OutlandHaven.Inventory
                 if (distance >= DragThreshold)
                 {
                     _isDragging = true;
+                    _dragAmount = evt.shiftKey ? Mathf.CeilToInt(_slotData.Count / 2f) : _slotData.Count;
                     Vector2 iconSize = new Vector2(_icon.layout.width, _icon.layout.height);
                     OnLocalDragStarted?.Invoke(_slotData.HeldItem.BaseItem.Icon, evt.position, iconSize);
                 }
@@ -181,7 +183,7 @@ namespace OutlandHaven.Inventory
                         if (targetSlotData.Slot != _slotData || targetSlotData.Container != _owningContainer)
                         {
                             // Invoke the cross-container swap logic
-                            OnLocalMoveItemRequested?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot);
+                            OnLocalMoveItemRequested?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot, _dragAmount);
                             Debug.Log($"FIRING EVENT: Moving {_slotData.HeldItem.BaseItem.ItemName} to new slot.");
                         }
                     }

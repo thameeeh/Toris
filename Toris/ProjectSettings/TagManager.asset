@@ -42,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Water
+    uniqueID: 2775524347
+    locked: 0
   - name: Ground
     uniqueID: 3809012859
     locked: 0

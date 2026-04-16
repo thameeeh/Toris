@@ -79,8 +79,23 @@ namespace OutlandHaven.Inventory
                 _icon.sprite = slotData.HeldItem.BaseItem.Icon;
                 _icon.style.display = DisplayStyle.Flex;
                 _icon.scaleMode = ScaleMode.ScaleToFit;
-                _qtyLabel.text = slotData.Count > 1 ? slotData.Count.ToString() : "";
+                _qtyLabel.text = GetQuantityText(slotData);
             }
+        }
+
+        private static string GetQuantityText(InventorySlot slotData)
+        {
+            if (slotData == null || slotData.IsEmpty)
+                return string.Empty;
+
+            if (slotData.Count > 1)
+                return slotData.Count.ToString();
+
+            ConsumableState consumableState = slotData.HeldItem?.GetState<ConsumableState>();
+            if (consumableState != null && consumableState.CurrentCharges > 1)
+                return consumableState.CurrentCharges.ToString();
+
+            return string.Empty;
         }
 
         private void OnPointerDown(PointerDownEvent evt)

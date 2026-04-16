@@ -9,5 +9,6 @@ public enum PlayerEffectType
     IncomingDamageMultiplier,
     PoisonImmunity,
     BurningImmunity,
-    BleedingImmunity
+    BleedingImmunity,
+    HealthRegenPerSecond
 }

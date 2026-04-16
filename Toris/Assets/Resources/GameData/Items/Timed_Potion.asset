@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
-  m_Name: Potion_Cons
+  m_Name: Timed_Potion
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: Potion
+  ItemName: TimedPotion
   Description: 
-  Icon: {fileID: 21300000, guid: 5297e4475a1f69346bc43126007a9b22, type: 3}
+  Icon: {fileID: 21300000, guid: 8f8d97c996ae3574f82e9f3803a4266c, type: 3}
   MaxStackSize: 16
   GoldValue: 5
   Components:
@@ -25,7 +25,10 @@ MonoBehaviour:
     - rid: 7555927880013971566
       type: {class: ConsumableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
+        EffectMode: 1
         EffectPayload: 0
         amount: 20
-        CooldownDuration: 1.5
-        MaxCharges: 2
+        TimedEffectDefinition: {fileID: 11400000, guid: b28b6e4a0d5b31348bdf3d83a130d22a, type: 2}
+        TimedEffectDuration: 10
+        CooldownDuration: 1
+        MaxCharges: 4

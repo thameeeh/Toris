@@ -8,6 +8,27 @@ public class InventoryActionController : MonoBehaviour
     [SerializeField] private InventoryManager _playerInventory;
     [SerializeField] private InventoryManager _equipmentInventory;
     [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+    [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
+    [SerializeField] private PlayerEffectSourceController _playerEffectSourceController;
+
+    private PlayerConsumableController _consumableController;
+
+    private void Awake()
+    {
+        if (_playerStats == null)
+            TryGetComponent(out _playerStats);
+
+        if (_playerEffectSourceController == null)
+            TryGetComponent(out _playerEffectSourceController);
+
+        EnsureConsumableController();
+    }
+
+    private void Update()
+    {
+        _consumableController?.Tick();
+    }
 
     private void OnEnable()
     {
@@ -39,7 +60,11 @@ public class InventoryActionController : MonoBehaviour
         if (slot == null || slot.IsEmpty || slot.HeldItem?.BaseItem == null)
             return;
 
-        Debug.Log($"[InventoryActionController] Use requested for '{slot.HeldItem.BaseItem.ItemName}', but consumable flow is not implemented yet.");
+        if (!CanUse(slot))
+            return;
+
+        EnsureConsumableController();
+        _consumableController?.TryUseConsumable(slot);
     }
 
     private void HandleRequestUnequip(EquipmentSlot slot)
@@ -163,5 +188,17 @@ public class InventoryActionController : MonoBehaviour
                !slot.IsEmpty &&
                slot.HeldItem?.BaseItem != null &&
                slot.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null;
+    }
+
+    private void EnsureConsumableController()
+    {
+        if (_consumableController != null)
+            return;
+
+        _consumableController = new PlayerConsumableController(
+            _uiInventoryEvents,
+            _playerStatsAnchor,
+            _playerStats,
+            _playerEffectSourceController);
     }
 }

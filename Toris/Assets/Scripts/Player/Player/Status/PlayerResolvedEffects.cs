@@ -4,6 +4,7 @@ using UnityEngine;
 public struct PlayerResolvedEffects
 {
     public float maxHealth;
+    public float healthRegenPerSecond;
     public float maxStamina;
     public float staminaRegenPerSecond;
 
@@ -22,6 +23,7 @@ public struct PlayerResolvedEffects
         return new PlayerResolvedEffects
         {
             maxHealth = 100f,
+            healthRegenPerSecond = 0f,
             maxStamina = 100f,
             staminaRegenPerSecond = 10f,
 

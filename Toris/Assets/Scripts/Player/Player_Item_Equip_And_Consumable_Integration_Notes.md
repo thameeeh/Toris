@@ -1,57 +1,25 @@
-# Player Item Equip And Consumable Integration Plan
+# Player Item Equip And Consumable Integration Guide
 
-This document is the player-side implementation plan we should follow later.
+Use this document as the working reference for player equipment and future consumable integration.
 
-It is intentionally a planning document only. It does not mean the runtime is already integrated.
+This guide is meant to describe how the system should be understood and where future work should go.
 
-## Source Of Truth
+## Purpose
 
-### Equipment Documentation Status
+Separate passive equipment behavior from active consumable behavior.
 
-The project equipment documentation is useful, but only partially current.
+Use these principles:
 
-Safe to trust:
+* keep equipment as a persistent stat and gameplay source
+* keep consumables as active use items
+* let UI emit requests and let runtime controllers mutate authoritative state
+* avoid bending the 5-slot equipment layout into a consumable system
 
-* equipment is backed by a dedicated `InventoryManager`
-* `PlayerEquipmentController` maps fixed indices to `EquipmentSlot`
-* `EquipmentEffectBridge` pushes equipped item effects into the player effect system
-* gameplay reads equipped items through `PlayerEquipmentController`
+## Equipment Model
 
-Do not trust as the active interaction source:
+Treat the equipment system as a dedicated 5-slot inventory-backed system.
 
-* the part saying click-to-equip and unequip is currently managed by `PlayerEquipmentController`
-
-The live active equip path is drag-and-drop:
-
-1. `InventorySlotView` emits `OnRequestMoveItem`
-2. `InventoryTransferManagerSO` validates and moves/swaps items
-3. `PlayerEquipmentController` reacts after inventory refresh
-
-Relevant references:
-
-* [Equipment_System_Documentation.md](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Documentation/Equipment_System_Documentation.md)
-* [InventorySlotView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/Template%20controlls/InventorySlotView.cs)
-* [InventoryTransferManagerSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Inventory/InventoryTransferManagerSO.cs)
-* [PlayerEquipmentController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Equipment/PlayerEquipmentController.cs)
-
-## Locked Decisions
-
-These are now treated as chosen design decisions for implementation:
-
-* `Mana` in consumable data means `stamina`
-* consumables are click-to-consume items
-* consuming can create:
-  * an instant effect, like healing or stamina restoration
-  * a timed effect, like a temporary buff
-* consumables should not be folded into the current 5-slot equipment mapping
-
-## Current State
-
-### Equipment
-
-Equipment is already integrated.
-
-The current 5-slot mapping is hardcoded in multiple places:
+Current slot meaning:
 
 * `0 = Head`
 * `1 = Chest`
@@ -59,15 +27,66 @@ The current 5-slot mapping is hardcoded in multiple places:
 * `3 = Arms`
 * `4 = Weapon`
 
-Relevant files:
+Use these files as the main runtime references:
 
 * [PlayerEquipmentController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Equipment/PlayerEquipmentController.cs)
 * [PlayerEquipmentView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/UIViews/PlayerEquipmentView.cs)
 * [InventoryTransferManagerSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Inventory/InventoryTransferManagerSO.cs)
 
-### Consumables
+## Equipment Interaction
 
-Consumable data already exists:
+Use two active interaction paths for equipment:
+
+### Drag And Drop
+
+Use `InventorySlotView` local move events and let `InventoryTransferManagerSO` perform the authoritative slot mutation.
+
+The drag path currently supports:
+
+* cross-container moves
+* swaps
+* partial stack movement through `amountToMove`
+* targeted refreshes through `OnSpecificSlotsUpdated`
+
+### Click And Right Click
+
+Use `PlayerInventoryView` to route main inventory right clicks by context:
+
+* `Normal` -> equip request
+* `Shop` -> sell request
+* `Salvage` -> salvage request
+
+Use `PlayerEquipmentView` to route equipment slot click and right-click to:
+
+* unequip request
+
+That means click-driven equip and unequip are active again.
+
+Use these files as the interaction reference:
+
+* [InventorySlotView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/Template%20controlls/InventorySlotView.cs)
+* [PlayerInventoryView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/UIViews/PlayerInventoryView.cs)
+* [PlayerEquipmentView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/UIViews/PlayerEquipmentView.cs)
+* [UIInventoryEventsSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/Events/UIInventoryEventsSO.cs)
+* [InventoryInteractionContext.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/Events/InventoryInteractionContext.cs)
+
+## Consumable Model
+
+Treat consumables as click-to-consume items.
+
+Use these locked meanings:
+
+* `HP` means health restoration or health-related effect
+* `Mana` means stamina restoration or stamina-related effect
+
+Consumables may support:
+
+* instant effects, such as healing or stamina restore
+* timed effects, such as temporary buffs or regeneration-over-time
+
+## Consumable Runtime
+
+The item data already exists:
 
 * `ConsumableComponent`
 * `ConsumableState`
@@ -76,329 +95,163 @@ Consumable data already exists:
 * cooldown
 * max charges
 
-But runtime use does not exist yet.
+The first runtime use path is now active.
 
-Right now `InventoryActionController.HandleRequestUse(...)` stops at a log.
+Right now:
 
-Relevant files:
+* `OnRequestUse` exists on the event channel
+* `PlayerInventoryView` emits `OnRequestUse` for consumables when the player right-clicks in `Normal` context
+* `InventoryActionController` receives the request and forwards it into `PlayerConsumableController`
+* `PlayerConsumableController` applies instant HP and stamina consumables
+* `PlayerConsumableController` applies timed buff consumables through `PlayerEffectSourceController`
+* consumable cooldown is tracked per item definition
+* timed consumables refresh their own active duration by consumable item type
+* active timed buffs expire through runtime ticking in `InventoryActionController`
+* slot updates are pushed through `OnSpecificSlotsUpdated`
+
+Use these files as the current consumable reference:
 
 * [ConsumableModule.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Items/Entity%20Modules/ConsumableModule.cs)
 * [InventoryActionController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Inventory/InventoryActionController.cs)
+* [UIInventoryEventsSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/Events/UIInventoryEventsSO.cs)
 
-### Player Runtime Targets Already Exist
+## Runtime Targets
 
-Instant resource consumables already have good runtime targets:
+Use `PlayerStats` for instant resource consumables:
 
 * `HP -> PlayerStats.RestoreHealth(...)`
 * `Mana -> PlayerStats.RestoreStamina(...)`
 
-The clean dependency path is:
+Use `PlayerStatsAnchorSO` as the clean dependency anchor:
 
 * [PlayerStatsAnchorSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Anchors/PlayerStatsAnchorSO.cs)
 
-Relevant runtime:
+Use `PlayerEffectSourceController` for timed buff consumables:
 
-* [PlayerStats.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Status/PlayerStats.cs)
 * [PlayerEffectSourceController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Status/PlayerEffectSourceController.cs)
 
-## Important Constraints
+Use these consumable authoring fields for timed buffs:
 
-### Constraint 1: The Existing Equipment Container Should Stay A 5-Slot Equipment Container
+* `EffectMode = TimedPlayerEffect`
+* `TimedEffectDefinition = PlayerEffectDefinitionSO asset to apply`
+* `TimedEffectDuration = active buff duration in seconds`
 
-Do not extend the current equipment inventory to absorb consumables as slot `5` and `6`.
+Use `HealthRegenPerSecond` in `PlayerEffectDefinitionSO` when a timed consumable should heal over time.
 
-That would require touching multiple hardcoded equipment assumptions and is not the right first integration.
+## Structural Rules
 
-### Constraint 2: Generic Slot Click Events Are Too Ambiguous
+### Keep Equipment And Consumables Separate
 
-This is a major implementation detail.
+Do not extend the current equipment inventory to absorb consumables.
 
-`InventorySlotView` currently emits:
+The current equipment layout is too specific and too hardcoded for that to be a good first integration.
 
-* `OnItemClicked(InventorySlot slot)`
-* `OnItemRightClicked(InventorySlot slot)`
+### Keep `InventoryActionController` As The Action Gateway
 
-That event payload does not include the owning container.
-
-So if both:
-
-* player inventory slots
-* equipment slots
-
-emit the same click event, the consumer cannot reliably know where the click came from.
-
-That means we should not build consumable use by blindly subscribing to the generic click event and guessing context.
-
-Relevant files:
-
-* [InventorySlotView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/Template%20controlls/InventorySlotView.cs)
-* [UIInventoryEventsSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/Events/UIInventoryEventsSO.cs)
-
-### Constraint 3: Charged Consumables And Stacks Need A Rule
-
-Current inventory data works like this:
-
-* an `InventorySlot` stores one `HeldItem` and one `Count`
-* `ItemInstance` stores per-instance runtime state
-* `ConsumableState` stores `CurrentCharges`
-
-So if one item in a stack loses a charge, that stack now wants mixed per-instance state.
-
-That does not fit cleanly into the current slot model.
-
-### Constraint 4: Cooldown Exists In Data, But Not Yet In Runtime
-
-`ConsumableComponent.CooldownDuration` already exists.
-
-There is no live player-side cooldown owner for consumables yet.
-
-## Recommended Architecture
-
-### 1. Keep `InventoryActionController` As The Action Gateway
-
-Do not turn `PlayerInventoryView` into a logic-heavy consumer.
-
-Keep the current event-driven structure:
-
-* UI emits a request
-* controller validates
-* runtime system mutates data
-* UI rebuilds from authoritative inventory state
-
-`InventoryActionController` should stay the entry point for:
+Use `InventoryActionController` to receive:
 
 * equip request
 * unequip request
 * use request
 
-But it should not grow into a god object.
+Keep views dumb.
+Let views emit requests.
+Let controllers validate and mutate state.
 
-### 2. Add A Dedicated `PlayerConsumableController`
+### Use `PlayerConsumableController` As The Runtime Owner
 
-Recommended new runtime owner:
+Use the dedicated runtime owner for consumables.
 
-* `PlayerConsumableController`
+Recommended responsibilities:
 
-Reason:
+* apply instant effects
+* apply timed buff effects
+* manage charges
+* manage cooldowns
+* manage active timed source expiry
+* handle stack cleanup
+* emit inventory refresh after authoritative mutation
 
-* keeps `InventoryActionController` small
-* gives cooldowns, charge consumption, and effect application a clear home
-* scales better once timed consumables are added
+Keep `InventoryActionController` small by forwarding use requests into that controller.
 
-Recommended responsibility split:
+## Main Inventory Routing Rule
 
-* `InventoryActionController`
-  * receives `OnRequestUse`
-  * validates that the clicked slot holds a consumable
-  * forwards to consumable runtime
-* `PlayerConsumableController`
-  * applies effects
-  * manages charges
-  * manages cooldowns
-  * handles stack cleanup rules
-  * fires inventory refresh when authoritative mutation is complete
+Use the existing `Normal` inventory context as the player inventory consume entry point.
 
-### 3. Add A Player-Inventory-Specific Click Path
+Use this main inventory right-click behavior in `Normal` context:
 
-Because the generic click event is ambiguous, the clean approach is:
+1. if item is consumable -> emit `OnRequestUse`
+2. else if item is equipable -> emit `OnRequestEquip`
+3. else do nothing
 
-* keep generic `InventorySlotView` behavior for drag/drop and shared screens
-* add a player-inventory-specific click request path for the player grid
+That fits the current interaction architecture better than inventing a new parallel click system.
 
-Recommended direction:
+## Stack And Charge Rule
 
-* player inventory grid emits a dedicated event that includes container context
-* equipment slots keep their current drag-and-drop path
+Treat stacked charged consumables as a special case that needs a clear restriction.
 
-Good options:
+Current data model:
 
-1. add a new event in `UIInventoryEventsSO` for player inventory slot interaction
-2. create a player-grid-specific slot view wrapper that emits the dedicated player inventory request event
+* `InventorySlot` stores one `HeldItem` and one `Count`
+* `ItemInstance` stores runtime state
+* `ConsumableState` stores `CurrentCharges`
 
-Recommended event shape:
+Because of that, mixed-charge stacks do not fit cleanly.
 
-* container + slot
-
-not just:
-
-* slot
-
-This preserves MVP and avoids hidden context guesses.
-
-### 4. Treat Timed Consumables As Effect Sources, Not Direct Stat Writes
-
-Instant consumables should mutate `PlayerStats`.
-
-Timed consumables should not directly patch stats and hope cleanup happens later.
-
-Instead, timed consumables should eventually use the player effect system through:
-
-* [PlayerEffectSourceController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Status/PlayerEffectSourceController.cs)
-
-That keeps temporary buffs aligned with how passive equipment effects are already resolved.
-
-## V1 Scope
-
-The first real implementation pass should be intentionally narrow.
-
-### V1 Includes
-
-* click-to-consume from the main player inventory grid
-* immediate HP restore
-* immediate stamina restore
-* charge consumption
-* single item removal when depleted
-* inventory refresh after successful use
-
-### V1 Explicitly Does Not Include
-
-* extending the 5-slot equipment container
-* binding the decorative consumable placeholder in `PlayerInventory.uxml`
-* quick-use potion slots
-* timed buff consumables
-* dynamic stack splitting for charged items
-
-## V1 Runtime Rules
-
-### Rule 1: `Mana` Maps To Stamina
-
-Runtime mapping:
-
-* `HP -> RestoreHealth`
-* `Mana -> RestoreStamina`
-
-### Rule 2: Multi-Charge Consumables Must Not Stack
-
-This should be the first implementation rule unless we intentionally build a stack-splitting system later.
-
-Recommended rule:
+Use this first implementation rule:
 
 * if `MaxCharges > 1`, require `MaxStackSize = 1`
 
 That is the safest fit for the current inventory model.
 
-### Rule 3: Clicking A Consumable Uses It Immediately
+## Active V1 Scope
 
-There is no equip step.
+Keep the current consumable pass narrow.
 
-The flow should be:
+### Include
 
-1. player clicks a player-grid slot
-2. click router identifies slot context
-3. if item is consumable, emit use request
-4. action controller validates request
-5. consumable controller consumes item
-6. inventory refresh event rebuilds UI
+* right-click consume from the main player inventory in `Normal` context
+* instant HP restore
+* instant stamina restore
+* timed buff consumables through `PlayerEffectSourceController`
+* charge consumption
+* item removal when depleted
+* inventory refresh after successful use
 
-### Rule 4: Clicking An Equipable Item Can Still Route To Equip
+### Exclude
 
-The same player-grid interaction layer can later support:
+* extending the equipment inventory
+* quick-use potion slots
+* binding the decorative consumable placeholder in `PlayerInventory.uxml`
+* dynamic stack splitting for charged items
 
-* equipable item -> request equip
-* consumable item -> request use
+## Next Implementation Order
 
-But the routing decision belongs in the controller layer, not in the dumb view.
+When the next consumable expansion begins, follow this order:
 
-## Implementation Sequence
+1. keep the current right-click use route in `PlayerInventoryView`
+2. keep `OnRequestEquip` for equipables
+3. keep `PlayerConsumableController` as the runtime owner
+4. keep timed buffs in `PlayerEffectSourceController`
+5. decide whether quick-use consumable slots are needed later
 
-### Phase 1: Event Contract Cleanup
+## Documentation Usage
 
-Goal:
+Use [Equipment_System_Documentation.md](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Documentation/Equipment_System_Documentation.md) for the passive equipment overview.
 
-* make player inventory clicks identifiable without breaking forge, salvage, or shop flows
+Use current runtime and UI files for the active interaction flow, because that flow now spans:
 
-Plan:
+* `InventorySlotView`
+* `PlayerInventoryView`
+* `PlayerEquipmentView`
+* `InventoryActionController`
+* `InventoryTransferManagerSO`
 
-1. add a dedicated player inventory interaction request event to `UIInventoryEventsSO`
-2. make the player inventory grid emit that event
-3. leave equipment slots and shared slot views on their current drag/drop path
+## Working Standard
 
-Files to touch later:
+When touching player items later, work from these assumptions:
 
-* [UIInventoryEventsSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/Events/UIInventoryEventsSO.cs)
-* [PlayerInventoryView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/UI/UIViews/PlayerInventoryView.cs)
-* [InventorySlotView.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/UIToolkit/Template%20controlls/InventorySlotView.cs)
-
-### Phase 2: Runtime Consumable Owner
-
-Goal:
-
-* create the authoritative consume path
-
-Plan:
-
-1. add `PlayerConsumableController`
-2. give it access to:
-   * `PlayerStatsAnchorSO`
-   * player inventory
-   * UI inventory events
-3. support instant HP/stamina consumables first
-4. enforce the stack rule for charged items
-5. refresh inventory only after successful mutation
-
-Files to touch later:
-
-* new `PlayerConsumableController.cs`
-* [InventoryActionController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Inventory/InventoryActionController.cs)
-* [PlayerStatsAnchorSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Anchors/PlayerStatsAnchorSO.cs)
-* [PlayerStats.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Status/PlayerStats.cs)
-
-### Phase 3: Timed Consumables
-
-Goal:
-
-* support buff-style potions cleanly
-
-Plan:
-
-1. extend consumable runtime to create a temporary effect source
-2. register it with `PlayerEffectSourceController`
-3. remove it when duration ends
-
-This should be a separate pass after V1 works.
-
-### Phase 4: Optional Dedicated Consumable Slots
-
-The `Consumables__Player--Inventory` area in `PlayerInventory.uxml` should be treated as optional future work.
-
-If we later want quick-use potion slots, that should be a separate equipped-consumable system, not mixed into the first click-to-consume pass.
-
-## File Ownership Guide For The Future Implementation
-
-### Safe To Treat As Sources Of Truth
-
-* [PlayerEquipmentController.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Equipment/PlayerEquipmentController.cs)
-* [InventoryTransferManagerSO.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Inventory/InventoryTransferManagerSO.cs)
-* [PlayerStats.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Player/Player/Status/PlayerStats.cs)
-* [ConsumableModule.cs](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Scripts/Items/Entity%20Modules/ConsumableModule.cs)
-
-### Use Carefully
-
-* [Equipment_System_Documentation.md](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/Documentation/Equipment_System_Documentation.md)
-
-Reason:
-
-* good passive architecture overview
-* stale on the active click-to-equip description
-
-### Do Not Use As The First Integration Target
-
-* the consumable placeholder slots inside [PlayerInventory.uxml](C:/Users/karol/Desktop/Unity/Project%20Toris/Toris/Assets/UI_Toolkit/UXMLs/PlayerInventory.uxml)
-
-Reason:
-
-* they are currently just placeholder visuals
-* they are not required for the first click-to-consume implementation
-
-## Practical Recommendation
-
-When we start coding this, the first pass should be:
-
-1. create a player-inventory-specific click request path
-2. add `PlayerConsumableController`
-3. wire `InventoryActionController` to forward valid use requests
-4. support only instant HP and stamina consumables
-5. enforce `MaxCharges > 1 => MaxStackSize = 1`
-6. leave timed buffs and quick slots for later
-
-That keeps the current equipment system stable, respects the existing MVP and event-driven architecture, and gives consumables a clean dedicated runtime path instead of forcing them into the wrong system.
+* equipment stays passive and persistent
+* consumables stay active and immediate
+* the first consumable pass should extend the existing main inventory interaction flow
+* timed effects belong in the player effect system, not in ad hoc stat patches

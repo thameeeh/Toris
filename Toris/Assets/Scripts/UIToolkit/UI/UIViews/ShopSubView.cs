@@ -113,8 +113,10 @@ namespace OutlandHaven.UIToolkit
 
                 var slotView = new InventorySlotView(slotInstance, _shopContainer);
 
-                slotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
-                slotView.OnLocalRightClicked += HandleShopSlotRightClicked;
+                // Left clicks in the shop currently do not have a defined action (e.g. details panel).
+                // We disconnect them from the global bus to prevent unintended side effects in other systems.
+                slotView.OnLocalClicked += (slot) => { /* Reserved for future selection/details logic */ };
+                slotView.OnLocalRightClickedWithShift += HandleShopSlotRightClicked;
                 slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
                 slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
 
@@ -129,11 +131,10 @@ namespace OutlandHaven.UIToolkit
         }
 
 
-        private void HandleShopSlotRightClicked(InventorySlot slotData)
+        private void HandleShopSlotRightClicked(InventorySlot slotData, bool isShiftHeld)
         {
             if (slotData == null || slotData.IsEmpty) return;
 
-            bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             int amount = isShiftHeld ? BULK_BUY_AMOUNT : 1;
 
             _uiInventoryEvents?.OnRequestBuy?.Invoke(slotData.HeldItem, amount);

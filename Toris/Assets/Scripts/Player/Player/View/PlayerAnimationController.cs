@@ -25,8 +25,6 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private CharacterAnimSO _character;
     [SerializeField] private WeaponProfile _weapon;
 
-    [Header("General")]
-    [Range(0f, 0.2f)] public float resumeEpsilon = 0.02f;
     [SerializeField] private int _dashParticleSortingOrderOffset = -1;
     [SerializeField] private float _dashParticleDestroyPadding = 0.05f;
 
@@ -45,8 +43,6 @@ public class PlayerAnimationController : MonoBehaviour
         public string dirToken;
         public string name;
         public int hash;
-        public float lockAt;
-        public bool usesLock;
         public float fade;
     }
 
@@ -341,8 +337,6 @@ public class PlayerAnimationController : MonoBehaviour
             dirToken = dirToken,
             name = stateName,
             hash = _view.StateHash(stateName),
-            lockAt = weaponAction?.lockAt ?? 0f,
-            usesLock = weaponAction?.usesLock ?? false,
             fade = weaponAction?.crossFade ?? 0.05f
         };
     }

@@ -10,8 +10,6 @@ public class WeaponProfile : ScriptableObject
         public string actionKey = "Shoot";
 
         [Header("Animation Behavior")]
-        public bool usesLock = true;
-        [Range(0f, 1f)] public float lockAt = 0.48f;
         [Range(0f, 0.3f)] public float crossFade = 0.05f;
 
         [Header("Naming")]
@@ -22,10 +20,10 @@ public class WeaponProfile : ScriptableObject
     [Header("Action Set")]
     public ActionDef[] actions = new[]
     {
-        new ActionDef { actionKey = "ShootDraw", usesLock = false, lockAt = 0f, crossFade = 0.03f, animSuffixOverride = "" },
-        new ActionDef { actionKey = "ShootHold", usesLock = false, lockAt = 0f, crossFade = 0.02f, animSuffixOverride = "" },
-        new ActionDef { actionKey = "ShootRelease", usesLock = false, lockAt = 0f, crossFade = 0.02f, animSuffixOverride = "" },
-        new ActionDef { actionKey = "Dash", usesLock = false, lockAt = 0f, crossFade = 0.05f, animSuffixOverride = "" }
+        new ActionDef { actionKey = "ShootDraw", crossFade = 0.03f, animSuffixOverride = "" },
+        new ActionDef { actionKey = "ShootHold", crossFade = 0.02f, animSuffixOverride = "" },
+        new ActionDef { actionKey = "ShootRelease", crossFade = 0.02f, animSuffixOverride = "" },
+        new ActionDef { actionKey = "Dash", crossFade = 0.05f, animSuffixOverride = "" }
     };
 
     public ActionDef Get(string key)

@@ -14,22 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponProfile
   actions:
   - actionKey: ShootDraw
-    usesLock: 0
-    lockAt: 0
     crossFade: 0.03
     animSuffixOverride: 
   - actionKey: ShootHold
-    usesLock: 0
-    lockAt: 0
     crossFade: 0.02
     animSuffixOverride: 
   - actionKey: ShootRelease
-    usesLock: 0
-    lockAt: 0
     crossFade: 0.02
     animSuffixOverride: 
   - actionKey: Dash
-    usesLock: 0
-    lockAt: 0
     crossFade: 0.05
     animSuffixOverride: 

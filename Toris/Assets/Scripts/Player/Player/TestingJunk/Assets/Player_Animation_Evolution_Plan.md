@@ -1,364 +1,141 @@
-# Player Animation Evolution Plan
+# Player Animation Evolution Notes
 
-This document explains why the current player animation setup is a good starting point, why it should evolve as the game grows, and what the recommended target architecture should be.
+This document now reflects the current player animation direction after the BowGuy bow flow cleanup.
 
-The intent is not to throw away the current structure. The intent is to preserve the parts that are working well and shift more of the animation-state responsibility into Unity's Animator where it belongs.
+The earlier evolution question was whether the player should keep leaning on a code-owned animation state machine or move into a cleaner Animator-driven hybrid. The bow system has now moved in that direction.
 
-## Assumptions
+## What Is Now Locked In
 
-This plan assumes the player already has all core directional animations authored and available:
+The current player animation stack keeps the same broad separation:
 
-* `Idle`
-* `Walk`
-* `Hurt`
-* `Shoot`
-* `Dash`
-* `Death`
+* `PlayerAnimationPresenter` is the presentation bridge
+* `PlayerAnimationController` is animation-facing runtime glue
+* `PlayerAnimationView` wraps Animator access
+* `CharacterAnimSO` and `WeaponProfile` keep animation data externalized
 
-It also assumes the player remains a 4-direction character and that the project wants to keep gameplay logic separate from direct Animator manipulation.
+That architecture still makes sense and remains the recommended baseline.
 
-## Current Setup
+## What Changed In Practice
 
-At the moment, the player animation stack is effectively split into four parts:
+The bow flow is no longer based on a single clip with a code-paused hold frame.
 
-### 1. Presentation Bridge
+The current setup uses authored phases:
 
-`PlayerAnimationPresenter` listens to gameplay-owned systems such as movement, bow usage, hurt, and death, then forwards animation intent.
+* `ShootDraw`
+* `ShootHold`
+* `ShootRelease`
 
-This is a good pattern.
+That is the most important evolution that actually landed, because it fixed the biggest source of brittleness in the previous setup.
 
-It keeps gameplay systems from directly calling `Animator` all over the project and gives animation a single presentation-facing entry point.
+## Current Hybrid Model
 
-### 2. Custom Animation Brain
+The player animation model is now:
 
-`PlayerAnimationController` currently acts as the primary state machine.
+### Gameplay Owns
 
-It:
+* draw validation
+* cooldowns
+* shot readiness timing
+* interrupt cancellation
+* projectile spawning
+* ability-based bow occupation rules
 
-* decides locomotion state
-* resolves directional state names
-* handles hold, lock, and release logic
-* manually tracks hurt and death timing
-* manually decides when to crossfade back to locomotion
+### Animation Owns
 
-This works, but it means the real animation state machine lives in C# instead of in Animator.
+* draw playback
+* hold playback
+* release playback
+* directional clip switching
+* locomotion presentation
+* dash, hurt, and death one-shot presentation
 
-### 3. Animator Wrapper
+### Presenter Owns
 
-`PlayerAnimationView` is a thin wrapper around Unity's `Animator`.
+* event routing between the two
+* translating gameplay events into animation intent without leaking Animator calls into gameplay systems
 
-It:
+## Why This Is Better
 
-* caches clip hashes
-* checks whether states exist
-* crossfades by hash
-* plays states directly
-* pauses the Animator by setting `Animator.speed`
+The old system worked, but it had a fragile contract:
 
-This wrapper is clean and useful. The main issue is not the wrapper itself. The issue is that most state behavior is still custom-driven above it.
+* gameplay asked whether the shot was ready
+* animation froze at an authored frame inside a longer clip
+* repeated shots and interrupts had too many edge cases
 
-### 4. Data Assets
+The current system is easier to reason about because each clip has one clear job:
 
-`CharacterAnimSO` and `WeaponProfile` hold naming and timing data.
+* `Draw` gets to ready
+* `Hold` represents ready
+* `Release` follows through
 
-This is also a good pattern.
+That is the core improvement.
 
-These assets make the system more data-driven and keep hardcoded timing out of unrelated gameplay scripts.
+## Current Interrupt Policy
+
+The player now treats active bow draw as something that can be cleanly canceled by higher-priority gameplay states.
+
+Current baseline:
+
+* dash cancels draw
+* hurt cancels draw
+* death cancels draw
+* drawing is blocked while dashing
+* drawing is blocked while an ability is actively using the bow
+
+This should remain gameplay-driven. Animator should show the result, not decide the rule.
+
+## Current Animator Direction
+
+The project has not moved to a fully parameter-driven Animator graph for every state, and that is fine.
+
+The active direction is a practical hybrid:
+
+* use Animator as the playback and transition surface
+* keep explicit code control where gameplay timing matters
+* avoid rebuilding the entire gameplay state machine inside Animator
+
+For this sprite-based 4-direction setup, that is still the right tradeoff.
 
 ## What Is Good Enough To Keep
 
-These parts should stay:
+These decisions still look correct:
 
-* Keep the `Presenter -> Controller -> View` separation.
-* Keep `CharacterAnimSO` and `WeaponProfile` as data assets.
-* Keep gameplay as the source of truth for animation intent.
-* Keep directional discrete states for a 4-direction sprite character.
+* keep the `Presenter -> Controller -> View` layering
+* keep directional authored sprite states instead of overusing blend trees
+* keep data-driven animation naming and tuning in ScriptableObjects
+* keep gameplay as the authority on combat validity and interrupts
 
-The current architecture is strongest where it separates responsibilities clearly.
+## What We Explicitly Moved Away From
 
-## Why The System Needs To Evolve
+These are no longer the recommended baseline:
 
-The current setup should evolve because it is already using Animator, but it is not really using Animator as a state machine.
+* `ShootF` / `ShootS` as the core bow runtime model
+* freezing the bow at a guessed normalized time inside one larger clip
+* letting animation events act as the authority for whether a shot is valid
 
-Right now the Animator is mostly acting as:
+That older model was useful for iteration, but it should not be treated as the target architecture anymore.
 
-* a clip database
-* a hash lookup target
-* a playback surface for C# decisions
+## Future Evolution Worth Remembering
 
-That becomes fragile as the animation set grows.
+Nothing urgent is left for the current bow flow, but a few future directions are still valid if the game needs them later:
 
-### 1. The C# FSM Will Scale Poorly
+* upper-body and lower-body split if ranged movement while holding becomes important
+* dedicated hold-move clips if split-body animation is not worth the complexity
+* more Animator-owned locomotion transitions if the action set grows significantly
+* additional ability-specific presentation layers if bow abilities become more visually unique
 
-As long as the player only has a small set of actions, a custom FSM is manageable.
+Those are future upgrades, not current requirements.
 
-Once the player gains more combat states, more weapons, interrupt rules, layered reactions, or combo logic, the controller will grow into a second animation graph written in code.
+## Bottom Line
 
-That means:
+The player animation system is in a healthier place now.
 
-* more manual timing checks
-* more special-case branching
-* more naming dependencies
-* more maintenance cost when clips or behaviors change
+The bow flow especially has crossed the important threshold from:
 
-### 2. State Names Are Too Important
+* prototype logic that worked but felt fragile
 
-The current flow depends heavily on clip and state naming conventions such as `U_Idle`, `R_Shoot`, and `D_Dash`.
+to:
 
-That is workable at small scale, but it means:
+* a clean, understandable hybrid that matches the authored clips and gameplay rules
 
-* animation changes are tightly coupled to code expectations
-* errors are discovered at runtime instead of being obvious in an Animator graph
-* animators and designers cannot confidently rework flow without code impact
-
-### 3. The Whole Animator Gets Paused
-
-The current hold-lock behavior pauses the Animator globally via `Animator.speed = 0`.
-
-That is acceptable in a tiny setup, but it becomes risky once the player has:
-
-* multiple Animator layers
-* additive reactions
-* secondary motion
-* future upper-body and lower-body separation
-
-Freezing the whole Animator is broader than the actual gameplay need.
-
-### 4. Animator Is Not Giving You Its Real Value
-
-Unity Animator is strongest when it handles:
-
-* state transitions
-* interruption rules
-* transition timing
-* trigger handling
-* state visualization
-* designer iteration
-
-The current controller asset is close to a container of states rather than a designed runtime graph.
-
-That is the biggest reason the system should evolve.
-
-## Recommended Direction
-
-The recommended destination is a hybrid Animator-driven system.
-
-That means:
-
-* keep gameplay deciding intent
-* keep the Presenter as the bridge
-* keep small amounts of code for rare, gameplay-specific timing rules
-* move the main animation flow into Animator parameters, transitions, and sub-state machines
-
-This is not a recommendation to move away from Animator.
-
-It is the opposite.
-
-The recommendation is to use Animator more fully while keeping the current code architecture clean.
-
-## Recommended Responsibilities
-
-### Keep In Code
-
-Code should keep ownership of:
-
-* deciding high-level intent from gameplay
-* facing direction from movement or aim
-* special charge-shot lock behavior if `Shoot` is still one clip
-* weapon-specific timing data
-* any authoritative gameplay event timing
-
-### Move Into Animator
-
-Animator should own:
-
-* locomotion flow
-* idle to walk transitions
-* hurt transitions
-* death transitions
-* dash entry and exit flow
-* most shoot playback flow
-* interruption rules
-* return-to-locomotion behavior
-
-## Recommended Animator Parameters
-
-A solid starting parameter set would be:
-
-* `FacingIndex` as an `int`
-* `IsMoving` as a `bool`
-* `IsDrawing` as a `bool`
-* `DashTrigger` as a `trigger`
-* `HurtTrigger` as a `trigger`
-* `IsDead` as a `bool`
-
-Optional additions later:
-
-* `WeaponAction` as an `int`
-* `MoveSpeed` as a `float`
-* `IsLocked` as a `bool`
-
-For a 4-direction sprite game, `FacingIndex` is usually cleaner than trying to force blend trees where the art is not meant to blend.
-
-## Recommended Animator Structure
-
-### Base Layer
-
-Use the base layer for full-body player states.
-
-Suggested sub-state machines:
-
-* `Locomotion`
-* `Action`
-* `Damage`
-* `Death`
-
-### Locomotion
-
-Locomotion should handle:
-
-* `U_Idle`
-* `D_Idle`
-* `L_Idle`
-* `R_Idle`
-* `U_Walk`
-* `D_Walk`
-* `L_Walk`
-* `R_Walk`
-
-This can be done with either:
-
-* four directional idle and walk states with transitions driven by `FacingIndex` and `IsMoving`
-* or grouped sub-state machines per facing direction
-
-For sprite work, explicit directional states are usually clearer than trying to blend.
-
-### Action
-
-Action should handle:
-
-* `U_Shoot`
-* `D_Shoot`
-* `L_Shoot`
-* `R_Shoot`
-* `U_Dash`
-* `D_Dash`
-* `L_Dash`
-* `R_Dash`
-
-These can be entered from triggers or booleans, then return to locomotion naturally through transition rules.
-
-### Damage
-
-Damage should handle:
-
-* `U_Hurt`
-* `D_Hurt`
-* `L_Hurt`
-* `R_Hurt`
-
-Hurt should interrupt locomotion and action states according to clear transition rules.
-
-### Death
-
-Death should handle:
-
-* `U_Death`
-* `D_Death`
-* `L_Death`
-* `R_Death`
-
-Death should be terminal and not require the controller to manually babysit the return path.
-
-## Special Note About Shoot
-
-The answer depends on what `Shoot` really means in your game.
-
-### If `Shoot` Is One Clip
-
-If you only have one directional `Shoot` clip and you are using a lock point to fake a draw-hold-release behavior, then keeping a small amount of code-driven control is still reasonable.
-
-In that case:
-
-* the Presenter should still call into animation intent
-* the Controller may still keep a small lock-point helper
-* Animator should still own entry, interruption, and return flow where possible
-
-### If You Later Split Shoot Into Phases
-
-If you later author separate clips such as:
-
-* `Draw`
-* `DrawHold`
-* `Release`
-
-then the lock behavior should move out of C# and into Animator almost entirely.
-
-That would let the Animator own charge-state flow much more naturally.
-
-## Suggested Evolution Plan
-
-### Phase 1: Keep The Current Scripts, Thin The Behavior
-
-Do not replace everything at once.
-
-First:
-
-* keep `PlayerAnimationPresenter`
-* keep `PlayerAnimationController`
-* keep `PlayerAnimationView`
-* keep `CharacterAnimSO`
-* keep `WeaponProfile`
-
-Then move locomotion, hurt, dash, and death flow into Animator parameters and transitions.
-
-### Phase 2: Stop Resolving Most States By Name In C#
-
-Reduce direct name-based playback for common states.
-
-The controller should stop being responsible for manually crossfading between most core clips every frame.
-
-Instead, it should mostly set parameters such as:
-
-* `FacingIndex`
-* `IsMoving`
-* `HurtTrigger`
-* `DashTrigger`
-* `IsDead`
-
-### Phase 3: Keep Only Rare Logic In Code
-
-Once the core states are Animator-driven, leave only the genuinely special cases in code.
-
-That likely means:
-
-* charge-shot lock timing
-* weapon-specific override rules
-* unusual interrupt rules driven by gameplay state
-
-### Phase 4: Revisit The Shoot Flow
-
-When the rest of the graph is stable, decide whether `Shoot` should remain a single clip with a code lock point or become a fuller Animator state flow with dedicated hold and release states.
-
-## Clear Recommendation
-
-Do not replace Animator with a different animation runtime for this player right now.
-
-Do not keep growing the current C#-driven FSM indefinitely either.
-
-The right move is:
-
-* keep the clean separation of responsibilities
-* keep Animator as the playback backend
-* evolve Animator into the real state machine
-* leave only the hard-to-express gameplay-specific timing in code
-
-## Final Summary
-
-The current system is a good prototype architecture.
-
-It is not yet the best long-term production architecture.
-
-If the player is only ever going to support `Death`, `Walk`, `Hurt`, `Idle`, `Shoot`, and `Dash`, the current setup can survive for a while.
-
-If the player is expected to grow in combat depth, weapon variety, or layered animation complexity, the system should evolve now into a more Animator-driven hybrid before the custom controller logic becomes the real bottleneck.
+That should be the reference point for future player animation work.

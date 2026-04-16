@@ -9,10 +9,6 @@ public class CharacterAnimSO : ScriptableObject
     [Header("Naming")]
     public string characterPrefix = "BowGuy";
 
-    [Header("Locomotion Suffixes")]
-    public string locomotionIdleSuffix = "Idle";
-    public string locomotionWalkSuffix = "Run";
-
     [System.Serializable]
     public class NameMap
     {
@@ -31,9 +27,6 @@ public class CharacterAnimSO : ScriptableObject
         new NameMap{ actionKey="Dash", defaultSuffix="Dash"},
         new NameMap{ actionKey="DashP", defaultSuffix="DashP"},
     };
-
-    [Header("Animator Tags")]
-    public string shootTag = "Shoot";
 
     public string DefaultSuffixFor(string key)
     {

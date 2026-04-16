@@ -20,6 +20,7 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private PlayerFacing _playerFacing;
     [SerializeField] private PlayerEquipmentController _equipment;
+    [SerializeField] private PlayerAbilityController _abilityController;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
@@ -88,6 +89,9 @@ public class PlayerBowController : MonoBehaviour
 
     private void Awake()
     {
+        if (_abilityController == null)
+            TryGetComponent(out _abilityController);
+
         ResolveDirectionalMuzzles();
         SyncShootDebugToggle();
     }
@@ -118,6 +122,9 @@ public class PlayerBowController : MonoBehaviour
 
     private void OnValidate()
     {
+        if (_abilityController == null)
+            TryGetComponent(out _abilityController);
+
         ResolveDirectionalMuzzles();
         SyncShootDebugToggle();
 
@@ -160,6 +167,12 @@ public class PlayerBowController : MonoBehaviour
         if (_motor != null && _motor.isDashing)
         {
             LogShoot("BeginDraw blocked because player is currently dashing.");
+            return;
+        }
+
+        if (_abilityController != null && _abilityController.IsBowDrawBlocked)
+        {
+            LogShoot("BeginDraw blocked because an ability is currently using the bow.");
             return;
         }
 

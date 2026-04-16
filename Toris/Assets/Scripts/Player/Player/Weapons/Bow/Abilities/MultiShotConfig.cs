@@ -29,6 +29,7 @@ public class MultiShotConfig : PlayerAbilitySO
 
         BowSO.ShotStats shotStats = playerBow.BuildFullyDrawnShotStats();
 
+        runtime.BeginBowUse(context);
         playerBow.FireMultiShotVolley(shotStats, arrowCount, totalSpreadDegrees, playReleaseAnimation);
         runtime.StartCooldown();
     }

@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimSO
   baseLayer: 0
   characterPrefix: BowGuy
-  locomotionIdleSuffix: Idle
-  locomotionWalkSuffix: Run
   actionMap:
   - actionKey: ShootDraw
     defaultSuffix: ShootDraw
@@ -31,4 +29,3 @@ MonoBehaviour:
     defaultSuffix: Dash
   - actionKey: DashP
     defaultSuffix: DashP
-  shootTag: Shoot

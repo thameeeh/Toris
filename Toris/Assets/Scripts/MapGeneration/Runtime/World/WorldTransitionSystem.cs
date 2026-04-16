@@ -11,6 +11,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     private readonly float gateCooldownSeconds;
 
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
+    private WorldStreamingRuntime worldStreamingRuntime;
 
     private int biomeIndex;
     private float lastGateTime = -999f;
@@ -49,6 +50,11 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         this.worldFeatureLifecycleSystem = worldFeatureLifecycleSystem;
     }
 
+    public void AttachStreamingRuntime(WorldStreamingRuntime worldStreamingRuntime)
+    {
+        this.worldStreamingRuntime = worldStreamingRuntime;
+    }
+
     public void StartInitialBiome(int startingBiomeIndex, Vector2Int originTile)
     {
         StartBiome(startingBiomeIndex, originTile);
@@ -82,15 +88,17 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     }
 
     private void StartBiome(int nextBiomeIndex, Vector2Int originTile)
-    {
-        biomeIndex = nextBiomeIndex;
-
-        BiomeDefinition biomeDefinition = biomeDatabase != null ? biomeDatabase.Get(biomeIndex) : null;
+    {       
+        BiomeDefinition biomeDefinition = biomeDatabase != null ? biomeDatabase.Get(nextBiomeIndex) : null;
         if (biomeDefinition == null)
         {
-            Debug.LogError($"Missing biome definition for index {biomeIndex}");
+            Debug.LogError($"Missing biome definition for index {nextBiomeIndex}");
             return;
         }
+
+        ClearCurrentBiomeRuntime();
+
+        biomeIndex = nextBiomeIndex;
 
         int biomeSeed = ComputeBiomeSeed(worldProfile.seed, biomeIndex);
 
@@ -104,13 +112,23 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         worldContext.BindBiome(biomeDefinition, biomeInstance);
         chunkStateStore?.Clear();
 
-        worldNavigationLifecycle?.SetNavigationContributions(worldContext.NavigationContributions);
+        worldNavigationLifecycle?.Initialize(worldContext.NavigationContributions);
         worldFeatureLifecycleSystem?.RebuildForCurrentBiome();
-
-        chunkStreamingSystem?.Reset();
 
         Vector2Int spawnChunk = TileToChunk(originTile, worldProfile.chunkSize);
         chunkStreamingSystem?.SetStreamingAnchor(spawnChunk);
+    }
+
+    private void ClearCurrentBiomeRuntime()
+    {
+        foreach (Enemy enemy in Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+        {
+            if (enemy != null)
+                enemy.RequestDespawn();
+        }
+
+        worldStreamingRuntime?.Reset();
+        worldFeatureLifecycleSystem?.ClearAll();
     }
 
     private int ComputeBiomeSeed(int runSeed, int biomeIndex)

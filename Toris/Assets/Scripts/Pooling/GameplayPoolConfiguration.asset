@@ -14,24 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameplayPoolConfiguration
   projectilePools:
   - prefab: {fileID: -9110488972372575258, guid: 4749abb17510d3e46b92d0da8adcdefd, type: 3}
-    prewarmCount: 4
-    defaultCapacity: 4
-    maxSize: 6
+    prewarmCount: 32
+    defaultCapacity: 8
+    maxSize: 64
     parentOverride: {fileID: 0}
   - prefab: {fileID: 15201539819315284, guid: e81e4808d2e279047b1781ae64241c12, type: 3}
     prewarmCount: 4
     defaultCapacity: 4
-    maxSize: 6
+    maxSize: 8
     parentOverride: {fileID: 0}
   - prefab: {fileID: 7277248905559919144, guid: 7546902ee198f77449b997abf1a4ff1d, type: 3}
     prewarmCount: 4
     defaultCapacity: 4
-    maxSize: 6
-    parentOverride: {fileID: 0}
-  - prefab: {fileID: 7277248905559919144, guid: 7546902ee198f77449b997abf1a4ff1d, type: 3}
-    prewarmCount: 4
-    defaultCapacity: 3
-    maxSize: 6
+    maxSize: 8
     parentOverride: {fileID: 0}
   enemyPools:
   - prefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
@@ -45,6 +40,16 @@ MonoBehaviour:
     maxSize: 12
     parentOverride: {fileID: 0}
   - prefab: {fileID: 7255815159274722986, guid: 68112641f8cb2f54c894da2c8fe35c71, type: 3}
+    prewarmCount: 12
+    defaultCapacity: 16
+    maxSize: 32
+    parentOverride: {fileID: 0}
+  - prefab: {fileID: -652129463887021437, guid: 770575f5521055d4a974ac51d9a3e1ea, type: 3}
+    prewarmCount: 12
+    defaultCapacity: 16
+    maxSize: 32
+    parentOverride: {fileID: 0}
+  - prefab: {fileID: 4139749955504758593, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
     prewarmCount: 12
     defaultCapacity: 16
     maxSize: 32

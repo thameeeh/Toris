@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8057200069195693602}
   - component: {fileID: 1331929433903837469}
   - component: {fileID: -652129463887021437}
+  - component: {fileID: 5282169703739860041}
   m_Layer: 7
   m_Name: BloodMage
   m_TagString: Enemy
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 396674782226241983}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.68163, y: -7.50415, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -98,7 +99,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.05, y: 0}
+  m_Offset: {x: -0.05, y: 0.5}
   m_Size: {x: 0.3, y: 1}
   m_Direction: 0
 --- !u!114 &-652129463887021437
@@ -119,6 +120,7 @@ MonoBehaviour:
   AttackDamage: 8
   MovementSpeed: 2.2
   castPoint: {fileID: 2979183751253149904}
+  spawnRevealDuration: 0.25
   owner: {fileID: 0}
   summonIndex: -1
   summonGroupSize: 1
@@ -128,6 +130,23 @@ MonoBehaviour:
   bloodMageChaseBase: {fileID: 11400000, guid: 67485988a331e854d8be710932519419, type: 2}
   bloodMageAttackBase: {fileID: 11400000, guid: 442e8d39c66aabc458420372795ec833, type: 2}
   bloodMageDeadBase: {fileID: 11400000, guid: 2d80be2db2ac5b947a3b37a666badf81, type: 2}
+--- !u!114 &5282169703739860041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396674782226241983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 212262b305fcc1147b68daac4f5e757d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
+  repathInterval: 0.4
+  maxPathRange: 25
+  waypointReachThreshold: 0.1
+  targetChangeThreshold: 0.5
+  allowDirectFallbackWhenNoPath: 0
 --- !u!1 &1002006597034897472
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +159,7 @@ GameObject:
   - component: {fileID: 4047819101055944627}
   - component: {fileID: 8365232162984719157}
   - component: {fileID: 1108232891299455793}
+  - component: {fileID: 4626814253416244077}
   m_Layer: 7
   m_Name: Animator
   m_TagString: Untagged
@@ -188,7 +208,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 45e5cb15070961e4cba00bec0c79724f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -255,6 +275,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3f736bb4b3d07c4db856b3866a4450f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimationEventRelay
+--- !u!114 &4626814253416244077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002006597034897472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea6307c8973b3648a875ac2696113a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteRevealDriver
+  revealPropertyName: _Reveal
+  defaultRevealInDuration: 0.25
 --- !u!1 &2892767036172995488
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +395,7 @@ Transform:
   m_GameObject: {fileID: 8049371277262346970}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

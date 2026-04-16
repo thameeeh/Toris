@@ -5,13 +5,22 @@ public sealed class TilemapApplier
 {
     private readonly Tilemap groundMap;
     private readonly Tilemap waterMap;
-    private readonly Tilemap decorMap;
+    private readonly Tilemap decorationMap;
+    private readonly Tilemap obstacleMap;
+    private readonly Tilemap canopyMap;
 
-    public TilemapApplier(Tilemap groundMap, Tilemap waterMap, Tilemap decorMap)
+    public TilemapApplier(
+        Tilemap groundMap,
+        Tilemap waterMap,
+        Tilemap decorationMap,
+        Tilemap obstacleMap,
+        Tilemap canopyMap)
     {
         this.groundMap = groundMap;
         this.waterMap = waterMap;
-        this.decorMap = decorMap;
+        this.decorationMap = decorationMap;
+        this.obstacleMap = obstacleMap;
+        this.canopyMap = canopyMap;
     }
 
     public void Apply(ChunkResult chunk)
@@ -24,7 +33,9 @@ public sealed class TilemapApplier
 
         groundMap.SetTilesBlock(bounds, chunk.ground);
         waterMap.SetTilesBlock(bounds, chunk.water);
-        decorMap.SetTilesBlock(bounds, chunk.decor);
+        decorationMap.SetTilesBlock(bounds, chunk.decoration);
+        obstacleMap.SetTilesBlock(bounds, chunk.obstacle);
+        canopyMap.SetTilesBlock(bounds, chunk.canopy);
     }
 
     private TileBase[] emptyBlock;
@@ -43,13 +54,17 @@ public sealed class TilemapApplier
 
         groundMap.SetTilesBlock(bounds, emptyBlock);
         waterMap.SetTilesBlock(bounds, emptyBlock);
-        decorMap.SetTilesBlock(bounds, emptyBlock);
+        decorationMap.SetTilesBlock(bounds, emptyBlock);
+        obstacleMap.SetTilesBlock(bounds, emptyBlock);
+        canopyMap.SetTilesBlock(bounds, emptyBlock);
     }
 
     public void ClearAll()
     {
         groundMap.ClearAllTiles();
         waterMap.ClearAllTiles();
-        decorMap.ClearAllTiles();
+        decorationMap.ClearAllTiles();
+        obstacleMap.ClearAllTiles();
+        canopyMap.ClearAllTiles();
     }
 }

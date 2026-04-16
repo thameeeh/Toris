@@ -19,6 +19,10 @@ public class RambowBowConfig : PlayerAbilitySO
     [Header("Misc")]
     [Min(0f)] public float maxDuration = 0f;
 
+    [Header("Animation")]
+    public bool playReleaseAnimation = true;
+    public bool useShortReleaseAnimation = true;
+
     public override PlayerAbilityRuntime CreateRuntime()
     {
         return new RamboBowRuntime();
@@ -111,6 +115,6 @@ public class RambowBowConfig : PlayerAbilitySO
             spreadDeg = spreadDegrees
         };
 
-        playerBow.FireArrow(shotStats);
+        playerBow.FireArrow(shotStats, playReleaseAnimation, useShortReleaseAnimation);
     }
 }

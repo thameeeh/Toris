@@ -6,9 +6,12 @@ public class CharacterAnimSO : ScriptableObject
     [Header("Base Layer")]
     public int baseLayer = 0;
 
+    [Header("Naming")]
+    public string characterPrefix = "BowGuy";
+
     [Header("Locomotion Suffixes")]
     public string locomotionIdleSuffix = "Idle";
-    public string locomotionWalkSuffix = "Walk";
+    public string locomotionWalkSuffix = "Run";
 
     [System.Serializable]
     public class NameMap
@@ -20,10 +23,12 @@ public class CharacterAnimSO : ScriptableObject
     [Header("Action Name Mapping")]
     public NameMap[] actionMap = new[]
     {
-        new NameMap{ actionKey="Shoot", defaultSuffix="Shoot"},
+        new NameMap{ actionKey="ShootF", defaultSuffix="ShootF"},
+        new NameMap{ actionKey="ShootS", defaultSuffix="ShootS"},
         new NameMap{ actionKey="Hurt", defaultSuffix="Hurt"},
         new NameMap{ actionKey="Death", defaultSuffix="Death"},
         new NameMap{ actionKey="Dash", defaultSuffix="Dash"},
+        new NameMap{ actionKey="DashP", defaultSuffix="DashP"},
     };
 
     [Header("Animator Tags")]
@@ -35,5 +40,14 @@ public class CharacterAnimSO : ScriptableObject
             if (m.actionKey == key) return m.defaultSuffix;
 
         return key;
+    }
+
+    public string BuildStateName(string actionKey, string dirToken, string suffixOverride = "")
+    {
+        string suffix = string.IsNullOrEmpty(suffixOverride)
+            ? DefaultSuffixFor(actionKey)
+            : suffixOverride;
+
+        return $"{characterPrefix}{suffix}_{dirToken}";
     }
 }

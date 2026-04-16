@@ -34,15 +34,22 @@ public sealed class TileResolver
             ground = PickGround(local, ctx)
         };
 
-        // 5) Decor layers (trees first, then flowers)
-        if (TryPickTreeDecor(local, ctx, s, out TileBase tree))
+        // 5) Visual overlays (tree stump/base plus canopy first, then small decoration)
+        if (TryPickTreeVariant(local, ctx, s, out TileBase obstacleTile, out TileBase canopyTile))
         {
-            r.decor = tree;
+            r.obstacle = obstacleTile;
+            r.canopy = canopyTile;
             return r;
         }
 
-        if (TryPickFlowerDecor(local, ctx, s, out TileBase flower))
-            r.decor = flower;
+        if (TryPickVegetationDecoration(local, ctx, s, out TileBase vegetationDecoration))
+        {
+            r.decoration = vegetationDecoration;
+            return r;
+        }
+
+        if (TryPickFlowerDecoration(local, ctx, s, out TileBase flower))
+            r.decoration = flower;
 
         return r;
     }
@@ -50,6 +57,7 @@ public sealed class TileResolver
     // Unique deterministic salts for different layer permutations
     private const uint HASH_SALT_GROUND = 101;
     private const uint HASH_SALT_TREE = 202;
+    private const uint HASH_SALT_SMALL_VEGETATION = 252;
     private const uint HASH_SALT_FLOWER = 303;
 
     private TileBase PickGround(Vector2Int local, WorldContext ctx)
@@ -63,27 +71,61 @@ public sealed class TileResolver
         return variants[idx];
     }
 
-    private bool TryPickTreeDecor(Vector2Int local, WorldContext ctx, WorldSignals s, out TileBase tile)
+    private bool TryPickTreeVariant(
+        Vector2Int local,
+        WorldContext ctx,
+        WorldSignals s,
+        out TileBase obstacleTile,
+        out TileBase canopyTile)
     {
-        tile = null;
+        obstacleTile = null;
+        canopyTile = null;
+
         var bp = ctx.Biome;
         if (bp == null) return false;
 
-        if (bp.vegetationDecorVariants == null || bp.vegetationDecorVariants.Length == 0) return false;
+        if (bp.treeVariants == null || bp.treeVariants.Length == 0) return false;
 
-        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.vegetationMaxProb, s.vegetation01));
+        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.treeMaxProb, s.vegetation01));
         if (prob <= 0f) return false;
 
         uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_TREE);
         if (DeterministicHash.Hash01(h) > prob) return false;
 
-        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * bp.vegetationDecorVariants.Length);
-        idx = Mathf.Clamp(idx, 0, bp.vegetationDecorVariants.Length - 1);
-        tile = bp.vegetationDecorVariants[idx];
+        int variantCount = bp.treeVariants.Length;
+        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * variantCount);
+        idx = Mathf.Clamp(idx, 0, variantCount - 1);
+
+        BiomeTreeVariant variant = bp.treeVariants[idx];
+        if (variant == null || !variant.IsValid)
+            return false;
+
+        obstacleTile = variant.obstacleTile;
+        canopyTile = variant.canopyTile;
+        return obstacleTile != null || canopyTile != null;
+    }
+
+    private bool TryPickVegetationDecoration(Vector2Int local, WorldContext ctx, WorldSignals s, out TileBase tile)
+    {
+        tile = null;
+        var bp = ctx.Biome;
+        if (bp == null) return false;
+
+        if (bp.smallVegetationDecorVariants == null || bp.smallVegetationDecorVariants.Length == 0) return false;
+
+        float prob = Mathf.Clamp01(Mathf.Lerp(0f, bp.smallVegetationMaxProb, s.vegetation01));
+        if (prob <= 0f) return false;
+
+        uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_SMALL_VEGETATION);
+        if (DeterministicHash.Hash01(h) > prob) return false;
+
+        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * bp.smallVegetationDecorVariants.Length);
+        idx = Mathf.Clamp(idx, 0, bp.smallVegetationDecorVariants.Length - 1);
+        tile = bp.smallVegetationDecorVariants[idx];
         return true;
     }
 
-    private bool TryPickFlowerDecor(Vector2Int local, WorldContext ctx, WorldSignals s, out TileBase tile)
+    private bool TryPickFlowerDecoration(Vector2Int local, WorldContext ctx, WorldSignals s, out TileBase tile)
     {
         tile = null;
         var bp = ctx.Biome;

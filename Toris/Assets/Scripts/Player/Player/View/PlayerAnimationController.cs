@@ -1,128 +1,155 @@
 using UnityEngine;
 
-/// Controller = brain that composes Character + Weapon profiles and drives the View.
-/// - Resolves state names (dir + suffix) from data assets
-/// - Runs a tiny FSM for hold/lock/release + one-shots
-/// - Delegates all Animator calls to PlayerAnimationView
+/// Controller = animation-facing runtime glue between gameplay intent and Animator.
+/// Animator owns state routing, while this controller keeps special timing for
+/// shoot hold/release and dash particle playback.
 public class PlayerAnimationController : MonoBehaviour
 {
+    private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;
+    private const string DashKey = "Dash";
+    private const string DashParticleKey = "DashP";
+    private const string DeathKey = "Death";
+    private const string HurtKey = "Hurt";
+    private const string ShootFullKey = "ShootF";
+    private const string ShootShortKey = "ShootS";
+
+    private const string FacingIndexParam = "FacingIndex";
+    private const string IsMovingParam = "IsMoving";
+    private const string IsInActionParam = "IsInAction";
+    private const string IsDeadParam = "IsDead";
+
     [Header("Scene refs")]
-    [SerializeField] PlayerAnimationView _view;
-    [SerializeField] CharacterAnimSO _character;
-    [SerializeField] WeaponProfile _weapon;
+    [SerializeField] private PlayerAnimationView _view;
+    [SerializeField] private CharacterAnimSO _character;
+    [SerializeField] private WeaponProfile _weapon;
 
     [Header("General")]
     [Range(0f, 0.2f)] public float resumeEpsilon = 0.02f;
+    [SerializeField] private int _dashParticleSortingOrderOffset = -1;
+    [SerializeField] private float _dashParticleDestroyPadding = 0.05f;
 
-    private float _hurtEndTime = 0f;
-    private float _deathEndTime = 0f;
+    private enum AnimState
+    {
+        Locomotion,
+        HoldUnlocked,
+        HoldLocked,
+        OneShotBusy,
+        Dead
+    }
 
-    #region FSM
+    private struct ActionRuntime
+    {
+        public string actionKey;
+        public string dirToken;
+        public string name;
+        public int hash;
+        public float lockAt;
+        public bool usesLock;
+        public float repeatWindow;
+        public float fade;
+    }
 
-    enum AnimState { Locomotion, HoldUnlocked, HoldLocked, OneShotBusy, Hurt, Dead }
-    AnimState _state = AnimState.Locomotion;
-    float _stateUntil;
+    private AnimState _state = AnimState.Locomotion;
+    private Vector2 _lastDir = Vector2.down;
+    private float _stateUntil;
+    private float _lastShotReleaseTime = float.NegativeInfinity;
 
-    #endregion
+    private string _activeActionKey;
+    private string _activeName;
+    private int _activeHash;
+    private float _activeLockAt;
+    private bool _activeUsesLock;
+    private bool _holding;
+    private bool _locked;
+    private bool _shotNockReached;
 
-    #region Runtime
-
-    Vector2 _lastDir = Vector2.down;
-    string _activeActionKey;
-    int _activeHash;
-    string _activeName;
-    float _activeLockAt;
-    float _activeFade;
-    bool _activeUsesLock;
-    bool _holding;
-    bool _locked;
-
-    static readonly string[] FourDirs = { "U", "L", "R", "D" };
-
-    #endregion
+    public event System.Action ShootNockReached;
 
     private void Reset()
     {
         if (!_view) _view = GetComponent<PlayerAnimationView>();
         if (!_character) Debug.LogError("[AnimCtrl] Missing CharacterAnimProfile.", this);
         if (!_weapon) Debug.LogError("[AnimCtrl] Missing WeaponProfile.", this);
-        ValidateCoreStates();
     }
 
     private void Awake()
     {
         if (!_view) Debug.LogError("[AnimCtrl] Missing PlayerAnimationView.", this);
-    }
-
-    #region Public API
-
-    public void Tick(Vector2 move)
-    {
-        if (_state == AnimState.Dead)
-        {
-            if (Time.time >= _deathEndTime && _deathEndTime > 0f)
-            {
-                _deathEndTime = 0f;
-                OnDeathAnimationFinished();
-            }
-            return;
-        }
-
-        if (_state == AnimState.Hurt)
-        {
-            if (Time.time >= _hurtEndTime)
-                _state = AnimState.Locomotion;
-            else
-                return;
-        }
-
-        if (_state == AnimState.HoldUnlocked || _state == AnimState.HoldLocked)
-        {
-            UpdateHoldLock();
-            return;
-        }
-
-        if (_state == AnimState.OneShotBusy)
-        {
-            if (Time.time < _stateUntil) return;
-            _state = AnimState.Locomotion;
-        }
-
-        if (move.sqrMagnitude > 0.0001f)
-            _lastDir = move.normalized;
-
-        string dir = _view.DirPrefix(_lastDir);
-        string suffix = move.sqrMagnitude > 0.0001f
-            ? _character.locomotionWalkSuffix
-            : _character.locomotionIdleSuffix;
-
-        int hash = _view.StateHash($"{dir}_{suffix}");
-        _view.CrossFadeIfChanged(hash, 0f);
+        if (!_character) Debug.LogError("[AnimCtrl] Missing CharacterAnimProfile.", this);
+        if (!_weapon) Debug.LogError("[AnimCtrl] Missing WeaponProfile.", this);
     }
 
     public Vector2 CurrentFacing => _lastDir;
 
-    public void BeginHold(string actionKey = "Shoot")
+    public void Tick(Vector2 move)
     {
-        var res = Resolve(actionKey, _lastDir);
-        if (!_view.HasState(res.hash))
+        if (_view == null || _character == null)
+            return;
+
+        bool isMoving = move.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE;
+        if (isMoving && _state == AnimState.Locomotion)
+            _lastDir = move.normalized;
+
+        SyncFacingParameter();
+
+        if (_state == AnimState.Dead)
         {
-            Debug.LogError($"[AnimCtrl] Missing state '{res.name}' on layer {_character.baseLayer}", this);
+            _view.SetBool(IsMovingParam, false);
             return;
         }
 
-        _activeActionKey = actionKey;
-        _activeHash = res.hash;
-        _activeName = res.name;
-        _activeLockAt = res.lockAt;
-        _activeFade = res.fade;
-        _activeUsesLock = res.usesLock;
+        _view.SetBool(IsMovingParam, isMoving);
 
-        _holding = _activeUsesLock;
+        if (_state == AnimState.HoldUnlocked || _state == AnimState.HoldLocked)
+        {
+            return;
+        }
+
+        if (_state == AnimState.OneShotBusy && Time.time >= _stateUntil)
+        {
+            _state = AnimState.Locomotion;
+            SetActionLock(false);
+        }
+    }
+
+    public void BeginShoot()
+    {
+        if (_state == AnimState.Dead)
+            return;
+
+        ActionRuntime action = Resolve(ShouldUseShortShoot() ? ShootShortKey : ShootFullKey, _lastDir);
+        if (!_view.HasState(action.hash))
+        {
+            Debug.LogError($"[AnimCtrl] Missing state '{action.name}' on layer {_character.baseLayer}", this);
+            return;
+        }
+
+        CancelCurrentHold();
+
+        _activeActionKey = action.actionKey;
+        _activeName = action.name;
+        _activeHash = action.hash;
+        _activeLockAt = action.lockAt;
+        _activeUsesLock = action.usesLock;
+        _holding = action.usesLock;
         _locked = false;
+        _shotNockReached = false;
 
+        SetActionLock(true);
+        _view.SetBool(IsMovingParam, false);
         _view.SetPaused(false);
-        _view.CrossFade(_activeHash, _activeFade);
+
+        // Consecutive short shots can request the same Animator state again while the
+        // previous release tail is still active. Force a restart from frame 0 in that
+        // case so the authored hold event fires again and the shot can nock properly.
+        if (_view.IsCurrent(_activeHash))
+        {
+            _view.Play(_activeHash, 0f);
+        }
+        else
+        {
+            _view.CrossFade(_activeHash, action.fade);
+        }
 
         if (_activeUsesLock)
         {
@@ -130,163 +157,326 @@ public class PlayerAnimationController : MonoBehaviour
         }
         else
         {
-            float dur = Mathf.Max(0.1f, _view.ClipLenByHash(_activeHash));
             _state = AnimState.OneShotBusy;
-            _stateUntil = Time.time + dur;
+            _stateUntil = Time.time + Mathf.Max(0.1f, _view.ClipLenByHash(_activeHash));
         }
     }
 
-    public void ReleaseHold()
+    public void ReleaseShoot()
     {
-        if (!_holding) return;
+        if (_state == AnimState.Dead || !_holding)
+            return;
 
         _holding = false;
         _view.SetPaused(false);
 
-        float t = Mathf.Clamp01(_activeLockAt + resumeEpsilon);
-        _view.Play(_activeHash, t);
+        float startTime = _locked
+            ? Mathf.Clamp01(_activeLockAt + resumeEpsilon)
+            : Mathf.Clamp01(CurrentNormalizedTime());
+
+        _view.Play(_activeHash, startTime);
 
         float len = _view.ClipLenByHash(_activeHash);
-        float remaining = Mathf.Max(0.1f, (1f - t) * (len > 0f ? len : 0.18f));
+        float remaining = Mathf.Max(0.1f, (1f - startTime) * len);
 
         _locked = false;
         _state = AnimState.OneShotBusy;
         _stateUntil = Time.time + remaining;
+        _lastShotReleaseTime = Time.time;
+    }
+
+    public void PlayAbilityShootRelease(Vector2 shotDirection, bool useShortVariant)
+    {
+        if (_state == AnimState.Dead)
+            return;
+
+        if (shotDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
+            _lastDir = shotDirection.normalized;
+
+        BreakShootChain();
+        CancelCurrentHold();
+
+        ActionRuntime action = Resolve(useShortVariant ? ShootShortKey : ShootFullKey, _lastDir);
+        if (!_view.HasState(action.hash))
+        {
+            Debug.LogError($"[AnimCtrl] Missing state '{action.name}' on layer {_character.baseLayer}", this);
+            return;
+        }
+
+        float startTime = ResolveShootReleaseStartTime(action);
+
+        _activeActionKey = action.actionKey;
+        _activeName = action.name;
+        _activeHash = action.hash;
+        _activeLockAt = startTime;
+        _activeUsesLock = false;
+        _holding = false;
+        _locked = false;
+        _shotNockReached = false;
+
+        SyncFacingParameter();
+        SetActionLock(true);
+        _view.SetBool(IsMovingParam, false);
+        _view.SetPaused(false);
+
+        if (_view.IsCurrent(action.hash))
+        {
+            _view.Play(action.hash, startTime);
+        }
+        else
+        {
+            _view.CrossFade(action.hash, action.fade, startTime);
+        }
+
+        float len = _view.ClipLenByHash(action.hash);
+        float remaining = Mathf.Max(0.1f, (1f - startTime) * len);
+
+        _state = AnimState.OneShotBusy;
+        _stateUntil = Time.time + remaining;
+    }
+
+    public void CancelShoot()
+    {
+        if (_state == AnimState.Dead)
+            return;
+
+        if (_state != AnimState.HoldUnlocked && _state != AnimState.HoldLocked)
+            return;
+
+        CancelCurrentHold();
+        SetActionLock(false);
+        _state = AnimState.Locomotion;
+    }
+
+    public void OnShootHoldFrame(AnimationEvent animationEvent)
+    {
+        if (_state != AnimState.HoldUnlocked || !_holding || !_activeUsesLock || _shotNockReached)
+            return;
+
+        AnimatorStateInfo stateInfo = _view.Current();
+        if (stateInfo.shortNameHash != _activeHash && !stateInfo.IsName(_activeName))
+            return;
+
+        float clipLength = _view.ClipLenByHash(_activeHash);
+        float normalizedTime = clipLength > 0f
+            ? Mathf.Clamp01(animationEvent.time / clipLength)
+            : Mathf.Clamp01(CurrentNormalizedTime());
+
+        _activeLockAt = normalizedTime;
+        _shotNockReached = true;
+        _locked = true;
+        _state = AnimState.HoldLocked;
+
+        _view.Play(_activeHash, _activeLockAt);
+        _view.SetPaused(true);
+        ShootNockReached?.Invoke();
     }
 
     public void UpdateAim(Vector2 aim)
     {
-        if (aim.sqrMagnitude > 0.0001f)
-        {
-            _lastDir = aim.normalized;
-        }
+        if (aim.sqrMagnitude <= MIN_DIRECTION_SQR_MAGNITUDE)
+            return;
 
-        if (_state != AnimState.HoldUnlocked && _state != AnimState.HoldLocked) return;
+        _lastDir = aim.normalized;
+        SyncFacingParameter();
 
-        var res = Resolve(_activeActionKey, _lastDir);
-        if (res.hash == _activeHash) return;
+        if (_state != AnimState.HoldUnlocked && _state != AnimState.HoldLocked)
+            return;
 
-        float t = _activeLockAt;
-        var st = _view.Current();
-        if (!_locked) t = st.normalizedTime % 1f;
+        ActionRuntime updated = Resolve(_activeActionKey, _lastDir);
+        if (updated.hash == _activeHash)
+            return;
 
-        _activeHash = res.hash;
-        _activeName = res.name;
+        float normalizedTime = _locked
+            ? _activeLockAt
+            : Mathf.Clamp01(CurrentNormalizedTime());
+
+        _activeName = updated.name;
+        _activeHash = updated.hash;
+
+        _view.SetPaused(false);
+        _view.Play(_activeHash, normalizedTime);
 
         if (_locked)
-        {
-            _view.Play(_activeHash, _activeLockAt);
             _view.SetPaused(true);
-        }
-        else
-        {
-            _view.SetPaused(false);
-            _view.Play(_activeHash, t);
-        }
     }
 
-    public void PlayHurt(float hold = 0f)
+    public void PlayDash(Vector2 dashDirection)
     {
-        if (_state == AnimState.Dead) return;
+        if (_state == AnimState.Dead)
+            return;
 
-        string dir = _view.DirPrefix(_lastDir);
-        int hash = _view.StateHash($"{dir}_{_character.DefaultSuffixFor("Hurt")}");
+        if (dashDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
+            _lastDir = dashDirection.normalized;
 
-        _view.CrossFade(hash, 0.05f);
-        _state = AnimState.Hurt;
+        BreakShootChain();
+        CancelCurrentHold();
 
-        float clipLen = _view.ClipLenByHash(hash);
-        _hurtEndTime = Time.time + (hold > 0f ? hold : clipLen);
+        ActionRuntime dash = Resolve(DashKey, _lastDir);
+        if (!_view.HasState(dash.hash))
+        {
+            Debug.LogError($"[AnimCtrl] Missing state '{dash.name}' on layer {_character.baseLayer}", this);
+            return;
+        }
+
+        SyncFacingParameter();
+        SetActionLock(true);
+        _view.SetBool(IsMovingParam, false);
+        _view.CrossFade(dash.hash, dash.fade);
+
+        _state = AnimState.OneShotBusy;
+        _stateUntil = Time.time + Mathf.Max(0.1f, _view.ClipLenByHash(dash.hash));
+
+        SpawnDashParticles();
+    }
+
+    public void PlayHurt()
+    {
+        if (_state == AnimState.Dead)
+            return;
+
+        BreakShootChain();
+        CancelCurrentHold();
+
+        ActionRuntime hurt = Resolve(HurtKey, _lastDir);
+        if (!_view.HasState(hurt.hash))
+        {
+            Debug.LogError($"[AnimCtrl] Missing state '{hurt.name}' on layer {_character.baseLayer}", this);
+            return;
+        }
+
+        SyncFacingParameter();
+        SetActionLock(true);
+        _view.SetBool(IsMovingParam, false);
+        _view.CrossFade(hurt.hash, hurt.fade);
+
+        _state = AnimState.OneShotBusy;
+        _stateUntil = Time.time + Mathf.Max(0.1f, _view.ClipLenByHash(hurt.hash));
     }
 
     public void PlayDeath()
     {
-        string dir = _view.DirPrefix(_lastDir);
-        int hash = _view.StateHash($"{dir}_{_character.DefaultSuffixFor("Death")}");
-        _view.CrossFade(hash, 0.05f);
+        BreakShootChain();
+        CancelCurrentHold();
 
+        ActionRuntime death = Resolve(DeathKey, _lastDir);
+        if (!_view.HasState(death.hash))
+        {
+            Debug.LogError($"[AnimCtrl] Missing state '{death.name}' on layer {_character.baseLayer}", this);
+            return;
+        }
+
+        SyncFacingParameter();
+        SetActionLock(true);
+        _view.SetBool(IsMovingParam, false);
+        _view.CrossFade(death.hash, death.fade);
+        _view.SetBool(IsDeadParam, true);
         _state = AnimState.Dead;
-
-        float clipLen = _view.ClipLenByHash(hash);
-        _deathEndTime = Time.time + clipLen;
     }
 
-    private void OnDeathAnimationFinished()
+    private float CurrentNormalizedTime()
     {
-        _view.SetPaused(true);
-        Debug.Log("[PlayerAnim] Death animation finished.");
+        return _view.Current().normalizedTime % 1f;
     }
 
-    #endregion
-
-    #region Internals
-
-    void UpdateHoldLock()
+    private float ResolveShootReleaseStartTime(ActionRuntime action)
     {
-        var st = _view.Current();
+        if (_view.TryGetEventNormalizedTime(action.hash, nameof(OnShootHoldFrame), out float eventNormalizedTime))
+            return eventNormalizedTime;
 
-        if (st.shortNameHash != _activeHash && !st.IsName(_activeName)) return;
+        return Mathf.Clamp01(action.lockAt);
+    }
 
-        float nt = st.normalizedTime % 1f;
-        if (!_locked && nt >= _activeLockAt)
+    private bool ShouldUseShortShoot()
+    {
+        ActionRuntime shortShoot = Resolve(ShootShortKey, _lastDir);
+        if (shortShoot.repeatWindow <= 0f)
+            return false;
+
+        return Time.time - _lastShotReleaseTime <= shortShoot.repeatWindow;
+    }
+
+    private ActionRuntime Resolve(string actionKey, Vector2 dir)
+    {
+        WeaponProfile.ActionDef weaponAction = _weapon ? _weapon.Get(actionKey) : null;
+        string dirToken = _view.DirectionToken(dir);
+        string stateName = _character.BuildStateName(actionKey, dirToken, weaponAction?.animSuffixOverride ?? "");
+
+        return new ActionRuntime
         {
-            _view.Play(_activeHash, _activeLockAt);
-            _view.SetPaused(true);
-            _locked = true;
-            _state = AnimState.HoldLocked;
-        }
+            actionKey = actionKey,
+            dirToken = dirToken,
+            name = stateName,
+            hash = _view.StateHash(stateName),
+            lockAt = weaponAction?.lockAt ?? 0f,
+            usesLock = weaponAction?.usesLock ?? false,
+            repeatWindow = weaponAction?.repeatWindow ?? 0f,
+            fade = weaponAction?.crossFade ?? 0.05f
+        };
     }
 
-    (int hash, float lockAt, float fade, bool usesLock, string name) Resolve(string actionKey, Vector2 dir)
+    private void SyncFacingParameter()
     {
-        var w = _weapon ? _weapon.Get(actionKey) : null;
-
-        string suffix = !string.IsNullOrEmpty(w?.animSuffixOverride)
-            ? w.animSuffixOverride
-            : _character.DefaultSuffixFor(actionKey);
-
-        string p = _view.DirPrefix(dir);
-
-        string name = $"{p}_{suffix}";
-        int hash = _view.StateHash(name);
-
-        float lockAt = w?.lockAt ?? 0f;
-        float fade = w?.crossFade ?? 0.05f;
-        bool usesLock = w?.usesLock ?? false;
-
-        return (hash, lockAt, fade, usesLock, name);
+        _view.SetInt(FacingIndexParam, _view.FacingIndex(_lastDir));
     }
 
-    void ValidateCoreStates()
+    private void SetActionLock(bool isInAction)
     {
-        if (!_character || !_view) return;
-
-        foreach (var dir in FourDirs)
-        {
-            string idle = $"{dir}_{_character.locomotionIdleSuffix}";
-            string walk = $"{dir}_{_character.locomotionWalkSuffix}";
-
-            if (!_view.HasState(_view.StateHash(idle)))
-                Debug.LogWarning($"[AnimCtrl] Missing state: {idle}", this);
-
-            if (!_view.HasState(_view.StateHash(walk)))
-                Debug.LogWarning($"[AnimCtrl] Missing state: {walk}", this);
-        }
-
-        if (_weapon != null && _weapon.Get("Shoot") != null)
-        {
-            string shootSuffix = string.IsNullOrEmpty(_weapon.Get("Shoot").animSuffixOverride)
-                ? _character.DefaultSuffixFor("Shoot")
-                : _weapon.Get("Shoot").animSuffixOverride;
-
-            foreach (var dir in FourDirs)
-            {
-                string nm = $"{dir}_{shootSuffix}";
-                if (!_view.HasState(_view.StateHash(nm)))
-                    Debug.LogWarning($"[AnimCtrl] Missing state: {nm}", this);
-            }
-        }
+        _view.SetBool(IsInActionParam, isInAction);
     }
 
-    #endregion
+    private void CancelCurrentHold()
+    {
+        _holding = false;
+        _locked = false;
+        _activeActionKey = string.Empty;
+        _activeName = string.Empty;
+        _activeHash = 0;
+        _activeLockAt = 0f;
+        _activeUsesLock = false;
+        _shotNockReached = false;
+        _view.SetPaused(false);
+    }
+
+    private void BreakShootChain()
+    {
+        _lastShotReleaseTime = float.NegativeInfinity;
+    }
+
+    private void SpawnDashParticles()
+    {
+        RuntimeAnimatorController runtimeController = _view.RuntimeController;
+        SpriteRenderer sourceSprite = _view.SpriteRenderer;
+        if (runtimeController == null || sourceSprite == null)
+            return;
+
+        ActionRuntime dashParticles = Resolve(DashParticleKey, _lastDir);
+        float lifeTime = _view.ClipLenByHash(dashParticles.hash);
+        if (lifeTime <= 0f)
+            return;
+
+        GameObject fxObject = new GameObject($"DashFX_{dashParticles.dirToken}");
+        fxObject.transform.position = transform.position;
+        fxObject.transform.rotation = Quaternion.identity;
+
+        SpriteRenderer fxSprite = fxObject.AddComponent<SpriteRenderer>();
+        fxSprite.sprite = sourceSprite.sprite;
+        fxSprite.sharedMaterial = sourceSprite.sharedMaterial;
+        fxSprite.color = sourceSprite.color;
+        fxSprite.sortingLayerID = sourceSprite.sortingLayerID;
+        fxSprite.sortingOrder = sourceSprite.sortingOrder + _dashParticleSortingOrderOffset;
+
+        Animator fxAnimator = fxObject.AddComponent<Animator>();
+        fxAnimator.runtimeAnimatorController = runtimeController;
+        fxAnimator.Rebind();
+        fxAnimator.SetBool(IsDeadParam, false);
+        fxAnimator.SetBool(IsMovingParam, false);
+        fxAnimator.SetBool(IsInActionParam, true);
+        fxAnimator.SetInteger(FacingIndexParam, _view.FacingIndex(_lastDir));
+        fxAnimator.Update(0f);
+        fxAnimator.Play(dashParticles.hash, 0, 0f);
+        fxAnimator.Update(0f);
+
+        Destroy(fxObject, lifeTime + _dashParticleDestroyPadding);
+    }
 }

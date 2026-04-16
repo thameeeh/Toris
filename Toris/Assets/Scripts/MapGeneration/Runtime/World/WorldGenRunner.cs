@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
@@ -13,7 +14,10 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
     [Header("Tilemaps")]
     [SerializeField] private Tilemap groundMap;
     [SerializeField] private Tilemap waterMap;
-    [SerializeField] private Tilemap decorMap;
+    [FormerlySerializedAs("decorMap")]
+    [SerializeField] private Tilemap decorationMap;
+    [SerializeField] private Tilemap obstacleMap;
+    [SerializeField] private Tilemap canopyMap;
 
     [Header("Streaming")]
     [SerializeField] private Transform followTarget;
@@ -75,6 +79,13 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             return;
         }
 
+        if (groundMap == null || waterMap == null || decorationMap == null || obstacleMap == null || canopyMap == null)
+        {
+            Debug.LogError($"{nameof(WorldGenRunner)} is missing one or more required tilemap references.", this);
+            enabled = false;
+            return;
+        }
+
         if (followTarget == null)
         {
             Debug.LogWarning($"{nameof(WorldGenRunner)} has no followTarget assigned. PlayerLocatorService will return null.", this);
@@ -100,12 +111,17 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
         ctx = new WorldContext(profile);
         chunkStateStore = new ChunkStateStore();
         ChunkGenerator generator = new ChunkGenerator(ctx);
-        TilemapApplier applier = new TilemapApplier(groundMap, waterMap, decorMap);
+        TilemapApplier applier = new TilemapApplier(
+            groundMap,
+            waterMap,
+            decorationMap,
+            obstacleMap,
+            canopyMap);
 
         EnsurePoiPool();
         EnsureNavWorld();
 
-        worldNavigationLifecycle = new WorldNavigationLifecycle(TileNavWorld.Instance, groundMap, waterMap);
+        worldNavigationLifecycle = new WorldNavigationLifecycle(TileNavWorld.Instance, groundMap, waterMap, obstacleMap);
         worldNavigationLifecycle.Initialize(ctx.NavigationContributions);
         WorldSceneServices worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
         chunkStreamingSystem = new ChunkStreamingSystem();
@@ -172,6 +188,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             genBudgetMs);
 
         worldTransitionSystem.AttachLifecycleSystem(worldFeatureLifecycleSystem);
+        worldTransitionSystem.AttachStreamingRuntime(worldStreamingRuntime);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
         worldTransitionSystem.StartInitialBiome(0, spawnTile);
@@ -179,7 +196,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     private void Update()
     {
-        if (groundMap == null || waterMap == null || decorMap == null)
+        if (groundMap == null || waterMap == null || decorationMap == null || obstacleMap == null || canopyMap == null)
             return;
 
         worldStreamingRuntime?.ProcessFrame();

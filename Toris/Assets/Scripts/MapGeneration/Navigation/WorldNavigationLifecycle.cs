@@ -6,15 +6,17 @@ public sealed class WorldNavigationLifecycle
     private readonly TileNavWorld tileNavWorld;
     private readonly Tilemap groundMap;
     private readonly Tilemap waterMap;
+    private readonly Tilemap obstacleMap;
 
     public int LoadedNavChunkCount => tileNavWorld != null ? tileNavWorld.LoadedNavChunkCount : 0;
     public bool HasNavigationContributions => tileNavWorld != null && tileNavWorld.HasNavigationContributions;
 
-    public WorldNavigationLifecycle(TileNavWorld tileNavWorld, Tilemap groundMap, Tilemap waterMap)
+    public WorldNavigationLifecycle(TileNavWorld tileNavWorld, Tilemap groundMap, Tilemap waterMap, Tilemap obstacleMap)
     {
         this.tileNavWorld = tileNavWorld;
         this.groundMap = groundMap;
         this.waterMap = waterMap;
+        this.obstacleMap = obstacleMap;
     }
 
     public void Initialize(ITileNavigationContributionSource navigationContributions)
@@ -22,7 +24,7 @@ public sealed class WorldNavigationLifecycle
         if (tileNavWorld == null)
             return;
 
-        tileNavWorld.Initialize(groundMap, waterMap);
+        tileNavWorld.Initialize(groundMap, waterMap, obstacleMap);
         tileNavWorld.SetNavigationContributions(navigationContributions);
     }
 

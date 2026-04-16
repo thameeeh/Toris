@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerAnimationView : MonoBehaviour
 {
+    private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;
+
     [Header("Scene refs")]
     [SerializeField] Animator _animator;
     [SerializeField] SpriteRenderer _sprite;
@@ -14,6 +16,10 @@ public class PlayerAnimationView : MonoBehaviour
 
     readonly Dictionary<string, int> _nameToHash = new();
     readonly Dictionary<int, float> _hashToLen = new();
+    readonly Dictionary<int, AnimationClip> _hashToClip = new();
+
+    public RuntimeAnimatorController RuntimeController => _animator ? _animator.runtimeAnimatorController : null;
+    public SpriteRenderer SpriteRenderer => _sprite;
 
     void Awake()
     {
@@ -29,6 +35,7 @@ public class PlayerAnimationView : MonoBehaviour
 
         _nameToHash.Clear();
         _hashToLen.Clear();
+        _hashToClip.Clear();
 
         foreach (var clip in rc.animationClips)
         {
@@ -39,20 +46,36 @@ public class PlayerAnimationView : MonoBehaviour
 
             if (!_hashToLen.ContainsKey(h))
                 _hashToLen[h] = clip.length;
+
+            if (!_hashToClip.ContainsKey(h))
+                _hashToClip[h] = clip;
         }
     }
 
     #region Helpers
 
-    public string DirPrefix(Vector2 dir)
+    public int FacingIndex(Vector2 dir)
     {
-        if (dir.sqrMagnitude <= 0.0001f)
+        if (dir.sqrMagnitude <= MIN_DIRECTION_SQR_MAGNITUDE)
             dir = Vector2.down;
 
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
-            return dir.x >= 0f ? "R" : "L";
+            return dir.x >= 0f ? 2 : 1;
 
-        return dir.y >= 0f ? "U" : "D";
+        return dir.y >= 0f ? 3 : 0;
+    }
+
+    public string DirectionToken(Vector2 dir) => DirectionToken(FacingIndex(dir));
+
+    public string DirectionToken(int facingIndex)
+    {
+        return facingIndex switch
+        {
+            1 => "L",
+            2 => "R",
+            3 => "U",
+            _ => "D",
+        };
     }
 
     public int StateHash(string stateName)
@@ -82,12 +105,48 @@ public class PlayerAnimationView : MonoBehaviour
     public float ClipLenByHash(int hash) =>
         _hashToLen.TryGetValue(hash, out var len) ? len : 0.18f;
 
+    public bool TryGetEventNormalizedTime(int hash, string functionName, out float normalizedTime)
+    {
+        normalizedTime = 0f;
+
+        if (!_hashToClip.TryGetValue(hash, out var clip) || clip == null)
+            return false;
+
+        float clipLength = clip.length;
+        if (clipLength <= 0f)
+            return false;
+
+        var events = clip.events;
+        for (int i = 0; i < events.Length; i++)
+        {
+            AnimationEvent animationEvent = events[i];
+            if (animationEvent == null || animationEvent.functionName != functionName)
+                continue;
+
+            normalizedTime = Mathf.Clamp01(animationEvent.time / clipLength);
+            return true;
+        }
+
+        return false;
+    }
+
     public AnimatorStateInfo Current() => _animator.GetCurrentAnimatorStateInfo(BaseLayer);
 
     public bool HasState(int hash) => _animator.HasState(BaseLayer, hash);
 
     public void CrossFade(int stateHash, float fadeSeconds) =>
         _animator.CrossFade(stateHash, fadeSeconds);
+
+    public void CrossFade(int stateHash, float fadeSeconds, float normalizedTime) =>
+        _animator.CrossFade(stateHash, fadeSeconds, BaseLayer, normalizedTime);
+
+    public void SetBool(string name, bool value) => _animator.SetBool(name, value);
+
+    public void SetInt(string name, int value) => _animator.SetInteger(name, value);
+
+    public void SetTrigger(string name) => _animator.SetTrigger(name);
+
+    public void ResetTrigger(string name) => _animator.ResetTrigger(name);
 
     public void Play(int stateHash, float normalizedTime) =>
         _animator.Play(stateHash, BaseLayer, normalizedTime);

@@ -126,11 +126,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4719436173001502771, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
       propertyPath: m_Size.x
-      value: 18
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4719436173001502771, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
       propertyPath: m_Size.y
-      value: 26
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4719436173001502771, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
       propertyPath: m_Origin.x
@@ -138,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4719436173001502771, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
       propertyPath: m_Origin.y
-      value: -19
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 4719436173001502771, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
       propertyPath: m_Tiles.Array.size
@@ -5143,6 +5143,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4644428977132427298, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5340432061568408468}
+    - targetCorrespondingSourceObject: {fileID: 4644428977132427298, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2738197855859180698}
   m_SourcePrefab: {fileID: 100100000, guid: f1610da1b4fb97c48aaab05fd1f7c746, type: 3}
 --- !u!1 &5694596756268382656 stripped
 GameObject:
@@ -5150,6 +5153,18 @@ GameObject:
   m_PrefabInstance: {fileID: 1113257826214846946}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5340432061568408468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5694596756268382656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9381dda21a4414087b58807289d4c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TilemapClearer
+--- !u!114 &2738197855859180698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5261,6 +5276,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8518583055666640390, guid: f527bfe6ed3d28242b781c34bd127337, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3112209636815264136}
+    - targetCorrespondingSourceObject: {fileID: 8518583055666640390, guid: f527bfe6ed3d28242b781c34bd127337, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7656872240653792835}
   m_SourcePrefab: {fileID: 100100000, guid: f527bfe6ed3d28242b781c34bd127337, type: 3}
 --- !u!1 &4748778885853713864 stripped
 GameObject:
@@ -5268,6 +5286,18 @@ GameObject:
   m_PrefabInstance: {fileID: 4025966395987878862}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3112209636815264136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4748778885853713864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9381dda21a4414087b58807289d4c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::allErase
+--- !u!114 &7656872240653792835
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

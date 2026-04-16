@@ -69,7 +69,7 @@ Material:
     - _EnableExternalAlpha: 0
     - _NoiseScale: 8
     - _NoiseStrength: 0.3
-    - _Reveal: 1
+    - _Reveal: 0
     - _Softness: 0.0954
     - _VisibleBottom: 0.8
     - _VisibleTop: 0.95

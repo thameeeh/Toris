@@ -24,4 +24,3 @@ MonoBehaviour:
   staminaPerShot: 8
   maxDuration: 10
   playReleaseAnimation: 1
-  useShortReleaseAnimation: 1

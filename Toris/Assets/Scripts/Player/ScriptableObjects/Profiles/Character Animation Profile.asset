@@ -17,10 +17,12 @@ MonoBehaviour:
   locomotionIdleSuffix: Idle
   locomotionWalkSuffix: Run
   actionMap:
-  - actionKey: ShootF
-    defaultSuffix: ShootF
-  - actionKey: ShootS
-    defaultSuffix: ShootS
+  - actionKey: ShootDraw
+    defaultSuffix: ShootDraw
+  - actionKey: ShootHold
+    defaultSuffix: ShootHold
+  - actionKey: ShootRelease
+    defaultSuffix: ShootRelease
   - actionKey: Hurt
     defaultSuffix: Hurt
   - actionKey: Death

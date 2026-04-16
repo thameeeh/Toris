@@ -1,17 +1,19 @@
 using UnityEngine;
 
 /// Controller = animation-facing runtime glue between gameplay intent and Animator.
-/// Animator owns state routing, while this controller keeps special timing for
-/// shoot hold/release and dash particle playback.
+/// Animator owns state routing, while this controller keeps shoot visuals aligned
+/// to gameplay timing and handles dash particle playback.
 public class PlayerAnimationController : MonoBehaviour
 {
     private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;
+    private const float MIN_READY_DURATION = 0.01f;
     private const string DashKey = "Dash";
     private const string DashParticleKey = "DashP";
     private const string DeathKey = "Death";
     private const string HurtKey = "Hurt";
-    private const string ShootFullKey = "ShootF";
-    private const string ShootShortKey = "ShootS";
+    private const string ShootDrawKey = "ShootDraw";
+    private const string ShootHoldKey = "ShootHold";
+    private const string ShootReleaseKey = "ShootRelease";
 
     private const string FacingIndexParam = "FacingIndex";
     private const string IsMovingParam = "IsMoving";
@@ -31,8 +33,8 @@ public class PlayerAnimationController : MonoBehaviour
     private enum AnimState
     {
         Locomotion,
-        HoldUnlocked,
-        HoldLocked,
+        ShootDrawing,
+        ShootHolding,
         OneShotBusy,
         Dead
     }
@@ -45,25 +47,26 @@ public class PlayerAnimationController : MonoBehaviour
         public int hash;
         public float lockAt;
         public bool usesLock;
-        public float repeatWindow;
         public float fade;
     }
 
     private AnimState _state = AnimState.Locomotion;
     private Vector2 _lastDir = Vector2.down;
     private float _stateUntil;
-    private float _lastShotReleaseTime = float.NegativeInfinity;
 
     private string _activeActionKey;
     private string _activeName;
     private int _activeHash;
-    private float _activeLockAt;
-    private bool _activeUsesLock;
-    private bool _holding;
-    private bool _locked;
-    private bool _shotNockReached;
 
-    public event System.Action ShootNockReached;
+    private void LogShoot(string message)
+    {
+        PlayerShootDebug.Log(this, "AnimCtrl", message);
+    }
+
+    private static string FormatVector(Vector2 value)
+    {
+        return $"({value.x:F2}, {value.y:F2})";
+    }
 
     private void Reset()
     {
@@ -100,92 +103,94 @@ public class PlayerAnimationController : MonoBehaviour
 
         _view.SetBool(IsMovingParam, isMoving);
 
-        if (_state == AnimState.HoldUnlocked || _state == AnimState.HoldLocked)
+        if (_state == AnimState.ShootDrawing || _state == AnimState.ShootHolding)
         {
             return;
         }
 
         if (_state == AnimState.OneShotBusy && Time.time >= _stateUntil)
         {
+            LogShoot($"Returning to locomotion from OneShotBusy. activeAction={_activeActionKey} facing={FormatVector(_lastDir)}");
             _state = AnimState.Locomotion;
             SetActionLock(false);
+            _view.SetPlaybackSpeed(1f);
         }
     }
 
-    public void BeginShoot()
+    public void BeginShoot(float readyDuration, Vector2 initialAim)
     {
         if (_state == AnimState.Dead)
             return;
 
-        ActionRuntime action = Resolve(ShouldUseShortShoot() ? ShootShortKey : ShootFullKey, _lastDir);
-        if (!_view.HasState(action.hash))
+        if (initialAim.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
+            _lastDir = initialAim.normalized;
+
+        ActionRuntime draw = Resolve(ShootDrawKey, _lastDir);
+        float drawSpeed = ResolveShootDrawSpeed(draw.hash, readyDuration);
+        LogShoot($"BeginShoot. facing={FormatVector(_lastDir)} initialAim={FormatVector(initialAim)} readyDuration={readyDuration:F3} drawState={draw.name} drawSpeed={drawSpeed:F2}");
+        if (!TryPlayShootAction(
+                ShootDrawKey,
+                restartIfCurrent: true,
+                playbackSpeed: drawSpeed,
+                playDirect: true,
+                normalizedTime: 0f,
+                out _))
         {
-            Debug.LogError($"[AnimCtrl] Missing state '{action.name}' on layer {_character.baseLayer}", this);
             return;
         }
 
-        CancelCurrentHold();
+        _state = AnimState.ShootDrawing;
+    }
 
-        _activeActionKey = action.actionKey;
-        _activeName = action.name;
-        _activeHash = action.hash;
-        _activeLockAt = action.lockAt;
-        _activeUsesLock = action.usesLock;
-        _holding = action.usesLock;
-        _locked = false;
-        _shotNockReached = false;
+    public void EnterShootHold()
+    {
+        if (_state == AnimState.Dead)
+            return;
 
-        SetActionLock(true);
-        _view.SetBool(IsMovingParam, false);
-        _view.SetPaused(false);
+        if (_state != AnimState.ShootDrawing && _state != AnimState.ShootHolding)
+            return;
 
-        // Consecutive short shots can request the same Animator state again while the
-        // previous release tail is still active. Force a restart from frame 0 in that
-        // case so the authored hold event fires again and the shot can nock properly.
-        if (_view.IsCurrent(_activeHash))
+        LogShoot($"EnterShootHold. facing={FormatVector(_lastDir)}");
+        if (!TryPlayShootAction(
+                ShootHoldKey,
+                restartIfCurrent: true,
+                playbackSpeed: 1f,
+                playDirect: true,
+                normalizedTime: 0f,
+                out _))
         {
-            _view.Play(_activeHash, 0f);
-        }
-        else
-        {
-            _view.CrossFade(_activeHash, action.fade);
+            return;
         }
 
-        if (_activeUsesLock)
-        {
-            _state = AnimState.HoldUnlocked;
-        }
-        else
-        {
-            _state = AnimState.OneShotBusy;
-            _stateUntil = Time.time + Mathf.Max(0.1f, _view.ClipLenByHash(_activeHash));
-        }
+        _state = AnimState.ShootHolding;
     }
 
     public void ReleaseShoot()
     {
-        if (_state == AnimState.Dead || !_holding)
+        if (_state == AnimState.Dead)
             return;
 
-        _holding = false;
-        _view.SetPaused(false);
+        if (_state != AnimState.ShootDrawing && _state != AnimState.ShootHolding)
+            return;
 
-        float startTime = _locked
-            ? Mathf.Clamp01(_activeLockAt + resumeEpsilon)
-            : Mathf.Clamp01(CurrentNormalizedTime());
+        LogShoot($"ReleaseShoot. facing={FormatVector(_lastDir)} state={_state}");
+        if (!TryPlayShootAction(
+                ShootReleaseKey,
+                restartIfCurrent: false,
+                playbackSpeed: 1f,
+                playDirect: true,
+                normalizedTime: 0f,
+                out ActionRuntime action))
+        {
+            return;
+        }
 
-        _view.Play(_activeHash, startTime);
-
-        float len = _view.ClipLenByHash(_activeHash);
-        float remaining = Mathf.Max(0.1f, (1f - startTime) * len);
-
-        _locked = false;
+        float len = _view.ClipLenByHash(action.hash);
         _state = AnimState.OneShotBusy;
-        _stateUntil = Time.time + remaining;
-        _lastShotReleaseTime = Time.time;
+        _stateUntil = Time.time + Mathf.Max(0.1f, len);
     }
 
-    public void PlayAbilityShootRelease(Vector2 shotDirection, bool useShortVariant)
+    public void PlayAbilityShootRelease(Vector2 shotDirection)
     {
         if (_state == AnimState.Dead)
             return;
@@ -193,46 +198,23 @@ public class PlayerAnimationController : MonoBehaviour
         if (shotDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
             _lastDir = shotDirection.normalized;
 
-        BreakShootChain();
         CancelCurrentHold();
+        LogShoot($"PlayAbilityShootRelease. dir={FormatVector(_lastDir)}");
 
-        ActionRuntime action = Resolve(useShortVariant ? ShootShortKey : ShootFullKey, _lastDir);
-        if (!_view.HasState(action.hash))
+        if (!TryPlayShootAction(
+                ShootReleaseKey,
+                restartIfCurrent: false,
+                playbackSpeed: 1f,
+                playDirect: true,
+                normalizedTime: 0f,
+                out ActionRuntime action))
         {
-            Debug.LogError($"[AnimCtrl] Missing state '{action.name}' on layer {_character.baseLayer}", this);
             return;
         }
 
-        float startTime = ResolveShootReleaseStartTime(action);
-
-        _activeActionKey = action.actionKey;
-        _activeName = action.name;
-        _activeHash = action.hash;
-        _activeLockAt = startTime;
-        _activeUsesLock = false;
-        _holding = false;
-        _locked = false;
-        _shotNockReached = false;
-
-        SyncFacingParameter();
-        SetActionLock(true);
-        _view.SetBool(IsMovingParam, false);
-        _view.SetPaused(false);
-
-        if (_view.IsCurrent(action.hash))
-        {
-            _view.Play(action.hash, startTime);
-        }
-        else
-        {
-            _view.CrossFade(action.hash, action.fade, startTime);
-        }
-
         float len = _view.ClipLenByHash(action.hash);
-        float remaining = Mathf.Max(0.1f, (1f - startTime) * len);
-
         _state = AnimState.OneShotBusy;
-        _stateUntil = Time.time + remaining;
+        _stateUntil = Time.time + Mathf.Max(0.1f, len);
     }
 
     public void CancelShoot()
@@ -240,36 +222,14 @@ public class PlayerAnimationController : MonoBehaviour
         if (_state == AnimState.Dead)
             return;
 
-        if (_state != AnimState.HoldUnlocked && _state != AnimState.HoldLocked)
+        if (_state != AnimState.ShootDrawing && _state != AnimState.ShootHolding)
             return;
 
+        LogShoot($"CancelShoot. state={_state} facing={FormatVector(_lastDir)}");
         CancelCurrentHold();
         SetActionLock(false);
+        _view.SetPlaybackSpeed(1f);
         _state = AnimState.Locomotion;
-    }
-
-    public void OnShootHoldFrame(AnimationEvent animationEvent)
-    {
-        if (_state != AnimState.HoldUnlocked || !_holding || !_activeUsesLock || _shotNockReached)
-            return;
-
-        AnimatorStateInfo stateInfo = _view.Current();
-        if (stateInfo.shortNameHash != _activeHash && !stateInfo.IsName(_activeName))
-            return;
-
-        float clipLength = _view.ClipLenByHash(_activeHash);
-        float normalizedTime = clipLength > 0f
-            ? Mathf.Clamp01(animationEvent.time / clipLength)
-            : Mathf.Clamp01(CurrentNormalizedTime());
-
-        _activeLockAt = normalizedTime;
-        _shotNockReached = true;
-        _locked = true;
-        _state = AnimState.HoldLocked;
-
-        _view.Play(_activeHash, _activeLockAt);
-        _view.SetPaused(true);
-        ShootNockReached?.Invoke();
     }
 
     public void UpdateAim(Vector2 aim)
@@ -280,25 +240,18 @@ public class PlayerAnimationController : MonoBehaviour
         _lastDir = aim.normalized;
         SyncFacingParameter();
 
-        if (_state != AnimState.HoldUnlocked && _state != AnimState.HoldLocked)
+        if (_state != AnimState.ShootDrawing && _state != AnimState.ShootHolding)
             return;
 
-        ActionRuntime updated = Resolve(_activeActionKey, _lastDir);
+        ActionRuntime updated = Resolve(_state == AnimState.ShootHolding ? ShootHoldKey : ShootDrawKey, _lastDir);
         if (updated.hash == _activeHash)
             return;
 
-        float normalizedTime = _locked
-            ? _activeLockAt
-            : Mathf.Clamp01(CurrentNormalizedTime());
-
+        LogShoot($"UpdateAim swapped shoot clip. action={updated.actionKey} from={_activeName} to={updated.name} aim={FormatVector(aim)}");
         _activeName = updated.name;
         _activeHash = updated.hash;
-
-        _view.SetPaused(false);
+        float normalizedTime = _state == AnimState.ShootHolding ? 0f : Mathf.Clamp01(CurrentNormalizedTime());
         _view.Play(_activeHash, normalizedTime);
-
-        if (_locked)
-            _view.SetPaused(true);
     }
 
     public void PlayDash(Vector2 dashDirection)
@@ -309,8 +262,8 @@ public class PlayerAnimationController : MonoBehaviour
         if (dashDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
             _lastDir = dashDirection.normalized;
 
-        BreakShootChain();
         CancelCurrentHold();
+        LogShoot($"PlayDash. dir={FormatVector(_lastDir)}");
 
         ActionRuntime dash = Resolve(DashKey, _lastDir);
         if (!_view.HasState(dash.hash))
@@ -335,8 +288,8 @@ public class PlayerAnimationController : MonoBehaviour
         if (_state == AnimState.Dead)
             return;
 
-        BreakShootChain();
         CancelCurrentHold();
+        LogShoot($"PlayHurt. facing={FormatVector(_lastDir)}");
 
         ActionRuntime hurt = Resolve(HurtKey, _lastDir);
         if (!_view.HasState(hurt.hash))
@@ -356,8 +309,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayDeath()
     {
-        BreakShootChain();
         CancelCurrentHold();
+        LogShoot($"PlayDeath. facing={FormatVector(_lastDir)}");
 
         ActionRuntime death = Resolve(DeathKey, _lastDir);
         if (!_view.HasState(death.hash))
@@ -374,27 +327,7 @@ public class PlayerAnimationController : MonoBehaviour
         _state = AnimState.Dead;
     }
 
-    private float CurrentNormalizedTime()
-    {
-        return _view.Current().normalizedTime % 1f;
-    }
-
-    private float ResolveShootReleaseStartTime(ActionRuntime action)
-    {
-        if (_view.TryGetEventNormalizedTime(action.hash, nameof(OnShootHoldFrame), out float eventNormalizedTime))
-            return eventNormalizedTime;
-
-        return Mathf.Clamp01(action.lockAt);
-    }
-
-    private bool ShouldUseShortShoot()
-    {
-        ActionRuntime shortShoot = Resolve(ShootShortKey, _lastDir);
-        if (shortShoot.repeatWindow <= 0f)
-            return false;
-
-        return Time.time - _lastShotReleaseTime <= shortShoot.repeatWindow;
-    }
+    private float CurrentNormalizedTime() => _view.Current().normalizedTime % 1f;
 
     private ActionRuntime Resolve(string actionKey, Vector2 dir)
     {
@@ -410,7 +343,6 @@ public class PlayerAnimationController : MonoBehaviour
             hash = _view.StateHash(stateName),
             lockAt = weaponAction?.lockAt ?? 0f,
             usesLock = weaponAction?.usesLock ?? false,
-            repeatWindow = weaponAction?.repeatWindow ?? 0f,
             fade = weaponAction?.crossFade ?? 0.05f
         };
     }
@@ -427,20 +359,67 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void CancelCurrentHold()
     {
-        _holding = false;
-        _locked = false;
+        if (!string.IsNullOrEmpty(_activeActionKey))
+        {
+            LogShoot($"CancelCurrentHold. action={_activeActionKey} stateName={_activeName}");
+        }
+
         _activeActionKey = string.Empty;
         _activeName = string.Empty;
         _activeHash = 0;
-        _activeLockAt = 0f;
-        _activeUsesLock = false;
-        _shotNockReached = false;
-        _view.SetPaused(false);
+        _view.SetPlaybackSpeed(1f);
     }
 
-    private void BreakShootChain()
+    private float ResolveShootDrawSpeed(int drawHash, float readyDuration)
     {
-        _lastShotReleaseTime = float.NegativeInfinity;
+        float drawClipLength = _view.ClipLenByHash(drawHash);
+        if (drawClipLength <= MIN_READY_DURATION || readyDuration <= MIN_READY_DURATION)
+            return 1f;
+
+        return Mathf.Max(0.01f, drawClipLength / readyDuration);
+    }
+
+    private bool TryPlayShootAction(
+        string actionKey,
+        bool restartIfCurrent,
+        float playbackSpeed,
+        bool playDirect,
+        float normalizedTime,
+        out ActionRuntime action)
+    {
+        action = Resolve(actionKey, _lastDir);
+        if (!_view.HasState(action.hash))
+        {
+            Debug.LogError($"[AnimCtrl] Missing state '{action.name}' on layer {_character.baseLayer}", this);
+            return false;
+        }
+
+        _activeActionKey = action.actionKey;
+        _activeName = action.name;
+        _activeHash = action.hash;
+
+        LogShoot(
+            $"TryPlayShootAction. action={action.actionKey} state={action.name} facing={action.dirToken} speed={playbackSpeed:F2} direct={playDirect} normalizedTime={normalizedTime:F2}");
+
+        SyncFacingParameter();
+        SetActionLock(true);
+        _view.SetBool(IsMovingParam, false);
+        _view.SetPlaybackSpeed(playbackSpeed);
+
+        if (playDirect)
+        {
+            _view.Play(action.hash, normalizedTime);
+        }
+        else if (restartIfCurrent && _view.IsCurrent(action.hash))
+        {
+            _view.Play(action.hash, 0f);
+        }
+        else
+        {
+            _view.CrossFade(action.hash, action.fade);
+        }
+
+        return true;
     }
 
     private void SpawnDashParticles()

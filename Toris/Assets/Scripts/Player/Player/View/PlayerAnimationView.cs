@@ -151,5 +151,7 @@ public class PlayerAnimationView : MonoBehaviour
     public void Play(int stateHash, float normalizedTime) =>
         _animator.Play(stateHash, BaseLayer, normalizedTime);
 
+    public void SetPlaybackSpeed(float speed) => _animator.speed = speed;
+
     public void SetPaused(bool paused) => _animator.speed = paused ? 0f : 1f;
 }

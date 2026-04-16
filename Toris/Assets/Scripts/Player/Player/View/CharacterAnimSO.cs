@@ -23,8 +23,9 @@ public class CharacterAnimSO : ScriptableObject
     [Header("Action Name Mapping")]
     public NameMap[] actionMap = new[]
     {
-        new NameMap{ actionKey="ShootF", defaultSuffix="ShootF"},
-        new NameMap{ actionKey="ShootS", defaultSuffix="ShootS"},
+        new NameMap{ actionKey="ShootDraw", defaultSuffix="ShootDraw"},
+        new NameMap{ actionKey="ShootHold", defaultSuffix="ShootHold"},
+        new NameMap{ actionKey="ShootRelease", defaultSuffix="ShootRelease"},
         new NameMap{ actionKey="Hurt", defaultSuffix="Hurt"},
         new NameMap{ actionKey="Death", defaultSuffix="Death"},
         new NameMap{ actionKey="Dash", defaultSuffix="Dash"},

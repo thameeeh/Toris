@@ -19,4 +19,3 @@ MonoBehaviour:
   totalSpreadDegrees: 10
   staminaCost: 10
   playReleaseAnimation: 1
-  useShortReleaseAnimation: 0

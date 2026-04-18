@@ -87,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -143,12 +143,12 @@ TextureImporter:
       name: Town_buildings_1_final_1
       rect:
         serializedVersion: 2
-        x: 189
-        y: 114
-        width: 45
+        x: 168
+        y: 123
+        width: 44
         height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.4215296, y: 0.21606223}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -172,9 +172,9 @@ TextureImporter:
       name: Town_buildings_1_final_2
       rect:
         serializedVersion: 2
-        x: 231
+        x: 233
         y: 119
-        width: 73
+        width: 71
         height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

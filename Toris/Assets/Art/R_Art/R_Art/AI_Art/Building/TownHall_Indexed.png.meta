@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f2f97ec41ca13484aaf959647d7a8c93
+guid: 4e46c70728622b9478e40b1db4be2a8f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8283163780243964806
-    second: 8_color_hut_0
+      213: -5839791990454961639
+    second: TownHall_Indexed_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -50,8 +50,8 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 9
-  spritePivot: {x: 0.5, y: 0.17271435}
-  spritePixelsToUnits: 24
+  spritePivot: {x: 0.51882017, y: 0.18220088}
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 8_color_hut_0
+      name: TownHall_Indexed_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 0
-        width: 114
-        height: 126
+        x: 2
+        y: 1
+        width: 152
+        height: 163
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 683c2d17295b3f270800000000000000
-      internalID: 8283163780243964806
+      spriteID: 91ab2ce0024e4fea0800000000000000
+      internalID: -5839791990454961639
       vertices: []
       indices: 
       edges: []
@@ -124,16 +124,10 @@ TextureImporter:
     outline: []
     customData: 
     physicsShape:
-    - - {x: 25.745407, y: -43.260834}
-      - {x: 36, y: -50}
-      - {x: 56, y: -39}
-      - {x: 5, y: -14}
-      - {x: -53, y: -40}
-      - {x: -38.983833, y: -47.008083}
-      - {x: -42, y: -49}
-      - {x: -30, y: -56}
-      - {x: -25.78402, y: -53.60799}
-      - {x: -11, y: -61}
+    - - {x: -67.5, y: -51}
+      - {x: -7.5, y: -82}
+      - {x: 73.5, y: -48}
+      - {x: 5.5, y: -21}
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
     internalID: 1537655665
@@ -145,7 +139,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      8_color_hut_0: 8283163780243964806
+      TownHall_Indexed_0: -5839791990454961639
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

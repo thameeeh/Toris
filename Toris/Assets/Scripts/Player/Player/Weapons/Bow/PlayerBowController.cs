@@ -8,8 +8,23 @@ public class PlayerBowController : MonoBehaviour
 {
     private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;
     private const int ArrowRainMaxOverlapResults = 16;
+    private const int ChainShotMaxOverlapResults = 16;
     private const string ArrowRainHitEffectId = "hit_arrow_square";
     private const float ArrowRainVisualLifetimePadding = 0.05f;
+    private const float ChainShotSpawnOffset = 0.05f;
+    private const string EnemyHurtBoxLayerName = "EnemyHurtBox";
+
+    [System.Serializable]
+    public struct ChainShotSettings
+    {
+        public float baseDamage;
+        public float[] damageMultipliers;
+        public float chainSearchRadius;
+        public float chainProjectileSpeed;
+        public float chainProjectileLifetime;
+        public float chainJumpDelay;
+        public bool playImpactEffect;
+    }
 
     [System.Serializable]
     public struct ArrowRainZoneSettings
@@ -136,6 +151,7 @@ public class PlayerBowController : MonoBehaviour
     private int _arrowRainCastVersion;
     private readonly Collider2D[] _arrowRainOverlapResults = new Collider2D[ArrowRainMaxOverlapResults];
     private readonly HashSet<IDamageable> _arrowRainDamagedTargets = new HashSet<IDamageable>();
+    private readonly Collider2D[] _chainShotOverlapResults = new Collider2D[ChainShotMaxOverlapResults];
 
     private void LogShoot(string message)
     {
@@ -373,16 +389,59 @@ public class PlayerBowController : MonoBehaviour
         SpawnArrow(finalStats, baseDir);
     }
 
+    public void FireChainShot(BowSO.ShotStats initialShotStats, ChainShotSettings settings, bool playReleaseAnimation = false)
+    {
+        if (_bow == null)
+        {
+            LogShoot("FireChainShot ignored. Bow config missing.");
+            return;
+        }
+
+        if (_bow.arrowPrefab == null)
+        {
+            LogShoot("FireChainShot ignored. Arrow prefab missing.");
+            return;
+        }
+
+        if (settings.damageMultipliers == null || settings.damageMultipliers.Length == 0)
+        {
+            LogShoot("FireChainShot fell back to normal arrow because no damage multipliers were configured.");
+            FireArrow(initialShotStats, playReleaseAnimation);
+            return;
+        }
+
+        BowSO.ShotStats finalInitialShot = ApplyResolvedDamageModifiers(initialShotStats);
+
+        Vector2 baseDir = GetAimDirection();
+        if (baseDir.sqrMagnitude < MIN_DIRECTION_SQR_MAGNITUDE)
+            baseDir = Vector2.right;
+
+        _playerFacing?.SetFacing(baseDir);
+
+        LogShoot(
+            $"FireChainShot requested. dir={FormatVector(baseDir)} firstDamage={finalInitialShot.damage:F2} firstSpeed={finalInitialShot.speed:F2} chainTargets={settings.damageMultipliers.Length} searchRadius={settings.chainSearchRadius:F2}");
+
+        if (playReleaseAnimation)
+        {
+            LogShoot("FireChainShot requested release animation bridge.");
+            AbilityReleaseRequested?.Invoke(baseDir);
+        }
+
+        HashSet<int> visitedTargets = new HashSet<int>();
+        ArrowProjectile projectile = SpawnArrowInternal(finalInitialShot, baseDir);
+        if (projectile == null)
+            return;
+
+        ConfigureChainShotProjectile(projectile, settings, 1, visitedTargets);
+    }
+
     private void SpawnArrow(BowSO.ShotStats stats, Vector2 dir)
     {
         SpawnArrowInternal(stats, dir);
     }
 
-    private void SpawnArrowInternal(BowSO.ShotStats stats, Vector2 dir)
+    private ArrowProjectile SpawnArrowInternal(BowSO.ShotStats stats, Vector2 dir)
     {
-        float spread = Random.Range(-stats.spreadDeg, stats.spreadDeg);
-        dir = (Quaternion.Euler(0, 0, spread) * (Vector3)dir).normalized;
-
         Vector3 spawnPos;
         Transform activeMuzzle = GetAimOriginTransform(dir);
         if (activeMuzzle != null)
@@ -390,16 +449,25 @@ public class PlayerBowController : MonoBehaviour
         else
             spawnPos = transform.position + (Vector3)(dir * spawnOffsetFromCenter);
 
+        string spawnSourceLabel = activeMuzzle != null ? activeMuzzle.name : "fallback";
+        return SpawnArrowAtPosition(stats, dir, spawnPos, true, spawnSourceLabel);
+    }
+
+    private ArrowProjectile SpawnArrowAtPosition(BowSO.ShotStats stats, Vector2 dir, Vector3 spawnPos, bool applySpread, string spawnSourceLabel)
+    {
+        float spread = applySpread ? Random.Range(-stats.spreadDeg, stats.spreadDeg) : 0f;
+        dir = (Quaternion.Euler(0, 0, spread) * (Vector3)dir).normalized;
+
         var prefabProj = _bow.arrowPrefab;
         if (prefabProj == null)
         {
             LogShoot("SpawnArrow aborted. Prefab missing.");
-            return;
+            return null;
         }
 
         var manager = _poolManager != null ? _poolManager : GameplayPoolManager.Instance;
         LogShoot(
-            $"SpawnArrow. dir={FormatVector(dir)} spreadApplied={spread:F2} muzzle={(activeMuzzle != null ? activeMuzzle.name : "fallback")} spawnPos={spawnPos} speed={stats.speed:F2} damage={stats.damage:F2}");
+            $"SpawnArrow. dir={FormatVector(dir)} spreadApplied={spread:F2} muzzle={spawnSourceLabel} spawnPos={spawnPos} speed={stats.speed:F2} damage={stats.damage:F2}");
 
         Projectile projBase = manager
             ? manager.SpawnProjectile(prefabProj, spawnPos, Quaternion.identity)
@@ -409,10 +477,11 @@ public class PlayerBowController : MonoBehaviour
         if (arrow == null)
         {
             LogShoot("SpawnArrow aborted. Spawned projectile is not ArrowProjectile.");
-            return;
+            return null;
         }
 
         arrow.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
+        return arrow;
     }
 
     public Vector2 GetPointerWorldPoint()
@@ -681,7 +750,7 @@ public class PlayerBowController : MonoBehaviour
             if (overlapCollider == null || overlapCollider == _ownerCollider)
                 continue;
 
-            if (!IsValidArrowRainTargetCollider(overlapCollider))
+            if (!IsEnemyHurtBoxCollider(overlapCollider))
             {
                 LogShoot($"ArrowRain skipped non-hurtbox collider. collider={overlapCollider.name} layer={LayerMask.LayerToName(overlapCollider.gameObject.layer)}");
                 continue;
@@ -734,17 +803,7 @@ public class PlayerBowController : MonoBehaviour
         if (!settings.playImpactEffect || EffectManagerBehavior.Instance == null)
             return;
 
-        EffectRequest request = new EffectRequest
-        {
-            EffectId = ArrowRainHitEffectId,
-            Position = strikePoint,
-            Rotation = Quaternion.identity,
-            Parent = null,
-            Variant = default,
-            Magnitude = 1f
-        };
-
-        EffectManagerBehavior.Instance.Play(request);
+        PlayHitEffect(strikePoint);
     }
 
     private Vector2 ClampArrowRainPointToRange(Vector2 point, ArrowRainZoneSettings settings)
@@ -763,9 +822,181 @@ public class PlayerBowController : MonoBehaviour
         return settings.castOrigin + (offset.normalized * settings.maxTargetRange);
     }
 
-    private static bool IsValidArrowRainTargetCollider(Collider2D overlapCollider)
+    private void ConfigureChainShotProjectile(
+        ArrowProjectile projectile,
+        ChainShotSettings settings,
+        int nextDamageIndex,
+        HashSet<int> visitedTargets)
     {
-        int enemyHurtBoxLayer = LayerMask.NameToLayer("EnemyHurtBox");
+        if (projectile == null)
+            return;
+
+        int enemyHurtBoxLayer = LayerMask.NameToLayer(EnemyHurtBoxLayerName);
+        if (enemyHurtBoxLayer >= 0)
+            projectile.SetDamageLayerMask(1 << enemyHurtBoxLayer);
+
+        projectile.SetPlayHitEffect(settings.playImpactEffect);
+
+        projectile.SetDamageTargetPredicate(targetCollider =>
+        {
+            if (!IsEnemyHurtBoxCollider(targetCollider))
+                return false;
+
+            IDamageable damageableTarget = targetCollider.GetComponentInParent<IDamageable>();
+            if (damageableTarget == null)
+                return false;
+
+            Component damageableComponent = damageableTarget as Component;
+            if (damageableComponent != null && visitedTargets.Contains(damageableComponent.GetInstanceID()))
+                return false;
+
+            return true;
+        });
+
+        System.Action<ArrowProjectile, Collider2D, IDamageable, Vector2> handleHit = null;
+        handleHit = (hitProjectile, hitCollider, damageable, hitPoint) =>
+        {
+            hitProjectile.DamageApplied -= handleHit;
+
+            if (!IsEnemyHurtBoxCollider(hitCollider))
+                return;
+
+            Component hitComponent = damageable as Component;
+            if (hitComponent != null)
+                visitedTargets.Add(hitComponent.GetInstanceID());
+
+            LogShoot(
+                $"ChainShot hit confirmed. target={(hitComponent != null ? hitComponent.name : damageable.GetType().Name)} hitPoint={FormatVector(hitPoint)} nextDamageIndex={nextDamageIndex}");
+
+            StartCoroutine(ContinueChainShotAfterHit(hitPoint, hitCollider, settings, nextDamageIndex, visitedTargets));
+        };
+
+        projectile.DamageApplied += handleHit;
+    }
+
+    private IEnumerator ContinueChainShotAfterHit(
+        Vector2 currentPoint,
+        Collider2D previousHitCollider,
+        ChainShotSettings settings,
+        int nextDamageIndex,
+        HashSet<int> visitedTargets)
+    {
+        if (settings.damageMultipliers == null || nextDamageIndex >= settings.damageMultipliers.Length)
+            yield break;
+
+        float safeJumpDelay = Mathf.Max(0f, settings.chainJumpDelay);
+        if (safeJumpDelay > 0f)
+            yield return new WaitForSeconds(safeJumpDelay);
+
+        SpawnNextChainShotProjectile(currentPoint, previousHitCollider, settings, nextDamageIndex, visitedTargets);
+    }
+
+    private Collider2D FindNearestChainShotTarget(Vector2 origin, float searchRadius, HashSet<int> visitedTargets)
+    {
+        int enemyHurtBoxLayer = LayerMask.NameToLayer(EnemyHurtBoxLayerName);
+        int layerMask = enemyHurtBoxLayer >= 0 ? 1 << enemyHurtBoxLayer : Physics2D.DefaultRaycastLayers;
+        int hitCount = Physics2D.OverlapCircleNonAlloc(origin, searchRadius, _chainShotOverlapResults, layerMask);
+
+        Collider2D nearestCollider = null;
+        float nearestDistanceSqr = float.PositiveInfinity;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider2D overlapCollider = _chainShotOverlapResults[i];
+            if (overlapCollider == null || !IsEnemyHurtBoxCollider(overlapCollider))
+                continue;
+
+            IDamageable damageable = overlapCollider.GetComponentInParent<IDamageable>();
+            if (damageable == null)
+                continue;
+
+            Component damageableComponent = damageable as Component;
+            if (damageableComponent != null && visitedTargets.Contains(damageableComponent.GetInstanceID()))
+                continue;
+
+            Vector2 candidatePoint = overlapCollider.ClosestPoint(origin);
+            float distanceSqr = (candidatePoint - origin).sqrMagnitude;
+            if (distanceSqr < nearestDistanceSqr)
+            {
+                nearestDistanceSqr = distanceSqr;
+                nearestCollider = overlapCollider;
+            }
+        }
+
+        return nearestCollider;
+    }
+
+    private void SpawnNextChainShotProjectile(
+        Vector2 startPoint,
+        Collider2D previousHitCollider,
+        ChainShotSettings settings,
+        int damageIndex,
+        HashSet<int> visitedTargets)
+    {
+        float safeSearchRadius = Mathf.Max(0.05f, settings.chainSearchRadius);
+        Collider2D nextTargetCollider = FindNearestChainShotTarget(startPoint, safeSearchRadius, visitedTargets);
+        if (nextTargetCollider == null)
+        {
+            LogShoot($"ChainShot stopped. No valid target found from point={FormatVector(startPoint)} within radius={safeSearchRadius:F2}");
+            return;
+        }
+
+        if (settings.damageMultipliers == null || damageIndex >= settings.damageMultipliers.Length)
+            return;
+
+        Vector2 targetPoint = nextTargetCollider.ClosestPoint(startPoint);
+        Vector2 direction = targetPoint - startPoint;
+        if (direction.sqrMagnitude <= MIN_DIRECTION_SQR_MAGNITUDE)
+            return;
+
+        float safeChainSpeed = Mathf.Max(0.1f, settings.chainProjectileSpeed);
+        float safeChainLifetime = Mathf.Max(0.05f, settings.chainProjectileLifetime);
+        float damageMultiplier = settings.damageMultipliers[damageIndex];
+        BowSO.ShotStats chainShotStats = new BowSO.ShotStats
+        {
+            power = 1f,
+            speed = safeChainSpeed,
+            damage = ApplyResolvedDamageModifiers(settings.baseDamage * damageMultiplier),
+            spreadDeg = 0f
+        };
+
+        float escapeDistance = ChainShotSpawnOffset;
+        if (previousHitCollider != null)
+            escapeDistance += previousHitCollider.bounds.extents.magnitude;
+
+        Vector3 spawnPoint = startPoint + (Vector2)(direction.normalized * escapeDistance);
+        ArrowProjectile nextProjectile = SpawnArrowAtPosition(chainShotStats, direction.normalized, spawnPoint, false, "chain");
+        if (nextProjectile == null)
+            return;
+
+        LogShoot(
+            $"ChainShot bounce spawned. index={damageIndex} from={FormatVector(startPoint)} to={FormatVector(targetPoint)} damage={chainShotStats.damage:F2} speed={chainShotStats.speed:F2}");
+
+        nextProjectile.Initialize(direction.normalized, safeChainSpeed, chainShotStats.damage, safeChainLifetime, _ownerCollider);
+        ConfigureChainShotProjectile(nextProjectile, settings, damageIndex + 1, visitedTargets);
+    }
+
+    private void PlayHitEffect(Vector2 position)
+    {
+        if (EffectManagerBehavior.Instance == null)
+            return;
+
+        EffectRequest request = new EffectRequest
+        {
+            EffectId = ArrowRainHitEffectId,
+            Position = position,
+            Rotation = Quaternion.identity,
+            Parent = null,
+            Variant = default,
+            Magnitude = 1f
+        };
+
+        EffectManagerBehavior.Instance.Play(request);
+    }
+
+    private static bool IsEnemyHurtBoxCollider(Collider2D overlapCollider)
+    {
+        int enemyHurtBoxLayer = LayerMask.NameToLayer(EnemyHurtBoxLayerName);
         if (enemyHurtBoxLayer < 0)
             return true;
 

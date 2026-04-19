@@ -40924,6 +40924,10 @@ PrefabInstance:
       propertyPath: _enableShootDebugLogs
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _abilitySlots.Array.data[3]._abilityDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 738d00bb63795d04bbdb2414a28a778b, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.69

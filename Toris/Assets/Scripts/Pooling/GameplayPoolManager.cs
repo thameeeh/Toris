@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
+public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool, IVisualPool
 {
     public static GameplayPoolManager Instance { get; private set; }
 
@@ -12,12 +12,16 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
     [Header("Parents (optional)")]
     [SerializeField] private Transform projectileRoot;
+    [SerializeField] private Transform visualRoot;
     [SerializeField] private Transform enemyRoot;
 
     [Header("Fallback sizing (used when prefab is not configured)")]
     [SerializeField] private int defaultProjectilePrewarm = 0;
     [SerializeField] private int defaultProjectileCapacity = 16;
     [SerializeField] private int defaultProjectileMaxSize = 128;
+    [SerializeField] private int defaultVisualPrewarm = 0;
+    [SerializeField] private int defaultVisualCapacity = 16;
+    [SerializeField] private int defaultVisualMaxSize = 128;
     [SerializeField] private int defaultEnemyPrewarm = 0;
     [SerializeField] private int defaultEnemyCapacity = 8;
     [SerializeField] private int defaultEnemyMaxSize = 32;
@@ -29,11 +33,15 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
     private readonly Dictionary<Projectile, SafeRuntimePool<Projectile>> projectilePools = new();
     private readonly Dictionary<Projectile, PoolCounters> projectileCounters = new();
 
+    private readonly Dictionary<GameObject, SafeRuntimePool<PooledVisualInstance>> visualPools = new();
+    private readonly Dictionary<GameObject, PoolCounters> visualCounters = new();
+
     // Enemies still use UnityEngine.Pool.ObjectPool<T>
     private readonly Dictionary<Enemy, SafeRuntimePool<Enemy>> enemyPools = new();
     private readonly Dictionary<Enemy, PoolCounters> enemyCounters = new();
 
     private readonly Dictionary<Projectile, ProjectilePoolSettings> projectileSettings = new();
+    private readonly Dictionary<GameObject, VisualPoolSettings> visualSettings = new();
     private readonly Dictionary<Enemy, EnemyPoolSettings> enemySettings = new();
 
     private bool _isPrewarmingEnemies = false;
@@ -84,6 +92,9 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         projectilePools.Clear();
         projectileCounters.Clear();
         projectileSettings.Clear();
+        visualPools.Clear();
+        visualCounters.Clear();
+        visualSettings.Clear();
         enemyPools.Clear();
         enemyCounters.Clear();
         enemySettings.Clear();
@@ -99,6 +110,16 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
                 projectileSettings[cfg.prefab] = cfg;
                 var pool = EnsureProjectilePool(cfg.prefab, cfg);
                 PrewarmProjectilePool(pool, cfg.prewarmCount);
+            }
+
+            foreach (var cfg in configuration.VisualPools)
+            {
+                if (cfg?.prefab == null)
+                    continue;
+
+                visualSettings[cfg.prefab] = cfg;
+                var pool = EnsureVisualPool(cfg.prefab, cfg);
+                PrewarmVisualPool(pool, cfg.prewarmCount);
             }
 
             // Enemies
@@ -173,6 +194,39 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
     {
         foreach (var kvp in projectilePools)
             yield return GetProjectileReport(kvp.Key);
+    }
+
+    // --- Visual API ---
+
+    public PooledVisualInstance SpawnVisual(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
+        var pool = EnsureVisualPool(prefab);
+        if (pool == null)
+            return null;
+
+        var visual = pool.Get();
+        if (!visual)
+            return null;
+
+        visual.transform.SetPositionAndRotation(position, rotation);
+        return visual;
+    }
+
+    public void Release(PooledVisualInstance instance)
+    {
+        if (instance == null)
+            return;
+
+        var key = instance.OriginalPrefab ? instance.OriginalPrefab : instance.gameObject;
+
+        if (visualPools.TryGetValue(key, out var pool))
+        {
+            pool.Release(instance);
+        }
+        else
+        {
+            Destroy(instance.gameObject);
+        }
     }
 
     // --- Enemy API ---
@@ -281,6 +335,24 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         return pool;
     }
 
+    private SafeRuntimePool<PooledVisualInstance> EnsureVisualPool(GameObject prefab, VisualPoolSettings settings = null)
+    {
+        if (prefab == null)
+            return null;
+
+        if (!visualPools.TryGetValue(prefab, out var pool))
+        {
+            var effectiveSettings = settings ?? TryGetVisualSettings(prefab) ?? CreateDefaultVisualSettings(prefab);
+            pool = CreateVisualPool(prefab, effectiveSettings);
+            visualPools[prefab] = pool;
+
+            if (settings == null)
+                PrewarmVisualPool(pool, effectiveSettings.prewarmCount);
+        }
+
+        return pool;
+    }
+
 
     private ProjectilePoolSettings TryGetProjectileSettings(Projectile prefab)
     {
@@ -297,6 +369,15 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             return null;
 
         enemySettings.TryGetValue(prefab, out var settings);
+        return settings;
+    }
+
+    private VisualPoolSettings TryGetVisualSettings(GameObject prefab)
+    {
+        if (prefab == null)
+            return null;
+
+        visualSettings.TryGetValue(prefab, out var settings);
         return settings;
     }
 
@@ -321,6 +402,18 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             defaultCapacity = defaultEnemyCapacity,
             maxSize = defaultEnemyMaxSize,
             parentOverride = enemyRoot
+        };
+    }
+
+    private VisualPoolSettings CreateDefaultVisualSettings(GameObject prefab)
+    {
+        return new VisualPoolSettings
+        {
+            prefab = prefab,
+            prewarmCount = defaultVisualPrewarm,
+            defaultCapacity = defaultVisualCapacity,
+            maxSize = defaultVisualMaxSize,
+            parentOverride = visualRoot
         };
     }
 
@@ -400,6 +493,34 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         return pool;
     }
 
+    private SafeRuntimePool<PooledVisualInstance> CreateVisualPool(GameObject prefab, VisualPoolSettings settings)
+    {
+        var counters = GetOrCreateCounters(visualCounters, prefab);
+        var parent = ResolveParent(settings?.parentOverride, visualRoot, "VisualPools");
+
+        return new SafeRuntimePool<PooledVisualInstance>(
+            () => CreateVisualInstance(prefab, parent, counters),
+            obj =>
+            {
+                counters.ActiveCount++;
+                counters.PeakActive = Mathf.Max(counters.PeakActive, counters.ActiveCount);
+                obj.gameObject.SetActive(true);
+                obj.NotifySpawned();
+            },
+            obj =>
+            {
+                counters.ActiveCount = Mathf.Max(0, counters.ActiveCount - 1);
+                obj.NotifyDespawned();
+                obj.gameObject.SetActive(false);
+                obj.transform.SetParent(parent, false);
+            },
+            obj =>
+            {
+                if (obj)
+                    Destroy(obj.gameObject);
+            });
+    }
+
 
     private Projectile CreateProjectileInstance(Projectile prefab, Transform parent, PoolCounters counters)
     {
@@ -418,6 +539,19 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
         counters.TotalCreated++;
         //Debug.Log($"[Pool] Created pooled enemy instance of {prefab.name}");
         return inst;
+    }
+
+    private PooledVisualInstance CreateVisualInstance(GameObject prefab, Transform parent, PoolCounters counters)
+    {
+        GameObject inst = Instantiate(prefab, parent);
+        PooledVisualInstance pooledVisual = inst.GetComponent<PooledVisualInstance>();
+        if (pooledVisual == null)
+            pooledVisual = inst.AddComponent<PooledVisualInstance>();
+
+        pooledVisual.SetPool(this, prefab);
+        inst.SetActive(false);
+        counters.TotalCreated++;
+        return pooledVisual;
     }
 
     // --- Internal: prewarm & helpers ---
@@ -452,6 +586,19 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
             pool.Release(temp[i]);
     }
 
+    private void PrewarmVisualPool(SafeRuntimePool<PooledVisualInstance> pool, int count)
+    {
+        if (pool == null || count <= 0)
+            return;
+
+        var temp = new List<PooledVisualInstance>(count);
+        for (int i = 0; i < count; i++)
+            temp.Add(pool.Get());
+
+        for (int i = 0; i < count; i++)
+            pool.Release(temp[i]);
+    }
+
     private Transform ResolveParent(Transform overrideParent, Transform categoryRoot, string categoryName)
     {
         if (overrideParent != null)
@@ -465,6 +612,8 @@ public class GameplayPoolManager : MonoBehaviour, IProjectilePool, IEnemyPool
 
             if (categoryName == "ProjectilePools")
                 projectileRoot = categoryRoot;
+            else if (categoryName == "VisualPools")
+                visualRoot = categoryRoot;
             else if (categoryName == "EnemyPools")
                 enemyRoot = categoryRoot;
         }

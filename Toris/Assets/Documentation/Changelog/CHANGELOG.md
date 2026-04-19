@@ -1,39 +1,3 @@
-## [Current/Recent] - Hardened Bow Ability Architecture Notes Into A Standard
-This update converts the Player bow ability notes into a stricter architecture standard so future bow abilities have explicit rules and anti-drift guardrails.
-
-### 1. Reframed The Document As A Standard
-* Rewrote `Player_Bow_Ability_Architecture_Notes.md` as a mandatory architecture standard instead of informal notes.
-* Clarified that configs, runtimes, and `PlayerBowController` each have fixed ownership boundaries.
-
-### 2. Added Explicit MUST / MUST NOT Rules
-* Defined what belongs in configs, runtimes, shared utilities, and the bow controller.
-* Added hard bans against putting ability-specific orchestration back into `PlayerBowController`.
-
-### 3. Added Upgrade And Review Guardrails
-* Added a future-upgrade rule so new ability complexity stays local to the ability.
-* Added a review checklist to catch architectural drift before new bow work is considered complete.
-
-## [Current/Recent] - Standardized Bow Ability Architecture Around Rambow Pattern
-This update documents and applies a Rambow-style structure for bow abilities so ability-specific orchestration no longer lives inside `PlayerBowController`.
-
-### 1. Added Player-Level Architecture Notes
-* Added `Player_Bow_Ability_Architecture_Notes.md` under `Assets/Scripts/Player/`.
-* Documented Rambow as the reference ability architecture and clarified the intended ownership split between config, runtime, and bow controller primitives.
-
-### 2. Refactored ArrowRain Into Runtime-Owned Behavior
-* Moved Arrow Rain burst timing, pending strike scheduling, visual spawning, and strike damage resolution into `ArrowRainRuntime`.
-* Reduced `PlayerBowController` to generic bow utilities instead of hosting Arrow Rain-specific coroutines and strike logic.
-
-### 3. Refactored ChainShot Into Runtime-Owned Sessions
-* Added `ChainShotRuntime` to own chain sessions, visited-target tracking, and delayed bounce spawning.
-* Added generic bow spawn helpers and shared `EnemyHurtBox` targeting utility code so Chain Shot can stay ability-owned without controller-specific branching.
-
-### 4. Kept MultiShot On The Simple Ability Path
-* Confirmed `MultiShot` already matches the intended pattern closely enough as a config-driven one-shot ability calling generic bow volley primitives.
-
-## [Current/Recent] - Documentation Update for Architecture Shifts
-This update refactors the core documentation to accurately reflect the current "production-ready" architecture of the inventory and drag-and-drop systems, moving away from prototyping implementations.
-
 ### 1. Documented Shift from "Nuke" Redraw to Targeted Updates
 * Updated `Inventory_Event_System_Documentation.md` and `Drag_and_Drop_System_Documentation.md` to detail the removal of the parameterless `OnInventoryUpdated` event.
 * Added documentation for the new `OnSpecificSlotsUpdated(sourceSlot, targetSlot)` event.

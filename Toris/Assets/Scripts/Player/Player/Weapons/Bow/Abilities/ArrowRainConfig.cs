@@ -9,9 +9,8 @@ public class ArrowRainConfig : PlayerAbilitySO
     [Header("Zone")]
     [Min(0.1f)] public float zoneRadius = 3f;
     [Min(0.05f)] public float rainDuration = 3f;
-    [Min(0f)] public float firstBurstDelay = 0.05f;
-    [Min(0.05f)] public float burstInterval = 0.35f;
-    [Min(1)] public int strikesPerBurst = 6;
+    [Min(0f)] public float initialStrikeDelay = 0.05f;
+    [Min(0.01f)] public float strikeInterval = 0.15f;
     public bool guaranteeCenterStrike = true;
 
     [Header("Strike")]
@@ -23,6 +22,12 @@ public class ArrowRainConfig : PlayerAbilitySO
     public bool spawnVisualArrows = true;
     [Min(0f)] public float visualArrowHeight = 4.5f;
     [Min(0.1f)] public float visualArrowSpeed = 28f;
+    public GameObject impactShadowPrefab;
+    public bool spawnImpactShadow = true;
+    [Min(0f)] public float impactShadowStartScaleMultiplier = 0.75f;
+    [Min(0f)] public float impactShadowEndScaleMultiplier = 1f;
+    [Range(0f, 1f)] public float impactShadowStartAlpha = 0.2f;
+    [Range(0f, 1f)] public float impactShadowEndAlpha = 0.65f;
     public bool playImpactEffect = true;
 
     [Header("Cost")]
@@ -70,9 +75,8 @@ public class ArrowRainConfig : PlayerAbilitySO
                 castOrigin = castOrigin,
                 maxTargetRange = maxTargetRange,
                 duration = rainDuration,
-                firstBurstDelay = firstBurstDelay,
-                burstInterval = burstInterval,
-                strikesPerBurst = strikesPerBurst,
+                initialStrikeDelay = initialStrikeDelay,
+                strikeInterval = strikeInterval,
                 zoneRadius = zoneRadius,
                 impactRadius = impactRadius,
                 guaranteeCenterStrike = guaranteeCenterStrike,
@@ -81,6 +85,12 @@ public class ArrowRainConfig : PlayerAbilitySO
                 spawnVisualArrows = spawnVisualArrows,
                 visualArrowHeight = visualArrowHeight,
                 visualArrowSpeed = visualArrowSpeed,
+                impactShadowPrefab = impactShadowPrefab,
+                spawnImpactShadow = spawnImpactShadow,
+                impactShadowStartScaleMultiplier = impactShadowStartScaleMultiplier,
+                impactShadowEndScaleMultiplier = impactShadowEndScaleMultiplier,
+                impactShadowStartAlpha = impactShadowStartAlpha,
+                impactShadowEndAlpha = impactShadowEndAlpha,
                 playImpactEffect = playImpactEffect
             });
 

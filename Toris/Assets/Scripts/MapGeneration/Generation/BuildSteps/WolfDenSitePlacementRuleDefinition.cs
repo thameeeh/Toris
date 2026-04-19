@@ -17,6 +17,7 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
     private const int RelaxStartIndexBase = 100000;
 
     [SerializeField] private WorldSiteDefinition wolfDenSiteDefinition;
+    [SerializeField] private SiteStampDefinition wolfDenStampDefinition;
     [SerializeField]
     [Min(0)] private int minWolfDenCount = 3;
     [SerializeField]
@@ -68,16 +69,21 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
         {
             Vector2Int centerTile = chosenCenters[i];
 
-            SiteStamping.StampSquareGround(
-                ctx,
-                centerTile,
-                stampSize,
-                wolfDenGroundTile);
+            if (wolfDenStampDefinition != null)
+                SiteStamping.ApplyStampDefinition(ctx, centerTile, wolfDenStampDefinition);
+            else
+            {
+                SiteStamping.StampSquareGround(
+                    ctx,
+                    centerTile,
+                    stampSize,
+                    wolfDenGroundTile);
 
-            SiteStamping.AddSquareBlocker(
-                ctx,
-                centerTile,
-                stampSize);
+                SiteStamping.AddSquareBlocker(
+                    ctx,
+                    centerTile,
+                    stampSize);
+            }
 
             buildOutput.RegisterSite(wolfDenSiteDefinition, centerTile, ctx.World.chunkSize);
         }

@@ -8,9 +8,13 @@ public class GameplayPoolConfiguration : ScriptableObject
     private ProjectilePoolSettings[] projectilePools = Array.Empty<ProjectilePoolSettings>();
 
     [SerializeField]
+    private VisualPoolSettings[] visualPools = Array.Empty<VisualPoolSettings>();
+
+    [SerializeField]
     private EnemyPoolSettings[] enemyPools = Array.Empty<EnemyPoolSettings>();
 
     public ProjectilePoolSettings[] ProjectilePools => projectilePools;
+    public VisualPoolSettings[] VisualPools => visualPools;
     public EnemyPoolSettings[] EnemyPools => enemyPools;
 }
 
@@ -22,6 +26,17 @@ public sealed class ProjectilePoolSettings
     [Min(1)] public int defaultCapacity = 32;
     [Min(1)] public int maxSize = 256;
     [Tooltip("Optional parent transform for pooled projectiles.")]
+    public Transform parentOverride;
+}
+
+[Serializable]
+public sealed class VisualPoolSettings
+{
+    public GameObject prefab;
+    [Min(0)] public int prewarmCount = 8;
+    [Min(1)] public int defaultCapacity = 32;
+    [Min(1)] public int maxSize = 256;
+    [Tooltip("Optional parent transform for pooled visuals.")]
     public Transform parentOverride;
 }
 

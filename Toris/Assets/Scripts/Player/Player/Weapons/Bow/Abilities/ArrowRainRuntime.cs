@@ -6,9 +6,8 @@ public struct ArrowRainCastSettings
     public Vector2 castOrigin;
     public float maxTargetRange;
     public float duration;
-    public float firstBurstDelay;
-    public float burstInterval;
-    public int strikesPerBurst;
+    public float initialStrikeDelay;
+    public float strikeInterval;
     public float zoneRadius;
     public float impactRadius;
     public bool guaranteeCenterStrike;
@@ -17,6 +16,12 @@ public struct ArrowRainCastSettings
     public bool spawnVisualArrows;
     public float visualArrowHeight;
     public float visualArrowSpeed;
+    public GameObject impactShadowPrefab;
+    public bool spawnImpactShadow;
+    public float impactShadowStartScaleMultiplier;
+    public float impactShadowEndScaleMultiplier;
+    public float impactShadowStartAlpha;
+    public float impactShadowEndAlpha;
     public bool playImpactEffect;
 }
 
@@ -25,6 +30,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
 {
     private const int MaxOverlapResults = 16;
     private const float MinDirectionSqrMagnitude = 0.0001f;
+    private const float MinContinuousStrikeSpacing = 0.01f;
     private const float VisualLifetimePadding = 0.05f;
 
     private struct PendingStrike
@@ -37,12 +43,12 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
     private bool _isActive;
     private float _activationStartTime;
     private float _activationEndTime;
-    private float _nextBurstTime;
-    private float _nextBurstElapsed;
+    private float _nextStrikeTime;
+    private float _nextStrikeElapsed;
     private float _safeDuration;
-    private float _safeBurstInterval;
-    private bool _firstBurstPending;
-    private bool _hasMoreBursts;
+    private float _safeStrikeInterval;
+    private int _emittedStrikeCount;
+    private bool _hasMoreScheduledStrikes;
     private Vector2 _center;
     private ArrowRainCastSettings _settings;
     private readonly List<PendingStrike> _pendingStrikes = new List<PendingStrike>();
@@ -60,16 +66,16 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
         _activationStartTime = Time.time;
         _safeDuration = Mathf.Max(0.01f, settings.duration);
         _activationEndTime = _activationStartTime + _safeDuration;
-        _safeBurstInterval = Mathf.Max(0.01f, settings.burstInterval);
-        _nextBurstElapsed = Mathf.Clamp(settings.firstBurstDelay, 0f, _safeDuration);
-        _nextBurstTime = _activationStartTime + _nextBurstElapsed;
-        _firstBurstPending = true;
-        _hasMoreBursts = true;
+        _nextStrikeElapsed = Mathf.Clamp(settings.initialStrikeDelay, 0f, _safeDuration);
+        _safeStrikeInterval = Mathf.Max(MinContinuousStrikeSpacing, settings.strikeInterval);
+        _emittedStrikeCount = 0;
+        _hasMoreScheduledStrikes = true;
+        _nextStrikeTime = _activationStartTime + _nextStrikeElapsed;
 
         Log(context.bow,
             $"Cast accepted. castOrigin={FormatVector(settings.castOrigin)} requestedCenter={FormatVector(center)} clampedCenter={FormatVector(_center)} maxTargetRange={settings.maxTargetRange:F2} zoneRadius={settings.zoneRadius:F2}");
         Log(context.bow,
-            $"Started. center={FormatVector(_center)} zoneRadius={settings.zoneRadius:F2} duration={_safeDuration:F2} burstInterval={_safeBurstInterval:F2} strikesPerBurst={settings.strikesPerBurst}");
+            $"Started. center={FormatVector(_center)} zoneRadius={settings.zoneRadius:F2} duration={_safeDuration:F2} initialStrikeDelay={_nextStrikeElapsed:F2} strikeInterval={_safeStrikeInterval:F2}");
     }
 
     public void Tick(PlayerAbilityContext context)
@@ -78,19 +84,19 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
             return;
 
         float currentTime = Time.time;
-        while (_hasMoreBursts && currentTime >= _nextBurstTime)
+        while (_hasMoreScheduledStrikes && currentTime >= _nextStrikeTime)
         {
-            ResolveBurst(context, _firstBurstPending);
-            _firstBurstPending = false;
+            EmitScheduledStrike(context, _emittedStrikeCount == 0);
+            _emittedStrikeCount++;
 
-            if (_nextBurstElapsed + _safeBurstInterval > _safeDuration)
+            _nextStrikeElapsed += _safeStrikeInterval;
+            if (_nextStrikeElapsed > _safeDuration)
             {
-                _hasMoreBursts = false;
+                _hasMoreScheduledStrikes = false;
             }
             else
             {
-                _nextBurstElapsed += _safeBurstInterval;
-                _nextBurstTime = _activationStartTime + _nextBurstElapsed;
+                _nextStrikeTime = _activationStartTime + _nextStrikeElapsed;
             }
         }
 
@@ -104,49 +110,21 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
             ResolveStrike(context, pendingStrike);
         }
 
-        if (!_hasMoreBursts && _pendingStrikes.Count == 0 && currentTime >= _activationEndTime)
+        if (!_hasMoreScheduledStrikes && _pendingStrikes.Count == 0 && currentTime >= _activationEndTime)
             _isActive = false;
     }
 
-    private void ResolveBurst(PlayerAbilityContext context, bool isFirstBurst)
+    private void EmitScheduledStrike(PlayerAbilityContext context, bool isFirstStrike)
     {
-        int strikeCount = Mathf.Max(1, _settings.strikesPerBurst);
         float finalDamage = context.bow != null
             ? context.bow.ResolveOutgoingDamage(_settings.damagePerStrike)
             : Mathf.Max(0f, _settings.damagePerStrike);
-        float zoneRadius = Mathf.Max(0f, _settings.zoneRadius);
+        Vector2 strikePoint = SelectStrikePoint(isFirstStrike);
 
         Log(context.bow,
-            $"Burst. center={FormatVector(_center)} firstBurst={isFirstBurst} strikeCount={strikeCount} damage={finalDamage:F2}");
+            $"Strike emitted. center={FormatVector(_center)} firstStrike={isFirstStrike} emittedCount={_emittedStrikeCount + 1} damage={finalDamage:F2}");
 
-        int remainingStrikes = strikeCount;
-        if (isFirstBurst && _settings.guaranteeCenterStrike)
-        {
-            QueueStrike(context.bow, _center, finalDamage);
-            remainingStrikes--;
-        }
-
-        if (remainingStrikes <= 0)
-            return;
-
-        if (isFirstBurst)
-        {
-            float ringRadius = zoneRadius * 0.65f;
-            float angleStep = 360f / remainingStrikes;
-            for (int i = 0; i < remainingStrikes; i++)
-            {
-                float angle = i * angleStep;
-                Vector2 offset = Quaternion.Euler(0f, 0f, angle) * Vector2.right * ringRadius;
-                QueueStrike(context.bow, _center + offset, finalDamage);
-            }
-            return;
-        }
-
-        for (int i = 0; i < remainingStrikes; i++)
-        {
-            Vector2 strikePoint = _center + (Random.insideUnitCircle * zoneRadius);
-            QueueStrike(context.bow, strikePoint, finalDamage);
-        }
+        QueueStrike(context.bow, strikePoint, finalDamage);
     }
 
     private void QueueStrike(PlayerBowController playerBow, Vector2 strikePoint, float damage)
@@ -157,6 +135,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
             $"Strike queued. requested={FormatVector(strikePoint)} clamped={FormatVector(clampedStrikePoint)} distanceFromCastOrigin={strikeDistance:F2} maxTargetRange={_settings.maxTargetRange:F2}");
 
         float impactDelay = SpawnVisual(clampedStrikePoint);
+        SpawnImpactShadow(clampedStrikePoint, impactDelay);
         _pendingStrikes.Add(new PendingStrike
         {
             point = clampedStrikePoint,
@@ -213,12 +192,27 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
         float safeSpeed = Mathf.Max(0.1f, _settings.visualArrowSpeed);
         float flightTime = safeHeight / safeSpeed;
         Vector3 spawnPoint = strikePoint + (Vector2.up * safeHeight);
-        GameObject visualObject = Object.Instantiate(_settings.arrowRainVisualPrefab, spawnPoint, Quaternion.identity);
+        GameObject visualObject = null;
+        GameplayPoolManager poolManager = GameplayPoolManager.Instance;
+        if (poolManager != null)
+        {
+            PooledVisualInstance pooledVisual = poolManager.SpawnVisual(_settings.arrowRainVisualPrefab, spawnPoint, Quaternion.identity);
+            if (pooledVisual != null)
+                visualObject = pooledVisual.gameObject;
+        }
+
+        if (visualObject == null)
+            visualObject = Object.Instantiate(_settings.arrowRainVisualPrefab, spawnPoint, Quaternion.identity);
+
         ArrowRainVisual visual = visualObject.GetComponent<ArrowRainVisual>();
 
         if (visual == null)
         {
-            Object.Destroy(visualObject);
+            PooledVisualInstance pooledVisual = visualObject.GetComponent<PooledVisualInstance>();
+            if (pooledVisual != null)
+                pooledVisual.Despawn();
+            else
+                Object.Destroy(visualObject);
             return 0f;
         }
 
@@ -228,6 +222,36 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
             flightTime + VisualLifetimePadding);
 
         return flightTime;
+    }
+
+    private void SpawnImpactShadow(Vector2 strikePoint, float impactDelay)
+    {
+        if (!_settings.spawnImpactShadow || _settings.impactShadowPrefab == null)
+            return;
+
+        float safeDuration = Mathf.Max(0.01f, impactDelay);
+        GameObject shadowObject = null;
+        GameplayPoolManager poolManager = GameplayPoolManager.Instance;
+        if (poolManager != null)
+        {
+            PooledVisualInstance pooledShadow = poolManager.SpawnVisual(_settings.impactShadowPrefab, strikePoint, Quaternion.identity);
+            if (pooledShadow != null)
+                shadowObject = pooledShadow.gameObject;
+        }
+
+        if (shadowObject == null)
+            shadowObject = Object.Instantiate(_settings.impactShadowPrefab, strikePoint, Quaternion.identity);
+
+        ArrowRainImpactShadowVisual shadowVisual =
+            shadowObject.GetComponent<ArrowRainImpactShadowVisual>() ??
+            shadowObject.AddComponent<ArrowRainImpactShadowVisual>();
+
+        shadowVisual.Initialize(
+            safeDuration,
+            _settings.impactShadowStartScaleMultiplier,
+            _settings.impactShadowEndScaleMultiplier,
+            _settings.impactShadowStartAlpha,
+            _settings.impactShadowEndAlpha);
     }
 
     private static Vector2 ClampPointToRange(Vector2 point, ArrowRainCastSettings settings)
@@ -252,6 +276,18 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
             return;
 
         playerBow.PlayDefaultArrowHitEffect(strikePoint);
+    }
+
+    private Vector2 SelectStrikePoint(bool isFirstStrike)
+    {
+        if (isFirstStrike && _settings.guaranteeCenterStrike)
+            return _center;
+
+        float zoneRadius = Mathf.Max(0f, _settings.zoneRadius);
+        if (zoneRadius <= 0f)
+            return _center;
+
+        return _center + (Random.insideUnitCircle * zoneRadius);
     }
 
     private static void Log(Object context, string message)

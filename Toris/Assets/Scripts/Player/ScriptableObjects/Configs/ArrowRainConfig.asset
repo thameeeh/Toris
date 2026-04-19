@@ -24,9 +24,8 @@ MonoBehaviour:
   maxTargetRange: 8
   zoneRadius: 2
   rainDuration: 3
-  firstBurstDelay: 0.05
-  burstInterval: 0.8
-  strikesPerBurst: 6
+  initialStrikeDelay: 0.05
+  strikeInterval: 0.15
   guaranteeCenterStrike: 1
   impactRadius: 0.9
   damagePerStrike: 50
@@ -34,6 +33,12 @@ MonoBehaviour:
   spawnVisualArrows: 1
   visualArrowHeight: 10
   visualArrowSpeed: 28
+  impactShadowPrefab: {fileID: 719343916627612111, guid: cb0da83b83c0c5b40a546894f7af7ca8, type: 3}
+  spawnImpactShadow: 1
+  impactShadowStartScaleMultiplier: 0.75
+  impactShadowEndScaleMultiplier: 1
+  impactShadowStartAlpha: 0.2
+  impactShadowEndAlpha: 0.65
   playImpactEffect: 1
   staminaCost: 35
   playReleaseAnimation: 1

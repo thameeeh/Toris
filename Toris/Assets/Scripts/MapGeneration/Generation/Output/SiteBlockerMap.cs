@@ -14,11 +14,19 @@ public sealed class SiteBlockerMap : ITileNavigationContributionSource
     public void AddSquareFootprint(Vector2Int centerTile, int size)
     {
         int clampedSize = Mathf.Max(1, size);
-        int half = Mathf.Max(0, clampedSize / 2);
+        AddRectFootprint(centerTile, clampedSize, clampedSize);
+    }
 
-        for (int y = -half; y <= half; y++)
+    public void AddRectFootprint(Vector2Int centerTile, int width, int height)
+    {
+        int clampedWidth = Mathf.Max(1, width);
+        int clampedHeight = Mathf.Max(1, height);
+        int halfWidth = Mathf.Max(0, clampedWidth / 2);
+        int halfHeight = Mathf.Max(0, clampedHeight / 2);
+
+        for (int y = -halfHeight; y <= halfHeight; y++)
         {
-            for (int x = -half; x <= half; x++)
+            for (int x = -halfWidth; x <= halfWidth; x++)
             {
                 blockedTiles.Add(centerTile + new Vector2Int(x, y));
             }

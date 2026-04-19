@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class ArrowProjectile : Projectile
 {
@@ -27,6 +27,7 @@ public class ArrowProjectile : Projectile
     private const string ArrowHitEffectId = "hit_arrow_square";
 
     public event Action<ArrowProjectile, Collider2D, IDamageable, Vector2> DamageApplied;
+    public event Action<ArrowProjectile> ProjectileDespawned;
 
     private void Awake()
     {
@@ -116,7 +117,10 @@ public class ArrowProjectile : Projectile
         _damageLayerMask = ~0;
         _canDamageTargetPredicate = null;
         _playHitEffect = true;
+        Action<ArrowProjectile> projectileDespawned = ProjectileDespawned;
+        ProjectileDespawned = null;
         DamageApplied = null;
+        projectileDespawned?.Invoke(this);
     }
 
     /// <summary>
@@ -202,7 +206,6 @@ public class ArrowProjectile : Projectile
         if (dmgTarget != null)
         {
             Vector2 hitPoint = target.ClosestPoint(transform.position);
-            Debug.Log($"[ArrowProjectile] Applying dmg: {damage}");
             dmgTarget.Damage(damage);
             if (_playHitEffect)
                 SpawnHitEffect(hitPoint);
@@ -232,8 +235,4 @@ public class ArrowProjectile : Projectile
 
         EffectManagerBehavior.Instance.Play(request);
     }
-    //private void OnDestroy()
-    //{
-    //    Debug.LogWarning($"[ArrowProjectile] {name} was destroyed. If this is a pooled projectile, that's probably a bug.");
-    //}
 }

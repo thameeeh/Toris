@@ -24,15 +24,21 @@ public class ChainShotConfig : PlayerAbilitySO
     [Header("Animation")]
     public bool playReleaseAnimation = true;
 
+    public override PlayerAbilityRuntime CreateRuntime()
+    {
+        return new ChainShotRuntime();
+    }
+
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         PlayerStats playerStats = context.stats;
         PlayerBowController playerBow = context.bow;
+        ChainShotRuntime chainShotRuntime = runtime as ChainShotRuntime;
 
-        if (runtime == null || playerStats == null || playerBow == null)
+        if (chainShotRuntime == null || playerStats == null || playerBow == null)
             return;
 
-        if (!runtime.IsReady(context))
+        if (!chainShotRuntime.IsReady(context))
             return;
 
         if (damageMultipliers == null || damageMultipliers.Count == 0)
@@ -43,14 +49,13 @@ public class ChainShotConfig : PlayerAbilitySO
 
         BowSO.ShotStats baseShotStats = playerBow.BuildFullyDrawnShotStats();
         float baseDamage = baseShotStats.damage;
-
-        baseShotStats.damage = baseDamage * damageMultipliers[0];
         baseShotStats.speed *= initialProjectileSpeedMultiplier;
 
-        runtime.BeginAbilityUse(context);
-        playerBow.FireChainShot(
+        chainShotRuntime.BeginAbilityUse(context);
+        chainShotRuntime.StartCast(
+            context,
             baseShotStats,
-            new PlayerBowController.ChainShotSettings
+            new ChainShotCastSettings
             {
                 baseDamage = baseDamage,
                 damageMultipliers = damageMultipliers.ToArray(),
@@ -61,7 +66,13 @@ public class ChainShotConfig : PlayerAbilitySO
                 playImpactEffect = playChainImpactEffect
             },
             playReleaseAnimation);
-        runtime.StartCooldown();
+        chainShotRuntime.StartCooldown();
+    }
+
+    public override void Tick(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
+    {
+        if (runtime is ChainShotRuntime chainShotRuntime)
+            chainShotRuntime.Tick(context);
     }
 
 #if UNITY_EDITOR

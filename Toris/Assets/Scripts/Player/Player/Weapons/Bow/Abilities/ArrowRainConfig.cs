@@ -45,8 +45,6 @@ public class ArrowRainConfig : PlayerAbilitySO
         if (arrowRainRuntime == null || playerStats == null || playerBow == null)
             return;
 
-        arrowRainRuntime.RefreshState();
-
         if (arrowRainRuntime.IsActive)
             return;
 
@@ -64,16 +62,10 @@ public class ArrowRainConfig : PlayerAbilitySO
             $"OnButtonDown. castOrigin={FormatVector(castOrigin)} rawTarget={FormatVector(rawTargetPoint)} resolvedTarget={FormatVector(targetPoint)} maxTargetRange={maxTargetRange:F2} zoneRadius={zoneRadius:F2} resolvedDistance={Vector2.Distance(castOrigin, targetPoint):F2}");
 
         arrowRainRuntime.BeginAbilityUse(context);
-        arrowRainRuntime.Activate(rainDuration);
-
-        if (playReleaseAnimation)
-        {
-            playerBow.RequestAbilityReleaseTowards(targetPoint);
-        }
-
-        playerBow.StartArrowRain(
+        arrowRainRuntime.Activate(
+            context,
             targetPoint,
-            new PlayerBowController.ArrowRainZoneSettings
+            new ArrowRainCastSettings
             {
                 castOrigin = castOrigin,
                 maxTargetRange = maxTargetRange,
@@ -92,15 +84,18 @@ public class ArrowRainConfig : PlayerAbilitySO
                 playImpactEffect = playImpactEffect
             });
 
+        if (playReleaseAnimation)
+        {
+            playerBow.RequestAbilityReleaseTowards(targetPoint);
+        }
+
         arrowRainRuntime.StartCooldown();
     }
 
     public override void Tick(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         if (runtime is ArrowRainRuntime arrowRainRuntime)
-        {
-            arrowRainRuntime.RefreshState();
-        }
+            arrowRainRuntime.Tick(context);
     }
 
     private Vector2 ResolveTargetPoint(PlayerBowController playerBow)

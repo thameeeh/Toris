@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using OutlandHaven.Inventory;
@@ -5,6 +7,27 @@ using OutlandHaven.Inventory;
 public class PlayerBowController : MonoBehaviour
 {
     private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;
+    private const int ArrowRainMaxOverlapResults = 16;
+    private const string ArrowRainHitEffectId = "hit_arrow_square";
+    private const float ArrowRainVisualLifetimePadding = 0.05f;
+
+    [System.Serializable]
+    public struct ArrowRainZoneSettings
+    {
+        public float duration;
+        public float firstBurstDelay;
+        public float burstInterval;
+        public int strikesPerBurst;
+        public float zoneRadius;
+        public float impactRadius;
+        public bool guaranteeCenterStrike;
+        public float damagePerStrike;
+        public GameObject arrowRainVisualPrefab;
+        public bool spawnVisualArrows;
+        public float visualArrowHeight;
+        public float visualArrowSpeed;
+        public bool playImpactEffect;
+    }
 
     [Header("Refs")]
     [SerializeField] private PlayerInputReaderSO _input;
@@ -32,6 +55,7 @@ public class PlayerBowController : MonoBehaviour
     public BowSO BowConfig => _bow;
     public bool IsDrawing => drawing;
     public Vector2 CurrentAimDirection => GetAimDirection();
+    public Vector2 CurrentAimWorldPoint => GetPointerWorldPoint();
 
     public bool CancelCurrentDraw(string reason)
     {
@@ -72,10 +96,41 @@ public class PlayerBowController : MonoBehaviour
     public event System.Action ShotFired;
     public event System.Action<Vector2> AbilityReleaseRequested;
 
+    public void RequestAbilityReleaseTowards(Vector2 worldPoint)
+    {
+        Vector2 direction = worldPoint - (Vector2)transform.position;
+        if (direction.sqrMagnitude < MIN_DIRECTION_SQR_MAGNITUDE)
+        {
+            direction = GetFallbackFacing();
+        }
+
+        AbilityReleaseRequested?.Invoke(direction.normalized);
+    }
+
+    public void StartArrowRain(Vector2 center, ArrowRainZoneSettings settings)
+    {
+        if (!isActiveAndEnabled)
+            return;
+
+        _arrowRainCastVersion++;
+
+        if (_arrowRainRoutine != null)
+        {
+            StopCoroutine(_arrowRainRoutine);
+            _arrowRainRoutine = null;
+        }
+
+        _arrowRainRoutine = StartCoroutine(RunArrowRainZone(center, settings, _arrowRainCastVersion));
+    }
+
     private float drawStartTime = -999f;
     private float lastShotTime = -999f;
     private bool drawing;
     private bool _shootReadyRaised;
+    private Coroutine _arrowRainRoutine;
+    private int _arrowRainCastVersion;
+    private readonly Collider2D[] _arrowRainOverlapResults = new Collider2D[ArrowRainMaxOverlapResults];
+    private readonly HashSet<IDamageable> _arrowRainDamagedTargets = new HashSet<IDamageable>();
 
     private void LogShoot(string message)
     {
@@ -118,6 +173,13 @@ public class PlayerBowController : MonoBehaviour
         _motor?.SetMovementLocked(false);
         drawing = false;
         _shootReadyRaised = false;
+        _arrowRainCastVersion++;
+
+        if (_arrowRainRoutine != null)
+        {
+            StopCoroutine(_arrowRainRoutine);
+            _arrowRainRoutine = null;
+        }
     }
 
     private void OnValidate()
@@ -308,6 +370,11 @@ public class PlayerBowController : MonoBehaviour
 
     private void SpawnArrow(BowSO.ShotStats stats, Vector2 dir)
     {
+        SpawnArrowInternal(stats, dir);
+    }
+
+    private void SpawnArrowInternal(BowSO.ShotStats stats, Vector2 dir)
+    {
         float spread = Random.Range(-stats.spreadDeg, stats.spreadDeg);
         dir = (Quaternion.Euler(0, 0, spread) * (Vector3)dir).normalized;
 
@@ -343,10 +410,11 @@ public class PlayerBowController : MonoBehaviour
         arrow.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
     }
 
-    private Vector2 GetAimDirection()
+    public Vector2 GetPointerWorldPoint()
     {
         var cam = Camera.main;
-        if (!cam) return Vector2.right;
+        if (!cam)
+            return transform.position;
 
         Vector2 screen;
         if (Pointer.current != null)
@@ -354,13 +422,18 @@ public class PlayerBowController : MonoBehaviour
         else if (Mouse.current != null)
             screen = Mouse.current.position.ReadValue();
         else
-            return Vector2.right;
+            return transform.position;
 
         Vector3 depthRef = transform.position;
         float depth = cam.orthographic ? 0f : Mathf.Abs(cam.WorldToScreenPoint(depthRef).z);
-
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
         world.z = depthRef.z;
+        return world;
+    }
+
+    private Vector2 GetAimDirection()
+    {
+        Vector3 world = GetPointerWorldPoint();
 
         Vector2 centerOrigin = transform.position;
         Vector2 rawDirection = (Vector2)(world - (Vector3)centerOrigin);
@@ -408,8 +481,15 @@ public class PlayerBowController : MonoBehaviour
 
     private BowSO.ShotStats ApplyResolvedDamageModifiers(BowSO.ShotStats stats)
     {
+        stats.damage = ApplyResolvedDamageModifiers(stats.damage);
+        return stats;
+    }
+
+    private float ApplyResolvedDamageModifiers(float damage)
+    {
         const float minDamageMultiplier = 0f;
 
+        float finalDamage = Mathf.Max(0f, damage);
         float outgoingDamageMultiplier = 1f;
 
         if (_stats != null)
@@ -419,8 +499,8 @@ public class PlayerBowController : MonoBehaviour
                 _stats.ResolvedEffects.outgoingDamageMultiplier);
         }
 
-        stats.damage *= outgoingDamageMultiplier;
-        return stats;
+        finalDamage *= outgoingDamageMultiplier;
+        return finalDamage;
     }
 
     private void SyncShootDebugToggle()
@@ -485,5 +565,160 @@ public class PlayerBowController : MonoBehaviour
             return _playerFacing.CurrentFacing;
 
         return Vector2.down;
+    }
+
+    private IEnumerator RunArrowRainZone(Vector2 center, ArrowRainZoneSettings settings, int castVersion)
+    {
+        float safeDuration = Mathf.Max(0.01f, settings.duration);
+        float safeFirstBurstDelay = Mathf.Clamp(settings.firstBurstDelay, 0f, safeDuration);
+        float safeBurstInterval = Mathf.Max(0.01f, settings.burstInterval);
+        float elapsed = safeFirstBurstDelay;
+
+        LogShoot(
+            $"ArrowRain started. center={FormatVector(center)} zoneRadius={settings.zoneRadius:F2} duration={safeDuration:F2} burstInterval={safeBurstInterval:F2} strikesPerBurst={settings.strikesPerBurst}");
+
+        if (safeFirstBurstDelay > 0f)
+        {
+            yield return new WaitForSeconds(safeFirstBurstDelay);
+        }
+
+        bool firstBurst = true;
+        while (elapsed <= safeDuration + 0.0001f && castVersion == _arrowRainCastVersion)
+        {
+            ResolveArrowRainBurst(center, settings, firstBurst, castVersion);
+            firstBurst = false;
+
+            if (elapsed + safeBurstInterval > safeDuration)
+                break;
+
+            yield return new WaitForSeconds(safeBurstInterval);
+            elapsed += safeBurstInterval;
+        }
+
+        if (castVersion == _arrowRainCastVersion)
+            _arrowRainRoutine = null;
+    }
+
+    private void ResolveArrowRainBurst(Vector2 center, ArrowRainZoneSettings settings, bool isFirstBurst, int castVersion)
+    {
+        int strikeCount = Mathf.Max(1, settings.strikesPerBurst);
+        float finalDamage = ApplyResolvedDamageModifiers(settings.damagePerStrike);
+        float zoneRadius = Mathf.Max(0f, settings.zoneRadius);
+
+        LogShoot(
+            $"ArrowRain burst. center={FormatVector(center)} firstBurst={isFirstBurst} strikeCount={strikeCount} damage={finalDamage:F2}");
+
+        int remainingStrikes = strikeCount;
+        if (isFirstBurst && settings.guaranteeCenterStrike)
+        {
+            QueueArrowRainStrike(center, settings, finalDamage, castVersion);
+            remainingStrikes--;
+        }
+
+        if (remainingStrikes <= 0)
+            return;
+
+        if (isFirstBurst)
+        {
+            float ringRadius = zoneRadius * 0.65f;
+            float angleStep = 360f / remainingStrikes;
+            for (int i = 0; i < remainingStrikes; i++)
+            {
+                float angle = i * angleStep;
+                Vector2 offset = Quaternion.Euler(0f, 0f, angle) * Vector2.right * ringRadius;
+                QueueArrowRainStrike(center + offset, settings, finalDamage, castVersion);
+            }
+            return;
+        }
+
+        for (int i = 0; i < remainingStrikes; i++)
+        {
+            Vector2 strikePoint = center + (Random.insideUnitCircle * zoneRadius);
+            QueueArrowRainStrike(strikePoint, settings, finalDamage, castVersion);
+        }
+    }
+
+    private void QueueArrowRainStrike(Vector2 strikePoint, ArrowRainZoneSettings settings, float damage, int castVersion)
+    {
+        float impactDelay = SpawnArrowRainVisual(strikePoint, settings);
+        StartCoroutine(ResolveArrowRainStrikeAfterDelay(strikePoint, settings, damage, impactDelay, castVersion));
+    }
+
+    private IEnumerator ResolveArrowRainStrikeAfterDelay(
+        Vector2 strikePoint,
+        ArrowRainZoneSettings settings,
+        float damage,
+        float impactDelay,
+        int castVersion)
+    {
+        if (impactDelay > 0f)
+            yield return new WaitForSeconds(impactDelay);
+
+        if (castVersion != _arrowRainCastVersion)
+            yield break;
+
+        PlayArrowRainImpactEffect(strikePoint, settings);
+
+        float impactRadius = settings.impactRadius;
+        float safeImpactRadius = Mathf.Max(0.05f, impactRadius);
+        int hitCount = Physics2D.OverlapCircleNonAlloc(strikePoint, safeImpactRadius, _arrowRainOverlapResults);
+        _arrowRainDamagedTargets.Clear();
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider2D overlapCollider = _arrowRainOverlapResults[i];
+            if (overlapCollider == null || overlapCollider == _ownerCollider)
+                continue;
+
+            IDamageable damageable = overlapCollider.GetComponentInParent<IDamageable>();
+            if (damageable == null || !_arrowRainDamagedTargets.Add(damageable))
+                continue;
+
+            damageable.Damage(damage);
+        }
+    }
+
+    private float SpawnArrowRainVisual(Vector2 strikePoint, ArrowRainZoneSettings settings)
+    {
+        if (!settings.spawnVisualArrows || settings.arrowRainVisualPrefab == null)
+            return 0f;
+
+        float safeHeight = Mathf.Max(0f, settings.visualArrowHeight);
+        float safeSpeed = Mathf.Max(0.1f, settings.visualArrowSpeed);
+        float flightTime = safeHeight / safeSpeed;
+        Vector3 spawnPoint = strikePoint + (Vector2.up * safeHeight);
+        GameObject visualObject = Instantiate(settings.arrowRainVisualPrefab, spawnPoint, Quaternion.identity);
+        ArrowRainVisual visual = visualObject.GetComponent<ArrowRainVisual>();
+
+        if (visual == null)
+        {
+            Destroy(visualObject);
+            return 0f;
+        }
+
+        visual.Initialize(
+            spawnPoint,
+            strikePoint,
+            flightTime + ArrowRainVisualLifetimePadding);
+
+        return flightTime;
+    }
+
+    private void PlayArrowRainImpactEffect(Vector2 strikePoint, ArrowRainZoneSettings settings)
+    {
+        if (!settings.playImpactEffect || EffectManagerBehavior.Instance == null)
+            return;
+
+        EffectRequest request = new EffectRequest
+        {
+            EffectId = ArrowRainHitEffectId,
+            Position = strikePoint,
+            Rotation = Quaternion.identity,
+            Parent = null,
+            Variant = default,
+            Magnitude = 1f
+        };
+
+        EffectManagerBehavior.Instance.Play(request);
     }
 }

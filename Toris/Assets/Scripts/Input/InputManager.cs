@@ -65,6 +65,11 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         if (context.started)
         {
             _inputReader.OnAbility1Pressed?.Invoke();
+            _inputReader.RaiseAbilitySlotStarted(0);
+        }
+        else if (context.canceled)
+        {
+            _inputReader.RaiseAbilitySlotReleased(0);
         }
     }
     public void OnAbility2(InputAction.CallbackContext context) 
@@ -73,11 +78,13 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         {
             _inputReader.isAbility2Held = true;
             _inputReader.OnAbility2Started?.Invoke();
+            _inputReader.RaiseAbilitySlotStarted(1);
         }
         else if(context.canceled)
         {
             _inputReader.isAbility2Held = false;
             _inputReader.OnAbility2Released?.Invoke();
+            _inputReader.RaiseAbilitySlotReleased(1);
         }
     }
     public void OnAttack(InputAction.CallbackContext context) 
@@ -106,6 +113,33 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnNext(InputAction.CallbackContext context) { /* Handle Next */ }
     public void OnPause(InputAction.CallbackContext context) {}
     public void OnPrevious(InputAction.CallbackContext context) { /* Handle Previous */ }
+
+    public void OnAbility3(InputAction.CallbackContext context)
+    {
+        HandleAbilitySlotInput(2, context);
+    }
+
+    public void OnAbility4(InputAction.CallbackContext context)
+    {
+        HandleAbilitySlotInput(3, context);
+    }
+
+    public void OnAbility5(InputAction.CallbackContext context)
+    {
+        HandleAbilitySlotInput(4, context);
+    }
+
+    private void HandleAbilitySlotInput(int slotIndex, InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            _inputReader.RaiseAbilitySlotStarted(slotIndex);
+        }
+        else if (context.canceled)
+        {
+            _inputReader.RaiseAbilitySlotReleased(slotIndex);
+        }
+    }
 
 
     // -------- IUIActions implementation --------

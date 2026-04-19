@@ -53,4 +53,9 @@ public sealed class RamboBowRuntime : PlayerAbilityRuntime
     {
         return base.IsBlockingBowDraw(context) || _isHeld || _isActive;
     }
+
+    public override bool IsBlockingMovement(PlayerAbilityContext context)
+    {
+        return base.IsBlockingMovement(context) || _isHeld || _isActive;
+    }
 }

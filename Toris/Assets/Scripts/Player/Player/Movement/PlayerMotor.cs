@@ -10,6 +10,7 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerMoveSO _moveSO;
     [SerializeField] private PlayerStats _stats;
+    [SerializeField] private PlayerAbilityController _abilityController;
     [SerializeField] private DashAbility _dashAbility = new DashAbility();
 
     private Vector2 _moveInput;
@@ -26,6 +27,9 @@ public class PlayerMotor : MonoBehaviour
         if (!rb)
             rb = GetComponent<Rigidbody2D>();
 
+        if (_abilityController == null)
+            TryGetComponent(out _abilityController);
+
         _dashAbility?.Initialize(rb, _moveSO, ApplyVelocity);
     }
 
@@ -33,6 +37,9 @@ public class PlayerMotor : MonoBehaviour
     {
         if (!rb)
             rb = GetComponent<Rigidbody2D>();
+
+        if (_abilityController == null)
+            TryGetComponent(out _abilityController);
 
         _dashAbility?.Initialize(rb, _moveSO, ApplyVelocity);
     }
@@ -47,6 +54,14 @@ public class PlayerMotor : MonoBehaviour
         _movementLocked = locked;
 
         if (locked && rb && !isDashing)
+        {
+            ApplyVelocity(Vector2.zero);
+        }
+    }
+
+    public void StopMovementImmediately()
+    {
+        if (rb && !isDashing)
         {
             ApplyVelocity(Vector2.zero);
         }
@@ -87,7 +102,8 @@ public class PlayerMotor : MonoBehaviour
                 return;
         }
 
-        Vector2 direction = _movementLocked ? Vector2.zero : _moveInput;
+        bool abilityMovementLocked = _abilityController != null && _abilityController.IsMovementLocked;
+        Vector2 direction = (_movementLocked || abilityMovementLocked) ? Vector2.zero : _moveInput;
 
         float finalMoveSpeed = _moveSO.speed * moveSpeedMultiplier;
         ApplyVelocity(direction * finalMoveSpeed);

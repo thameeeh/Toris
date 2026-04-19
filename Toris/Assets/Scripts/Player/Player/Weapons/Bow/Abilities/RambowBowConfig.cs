@@ -50,7 +50,7 @@ public class RambowBowConfig : PlayerAbilitySO
             return;
 
         ramboRuntime.Activate();
-        ramboRuntime.BeginBowUse(context);
+        ramboRuntime.BeginAbilityUse(context);
         FireRambowShot(context);
         ramboRuntime.ScheduleNextShot(shotsPerSecond);
         ramboRuntime.StartCooldown();

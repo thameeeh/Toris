@@ -4,6 +4,24 @@ Use this document as the working reference for player equipment and future consu
 
 This guide is meant to describe how the system should be understood and where future work should go.
 
+## Current Backend State
+
+Treat the first consumable backend pass as complete.
+
+The current player-owned runtime now supports:
+
+* right-click consume from the main inventory in `Normal` context
+* instant health consumables
+* instant stamina consumables
+* timed buff consumables through the player effect pipeline
+* health regeneration over time through `HealthRegenPerSecond`
+* per-item cooldown handling
+* charge consumption and depletion cleanup
+
+Treat that as the stable baseline.
+
+Do not reopen this backend unless a new gameplay requirement appears.
+
 ## Purpose
 
 Separate passive equipment behavior from active consumable behavior.
@@ -214,6 +232,7 @@ Keep the current consumable pass narrow.
 * instant HP restore
 * instant stamina restore
 * timed buff consumables through `PlayerEffectSourceController`
+* health-over-time consumables through `HealthRegenPerSecond`
 * charge consumption
 * item removal when depleted
 * inventory refresh after successful use
@@ -223,6 +242,9 @@ Keep the current consumable pass narrow.
 * extending the equipment inventory
 * quick-use potion slots
 * binding the decorative consumable placeholder in `PlayerInventory.uxml`
+* active buff visuals
+* cooldown visuals
+* live stats panel integration
 * dynamic stack splitting for charged items
 
 ## Next Implementation Order
@@ -233,7 +255,24 @@ When the next consumable expansion begins, follow this order:
 2. keep `OnRequestEquip` for equipables
 3. keep `PlayerConsumableController` as the runtime owner
 4. keep timed buffs in `PlayerEffectSourceController`
-5. decide whether quick-use consumable slots are needed later
+5. add quick-use consumable slots only when input and ownership are agreed
+6. add buff and cooldown visuals only when the UI owner is ready
+
+## Next Work Boundary
+
+The next consumable work is no longer backend-first.
+
+Use this rule:
+
+* player runtime work is complete for the first pass
+* future work is mostly input, UI, or presentation driven
+
+That means the next likely expansions are:
+
+* quick-use consumable slots
+* buff feedback
+* cooldown feedback
+* visual display for assigned consumables
 
 ## Documentation Usage
 
@@ -255,3 +294,4 @@ When touching player items later, work from these assumptions:
 * consumables stay active and immediate
 * the first consumable pass should extend the existing main inventory interaction flow
 * timed effects belong in the player effect system, not in ad hoc stat patches
+* new consumable work after this point should only start when a clear input or UI requirement exists

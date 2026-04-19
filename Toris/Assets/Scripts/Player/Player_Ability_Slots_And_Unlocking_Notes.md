@@ -1,86 +1,89 @@
-# Player Ability Slots And Unlocking Guide
+# Player Ability Slots And Unlocking Implementation Guide
 
-Use this document as the reference for how player bow abilities should scale over time.
+Use this document as the working implementation reference for expanding the player bow ability system.
 
-The current project keeps abilities unlocked by default, but the system should be shaped so locking, equipping, and slot expansion can be added cleanly later.
+This guide is meant to keep gameplay runtime work, progression ownership, and future slot scaling aligned.
 
 ## Purpose
 
-Use the player ability system to do three jobs well:
+Use the player ability system to do three jobs cleanly:
 
-* execute equipped abilities cleanly in moment-to-moment gameplay
-* scale from a small roster to a larger one without exploding the input map
-* leave unlock ownership in the right part of the project
+* execute equipped abilities during moment-to-moment gameplay
+* scale from the current small roster to a larger roster without increasing button count linearly
+* leave unlock and progression authority in the correct part of the project
 
-## Current Runtime Structure
+## Current Runtime Baseline
 
-The current bow ability setup already has the main building blocks:
+Treat the current runtime as the starting point, not the final shape.
 
-* `PlayerAbilitySO` defines metadata, cooldown, and an `IsUnlocked(...)` hook
-* `PlayerAbilityRuntime` owns cooldown and bow-draw blocking state
-* `PlayerAbilityController` owns equipped abilities and forwards input into them
-* `PlayerBowController` checks `PlayerAbilityController.IsBowDrawBlocked` before starting draw
+The current structure already provides these useful building blocks:
 
-Use that as the baseline execution path.
+* `PlayerAbilitySO` defines metadata, cooldown, unlock query, and behavior hooks
+* `PlayerAbilityRuntime` owns cooldown timing, bow-draw blocking state, and movement-lock state
+* `PlayerAbilityController` owns a 5-slot backend array and ticks equipped runtimes
+* `PlayerBowController` asks `PlayerAbilityController.IsBowDrawBlocked` before beginning draw
+* `PlayerMotor` respects both direct movement locks and active ability movement locks
 
-## Responsibilities
+Use that execution flow as the base that future slot work should preserve.
 
-### Player Ability Code Should Own
+## Current Runtime Constraints
+
+Treat these as the main constraints that future implementation must remove carefully:
+
+* the backend now exposes 5 runtime slots and the keyboard input path now drives all 5
+* the input asset still uses numbered action names rather than a renamed `AbilitySlot` action family
+* legacy `_ability1` and `_ability2` data still exists only as a migration bridge for older serialized objects
+* there is no persistent equipped-slot model yet
+* all abilities are still unlocked by default
+
+These constraints are acceptable for now, but future work should not reintroduce more hardcoded named slot fields.
+
+## Ownership Rules
+
+### Player Ability Runtime Should Own
+
+Use player-side code for:
 
 * which abilities are equipped into active slots
-* how slot input triggers the equipped ability
-* whether an equipped ability can currently execute
+* how slot input activates the equipped ability
+* whether the equipped ability can execute right now
 * whether an active ability blocks bow draw
-* how press and release behaviors are handled per equipped ability
+* whether an active ability locks movement
+* how press and release behaviors are forwarded to the equipped ability runtime
 
-### Broader Progression Code Should Own
+### Progression Systems Should Own
 
-* whether an ability is purchased or unlocked
+Use broader progression code for:
+
+* whether an ability has been purchased
 * skill tree progression
 * SP costs
-* shop or upgrade UI logic
 * save and load authority for unlock state
+* UI for browsing and selecting unlocked abilities
 
-Use player code to ask whether an ability is unlocked.
-Use progression code to decide and persist the answer.
+Use player ability code as the query consumer, not as the long-term source of truth for unlock persistence.
 
-## Unlocking Guidance
+## Current Input Shape
 
-Use `PlayerAbilitySO.IsUnlocked(PlayerAbilityContext context)` as the player-side query point.
+Use the current input shape only as the temporary bridge.
 
-When ability locking is added later, support it with stable IDs.
+Right now:
 
-Recommended fields:
+* the controller consumes generic slot events internally
+* the current keyboard input bridge feeds all 5 slots
+* `Ability1` currently maps into slot 1 on `Q`
+* `Ability2` currently maps into slot 2 on `R`
+* `Ability3` currently maps into slot 3 on `Z`
+* `Ability4` currently maps into slot 4 on `X`
+* `Ability5` currently maps into slot 5 on `C`
 
-* `abilityID`
-* `requiredSkillID`
+That keeps existing gameplay stable and completes the keyboard-side slot-input migration.
 
-Recommended behavior:
+Do not extend this bridge with more one-off controller fields.
 
-* empty `requiredSkillID` means the ability is available by default
-* non-empty `requiredSkillID` means query the progression source, likely through `GameSessionSO.PlayerSkills`
+## Target Slot Input Plan
 
-Do not create a second separate unlock database inside the bow ability scripts unless design explicitly requires it.
-
-## Slot Model
-
-Treat the current two-slot setup as a temporary runtime shape, not the long-term target.
-
-Right now the runtime is still built around:
-
-* `_ability1`
-* `_ability2`
-
-Current input behavior is:
-
-* `Ability1` -> button down
-* `Ability2` -> button down and button up
-
-That is fine for the current project state, but future work should be aimed at equipped slots rather than one hardcoded field per ability.
-
-## Input Plan
-
-Use slot-based input, not one key per named ability.
+Use slot-based input instead of named-ability input.
 
 The planned slot key layout should be:
 
@@ -90,32 +93,41 @@ The planned slot key layout should be:
 * slot 4 -> `X`
 * slot 5 -> `C`
 
-This keeps the keys grouped together and avoids conflict with the current:
+Keep these current bindings untouched:
 
 * `1` -> `Previous`
 * `2` -> `Next`
 
-## Scaling Rule
+This keeps ability keys grouped together and avoids conflicts with the current item or selection bindings.
 
-When the roster gets larger, use this model:
+The old keyboard `Crouch` key has been reclaimed for slot 5 because crouch is not part of the player gameplay set.
 
+## Slot Model
+
+Treat the long-term model as:
+
+* many abilities may exist
 * many abilities may be unlocked
-* only a small number are equipped at one time
-* input triggers slots, not named abilities
+* only a small number of abilities are equipped at one time
+* input activates slots, not ability names
 
-That means the player can own a large roster without needing a large number of direct keybinds.
+That means the player can grow the roster without growing the keyboard mapping.
 
-## Recommended Future Structure
+## Runtime Structure To Build Toward
 
-Use these concepts:
+Use these concepts as the target runtime model.
 
 ### Ability Library
 
-The full set of ability definitions that can exist for the player.
+The full set of ability definitions that may exist for the player.
+
+This stays definition-driven through `PlayerAbilitySO`.
 
 ### Unlock State
 
-A persistent progression source that says which ability IDs are owned.
+A persistent progression source that answers whether a given ability ID is owned.
+
+Use the player ability side only to ask that question.
 
 ### Equipped Slots
 
@@ -127,19 +139,17 @@ A player-owned set of active ability slots, such as:
 * slot 4
 * slot 5
 
-Each slot should reference one equipped ability definition or ability ID.
+Each slot should reference one equipped ability definition or stable ability ID.
 
 ### Slot Input
 
-Input should activate slots, not concrete abilities.
-
-Use commands like:
+Input should call slot commands such as:
 
 * activate slot 1
 * release slot 1
 * activate slot 2
 
-Do not build input around commands like:
+Do not build the future input stack around commands like:
 
 * cast MultiShot
 * cast Rambow
@@ -148,38 +158,61 @@ Do not build input around commands like:
 
 Do not assume every ability is press-only.
 
-The current system already has both styles:
+The current system already proves both styles are needed:
 
 * `MultiShot` behaves like a press
+* `Arrow Rain` behaves like a press
 * `Rambow` behaves like a hold
 
-Future slot input should forward both press and release, then let each ability decide what it cares about.
+Future slot input should forward both press and release, then let each ability decide what it uses.
 
-## Recommended Refactor Direction
+The same rule applies to movement locking:
 
-When the slot system grows, evolve `PlayerAbilityController` from:
+* short one-shot abilities may use timed movement lock windows
+* held abilities may keep movement locked while active
 
-* `_ability1`
-* `_ability2`
+## Unlocking Rule
 
-toward something like:
+Use `PlayerAbilitySO.IsUnlocked(PlayerAbilityContext context)` as the player-side gate.
+
+When unlock persistence is added, support it with stable identifiers.
+
+Recommended fields to add later:
+
+* `abilityID`
+* `requiredSkillID`
+
+Recommended behavior:
+
+* empty `requiredSkillID` means the ability is available by default
+* non-empty `requiredSkillID` means query the progression source, likely through `GameSessionSO.PlayerSkills`
+
+Do not add a second separate unlock database inside the bow ability scripts.
+
+## Refactor Direction
+
+Use `PlayerAbilityController` as a true equipped-slot owner.
+
+Shape it around:
 
 * `AbilitySlot[] _equippedSlots`
 
 or:
 
-* a serialized list of equipped slots
+* a serialized list of `AbilitySlot`
 
-Recommended public behavior later:
+The backend controller now effectively follows that shape already.
+
+Use public behavior shaped like:
 
 * `TryActivateSlot(int slotIndex)`
 * `TryReleaseSlot(int slotIndex)`
 
-That scales much better than adding `_ability3`, `_ability4`, and so on.
+That keeps the controller scalable and removes the need for one field per ability button.
 
-## Input Migration Reminder
+## Input Migration Rule
 
-When the slot-input refactor happens, keep the project input stack in sync.
+When slot-based ability input is implemented, keep the input stack synchronized.
 
 Update all of these together:
 
@@ -189,24 +222,76 @@ Update all of these together:
 * `Assets/Scripts/Input/InputManager.cs`
 * `PlayerAbilityController`
 
-## Suggested Implementation Order
+Do not partially migrate only one layer of the input path.
 
-When this work starts for real, follow this order:
+## Implementation Phases
 
-1. add stable ability IDs and optional required skill IDs to `PlayerAbilitySO`
-2. choose the real progression source for unlock checks
-3. refactor `PlayerAbilityController` toward equipped slot data
-4. change input from named abilities to named slots
-5. map slots to `Q`, `R`, `Z`, `X`, and `C`
-6. keep `1` and `2` untouched for `Previous` and `Next`
-7. add UI later for equipping unlocked abilities into slots
+Use this order when the slot and unlock refactor begins.
 
-## Working Standard
+### Phase 1: Stabilize Ability Identity
 
-For now, use these rules:
+Add stable ability identification to `PlayerAbilitySO`.
 
-* keep all current abilities unlocked by default
-* keep purchase and progression UI out of the player bow scripts
-* shape new work toward 5 equipped slots
-* use `IsUnlocked(...)` as the player-side gate
-* expect the progression system to become the long-term source of truth
+Goal:
+
+* make every ability referenceable by a stable ID
+* keep all abilities unlocked by default until progression work begins
+
+### Phase 2: Separate Unlock Query From Runtime Ownership
+
+Choose the real progression source for unlock checks.
+
+Goal:
+
+* keep `IsUnlocked(...)` as the player-side query point
+* avoid putting purchase or save logic into the bow runtime
+
+### Phase 3: Convert Hardcoded Entries Into Equipped Slots
+
+Refactor `PlayerAbilityController` from two named fields into slot data.
+
+Goal:
+
+* preserve current behavior for the first two abilities
+* make room for slots 3 through 5 without adding more hardcoded members
+
+Status:
+
+* backend foundation complete
+* legacy slot migration bridge still present for older serialized data
+* movement lock is now available as part of the ability runtime path
+
+### Phase 4: Migrate Input To Slot Commands
+
+Replace named ability input with slot input.
+
+Goal:
+
+* `Q`, `R`, `Z`, `X`, and `C` trigger equipped slots
+* each slot forwards both press and release when needed
+
+Status:
+
+* keyboard backend migration complete
+* `Q`, `R`, `Z`, `X`, and `C` now drive slots 1 through 5
+* the input asset and generated wrapper are synchronized
+* future work is no longer about keybind count, but about progression and equip management
+
+### Phase 5: Add Equip Management Later
+
+Add UI and player-facing equip management only after runtime and input are stable.
+
+Goal:
+
+* allow selecting which unlocked abilities fill the 5 active slots
+* keep this step separate from the core runtime refactor
+
+## Current Working Standard
+
+Until the slot refactor begins, use these rules:
+
+* keep current abilities unlocked by default
+* keep purchase and progression UI out of player bow scripts
+* do not add more named ability fields to the controller
+* treat the current numbered action names as slot input, not named ability input
+* shape all future ability work toward 5 equipped slots on `Q`, `R`, `Z`, `X`, and `C`

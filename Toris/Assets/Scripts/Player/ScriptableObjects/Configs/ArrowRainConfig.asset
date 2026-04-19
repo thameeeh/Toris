@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b24f39f8f7d4c88b2d2976fa2ae6d3a, type: 3}
+  m_Name: ArrowRainConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ArrowRainConfig
+  abilityID: ArrowRainConfig
+  requiredSkillID: 
+  abilityName: Arrow Rain
+  icon: {fileID: 0}
+  cooldownSeconds: 1
+  blocksBowDraw: 1
+  bowDrawLockDuration: 0.35
+  blocksMovement: 1
+  movementLockDuration: 0.35
+  maxTargetRange: 10
+  zoneRadius: 3
+  rainDuration: 3
+  firstBurstDelay: 0.05
+  burstInterval: 0.35
+  strikesPerBurst: 6
+  guaranteeCenterStrike: 1
+  impactRadius: 0.9
+  damagePerStrike: 50
+  arrowRainVisualPrefab: {fileID: 2707063387119386915, guid: cfc6e8b3370ed0a4596088fd4292bc23, type: 3}
+  spawnVisualArrows: 1
+  visualArrowHeight: 10
+  visualArrowSpeed: 28
+  playImpactEffect: 1
+  staminaCost: 35
+  playReleaseAnimation: 1

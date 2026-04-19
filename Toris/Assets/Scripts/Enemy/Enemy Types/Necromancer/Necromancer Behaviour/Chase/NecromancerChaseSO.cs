@@ -83,13 +83,6 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         Vector2 toPlayer = playerPosition - enemyPosition;
         float distanceToPlayerSqr = toPlayer.sqrMagnitude;
 
-        if (enemy.IsHumanRescueVariant)
-        {
-            ResetHumanToFloaterDelay();
-            MoveAwayFromPlayer(toPlayer);
-            return;
-        }
-
         if (enemy.IsChangingForm)
         {
             ResetHumanToFloaterDelay();

@@ -247,8 +247,6 @@ Runtime-only visual children under `Animator`:
 - `hideShadowInHumanForm`
 - `flipSpriteHorizontally`
 - `horizontalFlipThreshold`
-- `humanRescueVariantChance`
-- `humanRescueVariantInvincible`
 - `summonHealthThreshold`
 - `enableBloodMageSummonProtection`
 
@@ -325,12 +323,10 @@ Runtime-only visual children under `Animator`:
 - tune and validate the full phase-two loop in play mode
 - decide how much visual feedback summon protection should have beyond the current shield layer
 - add hit VFX / summon VFX / shield break feedback
-- decide whether the rescue variant stays, changes, or is removed
 - verify the intended summon cadence once Blood Mage combat tuning is final
 
 ## Future Ideas
 
-- rescue-variant branch where the human facade can become a real NPC/rescue event
 - more readable shield presentation than the current placeholder if needed
 - richer spell behavior beyond the current projectile implementation
 
@@ -339,5 +335,4 @@ Runtime-only visual children under `Animator`:
 - projectile hit VFX
 - summon VFX
 - shield break feedback
-- rescue NPC conversion / rescue reward flow
 - optional standalone enemy-pool registration verification if that spawn path is used later

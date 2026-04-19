@@ -46,11 +46,6 @@ public class Necromancer : Enemy
     [SerializeField] private bool flipSpriteHorizontally = true;
     [SerializeField] private float horizontalFlipThreshold = 0.01f;
 
-    [Header("Human Rescue Variant")]
-    [SerializeField] private bool enableHumanRescueVariant = true;
-    [SerializeField, Range(0f, 1f)] private float humanRescueVariantChance = 0.05f;
-    [SerializeField] private bool humanRescueVariantInvincible = true;
-
     [Header("Summon")]
     [SerializeField] private bool enableHealthThresholdSummon = true;
     [SerializeField, Range(0f, 1f)] private float summonHealthThreshold = 0.5f;
@@ -81,8 +76,6 @@ public class Necromancer : Enemy
     private bool _requiresPostCastReposition;
     private float _postAttackRepositionSpeedMultiplier = 1f;
     private bool _prioritizePostAttackReposition;
-    private bool _hasResolvedAggroTransition;
-    private bool _isHumanRescueVariant;
     private bool _hasEnteredDeadState;
     private bool _isAnimatorTemporarilyHeld;
     private float _animatorHoldEndTime;
@@ -94,7 +87,6 @@ public class Necromancer : Enemy
     public float PostAttackRepositionSpeedMultiplier => _postAttackRepositionSpeedMultiplier;
     public bool ShouldPrioritizePostAttackReposition => _requiresPostCastReposition && _prioritizePostAttackReposition;
     public bool IsWithinCastingRange { get; private set; }
-    public bool IsHumanRescueVariant => _isHumanRescueVariant;
     public NecromancerAttackType PendingAttackType { get; private set; } = NecromancerAttackType.SpellCast;
     public Collider2D[] ProjectileIgnoreColliders => _projectileIgnoreColliders;
     public int ActiveBloodMageCount => _summonProtectionState.ActiveBloodMageCount;
@@ -105,8 +97,7 @@ public class Necromancer : Enemy
         && (HasActiveSummonProtection || IsAwaitingSummonedBloodMages);
     public bool ShouldDisplaySummonProtectionVisual => HasSummonProtectionShield;
     public bool ShouldCommandBloodMagesToAttack =>
-        !_isHumanRescueVariant
-        && CurrentHealth > 0f
+        CurrentHealth > 0f
         && PlayerTransform != null
         && (IsWithinCastingRange || IsWithinStrikingDistance || StateMachine.CurrentEnemyState == AttackState);
     public bool IsPhaseTwoSummonUnlocked =>
@@ -349,9 +340,6 @@ public class Necromancer : Enemy
 
     protected override bool CanTakeDamage()
     {
-        if (_isHumanRescueVariant && humanRescueVariantInvincible)
-            return false;
-
         if (enableBloodMageSummonProtection && HasActiveSummonProtection)
             return false;
 
@@ -373,23 +361,6 @@ public class Necromancer : Enemy
         StateMachine.ChangeState(DeadState);
     }
 
-    public void ResolveAggroTransition()
-    {
-        if (_hasResolvedAggroTransition)
-            return;
-
-        _hasResolvedAggroTransition = true;
-        _isHumanRescueVariant = enableHumanRescueVariant
-            && IsHumanForm
-            && UnityEngine.Random.value < humanRescueVariantChance;
-
-#if UNITY_EDITOR
-        DebugAnimationLog(_isHumanRescueVariant
-            ? "Aggro transition resolved -> human rescue variant. Floater/attack logic disabled."
-            : "Aggro transition resolved -> hostile necromancer.");
-#endif
-    }
-
     public void SetCastingRangeBool(bool isWithinCastingRange)
     {
         IsWithinCastingRange = isWithinCastingRange;
@@ -402,7 +373,7 @@ public class Necromancer : Enemy
 
     public bool RequestBecomeFloater()
     {
-        if (animator == null || _isHumanRescueVariant || IsFloaterForm || IsChangingForm)
+        if (animator == null || IsFloaterForm || IsChangingForm)
             return false;
 
         EndTemporaryAnimatorHold();
@@ -650,8 +621,6 @@ public class Necromancer : Enemy
         SetCastingRangeBool(false);
         EndTemporaryAnimatorHold();
         ClearPostCastReposition();
-        _hasResolvedAggroTransition = false;
-        _isHumanRescueVariant = false;
         _hasEnteredDeadState = false;
         ClearSummonProtection();
         PendingAttackType = NecromancerAttackType.SpellCast;

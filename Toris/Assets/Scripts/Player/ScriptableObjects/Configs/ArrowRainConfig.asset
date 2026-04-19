@@ -21,11 +21,11 @@ MonoBehaviour:
   bowDrawLockDuration: 0.35
   blocksMovement: 1
   movementLockDuration: 0.35
-  maxTargetRange: 10
-  zoneRadius: 3
+  maxTargetRange: 8
+  zoneRadius: 2
   rainDuration: 3
   firstBurstDelay: 0.05
-  burstInterval: 0.35
+  burstInterval: 0.8
   strikesPerBurst: 6
   guaranteeCenterStrike: 1
   impactRadius: 0.9

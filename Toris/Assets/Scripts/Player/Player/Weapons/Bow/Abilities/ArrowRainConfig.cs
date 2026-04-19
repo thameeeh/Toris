@@ -56,7 +56,12 @@ public class ArrowRainConfig : PlayerAbilitySO
         if (staminaCost > 0f && !playerStats.TryConsumeStamina(staminaCost))
             return;
 
+        Vector2 castOrigin = playerBow.transform.position;
+        Vector2 rawTargetPoint = playerBow.GetPointerWorldPoint();
         Vector2 targetPoint = ResolveTargetPoint(playerBow);
+        LogArrowRain(
+            playerBow,
+            $"OnButtonDown. castOrigin={FormatVector(castOrigin)} rawTarget={FormatVector(rawTargetPoint)} resolvedTarget={FormatVector(targetPoint)} maxTargetRange={maxTargetRange:F2} zoneRadius={zoneRadius:F2} resolvedDistance={Vector2.Distance(castOrigin, targetPoint):F2}");
 
         arrowRainRuntime.BeginAbilityUse(context);
         arrowRainRuntime.Activate(rainDuration);
@@ -70,6 +75,8 @@ public class ArrowRainConfig : PlayerAbilitySO
             targetPoint,
             new PlayerBowController.ArrowRainZoneSettings
             {
+                castOrigin = castOrigin,
+                maxTargetRange = maxTargetRange,
                 duration = rainDuration,
                 firstBurstDelay = firstBurstDelay,
                 burstInterval = burstInterval,
@@ -105,10 +112,24 @@ public class ArrowRainConfig : PlayerAbilitySO
             return rawTarget;
 
         Vector2 offset = rawTarget - playerPosition;
-        float maxRangeSqr = maxTargetRange * maxTargetRange;
+        float allowedCenterRange = Mathf.Max(0f, maxTargetRange - Mathf.Max(0f, zoneRadius));
+        float maxRangeSqr = allowedCenterRange * allowedCenterRange;
         if (offset.sqrMagnitude <= maxRangeSqr)
             return rawTarget;
 
-        return playerPosition + (offset.normalized * maxTargetRange);
+        if (offset.sqrMagnitude <= 0.0001f)
+            return playerPosition;
+
+        return playerPosition + (offset.normalized * allowedCenterRange);
+    }
+
+    private static void LogArrowRain(Object context, string message)
+    {
+        PlayerShootDebug.Log(context, "ArrowRain", message);
+    }
+
+    private static string FormatVector(Vector2 value)
+    {
+        return $"({value.x:F2}, {value.y:F2})";
     }
 }

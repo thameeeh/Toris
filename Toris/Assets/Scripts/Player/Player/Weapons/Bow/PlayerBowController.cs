@@ -14,6 +14,8 @@ public class PlayerBowController : MonoBehaviour
     [System.Serializable]
     public struct ArrowRainZoneSettings
     {
+        public Vector2 castOrigin;
+        public float maxTargetRange;
         public float duration;
         public float firstBurstDelay;
         public float burstInterval;
@@ -112,6 +114,7 @@ public class PlayerBowController : MonoBehaviour
         if (!isActiveAndEnabled)
             return;
 
+        Vector2 clampedCenter = ClampArrowRainPointToRange(center, settings);
         _arrowRainCastVersion++;
 
         if (_arrowRainRoutine != null)
@@ -120,7 +123,9 @@ public class PlayerBowController : MonoBehaviour
             _arrowRainRoutine = null;
         }
 
-        _arrowRainRoutine = StartCoroutine(RunArrowRainZone(center, settings, _arrowRainCastVersion));
+        LogShoot(
+            $"ArrowRain cast accepted. castOrigin={FormatVector(settings.castOrigin)} requestedCenter={FormatVector(center)} clampedCenter={FormatVector(clampedCenter)} maxTargetRange={settings.maxTargetRange:F2} zoneRadius={settings.zoneRadius:F2}");
+        _arrowRainRoutine = StartCoroutine(RunArrowRainZone(clampedCenter, settings, _arrowRainCastVersion));
     }
 
     private float drawStartTime = -999f;
@@ -640,8 +645,12 @@ public class PlayerBowController : MonoBehaviour
 
     private void QueueArrowRainStrike(Vector2 strikePoint, ArrowRainZoneSettings settings, float damage, int castVersion)
     {
-        float impactDelay = SpawnArrowRainVisual(strikePoint, settings);
-        StartCoroutine(ResolveArrowRainStrikeAfterDelay(strikePoint, settings, damage, impactDelay, castVersion));
+        Vector2 clampedStrikePoint = ClampArrowRainPointToRange(strikePoint, settings);
+        float strikeDistance = Vector2.Distance(settings.castOrigin, clampedStrikePoint);
+        LogShoot(
+            $"ArrowRain strike queued. requested={FormatVector(strikePoint)} clamped={FormatVector(clampedStrikePoint)} distanceFromCastOrigin={strikeDistance:F2} maxTargetRange={settings.maxTargetRange:F2}");
+        float impactDelay = SpawnArrowRainVisual(clampedStrikePoint, settings);
+        StartCoroutine(ResolveArrowRainStrikeAfterDelay(clampedStrikePoint, settings, damage, impactDelay, castVersion));
     }
 
     private IEnumerator ResolveArrowRainStrikeAfterDelay(
@@ -662,6 +671,8 @@ public class PlayerBowController : MonoBehaviour
         float impactRadius = settings.impactRadius;
         float safeImpactRadius = Mathf.Max(0.05f, impactRadius);
         int hitCount = Physics2D.OverlapCircleNonAlloc(strikePoint, safeImpactRadius, _arrowRainOverlapResults);
+        LogShoot(
+            $"ArrowRain strike resolved. point={FormatVector(strikePoint)} distanceFromCastOrigin={Vector2.Distance(settings.castOrigin, strikePoint):F2} impactRadius={safeImpactRadius:F2} hitCount={hitCount}");
         _arrowRainDamagedTargets.Clear();
 
         for (int i = 0; i < hitCount; i++)
@@ -670,10 +681,24 @@ public class PlayerBowController : MonoBehaviour
             if (overlapCollider == null || overlapCollider == _ownerCollider)
                 continue;
 
+            if (!IsValidArrowRainTargetCollider(overlapCollider))
+            {
+                LogShoot($"ArrowRain skipped non-hurtbox collider. collider={overlapCollider.name} layer={LayerMask.LayerToName(overlapCollider.gameObject.layer)}");
+                continue;
+            }
+
             IDamageable damageable = overlapCollider.GetComponentInParent<IDamageable>();
             if (damageable == null || !_arrowRainDamagedTargets.Add(damageable))
                 continue;
 
+            Vector2 closestPoint = overlapCollider.ClosestPoint(strikePoint);
+            Component damageableComponent = damageable as Component;
+            string targetName = damageableComponent != null ? damageableComponent.name : damageable.GetType().Name;
+            Vector2 targetPosition = damageableComponent != null
+                ? (Vector2)damageableComponent.transform.position
+                : closestPoint;
+            LogShoot(
+                $"ArrowRain damage hit. target={targetName} collider={overlapCollider.name} strikePoint={FormatVector(strikePoint)} closestPoint={FormatVector(closestPoint)} closestDistanceFromStrike={Vector2.Distance(strikePoint, closestPoint):F2} targetPosition={FormatVector(targetPosition)} targetDistanceFromCastOrigin={Vector2.Distance(settings.castOrigin, targetPosition):F2}");
             damageable.Damage(damage);
         }
     }
@@ -720,5 +745,30 @@ public class PlayerBowController : MonoBehaviour
         };
 
         EffectManagerBehavior.Instance.Play(request);
+    }
+
+    private Vector2 ClampArrowRainPointToRange(Vector2 point, ArrowRainZoneSettings settings)
+    {
+        if (settings.maxTargetRange <= 0f)
+            return point;
+
+        Vector2 offset = point - settings.castOrigin;
+        float maxRangeSqr = settings.maxTargetRange * settings.maxTargetRange;
+        if (offset.sqrMagnitude <= maxRangeSqr)
+            return point;
+
+        if (offset.sqrMagnitude <= MIN_DIRECTION_SQR_MAGNITUDE)
+            return settings.castOrigin;
+
+        return settings.castOrigin + (offset.normalized * settings.maxTargetRange);
+    }
+
+    private static bool IsValidArrowRainTargetCollider(Collider2D overlapCollider)
+    {
+        int enemyHurtBoxLayer = LayerMask.NameToLayer("EnemyHurtBox");
+        if (enemyHurtBoxLayer < 0)
+            return true;
+
+        return overlapCollider.gameObject.layer == enemyHurtBoxLayer;
     }
 }

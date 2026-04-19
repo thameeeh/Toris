@@ -45,6 +45,7 @@ Current first-pass radii:
 - retreat threshold: `4`
 - after `SpellCast`, the Necromancer repositions
 - after `PanicSwing`, the Necromancer repositions faster and with higher priority than its normal retreat
+- preferred combat spacing is clamped to stay inside the real casting trigger, so changing collider radii does not leave the Necromancer hovering just outside usable attack range
 
 ### Attack Selection
 
@@ -80,6 +81,17 @@ Current first-pass radii:
   - when the Necromancer is actively commanding combat, they attack and kite while staying owner-leashed
 
 ## Current Runtime Behavior
+
+### Grave Encounter Reveal
+
+- the grave site does not start full combat immediately on interaction
+- grave interaction now uses a short spawn delay for future UI text / anticipation
+- the Necromancer appears in human form first
+- the grave encounter begins when:
+  - the player leaves the grave trigger area
+  - or the player damages the Necromancer
+- on encounter start, the Necromancer is forced into hostile combat and can immediately reveal into floater form
+- this keeps the human reveal readable without relying on another hidden timer
 
 ### No Player Nearby
 
@@ -163,7 +175,7 @@ Current first-pass radii:
 - shadow is hidden in human form by default
 - shadow is visible in floater / transform / attack / dead states
 - the main sprite flips horizontally using `SpriteRenderer.flipX`
-- projectile aim uses the player hurtbox collider center when available
+- projectile aim uses a live player-linked hurtbox collider when available and falls back cleanly to the player transform if the cached collider is stale
 - a small serialized aim offset exists for visual tuning
 - summon protection currently uses the shield visual child for readability
 - summon can optionally pause the Necromancer animator for a short impact hold after `Anim_AttackHit()` so the cast lands with more weight before the animation finishes

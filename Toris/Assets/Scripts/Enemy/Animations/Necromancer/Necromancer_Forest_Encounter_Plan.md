@@ -88,8 +88,10 @@ The first-pass start flow should be:
 2. player follows the side road until it trails off
 3. the grave becomes visible at the end of the approach
 4. player walks up and interacts with the grave
-5. the Necromancer reveal begins
-6. the Necromancer becomes the combat encounter
+5. a short wake-up delay plays for text / anticipation
+6. the Necromancer appears in human form at the grave
+7. the combat reveal begins when the player leaves the grave space or attacks the Necromancer
+8. at that point the Necromancer fully engages as the combat encounter
 
 ## Persistence Model
 
@@ -208,6 +210,36 @@ For this project, the most realistic first-pass decoration plan is:
 3. optionally add a small deterministic edge scatter later if needed
 
 This is much safer than trying to fully proceduralize the site dressing immediately.
+
+### Multi-Layout Workflow
+
+The grave site now supports a design-first layout workflow:
+
+- `SiteStampDefinition`
+  - defines the footprint
+  - defines the clutter clear zone
+  - can hold multiple authored layout variants
+- `SiteTileLayoutDefinition`
+  - defines one exact hand-authored tile arrangement around the grave center
+
+Recommended usage:
+
+1. keep one `NecromancerSiteStamp` asset for the shared grave footprint
+2. create multiple `SiteTileLayoutDefinition` assets for different grave dressings
+3. assign those layout assets into the stamp's `Tile Layout Variants` list
+4. world generation will pick one variant deterministically per grave site
+
+That means:
+
+- the site still appears in procedural locations
+- each grave can use a different arrangement
+- the same grave keeps the same arrangement for the same biome seed / tile position
+
+So the design responsibilities stay simple:
+
+- `stamp` = arena footprint and cleanup
+- `layout` = exact decorative tile pattern
+- `prefab` = interactive grave object and encounter runtime
 
 ## Recommended Implementation Order
 

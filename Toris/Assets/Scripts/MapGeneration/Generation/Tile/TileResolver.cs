@@ -34,6 +34,10 @@ public sealed class TileResolver
             ground = PickGround(local, ctx)
         };
 
+        SiteVisualClearMap siteVisualClears = ctx.BuildOutput != null ? ctx.BuildOutput.SiteVisualClears : null;
+        if (siteVisualClears != null && siteVisualClears.Contains(tilePos))
+            return r;
+
         // 5) Visual overlays (tree stump/base plus canopy first, then small decoration)
         if (TryPickTreeVariant(local, ctx, s, out TileBase obstacleTile, out TileBase canopyTile))
         {

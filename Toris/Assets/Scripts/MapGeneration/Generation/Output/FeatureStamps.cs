@@ -33,6 +33,20 @@ public sealed class FeatureStamps
         overrides[worldTile] = tr;
     }
 
+    public void SetObstacle(Vector2Int worldTile, TileBase obstacle)
+    {
+        overrides.TryGetValue(worldTile, out TileResult tr);
+        tr.obstacle = obstacle;
+        overrides[worldTile] = tr;
+    }
+
+    public void SetCanopy(Vector2Int worldTile, TileBase canopy)
+    {
+        overrides.TryGetValue(worldTile, out TileResult tr);
+        tr.canopy = canopy;
+        overrides[worldTile] = tr;
+    }
+
     public void StampRectGround(Vector2Int center, int w, int h, TileBase ground)
     {
         int hx = w / 2;

@@ -43,6 +43,7 @@ The Blood Mage is a ranged support minion.
 - it does not freely chase the player on its own when the Necromancer is out of attack range
 - when the Necromancer is not commanding combat, it returns to and holds a bodyguard slot around the Necromancer
 - when the Necromancer is commanding combat, it can attack, kite, and reposition while still hovering around the Necromancer
+- combat leash is intentionally looser than idle guard leash so Blood Mages can pressure outward without immediately snapping back
 - it uses leash and guard hysteresis so it does not flicker between tiny position corrections every frame
 
 ### Attack
@@ -53,6 +54,7 @@ The Blood Mage is a ranged support minion.
 - the bubble targets the player's current position with a small randomized placement radius for a more natural look
 - the pop only damages the player if they are still inside the bubble when the pop event fires
 - the damage path stays consistent with direct enemy-to-player damage flow
+- chase permission to start an attack is distance-based and not tied only to the tiny close-range trigger, so Blood Mages can contribute from a more useful radius
 
 ## Spawn And Owner Contract
 

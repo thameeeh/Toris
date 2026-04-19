@@ -15,6 +15,8 @@ MonoBehaviour:
   retreatDistance: 1.5
   leashRadius: 5
   leashHysteresis: 0.5
+  combatLeashBonus: 2
+  attackStartDistance: 3.25
   guardRadius: 1.75
   guardPositionTolerance: 0.25
   guardPositionHysteresis: 0.2

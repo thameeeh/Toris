@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce87f17e7b9b1404cb0a619e13b3006f, type: 3}
+  m_Name: NecromancerWorldSite
+  m_EditorClassIdentifier: Assembly-CSharp::WorldSiteDefinition
+  siteId: necromancer_grave
+  prefab: {fileID: 3996470808434051263, guid: e9894f6197436c241aded6e1e2868e81, type: 3}
+  skipIfConsumed: 0
+  spawnSalt: 0
+  runtimeConfig: {fileID: 11400000, guid: 67a05cd9bf2a4305b3f9c6206f965356, type: 2}

@@ -549,8 +549,20 @@ public class Necromancer : Enemy
 
     private void CachePlayerAimCollider()
     {
-        if (playerAimCollider != null || PlayerTransform == null)
+        if (PlayerTransform == null)
+        {
+            playerAimCollider = null;
             return;
+        }
+
+        if (playerAimCollider != null)
+        {
+            Transform aimTransform = playerAimCollider.transform;
+            if (aimTransform == PlayerTransform || aimTransform.IsChildOf(PlayerTransform))
+                return;
+
+            playerAimCollider = null;
+        }
 
         PlayerHurtbox playerHurtbox = PlayerTransform.GetComponentInChildren<PlayerHurtbox>();
         if (playerHurtbox != null)

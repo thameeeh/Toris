@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1d9ab1f9d5270c4c8720bd10cf2a603, type: 3}
+  m_Name: NecromancerSiteStamp
+  m_EditorClassIdentifier: Assembly-CSharp::SiteStampDefinition
+  stampGround: 1
+  groundTile: {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
+  groundOffset: {x: 0, y: 0}
+  groundWidth: 2
+  groundHeight: 5
+  addNavigationBlocker: 0
+  blockerOffset: {x: 0, y: 0}
+  blockerWidth: 1
+  blockerHeight: 1
+  clearProceduralVisualsAroundSite: 1
+  clearVisualsOffset: {x: 0, y: 0}
+  clearVisualsWidth: 20
+  clearVisualsHeight: 20
+  tileLayoutDefinition: {fileID: 11400000, guid: 8396d4f5a3cc4c11b31b0d3f2cb645ef, type: 2}

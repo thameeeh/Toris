@@ -1,3 +1,9 @@
+## [Current/Recent] - Unit Tests for PlayerEquipmentController
+### 1. Added IsSlotOccupied Tests
+* Implemented new unit tests in `PlayerEquipmentControllerTests.cs` to verify the `IsSlotOccupied` functionality.
+* Covered scenarios for empty slots, occupied slots, and slots that transition from occupied to empty.
+* Used reflection-based dependency injection to isolate the controller from scene-level dependencies during testing.
+
 ## [Current/Recent] - Documentation Update for Architecture Shifts
 This update refactors the core documentation to accurately reflect the current "production-ready" architecture of the inventory and drag-and-drop systems, moving away from prototyping implementations.
 

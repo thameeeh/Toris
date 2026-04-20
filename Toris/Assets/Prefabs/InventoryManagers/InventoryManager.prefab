@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentFromInventoryTester
   _inventory: {fileID: 7584297309565093339}
-  _equipment: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  _equipment: {fileID: 0}
   _testSlotIndex: 0
 --- !u!114 &7379342914277460611
 MonoBehaviour:
@@ -206,4 +206,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b1f2963dd7b2b84b9029baf732fd9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquippedItemStatsDebugger
-  _equipment: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  _equipment: {fileID: 0}

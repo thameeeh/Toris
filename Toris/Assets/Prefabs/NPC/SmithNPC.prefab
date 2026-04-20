@@ -83,7 +83,7 @@ SpriteRenderer:
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3977378887079403499, guid: 25033ae8f1fc2b14bb18e8243ae349d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 2, y: 2}
@@ -144,127 +144,11 @@ MonoBehaviour:
       BaseItem: {fileID: 11400000, guid: f3168b74f45f17c47bf6c623620169bc, type: 2}
       States: []
     Count: 4
-    AllowedFilter: 0
   - HeldItem:
       InstanceID: apple
       BaseItem: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
       States: []
     Count: 10
-    AllowedFilter: 0
-  - HeldItem:
-      InstanceID: aaeca5ce-8f9b-4b9e-821c-42e897c90bf2
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 4de83ccc-767c-4552-91ee-f6e3328c7497
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: d6b0273f-b7b8-47ad-a76d-0f0f525880c2
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 83b7c4b0-3d2a-426f-8f5c-9b894108eb25
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 1f779a18-6a6b-4ea6-9149-9b329e5000d0
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 53e9b82a-7751-4b7b-927c-5e8b1d8c51c3
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 35035887-faa4-4b2b-b415-403fab88da84
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 8c430202-f8bd-4cb0-97ef-14ac0dbaf0dc
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: baaa3ee9-d7f5-4f59-87e8-d6d1d2ad4955
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 2d87f742-fd15-4505-b432-e9d341f358bb
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 4e0e36cb-ffe6-4a99-975c-d23b3cb6f70a
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 81b89155-ee7a-4197-933d-a2af27b85315
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 3f080ddb-2df8-4a37-9d23-4584b941e72d
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 8d44d13b-35d0-452f-aea4-113cc161d5a7
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 99ae37fa-0572-46d6-9991-9a08e6b21ddb
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 5a18f374-7239-4145-bea6-d1964980eab5
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: f038363f-145b-421b-affa-962960bbe2d0
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: cc3fa588-d71f-4b0f-922b-e00c58cc88fe
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: b30ed27e-e2b8-49b6-8498-f173bb79da7f
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   references:
@@ -296,13 +180,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6129318122709328053}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.50934184, w: 0.8605643}
-  m_LocalPosition: {x: -0.31, y: -1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.962218, w: 0.27228028}
+  m_LocalPosition: {x: 0.42467794, y: -0.6743327, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8865766885898603617}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 61.24}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 148.4}
 --- !u!70 &7900864018743453055
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

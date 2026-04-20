@@ -1,7 +1,6 @@
+using UnityEngine;
 using OutlandHaven.Inventory;
 using OutlandHaven.UIToolkit;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class InventoryActionController : MonoBehaviour
 {
@@ -30,27 +29,6 @@ public class InventoryActionController : MonoBehaviour
     {
         _consumableController?.Tick();
     }
-
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (_playerInventory == null)
-        {
-            Debug.LogWarning($"[InventoryActionController] <color=yellow><b>_playerInventory</b></color> is missing. Please assign an InventoryManager in the Inspector.", this);
-        }
-
-        if (_equipmentInventory == null)
-        {
-            Debug.LogWarning($"[InventoryActionController] <color=yellow><b>_equipmentInventory</b></color> is missing. Please assign an InventoryManager in the Inspector.", this);
-        }
-
-        if (_uiInventoryEvents == null)
-        {
-            Debug.LogWarning($"[InventoryActionController] <color=yellow><b>_uiInventoryEvents</b></color> is missing. Please assign the UIInventoryEventsSO in the Inspector.", this);
-        }
-    }
-#endif
 
     private void OnEnable()
     {

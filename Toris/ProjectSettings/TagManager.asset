@@ -42,20 +42,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Water
-    uniqueID: 2775524347
-    locked: 0
   - name: Ground
     uniqueID: 3809012859
     locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: wall_2
-    uniqueID: 1200885059
-    locked: 0
-  - name: wall_3
-    uniqueID: 2860518337
     locked: 0
   m_RenderingLayers:
   - Default

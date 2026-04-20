@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BowGuyShootF_D
+  m_Name: BowGuyShootDraw_D
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -32,16 +32,6 @@ AnimationClip:
       value: {fileID: -4758951328521551560, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     - time: 0.41666666
       value: {fileID: -4621356551859890593, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.5
-      value: {fileID: 1103600996293260523, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.5833333
-      value: {fileID: -123943356654952604, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.6666667
-      value: {fileID: -3833703709992200789, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.75
-      value: {fileID: -6152803937924826294, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.8333333
-      value: {fileID: -2955774250715742568, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -70,17 +60,12 @@ AnimationClip:
     - {fileID: -8460448643565868437, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     - {fileID: -4758951328521551560, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     - {fileID: -4621356551859890593, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: 1103600996293260523, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: -123943356654952604, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: -3833703709992200789, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: -6152803937924826294, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: -2955774250715742568, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.9166666
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -99,11 +84,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.5
-    functionName: OnShootHoldFrame
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

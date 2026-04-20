@@ -4,7 +4,6 @@ namespace OutlandHaven.Inventory
     {
         Normal,
         Shop,
-        Salvage,
-        Forge
+        Salvage
     }
 }

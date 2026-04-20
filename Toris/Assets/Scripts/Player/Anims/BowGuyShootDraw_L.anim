@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BowGuyShootF_L
+  m_Name: BowGuyShootDraw_L
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -32,14 +32,6 @@ AnimationClip:
       value: {fileID: 3887136055685926118, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     - time: 0.41666666
       value: {fileID: 54064115046909065, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.5
-      value: {fileID: -7421345067804525474, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.5833333
-      value: {fileID: 6414603531779350693, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.6666667
-      value: {fileID: -3233631391077620146, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - time: 0.75
-      value: {fileID: 4622889255029748813, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -68,16 +60,12 @@ AnimationClip:
     - {fileID: 3764816603650304799, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     - {fileID: 3887136055685926118, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     - {fileID: 54064115046909065, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: -7421345067804525474, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: 6414603531779350693, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: -3233631391077620146, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
-    - {fileID: 4622889255029748813, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.8333333
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -96,11 +84,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.5
-    functionName: OnShootHoldFrame
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

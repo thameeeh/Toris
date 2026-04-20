@@ -16,15 +16,13 @@ This file contains crucial architectural directives, conventions, and guidelines
   - Instantiate it in the `Start()` method (not `OnEnable()`, to avoid race conditions with `UIManager.Awake()`).
   - Pass the instance to the View, explicitly call `view.Initialize()` (never initialize within the View constructor to avoid race conditions).
   - Register the view with the `UIManager` using the appropriate `ScreenZone`.
-- **View Lifecycle & Memory Management**:
+- **View Lifecycle**:
   - `SetVisualElements()` must STRICTLY only query and cache static layout elements (`.Q<VisualElement>()`) without touching injected data.
   - `Setup()` is designated for dynamic assembly, such as instantiating sub-templates and populating data grids. Always explicitly call `view.Setup(payload)` before `view.Show()` when programmatically opening dependent views.
-  - **Memory Safety (IDisposable)**: All UI Views, Sub-Views, and Presenters that subscribe to global ScriptableObject event buses (e.g., `UIEventsSO`, `UIInventoryEventsSO`) **MUST** implement the `System.IDisposable` interface. 
-  - The `Dispose()` method is the strict, authoritative location for unbinding all global events and destroying dynamically generated template instances.
-  - Bind dynamic event listeners in `Show()` or `Setup()`, and ALWAYS track event subscription state with a `private bool _eventsBound` to prevent double-subscriptions and memory leaks.
+  - Bind/unbind dynamic event listeners in `Show()`/`Hide()` or `Setup()`/`Dispose()` rather than the constructor. Track event subscription state with a `private bool _eventsBound` to prevent double subscriptions and leaks.
 - **Screen Zones**: `UIManager` enforces mutual exclusivity for views sharing the same `ScreenZone` (excluding the `HUD` zone). Opening a new view automatically closes any active view in that zone.
 - **Styling**: When modifying layouts, adjust UXML/USS files for layout and sizing instead of using C# inline styles (e.g., `element.style.width = ...`), which override all other stylesheets and cause regressions.
-- **Sub-Views & Tabs**: For tabbed UI screens, the UI Controller is strictly responsible for instantiating sub-view VisualTreeAsset templates and managing their Hide() and Dispose() lifecycles. The Controller injects these fully initialized sub-views into the main View. The View's only job is to mount or unmount them from the visual layout upon tab selection.
+- **Sub-Views & Tabs**: For tabbed UI screens, the main ScreenController must serialize and pass required sub-view `VisualTreeAsset` templates to the main View. The View lazily instantiates these templates upon tab selection and handles their `Hide()` and `Dispose()` lifecycles.
 - **UXML Organization**: UI Toolkit sub-view UXML files go into `Toris/Assets/UI Toolkit/UXML Templates/`.
 - **Input Slots**: When displaying selected inventory items in crafting/input slots, instantiate a dummy proxy `InventorySlot` with the exact required quantity rather than passing the direct player inventory slot reference.
 
@@ -43,19 +41,12 @@ This file contains crucial architectural directives, conventions, and guidelines
 - **Empty Lifecycles**: Remove empty Unity lifecycle methods (e.g., `Start`, `Update`, `FixedUpdate`) to minimize C++ to C# bridge overhead.
 - **Pooled Objects**: For pooled Map Generation POIs (e.g., 'WolfDen'), cache child components like `Collider2D[]` in `Awake` using `GetComponentsInChildren(true)` to prevent performance degradation from hierarchy traversals during frequent `Initialize` or `Clear` cycles.
 - **Performance Journal**: Maintain a performance journal in `.jules/bolt.md` for critical, codebase-specific performance learnings. Format: `## YYYY-MM-DD - [Title]`, `**Learning:** [Insight]`, and `**Action:** [How to apply next time]`. Do not commit this journal.
-- - **Allocation Exemptions (Data Hydration):** The strict zero-allocation rules (avoiding heap allocations and GC spikes) apply to the core runtime gameplay loop (e.g., `Update`, physics, combat). 
-  - The `InventorySystem` is explicitly **exempt** from this during initialization phases. Instantiating `ItemInstance` and its `[SerializeReference]` list of `ItemComponentState` objects is permitted during specific UI events (e.g., generating Shop inventory, loading save files, or crafting completion). 
-  - **Restriction:** You must never instantiate or destroy `ItemInstance` objects inside an `Update` loop or during frequent physics interactions (like vacuuming up 50 dropped items at once—use grouped data payloads instead).
 
 ## Code Health & Security Practices
 - **Magic Numbers**: Extract magic numbers to `const` or serialized fields. Unresolved magic numbers should be documented in `Toris/Assets/Scripts/MagicNumbers.md`.
   - For world generation `DeterministicHash.Hash`, use named constants for specific integer salts (e.g., `HASH_SALT_GROUND = 101`, `ROAD_HASH_SALT = 5001`).
 - **Debugging**: Wrap `Debug.Log` statements in `#if UNITY_EDITOR` preprocessor directives. Remove dead, commented-out debug statements and proactively clean up resulting unused variables or empty control blocks.
 - **Save System**: The Pixel Crushers Save System integration must NOT have hardcoded secrets. Save system encryption defaults must be set to `encrypt = false` with an empty password string.
-- **ScriptableObject Runtime State & Hydration**:
-  - **The Editor Persistence Rule**: ScriptableObjects containing runtime state (e.g., `GameSessionSO`, `InventoryContainerSO` if used dynamically) retain mutated data between play sessions in the Unity Editor, but reset in standalone builds. You MUST implement a reliable state-clearing mechanism (e.g., a `ResetState()` or `Clear()` method) that is explicitly invoked by the owning Manager's `Awake()` method before any initialization logic runs.
-  - **Static vs. Dynamic Isolation**: Never mutate blueprint/flyweight ScriptableObjects (e.g., `InventoryItemSO`, `CraftingRecipeSO`) at runtime. State changes must strictly be confined to `ItemInstance` objects or explicitly designated runtime SOs.
-  - **Save Data Injection (Hydration)**: When loading data via the Pixel Crushers Save System, UI Views must never read the save file directly. A dedicated Save/Load Manager must parse the save data, inject (hydrate) that data into the runtime ScriptableObjects, and then fire a global initialization event (e.g., `UIEvents.OnGameDataLoaded`) to command the UI to rebuild using the newly populated data.
 - **Serialization**:
   - Use custom Editor scripts to instantiate abstract classes in `[SerializeReference]` lists via a Reflection-based `GenericMenu`.
   - Enforce sensible defaults using parameterless constructors and an `OnValidate()` method wrapped in `#if UNITY_EDITOR` for custom serializable classes to prevent game crashes. Avoid validating dynamically generated generic states via `OnValidate`.

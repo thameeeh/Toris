@@ -5,11 +5,8 @@ public class PlayerAbilityRuntime
 {
     private PlayerAbilitySO _definition;
     private float _nextReadyTime;
-<<<<<<< HEAD
     private float _bowDrawBlockedUntilTime;
     private float _movementBlockedUntilTime;
-=======
->>>>>>> UI_Update
 
     public PlayerAbilitySO Definition => _definition;
     public bool HasAbility => _definition != null;
@@ -25,11 +22,8 @@ public class PlayerAbilityRuntime
     public void ResetRuntimeState()
     {
         _nextReadyTime = 0f;
-<<<<<<< HEAD
         _bowDrawBlockedUntilTime = 0f;
         _movementBlockedUntilTime = 0f;
-=======
->>>>>>> UI_Update
     }
 
     public bool IsUnlocked(PlayerAbilityContext context)
@@ -50,7 +44,6 @@ public class PlayerAbilityRuntime
         _nextReadyTime = Time.time + _definition.cooldownSeconds;
     }
 
-<<<<<<< HEAD
     public void BlockBowDraw()
     {
         if (_definition == null || !_definition.blocksBowDraw)
@@ -115,8 +108,6 @@ public class PlayerAbilityRuntime
             && Time.time < _movementBlockedUntilTime;
     }
 
-=======
->>>>>>> UI_Update
     public void OnButtonDown(PlayerAbilityContext context)
     {
         _definition?.OnButtonDown(this, context);

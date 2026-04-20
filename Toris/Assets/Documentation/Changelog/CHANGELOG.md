@@ -1,20 +1,3 @@
-## [Current/Recent] - Resolved Broken Purchasing Functionality in Shop
-This update fixes the shop purchase pipeline which failed due to deprecated input handling and overly rigid bulk-buy validation.
-
-### 1. Fixed Modifier Key Input in UI Toolkit
-* Replaced legacy `Input.GetKey()` polling in `ShopSubView.cs` which could silently fail.
-* Added a new `OnLocalRightClickedWithShift` event in `InventorySlotView.cs` to cleanly pass the `evt.shiftKey` state from the pointer payload directly to parent views, ensuring robust UI event decoupling.
-
-### 2. Improved Transaction Validation
-* Modified `ShopManagerSO.HandleRequestBuy` to automatically clamp the requested purchase quantity against the shop's actual available stock.
-* Clamped the purchase quantity against the player's total affordable amount.
-* This prevents bulk-buy attempts (e.g., requesting 10 items) from instantly failing when the shop only holds 2 items or the player only has gold for 4.
-
----
-
-## [Previous] - Documentation Update for Architecture Shifts
-This update refactors the core documentation to accurately reflect the current "production-ready" architecture of the inventory and drag-and-drop systems, moving away from prototyping implementations.
-
 ### 1. Documented Shift from "Nuke" Redraw to Targeted Updates
 * Updated `Inventory_Event_System_Documentation.md` and `Drag_and_Drop_System_Documentation.md` to detail the removal of the parameterless `OnInventoryUpdated` event.
 * Added documentation for the new `OnSpecificSlotsUpdated(sourceSlot, targetSlot)` event.
@@ -539,21 +522,7 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
 
-## [Current/Recent] - Resolved Broken Click Events in Auxiliary Views
-This update resolves issues where left-click and right-click events were not functioning correctly or triggering unintended behaviors in auxiliary views like Forge and Salvage after the drag-and-drop refactor.
-
-### 1. Updated Contextual Right-Click Logic
-* Added an `InventoryInteractionContext.Forge` state.
-* `PlayerInventoryView` now routes right-clicks on main inventory items to a new `OnRequestSendToForge` event when the Forge context is active, standardizing the universal fast-action interaction pattern.
-
-### 2. Fixed Proxy Slot Clearing
-* Removed legacy `MouseUpEvent` bindings on ignored UI Toolkit roots in `ForgeSubView` and `SalvageSubView`.
-* Disconnected proxy slots (`salvage-input`, `forge-slot-1`, `forge-slot-2`) from the global `OnItemClicked` event bus to prevent infinite proxy-spawning loops.
-* Bound both left-click and right-click actions on proxy slots directly to local `ClearSlot` methods, allowing players to easily remove items from the Forge/Salvage areas.
-
----
-
-## [Previous] - UI Inventory Events Compilation Fix
+## [Current/Recent] - UI Inventory Events Compilation Fix
 This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by exceeding the maximum number of type arguments supported by `UnityAction`.
 
 ### 1. Fixed `OnRequestMoveItem` Delegate

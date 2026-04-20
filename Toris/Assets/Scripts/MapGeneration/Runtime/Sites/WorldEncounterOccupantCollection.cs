@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public sealed class WorldEncounterOccupantCollection<TEnemy> where TEnemy : Enemy
 {
     private readonly List<TEnemy> tracked = new();
-    private readonly Dictionary<TEnemy, Action<Enemy>> despawnHandlers = new();
+    private readonly Dictionary<TEnemy, Action<Enemy>> releaseHandlers = new();
 
     public int Count
     {
@@ -15,24 +15,25 @@ public sealed class WorldEncounterOccupantCollection<TEnemy> where TEnemy : Enem
         }
     }
 
-    public void Track(TEnemy enemy, Action<TEnemy> onDespawned)
+    public void Track(TEnemy enemy, Action<TEnemy> onReleased)
     {
         if (enemy == null || tracked.Contains(enemy))
             return;
 
         tracked.Add(enemy);
 
-        Action<Enemy> handler = spawnedEnemy =>
+        Action<Enemy> handler = releasedEnemy =>
         {
-            TEnemy typedEnemy = spawnedEnemy as TEnemy;
+            TEnemy typedEnemy = releasedEnemy as TEnemy;
             if (typedEnemy == null)
                 return;
 
             Untrack(typedEnemy);
-            onDespawned?.Invoke(typedEnemy);
+            onReleased?.Invoke(typedEnemy);
         };
 
-        despawnHandlers.Add(enemy, handler);
+        releaseHandlers.Add(enemy, handler);
+        enemy.Died += handler;
         enemy.Despawned += handler;
     }
 
@@ -41,10 +42,11 @@ public sealed class WorldEncounterOccupantCollection<TEnemy> where TEnemy : Enem
         if (enemy == null)
             return;
 
-        if (despawnHandlers.TryGetValue(enemy, out Action<Enemy> handler))
+        if (releaseHandlers.TryGetValue(enemy, out Action<Enemy> handler))
         {
+            enemy.Died -= handler;
             enemy.Despawned -= handler;
-            despawnHandlers.Remove(enemy);
+            releaseHandlers.Remove(enemy);
         }
 
         tracked.Remove(enemy);
@@ -99,13 +101,15 @@ public sealed class WorldEncounterOccupantCollection<TEnemy> where TEnemy : Enem
 
     public void Clear()
     {
-        foreach (KeyValuePair<TEnemy, Action<Enemy>> pair in despawnHandlers)
+        foreach (KeyValuePair<TEnemy, Action<Enemy>> pair in releaseHandlers)
         {
+            if (pair.Key != null)
+                pair.Key.Died -= pair.Value;
             if (pair.Key != null)
                 pair.Key.Despawned -= pair.Value;
         }
 
-        despawnHandlers.Clear();
+        releaseHandlers.Clear();
         tracked.Clear();
     }
 }

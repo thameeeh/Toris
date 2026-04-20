@@ -14,6 +14,11 @@ namespace OutlandHaven.Inventory
         {
             return null;
         }
+
+        public virtual string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
+        {
+            return null;
+        }
     }
 
 }

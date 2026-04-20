@@ -30,7 +30,7 @@ The reward split for first pass should be:
 - `xp`
   - granted instantly on enemy death
 
-So the “plop out of the enemy” feeling is reserved for item loot.
+So the "plop out of the enemy" feeling is reserved for item loot.
 
 Gold and XP are still enemy rewards, but they are not world pickups.
 
@@ -43,6 +43,27 @@ That means:
 - Wolf A and Wolf B can produce different outcomes
 - each item entry is rolled at death time
 - multiple different items can drop from the same enemy if multiple entries succeed
+
+### Loot Quantity vs Inventory Stack Size
+
+Loot tables and item assets should not be treated as duplicate quantity systems.
+
+- `loot tables`
+  - decide how many items drop from an enemy
+- `InventoryItemSO.MaxStackSize`
+  - decides how many identical items can share one inventory slot
+
+That means:
+
+- if a wolf drops `3` flowers, that is a loot-table decision
+- whether those `3` flowers occupy one slot or several is an inventory-stackability decision
+
+This matters especially for stateful items.
+
+Example:
+
+- a multi-charge consumable should normally use `MaxStackSize = 1`
+- if you want more than one to drop, that should come from the loot table quantity range, not by making the item stackable in a way the runtime use rules reject
 
 ### Enemy Ownership
 
@@ -253,7 +274,7 @@ The intended runtime flow should be:
 
 1. enemy dies
 2. enemy `Died` event fires
-3. loot driver resolves the enemy’s assigned loot table
+3. loot driver resolves the enemy's assigned loot table
 4. item entries are rolled independently
 5. successful item entries spawn `WorldItem` drops around the corpse
 6. gold is rolled and added instantly

@@ -584,17 +584,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   m_PrefabInstance: {fileID: 740543133}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &444552524 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-  m_PrefabInstance: {fileID: 740543133}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
 --- !u!114 &444552532 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4459608157227879889, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
@@ -967,10 +956,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _equipmentInventory
+      value: 
+      objectReference: {fileID: 1526680095}
     - target: {fileID: 1738574752484829038, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _equipment
       value: 
-      objectReference: {fileID: 444552524}
+      objectReference: {fileID: 0}
     - target: {fileID: 1738574752484829038, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _poolManager
       value: 

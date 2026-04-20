@@ -37,12 +37,21 @@ namespace OutlandHaven.Inventory
         [Tooltip("Cooldown in seconds before this item can be used again.")]
         public float CooldownDuration = 1.5f;
 
-        [Tooltip("How many times can this item be used before it is destroyed?")]
+        [Tooltip("How many times can this item be used before it is destroyed? If this is greater than 1, the item should not stack in inventory.")]
         public int MaxCharges = 1;
 
         public override ItemComponentState CreateInitialState()
         {
             return new ConsumableState(MaxCharges);
+        }
+
+        public override string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
+        {
+            if (MaxCharges <= 1 || maxStackSize <= 1)
+                return null;
+
+            string itemName = owner != null ? owner.ItemName : "Unknown Item";
+            return $"[InventoryItemSO] '{itemName}' uses MaxCharges={MaxCharges} and should not stack in inventory. Set MaxStackSize to 1. Loot tables control drop quantity; MaxStackSize only controls how many copies fit in one inventory slot.";
         }
     }
 

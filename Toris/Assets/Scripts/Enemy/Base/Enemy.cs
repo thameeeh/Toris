@@ -37,6 +37,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     // pooling
     public Enemy OriginalPrefab { get; private set; }
     public IEnemyPool OwningPool { get; private set; }
+    [Header("Loot")]
+    [SerializeField] private EnemyLootTableSO lootTable;
 
     public EnemyLoadout ActiveLoadout { get; private set; }
     public Transform SpawnPoint { get; private set; }
@@ -49,6 +51,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private Collider2D[] _cachedColliders = Array.Empty<Collider2D>();
     private bool[] _cachedColliderEnabledStates = Array.Empty<bool>();
     private bool _collidersDisabledForDeath;
+    private bool _hasResolvedDeathLoot;
 
     public event Action<Enemy> Died;
     public event Action<Enemy> Despawned;
@@ -56,6 +59,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
+    private PlayerProgression _playerProgression;
+    public EnemyLootTableSO LootTable => lootTable;
     protected virtual void Awake()
     {
         StateMachine = new EnemyStateMachine();
@@ -83,6 +88,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
             _player.TryGetComponent(out _playerDamageReceiver);
             if (ShouldBindScenePlayerTransform(playerTransform))
                 playerTransform = _player.transform;
+
+            if (playerTransform != null)
+                playerTransform.TryGetComponent(out _playerProgression);
         }
     }
 
@@ -124,6 +132,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         //Debug.Log("Dead");
         if (CurrentHealth > 0f) return;
         DisableCollidersForDeath();
+        TryResolveDeathLoot();
         Died?.Invoke(this);
     }
 
@@ -217,6 +226,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public virtual void OnSpawned()
     {
         _isReleasing = false;
+        _hasResolvedDeathLoot = false;
         RestoreCachedColliderStates();
         CurrentHealth = MaxHealth;
         IsAggroed = false;
@@ -254,6 +264,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         AlwaysAggroed = false;
         CurrentHealth = MaxHealth;
         ActiveLoadout = null;
+        _hasResolvedDeathLoot = false;
     }
 
     public void RegisterStatusEffect(IStatusEffect effect)
@@ -338,6 +349,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         }
 
         _collidersDisabledForDeath = false;
+    }
+
+    private void TryResolveDeathLoot()
+    {
+        if (_hasResolvedDeathLoot)
+            return;
+
+        _hasResolvedDeathLoot = true;
+        EnemyLootRuntime.ResolveDeathLoot(this, _playerProgression);
     }
 
     #endregion

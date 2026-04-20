@@ -16,12 +16,7 @@ public class InventoryActionController : MonoBehaviour
 
     private void Awake()
     {
-        if (_playerStats == null)
-            TryGetComponent(out _playerStats);
-
-        if (_playerEffectSourceController == null)
-            TryGetComponent(out _playerEffectSourceController);
-
+        ResolveRuntimeReferences();
         EnsureConsumableController();
     }
 
@@ -32,6 +27,8 @@ public class InventoryActionController : MonoBehaviour
 
     private void OnEnable()
     {
+        ResolveRuntimeReferences();
+
         if (_uiInventoryEvents == null)
             return;
 
@@ -57,6 +54,8 @@ public class InventoryActionController : MonoBehaviour
 
     private void HandleRequestUse(InventorySlot slot)
     {
+        ResolveRuntimeReferences();
+
         if (slot == null || slot.IsEmpty || slot.HeldItem?.BaseItem == null)
             return;
 
@@ -192,13 +191,34 @@ public class InventoryActionController : MonoBehaviour
 
     private void EnsureConsumableController()
     {
-        if (_consumableController != null)
+        if (_consumableController == null)
+        {
+            _consumableController = new PlayerConsumableController(
+                _uiInventoryEvents,
+                _playerStatsAnchor,
+                _playerStats,
+                _playerEffectSourceController);
             return;
+        }
 
-        _consumableController = new PlayerConsumableController(
-            _uiInventoryEvents,
+        _consumableController.Rebind(
             _playerStatsAnchor,
             _playerStats,
             _playerEffectSourceController);
+    }
+
+    private void ResolveRuntimeReferences()
+    {
+        _playerInventory = PlayerInventorySceneResolver.ResolvePlayerInventory(this, _playerInventory);
+        _equipmentInventory = PlayerInventorySceneResolver.ResolveEquipmentInventory(this, _equipmentInventory, _playerInventory);
+
+        if (_playerStats == null)
+            TryGetComponent(out _playerStats);
+
+        if (_playerEffectSourceController == null)
+            TryGetComponent(out _playerEffectSourceController);
+
+        _playerStatsAnchor = PlayerInventorySceneResolver.ResolvePlayerStatsAnchor(_playerStatsAnchor);
+        EnsureConsumableController();
     }
 }

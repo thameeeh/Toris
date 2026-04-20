@@ -11,9 +11,9 @@ namespace OutlandHaven.Inventory
         private const string TIMED_CONSUMABLE_SOURCE_PREFIX = "ConsumableTimed_";
 
         private readonly UIInventoryEventsSO _uiInventoryEvents;
-        private readonly PlayerStatsAnchorSO _playerStatsAnchor;
-        private readonly PlayerStats _playerStatsFallback;
-        private readonly PlayerEffectSourceController _playerEffectSourceController;
+        private PlayerStatsAnchorSO _playerStatsAnchor;
+        private PlayerStats _playerStatsFallback;
+        private PlayerEffectSourceController _playerEffectSourceController;
         private readonly Dictionary<InventoryItemSO, float> _nextUseByItem = new();
         private readonly Dictionary<string, float> _timedConsumableExpirations = new();
         private readonly List<string> _expiredTimedConsumableKeys = new();
@@ -25,6 +25,16 @@ namespace OutlandHaven.Inventory
             PlayerEffectSourceController playerEffectSourceController)
         {
             _uiInventoryEvents = uiInventoryEvents;
+            _playerStatsAnchor = playerStatsAnchor;
+            _playerStatsFallback = playerStatsFallback;
+            _playerEffectSourceController = playerEffectSourceController;
+        }
+
+        public void Rebind(
+            PlayerStatsAnchorSO playerStatsAnchor,
+            PlayerStats playerStatsFallback,
+            PlayerEffectSourceController playerEffectSourceController)
+        {
             _playerStatsAnchor = playerStatsAnchor;
             _playerStatsFallback = playerStatsFallback;
             _playerEffectSourceController = playerEffectSourceController;
@@ -67,7 +77,9 @@ namespace OutlandHaven.Inventory
 
             if (state != null && state.CurrentCharges > 1 && slot.Count > 1)
             {
-                Debug.LogWarning($"[PlayerConsumableController] Refusing to use stacked charged consumable '{item.BaseItem.ItemName}'. Multi-charge consumables should not stack.");
+                Debug.LogWarning(
+                    $"[PlayerConsumableController] Refusing to use stacked charged consumable '{item.BaseItem.ItemName}'. " +
+                    "If MaxCharges > 1, set InventoryItemSO.MaxStackSize to 1. Loot tables control drop quantity; MaxStackSize only controls per-slot inventory stacking.");
                 return false;
             }
 
@@ -109,6 +121,21 @@ namespace OutlandHaven.Inventory
                 return false;
 
             state = item.GetState<ConsumableState>();
+            if (state == null)
+            {
+                if (item.States == null)
+                    item.States = new List<ItemComponentState>();
+
+                state = new ConsumableState(Mathf.Max(1, consumable.MaxCharges));
+                item.States.Add(state);
+                item.NotifyStateChanged();
+
+                Debug.LogWarning(
+                    $"[PlayerConsumableController] Repaired missing ConsumableState for '{item.BaseItem.ItemName}'. " +
+                    "This item instance was missing runtime charge state and has been reset to its authored MaxCharges.",
+                    _playerEffectSourceController);
+            }
+
             return true;
         }
 

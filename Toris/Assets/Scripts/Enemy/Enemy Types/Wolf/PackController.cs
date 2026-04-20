@@ -43,6 +43,7 @@ public class PackController : MonoBehaviour
     {
         Wolf leader = ResolveLeader(requester);
         if (leader == null) return false;
+        if (!IsWolfAliveAndActive(leader)) return false;
         if (!leader.CanHowl) return false;
         if (Time.time < _lastHowlTimestamp + howlCooldownDuration) return false;
         if (GetActiveMinionCount() >= maxPackSize) return false;
@@ -59,7 +60,7 @@ public class PackController : MonoBehaviour
 
     public int GetActiveMinionCount()
     {
-        activeMinions.RemoveAll(m => m == null);
+        activeMinions.RemoveAll(m => !IsWolfAliveAndActive(m));
         return activeMinions.Count;
     }
 
@@ -94,8 +95,10 @@ public class PackController : MonoBehaviour
 
             CopyLeaderHomeToMinion(newMinion);
 
-            newMinion.Despawned -= OnMinionDespawned;
-            newMinion.Despawned += OnMinionDespawned;
+            newMinion.Died -= OnMinionReleased;
+            newMinion.Died += OnMinionReleased;
+            newMinion.Despawned -= OnMinionReleased;
+            newMinion.Despawned += OnMinionReleased;
 
             activeMinions.Add(newMinion);
 
@@ -163,6 +166,23 @@ public class PackController : MonoBehaviour
         var wolf = enemy as Wolf;
         if (wolf == null) return;
         activeMinions.Remove(wolf);
+    }
+
+    private void OnMinionReleased(Enemy enemy)
+    {
+        if (enemy == null)
+            return;
+
+        enemy.Died -= OnMinionReleased;
+        enemy.Despawned -= OnMinionReleased;
+        OnMinionDespawned(enemy);
+    }
+
+    private static bool IsWolfAliveAndActive(Wolf wolf)
+    {
+        return wolf != null
+               && wolf.gameObject.activeInHierarchy
+               && wolf.CurrentHealth > 0f;
     }
 
     private void CopyLeaderHomeToMinion(Wolf newMinion)

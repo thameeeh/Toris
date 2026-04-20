@@ -22,16 +22,7 @@ namespace OutlandHaven.Inventory
 
         private void Awake()
         {
-            // Failsafe: If the designer forgot to assign it in the Inspector, try to find it automatically.
-            if (_myInventoryManager == null)
-            {
-                _myInventoryManager = GetComponentInParent<InventoryManager>();
-            }
-
-            if (_myInventoryManager == null)
-            {
-                Debug.LogError("ItemPicker cannot find an InventoryManager on the Player!");
-            }
+            ResolveRuntimeReferences(logErrors: true);
         }
 
         private void OnValidate()
@@ -40,28 +31,39 @@ namespace OutlandHaven.Inventory
             {
                 Debug.LogError($"<b><color=red>[ItemPicker]</color></b> is missing ItemPickEventSO on GameObject: <b>{name}<b>", this);
             }
+
+            if (!gameObject.scene.IsValid())
+                return;
+
             if (_myInventoryManager == null)
             {
-                Debug.LogWarning($"<b><color=yellow>[InventoryManager]</color></b> is missing InventoryManager on GameObject: <b>{name}<b>", this);
+                Debug.LogWarning($"<b><color=yellow>[InventoryManager]</color></b> is not assigned on GameObject: <b>{name}</b>. ItemPicker will try to auto-resolve the player inventory at runtime.", this);
             }
             if (_interactionUI == null)
             {
-                Debug.LogError($"<b><color=teal>[InteractionUI]</color></b> is missing InteractionPromptUI on GameObject: <b>{name}<b>", this);
+                Debug.LogWarning($"<b><color=teal>[InteractionUI]</color></b> is not assigned on GameObject: <b>{name}</b>. ItemPicker will try to auto-resolve the prompt UI at runtime.", this);
             }
         }
 
         private void OnEnable()
         {
-            _itemPickerSO.OnItemPick += PickItem;
+            if (_itemPickerSO != null)
+                _itemPickerSO.OnItemPick += PickItem;
         }
 
         private void OnDisable()
         {
-            _itemPickerSO.OnItemPick -= PickItem;
+            if (_itemPickerSO != null)
+                _itemPickerSO.OnItemPick -= PickItem;
         }
 
         void Update()
         {
+            ResolveRuntimeReferences();
+
+            if (_interactionUI == null)
+                return;
+
             // CONSTANTLY scan items for UI
             FindBestInteractable();
 
@@ -83,17 +85,27 @@ namespace OutlandHaven.Inventory
         {
             if (_currentSelection == null) return;
 
+            ResolveRuntimeReferences(logErrors: true);
+            if (_myInventoryManager == null)
+                return;
+
             bool picked = _currentSelection.Interact(_myInventoryManager);
 
             if (picked)
             {
                 _currentSelection = null;
-                _interactionUI.Hide();
+                _interactionUI?.Hide();
             }
         }
 
         private void FindBestInteractable()
         {
+            if (_interactionPoint == null)
+            {
+                _currentSelection = null;
+                return;
+            }
+
             Collider2D[] hits = Physics2D.OverlapCircleAll(_interactionPoint.position, _radius, _layerMask);
 
             IContainerInteractable closest = null;
@@ -117,6 +129,25 @@ namespace OutlandHaven.Inventory
             }
 
             _currentSelection = closest;
+        }
+
+        private void ResolveRuntimeReferences(bool logErrors = false)
+        {
+            _myInventoryManager = PlayerInventorySceneResolver.ResolvePlayerInventory(this, _myInventoryManager);
+            _interactionUI = PlayerInventorySceneResolver.ResolveInteractionPrompt(_interactionUI);
+
+            if (!logErrors)
+                return;
+
+            if (_myInventoryManager == null)
+            {
+                Debug.LogError("ItemPicker cannot resolve a player InventoryManager in the current scene.", this);
+            }
+
+            if (_interactionUI == null)
+            {
+                Debug.LogError("ItemPicker cannot resolve an InteractionPromptUI in the current scene.", this);
+            }
         }
     }
 

@@ -22,10 +22,10 @@ MonoBehaviour:
   blocksMovement: 1
   movementLockDuration: 0.35
   maxTargetRange: 8
-  zoneRadius: 2
-  rainDuration: 3
+  zoneRadius: 4
+  rainDuration: 6
   initialStrikeDelay: 0.05
-  strikeInterval: 0.15
+  strikeInterval: 0.02
   guaranteeCenterStrike: 1
   impactRadius: 0.9
   damagePerStrike: 50

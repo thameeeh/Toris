@@ -35,6 +35,8 @@ namespace OutlandHaven.Inventory
                     LiveSlots.RemoveAt(LiveSlots.Count - 1);
                 }
             }
+
+            EnsureSlotItemStates();
         }
 
 #if UNITY_EDITOR
@@ -79,6 +81,9 @@ namespace OutlandHaven.Inventory
                         }
                     }
                 }
+
+                EnsureSlotItemStates();
+                ValidateSceneSlotStacking();
             }
         }
 #endif
@@ -210,5 +215,76 @@ namespace OutlandHaven.Inventory
             }
             return space;
         }
+
+        private void EnsureSlotItemStates()
+        {
+            if (LiveSlots == null)
+                return;
+
+            for (int i = 0; i < LiveSlots.Count; i++)
+            {
+                InventorySlot slot = LiveSlots[i];
+                if (slot == null || slot.IsEmpty || slot.HeldItem?.BaseItem == null)
+                    continue;
+
+                EnsureItemInstanceStates(slot.HeldItem);
+            }
+        }
+
+        private static void EnsureItemInstanceStates(ItemInstance itemInstance)
+        {
+            if (itemInstance == null || itemInstance.BaseItem == null || itemInstance.BaseItem.Components == null)
+                return;
+
+            if (itemInstance.States == null)
+                itemInstance.States = new List<ItemComponentState>();
+
+            for (int i = 0; i < itemInstance.BaseItem.Components.Count; i++)
+            {
+                ItemComponent component = itemInstance.BaseItem.Components[i];
+                if (component == null)
+                    continue;
+
+                ItemComponentState initialState = component.CreateInitialState();
+                if (initialState == null)
+                    continue;
+
+                bool hasMatchingState = false;
+                for (int stateIndex = 0; stateIndex < itemInstance.States.Count; stateIndex++)
+                {
+                    ItemComponentState existingState = itemInstance.States[stateIndex];
+                    if (existingState != null && existingState.GetType() == initialState.GetType())
+                    {
+                        hasMatchingState = true;
+                        break;
+                    }
+                }
+
+                if (!hasMatchingState)
+                    itemInstance.States.Add(initialState);
+            }
+        }
+
+#if UNITY_EDITOR
+        private void ValidateSceneSlotStacking()
+        {
+            if (!gameObject.scene.IsValid() || LiveSlots == null)
+                return;
+
+            for (int i = 0; i < LiveSlots.Count; i++)
+            {
+                InventorySlot slot = LiveSlots[i];
+                if (slot == null || slot.IsEmpty || slot.HeldItem?.BaseItem == null || slot.Count <= 1)
+                    continue;
+
+                if (!slot.HeldItem.BaseItem.TryGetStackingValidationMessage(out string validationMessage))
+                    continue;
+
+                Debug.LogWarning(
+                    $"[InventoryManager] Slot {i} on '{name}' contains Count={slot.Count} for '{slot.HeldItem.BaseItem.ItemName}'. {validationMessage}",
+                    this);
+            }
+        }
+#endif
     }
 }

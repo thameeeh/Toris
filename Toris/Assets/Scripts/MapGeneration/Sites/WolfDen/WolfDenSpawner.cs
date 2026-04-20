@@ -298,6 +298,9 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         if (w == leader)
         {
+            if (pack != null)
+                pack.MinionSpawned -= OnPackMinionSpawned;
+
             leader = null;
             pack = null;
             respawnTimer = 0f;

@@ -26,3 +26,6 @@ MonoBehaviour:
   clearVisualsWidth: 20
   clearVisualsHeight: 20
   tileLayoutDefinition: {fileID: 11400000, guid: 8396d4f5a3cc4c11b31b0d3f2cb645ef, type: 2}
+  tileLayoutVariants:
+  - {fileID: 11400000, guid: a5bcf6cff5baf2c4b9df58ebbe541e0d, type: 2}
+  - {fileID: 11400000, guid: 7246dd04be552f8488c27329d2e8bb52, type: 2}

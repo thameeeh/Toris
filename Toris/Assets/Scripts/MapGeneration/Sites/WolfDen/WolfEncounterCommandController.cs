@@ -75,6 +75,12 @@ public sealed class WolfEncounterCommandController
         if (leader == null)
             return false;
 
+        if (leader.CurrentHealth <= 0f)
+            return false;
+
+        if (!leader.gameObject.activeInHierarchy)
+            return false;
+
         if (!leader.CanHowl)
             return false;
 

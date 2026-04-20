@@ -1,0 +1,348 @@
+fileFormatVersion: 2
+guid: ac8414ebdd610174e8a9932209ae43d7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1565060628970508659
+    second: harbour_1_50percent_13percent_0
+  - first:
+      213: 2407199586914536229
+    second: harbour_1_50percent_13percent_1
+  - first:
+      213: -1698296420067635605
+    second: harbour_1_50percent_13percent_2
+  - first:
+      213: -3571495326561545695
+    second: harbour_1_50percent_13percent_3
+  - first:
+      213: -5008227310193249858
+    second: harbour_1_50percent_13percent_4
+  - first:
+      213: 922545314771245457
+    second: harbour_1_50percent_13percent_5
+  - first:
+      213: 6851183211729310925
+    second: harbour_1_50percent_13percent_6
+  - first:
+      213: 8849434100582566713
+    second: harbour_1_50percent_13percent_7
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 34
+        height: 26
+      alignment: 9
+      pivot: {x: 0.47677192, y: 0.5708753}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8e634666a9c74ae0800000000000000
+      internalID: -1565060628970508659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_1
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 76
+        width: 35
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5000001, y: 0.6272382}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b02893547186120800000000000000
+      internalID: 2407199586914536229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_2
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 81
+        width: 30
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5175502, y: 0.31572387}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6e0d8667607e68e0800000000000000
+      internalID: -1698296420067635605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 41
+        width: 35
+        height: 35
+      alignment: 9
+      pivot: {x: 0.5150429, y: 0.7068405}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 122d45f4cef7f6ec0800000000000000
+      internalID: -3571495326561545695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_4
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 38
+        width: 33
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb1758dcbc33f7ab0800000000000000
+      internalID: -5008227310193249858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 40
+        width: 33
+        height: 30
+      alignment: 9
+      pivot: {x: 0.49202266, y: 0.267461}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1991420731a8dcc00800000000000000
+      internalID: 922545314771245457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_6
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 14
+        width: 30
+        height: 19
+      alignment: 9
+      pivot: {x: 0.49122486, y: 0.44457877}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc4de3af4da441f50800000000000000
+      internalID: 6851183211729310925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_7
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 5
+        width: 33
+        height: 32
+      alignment: 9
+      pivot: {x: 0.51994324, y: 0.175049}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93bc37c9d618fca70800000000000000
+      internalID: 8849434100582566713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_8
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 3
+        width: 35
+        height: 33
+      alignment: 9
+      pivot: {x: 0.51866084, y: 0.38877276}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2040e0f457913ec4c9181b36be65525c
+      internalID: 550181336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 75258a4d83f9b8d429b6673ced1a9328
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      harbour_1_50percent_13percent_0: -1565060628970508659
+      harbour_1_50percent_13percent_1: 2407199586914536229
+      harbour_1_50percent_13percent_2: -1698296420067635605
+      harbour_1_50percent_13percent_3: -3571495326561545695
+      harbour_1_50percent_13percent_4: -5008227310193249858
+      harbour_1_50percent_13percent_5: 922545314771245457
+      harbour_1_50percent_13percent_6: 6851183211729310925
+      harbour_1_50percent_13percent_7: 8849434100582566713
+      harbour_1_50percent_13percent_8: 550181336
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

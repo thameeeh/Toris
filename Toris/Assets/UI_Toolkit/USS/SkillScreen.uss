@@ -1,6 +1,6 @@
 .skill-screen__root {
     flex-grow: 1;
-    background-color: var(--color-bg-dark);
+    background-color: rgb(30, 30, 35);
     flex-direction: row;
 }
 
@@ -47,26 +47,26 @@
 .skill-node__label {
     position: absolute;
     bottom: -30px;
-    color: var(--color-text-light);
-    font-size: var(--font-size-small);
+    color: rgb(220, 220, 220);
+    font-size: 14px;
     -unity-font-style: bold;
     white-space: nowrap;
 }
 
 .skill-node--unlocked {
-    background-color: var(--color-skill-unlocked-bg);
-    border-color: var(--color-skill-unlocked-border);
+    background-color: rgb(70, 150, 70);
+    border-color: rgb(100, 255, 100);
 }
 
 .skill-node--available {
-    background-color: var(--color-skill-available-bg);
-    border-color: var(--color-skill-available-border);
+    background-color: rgb(150, 150, 70);
+    border-color: rgb(255, 255, 100);
     cursor: link;
 }
 
 .skill-node--locked {
-    background-color: var(--color-skill-locked-bg);
-    border-color: var(--color-skill-locked-border);
+    background-color: rgb(50, 50, 50);
+    border-color: rgb(80, 80, 80);
     opacity: 0.6;
 }
 
@@ -110,7 +110,7 @@
 
 .info-text-body {
     font-size: var(--font-size-body);
-    color: var(--color-text-dim);
+    color: rgb(200, 200, 200);
     margin-bottom: 15px;
 }
 
@@ -121,16 +121,16 @@
     -unity-font-style: bold;
     
     /* Override standard button colors for a 'Purchase' feel */
-    background-color: var(--color-btn-unlock-bg);
-    border-color: var(--color-btn-unlock-border);
+    background-color: rgb(45, 75, 45); 
+    border-color: rgb(100, 200, 100);
     border-width: 2px;
     border-radius: 8px;
-    color: var(--color-text-light);
+    color: rgb(255, 255, 255);
 }
 
 .skill-unlock-btn:hover {
-    background-color: var(--color-btn-unlock-hover-bg);
-    border-color: var(--color-btn-unlock-hover-border);
+    background-color: rgb(60, 100, 60);
+    border-color: rgb(130, 255, 130);
     scale: 1.02; /* Slightly smaller scale than standard buttons to feel more grounded */
 }
 
@@ -138,16 +138,9 @@
    This automatically applies when C# calls _unlockButton.SetEnabled(false) 
 */
 .skill-unlock-btn:disabled {
-    background-color: var(--color-btn-disabled-bg);
-    border-color: var(--color-btn-disabled-border);
-    color: var(--color-text-disabled);
+    background-color: rgb(35, 35, 35);
+    border-color: rgb(60, 60, 60);
+    color: rgb(120, 120, 120);
     opacity: 0.7;
     scale: 1; /* Prevents the button from scaling if they somehow hover while disabled */
-}
-.info-text-desc {
-    white-space: normal;
-}
-
-.skill-node {
-    flex-shrink: 0;
 }

@@ -29,22 +29,3 @@
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
-.shop-gold-container {
-    flex-direction: row;
-    align-items: center;
-}
-
-.shop-gold-label {
-    font-size: var(--font-size-body);
-    color: var(--color-coin-gold);
-    -unity-font-style: bold;
-}
-
-.shop-gold-amount {
-    font-size: var(--font-size-body);
-    color: var(--color-text-light);
-}
-
-.shop-scroll-view {
-    flex-grow: 1;
-}

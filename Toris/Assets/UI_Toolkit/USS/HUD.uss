@@ -1,5 +1,5 @@
 /* --- Root & Layout Containers --- */
-.hud-screen {
+#hud__screen {
     flex-grow: 1;
     justify-content: flex-end;
     padding-bottom: 20px;
@@ -7,28 +7,28 @@
     padding-right: 20px;
 }
 
-.hud-bottom-section {
+#hud__bottom-section {
     flex-direction: row;
     align-items: flex-end;
     width: 100%;
     height: 150px;
 }
 
-.hud-left-container {
+#hud__left-container {
     width: 300px;
     margin-right: auto;
     flex-shrink: 1;
     flex-grow: 0.1;
 }
 
-.hud-right-container {
+#hud__right-container {
     width: 300px;
     margin-left: auto;
     align-items: flex-end;
 }
 
 /* --- Menu Button & Container --- */
-.hud-menu-section {
+#hud__menu-section {
     flex-grow: 0;
     align-items: flex-start;
     flex-direction: column-reverse;
@@ -50,7 +50,7 @@
     left: 0;
     padding-bottom: 10px;
     align-items: center;
-    background-color: var(--color-bg-hud-menu);
+    background-color: rgba(0, 0, 0, 0.57);
 }
 
 .hud-menu-icon {
@@ -63,10 +63,10 @@
 .HUD {
     color: var(--color-text-light);
     -unity-font-style: bold;
-    font-size: var(--font-size-body); /* Slightly larger */
+    font-size: 22px; /* Slightly larger */
     letter-spacing: 2px; /* Gives it a premium feel */
     -unity-text-outline-width: 1.5px;
-    -unity-text-outline-color: var(--color-text-outline-dark); /* Dark outline makes it readable anywhere */
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8); /* Dark outline makes it readable anywhere */
 }
 
 .hud-label-xp {
@@ -74,12 +74,12 @@
     color: var(--color-xp); /* Match label to bar color */
 }
 
-.hud-gold-label {
+#hud__gold-label {
     color: var(--color-coin-gold);
-    font-size: var(--font-size-h3);
+    font-size: 24px;
     -unity-font-style: bold;
     -unity-text-outline-width: 1.5px;
-    -unity-text-outline-color: var(--color-text-outline-dark);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
 }
 
 /* --- Bars & Containers --- */
@@ -99,9 +99,9 @@
 }
 
 /* Base sizing for the bars */
-.hud-xp-bar { flex-grow: 1; height: 15px; } /* Thinner XP bar */
-.hud-health-bar { flex-grow: 1; height: 35px; } /* Thicker Health bar */
-.hud-mana-bar { width: 100%; height: 30px; }
+#hud__xp-bar { flex-grow: 1; height: 15px; } /* Thinner XP bar */
+#hud__health-bar { flex-grow: 1; height: 35px; } /* Thicker Health bar */
+#hud__mana-bar { width: 100%; height: 30px; }
 
 /* THE UPGRADE: Styling the container and the fill 
 */
@@ -119,8 +119,8 @@
 
 /* 3. The empty background container */
 .unity-progress-bar__background {
-    background-color: var(--color-bg-bar-bg);
-    border-color: var(--color-border-bar);
+    background-color: rgba(15, 15, 15, 0.9);
+    border-color: rgba(0, 0, 0, 1);
     border-width: 2px;
     border-radius: 8px; /* Beautiful rounded corners */
     overflow: hidden; /* Essential: Keeps the fill from spilling out of the rounded corners */
@@ -133,48 +133,6 @@
 }
 
 /* 5. The Colors */
-.hud-xp-bar .unity-progress-bar__progress { background-color: var(--color-xp); }
-.hud-health-bar .unity-progress-bar__progress { background-color: var(--color-health); }
-.hud-mana-bar .unity-progress-bar__progress { background-color: var(--color-mana); }
-/* --- Menu Button Template --- */
-.hud-menu-btn-root {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 160px;
-    height: 40px;
-    margin-bottom: 5px;
-    background-color: var(--color-bg-dark);
-    border-width: 1px;
-    border-color: var(--color-border-default);
-    border-radius: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.hud-menu-btn-icon-container {
-    flex-direction: row;
-    align-items: center;
-}
-
-.hud-menu-btn-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    background-color: transparent;
-}
-
-.hud-menu-btn-label {
-    color: var(--color-text-light);
-    -unity-font-style: bold;
-    font-size: var(--font-size-small);
-}
-
-.hud-menu-btn-shortcut {
-    color: var(--color-text-dim); /* Keeping this color for now, since we only have --color-text-light */
-    font-size: var(--font-size-small);
-}
-
-.hud-menu-tab {
-    background-image: url("project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&guid=065e66474324a9f459577583dff2a17e&type=3#Compass");
-}
+#hud__xp-bar .unity-progress-bar__progress { background-color: var(--color-xp); }
+#hud__health-bar .unity-progress-bar__progress { background-color: var(--color-health); }
+#hud__mana-bar .unity-progress-bar__progress { background-color: var(--color-mana); }

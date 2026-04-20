@@ -63,7 +63,6 @@ namespace OutlandHaven.UIToolkit
                 if (_shopTemplate != null)
                 {
                     TemplateContainer shopInstance = _shopTemplate.Instantiate();
-                    shopInstance.style.flexGrow = 1;
                     _middlePanel.Add(shopInstance);
                     _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession, _playerHudBridge);
                     _shopSubView.Initialize();

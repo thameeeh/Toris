@@ -79,7 +79,6 @@ namespace OutlandHaven.UIToolkit
             if (_mageMainTemplate == null || _slotTemplate == null) return;
 
             TemplateContainer mageInstance = _mageMainTemplate.Instantiate();
-            mageInstance.style.flexGrow = 1;
 
             _view = new MageView(mageInstance, _slotTemplate, _shopTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopManagerSO, _bridge);
             _view.Initialize();

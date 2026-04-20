@@ -2,31 +2,31 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/HUD.uss?fileID=7433441132597879392&amp;guid=76aca9a85a7322240ba3777a79b12751&amp;type=3#HUD"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
-    <ui:VisualElement name="hud__screen" class="hud-screen">
-        <ui:VisualElement name="hud__menu-section" class="hud-menu-section">
-            <ui:Button name="hud__menu-tab" class="hud-menu-btn hud-menu-tab"/>
+    <ui:VisualElement name="hud__screen">
+        <ui:VisualElement name="hud__menu-section">
+            <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Compass.png?fileID=21300000&amp;guid=065e66474324a9f459577583dff2a17e&amp;type=3#Compass&quot;);"/>
             <ui:VisualElement name="hud__menu-options" class="hud-menu-container">
                 <ui:VisualElement class="hud-menu-icon"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="hud__bottom-section" class="hud-bottom-section">
-            <ui:VisualElement name="hud__left-container" class="hud-left-container">
+        <ui:VisualElement name="hud__bottom-section">
+            <ui:VisualElement name="hud__left-container">
                 <ui:Label text="Level" name="hud__level-label" class="HUD"/>
                 <ui:VisualElement class="hud-bar-row">
                     <ui:Label text="XP" class="HUD hud-label-xp"/>
-                    <ui:ProgressBar value="0" name="hud__xp-bar" class="hud-xp-bar"/>
+                    <ui:ProgressBar value="0" name="hud__xp-bar"/>
                 </ui:VisualElement>
                 <ui:VisualElement class="hud-bar-row">
                     <ui:Label text="Health" class="HUD"/>
-                    <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100" class="hud-health-bar"/>
+                    <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="hud__right-container" class="hud-right-container">
+            <ui:VisualElement name="hud__right-container">
                 <ui:VisualElement class="hud-bar-header">
                     <ui:Label text="Mana" class="HUD"/>
-                    <ui:Label text="Gold:" name="hud__gold-label" class="panel-tab-label hud-gold-label"/>
+                    <ui:Label text="Gold:" name="hud__gold-label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:ProgressBar value="20" name="hud__mana-bar" class="hud-mana-bar"/>
+                <ui:ProgressBar value="20" name="hud__mana-bar"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

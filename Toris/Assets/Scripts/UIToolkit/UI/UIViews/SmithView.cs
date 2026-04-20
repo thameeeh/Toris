@@ -99,7 +99,6 @@ namespace OutlandHaven.UIToolkit
                 if (_shopTemplate != null)
                 {
                     TemplateContainer shopInstance = _shopTemplate.Instantiate();
-                    shopInstance.style.flexGrow = 1;
                     _middlePanel.Add(shopInstance);
                     _shopSubView = new ShopSubView(shopInstance, _slotTemplate, _uiInventoryEvents, _gameSession, _playerHudBridge);
                     _shopSubView.Initialize();
@@ -125,7 +124,6 @@ namespace OutlandHaven.UIToolkit
                 if (_forgeTemplate != null)
                 {
                     TemplateContainer forgeInstance = _forgeTemplate.Instantiate();
-                    forgeInstance.style.flexGrow = 1;
                     _middlePanel.Add(forgeInstance);
                     _forgeSubView = new ForgeSubView(forgeInstance, _slotTemplate, _uiInventoryEvents, _craftingManager);
                     _forgeSubView.Initialize();
@@ -151,7 +149,6 @@ namespace OutlandHaven.UIToolkit
                 if (_salvageTemplate != null)
                 {
                     TemplateContainer salvageInstance = _salvageTemplate.Instantiate();
-                    salvageInstance.style.flexGrow = 1;
                     _middlePanel.Add(salvageInstance);
                     _salvageSubView = new SalvageSubView(salvageInstance, _slotTemplate, _uiInventoryEvents, _salvageManager);
                     _salvageSubView.Initialize();

@@ -15,8 +15,6 @@ MonoBehaviour:
   abilityName: Rambow
   icon: {fileID: 0}
   cooldownSeconds: 0
-  blocksBowDraw: 1
-  bowDrawLockDuration: 0.25
   killsRequired: 0
   shotsPerSecond: 12
   spreadDegrees: 3
@@ -26,3 +24,4 @@ MonoBehaviour:
   staminaPerShot: 8
   maxDuration: 10
   playReleaseAnimation: 1
+  useShortReleaseAnimation: 1

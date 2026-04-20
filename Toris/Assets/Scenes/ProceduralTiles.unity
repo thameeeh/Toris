@@ -346,7 +346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7709393319882614427, guid: 6c3f8a35cd05f8a49bcc4220d68f13e1, type: 3}
       propertyPath: orthographic size
-      value: 5.25
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1968,13 +1968,18 @@ MonoBehaviour:
   configuration: {fileID: 11400000, guid: 38b8c10c0b8948e47afcb20ab85d7799, type: 2}
   persistAcrossScenes: 0
   projectileRoot: {fileID: 0}
+  visualRoot: {fileID: 0}
   enemyRoot: {fileID: 0}
   defaultProjectilePrewarm: 0
   defaultProjectileCapacity: 16
   defaultProjectileMaxSize: 128
+  defaultVisualPrewarm: 0
+  defaultVisualCapacity: 16
+  defaultVisualMaxSize: 128
   defaultEnemyPrewarm: 0
   defaultEnemyCapacity: 8
   defaultEnemyMaxSize: 32
+  enemyWalkableSearchRadiusTiles: 6
 --- !u!1001 &424703103185275433
 PrefabInstance:
   m_ObjectHideFlags: 0

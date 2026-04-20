@@ -1,21 +1,23 @@
-# BowGuy Animator Implementation Notes
+# BowGuy Animator Implementation Guide
 
-This document records the BowGuy player animation setup that is now locked in on the current player runtime.
+Use this document as the working reference for the player bow animation setup.
 
-The earlier `ShootF` and `ShootS` path is no longer the baseline. The active system is built around authored `Draw`, `Hold`, and `Release` clips.
+The player bow flow should be built around authored `Draw`, `Hold`, and `Release` clips. Treat that as the standard BowGuy contract.
 
-## Current Goal
+## Purpose
 
-Keep the player bow flow readable, responsive, and decoupled:
+Use this setup to keep the bow readable, responsive, and easy to debug.
 
-* gameplay owns whether a shot is valid
-* animation owns how that state is shown
-* interrupt rules are explicit
-* directional sprite naming stays aligned with the authored BowGuy clips
+Follow these principles:
 
-## Active Clip Contract
+* let gameplay decide whether the shot is valid
+* let animation decide how that state is shown
+* keep interrupt behavior explicit
+* keep directional clip naming aligned with the BowGuy assets
 
-The current bow action set uses:
+## Clip Set
+
+Use these directional bow clips:
 
 * `BowGuyShootDraw_D`
 * `BowGuyShootDraw_L`
@@ -30,7 +32,7 @@ The current bow action set uses:
 * `BowGuyShootRelease_R`
 * `BowGuyShootRelease_U`
 
-The rest of the BowGuy directional body states remain:
+Keep the rest of the body states in the same directional naming style:
 
 * `BowGuyIdle_*`
 * `BowGuyRun_*`
@@ -41,41 +43,42 @@ The rest of the BowGuy directional body states remain:
 
 ## Runtime Ownership
 
-### Gameplay Owns
+### `PlayerBowController`
 
-`PlayerBowController` owns:
+Use `PlayerBowController` for gameplay authority:
 
-* draw start validation
-* cooldown checks
-* `nockTime` readiness
-* whether release fires a real arrow or becomes a dry cancel
-* movement lock while drawing and holding
-* draw cancellation on gameplay interrupts
-* directional muzzle selection and arrow spawn origin
+* validate draw start
+* check cooldown
+* evaluate `nockTime`
+* decide whether release fires a real arrow or becomes a dry cancel
+* lock and unlock movement while drawing
+* cancel draw on gameplay interrupts
+* choose the active directional muzzle
+* spawn projectiles
 
-### Presentation Bridge Owns
+### `PlayerAnimationPresenter`
 
-`PlayerAnimationPresenter` owns:
+Use `PlayerAnimationPresenter` as the presentation bridge:
 
-* listening to bow, dash, hurt, and death events
-* forwarding `DrawStarted`, `ShootReady`, `ShotReleased`, and `DryReleased`
-* canceling active draw on dash, hurt, and death before playing interrupt visuals
-* forwarding ability-triggered release playback
+* listen to bow, dash, hurt, and death events
+* forward `DrawStarted`, `ShootReady`, `ShotReleased`, and `DryReleased`
+* cancel active bow draw before playing higher-priority interrupt visuals
+* forward ability-triggered release playback
 
-### Animation Controller Owns
+### `PlayerAnimationController`
 
-`PlayerAnimationController` owns:
+Use `PlayerAnimationController` for animation-facing glue:
 
-* resolving directional BowGuy state names
-* playing `ShootDraw`, `ShootHold`, and `ShootRelease`
-* matching draw playback speed to gameplay `nockTime`
-* swapping directional shoot clips when aim direction changes during draw or hold
-* returning one-shot states back to locomotion
-* spawning directional dash particle playback
+* resolve directional BowGuy state names
+* play `ShootDraw`, `ShootHold`, and `ShootRelease`
+* match draw playback speed to gameplay `nockTime`
+* swap directional shoot clips while aiming during draw or hold
+* return one-shot states back to locomotion
+* spawn directional dash particle playback
 
-## Active Shoot Flow
+## Shoot Flow
 
-The current bow flow is:
+Follow this order:
 
 1. input starts draw
 2. `PlayerBowController` validates the attempt
@@ -87,88 +90,84 @@ The current bow flow is:
 8. release after ready fires a real arrow and plays `BowGuyShootRelease_*`
 9. release before ready becomes `DryReleased`
 
-This means the held bow pose is no longer a frozen frame inside a longer shoot clip. It is now a dedicated authored hold state.
+Use the `Hold` clip as a real authored state.
 
-## Decoupling Rules
+Do not treat the hold pose as a frozen frame inside a longer clip.
 
-The important split is:
+## Gameplay And Animation Rules
+
+Follow this split:
 
 * gameplay readiness comes from `BowSO.nockTime`
-* animation readiness is represented by the `Hold` clip
+* visual readiness is represented by the `Hold` clip
 
-Animation does not decide whether the shot is allowed.
+Keep shot authority in gameplay code.
 
-That was the main reason the old hold-frame approach felt brittle. The current setup keeps the visual hold stable while leaving shot authority in gameplay code.
+Do not let animation events decide whether the player is allowed to shoot.
 
 ## Interrupt Rules
 
-These rules are part of the current baseline:
+Treat these as baseline behavior:
 
 * dash cancels an active draw
 * hurt cancels an active draw
 * death cancels an active draw
 * releasing after a canceled draw does nothing
-* drawing is blocked while the player is dashing
-* drawing is blocked while an ability is actively occupying the bow
+* drawing is blocked while dashing
+* drawing is blocked while an ability is occupying the bow
 
-This makes draw cancellation behave like a dry cancel rather than a delayed shot.
+Use dry-cancel behavior for interrupted draws.
+
+Do not allow delayed shots to leak through after an interrupt.
 
 ## Ability Rules
 
-Bow-using abilities do not get special-case bow checks in `PlayerBowController`.
+Use a shared bow-blocking rule for abilities.
 
-Instead:
+Follow this structure:
 
 * `PlayerAbilityController` exposes `IsBowDrawBlocked`
 * ability runtimes decide whether they currently occupy the bow
-* the normal bow draw path simply checks that shared state
+* `PlayerBowController` checks that shared state before starting a draw
 
-Ability shots can also request the normal bow release animation bridge so their projectile firing still lines up with the BowGuy body presentation.
+If an ability should play the normal bow release body animation, route it through the same release bridge instead of inventing a separate special-case animation path.
 
 ## Muzzle Rules
 
-The player now uses directional muzzle transforms:
+Use directional muzzle transforms:
 
 * `Muzzle_D`
 * `Muzzle_L`
 * `Muzzle_R`
 * `Muzzle_U`
 
-The active muzzle is chosen from current cardinal aim and is used for both:
+Choose the active muzzle from current cardinal aim and use it for both:
 
 * aim origin
 * projectile spawn position
 
-That keeps the bow shot origin aligned with the actual sprite direction.
+Keep projectile origin and directional body presentation aligned.
 
-## Debugging Support
+## Debugging
 
-Shoot logs are still available, but they are no longer always on.
+Use the shared `PlayerShootDebug` helper as the standard debugging entry point.
 
-The current setup uses a shared `PlayerShootDebug` helper and one inspector toggle on `PlayerBowController` to enable or disable logs for:
+Control the logs from the inspector toggle on `PlayerBowController`.
+
+That toggle should enable or disable logs for:
 
 * `BowCtrl`
 * `AnimPresenter`
 * `AnimCtrl`
 
-This should stay as the standard debugging entry point for future shoot-flow issues.
+## Working Standard
 
-## Cleanup Status
+When touching this system later, work from these assumptions:
 
-The old lock-based shoot implementation has been cleaned out of the player path:
+* locomotion uses directional idle and run states
+* bow uses authored `Draw / Hold / Release`
+* gameplay owns combat validity and interrupts
+* presentation owns visual playback
+* interrupt behavior stays explicit and predictable
 
-* no `ShootF` / `ShootS` runtime branch remains in the active bow flow
-* old normalized hold-lock timing fields were removed from the live weapon animation data
-* unused animation view helpers from the old system were removed
-
-## Recommended Baseline Going Forward
-
-Treat this as the current stable BowGuy standard:
-
-* locomotion through directional idle and run states
-* bow through authored `Draw / Hold / Release`
-* gameplay-owned shot authority
-* presentation-owned state playback
-* explicit interrupt cancellation
-
-If the player animation set evolves again later, this should be the starting point rather than the older single-clip hold-lock approach.
+Use this setup as the starting point for future BowGuy work.

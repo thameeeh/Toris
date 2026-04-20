@@ -11,6 +11,8 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
     [SerializeField, Min(0f)] private float retreatDistance = 1.5f;
     [SerializeField, Min(0f)] private float leashRadius = 5f;
     [SerializeField, Min(0f)] private float leashHysteresis = 0.5f;
+    [SerializeField, Min(0f)] private float combatLeashBonus = 2f;
+    [SerializeField, Min(0f)] private float attackStartDistance = 3.25f;
     [SerializeField, Min(0f)] private float guardRadius = 1.75f;
     [SerializeField, Min(0f)] private float guardPositionTolerance = 0.25f;
     [SerializeField, Min(0f)] private float guardPositionHysteresis = 0.2f;
@@ -26,6 +28,9 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
     private float _retreatDistanceSqr;
     private float _leashRadiusSqr;
     private float _leashReturnReleaseDistanceSqr;
+    private float _combatLeashRadiusSqr;
+    private float _combatLeashReturnReleaseDistanceSqr;
+    private float _attackStartDistanceSqr;
     private float _effectiveGuardRadius;
     private float _guardPositionToleranceSqr;
     private float _guardPositionMoveDistanceSqr;
@@ -79,6 +84,9 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
         Vector2 toOwner = ownerPosition - enemyPosition;
         float playerDistanceSqr = toPlayer.sqrMagnitude;
         float ownerDistanceSqr = toOwner.sqrMagnitude;
+        float leashRadiusSqr = _combatLeashRadiusSqr;
+        float leashReturnReleaseDistanceSqr = _combatLeashReturnReleaseDistanceSqr;
+        bool canPressurePlayer = enemy.IsWithinAttackRange || playerDistanceSqr <= _attackStartDistanceSqr;
 
         if (!enemy.ShouldAttackOnOwnerCommand)
         {
@@ -88,7 +96,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
 
         if (_isReturningToOwner)
         {
-            if (ownerDistanceSqr > _leashReturnReleaseDistanceSqr)
+            if (ownerDistanceSqr > leashReturnReleaseDistanceSqr)
             {
                 LogDecision($"Leash return commit -> ReturnToOwner ownerDist={Mathf.Sqrt(ownerDistanceSqr):0.##}");
                 MoveInDirection(GetTowardPositionDirection(ownerPosition, toOwner), leashReturnSpeedMultiplier);
@@ -99,7 +107,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
             LogDecision($"Leash return released -> ResumeCombat ownerDist={Mathf.Sqrt(ownerDistanceSqr):0.##}");
         }
 
-        if (ownerDistanceSqr > _leashRadiusSqr)
+        if (ownerDistanceSqr > leashRadiusSqr)
         {
             _isReturningToOwner = true;
             LogDecision($"Outside leash -> ReturnToOwner ownerDist={Mathf.Sqrt(ownerDistanceSqr):0.##}");
@@ -107,12 +115,12 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
             return;
         }
 
-        if (enemy.IsWithinAttackRange)
+        if (canPressurePlayer)
         {
             if (playerDistanceSqr < _retreatDistanceSqr)
             {
                 LogDecision($"Player too close -> KiteRetreat playerDist={Mathf.Sqrt(playerDistanceSqr):0.##}");
-                MoveInDirection(GetSafeRetreatDirection(toPlayer, toOwner), kiteMoveSpeedMultiplier);
+                MoveInDirection(GetSafeRetreatDirection(toPlayer, toOwner, leashRadiusSqr), kiteMoveSpeedMultiplier);
                 return;
             }
 
@@ -206,7 +214,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
         return moveDirection;
     }
 
-    private Vector2 GetSafeRetreatDirection(Vector2 toPlayer, Vector2 toOwner)
+    private Vector2 GetSafeRetreatDirection(Vector2 toPlayer, Vector2 toOwner, float leashRadiusSqr)
     {
         Vector2 retreatDirection = toPlayer.sqrMagnitude > minimumMoveDirectionSqr ? -toPlayer.normalized : Vector2.zero;
         if (retreatDirection.sqrMagnitude <= minimumMoveDirectionSqr)
@@ -214,7 +222,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
 
         Vector2 projectedPosition = (Vector2)enemy.transform.position + retreatDirection;
         Vector2 projectedToOwner = (Vector2)enemy.Owner.transform.position - projectedPosition;
-        if (projectedToOwner.sqrMagnitude <= _leashRadiusSqr)
+        if (projectedToOwner.sqrMagnitude <= leashRadiusSqr)
             return retreatDirection;
 
         return toOwner.sqrMagnitude > minimumMoveDirectionSqr ? toOwner.normalized : Vector2.zero;
@@ -226,6 +234,11 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
         _leashRadiusSqr = leashRadius * leashRadius;
         float leashReturnReleaseDistance = Mathf.Max(0f, leashRadius - leashHysteresis);
         _leashReturnReleaseDistanceSqr = leashReturnReleaseDistance * leashReturnReleaseDistance;
+        float combatLeashRadius = Mathf.Max(leashRadius, leashRadius + combatLeashBonus);
+        _combatLeashRadiusSqr = combatLeashRadius * combatLeashRadius;
+        float combatLeashReturnReleaseDistance = Mathf.Max(0f, combatLeashRadius - leashHysteresis);
+        _combatLeashReturnReleaseDistanceSqr = combatLeashReturnReleaseDistance * combatLeashReturnReleaseDistance;
+        _attackStartDistanceSqr = attackStartDistance * attackStartDistance;
         _effectiveGuardRadius = guardRadius > 0f ? guardRadius : DefaultGuardRadius;
         float effectiveGuardTolerance = guardPositionTolerance > 0f
             ? guardPositionTolerance

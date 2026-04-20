@@ -18,6 +18,7 @@ public class PlayerResolvedEffectsDebugger : MonoBehaviour
         Debug.Log(
             $"[PlayerResolvedEffectsDebugger]\n" +
             $"MaxHealth: {effects.maxHealth}\n" +
+            $"HealthRegen: {effects.healthRegenPerSecond}\n" +
             $"MaxStamina: {effects.maxStamina}\n" +
             $"StaminaRegen: {effects.staminaRegenPerSecond}\n" +
             $"MoveSpeedMultiplier: {effects.moveSpeedMultiplier}\n" +

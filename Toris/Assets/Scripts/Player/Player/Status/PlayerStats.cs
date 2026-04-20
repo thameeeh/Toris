@@ -32,6 +32,7 @@ public class PlayerStats : MonoBehaviour
 
     public float maxHP => _resolvedEffects.maxHealth;
     public float currentHP => _runtimeStats != null ? _runtimeStats.CurrentHealth : _resolvedEffects.maxHealth;
+    public float healthRegenPerSec => _resolvedEffects.healthRegenPerSecond;
 
     public float maxStamina => _resolvedEffects.maxStamina;
     public float currentStamina => _runtimeStats != null ? _runtimeStats.CurrentStamina : _resolvedEffects.maxStamina;
@@ -87,6 +88,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        RegenerateHealth(Time.deltaTime);
         RegenerateStamina(Time.deltaTime);
     }
 
@@ -238,6 +240,28 @@ public class PlayerStats : MonoBehaviour
         if (!Mathf.Approximately(previousStamina, _runtimeStats.CurrentStamina))
         {
             BroadcastStamina();
+        }
+    }
+
+    private void RegenerateHealth(float deltaTime)
+    {
+        if (_runtimeStats == null)
+            return;
+
+        if (_resolvedEffects.healthRegenPerSecond <= 0f)
+            return;
+
+        if (_runtimeStats.CurrentHealth >= _resolvedEffects.maxHealth)
+            return;
+
+        float previousHealth = _runtimeStats.CurrentHealth;
+        float healthToRestore = _resolvedEffects.healthRegenPerSecond * deltaTime;
+
+        _runtimeStats.RestoreHealth(healthToRestore, _resolvedEffects.maxHealth);
+
+        if (!Mathf.Approximately(previousHealth, _runtimeStats.CurrentHealth))
+        {
+            BroadcastHealth();
         }
     }
 

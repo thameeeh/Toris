@@ -28,6 +28,17 @@ MonoBehaviour:
     defaultCapacity: 4
     maxSize: 8
     parentOverride: {fileID: 0}
+  visualPools:
+  - prefab: {fileID: 2707063387119386915, guid: cfc6e8b3370ed0a4596088fd4292bc23, type: 3}
+    prewarmCount: 24
+    defaultCapacity: 24
+    maxSize: 64
+    parentOverride: {fileID: 0}
+  - prefab: {fileID: 719343916627612111, guid: cb0da83b83c0c5b40a546894f7af7ca8, type: 3}
+    prewarmCount: 16
+    defaultCapacity: 16
+    maxSize: 48
+    parentOverride: {fileID: 0}
   enemyPools:
   - prefab: {fileID: 7255815159274722986, guid: 56898681142000047ae22fb7aab4aa27, type: 3}
     prewarmCount: 4

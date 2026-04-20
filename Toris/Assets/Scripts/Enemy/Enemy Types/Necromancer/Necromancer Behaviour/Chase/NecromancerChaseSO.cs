@@ -6,6 +6,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
     [Header("Ranges")]
     [SerializeField] private float preferredDistance = 6f;
     [SerializeField] private float retreatDistance = 4f;
+    [SerializeField, Min(0f)] private float preferredDistanceInsideCastingRangePadding = 0.35f;
 
     [Header("Form Timing")]
     [SerializeField, Min(0f)] private float humanToFloaterTriggerDelay = 0.2f;
@@ -18,6 +19,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
     [SerializeField] private float postCastRepositionDuration = 0.75f;
 
     private GridPathAgent _pathAgent;
+    private CircleCollider2D _castingRangeCollider;
     private float _preferredDistanceSqr;
     private float _retreatDistanceSqr;
     private float _postCastRepositionTimer;
@@ -35,6 +37,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
     {
         base.Initialize(gameObject, enemy, player);
         enemy.TryGetComponent(out _pathAgent);
+        CacheCastingRangeCollider();
         CacheSquaredRanges();
     }
 
@@ -82,13 +85,6 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         Vector2 playerPosition = playerTransform.position;
         Vector2 toPlayer = playerPosition - enemyPosition;
         float distanceToPlayerSqr = toPlayer.sqrMagnitude;
-
-        if (enemy.IsHumanRescueVariant)
-        {
-            ResetHumanToFloaterDelay();
-            MoveAwayFromPlayer(toPlayer);
-            return;
-        }
 
         if (enemy.IsChangingForm)
         {
@@ -257,8 +253,31 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
     private void CacheSquaredRanges()
     {
-        _preferredDistanceSqr = preferredDistance * preferredDistance;
+        float resolvedPreferredDistance = preferredDistance;
+        if (_castingRangeCollider != null)
+        {
+            float colliderScale = Mathf.Max(
+                Mathf.Abs(_castingRangeCollider.transform.lossyScale.x),
+                Mathf.Abs(_castingRangeCollider.transform.lossyScale.y));
+            float castingRangeRadius = _castingRangeCollider.radius * colliderScale;
+            float maxPreferredDistanceInsideCastingRange = Mathf.Max(
+                retreatDistance,
+                castingRangeRadius - preferredDistanceInsideCastingRangePadding);
+            resolvedPreferredDistance = Mathf.Min(resolvedPreferredDistance, maxPreferredDistanceInsideCastingRange);
+        }
+
+        _preferredDistanceSqr = resolvedPreferredDistance * resolvedPreferredDistance;
         _retreatDistanceSqr = retreatDistance * retreatDistance;
+    }
+
+    private void CacheCastingRangeCollider()
+    {
+        if (_castingRangeCollider != null || enemy == null)
+            return;
+
+        NecromancerCastingRangeCheck castingRangeCheck = enemy.GetComponentInChildren<NecromancerCastingRangeCheck>(true);
+        if (castingRangeCheck != null)
+            castingRangeCheck.TryGetComponent(out _castingRangeCollider);
     }
 
     private void EnsurePostCastRepositionStarted()
@@ -277,7 +296,8 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
         _postCastRepositionTimer -= Time.deltaTime;
 
-        if (_postCastRepositionTimer <= 0f && distanceToPlayerSqr >= _preferredDistanceSqr)
+        if (_postCastRepositionTimer <= 0f
+            && (distanceToPlayerSqr >= _preferredDistanceSqr || !enemy.IsWithinCastingRange))
         {
             _isPostCastRepositioning = false;
             enemy.ClearPostCastReposition();

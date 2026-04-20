@@ -68,7 +68,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 8
+  m_Radius: 10
 --- !u!114 &6548495601441852403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,7 +311,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 6
+  m_Radius: 5
 --- !u!114 &6444444444444444444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,9 +664,6 @@ MonoBehaviour:
   hideShadowInHumanForm: 1
   flipSpriteHorizontally: 1
   horizontalFlipThreshold: 0.01
-  enableHumanRescueVariant: 0
-  humanRescueVariantChance: 0.05
-  humanRescueVariantInvincible: 1
   enableHealthThresholdSummon: 1
   summonHealthThreshold: 0.5
   enableBloodMageSummonProtection: 1

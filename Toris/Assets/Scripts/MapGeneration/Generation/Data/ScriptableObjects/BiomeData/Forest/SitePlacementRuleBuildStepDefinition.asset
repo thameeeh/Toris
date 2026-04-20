@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SitePlacementRuleBuildStepDefinition
   sitePlacementRules:
   - {fileID: 11400000, guid: 3c50b7c740224426aa18aecd78f09e4e, type: 2}
+  - {fileID: 11400000, guid: f8b7e12736b991d42a71edba2ddaefa5, type: 2}

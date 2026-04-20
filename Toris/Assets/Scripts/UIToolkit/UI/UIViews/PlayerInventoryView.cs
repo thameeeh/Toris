@@ -155,7 +155,17 @@ namespace OutlandHaven.Inventory
                     break;
                 case InventoryInteractionContext.Normal:
                 default:
-                    _uiInventoryEvents.OnRequestEquip?.Invoke(dataSlot);
+                    if (dataSlot == null || dataSlot.IsEmpty || dataSlot.HeldItem?.BaseItem == null)
+                        return;
+
+                    if (dataSlot.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null)
+                    {
+                        _uiInventoryEvents.OnRequestUse?.Invoke(dataSlot);
+                    }
+                    else if (dataSlot.HeldItem.BaseItem.GetComponent<EquipableComponent>() != null)
+                    {
+                        _uiInventoryEvents.OnRequestEquip?.Invoke(dataSlot);
+                    }
                     break;
             }
         }

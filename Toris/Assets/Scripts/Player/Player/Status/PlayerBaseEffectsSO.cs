@@ -5,6 +5,7 @@ public class PlayerBaseEffectsSO : ScriptableObject
 {
     [Header("Resources")]
     [Min(1f)] public float maxHealth = 100f;
+    [Min(0f)] public float healthRegenPerSecond = 0f;
     [Min(0f)] public float maxStamina = 100f;
     [Min(0f)] public float staminaRegenPerSecond = 10f;
 

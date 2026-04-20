@@ -12,6 +12,9 @@ public static class PlayerEffectResolver
         float maxHealthAdditive = 0f;
         float maxHealthMultiplicative = 1f;
 
+        float healthRegenAdditive = 0f;
+        float healthRegenMultiplicative = 1f;
+
         float maxStaminaAdditive = 0f;
         float maxStaminaMultiplicative = 1f;
 
@@ -41,6 +44,10 @@ public static class PlayerEffectResolver
 
                     case PlayerEffectType.MaxStamina:
                         ApplyNumericModifier(modifier, ref maxStaminaAdditive, ref maxStaminaMultiplicative);
+                        break;
+
+                    case PlayerEffectType.HealthRegenPerSecond:
+                        ApplyNumericModifier(modifier, ref healthRegenAdditive, ref healthRegenMultiplicative);
                         break;
 
                     case PlayerEffectType.StaminaRegenPerSecond:
@@ -79,6 +86,7 @@ public static class PlayerEffectResolver
         }
 
         resolvedEffects.maxHealth = Mathf.Max(1f, (resolvedEffects.maxHealth + maxHealthAdditive) * maxHealthMultiplicative);
+        resolvedEffects.healthRegenPerSecond = Mathf.Max(0f, (resolvedEffects.healthRegenPerSecond + healthRegenAdditive) * healthRegenMultiplicative);
         resolvedEffects.maxStamina = Mathf.Max(0f, (resolvedEffects.maxStamina + maxStaminaAdditive) * maxStaminaMultiplicative);
         resolvedEffects.staminaRegenPerSecond = Mathf.Max(0f, (resolvedEffects.staminaRegenPerSecond + staminaRegenAdditive) * staminaRegenMultiplicative);
 
@@ -102,6 +110,7 @@ public static class PlayerEffectResolver
         return new PlayerResolvedEffects
         {
             maxHealth = Mathf.Max(1f, baseEffects.maxHealth),
+            healthRegenPerSecond = Mathf.Max(0f, baseEffects.healthRegenPerSecond),
             maxStamina = Mathf.Max(0f, baseEffects.maxStamina),
             staminaRegenPerSecond = Mathf.Max(0f, baseEffects.staminaRegenPerSecond),
 

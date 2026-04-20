@@ -73,6 +73,7 @@ public class PlayerEffectPipelineTester : MonoBehaviour
         Debug.Log(
             $"[{label}]\n" +
             $"HP: {_playerStats.currentHP}/{_playerStats.maxHP}\n" +
+            $"Health Regen: {_playerStats.healthRegenPerSec}\n" +
             $"Stamina: {_playerStats.currentStamina}/{_playerStats.maxStamina}\n" +
             $"Stamina Regen: {_playerStats.staminaRegenPerSec}\n" +
             $"Move Speed Mult: {effects.moveSpeedMultiplier}\n" +

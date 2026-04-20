@@ -1,4 +1,4 @@
-using Unity.Cinemachine;
+using System;
 using UnityEngine;
 
 public class ArrowProjectile : Projectile
@@ -17,9 +17,17 @@ public class ArrowProjectile : Projectile
     private float damage;
     private float despawnAtTime;
     private Collider2D ownerCollider; // ignore self-collision
+    private bool _isVisualOnly;
+    private bool _usesDamageLayerMask;
+    private int _damageLayerMask = ~0;
+    private Func<Collider2D, bool> _canDamageTargetPredicate;
+    private bool _playHitEffect = true;
 
     //Effect spawning attempt
     private const string ArrowHitEffectId = "hit_arrow_square";
+
+    public event Action<ArrowProjectile, Collider2D, IDamageable, Vector2> DamageApplied;
+    public event Action<ArrowProjectile> ProjectileDespawned;
 
     private void Awake()
     {
@@ -80,6 +88,11 @@ public class ArrowProjectile : Projectile
         ownerCollider = null;
         despawnAtTime = float.PositiveInfinity;
         damage = 0f;
+        _isVisualOnly = false;
+        _usesDamageLayerMask = false;
+        _damageLayerMask = ~0;
+        _canDamageTargetPredicate = null;
+        _playHitEffect = true;
     }
 
     /// <summary>Called by the pool right before the projectile is returned to the pool.</summary>
@@ -99,6 +112,15 @@ public class ArrowProjectile : Projectile
 
         despawnAtTime = float.PositiveInfinity;
         damage = 0f;
+        _isVisualOnly = false;
+        _usesDamageLayerMask = false;
+        _damageLayerMask = ~0;
+        _canDamageTargetPredicate = null;
+        _playHitEffect = true;
+        Action<ArrowProjectile> projectileDespawned = ProjectileDespawned;
+        ProjectileDespawned = null;
+        DamageApplied = null;
+        projectileDespawned?.Invoke(this);
     }
 
     /// <summary>
@@ -109,6 +131,7 @@ public class ArrowProjectile : Projectile
         damage = dmg;
         despawnAtTime = Time.time + lifetimeSeconds;
         ownerCollider = owner;
+        _isVisualOnly = false;
 
         Vector2 dir = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
 
@@ -120,6 +143,41 @@ public class ArrowProjectile : Projectile
         SetOwnerIgnore(true);
         RotateTowardVelocity();
     }
+
+    public void InitializeVisualOnly(Vector2 direction, float speed, float lifetimeSeconds)
+    {
+        damage = 0f;
+        despawnAtTime = Time.time + lifetimeSeconds;
+        ownerCollider = null;
+        _isVisualOnly = true;
+
+        if (myCollider != null)
+            myCollider.enabled = false;
+
+        Vector2 dir = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+
+        if (rb != null)
+            rb.linearVelocity = dir * speed;
+
+        RotateTowardVelocity();
+    }
+
+    public void SetDamageLayerMask(LayerMask layerMask)
+    {
+        _usesDamageLayerMask = true;
+        _damageLayerMask = layerMask.value;
+    }
+
+    public void SetDamageTargetPredicate(Func<Collider2D, bool> predicate)
+    {
+        _canDamageTargetPredicate = predicate;
+    }
+
+    public void SetPlayHitEffect(bool playHitEffect)
+    {
+        _playHitEffect = playHitEffect;
+    }
+
     /// <summary>Return to pool (or disable/destroy if no pool available).</summary>
     public override void Despawn() => base.Despawn();
 
@@ -138,13 +196,20 @@ public class ArrowProjectile : Projectile
     private void TryApplyDamage(Collider2D target)
     {
         if (target == null) return;
+        if (_isVisualOnly) return;
+        if (_usesDamageLayerMask && (_damageLayerMask & (1 << target.gameObject.layer)) == 0)
+            return;
+        if (_canDamageTargetPredicate != null && !_canDamageTargetPredicate(target))
+            return;
 
         var dmgTarget = target.GetComponentInParent<IDamageable>();
         if (dmgTarget != null)
         {
-            Debug.Log($"[ArrowProjectile] Applying dmg: {damage}");
+            Vector2 hitPoint = target.ClosestPoint(transform.position);
             dmgTarget.Damage(damage);
-            SpawnHitEffect(transform.position);
+            if (_playHitEffect)
+                SpawnHitEffect(hitPoint);
+            DamageApplied?.Invoke(this, target, dmgTarget, hitPoint);
         }
     }
 
@@ -170,8 +235,4 @@ public class ArrowProjectile : Projectile
 
         EffectManagerBehavior.Instance.Play(request);
     }
-    //private void OnDestroy()
-    //{
-    //    Debug.LogWarning($"[ArrowProjectile] {name} was destroyed. If this is a pooled projectile, that's probably a bug.");
-    //}
 }

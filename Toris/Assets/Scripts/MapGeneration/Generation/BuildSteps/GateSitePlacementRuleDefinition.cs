@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {
     [SerializeField] private WorldSiteDefinition gateSiteDefinition;
+    [SerializeField] private SiteStampDefinition gateStampDefinition;
     [SerializeField] private TileBase gateGroundTile;
     [SerializeField]
     [Min(1)] private int gateSize = 7;
@@ -26,11 +27,14 @@ public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinitio
         {
             Vector2Int gateCenterTile = gateAnchorTiles[i];
 
-            SiteStamping.StampSquareGround(
-                ctx,
-                gateCenterTile,
-                resolvedGateSize,
-                gateGroundTile);
+            if (gateStampDefinition != null)
+                SiteStamping.ApplyStampDefinition(ctx, gateCenterTile, gateStampDefinition);
+            else
+                SiteStamping.StampSquareGround(
+                    ctx,
+                    gateCenterTile,
+                    resolvedGateSize,
+                    gateGroundTile);
 
             buildOutput.RegisterSite(gateSiteDefinition, gateCenterTile, ctx.World.chunkSize);
         }

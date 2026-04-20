@@ -28,4 +28,4 @@ MonoBehaviour:
         EffectPayload: 0
         amount: 20
         CooldownDuration: 1.5
-        MaxCharges: 1
+        MaxCharges: 2

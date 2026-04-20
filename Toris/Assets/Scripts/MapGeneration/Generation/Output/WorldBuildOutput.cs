@@ -3,11 +3,13 @@ public sealed class WorldBuildOutput
     private readonly FeatureStamps terrainOverrides = new();
     private readonly SitePlacementIndex sitePlacements = new();
     private readonly SiteBlockerMap siteBlockers = new();
+    private readonly SiteVisualClearMap siteVisualClears = new();
     private readonly RoadAnchorMap roadAnchors = new();
 
     public FeatureStamps TerrainOverrides => terrainOverrides;
     public SitePlacementIndex SitePlacements => sitePlacements;
     public SiteBlockerMap SiteBlockers => siteBlockers;
+    public SiteVisualClearMap SiteVisualClears => siteVisualClears;
     public ITileNavigationContributionSource NavigationContributions => siteBlockers;
     public RoadAnchorMap RoadAnchors => roadAnchors;
 
@@ -16,6 +18,7 @@ public sealed class WorldBuildOutput
         terrainOverrides.Clear();
         sitePlacements.Clear();
         siteBlockers.Clear();
+        siteVisualClears.Clear();
         roadAnchors.Clear();
     }
 

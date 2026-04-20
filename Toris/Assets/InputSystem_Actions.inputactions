@@ -106,6 +106,33 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Ability3",
+                    "type": "Button",
+                    "id": "3b321d11-5873-4b20-9b97-41db8d64bb71",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability4",
+                    "type": "Button",
+                    "id": "8d6125a6-4c3b-4d4b-88f2-76905ef9b7cd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability5",
+                    "type": "Button",
+                    "id": "6f6cf0f9-31aa-4db2-9c4c-8184d1e3d377",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "473bde7d-5242-4755-8b68-c28ba55944bc",
@@ -497,7 +524,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Crouch",
+                    "action": "Ability5",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -520,6 +547,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Ability2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14bca6cc-d5c2-401a-89b2-6c566aea6a67",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Ability3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b20d4c40-b571-4bd9-9d91-3c5e7e223449",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Ability4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

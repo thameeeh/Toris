@@ -10,6 +10,8 @@ public class PlayerInputReaderSO : ScriptableObject
     public Action OnShootReleased;
     public Action OnDashPressed;
     public Action OnAbility1Pressed;
+    public Action<int> OnAbilitySlotStarted;
+    public Action<int> OnAbilitySlotReleased;
 
 
     /* OnInteractPressed Summary
@@ -33,5 +35,7 @@ public class PlayerInputReaderSO : ScriptableObject
     [NonSerialized] public bool IsShootHeld = false;
 
     public void SetMove(Vector2 move) => Move = move;
-    
+
+    public void RaiseAbilitySlotStarted(int slotIndex) => OnAbilitySlotStarted?.Invoke(slotIndex);
+    public void RaiseAbilitySlotReleased(int slotIndex) => OnAbilitySlotReleased?.Invoke(slotIndex);
 }

@@ -166,7 +166,6 @@ MonoBehaviour:
   _view: {fileID: 4736313697602286086}
   _character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
   _weapon: {fileID: 11400000, guid: ef8138cce2675194c9de1b4d5c8c6dfe, type: 2}
-  resumeEpsilon: 0.02
   _dashParticleSortingOrderOffset: -1
   _dashParticleDestroyPadding: 0.05
 --- !u!114 &4736313697602286086
@@ -322,6 +321,7 @@ MonoBehaviour:
   rb: {fileID: 4313767850351379256}
   _moveSO: {fileID: 11400000, guid: 24f30c4e31e982344b17ed2b3b3f3a49, type: 2}
   _stats: {fileID: 8137892244548921797}
+  _abilityController: {fileID: 2003589166597666773}
   _dashAbility:
     _config: {fileID: 11400000, guid: b851c81fc65123e4ca4bc0830ae20d45, type: 2}
 --- !u!114 &1738574752484829038
@@ -339,13 +339,19 @@ MonoBehaviour:
   _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _bow: {fileID: 11400000, guid: 94909859f9417e14b9db4efca5713ca8, type: 2}
   _muzzle: {fileID: 2980662243367807876}
+  _muzzleDown: {fileID: 1406179489318998721}
+  _muzzleLeft: {fileID: 1893096360667356617}
+  _muzzleRight: {fileID: 1009031232262767017}
+  _muzzleUp: {fileID: 3314719546744460936}
   _motor: {fileID: 6347703112388059557}
   _ownerCollider: {fileID: 5599079654927792221}
   _poolManager: {fileID: 0}
   _stats: {fileID: 8137892244548921797}
   _playerFacing: {fileID: 1884929689371088939}
   _equipment: {fileID: 0}
+  _abilityController: {fileID: 2003589166597666773}
   spawnOffsetFromCenter: 0.35
+  _enableShootDebugLogs: 0
 --- !u!61 &5599079654927792221
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -444,9 +450,15 @@ MonoBehaviour:
   _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
-  _ability1:
+  _abilitySlots:
+  - _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
+  - _abilityDefinition: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
+  - _abilityDefinition: {fileID: 11400000, guid: 0b532d9704914eb0b0a72e6d3f3f1b0e, type: 2}
+  - _abilityDefinition: {fileID: 0}
+  - _abilityDefinition: {fileID: 0}
+  _legacyAbility1:
     _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
-  _ability2:
+  _legacyAbility2:
     _abilityDefinition: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
 --- !u!114 &503972616382245057
 MonoBehaviour:
@@ -604,7 +616,6 @@ MonoBehaviour:
   _view: {fileID: 4736313697602286086}
   _character: {fileID: 11400000, guid: a78f05ec4807ff349b2abd8e19caadd6, type: 2}
   _weapon: {fileID: 11400000, guid: ef8138cce2675194c9de1b4d5c8c6dfe, type: 2}
-  resumeEpsilon: 0.02
   _dashParticleSortingOrderOffset: -1
   _dashParticleDestroyPadding: 0.05
 --- !u!114 &2365839719724374038
@@ -750,6 +761,9 @@ MonoBehaviour:
   _playerInventory: {fileID: 0}
   _equipmentInventory: {fileID: 0}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  _playerStats: {fileID: 0}
+  _playerStatsAnchor: {fileID: 0}
+  _playerEffectSourceController: {fileID: 0}
 --- !u!114 &9194752483613569355
 MonoBehaviour:
   m_ObjectHideFlags: 0

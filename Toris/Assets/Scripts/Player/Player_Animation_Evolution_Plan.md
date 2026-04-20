@@ -1,35 +1,50 @@
-# Player Animation Evolution Notes
+# Player Animation Evolution Guide
 
-This document now reflects the current player animation direction after the BowGuy bow flow cleanup.
+Use this document as the higher-level reference for how the player animation system should evolve.
 
-The earlier evolution question was whether the player should keep leaning on a code-owned animation state machine or move into a cleaner Animator-driven hybrid. The bow system has now moved in that direction.
+This guide is about structure and direction, not only about the current bow implementation.
 
-## What Is Now Locked In
+## Purpose
 
-The current player animation stack keeps the same broad separation:
+Keep the player animation stack understandable, data-driven, and safe to expand.
+
+Use these principles:
+
+* keep gameplay authority outside the Animator
+* keep presentation logic layered and readable
+* prefer authored directional clips over overbuilt graph logic for this sprite setup
+* evolve toward cleaner contracts, not more special cases
+
+## Core Layering
+
+Keep this separation:
 
 * `PlayerAnimationPresenter` is the presentation bridge
 * `PlayerAnimationController` is animation-facing runtime glue
 * `PlayerAnimationView` wraps Animator access
-* `CharacterAnimSO` and `WeaponProfile` keep animation data externalized
+* `CharacterAnimSO` and `WeaponProfile` hold animation-facing data
 
-That architecture still makes sense and remains the recommended baseline.
+Use this layering when adding new animation-driven actions.
 
-## What Changed In Practice
+Do not let gameplay scripts talk directly to the Animator when the presenter and controller can carry the intent cleanly.
 
-The bow flow is no longer based on a single clip with a code-paused hold frame.
+## Bow Standard
 
-The current setup uses authored phases:
+Use authored phases for bow presentation:
 
 * `ShootDraw`
 * `ShootHold`
 * `ShootRelease`
 
-That is the most important evolution that actually landed, because it fixed the biggest source of brittleness in the previous setup.
+This should remain the standard approach for the bow because each clip has one clear job:
 
-## Current Hybrid Model
+* `Draw` gets to ready
+* `Hold` represents ready
+* `Release` follows through
 
-The player animation model is now:
+## Gameplay And Animation Contract
+
+Use this ownership split:
 
 ### Gameplay Owns
 
@@ -51,30 +66,45 @@ The player animation model is now:
 
 ### Presenter Owns
 
-* event routing between the two
-* translating gameplay events into animation intent without leaking Animator calls into gameplay systems
+* routing gameplay events into animation intent
+* keeping Animator calls out of gameplay scripts
 
-## Why This Is Better
+## Animator Direction
 
-The old system worked, but it had a fragile contract:
+Use a practical hybrid model.
 
-* gameplay asked whether the shot was ready
-* animation froze at an authored frame inside a longer clip
-* repeated shots and interrupts had too many edge cases
+For this project, that means:
 
-The current system is easier to reason about because each clip has one clear job:
+* use Animator as the playback and transition surface
+* keep explicit code control where gameplay timing matters
+* avoid rebuilding the gameplay state machine inside Animator parameters and transitions
 
-* `Draw` gets to ready
-* `Hold` represents ready
-* `Release` follows through
+This is the right tradeoff for a 4-direction sprite character.
 
-That is the core improvement.
+## Design Rules
 
-## Current Interrupt Policy
+Follow these rules when extending the player animation system:
 
-The player now treats active bow draw as something that can be cleanly canceled by higher-priority gameplay states.
+* keep the `Presenter -> Controller -> View` layering
+* keep directional authored sprite states
+* keep animation naming and tuning data-driven
+* keep gameplay as the authority on combat validity and interrupts
 
-Current baseline:
+## Patterns To Avoid
+
+Do not build future work around these patterns:
+
+* multiple overlapping bow shoot variants whose semantic moments drift apart
+* freezing a character at a guessed normalized time inside a longer clip
+* letting animation events decide whether a combat action is valid
+
+Those patterns make the system harder to reason about and harder to debug.
+
+## Interrupt Policy
+
+Treat interrupts as gameplay-driven rules that animation responds to.
+
+Current baseline behavior should stay in that direction:
 
 * dash cancels draw
 * hurt cancels draw
@@ -82,60 +112,27 @@ Current baseline:
 * drawing is blocked while dashing
 * drawing is blocked while an ability is actively using the bow
 
-This should remain gameplay-driven. Animator should show the result, not decide the rule.
+Animator should show the outcome of the rule.
+Animator should not own the rule itself.
 
-## Current Animator Direction
+## Future Growth
 
-The project has not moved to a fully parameter-driven Animator graph for every state, and that is fine.
+If the action set expands later, these are valid directions:
 
-The active direction is a practical hybrid:
+* split upper and lower body if ranged movement while holding becomes important
+* author dedicated hold-move clips if split-body animation is not worth the complexity
+* move more locomotion transitions into Animator if the state set grows large
+* add ability-specific presentation layers if bow abilities become more visually distinct
 
-* use Animator as the playback and transition surface
-* keep explicit code control where gameplay timing matters
-* avoid rebuilding the entire gameplay state machine inside Animator
+Treat those as upgrades, not as current requirements.
 
-For this sprite-based 4-direction setup, that is still the right tradeoff.
+## Working Standard
 
-## What Is Good Enough To Keep
+When evaluating a future animation change, ask:
 
-These decisions still look correct:
+1. does gameplay still own validity and timing?
+2. does each clip have one clear job?
+3. does the presenter remain the bridge?
+4. does the change make the system easier or harder to explain?
 
-* keep the `Presenter -> Controller -> View` layering
-* keep directional authored sprite states instead of overusing blend trees
-* keep data-driven animation naming and tuning in ScriptableObjects
-* keep gameplay as the authority on combat validity and interrupts
-
-## What We Explicitly Moved Away From
-
-These are no longer the recommended baseline:
-
-* `ShootF` / `ShootS` as the core bow runtime model
-* freezing the bow at a guessed normalized time inside one larger clip
-* letting animation events act as the authority for whether a shot is valid
-
-That older model was useful for iteration, but it should not be treated as the target architecture anymore.
-
-## Future Evolution Worth Remembering
-
-Nothing urgent is left for the current bow flow, but a few future directions are still valid if the game needs them later:
-
-* upper-body and lower-body split if ranged movement while holding becomes important
-* dedicated hold-move clips if split-body animation is not worth the complexity
-* more Animator-owned locomotion transitions if the action set grows significantly
-* additional ability-specific presentation layers if bow abilities become more visually unique
-
-Those are future upgrades, not current requirements.
-
-## Bottom Line
-
-The player animation system is in a healthier place now.
-
-The bow flow especially has crossed the important threshold from:
-
-* prototype logic that worked but felt fragile
-
-to:
-
-* a clean, understandable hybrid that matches the authored clips and gameplay rules
-
-That should be the reference point for future player animation work.
+If a change weakens those answers, it is probably the wrong direction.

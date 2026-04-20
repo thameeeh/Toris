@@ -32,6 +32,7 @@ public class PlayerBowController : MonoBehaviour
     public BowSO BowConfig => _bow;
     public bool IsDrawing => drawing;
     public Vector2 CurrentAimDirection => GetAimDirection();
+    public Vector2 CurrentAimWorldPoint => GetPointerWorldPoint();
 
     public bool CancelCurrentDraw(string reason)
     {
@@ -71,6 +72,17 @@ public class PlayerBowController : MonoBehaviour
     public event System.Action DryReleased;
     public event System.Action ShotFired;
     public event System.Action<Vector2> AbilityReleaseRequested;
+
+    public void RequestAbilityReleaseTowards(Vector2 worldPoint)
+    {
+        Vector2 direction = worldPoint - (Vector2)transform.position;
+        if (direction.sqrMagnitude < MIN_DIRECTION_SQR_MAGNITUDE)
+        {
+            direction = GetFallbackFacing();
+        }
+
+        AbilityReleaseRequested?.Invoke(direction.normalized);
+    }
 
     private float drawStartTime = -999f;
     private float lastShotTime = -999f;
@@ -289,31 +301,67 @@ public class PlayerBowController : MonoBehaviour
             return;
         }
 
-        BowSO.ShotStats finalStats = ApplyResolvedDamageModifiers(stats);
+        BowSO.ShotStats finalStats = ResolveOutgoingDamage(stats);
+        SpawnArrowFromAim(finalStats, playReleaseAnimation, true);
+    }
+
+    public ArrowProjectile SpawnArrowFromAim(BowSO.ShotStats stats, bool playReleaseAnimation = false, bool applySpread = true)
+    {
+        if (_bow == null)
+        {
+            LogShoot("SpawnArrowFromAim ignored. Bow config missing.");
+            return null;
+        }
+
+        if (_bow.arrowPrefab == null)
+        {
+            LogShoot("SpawnArrowFromAim ignored. Arrow prefab missing.");
+            return null;
+        }
 
         Vector2 baseDir = GetAimDirection();
-        if (baseDir.sqrMagnitude < 0.0001f)
+        if (baseDir.sqrMagnitude < MIN_DIRECTION_SQR_MAGNITUDE)
             baseDir = Vector2.right;
 
         _playerFacing?.SetFacing(baseDir);
-
         LogShoot(
-            $"FireArrow requested. dir={FormatVector(baseDir)} playReleaseAnimation={playReleaseAnimation} speed={finalStats.speed:F2} damage={finalStats.damage:F2} spread={finalStats.spreadDeg:F2}");
+            $"SpawnArrowFromAim requested. dir={FormatVector(baseDir)} playReleaseAnimation={playReleaseAnimation} speed={stats.speed:F2} damage={stats.damage:F2} spread={stats.spreadDeg:F2}");
 
         if (playReleaseAnimation)
         {
-            LogShoot("FireArrow requested release animation bridge.");
+            LogShoot("SpawnArrowFromAim requested release animation bridge.");
             AbilityReleaseRequested?.Invoke(baseDir);
         }
 
-        SpawnArrow(finalStats, baseDir);
+        return SpawnArrowInternal(stats, baseDir, applySpread);
     }
 
-    private void SpawnArrow(BowSO.ShotStats stats, Vector2 dir)
+    public ArrowProjectile SpawnArrowFromWorld(
+        BowSO.ShotStats stats,
+        Vector2 dir,
+        Vector3 spawnPos,
+        bool applySpread = false,
+        string spawnSourceLabel = "ability",
+        float lifetimeOverride = -1f)
     {
-        float spread = Random.Range(-stats.spreadDeg, stats.spreadDeg);
-        dir = (Quaternion.Euler(0, 0, spread) * (Vector3)dir).normalized;
+        if (_bow == null)
+        {
+            LogShoot("SpawnArrowFromWorld ignored. Bow config missing.");
+            return null;
+        }
 
+        if (_bow.arrowPrefab == null)
+        {
+            LogShoot("SpawnArrowFromWorld ignored. Arrow prefab missing.");
+            return null;
+        }
+
+        float lifetimeSeconds = lifetimeOverride > 0f ? lifetimeOverride : _bow.arrowLifetime;
+        return SpawnArrowAtPosition(stats, dir, spawnPos, applySpread, spawnSourceLabel, lifetimeSeconds);
+    }
+
+    private ArrowProjectile SpawnArrowInternal(BowSO.ShotStats stats, Vector2 dir, bool applySpread)
+    {
         Vector3 spawnPos;
         Transform activeMuzzle = GetAimOriginTransform(dir);
         if (activeMuzzle != null)
@@ -321,16 +369,31 @@ public class PlayerBowController : MonoBehaviour
         else
             spawnPos = transform.position + (Vector3)(dir * spawnOffsetFromCenter);
 
+        string spawnSourceLabel = activeMuzzle != null ? activeMuzzle.name : "fallback";
+        return SpawnArrowAtPosition(stats, dir, spawnPos, applySpread, spawnSourceLabel, _bow.arrowLifetime);
+    }
+
+    private ArrowProjectile SpawnArrowAtPosition(
+        BowSO.ShotStats stats,
+        Vector2 dir,
+        Vector3 spawnPos,
+        bool applySpread,
+        string spawnSourceLabel,
+        float lifetimeSeconds)
+    {
+        float spread = applySpread ? Random.Range(-stats.spreadDeg, stats.spreadDeg) : 0f;
+        dir = (Quaternion.Euler(0, 0, spread) * (Vector3)dir).normalized;
+
         var prefabProj = _bow.arrowPrefab;
         if (prefabProj == null)
         {
             LogShoot("SpawnArrow aborted. Prefab missing.");
-            return;
+            return null;
         }
 
         var manager = _poolManager != null ? _poolManager : GameplayPoolManager.Instance;
         LogShoot(
-            $"SpawnArrow. dir={FormatVector(dir)} spreadApplied={spread:F2} muzzle={(activeMuzzle != null ? activeMuzzle.name : "fallback")} spawnPos={spawnPos} speed={stats.speed:F2} damage={stats.damage:F2}");
+            $"SpawnArrow. dir={FormatVector(dir)} spreadApplied={spread:F2} muzzle={spawnSourceLabel} spawnPos={spawnPos} speed={stats.speed:F2} damage={stats.damage:F2}");
 
         Projectile projBase = manager
             ? manager.SpawnProjectile(prefabProj, spawnPos, Quaternion.identity)
@@ -340,17 +403,18 @@ public class PlayerBowController : MonoBehaviour
         if (arrow == null)
         {
             LogShoot("SpawnArrow aborted. Spawned projectile is not ArrowProjectile.");
-            return;
+            return null;
         }
 
-        arrow.Initialize(dir, stats.speed, stats.damage, _bow.arrowLifetime, _ownerCollider);
+        arrow.Initialize(dir, stats.speed, stats.damage, lifetimeSeconds, _ownerCollider);
+        return arrow;
     }
 
-    private Vector2 GetAimDirection()
+    public Vector2 GetPointerWorldPoint()
     {
-        if (_mainCamera == null) _mainCamera = Camera.main;
-        var cam = _mainCamera;
-        if (!cam) return Vector2.right;
+        var cam = Camera.main;
+        if (!cam)
+            return transform.position;
 
         Vector2 screen;
         if (Pointer.current != null)
@@ -358,14 +422,19 @@ public class PlayerBowController : MonoBehaviour
         else if (Mouse.current != null)
             screen = Mouse.current.position.ReadValue();
         else
-            return Vector2.right;
+            return transform.position;
 
         Vector3 myPos = transform.position;
         Vector3 depthRef = myPos;
         float depth = cam.orthographic ? 0f : Mathf.Abs(cam.WorldToScreenPoint(depthRef).z);
-
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
         world.z = depthRef.z;
+        return world;
+    }
+
+    private Vector2 GetAimDirection()
+    {
+        Vector3 world = GetPointerWorldPoint();
 
         Vector2 centerOrigin = (Vector2)myPos;
         Vector2 rawDirection = (Vector2)(world - (Vector3)centerOrigin);
@@ -384,7 +453,7 @@ public class PlayerBowController : MonoBehaviour
 
     public void FireMultiShotVolley(BowSO.ShotStats stats, int arrowCount, float totalSpreadDegrees, bool playReleaseAnimation = false)
     {
-        BowSO.ShotStats finalStats = ApplyResolvedDamageModifiers(stats);
+        BowSO.ShotStats finalStats = ResolveOutgoingDamage(stats);
 
         Vector2 baseDir = GetAimDirection();
         if (baseDir.sqrMagnitude < 0.0001f)
@@ -407,14 +476,21 @@ public class PlayerBowController : MonoBehaviour
             float t = count == 1 ? 0.5f : (float)i / (count - 1);
             float angle = Mathf.Lerp(-totalSpreadDegrees * 0.5f, totalSpreadDegrees * 0.5f, t);
             Vector2 dir = (Quaternion.Euler(0, 0, angle) * (Vector3)baseDir).normalized;
-            SpawnArrow(finalStats, dir);
+            SpawnArrowInternal(finalStats, dir, true);
         }
     }
 
-    private BowSO.ShotStats ApplyResolvedDamageModifiers(BowSO.ShotStats stats)
+    public BowSO.ShotStats ResolveOutgoingDamage(BowSO.ShotStats stats)
+    {
+        stats.damage = ResolveOutgoingDamage(stats.damage);
+        return stats;
+    }
+
+    public float ResolveOutgoingDamage(float damage)
     {
         const float minDamageMultiplier = 0f;
 
+        float finalDamage = Mathf.Max(0f, damage);
         float outgoingDamageMultiplier = 1f;
 
         if (_stats != null)
@@ -424,8 +500,8 @@ public class PlayerBowController : MonoBehaviour
                 _stats.ResolvedEffects.outgoingDamageMultiplier);
         }
 
-        stats.damage *= outgoingDamageMultiplier;
-        return stats;
+        finalDamage *= outgoingDamageMultiplier;
+        return finalDamage;
     }
 
     private void SyncShootDebugToggle()
@@ -490,5 +566,23 @@ public class PlayerBowController : MonoBehaviour
             return _playerFacing.CurrentFacing;
 
         return Vector2.down;
+    }
+
+    public void PlayDefaultArrowHitEffect(Vector2 position)
+    {
+        if (EffectManagerBehavior.Instance == null)
+            return;
+
+        EffectRequest request = new EffectRequest
+        {
+            EffectId = "hit_arrow_square",
+            Position = position,
+            Rotation = Quaternion.identity,
+            Parent = null,
+            Variant = default,
+            Magnitude = 1f
+        };
+
+        EffectManagerBehavior.Instance.Play(request);
     }
 }

@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerAbilityController : MonoBehaviour
 {
+    private const int DefaultSlotCount = 5;
+
     [Header("Refs")]
     [SerializeField] private PlayerInputReaderSO _input;
     [SerializeField] private PlayerStats _stats;
@@ -16,6 +20,7 @@ public class PlayerAbilityController : MonoBehaviour
 
         public PlayerAbilitySO AbilityDefinition => _abilityDefinition;
         public PlayerAbilityRuntime Runtime => _runtime;
+        public bool HasDefinition => _abilityDefinition != null;
 
         public void Initialize()
         {
@@ -28,28 +33,68 @@ public class PlayerAbilityController : MonoBehaviour
     }
 
     [Header("Ability Slots")]
-    [SerializeField] private AbilitySlot _ability1;
-    [SerializeField] private AbilitySlot _ability2;
+    [SerializeField] private AbilitySlot[] _abilitySlots = new AbilitySlot[DefaultSlotCount];
 
-    public PlayerAbilityRuntime Ability1Runtime => _ability1?.Runtime;
-    public PlayerAbilityRuntime Ability2Runtime => _ability2?.Runtime;
+    [HideInInspector, FormerlySerializedAs("_ability1")]
+    [SerializeField] private AbilitySlot _legacyAbility1;
+
+    [HideInInspector, FormerlySerializedAs("_ability2")]
+    [SerializeField] private AbilitySlot _legacyAbility2;
+
+    public PlayerAbilityRuntime Ability1Runtime => GetRuntime(0);
+    public PlayerAbilityRuntime Ability2Runtime => GetRuntime(1);
     public PlayerAbilityContext AbilityContext => _context;
-    public bool IsBowDrawBlocked => IsRuntimeBlockingBowDraw(_ability1?.Runtime) || IsRuntimeBlockingBowDraw(_ability2?.Runtime);
+    public int SlotCount => _abilitySlots?.Length ?? 0;
+    public bool IsBowDrawBlocked
+    {
+        get
+        {
+            for (int i = 0; i < SlotCount; i++)
+            {
+                PlayerAbilityRuntime runtime = GetRuntime(i);
+                if (runtime != null && runtime.IsBlockingBowDraw(_context))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+    public bool IsMovementLocked
+    {
+        get
+        {
+            for (int i = 0; i < SlotCount; i++)
+            {
+                PlayerAbilityRuntime runtime = GetRuntime(i);
+                if (runtime != null && runtime.IsBlockingMovement(_context))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
 
     private PlayerAbilityContext _context;
 
     private void Awake()
     {
+        EnsureSlotArray();
+        MigrateLegacySlotsIfNeeded();
+
         _context = new PlayerAbilityContext
         {
             controller = this,
             input = _input,
             stats = _stats,
-            bow = _bow
+            bow = _bow,
+            motor = _bow != null ? _bow.GetComponent<PlayerMotor>() : GetComponent<PlayerMotor>()
         };
 
-        _ability1?.Initialize();
-        _ability2?.Initialize();
+        InitializeSlots();
     }
 
     private void OnEnable()
@@ -60,9 +105,8 @@ public class PlayerAbilityController : MonoBehaviour
             return;
         }
 
-        _input.OnAbility1Pressed += OnAbility1Pressed;
-        _input.OnAbility2Started += OnAbility2Pressed;
-        _input.OnAbility2Released += OnAbility2Released;
+        _input.OnAbilitySlotStarted += HandleAbilitySlotStarted;
+        _input.OnAbilitySlotReleased += HandleAbilitySlotReleased;
     }
 
     private void OnDisable()
@@ -70,42 +114,122 @@ public class PlayerAbilityController : MonoBehaviour
         if (_input == null)
             return;
 
-        _input.OnAbility1Pressed -= OnAbility1Pressed;
-        _input.OnAbility2Started -= OnAbility2Pressed;
-        _input.OnAbility2Released -= OnAbility2Released;
+        _input.OnAbilitySlotStarted -= HandleAbilitySlotStarted;
+        _input.OnAbilitySlotReleased -= HandleAbilitySlotReleased;
     }
 
+    private void Update()
+    {
+        for (int i = 0; i < SlotCount; i++)
+        {
+            GetRuntime(i)?.Tick(_context);
+        }
+    }
+
+#if UNITY_EDITOR
     private void OnValidate()
     {
+        EnsureSlotArray();
+        MigrateLegacySlotsIfNeeded();
+
         if (_input == null)
         {
             Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}</b>", this);
         }
     }
+#endif
 
-    private void Update()
+    public PlayerAbilityRuntime GetRuntime(int slotIndex)
     {
-        _ability1?.Runtime?.Tick(_context);
-        _ability2?.Runtime?.Tick(_context);
+        AbilitySlot slot = GetSlot(slotIndex);
+        return slot?.Runtime;
     }
 
-    private void OnAbility1Pressed()
+    public PlayerAbilitySO GetAbilityDefinition(int slotIndex)
     {
-        _ability1?.Runtime?.OnButtonDown(_context);
+        AbilitySlot slot = GetSlot(slotIndex);
+        return slot?.AbilityDefinition;
     }
 
-    private void OnAbility2Pressed()
+    public bool TryActivateSlot(int slotIndex)
     {
-        _ability2?.Runtime?.OnButtonDown(_context);
+        PlayerAbilityRuntime runtime = GetRuntime(slotIndex);
+        if (runtime == null)
+            return false;
+
+        runtime.OnButtonDown(_context);
+        return true;
     }
 
-    private void OnAbility2Released()
+    public bool TryReleaseSlot(int slotIndex)
     {
-        _ability2?.Runtime?.OnButtonUp(_context);
+        PlayerAbilityRuntime runtime = GetRuntime(slotIndex);
+        if (runtime == null)
+            return false;
+
+        runtime.OnButtonUp(_context);
+        return true;
     }
 
-    private bool IsRuntimeBlockingBowDraw(PlayerAbilityRuntime runtime)
+    private void HandleAbilitySlotStarted(int slotIndex)
     {
-        return runtime != null && runtime.IsBlockingBowDraw(_context);
+        TryActivateSlot(slotIndex);
+    }
+
+    private void HandleAbilitySlotReleased(int slotIndex)
+    {
+        TryReleaseSlot(slotIndex);
+    }
+
+    private AbilitySlot GetSlot(int slotIndex)
+    {
+        if (_abilitySlots == null || slotIndex < 0 || slotIndex >= _abilitySlots.Length)
+            return null;
+
+        return _abilitySlots[slotIndex];
+    }
+
+    private void InitializeSlots()
+    {
+        for (int i = 0; i < SlotCount; i++)
+        {
+            _abilitySlots[i]?.Initialize();
+        }
+    }
+
+    private void EnsureSlotArray()
+    {
+        if (_abilitySlots == null)
+        {
+            _abilitySlots = new AbilitySlot[DefaultSlotCount];
+        }
+        else if (_abilitySlots.Length != DefaultSlotCount)
+        {
+            AbilitySlot[] resizedSlots = new AbilitySlot[DefaultSlotCount];
+            Array.Copy(_abilitySlots, resizedSlots, Mathf.Min(_abilitySlots.Length, DefaultSlotCount));
+            _abilitySlots = resizedSlots;
+        }
+
+        for (int i = 0; i < _abilitySlots.Length; i++)
+        {
+            _abilitySlots[i] ??= new AbilitySlot();
+        }
+    }
+
+    private void MigrateLegacySlotsIfNeeded()
+    {
+        CopyLegacySlotToIndex(_legacyAbility1, 0);
+        CopyLegacySlotToIndex(_legacyAbility2, 1);
+    }
+
+    private void CopyLegacySlotToIndex(AbilitySlot legacySlot, int slotIndex)
+    {
+        if (legacySlot == null || !legacySlot.HasDefinition)
+            return;
+
+        if (_abilitySlots[slotIndex] == null || !_abilitySlots[slotIndex].HasDefinition)
+        {
+            _abilitySlots[slotIndex] = legacySlot;
+        }
     }
 }

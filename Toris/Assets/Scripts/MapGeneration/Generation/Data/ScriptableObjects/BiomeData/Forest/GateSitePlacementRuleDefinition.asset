@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: GateSitePlacementRuleDefinition
   m_EditorClassIdentifier: Assembly-CSharp::GateSitePlacementRuleDefinition
   gateSiteDefinition: {fileID: 11400000, guid: e944387d7baae20488084ac7ddae00fa, type: 2}
+  gateStampDefinition: {fileID: 0}
   gateGroundTile: {fileID: 11400000, guid: dc1a9b6cc5dd30649adec2322a69d931, type: 2}
   gateSize: 7

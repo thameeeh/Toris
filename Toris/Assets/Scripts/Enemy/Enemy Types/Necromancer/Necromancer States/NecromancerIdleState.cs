@@ -27,7 +27,6 @@ public class NecromancerIdleState : EnemyState<Necromancer>
 
         if (enemy.IsAggroed)
         {
-            enemy.ResolveAggroTransition();
 #if UNITY_EDITOR
             enemy.DebugAnimationLog("IdleState -> ChaseState because IsAggroed=true.");
 #endif

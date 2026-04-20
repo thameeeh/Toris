@@ -10,6 +10,16 @@ public sealed class SiteTileLayoutDefinition : ScriptableObject
     [SerializeField] private List<SiteTileLayoutCell> cells = new();
 
     public IReadOnlyList<SiteTileLayoutCell> Cells => cells;
+
+    public void ReplaceCells(IEnumerable<SiteTileLayoutCell> newCells)
+    {
+        cells.Clear();
+
+        if (newCells == null)
+            return;
+
+        cells.AddRange(newCells);
+    }
 }
 
 [System.Serializable]

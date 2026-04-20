@@ -138,7 +138,7 @@ PrefabInstance:
     - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: _equipmentInventory
       value: 
-      objectReference: {fileID: 1526680095}
+      objectReference: {fileID: 950583190}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7823
@@ -1035,7 +1035,7 @@ PrefabInstance:
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _equipmentInventory
       value: 
-      objectReference: {fileID: 1526680095}
+      objectReference: {fileID: 950583190}
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _playerEffectSourceController
       value: 

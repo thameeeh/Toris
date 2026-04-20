@@ -17,6 +17,10 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
     [Header("Post Cast Reposition")]
     [SerializeField] private float postCastRepositionDuration = 0.75f;
+#if UNITY_EDITOR
+    [Header("Debug")]
+    [SerializeField] private bool debugChaseDecisions;
+#endif
 
     private GridPathAgent _pathAgent;
     private CircleCollider2D _castingRangeCollider;
@@ -26,6 +30,11 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
     private float _humanToFloaterDelayTimer;
     private bool _isPostCastRepositioning;
     private bool _isWaitingForHumanToFloaterDelay;
+#if UNITY_EDITOR
+    private const float DebugChaseLogInterval = 0.1f;
+    private string _lastChaseDecision = string.Empty;
+    private float _nextChaseDebugLogTime;
+#endif
 
     public bool CanStartSelectedAttack { get; private set; }
     public NecromancerAttackType SelectedAttackType { get; private set; }
@@ -78,6 +87,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         {
             ResetHumanToFloaterDelay();
             StopMoving();
+            LogChaseDecision("NoPlayer", 0f, enemy.IsWithinCastingRange, enemy.IsWithinStrikingDistance);
             return;
         }
 
@@ -91,6 +101,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             ResetHumanToFloaterDelay();
             StopMoving();
             enemy.FacePlayer();
+            LogChaseDecision("ChangingForm", distanceToPlayerSqr, enemy.IsWithinCastingRange, enemy.IsWithinStrikingDistance);
             return;
         }
 
@@ -108,6 +119,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             {
                 StopMoving();
                 enemy.FacePlayer();
+                LogChaseDecision("PanicRangeHumanDelay", distanceToPlayerSqr, IsInCastingRange, true);
                 TryRequestHumanToFloater();
                 return;
             }
@@ -118,10 +130,12 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
                 enemy.FacePlayer();
                 ResetHumanToFloaterDelay();
                 SelectAttack(NecromancerAttackType.PanicSwing);
+                LogChaseDecision("PanicSwingReady", distanceToPlayerSqr, IsInCastingRange, true);
                 return;
             }
 
             ResetHumanToFloaterDelay();
+            LogChaseDecision("PanicRetreat", distanceToPlayerSqr, IsInCastingRange, true);
             MoveAwayFromPlayer(toPlayer);
             AdvancePostCastReposition(distanceToPlayerSqr);
             return;
@@ -130,12 +144,14 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         if (enemy.ShouldPrioritizePostAttackReposition && UpdatePostCastReposition(toPlayer, distanceToPlayerSqr))
         {
             ResetHumanToFloaterDelay();
+            LogChaseDecision("PostCastRepositionPriority", distanceToPlayerSqr, IsInCastingRange, false);
             return;
         }
 
         if (UpdatePostCastReposition(toPlayer, distanceToPlayerSqr))
         {
             ResetHumanToFloaterDelay();
+            LogChaseDecision("PostCastReposition", distanceToPlayerSqr, IsInCastingRange, false);
             return;
         }
 
@@ -145,11 +161,13 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             {
                 StopMoving();
                 enemy.FacePlayer();
+                LogChaseDecision("RetreatBandHumanDelay", distanceToPlayerSqr, IsInCastingRange, false);
                 TryRequestHumanToFloater();
                 return;
             }
 
             ResetHumanToFloaterDelay();
+            LogChaseDecision("RetreatBandMoveAway", distanceToPlayerSqr, IsInCastingRange, false);
             MoveAwayFromPlayer(toPlayer);
             return;
         }
@@ -161,6 +179,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
             if (enemy.IsHumanForm)
             {
+                LogChaseDecision("CastingRangeHumanDelay", distanceToPlayerSqr, true, false);
                 TryRequestHumanToFloater();
                 return;
             }
@@ -169,10 +188,16 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             SelectAttack(enemy.IsPhaseTwoSummonUnlocked && enemy.CanStartAttack(NecromancerAttackType.Summon)
                 ? NecromancerAttackType.Summon
                 : NecromancerAttackType.SpellCast);
+            LogChaseDecision(
+                CanStartSelectedAttack ? $"CastingRangeAttackReady:{SelectedAttackType}" : $"CastingRangeHold:{SelectedAttackType}",
+                distanceToPlayerSqr,
+                true,
+                false);
             return;
         }
 
         ResetHumanToFloaterDelay();
+        LogChaseDecision("ApproachPlayer", distanceToPlayerSqr, false, false);
         MoveTowardPlayer(playerPosition, toPlayer);
     }
 
@@ -279,6 +304,31 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         if (castingRangeCheck != null)
             castingRangeCheck.TryGetComponent(out _castingRangeCollider);
     }
+
+#if UNITY_EDITOR
+    private void LogChaseDecision(string decision, float distanceToPlayerSqr, bool inCastingRange, bool inPanicRange)
+    {
+        if (!debugChaseDecisions || enemy == null)
+            return;
+
+        string message =
+            $"decision={decision} " +
+            $"dist={Mathf.Sqrt(distanceToPlayerSqr):0.##} " +
+            $"cast={inCastingRange} " +
+            $"panic={inPanicRange} " +
+            $"human={enemy.IsHumanForm} " +
+            $"floaterReady={enemy.IsReadyToCastAnimation} " +
+            $"postCast={_isPostCastRepositioning}";
+
+        float now = Time.time;
+        if (_lastChaseDecision == message && now < _nextChaseDebugLogTime)
+            return;
+
+        _lastChaseDecision = message;
+        _nextChaseDebugLogTime = now + DebugChaseLogInterval;
+        Debug.Log($"[NecroChase:{enemy.name}] {message}", enemy);
+    }
+#endif
 
     private void EnsurePostCastRepositionStarted()
     {

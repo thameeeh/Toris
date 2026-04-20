@@ -14,6 +14,10 @@ public class GridPathAgent : MonoBehaviour
     [Tooltip("If true, when no path is found the agent will still walk straight towards the target (ignoring nav). " +
              "If false, the agent will STOP when no path exists.")]
     [SerializeField] private bool allowDirectFallbackWhenNoPath = false;
+#if UNITY_EDITOR
+    [Header("Debug")]
+    [SerializeField] private bool debugPathing;
+#endif
 
     private Enemy _enemy;
 
@@ -23,6 +27,12 @@ public class GridPathAgent : MonoBehaviour
     private Vector3 _lastTarget;
     private bool _hasLastTarget;
     private bool _hasValidPath;
+#if UNITY_EDITOR
+    private const float DebugPathLogInterval = 0.1f;
+    private Vector2 _lastReturnedDirection = Vector2.zero;
+    private string _lastDebugMessage = string.Empty;
+    private float _nextDebugLogTime;
+#endif
 
     private void Awake()
     {
@@ -44,14 +54,18 @@ public class GridPathAgent : MonoBehaviour
     /// </summary>
     public Vector2 GetMoveDirection(Vector3 desiredTargetWorld)
     {
+        string repathReason = string.Empty;
+
         if (TileNavWorld.Instance == null)
         {
             if (allowDirectFallbackWhenNoPath)
             {
                 Vector2 dirFallback = desiredTargetWorld - transform.position;
+                LogPathing($"NoTileNav direct-fallback target={desiredTargetWorld} dir={dirFallback.normalized}");
                 return dirFallback.sqrMagnitude > 0.0001f ? dirFallback.normalized : Vector2.zero;
             }
 
+            LogPathing($"NoTileNav stop target={desiredTargetWorld}");
             return Vector2.zero;
         }
 
@@ -62,17 +76,22 @@ public class GridPathAgent : MonoBehaviour
         if (!_hasLastTarget)
         {
             needRepath = true;
+            repathReason = "NoLastTarget";
         }
         else
         {
             float distToLastTarget = (desiredTargetWorld - _lastTarget).sqrMagnitude;
             if (distToLastTarget > targetChangeThreshold * targetChangeThreshold)
+            {
                 needRepath = true;
+                repathReason = "TargetMoved";
+            }
         }
 
         if (_repathTimer <= 0f)
         {
             needRepath = true;
+            repathReason = string.IsNullOrEmpty(repathReason) ? "Interval" : $"{repathReason}+Interval";
         }
 
         if (needRepath)
@@ -81,6 +100,9 @@ public class GridPathAgent : MonoBehaviour
             _repathTimer = repathInterval;
             _lastTarget = desiredTargetWorld;
             _hasLastTarget = true;
+            LogPathing(
+                $"Repath reason={repathReason} valid={_hasValidPath} " +
+                $"count={_currentPath.Count} pathIndex={_pathIndex} target={desiredTargetWorld}");
         }
 
         if (!_hasValidPath || _currentPath.Count == 0)
@@ -88,15 +110,18 @@ public class GridPathAgent : MonoBehaviour
             if (allowDirectFallbackWhenNoPath)
             {
                 Vector2 direct = desiredTargetWorld - transform.position;
+                LogPathing($"NoPath direct-fallback target={desiredTargetWorld} dir={direct.normalized}");
                 return direct.sqrMagnitude > 0.0001f ? direct.normalized : Vector2.zero;
             }
 
+            LogPathing($"NoPath stop target={desiredTargetWorld}");
             return Vector2.zero;
         }
 
         if (_pathIndex < 0 || _pathIndex >= _currentPath.Count)
         {
             _hasValidPath = false;
+            LogPathing($"InvalidPathIndex stop pathIndex={_pathIndex} count={_currentPath.Count}");
             return Vector2.zero;
         }
 
@@ -116,13 +141,20 @@ public class GridPathAgent : MonoBehaviour
             else
             {
                 _hasValidPath = false;
+                LogPathing($"PathFinished stop target={desiredTargetWorld}");
                 return Vector2.zero;
             }
         }
 
         if (toWaypoint.sqrMagnitude > 0.0001f)
-            return toWaypoint.normalized;
+        {
+            Vector2 result = toWaypoint.normalized;
+            LogDirectionFlip(result, waypoint, desiredTargetWorld);
+            _lastReturnedDirection = result;
+            return result;
+        }
 
+        LogPathing($"ZeroDirection stop waypoint={waypoint} target={desiredTargetWorld}");
         return Vector2.zero;
     }
 
@@ -156,4 +188,42 @@ public class GridPathAgent : MonoBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
+    private void LogDirectionFlip(Vector2 newDirection, Vector3 waypoint, Vector3 desiredTargetWorld)
+    {
+        if (!ShouldDebugPathing())
+            return;
+
+        if (_lastReturnedDirection.sqrMagnitude <= 0.0001f || newDirection.sqrMagnitude <= 0.0001f)
+            return;
+
+        float dot = Vector2.Dot(_lastReturnedDirection.normalized, newDirection.normalized);
+        if (dot > -0.2f)
+            return;
+
+        LogPathing(
+            $"DirectionFlip dot={dot:0.##} pathIndex={_pathIndex}/{_currentPath.Count} " +
+            $"waypoint={waypoint} target={desiredTargetWorld} current={transform.position}");
+    }
+
+    private void LogPathing(string message)
+    {
+        if (!ShouldDebugPathing())
+            return;
+
+        float now = Time.time;
+        if (_lastDebugMessage == message && now < _nextDebugLogTime)
+            return;
+
+        _lastDebugMessage = message;
+        _nextDebugLogTime = now + DebugPathLogInterval;
+        Debug.Log($"[GridPath:{_enemy.name}] {message}", _enemy);
+    }
+
+    private bool ShouldDebugPathing()
+    {
+        return debugPathing && _enemy is Necromancer;
+    }
+#endif
 }

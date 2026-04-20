@@ -229,5 +229,12 @@ public static class TilePathfinder
             currentIdx = cameFrom[currentIdx];
         }
         outPath.Reverse();
+
+        // The reconstructed chain includes the start tile, which causes path agents
+        // to steer back to the center of the tile they are already occupying after a repath.
+        // Drop that leading tile when we have somewhere else to go so movement starts on
+        // the next actual step in the path.
+        if (outPath.Count > 1)
+            outPath.RemoveAt(0);
     }
 }

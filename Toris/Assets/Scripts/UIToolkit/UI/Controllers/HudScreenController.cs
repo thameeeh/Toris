@@ -36,6 +36,7 @@ namespace OutlandHaven.UIToolkit
 
             // 1. Instantiate the UI from the asset
             TemplateContainer hudInstance = _hudMainTemplate.Instantiate();
+            hudInstance.style.flexGrow = 1;
 
             if (_playerHudBridge == null)
             {

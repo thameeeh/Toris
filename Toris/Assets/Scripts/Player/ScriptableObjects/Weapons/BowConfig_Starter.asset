@@ -47,6 +47,6 @@ MonoBehaviour:
   maxSpreadDegreesAtMin: 1
   maxSpreadDegreesAtMax: 2
   overHoldExtraSpreadPerSecond: 8
-  nockTime: 0.2
+  nockTime: 0.5
   overHoldStartsAt: 1.2
   cooldownAfterShot: 0

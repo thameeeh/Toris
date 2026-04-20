@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <ui:VisualElement class="item-slot">
-        <ui:Image name="slot-icon" class="item-icon" style="display: none;"/>
+        <ui:Image name="slot-icon" class="item-icon slot-icon-hidden"/>
         <ui:Label name="slot-qty" picking-mode="Ignore" class="item-quantity"/>
     </ui:VisualElement>
 </ui:UXML>

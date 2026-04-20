@@ -37,7 +37,7 @@
             <ui:VisualElement class="skill-info-panel__content">
                 <ui:Label name="info-skill-name" text="Select a Skill" class="info-text-h2"/>
                 <ui:Label name="info-skill-state" text="Status: -" class="info-text-body"/>
-                <ui:Label name="info-skill-desc" text="Hover or click a skill node to see its details here." class="info-text-body" style="white-space: normal;"/>
+                <ui:Label name="info-skill-desc" text="Hover or click a skill node to see its details here." class="info-text-body info-text-desc"/>
             </ui:VisualElement>
             <ui:VisualElement class="skill-info-panel__footer">
                 <ui:Label name="info-skill-cost" text="Cost: 1 SP" class="info-text-h3"/>

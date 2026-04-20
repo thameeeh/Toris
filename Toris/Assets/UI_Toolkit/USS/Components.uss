@@ -1,5 +1,5 @@
 .standard-button {
-    background-color: rgb(60, 60, 60);
+    background-color: var(--color-btn-default);
     border-color: var(--color-border-default);
     border-width: 1px;
     border-radius: 5px;
@@ -9,16 +9,16 @@
 }
 
 .standard-button:hover {
-    background-color: rgb(90, 90, 90);
+    background-color: var(--color-btn-hover);
     scale: 1.05;
 }
 
 .item-slot {
     width: 82px;
     height: 82px;
-    background-color: rgb(56, 56, 56);
+    background-color: var(--color-bg-light);
     border-width: 0.5px;
-    border-color: rgb(255, 212, 180);
+    border-color: var(--color-border-item-slot);
 }
 
 .item-slot:hover {
@@ -29,11 +29,11 @@
     position: absolute;
     bottom: 2px;
     left: 4px;
-    color: rgb(255, 255, 255);
-    font-size: 14px;
+    color: var(--color-text-light);
+    font-size: var(--font-size-small);
     -unity-font-style: bold;
     -unity-text-outline-width: 1.5px;
-    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-color: var(--color-text-outline);
     picking-mode: Ignore;
 }
 
@@ -47,12 +47,12 @@
 .panel-tab {
     flex-grow: 1;
     height: 50px;
-    background-color: rgb(40, 40, 40);
+    background-color: var(--color-bg-tab);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-width: 1px;
     border-bottom-width: 0;
-    border-color: rgb(25, 25, 25);
+    border-color: var(--color-border-panel-tab);
     margin-left: 2px;
     margin-right: 2px;
     margin-top: 5px;
@@ -62,40 +62,40 @@
 }
 
 .panel-tab:hover {
-    background-color: rgb(60, 60, 60);
-    border-color: rgb(220, 179, 92);
+    background-color: var(--color-btn-default);
+    border-color: var(--color-border-highlight);
 }
 
 .panel-tab--active {
-    background-color: rgb(70, 70, 70);
-    border-color: rgb(220, 179, 92);
+    background-color: var(--color-bg-tab-active);
+    border-color: var(--color-border-highlight);
 }
 
 .panel-tab-label {
-    color: rgb(180, 180, 180);
-    font-size: 18px;
+    color: var(--color-text-dim);
+    font-size: var(--font-size-body);
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     picking-mode: Ignore;
 }
 
 .panel-tab--active .panel-tab-label {
-    color: rgb(255, 255, 255);
+    color: var(--color-text-light);
 }
 
 .panel-title {
-    color: rgb(255, 255, 255);
-    font-size: 40px;
+    color: var(--color-text-light);
+    font-size: var(--font-size-h2);
     margin-bottom: 20px;
 }
 
-#Equipment__Header .panel-title {
+.equipment-header .panel-title {
     margin-bottom: 0;
 }
 
 .stat-label {
     color: white;
-    font-size: 20px;
+    font-size: var(--font-size-body);
     margin-bottom: 10px;
 }
 
@@ -144,7 +144,7 @@
 .potion-slot {
     width: 70px;
     height: 70px;
-    background-color: rgb(40, 40, 40);
+    background-color: var(--color-bg-tab);
     border-width: 2px;
     border-color: var(--color-border-default);
     border-radius: 35px;
@@ -173,7 +173,7 @@
 }
 
 .shop-item-slot:hover {
-    background-color: rgb(40, 40, 40);
+    background-color: var(--color-bg-tab);
     border-color: var(--color-border-highlight);
     scale: 1.05;
 }
@@ -183,10 +183,10 @@
     bottom: 2px;
     right: 4px;
     color: var(--color-coin-gold);
-    font-size: 14px;
+    font-size: var(--font-size-small);
     -unity-font-style: bold;
     -unity-text-outline-width: 1px;
-    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-color: var(--color-text-outline);
     picking-mode: Ignore;
 }
 
@@ -199,12 +199,231 @@
     border-color: rgb(90, 80, 70); 
 }
 
-.forge-slot-result {
+
+/* --- Forge Layout --- */
+.forge-subview-container {
+    background-color: var(--color-bg-panel);
+    padding: 10px;
+}
+
+.forge-title {
+    color: var(--color-text-light);
+    -unity-text-align: middle-center;
+    margin-bottom: 20px;
+    font-size: var(--font-size-body);
+}
+
+.forge-inputs {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.forge-slot {
     width: 60px;
     height: 60px;
-    flex-shrink: 0;
-    background-color: rgb(35, 30, 25);
+    background-color: var(--color-bg-forge-slot);
     border-width: 2px;
-    border-color: rgb(180, 140, 70); /* Kept the gold highlight for the result */
+    border-color: var(--color-border-default);
+}
+
+.forge-plus-label {
+    color: var(--color-text-light);
+    font-size: var(--font-size-h3);
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.forge-btn {
+    height: 40px;
+    margin-bottom: 20px;
+    background-color: var(--color-bg-forge-btn);
+    color: var(--color-text-light);
+}
+
+.forge-result-slot {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-bg-forge-result);
+    border-width: 2px;
+    border-color: var(--color-border-highlight);
     align-self: center;
+}
+
+/* --- Salvage Layout --- */
+.salvage-subview-container {
+    background-color: var(--color-bg-panel);
+    padding: 15px;
+}
+
+.salvage-title {
+    color: var(--color-text-light);
+    -unity-text-align: middle-center;
+    margin-bottom: 20px;
+    font-size: var(--font-size-body);
+    font-weight: bold;
+}
+
+.salvage-input-section {
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.salvage-input-label {
+    color: var(--color-text-salvage-label);
+    font-size: var(--font-size-small);
+    margin-bottom: 8px;
+}
+
+.salvage-slot-input {
+    width: 64px;
+    height: 64px;
+    background-color: var(--color-bg-salvage-slot);
+    border-width: 2px;
+    border-color: var(--color-border-salvage-slot);
+}
+
+.salvage-options {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.salvage-option-container {
+    flex-grow: 1;
+    align-items: center;
+    background-color: var(--color-bg-forge-result);
+    padding: 10px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: var(--color-border-salvage-option);
+}
+
+.salvage-gold-container {
+    margin-right: 5px;
+}
+
+.salvage-item-container {
+    margin-left: 5px;
+}
+
+.salvage-yield-label {
+    font-size: var(--font-size-small);
+    margin-bottom: 5px;
+}
+
+.salvage-gold-yield-label {
+    color: var(--color-coin-gold);
+}
+
+.salvage-item-yield-label {
+    color: var(--color-text-salvage-item);
+}
+
+.salvage-gold-field {
+    width: 80px;
+    margin-bottom: 15px;
+    background-color: var(--color-bg-salvage-field);
+    color: var(--color-text-light);
+    -unity-text-align: middle-center;
+}
+
+.salvage-item-yield-slot {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+    background-color: var(--color-bg-salvage-slot);
+    border-width: 1px;
+    border-color: var(--color-border-default);
+}
+
+.salvage-action-btn {
+    width: 100%;
+    height: 35px;
+    color: var(--color-text-light);
+    border-width: 0;
+}
+
+.salvage-gold-btn {
+    background-color: var(--color-bg-salvage-btn-gold);
+}
+
+.salvage-item-btn {
+    background-color: var(--color-bg-salvage-btn-item);
+}
+
+/* --- Panel Layout --- */
+.middle-panel-container {
+    flex-grow: 1;
+}
+
+.main-view-container {
+    flex-grow: 1;
+    flex-wrap: wrap;
+    background-color: var(--color-bg-main-view);
+    width: 100%;
+    height: 100%;
+}
+
+.tabs-container {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+.tab-label-header {
+    flex-shrink: 1;
+    flex-grow: 1;
+    -unity-text-align: upper-left;
+}
+
+.main-view-root {
+    flex-grow: 1;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+/* Master Layout */
+.master-root {
+    flex-grow: 1;
+}
+
+.layer-windows {
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    justify-content: space-between;
+    flex-direction: row;
+    top: 0;
+}
+
+.window-zone {
+    height: 100%;
+    width: 30%;
+    min-width: 576px;
+}
+
+.layer-hud {
+    position: absolute;
+    bottom: 0;
+    height: 20%;
+    width: 100%;
+}
+
+.fullscreen-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.slot-icon-hidden {
+    display: none;
+}
+
+/* Flexbox fixes */
+.item-slot, .forge-slot, .forge-result-slot, .salvage-slot-input, .salvage-item-yield-slot, .potion-slot, .shop-item-slot, .hud-menu-btn, .hud-menu-icon, .hud-menu-btn-icon {
+    flex-shrink: 0;
 }

@@ -17,6 +17,10 @@ public abstract class PlayerAbilitySO : ScriptableObject
     [Header("Cooldown")]
     [Min(0f)] public float cooldownSeconds = 0f;
 
+    [Header("Bow Draw Lock")]
+    public bool blocksBowDraw = true;
+    [Min(0f)] public float bowDrawLockDuration = 0.25f;
+
     public virtual PlayerAbilityRuntime CreateRuntime()
     {
         return new PlayerAbilityRuntime();

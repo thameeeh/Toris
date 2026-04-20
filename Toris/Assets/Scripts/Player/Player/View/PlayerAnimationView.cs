@@ -16,7 +16,6 @@ public class PlayerAnimationView : MonoBehaviour
 
     readonly Dictionary<string, int> _nameToHash = new();
     readonly Dictionary<int, float> _hashToLen = new();
-    readonly Dictionary<int, AnimationClip> _hashToClip = new();
 
     public RuntimeAnimatorController RuntimeController => _animator ? _animator.runtimeAnimatorController : null;
     public SpriteRenderer SpriteRenderer => _sprite;
@@ -35,7 +34,6 @@ public class PlayerAnimationView : MonoBehaviour
 
         _nameToHash.Clear();
         _hashToLen.Clear();
-        _hashToClip.Clear();
 
         foreach (var clip in rc.animationClips)
         {
@@ -46,9 +44,6 @@ public class PlayerAnimationView : MonoBehaviour
 
             if (!_hashToLen.ContainsKey(h))
                 _hashToLen[h] = clip.length;
-
-            if (!_hashToClip.ContainsKey(h))
-                _hashToClip[h] = clip;
         }
     }
 
@@ -94,41 +89,10 @@ public class PlayerAnimationView : MonoBehaviour
         return st.shortNameHash == stateHash;
     }
 
-    public void CrossFadeIfChanged(int stateHash, float fadeSeconds)
-    {
-        if (!IsCurrent(stateHash))
-            _animator.CrossFade(stateHash, fadeSeconds);
-    }
-
     #endregion
 
     public float ClipLenByHash(int hash) =>
         _hashToLen.TryGetValue(hash, out var len) ? len : 0.18f;
-
-    public bool TryGetEventNormalizedTime(int hash, string functionName, out float normalizedTime)
-    {
-        normalizedTime = 0f;
-
-        if (!_hashToClip.TryGetValue(hash, out var clip) || clip == null)
-            return false;
-
-        float clipLength = clip.length;
-        if (clipLength <= 0f)
-            return false;
-
-        var events = clip.events;
-        for (int i = 0; i < events.Length; i++)
-        {
-            AnimationEvent animationEvent = events[i];
-            if (animationEvent == null || animationEvent.functionName != functionName)
-                continue;
-
-            normalizedTime = Mathf.Clamp01(animationEvent.time / clipLength);
-            return true;
-        }
-
-        return false;
-    }
 
     public AnimatorStateInfo Current() => _animator.GetCurrentAnimatorStateInfo(BaseLayer);
 
@@ -144,12 +108,8 @@ public class PlayerAnimationView : MonoBehaviour
 
     public void SetInt(string name, int value) => _animator.SetInteger(name, value);
 
-    public void SetTrigger(string name) => _animator.SetTrigger(name);
-
-    public void ResetTrigger(string name) => _animator.ResetTrigger(name);
-
     public void Play(int stateHash, float normalizedTime) =>
         _animator.Play(stateHash, BaseLayer, normalizedTime);
 
-    public void SetPaused(bool paused) => _animator.speed = paused ? 0f : 1f;
+    public void SetPlaybackSpeed(float speed) => _animator.speed = speed;
 }

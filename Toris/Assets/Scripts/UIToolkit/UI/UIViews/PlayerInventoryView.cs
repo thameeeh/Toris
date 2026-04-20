@@ -153,6 +153,9 @@ namespace OutlandHaven.Inventory
                 case InventoryInteractionContext.Salvage:
                     _uiInventoryEvents.OnRequestSalvage?.Invoke(dataSlot, SalvageType.Material); // default salvage type
                     break;
+                case InventoryInteractionContext.Forge:
+                    _uiInventoryEvents.OnRequestSendToForge?.Invoke(dataSlot);
+                    break;
                 case InventoryInteractionContext.Normal:
                 default:
                     if (dataSlot == null || dataSlot.IsEmpty || dataSlot.HeldItem?.BaseItem == null)

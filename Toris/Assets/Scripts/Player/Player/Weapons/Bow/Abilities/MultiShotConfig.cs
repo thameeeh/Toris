@@ -12,6 +12,7 @@ public class MultiShotConfig : PlayerAbilitySO
 
     [Header("Animation")]
     public bool playReleaseAnimation = true;
+    public bool useShortReleaseAnimation = false;
 
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
@@ -29,8 +30,12 @@ public class MultiShotConfig : PlayerAbilitySO
 
         BowSO.ShotStats shotStats = playerBow.BuildFullyDrawnShotStats();
 
+<<<<<<< HEAD
         runtime.BeginAbilityUse(context);
         playerBow.FireMultiShotVolley(shotStats, arrowCount, totalSpreadDegrees, playReleaseAnimation);
+=======
+        playerBow.FireMultiShotVolley(shotStats, arrowCount, totalSpreadDegrees, playReleaseAnimation, useShortReleaseAnimation);
+>>>>>>> UI_Update
         runtime.StartCooldown();
     }
 }

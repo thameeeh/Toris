@@ -15,6 +15,7 @@ namespace OutlandHaven.Inventory
         private InventoryManager _owningContainer;
         public event Action<InventorySlot> OnLocalClicked;
         public event Action<InventorySlot> OnLocalRightClicked;
+        public event Action<InventorySlot, bool> OnLocalRightClickedWithShift;
         public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnLocalMoveItemRequested;
         public event Action<InventorySlot, string> OnLocalSelectForProcessingRequested;
 
@@ -160,6 +161,7 @@ namespace OutlandHaven.Inventory
                 if (_slotData != null && !_slotData.IsEmpty)
                 {
                     OnLocalRightClicked?.Invoke(_slotData);
+                    OnLocalRightClickedWithShift?.Invoke(_slotData, evt.shiftKey);
                 }
                 return;
             }

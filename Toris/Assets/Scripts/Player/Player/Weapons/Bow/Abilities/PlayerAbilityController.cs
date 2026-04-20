@@ -44,6 +44,7 @@ public class PlayerAbilityController : MonoBehaviour
     public PlayerAbilityRuntime Ability1Runtime => GetRuntime(0);
     public PlayerAbilityRuntime Ability2Runtime => GetRuntime(1);
     public PlayerAbilityContext AbilityContext => _context;
+<<<<<<< HEAD
     public int SlotCount => _abilitySlots?.Length ?? 0;
     public bool IsBowDrawBlocked
     {
@@ -77,6 +78,8 @@ public class PlayerAbilityController : MonoBehaviour
             return false;
         }
     }
+=======
+>>>>>>> UI_Update
 
     private PlayerAbilityContext _context;
 
@@ -170,6 +173,7 @@ public class PlayerAbilityController : MonoBehaviour
         runtime.OnButtonUp(_context);
         return true;
     }
+<<<<<<< HEAD
 
     private void HandleAbilitySlotStarted(int slotIndex)
     {
@@ -233,3 +237,6 @@ public class PlayerAbilityController : MonoBehaviour
         }
     }
 }
+=======
+}
+>>>>>>> UI_Update

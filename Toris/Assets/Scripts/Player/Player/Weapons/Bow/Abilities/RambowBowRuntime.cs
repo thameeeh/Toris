@@ -48,6 +48,7 @@ public sealed class RamboBowRuntime : PlayerAbilityRuntime
     {
         return Time.time >= _nextShotTime;
     }
+<<<<<<< HEAD
 
     public override bool IsBlockingBowDraw(PlayerAbilityContext context)
     {
@@ -59,3 +60,6 @@ public sealed class RamboBowRuntime : PlayerAbilityRuntime
         return base.IsBlockingMovement(context) || _isHeld || _isActive;
     }
 }
+=======
+}
+>>>>>>> UI_Update

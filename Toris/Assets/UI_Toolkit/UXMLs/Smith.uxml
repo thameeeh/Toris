@@ -5,13 +5,13 @@
         <ui:VisualElement name="container-smith" style="flex-grow: 0; flex-wrap: wrap; background-color: rgb(23, 23, 23); width: 100%; height: 100%;">
             <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
                 <ui:Label text="Smith" class="panel-tab-label" style="flex-shrink: 1; flex-grow: 0; -unity-text-align: upper-left;"/>
-                <ui:VisualElement name="Smith_Forge--Tab" class="panel-tab" style="flex-grow: 1; height: 60px;">
+                <ui:VisualElement name="Smith_Forge--Tab" class="panel-tab panel-tab--active" style="flex-shrink: 0;">
                     <ui:Label text="Forge" name="Forge_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Smith_Market--Tab" class="panel-tab" style="flex-grow: 1; height: 60px;">
+                <ui:VisualElement name="Smith_Market--Tab" class="panel-tab" style="flex-grow: 1;">
                     <ui:Label text="Market" enable-rich-text="true" name="Market_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Smith_Salvage--Tab" class="panel-tab" style="flex-grow: 1; height: 60px;">
+                <ui:VisualElement name="Smith_Salvage--Tab" class="panel-tab" style="flex-grow: 1;">
                     <ui:Label text="Salvage" name="Salvage_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
             </ui:VisualElement>

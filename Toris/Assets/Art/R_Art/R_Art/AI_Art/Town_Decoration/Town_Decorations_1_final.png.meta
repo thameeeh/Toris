@@ -1,0 +1,433 @@
+fileFormatVersion: 2
+guid: 80079d6f84a9e4c4c9dec28d864c4fb1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6451232696850923391
+    second: Town_Decorations_1_final_0
+  - first:
+      213: 8939772485787402330
+    second: Town_Decorations_1_final_1
+  - first:
+      213: -5464078043726716882
+    second: Town_Decorations_1_final_2
+  - first:
+      213: -3012181356749250909
+    second: Town_Decorations_1_final_3
+  - first:
+      213: 4568825137750146069
+    second: Town_Decorations_1_final_4
+  - first:
+      213: 3739501252248037366
+    second: Town_Decorations_1_final_5
+  - first:
+      213: -8489257077842046285
+    second: Town_Decorations_1_final_6
+  - first:
+      213: 3374451120463471276
+    second: Town_Decorations_1_final_7
+  - first:
+      213: 3529272812388812212
+    second: Town_Decorations_1_final_8
+  - first:
+      213: 5030355527624072140
+    second: Town_Decorations_1_final_9
+  - first:
+      213: 2212332933124190076
+    second: Town_Decorations_1_final_10
+  - first:
+      213: 7839200157636768579
+    second: Town_Decorations_1_final_11
+  - first:
+      213: 1845187617266482243
+    second: Town_Decorations_1_final_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 124
+        width: 75
+        height: 71
+      alignment: 9
+      pivot: {x: 0.5062298, y: 0.27625307}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 180c0d4da0e9876a0800000000000000
+      internalID: -6451232696850923391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_1
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 133
+        width: 63
+        height: 52
+      alignment: 9
+      pivot: {x: 0.39616963, y: 0.33826417}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a504b2cf5b3701c70800000000000000
+      internalID: 8939772485787402330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_2
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 128
+        width: 52
+        height: 68
+      alignment: 9
+      pivot: {x: 0.5, y: 0.18392833}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2068aa18f1bb24b0800000000000000
+      internalID: -5464078043726716882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_3
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 131
+        width: 70
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5200243, y: 0.35558137}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ae18e7e3059236d0800000000000000
+      internalID: -3012181356749250909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_4
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 68
+        width: 48
+        height: 52
+      alignment: 9
+      pivot: {x: 0.5292022, y: 0.27536684}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51cf870914ab76f30800000000000000
+      internalID: 4568825137750146069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_5
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 67
+        width: 65
+        height: 58
+      alignment: 9
+      pivot: {x: 0.47843534, y: 0.32277244}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f76f51839065e330800000000000000
+      internalID: 3739501252248037366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_6
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 72
+        width: 58
+        height: 47
+      alignment: 9
+      pivot: {x: 0.52416754, y: 0.3210584}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b2114c6aa9103a80800000000000000
+      internalID: -8489257077842046285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_7
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 78
+        width: 53
+        height: 38
+      alignment: 9
+      pivot: {x: 0.552895, y: 0.34015575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca2e42b5a6574de20800000000000000
+      internalID: 3374451120463471276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_9
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 12
+        width: 37
+        height: 47
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2415284}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccb94fd43b96fc540800000000000000
+      internalID: 5030355527624072140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_10
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 15
+        width: 63
+        height: 43
+      alignment: 9
+      pivot: {x: 0.47033426, y: 0.32614434}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7fe3cbc419c3be10800000000000000
+      internalID: 2212332933124190076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_11
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 11
+        width: 55
+        height: 50
+      alignment: 9
+      pivot: {x: 0.49150473, y: 0.3317946}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 343302f620f6acc60800000000000000
+      internalID: 7839200157636768579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Town_Decorations_1_final_12
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 13
+        width: 56
+        height: 51
+      alignment: 9
+      pivot: {x: 0.5, y: 0.31677008}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34c3e179c5c6b9910800000000000000
+      internalID: 1845187617266482243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: cb05c17b9c436cf45b781d0dc7d2a165
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Town_Decorations_1_final_0: -6451232696850923391
+      Town_Decorations_1_final_1: 8939772485787402330
+      Town_Decorations_1_final_10: 2212332933124190076
+      Town_Decorations_1_final_11: 7839200157636768579
+      Town_Decorations_1_final_12: 1845187617266482243
+      Town_Decorations_1_final_2: -5464078043726716882
+      Town_Decorations_1_final_3: -3012181356749250909
+      Town_Decorations_1_final_4: 4568825137750146069
+      Town_Decorations_1_final_5: 3739501252248037366
+      Town_Decorations_1_final_6: -8489257077842046285
+      Town_Decorations_1_final_7: 3374451120463471276
+      Town_Decorations_1_final_8: 3529272812388812212
+      Town_Decorations_1_final_9: 5030355527624072140
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

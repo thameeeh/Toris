@@ -1,3 +1,7 @@
+## [Current/Recent] - Performance Optimization: PlayerBowController
+* Cached `Camera.main` in `PlayerBowController.cs` to reduce overhead from frequent property access in `Update` and aim logic.
+* Optimized `transform.position` usage in `PlayerBowController.GetAimDirection` by caching it in a local variable, minimizing native-to-managed bridge calls.
+
 ## [Current/Recent] - Documentation Update for Architecture Shifts
 This update refactors the core documentation to accurately reflect the current "production-ready" architecture of the inventory and drag-and-drop systems, moving away from prototyping implementations.
 

@@ -76,6 +76,7 @@ public class PlayerBowController : MonoBehaviour
     private float lastShotTime = -999f;
     private bool drawing;
     private bool _shootReadyRaised;
+    private Camera _mainCamera;
 
     private void LogShoot(string message)
     {
@@ -89,6 +90,8 @@ public class PlayerBowController : MonoBehaviour
 
     private void Awake()
     {
+        _mainCamera = Camera.main;
+
         if (_abilityController == null)
             TryGetComponent(out _abilityController);
 
@@ -345,7 +348,8 @@ public class PlayerBowController : MonoBehaviour
 
     private Vector2 GetAimDirection()
     {
-        var cam = Camera.main;
+        if (_mainCamera == null) _mainCamera = Camera.main;
+        var cam = _mainCamera;
         if (!cam) return Vector2.right;
 
         Vector2 screen;
@@ -356,13 +360,14 @@ public class PlayerBowController : MonoBehaviour
         else
             return Vector2.right;
 
-        Vector3 depthRef = transform.position;
+        Vector3 myPos = transform.position;
+        Vector3 depthRef = myPos;
         float depth = cam.orthographic ? 0f : Mathf.Abs(cam.WorldToScreenPoint(depthRef).z);
 
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
         world.z = depthRef.z;
 
-        Vector2 centerOrigin = transform.position;
+        Vector2 centerOrigin = (Vector2)myPos;
         Vector2 rawDirection = (Vector2)(world - (Vector3)centerOrigin);
         Vector2 facingDirection = rawDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE
             ? rawDirection.normalized

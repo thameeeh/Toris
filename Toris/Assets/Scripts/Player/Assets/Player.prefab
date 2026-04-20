@@ -454,7 +454,7 @@ MonoBehaviour:
   - _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   - _abilityDefinition: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
   - _abilityDefinition: {fileID: 11400000, guid: 0b532d9704914eb0b0a72e6d3f3f1b0e, type: 2}
-  - _abilityDefinition: {fileID: 0}
+  - _abilityDefinition: {fileID: 11400000, guid: 738d00bb63795d04bbdb2414a28a778b, type: 2}
   - _abilityDefinition: {fileID: 0}
   _legacyAbility1:
     _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
@@ -529,7 +529,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06a860f3d090e1444bd6fa027ebb6578, type: 3}
   m_Name: 

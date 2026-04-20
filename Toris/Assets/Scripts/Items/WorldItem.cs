@@ -16,30 +16,28 @@ namespace OutlandHaven.Inventory
 
         [Header("Visuals")]
         private SpriteRenderer _renderer;
+        private Collider2D _collider;
+
         private void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();
-        }
-        private void Start()
-        {
-            // Auto-configure visuals to match the data
-            if (_itemData != null)
-            {
-                _renderer.sprite = _itemData.Icon;
-                name = $"WorldItem_{_itemData.ItemName}";
-            }
-
-            Collider2D col = GetComponent<Collider2D>();
-            col.isTrigger = true; // Make sure it's a trigger so the player can walk over it
+            _collider = GetComponent<Collider2D>();
+            _collider.isTrigger = true;
+            ApplyVisuals();
         }
 
-        private void OnEnable()
+        public void Initialize(InventoryItemSO itemData, int quantity)
         {
-
+            _itemData = itemData;
+            _quantity = Mathf.Max(1, quantity);
+            ApplyVisuals();
         }
 
         void OnValidate()
         {
+            if (Application.isPlaying)
+                return;
+
             if (_itemData == null)
             {
                 Debug.LogWarning("<color=red>WorldItem</color> has no item data assigned!", this);
@@ -49,6 +47,7 @@ namespace OutlandHaven.Inventory
         public bool Interact(InventoryManager targetContainer)
         {
             if (targetContainer == null) return false;
+            if (_itemData == null) return false;
 
             ItemInstance item = new ItemInstance(_itemData);
             // Attempt to add the item to the container passed in
@@ -70,6 +69,15 @@ namespace OutlandHaven.Inventory
         public string GetInteractionPrompt()
         {
             return "E";
+        }
+
+        private void ApplyVisuals()
+        {
+            if (_renderer == null || _itemData == null)
+                return;
+
+            _renderer.sprite = _itemData.Icon;
+            name = $"WorldItem_{_itemData.ItemName}";
         }
     }
 

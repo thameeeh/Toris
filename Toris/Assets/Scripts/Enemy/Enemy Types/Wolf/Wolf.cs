@@ -13,9 +13,6 @@ public class Wolf : Enemy
     [Space][Space][Header("Stats")]
     public float AttackDamage = 20f;
     public float MovementSpeed = 2f;
-    public PlayerProgression PlayerProgression; // new
-
-    public int gold = 50;
 
     // leader/minion implement
     [Header("Role")]
@@ -146,11 +143,6 @@ public class Wolf : Enemy
     {
         base.Start();
 
-        if (PlayerTransform != null) // assigning PlayerProgression
-        {
-            PlayerProgression = PlayerTransform.GetComponent<PlayerProgression>();
-        }
-
         EnemyIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyChaseBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyHowlBaseInstance.Initialize(gameObject, this, PlayerTransform);
@@ -171,11 +163,6 @@ public class Wolf : Enemy
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
-            
-            if (PlayerProgression != null)
-            {
-                PlayerProgression.AddGold(gold); // new
-            }
             StateMachine.ChangeState(DeadState);
         }
     }

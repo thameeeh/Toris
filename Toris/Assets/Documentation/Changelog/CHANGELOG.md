@@ -1,3 +1,10 @@
+## [Current/Recent] - Unit Tests for PlayerEquipmentController
+### 1. Added IsSlotOccupied Tests
+* Implemented new unit tests in `PlayerEquipmentControllerTests.cs` to verify the `IsSlotOccupied` functionality.
+* Covered scenarios for empty slots, occupied slots, and slots that transition from occupied to empty.
+* Used reflection-based dependency injection to isolate the controller from scene-level dependencies during testing.
+
+## [Current/Recent] - Documentation Update for Architecture Shifts
 ## [Current/Recent] - Resolved Broken Purchasing Functionality in Shop
 This update fixes the shop purchase pipeline which failed due to deprecated input handling and overly rigid bulk-buy validation.
 

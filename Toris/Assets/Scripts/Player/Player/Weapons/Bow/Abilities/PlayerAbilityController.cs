@@ -34,6 +34,7 @@ public class PlayerAbilityController : MonoBehaviour
     public PlayerAbilityRuntime Ability1Runtime => _ability1?.Runtime;
     public PlayerAbilityRuntime Ability2Runtime => _ability2?.Runtime;
     public PlayerAbilityContext AbilityContext => _context;
+    public bool IsBowDrawBlocked => IsRuntimeBlockingBowDraw(_ability1?.Runtime) || IsRuntimeBlockingBowDraw(_ability2?.Runtime);
 
     private PlayerAbilityContext _context;
 
@@ -101,5 +102,10 @@ public class PlayerAbilityController : MonoBehaviour
     private void OnAbility2Released()
     {
         _ability2?.Runtime?.OnButtonUp(_context);
+    }
+
+    private bool IsRuntimeBlockingBowDraw(PlayerAbilityRuntime runtime)
+    {
+        return runtime != null && runtime.IsBlockingBowDraw(_context);
     }
 }

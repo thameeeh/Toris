@@ -15,13 +15,18 @@ public class PlayerAnimationPresenter : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerFacing _playerFacing;
 
+    private void LogShoot(string message)
+    {
+        PlayerShootDebug.Log(this, "AnimPresenter", message);
+    }
+
+    private static string FormatVector(Vector2 value)
+    {
+        return $"({value.x:F2}, {value.y:F2})";
+    }
+
     private void OnEnable()
     {
-        if (_animationController != null)
-        {
-            _animationController.ShootNockReached += HandleShootNockReached;
-        }
-
         if (_motor != null)
         {
             _motor.DashStarted += HandleDashStarted;
@@ -30,6 +35,7 @@ public class PlayerAnimationPresenter : MonoBehaviour
         if (_bowController != null)
         {
             _bowController.DrawStarted += HandleDrawStarted;
+            _bowController.ShootReady += HandleShootReady;
             _bowController.ShotReleased += HandleShotReleased;
             _bowController.DryReleased += HandleDryReleased;
             _bowController.AbilityReleaseRequested += HandleAbilityReleaseRequested;
@@ -48,11 +54,6 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void OnDisable()
     {
-        if (_animationController != null)
-        {
-            _animationController.ShootNockReached -= HandleShootNockReached;
-        }
-
         if (_motor != null)
         {
             _motor.DashStarted -= HandleDashStarted;
@@ -61,6 +62,7 @@ public class PlayerAnimationPresenter : MonoBehaviour
         if (_bowController != null)
         {
             _bowController.DrawStarted -= HandleDrawStarted;
+            _bowController.ShootReady -= HandleShootReady;
             _bowController.ShotReleased -= HandleShotReleased;
             _bowController.DryReleased -= HandleDryReleased;
             _bowController.AbilityReleaseRequested -= HandleAbilityReleaseRequested;
@@ -104,6 +106,12 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void HandleDashStarted(Vector2 dashDirection)
     {
+        LogShoot($"DashStarted received. dir={FormatVector(dashDirection)} bowDrawing={(_bowController != null && _bowController.IsDrawing)}");
+        if (_bowController != null && _bowController.CancelCurrentDraw("DashStarted"))
+        {
+            LogShoot("DashStarted canceled active bow draw.");
+        }
+
         if (_animationController == null)
             return;
 
@@ -112,36 +120,73 @@ public class PlayerAnimationPresenter : MonoBehaviour
 
     private void HandleDrawStarted()
     {
-        _animationController?.BeginShoot();
+        float readyDuration = _bowController != null && _bowController.BowConfig != null
+            ? _bowController.BowConfig.nockTime
+            : 0f;
+        Vector2 initialAim = Vector2.zero;
+
+        if (_bowController != null)
+        {
+            initialAim = _bowController.CurrentAimDirection;
+        }
+        else if (_playerFacing != null)
+        {
+            initialAim = _playerFacing.CurrentFacing;
+        }
+
+        LogShoot($"DrawStarted received. readyDuration={readyDuration:F3} initialAim={FormatVector(initialAim)}");
+        _animationController?.BeginShoot(readyDuration, initialAim);
+    }
+
+    private void HandleShootReady()
+    {
+        LogShoot("ShootReady received.");
+        _animationController?.EnterShootHold();
     }
 
     private void HandleShotReleased()
     {
+        LogShoot("ShotReleased received.");
         _animationController?.ReleaseShoot();
     }
 
     private void HandleDryReleased()
     {
+        LogShoot("DryReleased received.");
         _animationController?.CancelShoot();
     }
 
-    private void HandleShootNockReached()
+    private void HandleAbilityReleaseRequested(Vector2 shotDirection)
     {
-        _bowController?.NotifyNockReached();
-    }
-
-    private void HandleAbilityReleaseRequested(Vector2 shotDirection, bool useShortVariant)
-    {
-        _animationController?.PlayAbilityShootRelease(shotDirection, useShortVariant);
+        LogShoot($"AbilityReleaseRequested received. dir={FormatVector(shotDirection)}");
+        _animationController?.PlayAbilityShootRelease(shotDirection);
     }
 
     private void HandleHurtReceived()
     {
+        LogShoot($"HurtReceived. bowDrawing={(_bowController != null && _bowController.IsDrawing)}");
+        if (_bowController != null && _bowController.CancelCurrentDraw("HurtReceived"))
+        {
+            LogShoot("HurtReceived canceled active bow draw.");
+        }
+
+        if (_animationController == null)
+            return;
+
         _animationController?.PlayHurt();
     }
 
     private void HandlePlayerDied()
     {
+        LogShoot("PlayerDied received.");
+        if (_bowController != null && _bowController.CancelCurrentDraw("PlayerDied"))
+        {
+            LogShoot("PlayerDied canceled active bow draw.");
+        }
+
+        if (_animationController == null)
+            return;
+
         _animationController?.PlayDeath();
     }
 }

@@ -9,10 +9,6 @@ public class CharacterAnimSO : ScriptableObject
     [Header("Naming")]
     public string characterPrefix = "BowGuy";
 
-    [Header("Locomotion Suffixes")]
-    public string locomotionIdleSuffix = "Idle";
-    public string locomotionWalkSuffix = "Run";
-
     [System.Serializable]
     public class NameMap
     {
@@ -23,16 +19,14 @@ public class CharacterAnimSO : ScriptableObject
     [Header("Action Name Mapping")]
     public NameMap[] actionMap = new[]
     {
-        new NameMap{ actionKey="ShootF", defaultSuffix="ShootF"},
-        new NameMap{ actionKey="ShootS", defaultSuffix="ShootS"},
+        new NameMap{ actionKey="ShootDraw", defaultSuffix="ShootDraw"},
+        new NameMap{ actionKey="ShootHold", defaultSuffix="ShootHold"},
+        new NameMap{ actionKey="ShootRelease", defaultSuffix="ShootRelease"},
         new NameMap{ actionKey="Hurt", defaultSuffix="Hurt"},
         new NameMap{ actionKey="Death", defaultSuffix="Death"},
         new NameMap{ actionKey="Dash", defaultSuffix="Dash"},
         new NameMap{ actionKey="DashP", defaultSuffix="DashP"},
     };
-
-    [Header("Animator Tags")]
-    public string shootTag = "Shoot";
 
     public string DefaultSuffixFor(string key)
     {

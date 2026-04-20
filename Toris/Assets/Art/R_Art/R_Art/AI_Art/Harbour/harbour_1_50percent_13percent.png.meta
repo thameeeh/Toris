@@ -278,8 +278,8 @@ TextureImporter:
       name: harbour_1_50percent_13percent_7
       rect:
         serializedVersion: 2
-        x: 64
-        y: 8
+        x: 85
+        y: 5
         width: 33
         height: 32
       alignment: 9
@@ -292,6 +292,28 @@ TextureImporter:
       bones: []
       spriteID: 93bc37c9d618fca70800000000000000
       internalID: 8849434100582566713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: harbour_1_50percent_13percent_8
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 3
+        width: 35
+        height: 33
+      alignment: 9
+      pivot: {x: 0.51866084, y: 0.38877276}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2040e0f457913ec4c9181b36be65525c
+      internalID: 550181336
       vertices: []
       indices: 
       edges: []
@@ -318,6 +340,7 @@ TextureImporter:
       harbour_1_50percent_13percent_5: 922545314771245457
       harbour_1_50percent_13percent_6: 6851183211729310925
       harbour_1_50percent_13percent_7: 8849434100582566713
+      harbour_1_50percent_13percent_8: 550181336
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

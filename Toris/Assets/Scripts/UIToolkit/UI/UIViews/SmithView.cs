@@ -63,8 +63,8 @@ namespace OutlandHaven.UIToolkit
                 _shopContainer = dynamicShopContainer;
             }
 
-            // Default to showing Market for now
-            ShowMarketTab();
+            // Default to showing Forge for now
+            ShowForgeTab();
         }
 
         private void ShowMarketTab()

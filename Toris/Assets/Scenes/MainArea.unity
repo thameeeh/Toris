@@ -1258,11 +1258,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2936012662017822604, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.900002
+      value: -17.900002
       objectReference: {fileID: 0}
     - target: {fileID: 2936012662017822604, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.5000005
+      value: 4.8000007
       objectReference: {fileID: 0}
     - target: {fileID: 2936012662017822604, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9377,12 +9377,20 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[3].Count
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: LiveSlots.Array.data[4].Count
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: LiveSlots.Array.data[5].Count
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: 'managedReferences[6471051919503130629]'
+      value: Assembly-CSharp OutlandHaven.Inventory.ConsumableState
       objectReference: {fileID: 0}
     - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: LiveSlots.Array.data[2].HeldItem.BaseItem
@@ -9401,24 +9409,40 @@ PrefabInstance:
       value: bow
       objectReference: {fileID: 0}
     - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[3].HeldItem.InstanceID
+      value: 3f76910e-5b33-49e9-af68-2e281820f3fb
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: LiveSlots.Array.data[4].HeldItem.InstanceID
       value: Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: LiveSlots.Array.data[4].HeldItem.States.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: LiveSlots.Array.data[5].HeldItem.States.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: 'LiveSlots.Array.data[4].HeldItem.States.Array.data[0]'
+      value: 6471051919503130629
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: 'LiveSlots.Array.data[5].HeldItem.States.Array.data[0]'
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+      propertyPath: managedReferences[6471051919503130629].CurrentCharges
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.2
+      value: -7.3999996
       objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 9.3
       objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9655,14 +9679,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIControllers
       objectReference: {fileID: 0}
-    - target: {fileID: 1930326086921029389, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: _slotTemplate
-      value: 
-      objectReference: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
-    - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: _equipmentInventory
-      value: 
-      objectReference: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7823

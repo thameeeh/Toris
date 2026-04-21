@@ -27,10 +27,7 @@
     margin-bottom: 20px;
 }
 
-/* Moved from Components.uss & explicitly sized to stop squishing */
 .forge-slot {
-    width: 60px;
-    height: 60px;
     flex-shrink: 0; 
     background-color: rgb(55, 50, 45);
     border-width: 2px;
@@ -38,8 +35,6 @@
 }
 
 .forge-slot-result {
-    width: 60px;
-    height: 60px;
     flex-shrink: 0;
     background-color: rgb(35, 30, 25);
     border-width: 2px;

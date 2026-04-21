@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SkillsScreenController
   _skillsMainTemplate: {fileID: 9197481963319205126, guid: 4ab31f785c3e7614daecfda9464c00ab, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  _playerHudBridge: {fileID: 0}
+  _playerHudBridge: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   uiSkillEvents: {fileID: 11400000, guid: 0ae4c50464db5c946aa2e579312de26c, type: 2}
   _skillDatabase:

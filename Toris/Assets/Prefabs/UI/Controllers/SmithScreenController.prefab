@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7521786267576235075}
-  - component: {fileID: 1247329396249436219}
+  - component: {fileID: 7616839350192638993}
   m_Layer: 0
   m_Name: SmithScreenController
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1247329396249436219
+--- !u!114 &7616839350192638993
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67dcbc586f021f54db3ff07ae613f143, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIToolkit.UI.SmithScreenController
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SmithScreenController
   _smithMainTemplate: {fileID: 9197481963319205126, guid: fc51b91db31dc4f4183cd3a9570dc1b2, type: 3}
   _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
   _shopTemplate: {fileID: 9197481963319205126, guid: e0239f4ee7fe94c46bd87c359926ef99, type: 3}

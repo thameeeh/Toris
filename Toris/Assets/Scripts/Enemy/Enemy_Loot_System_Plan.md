@@ -62,8 +62,9 @@ This matters especially for stateful items.
 
 Example:
 
-- a multi-charge consumable should normally use `MaxStackSize = 1`
-- if you want more than one to drop, that should come from the loot table quantity range, not by making the item stackable in a way the runtime use rules reject
+- a multi-charge consumable can still use loot-table quantity ranges
+- if it stacks in inventory, the runtime should split off a partially used copy when the player starts using one from the stack
+- that means loot quantity and per-slot stacking remain separate concerns
 
 ### Enemy Ownership
 

@@ -25,7 +25,10 @@ MonoBehaviour:
     - rid: 7555927880013971566
       type: {class: ConsumableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
+        EffectMode: 0
         EffectPayload: 0
         amount: 20
+        TimedEffectDefinition: {fileID: 0}
+        TimedEffectDuration: 5
         CooldownDuration: 1.5
-        MaxCharges: 2
+        MaxCharges: 1

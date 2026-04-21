@@ -1,4 +1,5 @@
 using UnityEngine;
+using OutlandHaven.UIToolkit;
 
 public struct PlayerAbilityContext
 {
@@ -7,6 +8,7 @@ public struct PlayerAbilityContext
     public PlayerBowController bow;
     public PlayerMotor motor;
     public PlayerInputReaderSO input;
+    public GameSessionSO gameSession;
 }
 
 public abstract class PlayerAbilitySO : ScriptableObject
@@ -34,7 +36,20 @@ public abstract class PlayerAbilitySO : ScriptableObject
     {
         return new PlayerAbilityRuntime();
     }
-    public virtual bool IsUnlocked(PlayerAbilityContext context) => true;
+
+    public virtual bool IsUnlocked(PlayerAbilityContext context)
+    {
+        if (string.IsNullOrWhiteSpace(requiredSkillID))
+            return true;
+
+        GameSessionSO gameSession = context.gameSession != null
+            ? context.gameSession
+            : GameSessionSO.LoadDefault();
+
+        return gameSession != null
+            && gameSession.PlayerSkills != null
+            && gameSession.PlayerSkills.HasSkill(requiredSkillID);
+    }
 
     public virtual void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context) { }
     public virtual void OnButtonUp(PlayerAbilityRuntime runtime, PlayerAbilityContext context) { }

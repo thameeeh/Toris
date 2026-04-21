@@ -28,8 +28,7 @@ public class RambowBowConfig : PlayerAbilitySO
     }
     public override bool IsUnlocked(PlayerAbilityContext context)
     {
-        bool unlocked = true;
-        return unlocked;
+        return base.IsUnlocked(context);
     }
 
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)

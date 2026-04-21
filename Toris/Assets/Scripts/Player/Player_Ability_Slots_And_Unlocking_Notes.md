@@ -34,7 +34,8 @@ Treat these as the main constraints that future implementation must remove caref
 * the input asset still uses numbered action names rather than a renamed `AbilitySlot` action family
 * legacy `_ability1` and `_ability2` data still exists only as a migration bridge for older serialized objects
 * there is no persistent equipped-slot model yet
-* all abilities are still unlocked by default
+* runtime unlock gating now reads `requiredSkillID` against `GameSessionSO.PlayerSkills`
+* scene defaults can still make abilities appear equipped even when they are not unlocked, but locked abilities should no longer activate
 
 These constraints are acceptable for now, but future work should not reintroduce more hardcoded named slot fields.
 
@@ -175,17 +176,17 @@ The same rule applies to movement locking:
 
 Use `PlayerAbilitySO.IsUnlocked(PlayerAbilityContext context)` as the player-side gate.
 
-When unlock persistence is added, support it with stable identifiers.
+The unlock query now uses stable identifiers.
 
 Recommended fields to add later:
 
 * `abilityID`
 * `requiredSkillID`
 
-Recommended behavior:
+Current behavior:
 
 * empty `requiredSkillID` means the ability is available by default
-* non-empty `requiredSkillID` means query the progression source, likely through `GameSessionSO.PlayerSkills`
+* non-empty `requiredSkillID` queries `GameSessionSO.PlayerSkills`
 
 Do not add a second separate unlock database inside the bow ability scripts.
 
@@ -290,7 +291,7 @@ Goal:
 
 Until the slot refactor begins, use these rules:
 
-* keep current abilities unlocked by default
+* leave `requiredSkillID` empty for default-available abilities
 * keep purchase and progression UI out of player bow scripts
 * do not add more named ability fields to the controller
 * treat the current numbered action names as slot input, not named ability input

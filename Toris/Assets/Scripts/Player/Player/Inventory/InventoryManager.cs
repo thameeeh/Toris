@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using OutlandHaven.UIToolkit;
@@ -6,6 +7,8 @@ namespace OutlandHaven.Inventory
 {
     public class InventoryManager : MonoBehaviour
     {
+        private const string EquipmentNameToken = "Equip";
+
         [Tooltip("The rules for this specific inventory.")]
         public InventoryContainerSO ContainerBlueprint;
 
@@ -90,6 +93,10 @@ namespace OutlandHaven.Inventory
 
         private void OnEnable()
         {
+            GlobalSession = ResolveGlobalSession();
+
+            TryRestoreTransferredState();
+
             if (GlobalSession != null && ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory)
             {
                 GlobalSession.PlayerInventory = this;
@@ -98,6 +105,8 @@ namespace OutlandHaven.Inventory
 
         private void OnDisable()
         {
+            CaptureTransferredState();
+
             // Crucial: Prevent memory leaks or dangling references when the scene unloads
             if (GlobalSession != null && ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory)
             {
@@ -155,6 +164,14 @@ namespace OutlandHaven.Inventory
 
             _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
             return true;
+        }
+
+        public bool CanAddItem(ItemInstance itemInstance, int quantity)
+        {
+            if (itemInstance == null || itemInstance.BaseItem == null || quantity <= 0)
+                return false;
+
+            return CalculateAvailableSpace(itemInstance) >= quantity;
         }
 
         public bool RemoveItem(ItemInstance itemInstance, int quantity)
@@ -229,6 +246,80 @@ namespace OutlandHaven.Inventory
 
                 EnsureItemInstanceStates(slot.HeldItem);
             }
+        }
+
+        public void NotifyInventoryUpdated()
+        {
+            _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+        }
+
+        private void TryRestoreTransferredState()
+        {
+            if (GlobalSession == null)
+                return;
+
+            bool restored = false;
+
+            if (IsPlayerBackpackContainer())
+                restored = GlobalSession.TryApplyPlayerInventoryState(this);
+            else if (LooksLikeEquipmentContainer())
+                restored = GlobalSession.TryApplyEquipmentInventoryState(this);
+
+            if (!restored)
+                return;
+
+            EnsureSlotItemStates();
+            NotifyInventoryUpdated();
+        }
+
+        private void CaptureTransferredState()
+        {
+            GlobalSession = ResolveGlobalSession();
+            if (GlobalSession == null)
+                return;
+
+            if (IsPlayerBackpackContainer())
+            {
+                GlobalSession.CapturePlayerInventoryState(this);
+                return;
+            }
+
+            if (LooksLikeEquipmentContainer())
+                GlobalSession.CaptureEquipmentInventoryState(this);
+        }
+
+        private bool IsPlayerBackpackContainer()
+        {
+            return ContainerBlueprint != null
+                   && ContainerBlueprint.AssociatedView == ScreenType.Inventory;
+        }
+
+        private bool LooksLikeEquipmentContainer()
+        {
+            if (ContainerBlueprint != null
+                && ContainerBlueprint.PredefinedFilters != null
+                && ContainerBlueprint.PredefinedFilters.Length >= 5
+                && ContainerBlueprint.PredefinedFilters[0] == SlotFilterType.Head
+                && ContainerBlueprint.PredefinedFilters[1] == SlotFilterType.Chest
+                && ContainerBlueprint.PredefinedFilters[2] == SlotFilterType.Legs
+                && ContainerBlueprint.PredefinedFilters[3] == SlotFilterType.Arms
+                && ContainerBlueprint.PredefinedFilters[4] == SlotFilterType.Weapon)
+            {
+                return true;
+            }
+
+            string objectName = gameObject != null ? gameObject.name : string.Empty;
+            return !string.IsNullOrEmpty(objectName)
+                   && objectName.IndexOf(EquipmentNameToken, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private GameSessionSO ResolveGlobalSession()
+        {
+            if (GlobalSession != null)
+                return GlobalSession;
+
+            GlobalSession = GameSessionSO.LoadDefault();
+            return GlobalSession;
         }
 
         private static void EnsureItemInstanceStates(ItemInstance itemInstance)

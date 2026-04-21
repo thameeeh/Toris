@@ -15,7 +15,6 @@ MonoBehaviour:
   CurrentSaveSlotIndex: 1
   targetSpawnPointID: 
   _playerSkills:
-    _availableSP: 4
+    _availableSP: 9998
     _unlockedSkillIDs:
     - SKILL_BASE_JUMP
-    - SKILL_DASH

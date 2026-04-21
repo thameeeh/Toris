@@ -401,3 +401,45 @@ and decide whether that data should live in:
 or
 
 - a separate dedicated runtime player-state ScriptableObject
+
+## First-Pass Implementation Note
+
+The current first-pass implementation direction is:
+
+1. keep scene-owned player/runtime objects in both scenes
+2. store transferable runtime snapshots inside `GameSessionSO`
+3. let scene components capture themselves on `OnDisable()`
+4. let new scene components restore themselves on `OnEnable()`
+
+Current first-pass transfer scope:
+
+- backpack inventory
+- equipment inventory
+- player progression (`level`, `xp`, `gold`)
+- player runtime resources (`health`, `stamina`)
+
+## Runtime Re-entry Notes
+
+Two practical pitfalls showed up immediately once the first pass was wired:
+
+- `PlayerStats` must restore against a valid resolved-effects baseline
+  - if player resource state is applied before the effect pipeline has produced valid `maxHealth` / `maxStamina`, UI and damage behavior can drift after a scene swap
+- enemy trigger checks should not depend on one cached player `GameObject`
+  - when scenes rebuild the player, aggro and striking checks should identify the player through the active collider/tag/runtime receiver instead of a stale cached object reference
+
+These are not separate systems from persistence.
+They are part of making scene re-entry actually stable in play.
+
+## Editor Testing Note
+
+Because the first-pass transfer uses runtime snapshots stored on `GameSessionSO`, editor play-mode testing can become misleading if stale in-memory snapshots survive between play sessions.
+
+The current implementation now clears those runtime-only snapshots at play start before the first scene loads.
+
+That means:
+
+- a real in-session scene transition still transfers correctly
+- a fresh editor play session should not inherit old inventory / hp / stamina / progression handoff state
+- actual serialized session data such as unlocked skills on `GameSessionSO` still remains until you reset that asset manually
+
+This keeps the handoff lightweight while preserving the most important run continuity.

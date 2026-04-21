@@ -11,6 +11,7 @@ public class PlayerProgression : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerProgressionConfigSO _config;
     [SerializeField] private PlayerProgressionAnchorSO _playerProgressionAnchor;
+    [SerializeField] private OutlandHaven.UIToolkit.GameSessionSO _gameSession;
 
     [Header("Runtime")]
     [SerializeField] private bool _initializeFromConfigOnAwake = true;
@@ -48,10 +49,14 @@ public class PlayerProgression : MonoBehaviour
         {
             _playerProgressionAnchor.Provide(this);
         }
+
+        TryRestoreTransferredState();
     }
 
     private void OnDisable()
     {
+        CaptureTransferredState();
+
         if (_playerProgressionAnchor != null)
         {
             _playerProgressionAnchor.Clear();
@@ -131,6 +136,15 @@ public class PlayerProgression : MonoBehaviour
         OnGoldChanged?.Invoke(_runtimeProgression.CurrentGold, delta);
     }
 
+    public void SetRuntimeState(int level, float experience, int gold)
+    {
+        if (_runtimeProgression == null)
+            return;
+
+        _runtimeProgression.Initialize(level, experience, gold);
+        BroadcastAll();
+    }
+
     public float GetExperienceIntoCurrentLevel()
     {
         float levelFloor = (CurrentLevel - 1) * ExperiencePerLevel;
@@ -170,5 +184,41 @@ public class PlayerProgression : MonoBehaviour
     private int GetStartingGold()
     {
         return _config != null ? Mathf.Max(0, _config.startingGold) : 0;
+    }
+
+    private void TryRestoreTransferredState()
+    {
+        ResolveGameSession();
+
+        if (_gameSession == null || _runtimeProgression == null)
+            return;
+
+        if (!_gameSession.TryGetPlayerProgressionState(out int level, out float experience, out int gold))
+            return;
+
+        SetRuntimeState(level, experience, gold);
+    }
+
+    private void CaptureTransferredState()
+    {
+        ResolveGameSession();
+
+        if (_gameSession == null || _runtimeProgression == null)
+            return;
+
+        _gameSession.CapturePlayerProgressionState(CurrentLevel, CurrentExperience, CurrentGold);
+    }
+
+    private void ResolveGameSession()
+    {
+        if (_gameSession == null)
+            _gameSession = OutlandHaven.UIToolkit.GameSessionSO.LoadDefault();
+    }
+
+    private void BroadcastAll()
+    {
+        OnExperienceChanged?.Invoke(_runtimeProgression.CurrentExperience, _runtimeProgression.CurrentLevel);
+        OnLevelChanged?.Invoke(_runtimeProgression.CurrentLevel, _runtimeProgression.CurrentExperience);
+        OnGoldChanged?.Invoke(_runtimeProgression.CurrentGold, 0);
     }
 }

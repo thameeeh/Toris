@@ -79,19 +79,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         {
             rb = GetComponent<Rigidbody2D>();
         }
-        _player = GameObject.FindGameObjectWithTag("Player");
-#if UNITY_EDITOR
-        if (_player == null) Debug.Log("_player Null");
-#endif
-        if (_player != null)
-        {
-            _player.TryGetComponent(out _playerDamageReceiver);
-            if (ShouldBindScenePlayerTransform(playerTransform))
-                playerTransform = _player.transform;
-
-            if (playerTransform != null)
-                playerTransform.TryGetComponent(out _playerProgression);
-        }
+        RefreshScenePlayerReferences();
     }
 
     private static bool ShouldBindScenePlayerTransform(Transform currentPlayerTransform)
@@ -175,6 +163,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     public void DamagePlayer(float amount, HitData hitData) 
     {
+        if (_playerDamageReceiver == null || !IsSceneObjectValid(_playerDamageReceiver.gameObject))
+            RefreshScenePlayerReferences();
+
+        if (_playerDamageReceiver == null)
+            return;
+
         if (IsWithinStrikingDistance)
         {
             hitData.damage = amount;
@@ -358,6 +352,32 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
         _hasResolvedDeathLoot = true;
         EnemyLootRuntime.ResolveDeathLoot(this, _playerProgression);
+    }
+
+    private void RefreshScenePlayerReferences()
+    {
+        _player = GameObject.FindGameObjectWithTag("Player");
+#if UNITY_EDITOR
+        if (_player == null) Debug.Log("_player Null");
+#endif
+        if (_player == null)
+        {
+            _playerDamageReceiver = null;
+            return;
+        }
+
+        _player.TryGetComponent(out _playerDamageReceiver);
+
+        if (ShouldBindScenePlayerTransform(playerTransform))
+            playerTransform = _player.transform;
+
+        if (playerTransform != null)
+            playerTransform.TryGetComponent(out _playerProgression);
+    }
+
+    private static bool IsSceneObjectValid(GameObject sceneObject)
+    {
+        return sceneObject != null && sceneObject.scene.IsValid();
     }
 
     #endregion

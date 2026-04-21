@@ -206,7 +206,7 @@ That fits the current interaction architecture better than inventing a new paral
 
 ## Stack And Charge Rule
 
-Treat stacked charged consumables as a special case that needs a clear restriction.
+Treat stacked charged consumables as a split-on-use case.
 
 Current data model:
 
@@ -214,13 +214,17 @@ Current data model:
 * `ItemInstance` stores runtime state
 * `ConsumableState` stores `CurrentCharges`
 
-Because of that, mixed-charge stacks do not fit cleanly.
+Current runtime rule:
 
-Use this first implementation rule:
+* charged consumables may stack if their runtime states match
+* when the player uses one item from a charged stack, the system splits one copy out into a partially used item instance
+* that partially used copy is added into a compatible stack or empty slot
+* if there is no room for that partial copy, use is refused
 
-* if `MaxCharges > 1`, require `MaxStackSize = 1`
+This keeps loot quantity and inventory stacking separate:
 
-That is the safest fit for the current inventory model.
+* loot tables decide how many copies drop
+* `MaxStackSize` decides how many identical copies fit in one slot
 
 ## Active V1 Scope
 
@@ -245,7 +249,6 @@ Keep the current consumable pass narrow.
 * active buff visuals
 * cooldown visuals
 * live stats panel integration
-* dynamic stack splitting for charged items
 
 ## Next Implementation Order
 

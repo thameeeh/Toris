@@ -190,4 +190,26 @@
     picking-mode: Ignore;
 }
 
+.text-white-bald {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+}
 
+.forge-slot {
+    background-color: rgb(55, 50, 45);
+    border-width: 2px;
+    border-color: rgb(90, 80, 70);
+    flex-shrink: 0;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.forge-slot-result {
+    flex-shrink: 0;
+    background-color: rgb(35, 30, 25);
+    border-width: 2px;
+    border-color: rgb(180, 140, 70);
+    align-self: center;
+}

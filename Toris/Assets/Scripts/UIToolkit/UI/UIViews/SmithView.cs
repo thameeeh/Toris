@@ -21,6 +21,12 @@ namespace OutlandHaven.UIToolkit
 
         private VisualElement _middlePanel;
 
+        private VisualElement _marketTab;
+        private VisualElement _forgeTab;
+        private VisualElement _salvageTab;
+
+        private const string ActiveTabClass = "panel-tab--active";
+
         // SubViews
         private ShopSubView _shopSubView;
         private ForgeSubView _forgeSubView;
@@ -44,15 +50,15 @@ namespace OutlandHaven.UIToolkit
         {
             _middlePanel = m_TopElement.Q<VisualElement>("Smith-middle__panel");
 
-            // Setup Tab Buttons (Forge, Market, Salvage)
-            var marketTab = m_TopElement.Q<VisualElement>("Smith_Market--Tab");
-            if (marketTab != null) marketTab.RegisterCallback<ClickEvent>(evt => ShowMarketTab());
+            // Cache Tab Elements
+            _marketTab = m_TopElement.Q<VisualElement>("Smith_Market--Tab");
+            _forgeTab = m_TopElement.Q<VisualElement>("Smith_Forge--Tab");
+            _salvageTab = m_TopElement.Q<VisualElement>("Smith_Salvage--Tab");
 
-            var forgeTab = m_TopElement.Q<VisualElement>("Smith_Forge--Tab");
-            if (forgeTab != null) forgeTab.RegisterCallback<ClickEvent>(evt => ShowForgeTab());
-
-            var salvageTab = m_TopElement.Q<VisualElement>("Smith_Salvage--Tab");
-            if (salvageTab != null) salvageTab.RegisterCallback<ClickEvent>(evt => ShowSalvageTab());
+            // Setup Tab Button Callbacks
+            if (_marketTab != null) _marketTab.RegisterCallback<ClickEvent>(evt => ShowMarketTab());
+            if (_forgeTab != null) _forgeTab.RegisterCallback<ClickEvent>(evt => ShowForgeTab());
+            if (_salvageTab != null) _salvageTab.RegisterCallback<ClickEvent>(evt => ShowSalvageTab());
         }
 
         public override void Setup(object payload) 
@@ -67,9 +73,22 @@ namespace OutlandHaven.UIToolkit
             ShowForgeTab();
         }
 
+        private void UpdateActiveTabVisual(VisualElement activeTab)
+        {
+            // Remove the active class from all tabs
+            _marketTab?.RemoveFromClassList(ActiveTabClass);
+            _forgeTab?.RemoveFromClassList(ActiveTabClass);
+            _salvageTab?.RemoveFromClassList(ActiveTabClass);
+
+            // Apply it only to the newly selected tab
+            activeTab?.AddToClassList(ActiveTabClass);
+        }
+
         private void ShowMarketTab()
         {
             if (_middlePanel == null) return;
+
+            UpdateActiveTabVisual(_marketTab);
 
             _forgeSubView?.Hide();
             _salvageSubView?.Hide();
@@ -94,6 +113,8 @@ namespace OutlandHaven.UIToolkit
         {
             if (_middlePanel == null) return;
 
+            UpdateActiveTabVisual(_forgeTab);
+
             _shopSubView?.Hide();
             _salvageSubView?.Hide();
 
@@ -116,6 +137,8 @@ namespace OutlandHaven.UIToolkit
         private void ShowSalvageTab()
         {
             if (_middlePanel == null) return;
+
+            UpdateActiveTabVisual(_salvageTab);
 
             _shopSubView?.Hide();
             _forgeSubView?.Hide();

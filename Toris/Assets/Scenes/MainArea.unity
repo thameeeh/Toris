@@ -525,7 +525,7 @@ Transform:
   m_GameObject: {fileID: 291675225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.6100006, y: 6.5100007, z: -10}
+  m_LocalPosition: {x: -4.91, y: 6.75, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1014,11 +1014,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.6100006
+      value: -4.91
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.5100007
+      value: 6.75
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9214,7 +9214,7 @@ Transform:
   m_GameObject: {fileID: 1924643740}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.6100006, y: 6.5100007, z: -10}
+  m_LocalPosition: {x: -4.91, y: 6.75, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9663,7 +9663,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
---- !u!1001 &5886095197615138555
+--- !u!1001 &6160490654220401519
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9671,14 +9671,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 998378770075437751, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: _playerHudBridge
-      value: 
-      objectReference: {fileID: 2014174153}
-    - target: {fileID: 1261419630489080757, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: m_Name
-      value: UIControllers
-      objectReference: {fileID: 0}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7823
@@ -9719,6 +9711,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 998378770075437751, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerHudBridge
+      value: 
+      objectReference: {fileID: 2014174153}
+    - target: {fileID: 1261419630489080757, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: m_Name
+      value: UIControllers
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9740,7 +9740,7 @@ SceneRoots:
   - {fileID: 1782227373}
   - {fileID: 298659721}
   - {fileID: 3034384463664235969}
-  - {fileID: 5886095197615138555}
+  - {fileID: 6160490654220401519}
   - {fileID: 1001855282552902885}
   - {fileID: 238257603}
   - {fileID: 351610157}

@@ -31,4 +31,4 @@ MonoBehaviour:
         TimedEffectDefinition: {fileID: 11400000, guid: b28b6e4a0d5b31348bdf3d83a130d22a, type: 2}
         TimedEffectDuration: 10
         CooldownDuration: 1
-        MaxCharges: 4
+        MaxCharges: 2

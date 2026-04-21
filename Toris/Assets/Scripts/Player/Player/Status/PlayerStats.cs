@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerEffectSourceController _effectSourceController;
     [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
+    [SerializeField] private OutlandHaven.UIToolkit.GameSessionSO _gameSession;
 
     [Header("Runtime")]
     [SerializeField] private bool _fillResourcesToMaximumOnAwake = true;
@@ -42,15 +43,7 @@ public class PlayerStats : MonoBehaviour
     private void Awake()
     {
         _runtimeStats = new PlayerRuntimeStats();
-
-        if (_effectSourceController != null)
-        {
-            _resolvedEffects = _effectSourceController.ResolvedEffects;
-        }
-        else
-        {
-            _resolvedEffects = PlayerResolvedEffects.CreateDefault();
-        }
+        _resolvedEffects = ResolveValidResolvedEffects();
 
         _runtimeStats.Initialize(
             _resolvedEffects.maxHealth,
@@ -71,10 +64,15 @@ public class PlayerStats : MonoBehaviour
         {
             _playerStatsAnchor.Provide(this);
         }
+
+        RefreshResolvedEffectsFromController(false);
+        TryRestoreTransferredState();
     }
 
     private void OnDisable()
     {
+        CaptureTransferredState();
+
         if (_effectSourceController != null)
         {
             _effectSourceController.OnResolvedEffectsChanged -= HandleResolvedEffectsChanged;
@@ -187,6 +185,17 @@ public class PlayerStats : MonoBehaviour
         BroadcastStamina();
     }
 
+    public void SetRuntimeState(float currentHealthValue, float currentStaminaValue)
+    {
+        if (_runtimeStats == null)
+            return;
+
+        _runtimeStats.SetCurrentHealth(currentHealthValue, _resolvedEffects.maxHealth);
+        _runtimeStats.SetCurrentStamina(currentStaminaValue, _resolvedEffects.maxStamina);
+        _isDead = _runtimeStats.IsDead();
+        BroadcastAll();
+    }
+
     private void HandleResolvedEffectsChanged(PlayerResolvedEffects resolvedEffects)
     {
         float previousMaxHealth = _resolvedEffects.maxHealth;
@@ -279,5 +288,79 @@ public class PlayerStats : MonoBehaviour
     private void BroadcastStamina()
     {
         OnStaminaChanged?.Invoke(currentStamina, maxStamina);
+    }
+
+    private void TryRestoreTransferredState()
+    {
+        ResolveGameSession();
+
+        if (_gameSession == null || _runtimeStats == null)
+            return;
+
+        if (!_gameSession.TryGetPlayerStatsState(out float currentHealthValue, out float currentStaminaValue))
+            return;
+
+        SetRuntimeState(currentHealthValue, currentStaminaValue);
+    }
+
+    private void CaptureTransferredState()
+    {
+        ResolveGameSession();
+
+        if (_gameSession == null || _runtimeStats == null)
+            return;
+
+        _gameSession.CapturePlayerStatsState(currentHP, currentStamina);
+    }
+
+    private void ResolveGameSession()
+    {
+        if (_gameSession == null)
+            _gameSession = OutlandHaven.UIToolkit.GameSessionSO.LoadDefault();
+    }
+
+    private void RefreshResolvedEffectsFromController(bool preserveRuntimeResources)
+    {
+        PlayerResolvedEffects refreshedEffects = ResolveValidResolvedEffects();
+
+        if (_runtimeStats == null)
+        {
+            _resolvedEffects = refreshedEffects;
+            return;
+        }
+
+        if (preserveRuntimeResources)
+        {
+            HandleResolvedEffectsChanged(refreshedEffects);
+            return;
+        }
+
+        _resolvedEffects = refreshedEffects;
+        _runtimeStats.ClampToMaximums(_resolvedEffects.maxHealth, _resolvedEffects.maxStamina);
+        _isDead = _runtimeStats.IsDead();
+        OnResolvedEffectsChanged?.Invoke(_resolvedEffects);
+        BroadcastAll();
+    }
+
+    private PlayerResolvedEffects ResolveValidResolvedEffects()
+    {
+        if (_effectSourceController == null)
+            return PlayerResolvedEffects.CreateDefault();
+
+        PlayerResolvedEffects resolvedEffects = _effectSourceController.ResolvedEffects;
+        if (!IsResolvedEffectsInitialized(resolvedEffects))
+        {
+            _effectSourceController.RebuildResolvedEffects();
+            resolvedEffects = _effectSourceController.ResolvedEffects;
+        }
+
+        return IsResolvedEffectsInitialized(resolvedEffects)
+            ? resolvedEffects
+            : PlayerEffectResolver.CreateFromBase(_effectSourceController.BaseEffects);
+    }
+
+    private static bool IsResolvedEffectsInitialized(PlayerResolvedEffects resolvedEffects)
+    {
+        return resolvedEffects.maxHealth > 0f;
     }
 }

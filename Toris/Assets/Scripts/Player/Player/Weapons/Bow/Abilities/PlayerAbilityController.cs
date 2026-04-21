@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using OutlandHaven.UIToolkit;
 
 public class PlayerAbilityController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] private PlayerInputReaderSO _input;
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private PlayerBowController _bow;
+    [SerializeField] private GameSessionSO _gameSession;
 
     [System.Serializable]
     public class AbilitySlot
@@ -52,7 +54,7 @@ public class PlayerAbilityController : MonoBehaviour
             for (int i = 0; i < SlotCount; i++)
             {
                 PlayerAbilityRuntime runtime = GetRuntime(i);
-                if (runtime != null && runtime.IsBlockingBowDraw(_context))
+                if (runtime != null && runtime.IsUnlocked(_context) && runtime.IsBlockingBowDraw(_context))
                 {
                     return true;
                 }
@@ -68,7 +70,7 @@ public class PlayerAbilityController : MonoBehaviour
             for (int i = 0; i < SlotCount; i++)
             {
                 PlayerAbilityRuntime runtime = GetRuntime(i);
-                if (runtime != null && runtime.IsBlockingMovement(_context))
+                if (runtime != null && runtime.IsUnlocked(_context) && runtime.IsBlockingMovement(_context))
                 {
                     return true;
                 }
@@ -84,6 +86,7 @@ public class PlayerAbilityController : MonoBehaviour
     {
         EnsureSlotArray();
         MigrateLegacySlotsIfNeeded();
+        _gameSession = ResolveGameSession();
 
         _context = new PlayerAbilityContext
         {
@@ -91,7 +94,8 @@ public class PlayerAbilityController : MonoBehaviour
             input = _input,
             stats = _stats,
             bow = _bow,
-            motor = _bow != null ? _bow.GetComponent<PlayerMotor>() : GetComponent<PlayerMotor>()
+            motor = _bow != null ? _bow.GetComponent<PlayerMotor>() : GetComponent<PlayerMotor>(),
+            gameSession = _gameSession
         };
 
         InitializeSlots();
@@ -122,7 +126,11 @@ public class PlayerAbilityController : MonoBehaviour
     {
         for (int i = 0; i < SlotCount; i++)
         {
-            GetRuntime(i)?.Tick(_context);
+            PlayerAbilityRuntime runtime = GetRuntime(i);
+            if (runtime != null && runtime.IsUnlocked(_context))
+            {
+                runtime.Tick(_context);
+            }
         }
     }
 
@@ -154,7 +162,7 @@ public class PlayerAbilityController : MonoBehaviour
     public bool TryActivateSlot(int slotIndex)
     {
         PlayerAbilityRuntime runtime = GetRuntime(slotIndex);
-        if (runtime == null)
+        if (runtime == null || !runtime.IsUnlocked(_context))
             return false;
 
         runtime.OnButtonDown(_context);
@@ -231,5 +239,12 @@ public class PlayerAbilityController : MonoBehaviour
         {
             _abilitySlots[slotIndex] = legacySlot;
         }
+    }
+
+    private GameSessionSO ResolveGameSession()
+    {
+        return _gameSession != null
+            ? _gameSession
+            : GameSessionSO.LoadDefault();
     }
 }

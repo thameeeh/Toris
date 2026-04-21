@@ -63,7 +63,7 @@ public class InventoryActionController : MonoBehaviour
             return;
 
         EnsureConsumableController();
-        _consumableController?.TryUseConsumable(slot);
+        _consumableController?.TryUseConsumable(_playerInventory, slot);
     }
 
     private void HandleRequestUnequip(EquipmentSlot slot)

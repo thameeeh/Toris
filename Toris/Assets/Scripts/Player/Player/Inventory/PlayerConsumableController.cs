@@ -64,7 +64,7 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        public bool TryUseConsumable(InventorySlot slot)
+        public bool TryUseConsumable(InventoryManager inventoryManager, InventorySlot slot)
         {
             if (!TryResolveConsumable(slot, out ItemInstance item, out ConsumableComponent consumable, out ConsumableState state))
                 return false;
@@ -75,25 +75,20 @@ namespace OutlandHaven.Inventory
                 return false;
             }
 
-            if (state != null && state.CurrentCharges > 1 && slot.Count > 1)
-            {
-                Debug.LogWarning(
-                    $"[PlayerConsumableController] Refusing to use stacked charged consumable '{item.BaseItem.ItemName}'. " +
-                    "If MaxCharges > 1, set InventoryItemSO.MaxStackSize to 1. Loot tables control drop quantity; MaxStackSize only controls per-slot inventory stacking.");
-                return false;
-            }
-
             if (IsOnCooldown(item.BaseItem))
             {
                 return false;
             }
+
+            if (!CanConsumeUse(inventoryManager, slot, item, state))
+                return false;
 
             if (!TryApplyEffect(item, consumable))
             {
                 return false;
             }
 
-            ConsumeUse(slot, state);
+            ConsumeUse(inventoryManager, slot, item, state);
 
             if (consumable.CooldownDuration > 0f)
                 _nextUseByItem[item.BaseItem] = Time.time + consumable.CooldownDuration;
@@ -227,16 +222,76 @@ namespace OutlandHaven.Inventory
             return $"{TIMED_CONSUMABLE_SOURCE_PREFIX}{baseItemId}";
         }
 
-        private static void ConsumeUse(InventorySlot slot, ConsumableState state)
+        private static bool CanConsumeUse(
+            InventoryManager inventoryManager,
+            InventorySlot slot,
+            ItemInstance item,
+            ConsumableState state)
+        {
+            if (slot == null)
+                return false;
+
+            if (state == null || state.CurrentCharges <= 1 || slot.Count <= 1)
+                return true;
+
+            if (inventoryManager == null)
+            {
+                Debug.LogWarning("[PlayerConsumableController] Cannot split a stacked charged consumable because the source inventory could not be resolved.");
+                return false;
+            }
+
+            ItemInstance splitItem = CreateSplitConsumableItem(item, state.CurrentCharges - 1);
+            if (splitItem == null)
+                return false;
+
+            if (inventoryManager.CanAddItem(splitItem, 1))
+                return true;
+
+            Debug.LogWarning(
+                $"[PlayerConsumableController] Cannot use stacked charged consumable '{item.BaseItem.ItemName}' because no inventory space is available for the partially used copy. " +
+                "Free one slot or merge a matching partial stack first.");
+            return false;
+        }
+
+        private static void ConsumeUse(
+            InventoryManager inventoryManager,
+            InventorySlot slot,
+            ItemInstance item,
+            ConsumableState state)
         {
             if (state != null && state.CurrentCharges > 1)
             {
+                if (slot.Count > 1)
+                {
+                    ItemInstance splitItem = CreateSplitConsumableItem(item, state.CurrentCharges - 1);
+                    if (splitItem != null && inventoryManager != null)
+                    {
+                        slot.DecreaseCount(1);
+                        inventoryManager.AddItem(splitItem, 1);
+                        return;
+                    }
+                }
+
                 state.CurrentCharges -= 1;
                 slot.HeldItem?.NotifyStateChanged();
                 return;
             }
 
             slot.DecreaseCount(1);
+        }
+
+        private static ItemInstance CreateSplitConsumableItem(ItemInstance sourceItem, int remainingCharges)
+        {
+            if (sourceItem == null || sourceItem.BaseItem == null || remainingCharges <= 0)
+                return null;
+
+            ItemInstance splitItem = sourceItem.Clone();
+            ConsumableState splitState = splitItem.GetState<ConsumableState>();
+            if (splitState == null)
+                return null;
+
+            splitState.CurrentCharges = remainingCharges;
+            return splitItem;
         }
     }
 }

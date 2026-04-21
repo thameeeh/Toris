@@ -25,6 +25,7 @@ namespace OutlandHaven.Inventory
             ResolveRuntimeReferences(logErrors: true);
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (_itemPickerSO == null)
@@ -44,7 +45,7 @@ namespace OutlandHaven.Inventory
                 Debug.LogWarning($"<b><color=teal>[InteractionUI]</color></b> is not assigned on GameObject: <b>{name}</b>. ItemPicker will try to auto-resolve the prompt UI at runtime.", this);
             }
         }
-
+#endif
         private void OnEnable()
         {
             if (_itemPickerSO != null)

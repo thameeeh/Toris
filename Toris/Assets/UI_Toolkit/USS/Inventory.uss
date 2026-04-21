@@ -1,50 +1,47 @@
+/* ==========================================================================
+   PLAYER INVENTORY LAYOUT (Inventory.uss)
+   Structural wrappers and grid layouts for the main character screen.
+   ========================================================================== */
+
+.player-inventory-root {
+    picking-mode: Ignore;
+    flex-shrink: 0;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+}
+
 .inventory-window {
     width: 100%;
     height: 100%;
     background-color: var(--color-bg-dark);
-    border-color: rgb(109, 109, 109);
+    border-color: var(--color-border-default);
     border-width: 2px;
     border-radius: 10px;
     flex-direction: column;
     padding: 10px;
 }
 
-.inventory-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.item-slot--large {
-    width: 80px;
-    height: 80px;
-}
-
-#grid-player {
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-#container__player {
+.player-inventory-container {
     flex-grow: 1;
-    background-color: rgb(18, 18, 18);
+    background-color: var(--color-bg-dark);
     picking-mode: Position;
     flex-shrink: 0;
     align-items: stretch;
     justify-content: space-between;
 }
 
-#Top__Section {
+.player-top-section {
     flex-grow: 1;
     flex-direction: row;
 }
 
-#Stats__Panel {
+.player-stats-panel {
     flex-grow: 3;
     flex-basis: 0;
-    background-color: rgb(24, 24, 24);
+    background-color: var(--color-bg-panel);
     border-right-width: 2px;
-    border-right-color: rgb(40, 40, 40);
+    border-right-color: var(--color-border-default);
     padding: 15px;
 }
 
@@ -52,30 +49,50 @@
     flex-grow: 1;
 }
 
-#Equipment__Wrapper {
+.player-equipment-wrapper {
     flex-grow: 7;
     flex-basis: 0;
     display: flex;
 }
 
-#Equipment__Header {
+.player-equipment-header {
     padding-left: 10px;
 }
 
-#PlayerEquipment__Panel {
-    background-color: rgb(32, 32, 32);
-    -unity-background-scale-mode: scale-to-fit;
-    flex-grow: 1;
-    background-size: contain;
-    background-position-x: center;
-    background-position-y: top 50px;
+/* Brought over from the Components.uss purge */
+.player-equipment-header .panel-title {
+    margin-bottom: 0;
 }
 
-#Inventory__Slots--Panel {
+.player-equipment-panel {
+    background-color: var(--color-bg-panel);
+    -unity-background-scale-mode: scale-to-fit;
+    flex-grow: 1;
+    /* Extracted the inline background image from UXML */
+    background-image: url("project://database/Assets/UI_Toolkit/BowGuy007.png?fileID=2800000&guid=d2a0ea75174bdc740a7b12c0072b8de5&type=3#BowGuy007");
+}
+
+.player-inventory-slots-panel {
     flex-grow: 0;
     margin-bottom: 0;
     height: 20%;
     min-height: 248px;
     border-top-width: 2px;
-    border-top-color: rgb(40, 40, 40);
+    border-top-color: var(--color-border-default);
+}
+
+.inventory-slots-scroll {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.inventory-grid-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.inventory-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }

@@ -1,5 +1,18 @@
+/* ==========================================================================
+   GLOBAL COMPONENTS (Components.uss)
+   This file contains ONLY reusable UI atoms (buttons, slots, tabs).
+   
+   STRICT RULES FOR THIS FILE:
+   1. NO ID SELECTORS (#Name). Use semantic classes only (.class-name).
+   2. NO HARDCODED COLORS. Use var(--color-...) from theme-variables.uss.
+   3. NO SCREEN-SPECIFIC LAYOUTS. Keep structural wrappers in screen USS files.
+   4. FIXED DIMENSIONS MUST SHRINK: 0. Prevent flexbox from squishing slots.
+   ========================================================================== */
+
+/* --- BUTTONS --- 
+   Standardized interactable elements. */
 .standard-button {
-    background-color: rgb(60, 60, 60);
+    background-color: var(--color-bg-panel);
     border-color: var(--color-border-default);
     border-width: 1px;
     border-radius: 5px;
@@ -9,32 +22,23 @@
 }
 
 .standard-button:hover {
-    background-color: rgb(90, 90, 90);
+    background-color: var(--color-border-default);
     scale: 1.05;
 }
 
+/* --- COMMERCE & INVENTORY SLOTS --- 
+   Base containers for items. flex-shrink: 0 ensures they never distort. */
 .item-slot {
     width: 82px;
     height: 82px;
-    background-color: rgb(56, 56, 56);
+    flex-shrink: 0; /* Added to prevent squishing */
+    background-color: var(--color-bg-panel); 
     border-width: 0.5px;
-    border-color: rgb(255, 212, 180);
+    border-color: var(--color-border-default); 
 }
 
 .item-slot:hover {
     border-color: var(--color-border-highlight);
-}
-
-.item-quantity {
-    position: absolute;
-    bottom: 2px;
-    left: 4px;
-    color: rgb(255, 255, 255);
-    font-size: 14px;
-    -unity-font-style: bold;
-    -unity-text-outline-width: 1.5px;
-    -unity-text-outline-color: rgb(0, 0, 0);
-    picking-mode: Ignore;
 }
 
 .item-icon {
@@ -44,15 +48,29 @@
     padding: 0;
 }
 
+.item-quantity {
+    position: absolute;
+    bottom: 2px;
+    left: 4px;
+    color: var(--color-text-light);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+    picking-mode: Ignore;
+}
+
+/* --- TAB NAVIGATION --- 
+   Used for switching sub-views (e.g., Forge, Market, Salvage). */
 .panel-tab {
     flex-grow: 1;
     height: 50px;
-    background-color: rgb(40, 40, 40);
+    background-color: var(--color-bg-panel);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-width: 1px;
     border-bottom-width: 0;
-    border-color: rgb(25, 25, 25);
+    border-color: var(--color-border-default); /* Replaced dark gray */
     margin-left: 2px;
     margin-right: 2px;
     margin-top: 5px;
@@ -62,17 +80,17 @@
 }
 
 .panel-tab:hover {
-    background-color: rgb(60, 60, 60);
-    border-color: rgb(220, 179, 92);
+    background-color: var(--color-border-default);
+    border-color: var(--color-border-highlight);
 }
 
 .panel-tab--active {
-    background-color: rgb(70, 70, 70);
-    border-color: rgb(220, 179, 92);
+    background-color: var(--color-bg-dark);
+    border-color: var(--color-border-highlight);
 }
 
 .panel-tab-label {
-    color: rgb(180, 180, 180);
+    color: var(--color-border-default);
     font-size: 18px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
@@ -80,25 +98,32 @@
 }
 
 .panel-tab--active .panel-tab-label {
-    color: rgb(255, 255, 255);
+    color: var(--color-text-light);
 }
 
+/* --- TYPOGRAPHY --- 
+   Global text styles. */
 .panel-title {
-    color: rgb(255, 255, 255);
-    font-size: 40px;
+    color: var(--color-text-light);
+    font-size: var(--font-size-h2);
     margin-bottom: 20px;
 }
 
-#Equipment__Header .panel-title {
-    margin-bottom: 0;
-}
-
 .stat-label {
-    color: white;
-    font-size: 20px;
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
     margin-bottom: 10px;
 }
 
+.text-white-bald {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+}
+
+/* --- EQUIPMENT MAPPING --- 
+   Absolute positioning for avatar layouts. */
 .equip-slot--head {
     position: absolute;
     top: 5%;
@@ -129,6 +154,7 @@
     bottom: 10px;
 }
 
+/* --- QUICKSLOTS & POTIONS --- */
 .potion-container--absolute {
     position: absolute;
     right: 15px;
@@ -139,12 +165,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-right: 0;
 }
 
 .potion-slot {
     width: 70px;
     height: 70px;
-    background-color: rgb(40, 40, 40);
+    flex-shrink: 0; /* Added to prevent squishing */
+    background-color: var(--color-bg-panel);
     border-width: 2px;
     border-color: var(--color-border-default);
     border-radius: 35px;
@@ -152,64 +180,7 @@
     transition-duration: 0.1s;
 }
 
-.potion-slot-group > .potion-slot:last-child {
-    margin-right: 0;
-}
-
 .potion-slot:hover {
     border-color: var(--color-border-highlight);
     scale: 1.05;
-}
-
-.shop-item-slot {
-    width: 82px;
-    height: 82px;
-    background-color: var(--color-shop-slot-bg);
-    border-width: 1px;
-    border-color: var(--color-shop-slot-border);
-    border-radius: 4px;
-    margin: 4px;
-    transition-duration: 0.15s;
-}
-
-.shop-item-slot:hover {
-    background-color: rgb(40, 40, 40);
-    border-color: var(--color-border-highlight);
-    scale: 1.05;
-}
-
-.shop-item-price {
-    position: absolute;
-    bottom: 2px;
-    right: 4px;
-    color: var(--color-coin-gold);
-    font-size: 14px;
-    -unity-font-style: bold;
-    -unity-text-outline-width: 1px;
-    -unity-text-outline-color: rgb(0, 0, 0);
-    picking-mode: Ignore;
-}
-
-.text-white-bald {
-    color: rgb(255, 255, 255);
-    font-size: 18px;
-    -unity-text-align: middle-center;
-    -unity-font-style: bold;
-}
-
-.forge-slot {
-    background-color: rgb(55, 50, 45);
-    border-width: 2px;
-    border-color: rgb(90, 80, 70);
-    flex-shrink: 0;
-    min-width: 20px;
-    min-height: 20px;
-}
-
-.forge-slot-result {
-    flex-shrink: 0;
-    background-color: rgb(35, 30, 25);
-    border-width: 2px;
-    border-color: rgb(180, 140, 70);
-    align-self: center;
 }

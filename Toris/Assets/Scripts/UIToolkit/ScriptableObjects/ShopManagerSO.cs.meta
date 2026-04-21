@@ -5,6 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - SessionData: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  - PlayerAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
   - InventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   - UIEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   - CurrentShopInventory: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}

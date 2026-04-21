@@ -5,11 +5,11 @@ namespace OutlandHaven.Inventory
     public enum SlotFilterType
     {
         Any = -1,
-        Head = (int)EquipmentSlot.Head,
-        Chest = (int)EquipmentSlot.Chest,
-        Legs = (int)EquipmentSlot.Legs,
-        Arms = (int)EquipmentSlot.Arms,
-        Weapon = (int)EquipmentSlot.Weapon
+        Head = EquipmentSlot.Head,
+        Chest = EquipmentSlot.Chest,
+        Legs = EquipmentSlot.Legs,
+        Arms = EquipmentSlot.Arms,
+        Weapon = EquipmentSlot.Weapon
     }
 
     [Serializable]

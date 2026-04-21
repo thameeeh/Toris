@@ -170,7 +170,7 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             if (_eventsBound && _uiInventoryEvents != null)
             {
@@ -179,6 +179,8 @@ namespace OutlandHaven.Inventory
                 _eventsBound = false;
             }
             _equipmentView?.Dispose();
+
+            base.Dispose();
         }
     }
 }

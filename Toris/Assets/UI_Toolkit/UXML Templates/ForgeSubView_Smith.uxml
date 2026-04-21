@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
-    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith%20Forge.uss?fileID=7433441132597879392&amp;guid=b328af8a97b786f4b90f32885ebd63ae&amp;type=3#Smith Forge"/>
-    
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith_Forge.uss?fileID=7433441132597879392&amp;guid=b328af8a97b786f4b90f32885ebd63ae&amp;type=3#Smith_Forge"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <ui:VisualElement name="forge-container" class="forge-subview-container">
         <ui:Label text="Forge Panel" class="forge-title NPC_PanelButtons text-white-bald"/>
         <ui:VisualElement name="forge-inputs" class="forge-inputs-wrapper">

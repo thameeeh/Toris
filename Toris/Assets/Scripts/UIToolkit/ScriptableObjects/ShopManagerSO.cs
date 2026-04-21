@@ -30,6 +30,24 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            // Check all mandatory SO dependencies
+            CheckField(SessionData, nameof(SessionData));
+            CheckField(PlayerAnchor, nameof(PlayerAnchor));
+            CheckField(InventoryEvents, nameof(InventoryEvents));
+            CheckField(UIEvents, nameof(UIEvents));
+        }
+
+        private void CheckField(Object field, string fieldName)
+        {
+            if (field == null)
+            {
+                Debug.LogError($"<b><color=red>[ShopManagerSO]</color></b> <b>{fieldName}</b> is missing on Asset: <b>{name}</b>", this);
+            }
+        }
+#endif
         public void Cleanup() 
         {
             if (InventoryEvents != null)
@@ -85,7 +103,7 @@ namespace OutlandHaven.UIToolkit
                         InventoryEvents?.OnShopInventoryUpdated?.Invoke();
 
 #if UNITY_EDITOR
-                        Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {PlayerAnchor.Instance.CurrentGold}");
+                        //Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {PlayerAnchor.Instance.CurrentGold}");
 #endif
                     }
                     else
@@ -137,7 +155,7 @@ namespace OutlandHaven.UIToolkit
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"Sold {quantity} {item.BaseItem.ItemName} for {totalValue} gold. Total Gold: {PlayerAnchor.Instance.CurrentGold}");
+                //Debug.Log($"Sold {quantity} {item.BaseItem.ItemName} for {totalValue} gold. Total Gold: {PlayerAnchor.Instance.CurrentGold}");
 #endif
             }
             else

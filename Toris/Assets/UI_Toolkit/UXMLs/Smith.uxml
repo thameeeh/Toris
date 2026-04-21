@@ -1,21 +1,29 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%; height: 100%; flex-shrink: 0;">
-        <ui:VisualElement name="container-smith" style="flex-grow: 0; flex-wrap: wrap; background-color: rgb(23, 23, 23); width: 100%; height: 100%;">
-            <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
-                <ui:Label text="Smith" class="panel-tab-label" style="flex-shrink: 1; flex-grow: 0; -unity-text-align: upper-left;"/>
-                <ui:VisualElement name="Smith_Forge--Tab" class="panel-tab" style="flex-grow: 1; height: 60px;">
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith.uss?fileID=7433441132597879392&amp;guid=80cbcbd9f648eb245ae3518c5d19a6ed&amp;type=3#Smith"/>
+
+    <ui:VisualElement class="smith-root-wrapper">
+        <ui:VisualElement name="container-smith" class="smith-main-container">
+            
+            <ui:VisualElement class="smith-header-section">
+                <ui:Label text="Smith" class="smith-title"/>
+                
+                <ui:VisualElement name="Smith_Forge--Tab" class="panel-tab panel-tab--active">
                     <ui:Label text="Forge" name="Forge_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Smith_Market--Tab" class="panel-tab" style="flex-grow: 1; height: 60px;">
+                
+                <ui:VisualElement name="Smith_Market--Tab" class="panel-tab">
                     <ui:Label text="Market" enable-rich-text="true" name="Market_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Smith_Salvage--Tab" class="panel-tab" style="flex-grow: 1; height: 60px;">
+                
+                <ui:VisualElement name="Smith_Salvage--Tab" class="panel-tab">
                     <ui:Label text="Salvage" name="Salvage_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="Smith-middle__panel" style="flex-grow: 1;"/>
+            
+            <ui:VisualElement name="Smith-middle__panel" class="smith-middle-panel"/>
+            
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

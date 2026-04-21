@@ -1,0 +1,76 @@
+/* --- SHOP LAYOUT --- */
+.shop-window {
+    flex-grow: 1; /* Changed from width/height 100% so it fits dynamically */
+    background-color: var(--color-bg-shop);
+    border-color: var(--color-border-highlight); 
+    border-width: 2px;
+    border-radius: 8px;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.shop-header-container {
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 10px;
+}
+
+.shop-header-title {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    -unity-font-style: bold;
+}
+
+.shop-gold-container {
+    flex-direction: row; 
+    align-items: center;
+}
+
+.shop-gold-text {
+    font-size: 18px; 
+    color: gold; 
+    -unity-font-style: bold;
+}
+
+.shop-gold-amount {
+    font-size: 18px;
+    color: white;
+}
+
+.shop-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+/* --- Moved from Components.uss --- */
+.shop-item-slot {
+    width: 82px;
+    height: 82px;
+    background-color: var(--color-shop-slot-bg);
+    border-width: 1px;
+    border-color: var(--color-shop-slot-border);
+    border-radius: 4px;
+    margin: 4px;
+    transition-duration: 0.15s;
+}
+
+.shop-item-slot:hover {
+    background-color: rgb(40, 40, 40);
+    border-color: var(--color-border-highlight);
+    scale: 1.05;
+}
+
+.shop-item-price {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    color: var(--color-coin-gold);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    picking-mode: Ignore;
+}

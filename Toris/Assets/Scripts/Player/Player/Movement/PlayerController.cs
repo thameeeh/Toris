@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         if (_inputReader == null || _motor == null)
             return;
 
-        Vector2 moveInput = _inputReader.Move;
+        Vector2 moveInput = PlayerMovementDirectionUtility.ToWorldAlignedDirection(_inputReader.Move);
         _motor.SetMoveInput(moveInput);
 
         if (moveInput.sqrMagnitude > MOVE_INPUT_EPSILON_SQR)
@@ -99,13 +99,15 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 ResolveDashFacing()
     {
-        Vector2 inputMove = _inputReader != null ? _inputReader.Move : Vector2.zero;
+        Vector2 inputMove = _inputReader != null
+            ? PlayerMovementDirectionUtility.ToWorldAlignedDirection(_inputReader.Move)
+            : Vector2.zero;
 
         if (inputMove.sqrMagnitude > MOVE_INPUT_EPSILON_SQR)
             return inputMove;
 
         if (_playerFacing != null && _playerFacing.CurrentFacing.sqrMagnitude > FACING_EPSILON_SQR)
-            return _playerFacing.CurrentFacing;
+            return PlayerMovementDirectionUtility.ToWorldAlignedDirection(_playerFacing.CurrentFacing);
 
         return _lastDashFacing;
     }

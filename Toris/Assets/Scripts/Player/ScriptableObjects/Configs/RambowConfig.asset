@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RamboBowConfig
   abilityID: RambowConfig
   requiredSkillID: 
-  abilityName: Rambow
+  abilityName: Ability2
   icon: {fileID: 0}
   cooldownSeconds: 0
   blocksBowDraw: 1

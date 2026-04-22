@@ -563,7 +563,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60
-    OrthographicSize: 5.4
+    OrthographicSize: 6.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1169,11 +1169,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2936012662017822604, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.900002
+      value: 59.2
       objectReference: {fileID: 0}
     - target: {fileID: 2936012662017822604, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.8000007
+      value: 12.4
       objectReference: {fileID: 0}
     - target: {fileID: 2936012662017822604, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1221,7 +1221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7028104305884219924, guid: c1fdf2695e8d03c41b6b3882d9e843c6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11484,7 +11484,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.4
+  orthographic size: 6.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -11991,6 +11991,10 @@ PrefabInstance:
     - target: {fileID: 3923781557562625885, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
       propertyPath: m_Name
       value: Canvas_E
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923781557562625885, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

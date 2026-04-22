@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChainShotConfig
   abilityID: ChainShotConfig
   requiredSkillID: 
-  abilityName: New Ability
+  abilityName: Ability3
   icon: {fileID: 0}
   cooldownSeconds: 0
   blocksBowDraw: 1

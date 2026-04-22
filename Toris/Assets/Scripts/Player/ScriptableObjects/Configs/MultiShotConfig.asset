@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MultiShotConfig
   abilityID: MultiShotConfig
   requiredSkillID: 
-  abilityName: MultiShot
+  abilityName: Ability0
   icon: {fileID: 0}
   cooldownSeconds: 5
   blocksBowDraw: 1

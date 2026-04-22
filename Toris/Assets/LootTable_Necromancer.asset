@@ -10,18 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e406df3001db1e458885ac9563e86a7, type: 3}
-  m_Name: MinionWolf
+  m_Name: LootTable_Necromancer
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLootTableSO
-  itemDrops:
-  - item: {fileID: 11400000, guid: 0a965108baf262b40819ecdc6b0be49b, type: 2}
-    dropChance: 0.145
-    minQuantity: 1
-    maxQuantity: 1
-  - item: {fileID: 11400000, guid: 30a82d052c6934841897a2be59e7970c, type: 2}
-    dropChance: 0.325
-    minQuantity: 1
-    maxQuantity: 1
-  minGold: 10
-  maxGold: 50
-  minXp: 50
-  maxXp: 100
+  itemDrops: []
+  minGold: 0
+  maxGold: 0
+  minXp: 0
+  maxXp: 0

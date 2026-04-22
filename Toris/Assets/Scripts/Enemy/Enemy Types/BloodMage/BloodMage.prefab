@@ -117,6 +117,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 8057200069195693602}
   playerTransform: {fileID: 0}
+  lootTable: {fileID: 0}
   AttackDamage: 8
   MovementSpeed: 2.2
   castPoint: {fileID: 2979183751253149904}
@@ -147,6 +148,7 @@ MonoBehaviour:
   waypointReachThreshold: 0.1
   targetChangeThreshold: 0.5
   allowDirectFallbackWhenNoPath: 0
+  debugPathing: 0
 --- !u!1 &1002006597034897472
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +242,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &8365232162984719157
 Animator:
   serializedVersion: 7

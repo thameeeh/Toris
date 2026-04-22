@@ -11,10 +11,10 @@
                 <ui:VisualElement name="Stats__Panel" class="player-stats-panel">
                     <ui:Label text="Stats" class="panel-title"/>
                     <ui:ScrollView class="stats-scroll-view">
-                        <ui:Label text="STR: 25" class="stat-label"/>
-                        <ui:Label text="DEX: 40" class="stat-label"/>
-                        <ui:Label text="INT: 15" class="stat-label"/>
-                        <ui:Label text="VIT: 200/200" class="stat-label"/>
+                        <ui:Label name="stat-maxHealth" text="Max Health: 0" class="stat-label"/>
+                        <ui:Label name="stat-maxStamina" text="Max Stamina: 0" class="stat-label"/>
+                        <ui:Label name="stat-moveSpeed" text="Move Speed: 1.0" class="stat-label"/>
+                        <ui:Label name="stat-outgoingDamage" text="Outgoing Damage: 1.0" class="stat-label"/>
                     </ui:ScrollView>
                 </ui:VisualElement>
                 

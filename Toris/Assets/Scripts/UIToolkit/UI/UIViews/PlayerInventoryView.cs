@@ -19,19 +19,22 @@ namespace OutlandHaven.Inventory
         // UI Containers
         private VisualElement _playerGrid;
         private PlayerEquipmentView _equipmentView;
+        private PlayerStatsView _statsView;
+        private PlayerHUDBridge _hudBridge;
         private InventoryManager _equipmentInventory;
 
         private UIInventoryEventsSO _uiInventoryEvents;
         private bool _eventsBound = false;
         private InventoryInteractionContext _currentContext = InventoryInteractionContext.Normal;
 
-        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, InventoryManager equipmentInventory = null)
+        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, InventoryManager equipmentInventory = null, PlayerHUDBridge hudBridge = null)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;
             _uiInventoryEvents = uiInventoryEvents;
             _equipmentInventory = equipmentInventory;
+            _hudBridge = hudBridge;
         }
 
         public override void Initialize()
@@ -39,6 +42,8 @@ namespace OutlandHaven.Inventory
             base.Initialize();
             _equipmentView = new PlayerEquipmentView(m_TopElement, _slotTemplate, _uiInventoryEvents);
             _equipmentView.Initialize();
+            _statsView = new PlayerStatsView(m_TopElement);
+            _statsView.Initialize();
         }
 
         public override void Show()
@@ -53,6 +58,7 @@ namespace OutlandHaven.Inventory
                 _eventsBound = true;
             }
             _equipmentView?.Show();
+            _statsView?.Show();
         }
 
         public override void Hide()
@@ -67,6 +73,7 @@ namespace OutlandHaven.Inventory
                 _eventsBound = false;
             }
             _equipmentView?.Hide();
+            _statsView?.Hide();
         }
 
         protected override void SetVisualElements()
@@ -85,6 +92,7 @@ namespace OutlandHaven.Inventory
             // Refresh Player Inventory (Always)
             RefreshGrid(_playerGrid, _gameSession.PlayerInventory); 
             _equipmentView?.Setup(_equipmentInventory);
+            _statsView?.Setup(_hudBridge);
         }
 
         private void RefreshGrid(VisualElement gridRoot, InventoryManager data)
@@ -179,6 +187,7 @@ namespace OutlandHaven.Inventory
                 _eventsBound = false;
             }
             _equipmentView?.Dispose();
+            _statsView?.Dispose();
 
             base.Dispose();
         }

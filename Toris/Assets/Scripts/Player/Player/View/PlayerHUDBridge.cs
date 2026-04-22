@@ -21,12 +21,14 @@ public class PlayerHUDBridge : MonoBehaviour
     public event Action<PlayerStatusEffectType> OnStatusApplied;
     public event Action<PlayerStatusEffectType> OnStatusRemoved;
     public event Action<PlayerStatusEffectType, float> OnStatusDamageTick;
+    public event Action<PlayerResolvedEffects> OnResolvedEffectsChanged;
 
     public float CurrentHealth => _playerStats != null ? _playerStats.currentHP : 0f;
     public float MaxHealth => _playerStats != null ? _playerStats.maxHP : 0f;
 
     public float CurrentStamina => _playerStats != null ? _playerStats.currentStamina : 0f;
     public float MaxStamina => _playerStats != null ? _playerStats.maxStamina : 0f;
+    public PlayerResolvedEffects ResolvedEffects => _playerStats != null ? _playerStats.ResolvedEffects : PlayerResolvedEffects.CreateDefault();
 
     public int CurrentLevel => _playerProgression != null ? _playerProgression.CurrentLevel : 1;
     public float CurrentExperience => _playerProgression != null ? _playerProgression.CurrentExperience : 0f;
@@ -59,6 +61,7 @@ public class PlayerHUDBridge : MonoBehaviour
         {
             _playerStats.OnHealthChanged += HandleHealthChanged;
             _playerStats.OnStaminaChanged += HandleStaminaChanged;
+            _playerStats.OnResolvedEffectsChanged += HandleResolvedEffectsChanged;
         }
 
         if (_playerProgression != null)
@@ -81,6 +84,7 @@ public class PlayerHUDBridge : MonoBehaviour
         {
             _playerStats.OnHealthChanged -= HandleHealthChanged;
             _playerStats.OnStaminaChanged -= HandleStaminaChanged;
+            _playerStats.OnResolvedEffectsChanged -= HandleResolvedEffectsChanged;
         }
 
         if (_playerProgression != null)
@@ -108,6 +112,7 @@ public class PlayerHUDBridge : MonoBehaviour
         {
             OnHealthChanged?.Invoke(_playerStats.currentHP, _playerStats.maxHP);
             OnStaminaChanged?.Invoke(_playerStats.currentStamina, _playerStats.maxStamina);
+            OnResolvedEffectsChanged?.Invoke(_playerStats.ResolvedEffects);
         }
 
         if (_playerProgression != null)
@@ -125,6 +130,11 @@ public class PlayerHUDBridge : MonoBehaviour
     private void HandleStaminaChanged(float current, float max)
     {
         OnStaminaChanged?.Invoke(current, max);
+    }
+
+    private void HandleResolvedEffectsChanged(PlayerResolvedEffects resolvedEffects)
+    {
+        OnResolvedEffectsChanged?.Invoke(resolvedEffects);
     }
 
     private void HandleLevelChanged(int level, float experience)

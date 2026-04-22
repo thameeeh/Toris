@@ -17,6 +17,7 @@
     --font-size-h3: 30px;
     --font-size-body: 18px;
     --font-size-small: 12px;
+    --color-text-outline: rgba(0, 0, 0, 0.8);
 
     /* Commerce Specific Colors | Smith Shop*/
     --color-bg-shop: rgba(35, 25, 20, 0.98);

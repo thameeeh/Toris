@@ -184,3 +184,11 @@
     border-color: var(--color-border-highlight);
     scale: 1.05;
 }
+
+    /* Modifier for item slots instantiated inside the potion quickbar */
+.item-slot--potion {
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /* Lets the parent .potion-slot background show through */
+    border-width: 0; 
+}

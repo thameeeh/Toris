@@ -25,8 +25,8 @@
                     
                     <ui:VisualElement name="PlayerEquipment__Panel" class="player-equipment-panel">
                         <ui:VisualElement name="Consumables__Player--Inventory" class="potion-slot-group potion-container--absolute">
-                            <ui:VisualElement class="potion-slot"/>
-                            <ui:VisualElement class="potion-slot"/>
+                            <ui:VisualElement name="slot-potion-1" class="potion-slot"/>
+                            <ui:VisualElement name="slot-potion-2" class="potion-slot"/>
                         </ui:VisualElement>
                        
                         <ui:VisualElement name="slot-head" class="item-slot equip-slot--head"/>

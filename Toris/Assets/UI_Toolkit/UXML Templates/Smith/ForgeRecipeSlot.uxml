@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/ForgeRecipeSlot.uss"/>
+
+    <ui:VisualElement name="recipe-slot-root" class="recipe-list-item">
+        
+        <ui:VisualElement class="recipe-icon-wrapper">
+            <ui:Image name="recipe-result-icon" class="recipe-icon"/>
+        </ui:VisualElement>
+        
+        <ui:VisualElement class="recipe-details">
+            <ui:Label name="recipe-name" text="Iron Broadsword" class="recipe-name"/>
+            <ui:Label name="recipe-ingredients" text="Requires: 2x Iron Ingot, 1x Leather" class="recipe-ingredients"/>
+        </ui:VisualElement>
+
+    </ui:VisualElement>
+</ui:UXML>

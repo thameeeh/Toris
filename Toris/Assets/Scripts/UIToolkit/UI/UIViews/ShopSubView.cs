@@ -1,7 +1,8 @@
+using OutlandHaven.Inventory;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -108,6 +109,15 @@ namespace OutlandHaven.UIToolkit
 
             for (int i = 0; i < _shopContainer.LiveSlots.Count; i++)
             {
+                var slotData = _shopContainer.LiveSlots[i];
+
+                // --- THE FIX: Guard clause to skip instantiation of empty slots ---
+                if (slotData == null || slotData.IsEmpty || slotData.HeldItem?.BaseItem == null)
+                {
+                    continue;
+                }
+
+                // Only instantiate the UI if the slot actually contains an item
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
                 _shopGrid.Add(slotInstance);
 
@@ -121,10 +131,20 @@ namespace OutlandHaven.UIToolkit
                 slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
                 slotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
                 slotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
-                var slotData = _shopContainer.LiveSlots[i];
 
                 slotView.Update(slotData);
                 _slotViews.Add(slotView);
+
+                // Fetch the new UI elements from the template instance
+                Label itemNameLabel = slotInstance.Q<Label>("item-name");
+                Label itemDescLabel = slotInstance.Q<Label>("item-desc");
+                Label itemPriceLabel = slotInstance.Q<Label>("item-price");
+
+                // We no longer need the if/else check here because the guard clause 
+                // guarantees that any code reaching this point has valid item data.
+                if (itemNameLabel != null) itemNameLabel.text = slotData.HeldItem.BaseItem.ItemName;
+                if (itemDescLabel != null) itemDescLabel.text = slotData.HeldItem.BaseItem.Description;
+                if (itemPriceLabel != null) itemPriceLabel.text = slotData.HeldItem.BaseItem.GoldValue.ToString() + "g";
             }
         }
 
@@ -147,7 +167,7 @@ namespace OutlandHaven.UIToolkit
             CreateSlots();
         }
 
-                private void HandleGoldChanged(int currentGold, int delta)
+        private void HandleGoldChanged(int currentGold, int delta)
         {
             UpdateGoldAmount(currentGold);
         }

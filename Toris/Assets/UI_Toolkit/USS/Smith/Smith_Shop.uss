@@ -1,6 +1,6 @@
 /* --- SHOP LAYOUT --- */
 .shop-window {
-    flex-grow: 1; /* Changed from width/height 100% so it fits dynamically */
+    flex-grow: 1;
     background-color: var(--color-bg-shop);
     border-color: var(--color-border-highlight); 
     border-width: 2px;
@@ -17,60 +17,152 @@
 }
 
 .shop-header-title {
-    color: rgb(255, 255, 255);
-    font-size: 20px;
+    color: var(--color-text-light); /* Fixed Rule 2 Violation */
+    font-size: var(--font-size-h2); /* Standardized typography */
     -unity-font-style: bold;
 }
 
 .shop-gold-container {
-    flex-direction: row; 
+    flex-direction: row;
     align-items: center;
 }
 
 .shop-gold-text {
-    font-size: 18px; 
-    color: gold; 
+    font-size: var(--font-size-body); 
+    color: var(--color-coin-gold); /* Fixed Rule 2 Violation */
     -unity-font-style: bold;
 }
 
 .shop-gold-amount {
-    font-size: 18px;
-    color: white;
+    font-size: var(--font-size-body);
+    color: var(--color-text-light); /* Fixed Rule 2 Violation */
 }
 
-.shop-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
+/* New structural class to replace inline style */
+.shop-scroll-container {
+    flex-grow: 1;
+}
+
+/* Replaces .shop-grid */
+.shop-list-container {
+    flex-direction: column; /* Stack vertically instead of wrap */
     justify-content: flex-start;
     margin-top: 10px;
 }
 
-/* --- Moved from Components.uss --- */
-.shop-item-slot {
-    width: 82px;
-    height: 82px;
+/* --- NEW LIST ITEM LAYOUT (The Row) --- */
+.shop-list-item {
+    flex-direction: row; /* Horizontal layout for the row */
+    height: 90px;
+    flex-shrink: 0; /* Rule 4: Prevent ScrollView from squishing rows */
     background-color: var(--color-shop-slot-bg);
     border-width: 1px;
     border-color: var(--color-shop-slot-border);
     border-radius: 4px;
-    margin: 4px;
+    margin-bottom: 8px;
+    padding: 6px;
     transition-duration: 0.15s;
 }
 
-.shop-item-slot:hover {
-    background-color: rgb(40, 40, 40);
+.shop-list-item:hover {
+    background-color: var(--color-bg-panel); /* Fixed Rule 2 Violation */
     border-color: var(--color-border-highlight);
-    scale: 1.05;
+}
+
+/* Internal layout for the list item */
+.shop-item-icon-wrapper {
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+    background-color: var(--color-bg-dark);
+    border-width: 1px;
+    border-color: var(--color-border-default);
+    margin-right: 15px;
+}
+
+.shop-item-details {
+    flex-grow: 1; /* Pushes the price/buy section to the right */
+    flex-direction: column;
+    justify-content: center;
+}
+
+.shop-item-name {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+.shop-item-description {
+    color: var(--color-border-default);
+    font-size: var(--font-size-small);
+    white-space: normal; /* Enables multi-line text */
+}
+
+.shop-item-commerce {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100px;
+    flex-shrink: 0;
+    padding-right: 10px;
 }
 
 .shop-item-price {
-    position: absolute;
-    bottom: 2px;
-    right: 4px;
     color: var(--color-coin-gold);
-    font-size: 14px;
+    font-size: var(--font-size-body);
     -unity-font-style: bold;
     -unity-text-outline-width: 1px;
-    -unity-text-outline-color: rgb(0, 0, 0);
-    picking-mode: Ignore;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   SCROLLBAR OVERRIDES (Targeting Unity Base Slider)
+========================================================================== */
+
+/* The main vertical scroller container */
+.shop-scroll-container .unity-scroller--vertical {
+    width: 14px;
+    background-color: transparent;
+    margin-left: 4px; 
+}
+
+/* Hide the default Unity up/down arrow buttons */
+.shop-scroll-container .unity-scroller__low-button,
+.shop-scroll-container .unity-scroller__high-button {
+    display: none;
+}
+
+/* Kill the residual gray background on the slider container */
+.shop-scroll-container .unity-scroller--vertical .unity-slider {
+    margin: 0;
+    background-color: transparent;
+}
+
+/* The background track (Brown from shop background) */
+.shop-scroll-container .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: var(--color-bg-shop);
+    border-color: var(--color-shop-slot-border);
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+/* The draggable thumb (Golden from highlights) */
+.shop-scroll-container .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--color-border-highlight);
+    border-color: var(--color-coin-gold);
+    border-width: 1px;
+    border-radius: 4px;
+    width: 10px; 
+    
+    /* THE FIX: Strip inherited offsets and force Flexbox centering */
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    align-self: center; 
+}
+
+/* Draggable thumb hover state (Bright Gold) */
+.shop-scroll-container .unity-scroller--vertical .unity-base-slider__dragger:hover {
+    background-color: var(--color-coin-gold);
 }

@@ -1,0 +1,57 @@
+.recipe-list-item {
+    flex-direction: row;
+    height: 70px; /* Slightly smaller than shop slots */
+    flex-shrink: 0; 
+    background-color: var(--color-bg-panel);
+    border-width: 1px;
+    border-color: var(--color-border-default);
+    border-radius: 4px;
+    margin-bottom: 6px;
+    padding: 6px;
+    transition-duration: 0.15s;
+}
+
+.recipe-list-item:hover {
+    background-color: var(--color-bg-dark);
+    border-color: var(--color-border-highlight);
+}
+
+.recipe-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    background-color: var(--color-bg-dark);
+    border-width: 1px;
+    border-color: var(--color-border-highlight); /* Gold outline to denote it's the result */
+    border-radius: 4px;
+    margin-right: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipe-icon {
+    width: 80%;
+    height: 80%;
+}
+
+.recipe-details {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.recipe-name {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    -unity-font-style: bold;
+    margin-bottom: 2px;
+    padding: 0;
+}
+
+.recipe-ingredients {
+    color: var(--color-border-default);
+    font-size: var(--font-size-small);
+    white-space: normal;
+    padding: 0;
+}

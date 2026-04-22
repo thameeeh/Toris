@@ -1,7 +1,23 @@
+/* ==========================================================================
+   SMITH FORGE LAYOUT
+   Root layout for the crafting station and recipe list.
+========================================================================== */
+
 .forge-subview-container {
     flex-grow: 1;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--color-bg-shop); /* Replaced rgb(20,20,20) */
     padding: 10px;
+    flex-direction: column;
+}
+
+/* --- TOP PANEL (The Crafting Station) --- */
+.forge-top-panel {
+    flex-grow: 0.5; /* Takes up roughly half the screen */
+    align-items: center; /* Centers the forge station horizontally */
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-border-default);
+    padding-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .forge-title {
@@ -16,28 +32,59 @@
 }
 
 .forge-plus-label {
-    color: white;
-    font-size: 24px;
+    color: var(--color-text-light); /* Replaced 'white' */
+    font-size: var(--font-size-h2); /* Replaced '24px' */
     margin-left: 15px;
     margin-right: 15px;
+    -unity-font-style: bold;
 }
 
 .forge-action-btn {
     height: 40px;
     margin-bottom: 20px;
+    width: 200px;
 }
 
+/* Base custom slot for forge inputs */
 .forge-slot {
-    flex-shrink: 0; 
-    background-color: rgb(55, 50, 45);
+    flex-shrink: 0; /* Rule 4: Prevent squish */
+    background-color: var(--color-bg-panel);
     border-width: 2px;
-    border-color: rgb(90, 80, 70);
+    border-color: var(--color-border-default);
+    border-radius: 4px;
 }
 
+/* Highlighted result slot */
 .forge-slot-result {
-    flex-shrink: 0;
-    background-color: rgb(35, 30, 25);
+    flex-shrink: 0; 
+    background-color: var(--color-bg-dark);
     border-width: 2px;
-    border-color: rgb(180, 140, 70);
+    border-color: var(--color-border-highlight);
+    border-radius: 4px;
     align-self: center;
 }
+
+/* --- BOTTOM PANEL (The Recipe List) --- */
+.forge-bottom-panel {
+    flex-grow: 1; /* Takes up the remaining space */
+    flex-direction: column;
+}
+
+.forge-recipe-header {
+    color: var(--color-text-light);
+    font-size: var(--font-size-h3);
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+.forge-recipe-scroll {
+    flex-grow: 1;
+}
+
+/* Scrollbar Overrides for the Recipe List */
+.forge-recipe-scroll .unity-scroller--vertical { width: 14px; background-color: transparent; margin-left: 4px; }
+.forge-recipe-scroll .unity-scroller__low-button, .forge-recipe-scroll .unity-scroller__high-button { display: none; }
+.forge-recipe-scroll .unity-scroller--vertical .unity-slider { margin: 0; background-color: transparent; }
+.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__tracker { background-color: var(--color-bg-shop); border-color: var(--color-shop-slot-border); border-width: 1px; border-radius: 4px; }
+.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger { background-color: var(--color-border-highlight); border-color: var(--color-coin-gold); border-width: 1px; border-radius: 4px; width: 10px; left: auto; right: auto; margin-left: 0; margin-right: 0; align-self: center; }
+.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover { background-color: var(--color-coin-gold); }

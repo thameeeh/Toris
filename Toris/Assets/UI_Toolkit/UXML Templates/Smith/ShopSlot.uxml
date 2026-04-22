@@ -1,0 +1,22 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/ShopSlot.uss"/>
+
+    <ui:VisualElement name="shop-slot-root" class="shop-list-item">
+        
+        <ui:VisualElement class="shop-item-icon-wrapper">
+            <ui:Image name="slot-icon" class="shop-item-icon"/>
+            <ui:Label name="slot-qty" class="shop-item-qty"/>
+        </ui:VisualElement>
+        
+        <ui:VisualElement class="shop-item-details">
+            <ui:Label name="item-name" text="Unknown Item" class="shop-item-name"/>
+            <ui:Label name="item-desc" text="Item description..." class="shop-item-description"/>
+        </ui:VisualElement>
+        
+        <ui:VisualElement class="shop-item-commerce">
+            <ui:Label name="item-price" text="0g" class="shop-item-price"/>
+        </ui:VisualElement>
+        
+    </ui:VisualElement>
+</ui:UXML>

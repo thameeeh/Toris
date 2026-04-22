@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 
 // context menu tester; purely testing
@@ -86,3 +87,4 @@ public class PlayerEffectPipelineTester : MonoBehaviour
             this);
     }
 }
+#endif

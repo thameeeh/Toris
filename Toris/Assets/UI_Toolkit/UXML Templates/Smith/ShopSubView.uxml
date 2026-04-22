@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith_Shop.uss?fileID=7433441132597879392&amp;guid=1300f332d4f6fa14585c4af45625b91e&amp;type=3#Smith_Shop"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+
+    <ui:VisualElement name="shop-root" class="shop-window">
+        <ui:VisualElement class="shop-header-container">
+            <ui:Label text="Shop" class="shop-header-title"/>
+            <ui:VisualElement class="shop-gold-container">
+                <ui:Label text="Gold: " class="shop-gold-text"/>
+                <ui:Label name="gold-amount-label" text="0" class="shop-gold-amount"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        
+        <ui:ScrollView class="shop-scroll-container">
+            <ui:VisualElement name="shop-grid" class="shop-list-container">
+                </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

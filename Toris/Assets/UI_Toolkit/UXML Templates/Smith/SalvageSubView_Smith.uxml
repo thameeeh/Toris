@@ -1,0 +1,24 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith_Salvage.uss?fileID=7433441132597879392&amp;guid=db0f73bc40c92c84fa83645624445f6e&amp;type=3#Smith_Salvage"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <ui:VisualElement name="salvage-container" class="salvage-subview-container">
+        <ui:Label text="Salvage / Sell" class="salvage-title NPC_PanelButtons"/>
+        <ui:VisualElement name="salvage-input-section" class="salvage-input-section">
+            <ui:Label text="Place Item Here" class="salvage-instruction-text"/>
+            <ui:VisualElement name="salvage-slot-input" class="salvage-slot-input"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="salvage-options" class="salvage-options-container">
+            <ui:VisualElement name="gold-option-container" class="salvage-option-panel salvage-option-panel--left">
+                <ui:Label text="Gold Yield:" class="salvage-yield-label--gold"/>
+                <ui:TextField name="salvage-gold-field" value="0" readonly="true" class="salvage-gold-field"/>
+                <ui:Button name="btn-get-gold" text="Get Gold" class="text-white-bald salvage-action-btn salvage-action-btn--gold"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="item-option-container" class="salvage-option-panel salvage-option-panel--right">
+                <ui:Label text="Material Yield:" class="salvage-yield-label--material"/>
+                <ui:VisualElement name="salvage-item-yield" class="salvage-item-yield-slot"/>
+                <ui:Button name="btn-get-item" text="Salvage" class="text-white-bald salvage-action-btn salvage-action-btn--material"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

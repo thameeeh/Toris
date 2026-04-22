@@ -1,0 +1,31 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith_Forge.uss?fileID=7433441132597879392&amp;guid=b328af8a97b786f4b90f32885ebd63ae&amp;type=3#Smith_Forge"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    
+    <ui:VisualElement name="forge-container" class="forge-subview-container">
+        
+        <ui:VisualElement name="forge-top_panel" class="forge-top-panel">
+            <ui:Label text="Forge Equipment" class="forge-title panel-title text-white-bald"/>
+            
+            <ui:VisualElement name="forge-inputs" class="forge-inputs-wrapper">
+                <ui:VisualElement name="forge-slot-1" class="forge-slot"/>
+                <ui:Label text="+" class="forge-plus-label"/>
+                <ui:VisualElement name="forge-slot-2" class="forge-slot"/>
+            </ui:VisualElement>
+            
+            <ui:Button name="btn-forge-items" text="Forge Items" class="standard-button text-white-bald forge-action-btn"/>
+            <ui:VisualElement name="forge-result-slot" class="forge-slot-result"/>
+        </ui:VisualElement>
+        
+        <ui:VisualElement name="forge-bottom_panel" class="forge-bottom-panel">
+            <ui:Label text="Blueprints" class="forge-recipe-header"/>
+            
+            <ui:ScrollView class="forge-recipe-scroll">
+                <ui:VisualElement name="recipe-list-container" style="flex-direction: column;">
+                    </ui:VisualElement>
+            </ui:ScrollView>
+        </ui:VisualElement>
+        
+    </ui:VisualElement>
+</ui:UXML>

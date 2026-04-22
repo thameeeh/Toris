@@ -1,0 +1,41 @@
+/* ==========================================================================
+   SMITH SCREEN LAYOUT (Smith.uss)
+   Root layout container for the Blacksmith NPC menu.
+   ========================================================================== */
+
+.smith-root-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.smith-main-container {
+    flex-grow: 1;
+    flex-direction: column; /* Stack header on top, middle panel below */
+    background-color: var(--color-bg-dark);
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.smith-header-section {
+    flex-direction: row;
+    align-items: flex-end; /* Aligns tabs to the bottom of the header */
+    margin-bottom: 10px;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-border-default);
+}
+
+.smith-title {
+    flex-shrink: 0;
+    -unity-text-align: middle-left;
+    color: var(--color-text-light);
+    font-size: var(--font-size-h2);
+    margin-right: 20px;
+    margin-bottom: 5px;
+}
+
+.smith-middle-panel {
+    flex-grow: 1;
+    width: 100%;
+}

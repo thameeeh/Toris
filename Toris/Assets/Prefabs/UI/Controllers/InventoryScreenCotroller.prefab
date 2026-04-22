@@ -49,4 +49,4 @@ MonoBehaviour:
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
-  _equipmentInventory: {fileID: 0}
+  _equipmentInventory: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}

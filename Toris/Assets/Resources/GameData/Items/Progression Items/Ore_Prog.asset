@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ore_Prog
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: Ore
-  Description: 
+  Description: 'Used for: USELES'
   Icon: {fileID: 21300000, guid: 735e275b699204e36a43b999da486796, type: 3}
   MaxStackSize: 99
   GoldValue: 10

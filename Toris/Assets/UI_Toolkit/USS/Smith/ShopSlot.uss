@@ -1,0 +1,98 @@
+/* ==========================================================================
+   SHOP SLOT COMPONENT (ShopSlot.uss)
+   Horizontal list item layout for detailed commerce views.
+========================================================================== */
+
+/* The Root Row Container */
+.shop-list-item {
+    flex-direction: row;
+    height: 90px;
+    flex-shrink: 0; /* Rule 4: Prevents the ScrollView from squishing rows */
+    background-color: var(--color-shop-slot-bg);
+    border-width: 1px;
+    border-color: var(--color-shop-slot-border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding: 6px;
+    transition-duration: 0.15s;
+}
+
+.shop-list-item:hover {
+    background-color: var(--color-bg-panel);
+    border-color: var(--color-border-highlight);
+}
+
+/* Icon Container */
+.shop-item-icon-wrapper {
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+    background-color: var(--color-bg-dark);
+    border-width: 1px;
+    border-color: var(--color-border-default);
+    border-radius: 4px;
+    margin-right: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The Image Itself */
+.shop-item-icon {
+    width: 80%;
+    height: 80%;
+}
+
+/* Details Section (Name & Description) */
+.shop-item-details {
+    flex-grow: 1; /* Pushes the price block to the right edge */
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.shop-item-name {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+    padding: 0;
+}
+
+.shop-item-description {
+    color: var(--color-border-default);
+    font-size: var(--font-size-small);
+    white-space: normal; /* Allows text to wrap */
+    padding: 0;
+}
+
+/* Commerce Section (Price) */
+.shop-item-commerce {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100px;
+    flex-shrink: 0;
+    padding-right: 10px;
+}
+
+.shop-item-price {
+    color: var(--color-coin-gold);
+    font-size: var(--font-size-body);
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+    padding: 0;
+}
+
+/* Re-implementing quantity for the shop slot without global conflicts */
+.shop-item-qty {
+    position: absolute;
+    bottom: 2px;
+    left: 4px;
+    color: var(--color-text-light);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+    picking-mode: Ignore;
+}

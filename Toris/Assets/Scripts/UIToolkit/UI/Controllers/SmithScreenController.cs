@@ -9,7 +9,8 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Dependencies")]
         [SerializeField] private VisualTreeAsset _smithMainTemplate; // <--- Drag Smith.uxml here
-        [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG Slot.uxml HERE
+        [SerializeField] private VisualTreeAsset _slotTemplate; // <--- DRAG simple Slot.uxml HERE
+        [SerializeField] private VisualTreeAsset _shopSlotTemplate; // <--- DRAG NEW ShopSlot.uxml HERE
         [SerializeField] private VisualTreeAsset _shopTemplate; // <--- DRAG ShopSubView.uxml HERE
         [SerializeField] private VisualTreeAsset _forgeTemplate; // <--- DRAG ForgeSubView_Smith.uxml HERE
         [SerializeField] private VisualTreeAsset _salvageTemplate; // <--- DRAG SalvageSubView_Smith.uxml HERE
@@ -89,7 +90,7 @@ namespace OutlandHaven.UIToolkit
 
             smithInstance.style.flexGrow = 1; // Make it fill the available space
 
-            _view = new SmithView(smithInstance, _slotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _bridge, _craftingManagerSO, _salvageManagerSO);
+            _view = new SmithView(smithInstance, _slotTemplate, _shopSlotTemplate, _shopTemplate, _forgeTemplate, _salvageTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _bridge, _craftingManagerSO, _salvageManagerSO);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

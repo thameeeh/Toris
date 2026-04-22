@@ -435,7 +435,7 @@ public class PlayerBowController : MonoBehaviour
     private Vector2 GetAimDirection()
     {
         Vector3 world = GetPointerWorldPoint();
-
+        Vector3 myPos = transform.position;
         Vector2 centerOrigin = (Vector2)myPos;
         Vector2 rawDirection = (Vector2)(world - (Vector3)centerOrigin);
         Vector2 facingDirection = rawDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE

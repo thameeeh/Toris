@@ -61,8 +61,11 @@ public sealed class TileResolver
     // Unique deterministic salts for different layer permutations
     private const uint HASH_SALT_GROUND = 101;
     private const uint HASH_SALT_TREE = 202;
+    private const uint HASH_SALT_TREE_VARIANT = 212;
     private const uint HASH_SALT_SMALL_VEGETATION = 252;
+    private const uint HASH_SALT_SMALL_VEGETATION_VARIANT = 262;
     private const uint HASH_SALT_FLOWER = 303;
+    private const uint HASH_SALT_FLOWER_VARIANT = 313;
 
     private TileBase PickGround(Vector2Int local, WorldContext ctx)
     {
@@ -97,7 +100,8 @@ public sealed class TileResolver
         if (DeterministicHash.Hash01(h) > prob) return false;
 
         int variantCount = bp.treeVariants.Length;
-        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * variantCount);
+        uint variantHash = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_TREE_VARIANT);
+        int idx = (int)(DeterministicHash.Hash01(variantHash) * variantCount);
         idx = Mathf.Clamp(idx, 0, variantCount - 1);
 
         BiomeTreeVariant variant = bp.treeVariants[idx];
@@ -123,7 +127,8 @@ public sealed class TileResolver
         uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_SMALL_VEGETATION);
         if (DeterministicHash.Hash01(h) > prob) return false;
 
-        int idx = (int)(DeterministicHash.Hash01(h ^ 0xA5A5u) * bp.smallVegetationDecorVariants.Length);
+        uint variantHash = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_SMALL_VEGETATION_VARIANT);
+        int idx = (int)(DeterministicHash.Hash01(variantHash) * bp.smallVegetationDecorVariants.Length);
         idx = Mathf.Clamp(idx, 0, bp.smallVegetationDecorVariants.Length - 1);
         tile = bp.smallVegetationDecorVariants[idx];
         return true;
@@ -143,7 +148,8 @@ public sealed class TileResolver
         uint h = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_FLOWER);
         if (DeterministicHash.Hash01(h) > prob) return false;
 
-        int idx = (int)(DeterministicHash.Hash01(h ^ 0x5AA5u) * bp.flowerDecorVariants.Length);
+        uint variantHash = DeterministicHash.Hash((uint)ctx.ActiveBiome.Seed, local.x, local.y, HASH_SALT_FLOWER_VARIANT);
+        int idx = (int)(DeterministicHash.Hash01(variantHash) * bp.flowerDecorVariants.Length);
         idx = Mathf.Clamp(idx, 0, bp.flowerDecorVariants.Length - 1);
         tile = bp.flowerDecorVariants[idx];
         return true;

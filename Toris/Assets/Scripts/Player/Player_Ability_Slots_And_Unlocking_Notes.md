@@ -33,7 +33,8 @@ Treat these as the main constraints that future implementation must remove caref
 * the backend now exposes 5 runtime slots and the keyboard input path now drives all 5
 * the input asset still uses numbered action names rather than a renamed `AbilitySlot` action family
 * legacy `_ability1` and `_ability2` data still exists only as a migration bridge for older serialized objects
-* there is no persistent equipped-slot model yet
+* first-pass scene-transfer persistence now preserves equipped slots between `MainArea` and `ProceduralTiles`
+* there is still no broader long-term saved equipped-slot model beyond the current runtime scene-transfer flow
 * runtime unlock gating now reads `requiredSkillID` against `GameSessionSO.PlayerSkills`
 * scene defaults can still make abilities appear equipped even when they are not unlocked, but locked abilities should no longer activate
 

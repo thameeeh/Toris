@@ -56,7 +56,7 @@
     font-size: 14px;
     -unity-font-style: bold;
     -unity-text-outline-width: 1.5px;
-    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+    -unity-text-outline-color: var(--color-text-outline);
     picking-mode: Ignore;
 }
 

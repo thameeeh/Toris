@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
   m_Name: Cupcake_Prog
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
-  ItemName: Ore
+  ItemName: Cupcake
   Description: 
   Icon: {fileID: 21300000, guid: 098287609266847b18d7590b70eae6d9, type: 3}
   MaxStackSize: 99

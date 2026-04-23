@@ -202,7 +202,6 @@ GameObject:
   - component: {fileID: 5229613945364294266}
   - component: {fileID: 2003589166597666773}
   - component: {fileID: 503972616382245057}
-  - component: {fileID: 6478609135783926460}
   - component: {fileID: 7014179871662737768}
   - component: {fileID: 4549348511874797031}
   - component: {fileID: 4055305976804400490}
@@ -482,21 +481,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c3499cca59d0d2a469a97d013ed6de67, type: 2}
   - {fileID: 11400000, guid: ce6563ef3412d8c4095aea9496ef8e90, type: 2}
   - {fileID: 11400000, guid: 3ea2e61512cc04d46aa784e990b8f510, type: 2}
---- !u!114 &6478609135783926460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b2dfeac57f37840849ad39a19a19d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StaminaChargingSquareEffect
-  playerStats: {fileID: 8137892244548921797}
-  effectId: test_effect
-  localOffset: {x: 0, y: 0.75, z: 0}
 --- !u!114 &7014179871662737768
 MonoBehaviour:
   m_ObjectHideFlags: 0

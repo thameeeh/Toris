@@ -18,5 +18,16 @@ namespace OutlandHaven.UIToolkit
             base.Show();
             UIEvents.OnScreenOpen?.Invoke(ID);
         }
+
+        public override void Hide()
+        {
+            bool wasVisible = !IsHidden;
+            base.Hide();
+
+            if (wasVisible)
+            {
+                UIEvents.OnScreenClose?.Invoke(ID);
+            }
+        }
     }
 }

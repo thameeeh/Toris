@@ -4,6 +4,8 @@ using System;
 [CreateAssetMenu(fileName = "InputReaderSO", menuName = "Scriptable Objects/PlayerInputReaderSO")]
 public class PlayerInputReaderSO : ScriptableObject
 {
+    private const int AbilitySlotCount = 5;
+
     public Vector2 Move { get; private set; }
 
     public Action OnShootStarted;
@@ -34,8 +36,40 @@ public class PlayerInputReaderSO : ScriptableObject
     [NonSerialized] public bool isAbility2Held = false;
     [NonSerialized] public bool IsShootHeld = false;
 
+    public Action OnGameplayInputSuppressed;
+
     public void SetMove(Vector2 move) => Move = move;
 
     public void RaiseAbilitySlotStarted(int slotIndex) => OnAbilitySlotStarted?.Invoke(slotIndex);
     public void RaiseAbilitySlotReleased(int slotIndex) => OnAbilitySlotReleased?.Invoke(slotIndex);
+
+    public void CancelGameplayInputState(bool clearMove, bool notifyGameplaySuppressed = true)
+    {
+        if (clearMove)
+        {
+            Move = Vector2.zero;
+        }
+
+        if (IsShootHeld)
+        {
+            IsShootHeld = false;
+            OnShootReleased?.Invoke();
+        }
+
+        if (isAbility2Held)
+        {
+            isAbility2Held = false;
+            OnAbility2Released?.Invoke();
+        }
+
+        for (int slotIndex = 0; slotIndex < AbilitySlotCount; slotIndex++)
+        {
+            RaiseAbilitySlotReleased(slotIndex);
+        }
+
+        if (notifyGameplaySuppressed)
+        {
+            OnGameplayInputSuppressed?.Invoke();
+        }
+    }
 }

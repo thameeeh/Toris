@@ -16,6 +16,7 @@ namespace OutlandHaven.Inventory
         [Header("Equipment")]
         [Tooltip("The InventoryManager configured to act as the equipment container (e.g. 5 slots).")]
         [SerializeField] private InventoryManager _equipmentInventory;
+        [SerializeField] private InventoryManager _potionInventory;
 
         [Header("Player Data")]
         [SerializeField] private PlayerHUDBridge _playerHUDBridge;
@@ -43,7 +44,9 @@ namespace OutlandHaven.Inventory
             
             inventoryInstance.style.flexGrow = 1; // Make it fill the parent container
 
-            _view = new PlayerInventoryView(inventoryInstance, _slotTemplate, _gameSession, _uiEvents, _uiInventoryEvents, _equipmentInventory, _playerHUDBridge);
+            _view = new PlayerInventoryView(inventoryInstance, _slotTemplate,
+                _gameSession, _uiEvents, _uiInventoryEvents,
+                _equipmentInventory, _potionInventory, _playerHUDBridge);
             _view.Initialize();
 
             // Register to the RIGHT zone

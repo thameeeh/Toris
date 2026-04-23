@@ -20,15 +20,20 @@ namespace OutlandHaven.Inventory
         private VisualElement _playerGrid;
         private PlayerEquipmentView _equipmentView;
         private PlayerStatsView _statsView;
+        private PlayerPotionView _playerPotionView;
         private PlayerHUDBridge _hudBridge;
         private InventoryManager _equipmentInventory;
+        private InventoryManager _potionInventory;
 
         private UIInventoryEventsSO _uiInventoryEvents;
         private bool _eventsBound = false;
         private InventoryInteractionContext _currentContext = InventoryInteractionContext.Normal;
 
-        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, InventoryManager equipmentInventory = null, PlayerHUDBridge hudBridge = null)
-            : base(topElement, uiEvents)
+        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, 
+            GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, 
+            InventoryManager equipmentInventory = null, InventoryManager potionInventory = null, 
+            PlayerHUDBridge hudBridge = null)
+    : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;
@@ -44,6 +49,9 @@ namespace OutlandHaven.Inventory
             _equipmentView.Initialize();
             _statsView = new PlayerStatsView(m_TopElement);
             _statsView.Initialize();
+
+            _playerPotionView = new PlayerPotionView(m_TopElement, _slotTemplate, _uiInventoryEvents);
+            _playerPotionView.Initialize();
         }
 
         public override void Show()
@@ -93,6 +101,11 @@ namespace OutlandHaven.Inventory
             RefreshGrid(_playerGrid, _gameSession.PlayerInventory); 
             _equipmentView?.Setup(_equipmentInventory);
             _statsView?.Setup(_hudBridge);
+
+            if (_potionInventory != null)
+            {
+                _playerPotionView?.Setup(_potionInventory);
+            }
         }
 
         private void RefreshGrid(VisualElement gridRoot, InventoryManager data)
@@ -188,6 +201,8 @@ namespace OutlandHaven.Inventory
             }
             _equipmentView?.Dispose();
             _statsView?.Dispose();
+
+            _playerPotionView?.Dispose();
 
             base.Dispose();
         }

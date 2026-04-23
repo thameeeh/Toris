@@ -9,7 +9,8 @@ namespace OutlandHaven.Inventory
         Chest = EquipmentSlot.Chest,
         Legs = EquipmentSlot.Legs,
         Arms = EquipmentSlot.Arms,
-        Weapon = EquipmentSlot.Weapon
+        Weapon = EquipmentSlot.Weapon,
+        Consumable = 99
     }
 
     [Serializable]
@@ -30,10 +31,20 @@ namespace OutlandHaven.Inventory
 
         public bool CanAccept(ItemInstance item)
         {
+            // 1. Basic validation
             if (item == null || item.BaseItem == null) return false;
+
+            // 2. Unrestricted slots accept anything
             if (AllowedFilter == SlotFilterType.Any) return true;
 
-            // If it's a restricted slot, check the item's components
+            // 3. Handle Consumable specific filtering
+            if (AllowedFilter == SlotFilterType.Consumable)
+            {
+                var consumable = item.BaseItem.GetComponent<ConsumableComponent>();
+                return consumable != null; // Only accept if the item has the Consumable component
+            }
+
+            // 4. Handle Equipment specific filtering
             EquipableComponent equipable = item.BaseItem.GetComponent<EquipableComponent>();
             if (equipable == null) return false; // Not an equippable item
 

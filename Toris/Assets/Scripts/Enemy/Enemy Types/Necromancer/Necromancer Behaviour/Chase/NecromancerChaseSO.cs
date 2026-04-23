@@ -305,9 +305,9 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             castingRangeCheck.TryGetComponent(out _castingRangeCollider);
     }
 
-#if UNITY_EDITOR
     private void LogChaseDecision(string decision, float distanceToPlayerSqr, bool inCastingRange, bool inPanicRange)
     {
+#if UNITY_EDITOR
         if (!debugChaseDecisions || enemy == null)
             return;
 
@@ -327,8 +327,8 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         _lastChaseDecision = message;
         _nextChaseDebugLogTime = now + DebugChaseLogInterval;
         Debug.Log($"[NecroChase:{enemy.name}] {message}", enemy);
-    }
 #endif
+    }
 
     private void EnsurePostCastRepositionStarted()
     {

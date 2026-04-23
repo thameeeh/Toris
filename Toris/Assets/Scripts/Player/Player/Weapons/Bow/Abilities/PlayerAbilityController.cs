@@ -32,6 +32,12 @@ public class PlayerAbilityController : MonoBehaviour
 
             _runtime?.Initialize(_abilityDefinition);
         }
+
+        public void SetDefinition(PlayerAbilitySO abilityDefinition)
+        {
+            _abilityDefinition = abilityDefinition;
+            _runtime = null;
+        }
     }
 
     [Header("Ability Slots")]
@@ -103,6 +109,8 @@ public class PlayerAbilityController : MonoBehaviour
 
     private void OnEnable()
     {
+        TryRestoreTransferredState();
+
         if (_input == null)
         {
             Debug.LogWarning("[Ability] PlayerInputReader is not assigned on PlayerAbilityController", this);
@@ -115,6 +123,8 @@ public class PlayerAbilityController : MonoBehaviour
 
     private void OnDisable()
     {
+        CaptureTransferredState();
+
         if (_input == null)
             return;
 
@@ -246,5 +256,53 @@ public class PlayerAbilityController : MonoBehaviour
         return _gameSession != null
             ? _gameSession
             : GameSessionSO.LoadDefault();
+    }
+
+    private void TryRestoreTransferredState()
+    {
+        if (_gameSession == null)
+            return;
+
+        if (!_gameSession.TryGetPlayerAbilitySlotState(out PlayerAbilitySO[] slottedAbilities) || slottedAbilities == null)
+            return;
+
+        ApplyAbilityDefinitions(slottedAbilities);
+        InitializeSlots();
+    }
+
+    private void CaptureTransferredState()
+    {
+        _gameSession = ResolveGameSession();
+        if (_gameSession == null)
+            return;
+
+        _gameSession.CapturePlayerAbilitySlotState(BuildAbilityDefinitionSnapshot());
+    }
+
+    private PlayerAbilitySO[] BuildAbilityDefinitionSnapshot()
+    {
+        PlayerAbilitySO[] slottedAbilities = new PlayerAbilitySO[SlotCount];
+        for (int i = 0; i < SlotCount; i++)
+        {
+            slottedAbilities[i] = GetAbilityDefinition(i);
+        }
+
+        return slottedAbilities;
+    }
+
+    private void ApplyAbilityDefinitions(PlayerAbilitySO[] slottedAbilities)
+    {
+        EnsureSlotArray();
+
+        int count = Mathf.Min(SlotCount, slottedAbilities.Length);
+        for (int i = 0; i < count; i++)
+        {
+            _abilitySlots[i].SetDefinition(slottedAbilities[i]);
+        }
+
+        for (int i = count; i < SlotCount; i++)
+        {
+            _abilitySlots[i].SetDefinition(null);
+        }
     }
 }

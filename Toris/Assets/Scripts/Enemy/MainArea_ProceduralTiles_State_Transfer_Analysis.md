@@ -177,6 +177,7 @@ These should be preserved when moving between `MainArea` and `ProceduralTiles`:
 - xp
 - level
 - skills
+- equipped ability slots
 - optionally current HP/stamina
 
 ### Optional Later Transfer State

@@ -295,9 +295,9 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: a4ec415f3e5157e47b9fba0eaf6c43b3, type: 2}
   AttackDamage: 35
-  MovementSpeed: 2
+  MovementSpeed: 3
   role: 0
-  healthMultiplier: 1
+  healthMultiplier: 1.75
   fallbackHomeRadius: 4
   pack: {fileID: -2298867679096013564}
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
@@ -427,7 +427,7 @@ MonoBehaviour:
   center: {x: 0, y: 0, z: 0}
   radius: 4
   initializeFromTransformIfUnset: 1
-  showDebugGizmo: 1
+  showDebugGizmo: 0
   drawOnlyWhenSelected: 0
   centerMarkerRadius: 0.15
   centerColor: {r: 1, g: 0, b: 0, a: 1}

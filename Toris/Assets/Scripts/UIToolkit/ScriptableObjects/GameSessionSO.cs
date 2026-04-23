@@ -32,6 +32,7 @@ namespace OutlandHaven.UIToolkit
         [System.NonSerialized] private RuntimeInventorySnapshot _equipmentInventorySnapshot;
         [System.NonSerialized] private RuntimeProgressionSnapshot _playerProgressionSnapshot;
         [System.NonSerialized] private RuntimeStatsSnapshot _playerStatsSnapshot;
+        [System.NonSerialized] private PlayerAbilitySO[] _playerAbilitySlotSnapshot;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
@@ -54,6 +55,7 @@ namespace OutlandHaven.UIToolkit
             _equipmentInventorySnapshot = null;
             _playerProgressionSnapshot = null;
             _playerStatsSnapshot = null;
+            _playerAbilitySlotSnapshot = null;
         }
 
         public void CapturePlayerInventoryState(InventoryManager inventoryManager)
@@ -125,6 +127,32 @@ namespace OutlandHaven.UIToolkit
             currentHealth = _playerStatsSnapshot.CurrentHealth;
             currentStamina = _playerStatsSnapshot.CurrentStamina;
             _playerStatsSnapshot = null;
+            return true;
+        }
+
+        public void CapturePlayerAbilitySlotState(PlayerAbilitySO[] slottedAbilities)
+        {
+            if (slottedAbilities == null)
+            {
+                _playerAbilitySlotSnapshot = Array.Empty<PlayerAbilitySO>();
+                return;
+            }
+
+            _playerAbilitySlotSnapshot = new PlayerAbilitySO[slottedAbilities.Length];
+            Array.Copy(slottedAbilities, _playerAbilitySlotSnapshot, slottedAbilities.Length);
+        }
+
+        public bool TryGetPlayerAbilitySlotState(out PlayerAbilitySO[] slottedAbilities)
+        {
+            if (_playerAbilitySlotSnapshot == null)
+            {
+                slottedAbilities = null;
+                return false;
+            }
+
+            slottedAbilities = new PlayerAbilitySO[_playerAbilitySlotSnapshot.Length];
+            Array.Copy(_playerAbilitySlotSnapshot, slottedAbilities, _playerAbilitySlotSnapshot.Length);
+            _playerAbilitySlotSnapshot = null;
             return true;
         }
 

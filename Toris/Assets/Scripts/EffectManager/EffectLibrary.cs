@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEditor;
-
-#if UNITY_EDITOR
 using UnityEngine;
-#endif
 
 [CreateAssetMenu(menuName = "Effects/Effect Library", fileName = "EffectLibrary")]
 public sealed class EffectLibrary : ScriptableObject, IEffectCatalog

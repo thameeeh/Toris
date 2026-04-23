@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArrowRainConfig
   abilityID: ArrowRainConfig
   requiredSkillID: 
-  abilityName: Arrow Rain
+  abilityName: Ability1
   icon: {fileID: 0}
   cooldownSeconds: 1
   blocksBowDraw: 1

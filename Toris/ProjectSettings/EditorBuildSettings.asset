@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/K_Testing/K_TestHub.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu Scene/MainMenu.unity
     guid: 265eccf9950f7634fa4ac504657dcb08
   - enabled: 1
@@ -26,7 +26,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Prefabs/Enemies.unity
     guid: ddef44bba1001264796688fd5106bcfa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu Scene/PauseMenu.unity
     guid: 15d58f8dd753ade49811f1cc7728b6ba
   m_configObjects:

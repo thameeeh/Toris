@@ -650,10 +650,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd095ce6c202314ea11a462f7e97572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Necromancer
-  <MaxHealth>k__BackingField: 100
+  <MaxHealth>k__BackingField: 500
   <rb>k__BackingField: {fileID: 8686878537431172334}
   playerTransform: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-  lootTable: {fileID: 0}
+  lootTable: {fileID: 11400000, guid: 48b38a1c40f82354494007e8bf221954, type: 2}
   AttackDamage: 16
   MovementSpeed: 1.5
   castPoint: {fileID: 6703678301246532537}

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c353a304de02034c878ad0d6d748425, type: 3}
   m_Name: Crafting Recipe SO
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingRecipeSO
-  BaseItemRequirement: {fileID: 11400000, guid: aaa586bc71422cb47a005c5803719ee1, type: 2}
+  BaseItemRequirement: {fileID: 11400000, guid: 48dde59f99c754c4290921ee295ea3f3, type: 2}
   MaterialRequirements:
-  - Material: {fileID: 11400000, guid: e043d0fee05a2724e8b9d65f014132c9, type: 2}
+  - Material: {fileID: 11400000, guid: c084c4fee7e1e0f4fa738a67023be54e, type: 2}
     Quantity: 1
   GoldCost: 10
-  OutputItem: {fileID: 11400000, guid: f553aed2dd585b64baf66153c26ec3b0, type: 2}
+  OutputItem: {fileID: 11400000, guid: 30a82d052c6934841897a2be59e7970c, type: 2}

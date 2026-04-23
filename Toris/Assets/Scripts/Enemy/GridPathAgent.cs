@@ -27,9 +27,10 @@ public class GridPathAgent : MonoBehaviour
     private Vector3 _lastTarget;
     private bool _hasLastTarget;
     private bool _hasValidPath;
+    private Vector2 _lastReturnedDirection = Vector2.zero;
+
 #if UNITY_EDITOR
     private const float DebugPathLogInterval = 0.1f;
-    private Vector2 _lastReturnedDirection = Vector2.zero;
     private string _lastDebugMessage = string.Empty;
     private float _nextDebugLogTime;
 #endif
@@ -189,9 +190,9 @@ public class GridPathAgent : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
     private void LogDirectionFlip(Vector2 newDirection, Vector3 waypoint, Vector3 desiredTargetWorld)
     {
+#if UNITY_EDITOR
         if (!ShouldDebugPathing())
             return;
 
@@ -205,10 +206,12 @@ public class GridPathAgent : MonoBehaviour
         LogPathing(
             $"DirectionFlip dot={dot:0.##} pathIndex={_pathIndex}/{_currentPath.Count} " +
             $"waypoint={waypoint} target={desiredTargetWorld} current={transform.position}");
+#endif
     }
 
     private void LogPathing(string message)
     {
+#if UNITY_EDITOR
         if (!ShouldDebugPathing())
             return;
 
@@ -219,11 +222,11 @@ public class GridPathAgent : MonoBehaviour
         _lastDebugMessage = message;
         _nextDebugLogTime = now + DebugPathLogInterval;
         Debug.Log($"[GridPath:{_enemy.name}] {message}", _enemy);
+#endif
     }
 
     private bool ShouldDebugPathing()
     {
         return debugPathing && _enemy is Necromancer;
     }
-#endif
 }

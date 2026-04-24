@@ -40,10 +40,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [Header("Loot")]
     [SerializeField] private EnemyLootTableSO lootTable;
 
-    // Quest reporting stays data-driven: enemies expose a stable ID, and the Pixel Crushers
-    // bridge decides which active quest that fact should advance.
+    // Quest reporting stays data-driven: enemies expose stable IDs, then report facts.
+    // Quest-specific progress mapping stays outside enemy gameplay code.
     [Header("Quest Reporting")]
     [SerializeField] private string questEnemyId = string.Empty;
+    [SerializeField] private string questEnemyTypeOrTag = string.Empty;
 
     public EnemyLoadout ActiveLoadout { get; private set; }
     public Transform SpawnPoint { get; private set; }
@@ -67,6 +68,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private PlayerProgression _playerProgression;
     public EnemyLootTableSO LootTable => lootTable;
     public string QuestEnemyId => questEnemyId;
+    public string QuestEnemyTypeOrTag => questEnemyTypeOrTag;
     protected virtual void Awake()
     {
         StateMachine = new EnemyStateMachine();
@@ -366,7 +368,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (string.IsNullOrWhiteSpace(questEnemyId))
             return;
 
-        PixelCrushersQuestBridge.ReportEnemyKilled(questEnemyId);
+        PixelCrushersQuestFactReporter.Report(QuestFact.Kill(questEnemyId, questEnemyTypeOrTag));
     }
 
     private void RefreshScenePlayerReferences()

@@ -1155,6 +1155,8 @@ GameObject:
   - component: {fileID: 1212992761}
   - component: {fileID: 1212992762}
   - component: {fileID: 1212992763}
+  - component: {fileID: 1212992764}
+  - component: {fileID: 1212992765}
   m_Layer: 0
   m_Name: GuideNPC
   m_TagString: Untagged
@@ -1244,6 +1246,41 @@ MonoBehaviour:
   _conversationWhenReturnToNpc: Guide_QuestTurnIn
   _conversationWhenSuccess: Guide_PostQuest
   _debugConversationSelection: 1
+--- !u!114 &1212992764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212992760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099639002cdf0ae46a1b0c76205ee037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestRewardAdapter
+  _questName: Kill_3_Leader_Wolves
+  _rewardGrantedVariableName: Kill_3_Leader_Wolves_RewardsGranted
+  _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _goldReward: 5000
+  _experienceReward: 8000
+  _itemReward: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
+  _itemRewardQuantity: 1
+  _debugRewardFlow: 1
+--- !u!114 &1212992765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212992760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0da69f11e67be46bf6eb73d1dec789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestProgressMapper
+  _rules: []
+  _debugMapping: 1
 --- !u!1001 &1252678292
 PrefabInstance:
   m_ObjectHideFlags: 0

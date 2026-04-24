@@ -8,12 +8,6 @@ using UnityEngine;
 /// </summary>
 public static class PixelCrushersQuestBridge
 {
-    private const string KillThreeLeaderWolvesQuestName = "Kill_3_Leader_Wolves";
-    private const string LeaderWolfEnemyId = "LeaderWolf";
-    private const string LeaderWolfKillsVariableName = "LeaderWolfKills";
-    private const int KillThreeLeaderWolvesEntryNumber = 1;
-    private const int RequiredLeaderWolfKills = 3;
-
     public static bool HasDialogueManager => DialogueManager.hasInstance;
 
     public static string UnassignedState => QuestLog.UnassignedStateString;
@@ -107,35 +101,10 @@ public static class PixelCrushersQuestBridge
         return nextValue;
     }
 
-    // Gameplay reports facts such as "LeaderWolf died", and the bridge maps those facts
-    // to the current Pixel Crushers quest state for the first tutorial quest slice.
+    // Kept as a compatibility wrapper while enemy producers move onto the shared fact model.
     public static void ReportEnemyKilled(string enemyId)
     {
-        if (string.IsNullOrWhiteSpace(enemyId) || !HasDialogueManager)
-            return;
-
-        if (!string.Equals(enemyId, LeaderWolfEnemyId, System.StringComparison.Ordinal))
-            return;
-
-        if (GetQuestState(KillThreeLeaderWolvesQuestName) != QuestState.Active)
-            return;
-
-        int nextKillCount = IncrementIntVariable(LeaderWolfKillsVariableName);
-
-#if UNITY_EDITOR
-        LogDebug($"Reported enemy kill '{enemyId}'. {LeaderWolfKillsVariableName}={nextKillCount}.");
-#endif
-
-        if (nextKillCount < RequiredLeaderWolfKills)
-            return;
-
-        SetIntVariable(LeaderWolfKillsVariableName, RequiredLeaderWolfKills);
-        SetQuestEntryState(KillThreeLeaderWolvesQuestName, KillThreeLeaderWolvesEntryNumber, QuestState.Success);
-        SetQuestState(KillThreeLeaderWolvesQuestName, QuestState.ReturnToNPC);
-
-#if UNITY_EDITOR
-        LogDebug($"Quest '{KillThreeLeaderWolvesQuestName}' reached turn-in after {RequiredLeaderWolfKills} {LeaderWolfEnemyId} kills.");
-#endif
+        PixelCrushersQuestFactReporter.Report(QuestFact.Kill(enemyId));
     }
 
     public static void StartConversation(string conversationTitle, Transform actor, Transform conversant)

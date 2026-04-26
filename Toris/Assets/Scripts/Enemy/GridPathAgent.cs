@@ -224,9 +224,10 @@ public class GridPathAgent : MonoBehaviour
         Debug.Log($"[GridPath:{_enemy.name}] {message}", _enemy);
 #endif
     }
-
+#if UNITY_EDITOR
     private bool ShouldDebugPathing()
     {
         return debugPathing && _enemy is Necromancer;
     }
+#endif
 }

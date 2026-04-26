@@ -9,6 +9,9 @@ namespace OutlandHaven.Inventory
     {
         private const string EquipmentNameToken = "Equip";
 
+        [Tooltip("A unique string ID for the save system (e.g., 'PlayerBackpack' or 'Chest_01')")]
+        public string SaveID;
+
         [Tooltip("The rules for this specific inventory.")]
         public InventoryContainerSO ContainerBlueprint;
 
@@ -28,10 +31,10 @@ namespace OutlandHaven.Inventory
                 while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
                     int index = LiveSlots.Count;
-                    SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
+                    /*SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
                         ? ContainerBlueprint.PredefinedFilters[index]
-                        : SlotFilterType.Any;
-                    LiveSlots.Add(new InventorySlot(filter));
+                        : SlotFilterType.Any;*/
+                    LiveSlots.Add(new InventorySlot());
                 }
                 while (LiveSlots.Count > ContainerBlueprint.SlotCount)
                 {
@@ -56,10 +59,10 @@ namespace OutlandHaven.Inventory
                 while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
                     int index = LiveSlots.Count;
-                    SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
+                    /*SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
                         ? ContainerBlueprint.PredefinedFilters[index]
-                        : SlotFilterType.Any;
-                    LiveSlots.Add(new InventorySlot(filter));
+                        : SlotFilterType.Any;*/
+                    LiveSlots.Add(new InventorySlot());
                 }
                 while (LiveSlots.Count > ContainerBlueprint.SlotCount)
                 {
@@ -97,9 +100,16 @@ namespace OutlandHaven.Inventory
 
             TryRestoreTransferredState();
 
-            if (GlobalSession != null && ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory)
+            if (GlobalSession != null)
             {
-                GlobalSession.PlayerInventory = this;
+                if (IsPlayerBackpackContainer())
+                {
+                    GlobalSession.PlayerInventory = this;
+                }
+                else if (LooksLikeEquipmentContainer())
+                {
+                    GlobalSession.PlayerEquipment = this; // Bind the equipment!
+                }
             }
         }
 
@@ -108,11 +118,15 @@ namespace OutlandHaven.Inventory
             CaptureTransferredState();
 
             // Crucial: Prevent memory leaks or dangling references when the scene unloads
-            if (GlobalSession != null && ContainerBlueprint != null && ContainerBlueprint.AssociatedView == ScreenType.Inventory)
+            if (GlobalSession != null)
             {
-                if (GlobalSession.PlayerInventory == this)
+                if (IsPlayerBackpackContainer() && GlobalSession.PlayerInventory == this)
                 {
                     GlobalSession.PlayerInventory = null;
+                }
+                else if (LooksLikeEquipmentContainer() && GlobalSession.PlayerEquipment == this)
+                {
+                    GlobalSession.PlayerEquipment = null; // Unbind the equipment!
                 }
             }
         }
@@ -296,7 +310,7 @@ namespace OutlandHaven.Inventory
 
         private bool LooksLikeEquipmentContainer()
         {
-            if (ContainerBlueprint != null
+            /*if (ContainerBlueprint != null
                 && ContainerBlueprint.PredefinedFilters != null
                 && ContainerBlueprint.PredefinedFilters.Length >= 5
                 && ContainerBlueprint.PredefinedFilters[0] == SlotFilterType.Head
@@ -306,7 +320,7 @@ namespace OutlandHaven.Inventory
                 && ContainerBlueprint.PredefinedFilters[4] == SlotFilterType.Weapon)
             {
                 return true;
-            }
+            }*/
 
             string objectName = gameObject != null ? gameObject.name : string.Empty;
             return !string.IsNullOrEmpty(objectName)

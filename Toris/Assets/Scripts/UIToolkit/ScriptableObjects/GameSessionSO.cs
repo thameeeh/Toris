@@ -1,4 +1,5 @@
 using System;
+using OutlandHaven.SaveSystem;
 using UnityEngine;
 using OutlandHaven.Inventory;
 
@@ -24,9 +25,14 @@ namespace OutlandHaven.UIToolkit
         private const string DefaultResourcePath = "GameData/GameSession";
 
         [Header("Data References")]
-        // public PlayerDataSO PlayerData; // Deprecated
         [System.NonSerialized]
         public InventoryManager PlayerInventory;
+        [System.NonSerialized]
+        public InventoryManager PlayerEquipment;
+
+        [Header("Global Anchors")]
+        public PlayerProgressionAnchorSO ProgressionAnchor;
+        public PlayerStatsAnchorSO StatsAnchor;
 
         [System.NonSerialized] private RuntimeInventorySnapshot _playerInventorySnapshot;
         [System.NonSerialized] private RuntimeInventorySnapshot _equipmentInventorySnapshot;
@@ -154,6 +160,144 @@ namespace OutlandHaven.UIToolkit
             Array.Copy(_playerAbilitySlotSnapshot, slottedAbilities, _playerAbilitySlotSnapshot.Length);
             _playerAbilitySlotSnapshot = null;
             return true;
+        }
+
+        private SavedInventoryData ExtractInventoryData(InventoryManager inventory)
+        {
+            if (inventory == null || inventory.LiveSlots == null) return null;
+
+            SavedInventoryData savedData = new SavedInventoryData();
+            for (int i = 0; i < inventory.LiveSlots.Count; i++)
+            {
+                var liveSlot = inventory.LiveSlots[i];
+                SavedSlotData slotData = new SavedSlotData { SlotIndex = i, Count = liveSlot.Count };
+
+                if (!liveSlot.IsEmpty)
+                {
+                    slotData.ItemData = new SavedItemData
+                    {
+                        InstanceID = liveSlot.HeldItem.InstanceID,
+                        BaseItemID = liveSlot.HeldItem.BaseItem.name,
+                        States = liveSlot.HeldItem.States
+                    };
+                }
+                savedData.Slots.Add(slotData);
+            }
+            return savedData;
+        }
+
+        private void RestoreInventoryData(InventoryManager inventory, SavedInventoryData savedData, ItemDatabaseSO itemDatabase)
+        {
+            if (inventory == null || inventory.LiveSlots == null || savedData == null) return;
+
+            // Wipe current inventory clean
+            foreach (var slot in inventory.LiveSlots) slot.Clear();
+
+            foreach (var savedSlot in savedData.Slots)
+            {
+                if (savedSlot.SlotIndex >= inventory.LiveSlots.Count) continue;
+
+                InventorySlot liveSlot = inventory.LiveSlots[savedSlot.SlotIndex];
+
+                if (savedSlot.ItemData != null && savedSlot.Count > 0)
+                {
+                    InventoryItemSO blueprint = itemDatabase.GetItemByID(savedSlot.ItemData.BaseItemID);
+                    if (blueprint != null)
+                    {
+                        ItemInstance restoredItem = new ItemInstance();
+                        restoredItem.InstanceID = savedSlot.ItemData.InstanceID;
+                        restoredItem.BaseItem = blueprint;
+                        restoredItem.States = savedSlot.ItemData.States ?? new System.Collections.Generic.List<ItemComponentState>();
+
+                        liveSlot.SetItem(restoredItem, savedSlot.Count);
+                    }
+                }
+            }
+            inventory.NotifyInventoryUpdated();
+        }
+
+        public GameSaveData ExportToSaveData()
+        {
+            GameSaveData saveData = new GameSaveData();
+            saveData.SaveTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            saveData.SpawnPointID = this.targetSpawnPointID;
+
+            // --- 1. EXPORT PROGRESSION ---
+            if (ProgressionAnchor != null && ProgressionAnchor.IsReady)
+            {
+                // Read directly from the live PlayerProgression MonoBehaviour
+                saveData.Level = ProgressionAnchor.Instance.CurrentLevel;
+                saveData.Experience = ProgressionAnchor.Instance.CurrentExperience;
+                saveData.Gold = ProgressionAnchor.Instance.CurrentGold;
+            }
+            else if (TryGetPlayerProgressionState(out int level, out float exp, out int gold))
+            {
+                // Fallback to snapshot if the player isn't actively loaded in the scene
+                saveData.Level = level;
+                saveData.Experience = exp;
+                saveData.Gold = gold;
+                CapturePlayerProgressionState(level, exp, gold); // Put it back
+            }
+            else
+            {
+                saveData.Level = 1; // Absolute fallback
+            }
+
+            // --- 2. EXPORT STATS ---
+            if (StatsAnchor != null && StatsAnchor.IsReady)
+            {
+                // Read directly from the live PlayerStats MonoBehaviour
+                saveData.CurrentHealth = StatsAnchor.Instance.currentHP;
+                saveData.CurrentStamina = StatsAnchor.Instance.currentStamina;
+            }
+            else if (TryGetPlayerStatsState(out float currentHealth, out float currentStamina))
+            {
+                // Fallback to snapshot
+                saveData.CurrentHealth = currentHealth;
+                saveData.CurrentStamina = currentStamina;
+                CapturePlayerStatsState(currentHealth, currentStamina); // Put it back
+            }
+
+            // --- 3. EXPORT INVENTORIES ---
+            saveData.PlayerBackpack = ExtractInventoryData(PlayerInventory);
+            saveData.PlayerEquipment = ExtractInventoryData(PlayerEquipment);
+
+            return saveData;
+        }
+
+        public void ImportFromSaveData(GameSaveData saveData, ItemDatabaseSO itemDatabase)
+        {
+            if (saveData == null) return;
+
+            this.targetSpawnPointID = saveData.SpawnPointID;
+
+            // --- 1. RESTORE STATS & PROGRESSION ---
+            // A. Always update the snapshots so they are ready for standard scene transitions
+            CapturePlayerProgressionState(saveData.Level, saveData.Experience, saveData.Gold);
+            CapturePlayerStatsState(saveData.CurrentHealth, saveData.CurrentStamina);
+
+            // B. If the player is currently active in the scene (Quick Load mid-game), 
+            // inject the data directly using your existing SetRuntimeState methods.
+            if (ProgressionAnchor != null && ProgressionAnchor.IsReady)
+            {
+                ProgressionAnchor.Instance.SetRuntimeState(saveData.Level, saveData.Experience, saveData.Gold);
+            }
+
+            if (StatsAnchor != null && StatsAnchor.IsReady)
+            {
+                StatsAnchor.Instance.SetRuntimeState(saveData.CurrentHealth, saveData.CurrentStamina);
+            }
+
+            // --- 2. RESTORE INVENTORIES ---
+            if (saveData.PlayerBackpack != null)
+            {
+                RestoreInventoryData(PlayerInventory, saveData.PlayerBackpack, itemDatabase);
+            }
+
+            if (saveData.PlayerEquipment != null)
+            {
+                RestoreInventoryData(PlayerEquipment, saveData.PlayerEquipment, itemDatabase);
+            }
         }
 
         private sealed class RuntimeInventorySnapshot

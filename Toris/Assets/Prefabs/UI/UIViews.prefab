@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4509164335605956850}
   - component: {fileID: 6392461790037320731}
   - component: {fileID: 3385941367548579294}
+  - component: {fileID: 6374564660408957763}
   m_Layer: 0
   m_Name: UIViews
   m_TagString: Untagged
@@ -100,3 +101,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _persistentManagers:
   - {fileID: 11400000, guid: abd52f124dd86e543ac48eae8630e5c2, type: 2}
+--- !u!114 &6374564660408957763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8217643317894173914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fc4acff7533e7419b13a232be9e43d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.SaveSystem.SaveManager
+  ActiveSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  MasterItemDatabase: {fileID: 11400000, guid: 42bb86d2eb800304a8a42b3b360a928e, type: 2}

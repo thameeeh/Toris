@@ -247,6 +247,14 @@ MonoBehaviour:
       value: Cull the Nearby Pack
       type: 0
       typeString: CustomFieldType_Text
+    - title: Group
+      value: GuideJobs
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Group Display Name
+      value: Guide Jobs
+      type: 0
+      typeString: CustomFieldType_Text
     - title: Trackable
       value: True
       type: 2
@@ -460,7 +468,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -522,7 +530,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -689,7 +697,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -746,7 +754,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -802,7 +810,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1180,7 +1188,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1990,7 +1998,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: TorisOpenScreen("Smith")
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3496,7 +3504,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: TorisOpenScreen("Smith")
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []

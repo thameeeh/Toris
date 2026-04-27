@@ -20,10 +20,6 @@ public class PlayerInputReaderSO : ScriptableObject
      * It listens Interact Player Action
      * 
      *  USES
-     *  * NPC to know when player is in range and interacted 'E'
-     *  Script
-     *      NPCInteraction
-     *  
      *  * Player to interact with IInteractable objects
      *  Script: 
      *      PlayerInteractor

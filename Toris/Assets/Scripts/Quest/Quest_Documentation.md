@@ -317,6 +317,21 @@ Example:
 - dialogue calls Toris command to open shop UI
 - player can leave
 
+Do not auto-open shop UI from normal story lines.
+
+Smith story intro currently stays dialogue-only.
+
+Shop opening should be an explicit player choice or a separate shop interactable.
+
+Current Smith setup:
+
+- `SmithNPC` is the canonical Smith scene/prefab object
+- `SmithNPC` owns the Smith shop `InventoryManager`
+- `SmithNPC` uses `PixelCrushersConversationInteractable` for story dialogue
+- the Smith collider uses `DialogueNpcProximity` so the normal `PlayerInteractor` path starts dialogue
+- the old scene-only `SmithStoryNPC` is deprecated and inactive
+- dialogue can open the real Smith shop inventory with `TorisOpenScreen("SmithShop")`
+
 ## Quest UI Rules
 
 Needed quest UI:
@@ -385,6 +400,8 @@ The currently validated flow is:
 - accepting the job changes the quest from `Grantable` to `Active`
 - accepting the job activates the configured first quest entry
 - the journal switches to Active quests and selects the accepted job
+- jobs use the Pixel Crushers `Group` field as their source bucket
+- if another quest in the same group is already active, the accept button is disabled
 - the generated `Available Jobs` button lets the player return to available jobs after viewing Active or Completed quests
 - the same journal can switch between Available Jobs, Active quests, and Completed quests
 
@@ -609,7 +626,7 @@ No component should become `GuideOnlyQuestThing`.
 - Open the quest journal from dialogue with `TorisOpenQuestJournal`
 - Accept `Grantable` quests from the journal details panel
 - Support multiple offer groups such as `GuideJobs`, `SmithJobs`, `JobBoardJobs`
-- Enforce one active quest per source
+- Enforce one active quest per source through the Pixel Crushers quest `Group` field
 - Hide unavailable jobs based on quest state
 - Show accepted active job from that source
 - Show completed job state correctly

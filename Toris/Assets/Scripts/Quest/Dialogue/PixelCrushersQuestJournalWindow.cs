@@ -29,6 +29,10 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [SerializeField] private string _acceptAvailableJobButtonText = "Accept Job";
     [Tooltip("Quest entry number to activate when accepting a grantable quest.")]
     [SerializeField] private int _acceptedQuestEntryNumber = 1;
+    [Tooltip("When enabled, a grantable quest cannot be accepted if another active quest has the same Pixel Crushers Group.")]
+    [SerializeField] private bool _enforceOneActiveQuestPerGroup = true;
+    [Tooltip("Label shown when another quest from the same source/group is already active.")]
+    [SerializeField] private string _sourceBlockedJobButtonText = "Finish Current Job First";
 
     private bool _availableJobsButtonBound;
 
@@ -102,9 +106,13 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
         // Basic Pixel Crushers prefabs only provide one action-button template, so reuse it for "Accept Job" until the UI is polished.
         StandardUIButtonTemplate acceptButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
-        acceptButtonInstance.Assign(_acceptAvailableJobButtonText);
+        bool canAcceptFromSource = CanAcceptQuestFromSource(quest.Title, out _);
+        acceptButtonInstance.Assign(canAcceptFromSource ? _acceptAvailableJobButtonText : _sourceBlockedJobButtonText);
         detailsPanelContentManager.Add(acceptButtonInstance, questDetailsContentContainer);
-        acceptButtonInstance.button.onClick.AddListener(ClickAcceptAvailableJobButton);
+        acceptButtonInstance.button.interactable = canAcceptFromSource;
+
+        if (canAcceptFromSource)
+            acceptButtonInstance.button.onClick.AddListener(ClickAcceptAvailableJobButton);
     }
 
     public virtual void ClickAcceptAvailableJobButton()
@@ -171,6 +179,14 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         if (string.IsNullOrWhiteSpace(questTitle) || QuestLog.GetQuestState(questTitle) != QuestState.Grantable)
             return;
 
+        if (!CanAcceptQuestFromSource(questTitle, out string activeQuestFromSameSource))
+        {
+#if UNITY_EDITOR
+            Debug.Log($"[PixelCrushersQuestJournalWindow] Blocked available job '{questTitle}' because '{activeQuestFromSameSource}' is already active from the same quest group.", this);
+#endif
+            return;
+        }
+
         QuestLog.SetQuestState(questTitle, QuestState.Active);
 
         if (_acceptedQuestEntryNumber > 0 && QuestLog.GetQuestEntryCount(questTitle) >= _acceptedQuestEntryNumber)
@@ -182,6 +198,39 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
         ShowQuests(ActiveQuestStateMask);
         SelectQuest(questTitle);
+    }
+
+    private bool CanAcceptQuestFromSource(string questTitle, out string activeQuestFromSameSource)
+    {
+        activeQuestFromSameSource = string.Empty;
+
+        if (!_enforceOneActiveQuestPerGroup)
+            return true;
+
+        string questGroup = NormalizeQuestGroup(QuestLog.GetQuestGroup(questTitle));
+        if (string.IsNullOrWhiteSpace(questGroup))
+            return true;
+
+        string[] activeQuests = QuestLog.GetAllQuests(QuestState.Active, true, null);
+        for (int i = 0; i < activeQuests.Length; i++)
+        {
+            string activeQuest = activeQuests[i];
+            if (string.Equals(activeQuest, questTitle))
+                continue;
+
+            if (string.Equals(NormalizeQuestGroup(QuestLog.GetQuestGroup(activeQuest)), questGroup))
+            {
+                activeQuestFromSameSource = activeQuest;
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static string NormalizeQuestGroup(string questGroup)
+    {
+        return string.Equals(questGroup, "nil") ? string.Empty : questGroup;
     }
 
     private static void SetButtonText(Button button, string text)

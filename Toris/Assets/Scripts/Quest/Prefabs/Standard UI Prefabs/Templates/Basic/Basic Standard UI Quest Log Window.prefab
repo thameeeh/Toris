@@ -3909,6 +3909,8 @@ MonoBehaviour:
   _availableJobsButtonText: Available Jobs
   _acceptAvailableJobButtonText: Accept Job
   _acceptedQuestEntryNumber: 1
+  _enforceOneActiveQuestPerGroup: 1
+  _sourceBlockedJobButtonText: Finish Current Job First
   foldoutToSelect: 
   questTitleToSelect: 
 --- !u!1 &165220

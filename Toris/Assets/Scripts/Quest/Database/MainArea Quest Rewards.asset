@@ -19,3 +19,9 @@ MonoBehaviour:
     ExperienceReward: 8000
     ItemReward: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
     ItemRewardQuantity: 1
+  - QuestName: Guide_Cull_Wolves
+    RewardGrantedVariableName: Guide_Cull_Wolves_RewardsGranted
+    GoldReward: 750
+    ExperienceReward: 500
+    ItemReward: {fileID: 0}
+    ItemRewardQuantity: 1

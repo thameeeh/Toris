@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65dfedd95ff40bb4f979aba95e4fdde5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneTransitionService
   onTransitionStart:
     m_PersistentCalls:
@@ -290,6 +290,26 @@ PrefabInstance:
       propertyPath: initialDatabase
       value: 
       objectReference: {fileID: 11400000, guid: 3659fc536afac5149b50151f93e1b419, type: 2}
+    - target: {fileID: 11426072, guid: 58ac37417e60e534f91138088a3e6f70, type: 3}
+      propertyPath: displaySettings.dialogueUI
+      value: 
+      objectReference: {fileID: 147116, guid: dbd244fe4057574468e277ab6f38ea01, type: 3}
+    - target: {fileID: 11426072, guid: 58ac37417e60e534f91138088a3e6f70, type: 3}
+      propertyPath: displaySettings.subtitleSettings.continueButton
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11426072, guid: 58ac37417e60e534f91138088a3e6f70, type: 3}
+      propertyPath: displaySettings.subtitleSettings.requireContinueOnLastLine
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22325660, guid: 58ac37417e60e534f91138088a3e6f70, type: 3}
+      propertyPath: m_PixelPerfect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22325660, guid: 58ac37417e60e534f91138088a3e6f70, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -863,11 +883,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c36959acb4ab32f45b2e271247a71e29, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersConversationInteractable
-  _defaultConversation: Smith_Intro
-  _questConversationRoutes: []
-  _reportInteractNpcFact: 1
+  _defaultConversation: Smith_Idle
+  _questConversationRoutes:
+  - QuestName: Guide_Talk_To_Smith
+    ConversationWhenUnassigned: 
+    ConversationWhenActive: Smith_Intro
+    ConversationWhenReturnToNpc: Smith_AfterIntro
+    ConversationWhenSuccess: Smith_AfterIntro
+  _reportInteractNpcFact: 0
   _npcFactId: SmithNPC
   _npcFactTypeOrTag: Smith
   _npcFactContextId: MainArea
@@ -944,7 +969,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
 --- !u!114 &845357115 stripped
 MonoBehaviour:
@@ -1062,7 +1087,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ac56478c811ae946bed3fd680d7d0d0, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNpcProximity
 --- !u!61 &924502433
 BoxCollider2D:
@@ -1440,6 +1465,7 @@ GameObject:
   - component: {fileID: 1212992764}
   - component: {fileID: 1212992765}
   - component: {fileID: 1212992766}
+  - component: {fileID: 1212992767}
   m_Layer: 0
   m_Name: GuideNPC
   m_TagString: Untagged
@@ -1520,24 +1546,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c36959acb4ab32f45b2e271247a71e29, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersConversationInteractable
   _defaultConversation: Guide_Intro
   _questConversationRoutes:
+  - QuestName: Guide_Cull_Wolves
+    ConversationWhenUnassigned: 
+    ConversationWhenActive: Guide_CullWolves_Active
+    ConversationWhenReturnToNpc: Guide_CullWolves_TurnIn
+    ConversationWhenSuccess: Guide_Hub
   - QuestName: Guide_Talk_To_Smith
-    ConversationWhenUnassigned:
+    ConversationWhenUnassigned: 
     ConversationWhenActive: Guide_TalkToSmith_Active
     ConversationWhenReturnToNpc: Guide_TalkToSmith_TurnIn
-    ConversationWhenSuccess: Guide_TalkToSmith_Post
+    ConversationWhenSuccess: Guide_Hub
   - QuestName: Kill_3_Leader_Wolves
     ConversationWhenUnassigned: Guide_Intro
     ConversationWhenActive: Guide_QuestActive
     ConversationWhenReturnToNpc: Guide_QuestTurnIn
     ConversationWhenSuccess: Guide_PostQuest
   _reportInteractNpcFact: 0
-  _npcFactId:
-  _npcFactTypeOrTag:
-  _npcFactContextId:
+  _npcFactId: 
+  _npcFactTypeOrTag: 
+  _npcFactContextId: 
   _debugConversationSelection: 1
 --- !u!114 &1212992764
 MonoBehaviour:
@@ -1549,7 +1580,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099639002cdf0ae46a1b0c76205ee037, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestRewardAdapter
   _rewardSets:
   - {fileID: 11400000, guid: 4f13cf5ff6914d73a5c33adf1721e70c, type: 2}
@@ -1566,7 +1597,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f0da69f11e67be46bf6eb73d1dec789, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestProgressMapper
   _ruleSets:
   - {fileID: 11400000, guid: d7d7b84013e74fbf839c3aad946375c5, type: 2}
@@ -1582,11 +1613,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1023b72eea342229c27b671d27ac50e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersDialogueCommandBridge
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _screenCommands: []
   _debugCommands: 1
+--- !u!114 &1212992767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212992760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1e7e71f95a4937a7a4da6b8fc13f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestOfferWindow
+  _offerGroups:
+  - GroupId: GuideJobs
+    Title: Safe Haven Jobs
+    EmptyText: No jobs available right now.
+    Offers:
+    - QuestName: Guide_Cull_Wolves
+      EntryNumber: 1
+      ProgressVariableName: GuideCullWolfKills
+      ShowWhenUnassigned: 1
+      ShowWhenGrantable: 1
+      ShowWhenActive: 0
+      ShowWhenReturnToNpc: 0
+  _defaultTitle: Available Jobs
+  _panelSize: {x: 620, y: 420}
+  _backdropColor: {r: 0, g: 0, b: 0, a: 0.65}
+  _panelColor: {r: 0.08, g: 0.07, b: 0.06, a: 0.95}
+  _buttonColor: {r: 0.26, g: 0.2, b: 0.12, a: 1}
+  _textColor: {r: 1, g: 1, b: 1, a: 1}
+  _debugOffers: 1
 --- !u!1001 &1252678292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1901,6 +1963,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
   _quantity: 1
+  _reportQuestPickUpFact: 0
+  _questItemExactId: 
+  _questItemTypeOrTag: 
+  _questItemContextId: 
 --- !u!58 &1566638776
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2044,6 +2110,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
   _quantity: 1
+  _reportQuestPickUpFact: 0
+  _questItemExactId: 
+  _questItemTypeOrTag: 
+  _questItemContextId: 
 --- !u!58 &1681090514
 CircleCollider2D:
   m_ObjectHideFlags: 0

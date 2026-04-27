@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1513fa826864c87b8c74c099cdb01c3, type: 3}
+  m_Name: MainArea Quest Fact Progress Rules
+  m_EditorClassIdentifier: 
+  _rules:
+  - FactType: 1
+    ExactId: LeaderWolf
+    TypeOrTag: 
+    ContextId: 
+    QuestName: Kill_3_Leader_Wolves
+    RequireQuestActive: 1
+    ProgressVariableName: LeaderWolfKills
+    RequiredAmount: 3
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64
+  - FactType: 6
+    ExactId: SmithNPC
+    TypeOrTag: 
+    ContextId: MainArea
+    QuestName: Guide_Talk_To_Smith
+    RequireQuestActive: 1
+    ProgressVariableName: TalkedToSmith
+    RequiredAmount: 1
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64
+  - FactType: 1
+    ExactId: LeaderWolf
+    TypeOrTag: 
+    ContextId: 
+    QuestName: Guide_Cull_Wolves
+    RequireQuestActive: 1
+    ProgressVariableName: GuideCullWolfKills
+    RequiredAmount: 3
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64

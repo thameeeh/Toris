@@ -101,6 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8865766885898603617}
   - component: {fileID: 8752173885184601590}
+  - component: {fileID: 7445550001234567890}
   m_Layer: 0
   m_Name: SmithNPC
   m_TagString: Untagged
@@ -154,6 +155,30 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &7445550001234567890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676936000085796728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36959acb4ab32f45b2e271247a71e29, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersConversationInteractable
+  _defaultConversation: Smith_Idle
+  _questConversationRoutes:
+  - QuestName: Guide_Talk_To_Smith
+    ConversationWhenUnassigned:
+    ConversationWhenActive: Smith_Intro
+    ConversationWhenReturnToNpc: Smith_AfterIntro
+    ConversationWhenSuccess: Smith_AfterIntro
+  _reportInteractNpcFact: 0
+  _npcFactId: SmithNPC
+  _npcFactTypeOrTag: Smith
+  _npcFactContextId: MainArea
+  _debugConversationSelection: 1
 --- !u!1 &6129318122709328053
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,10 +258,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6129318122709328053}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8284ce495ed6377459969a93463f8d32, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ac56478c811ae946bed3fd680d7d0d0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
-  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  _myInventory: {fileID: 8752173885184601590}
-  _shopType: 5
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNpcProximity

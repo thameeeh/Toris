@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
         if (_inputReader != null)
         {
             _inputReader.OnDashPressed += HandleDashRequested;
+            _inputReader.OnGameplayInputSuppressed += HandleGameplayInputSuppressed;
         }
     }
 
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
         if (_inputReader != null)
         {
             _inputReader.OnDashPressed -= HandleDashRequested;
+            _inputReader.OnGameplayInputSuppressed -= HandleGameplayInputSuppressed;
         }
     }
 
@@ -110,5 +112,15 @@ public class PlayerController : MonoBehaviour
             return PlayerMovementDirectionUtility.ToWorldAlignedDirection(_playerFacing.CurrentFacing);
 
         return _lastDashFacing;
+    }
+
+    private void HandleGameplayInputSuppressed()
+    {
+        if (_motor == null)
+            return;
+
+        DashAbility dashAbility = _motor.DashAbility;
+        dashAbility?.Cancel();
+        _motor.StopMovementImmediately();
     }
 }

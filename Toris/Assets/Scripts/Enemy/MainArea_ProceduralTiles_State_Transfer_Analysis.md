@@ -266,6 +266,60 @@ Leave out by default:
 
 Add those only if the world scene later gets a real in-world interaction that can open them.
 
+## Recommended Input Policy Split
+
+The two scenes should not treat gameplay input the same way.
+
+### MainArea
+
+`MainArea` is a hub.
+
+That means:
+
+- movement should stay active
+- NPC/world interaction should stay active
+- combat-style gameplay input should be blocked
+
+Blocked in hub:
+
+- shooting
+- active abilities
+
+Still allowed in hub:
+
+- dash
+
+### ProceduralTiles
+
+`ProceduralTiles` is the active exploration/combat scene.
+
+That means:
+
+- movement should stay active
+- NPC/world interaction should stay active
+- combat-style gameplay input should stay active
+
+### Blocking UI Rule
+
+Whenever a blocking screen is open, gameplay input should be suppressed regardless of scene.
+
+That means when screens such as:
+
+- Inventory
+- Smith
+- Mage
+- Skills
+
+are open, the player should not:
+
+- move
+- interact with the world
+- shoot
+- dash
+- trigger abilities
+
+This keeps hub UI and overworld UI from fighting with live gameplay input.
+
 ## Recommended Transfer Architecture
 
 The cleanest architecture is:

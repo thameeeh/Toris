@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d906d34ca4a34335ab6bd94caea041b8, type: 3}
+  m_Name: MainArea Quest Rewards
+  m_EditorClassIdentifier: 
+  _rewards:
+  - QuestName: Kill_3_Leader_Wolves
+    RewardGrantedVariableName: Kill_3_Leader_Wolves_RewardsGranted
+    GoldReward: 5000
+    ExperienceReward: 8000
+    ItemReward: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
+    ItemRewardQuantity: 1
+  - QuestName: Guide_Cull_Wolves
+    RewardGrantedVariableName: Guide_Cull_Wolves_RewardsGranted
+    GoldReward: 750
+    ExperienceReward: 500
+    ItemReward: {fileID: 0}
+    ItemRewardQuantity: 1

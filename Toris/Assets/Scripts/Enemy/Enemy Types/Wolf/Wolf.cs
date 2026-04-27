@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using OutlandHaven.UIToolkit;
 
 // All States and ScriptableObjects specific to the Wolf enemy
 // are defined and instantiated here
@@ -163,9 +162,26 @@ public class Wolf : Enemy
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
         {
             Die();
-            StateMachine.ChangeState(DeadState);
         }
     }
+
+    public override void Die()
+    {
+        if (CurrentHealth > 0f)
+            return;
+
+        base.Die();
+
+        if (StateMachine.CurrentEnemyState == null)
+        {
+            StateMachine.Initialize(DeadState);
+            return;
+        }
+
+        if (StateMachine.CurrentEnemyState != DeadState)
+            StateMachine.ChangeState(DeadState);
+    }
+
     public override void OnSpawned()
     {
         RefreshHomeAnchor();

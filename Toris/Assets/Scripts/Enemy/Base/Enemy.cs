@@ -40,6 +40,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [Header("Loot")]
     [SerializeField] private EnemyLootTableSO lootTable;
 
+    // Quest reporting stays data-driven: enemies expose stable IDs, then report facts.
+    // Quest-specific progress mapping stays outside enemy gameplay code.
+    [Header("Quest Reporting")]
+    [SerializeField] private string questEnemyId = string.Empty;
+    [SerializeField] private string questEnemyTypeOrTag = string.Empty;
+
     public EnemyLoadout ActiveLoadout { get; private set; }
     public Transform SpawnPoint { get; private set; }
     public string FactionId { get; private set; } = string.Empty;
@@ -61,6 +67,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private PlayerDamageReceiver _playerDamageReceiver;
     private PlayerProgression _playerProgression;
     public EnemyLootTableSO LootTable => lootTable;
+    public string QuestEnemyId => questEnemyId;
+    public string QuestEnemyTypeOrTag => questEnemyTypeOrTag;
     protected virtual void Awake()
     {
         StateMachine = new EnemyStateMachine();
@@ -121,6 +129,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (CurrentHealth > 0f) return;
         DisableCollidersForDeath();
         TryResolveDeathLoot();
+        ReportQuestKillIfNeeded();
         Died?.Invoke(this);
     }
 
@@ -352,6 +361,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
         _hasResolvedDeathLoot = true;
         EnemyLootRuntime.ResolveDeathLoot(this, _playerProgression);
+    }
+
+    private void ReportQuestKillIfNeeded()
+    {
+        if (string.IsNullOrWhiteSpace(questEnemyId))
+            return;
+
+        PixelCrushersQuestFactReporter.Report(QuestFact.Kill(questEnemyId, questEnemyTypeOrTag));
     }
 
     private void RefreshScenePlayerReferences()

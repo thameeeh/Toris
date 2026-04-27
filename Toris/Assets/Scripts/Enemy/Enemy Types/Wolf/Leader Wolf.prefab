@@ -294,6 +294,7 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: a4ec415f3e5157e47b9fba0eaf6c43b3, type: 2}
+  questEnemyId: LeaderWolf
   AttackDamage: 35
   MovementSpeed: 3
   role: 0

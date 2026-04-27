@@ -1,16 +1,24 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using OutlandHaven.UIToolkit; // for screen types
 using OutlandHaven.Inventory;
 
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, InputSystem_Actions.IUIActions
 {
+    private readonly HashSet<ScreenType> _openBlockingScreens = new();
 
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private ItemPickEventSO _itemPicker;
 
     [Header("UI Events")]
     [SerializeField] private UIEventsSO _uiEvents;
+
+    [Header("Gameplay Input Policy")]
+    [Tooltip("Combat-like inputs are disabled in these scenes, but movement and interaction can still stay active.")]
+    [SerializeField] private string[] _combatDisabledSceneNames = { "MainArea" };
 
     private InputSystem_Actions _inputActions;
 
@@ -20,10 +28,28 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         _inputActions.Enable();
         _inputActions.Player.SetCallbacks(this);
         _inputActions.UI.SetCallbacks(this);
+
+        if (_uiEvents != null)
+        {
+            _uiEvents.OnScreenOpen += HandleScreenOpened;
+            _uiEvents.OnScreenClose += HandleScreenClosed;
+        }
+
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+        RefreshGameplayInputState();
     }
 
     private void OnDisable()
     {
+        if (_uiEvents != null)
+        {
+            _uiEvents.OnScreenOpen -= HandleScreenOpened;
+            _uiEvents.OnScreenClose -= HandleScreenClosed;
+        }
+
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+        _openBlockingScreens.Clear();
+
         _inputActions.Player.SetCallbacks(null);
         _inputActions.UI.SetCallbacks(null);
         _inputActions.Disable();
@@ -50,11 +76,14 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnLook(InputAction.CallbackContext context) {}
     public void OnMove(InputAction.CallbackContext context) 
     {
-        _inputReader.SetMove(context.ReadValue<Vector2>()); 
+        if (_inputReader == null)
+            return;
+
+        _inputReader.SetMove(AllowsMovementInput() ? context.ReadValue<Vector2>() : Vector2.zero); 
     }
     public void OnSprint(InputAction.CallbackContext context) 
     {
-        if (context.performed)
+        if (context.performed && AllowsDashInput())
         {
             _inputReader.OnDashPressed?.Invoke();
         }
@@ -62,6 +91,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnAbility1(InputAction.CallbackContext context) 
     {
+        if (!AllowsCombatInput())
+            return;
+
         if (context.started)
         {
             _inputReader.OnAbility1Pressed?.Invoke();
@@ -74,6 +106,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     }
     public void OnAbility2(InputAction.CallbackContext context) 
     {
+        if (!AllowsCombatInput())
+            return;
+
         if(context.started)
         {
             _inputReader.isAbility2Held = true;
@@ -89,6 +124,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     }
     public void OnAttack(InputAction.CallbackContext context) 
     {
+        if (!AllowsCombatInput())
+            return;
+
         if (context.started)
         {
             _inputReader.IsShootHeld = true;
@@ -103,6 +141,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnCrouch(InputAction.CallbackContext context) { /* Handle Crouch */ }
     public void OnInteract(InputAction.CallbackContext context) // Key 'E'
     {
+        if (!AllowsInteractionInput())
+            return;
+
         if (context.started)
         {
             _inputReader.OnInteractPressed?.Invoke();
@@ -131,6 +172,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     private void HandleAbilitySlotInput(int slotIndex, InputAction.CallbackContext context)
     {
+        if (!AllowsCombatInput())
+            return;
+
         if (context.started)
         {
             _inputReader.RaiseAbilitySlotStarted(slotIndex);
@@ -178,6 +222,118 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleSkills(InputAction.CallbackContext context)
     {
-        _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
+        if (context.performed)
+        {
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
+        }
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _openBlockingScreens.Clear();
+        RefreshGameplayInputState();
+    }
+
+    private void HandleScreenOpened(ScreenType screenType)
+    {
+        if (!IsGameplayBlockingScreen(screenType))
+            return;
+
+        _openBlockingScreens.Add(screenType);
+        RefreshGameplayInputState();
+    }
+
+    private void HandleScreenClosed(ScreenType screenType)
+    {
+        if (!IsGameplayBlockingScreen(screenType))
+            return;
+
+        _openBlockingScreens.Remove(screenType);
+        RefreshGameplayInputState();
+    }
+
+    private void RefreshGameplayInputState()
+    {
+        if (_inputReader == null)
+            return;
+
+        bool allowsMovementInput = AllowsMovementInput();
+        bool uiBlockingGameplay = IsUiBlockingGameplay();
+
+        if (allowsMovementInput)
+        {
+            _inputReader.SetMove(ReadCurrentMoveInput());
+        }
+        else
+        {
+            _inputReader.SetMove(Vector2.zero);
+        }
+
+        if (uiBlockingGameplay)
+        {
+            _inputReader.CancelGameplayInputState(clearMove: !allowsMovementInput, notifyGameplaySuppressed: true);
+        }
+        else if (!AllowsCombatInput())
+        {
+            _inputReader.CancelGameplayInputState(clearMove: false, notifyGameplaySuppressed: false);
+        }
+    }
+
+    private Vector2 ReadCurrentMoveInput()
+    {
+        return _inputActions != null
+            ? _inputActions.Player.Move.ReadValue<Vector2>()
+            : Vector2.zero;
+    }
+
+    private bool AllowsMovementInput()
+    {
+        return _openBlockingScreens.Count == 0;
+    }
+
+    private bool AllowsInteractionInput()
+    {
+        return _openBlockingScreens.Count == 0;
+    }
+
+    private bool AllowsDashInput()
+    {
+        return !IsUiBlockingGameplay();
+    }
+
+    private bool AllowsCombatInput()
+    {
+        return !IsUiBlockingGameplay() && !IsCombatDisabledInCurrentScene();
+    }
+
+    private bool IsUiBlockingGameplay()
+    {
+        return _openBlockingScreens.Count > 0;
+    }
+
+    private bool IsCombatDisabledInCurrentScene()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (_combatDisabledSceneNames == null)
+            return false;
+
+        for (int i = 0; i < _combatDisabledSceneNames.Length; i++)
+        {
+            string configuredSceneName = _combatDisabledSceneNames[i];
+            if (!string.IsNullOrWhiteSpace(configuredSceneName)
+                && string.Equals(currentSceneName, configuredSceneName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsGameplayBlockingScreen(ScreenType screenType)
+    {
+        return screenType != ScreenType.None
+            && screenType != ScreenType.HUD;
     }
 }

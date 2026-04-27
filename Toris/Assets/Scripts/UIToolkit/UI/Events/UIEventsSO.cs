@@ -12,6 +12,8 @@ namespace OutlandHaven.UIToolkit
 
         public UnityAction<ScreenType> OnRequestClose;
 
+        public UnityAction<ScreenType> OnScreenClose;
+
         public UnityAction OnRequestCloseAll;
 
         public UnityAction<ScreenType> OnScreenOpen;

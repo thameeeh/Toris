@@ -52,4 +52,29 @@ public struct QuestFact
     {
         return new QuestFact(QuestFactType.ClearSite, exactId, typeOrTag, amount, contextId);
     }
+
+    public static QuestFact BuyItem(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.BuyItem, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact SellItem(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.SellItem, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact LevelReached(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.LevelReached, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact EnterBiome(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.EnterBiome, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact InteractWorldObject(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.InteractWorldObject, exactId, typeOrTag, amount, contextId);
+    }
 }

@@ -490,7 +490,7 @@ Current Toris-side bridge components:
 - `PixelCrushersQuestProgressMapper`
 - `PixelCrushersQuestRewardAdapter`
 - `QuestFact`
-- `QuestFactType`
+- `QuestFactType` (Supported: Kill, PickUp, EnterScene, VisitSite, ClearSite, InteractNpc, BuyItem, SellItem, LevelReached, EnterBiome, InteractWorldObject)
 - `QuestFactProgressRuleSetSO`
 - `PixelCrushersQuestRewardSetSO`
 - `QuestFactSceneReporter`

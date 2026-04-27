@@ -13,5 +13,15 @@ public enum QuestFactType
     /// <summary>A site, encounter, or authored objective was cleared.</summary>
     ClearSite = 5,
     /// <summary>The player interacted with an NPC.</summary>
-    InteractNpc = 6
+    InteractNpc = 6,
+    /// <summary>The player bought an item.</summary>
+    BuyItem = 7,
+    /// <summary>The player sold an item.</summary>
+    SellItem = 8,
+    /// <summary>The player reached a certain level.</summary>
+    LevelReached = 9,
+    /// <summary>The player entered a biome.</summary>
+    EnterBiome = 10,
+    /// <summary>The player interacted with a world object.</summary>
+    InteractWorldObject = 11
 }

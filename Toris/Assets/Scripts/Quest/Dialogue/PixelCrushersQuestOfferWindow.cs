@@ -1,4 +1,5 @@
 using System;
+using OutlandHaven.UIToolkit;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,11 @@ public class PixelCrushersQuestOfferWindow : MonoBehaviour
     [SerializeField] private Color _buttonColor = new Color(0.26f, 0.2f, 0.12f, 1f);
     [Tooltip("Text color used by the generated offer window.")]
     [SerializeField] private Color _textColor = Color.white;
+    [Header("Gameplay Input Lock")]
+    [Tooltip("Project UI event channel used to freeze Toris gameplay input while this offer window is open.")]
+    [SerializeField] private UIEventsSO _uiEvents;
+    [Tooltip("Named gameplay input lock used while this offer window is open.")]
+    [SerializeField] private string _gameplayInputLockId = "PixelCrushersQuestOffers";
 
 #if UNITY_EDITOR
     [Tooltip("Logs opened groups and accepted quest offers. Editor only.")]
@@ -41,6 +47,7 @@ public class PixelCrushersQuestOfferWindow : MonoBehaviour
     private Text _emptyText;
     private Font _font;
     private PixelCrushersQuestOfferGroup _activeGroup;
+    private bool _gameplayInputLocked;
 
     public void Open(string offerGroupId)
     {
@@ -60,6 +67,7 @@ public class PixelCrushersQuestOfferWindow : MonoBehaviour
         _activeGroup = group;
         Populate(group);
         _root.SetActive(true);
+        RequestGameplayInputLock();
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         LogDebug($"Opened offer group '{offerGroupId}'.");
@@ -69,6 +77,8 @@ public class PixelCrushersQuestOfferWindow : MonoBehaviour
     {
         if (_root != null)
             _root.SetActive(false);
+
+        ReleaseGameplayInputLock();
     }
 
     private void OnDisable()
@@ -78,6 +88,8 @@ public class PixelCrushersQuestOfferWindow : MonoBehaviour
 
     private void OnDestroy()
     {
+        ReleaseGameplayInputLock();
+
         if (_root != null)
             Destroy(_root);
     }
@@ -347,6 +359,24 @@ public class PixelCrushersQuestOfferWindow : MonoBehaviour
         if (_debugOffers)
             Debug.LogWarning($"[PixelCrushersQuestOfferWindow] {message}", this);
 #endif
+    }
+
+    private void RequestGameplayInputLock()
+    {
+        if (_uiEvents == null || _gameplayInputLocked || string.IsNullOrWhiteSpace(_gameplayInputLockId))
+            return;
+
+        _uiEvents.OnGameplayInputLockRequested?.Invoke(_gameplayInputLockId);
+        _gameplayInputLocked = true;
+    }
+
+    private void ReleaseGameplayInputLock()
+    {
+        if (_uiEvents == null || !_gameplayInputLocked || string.IsNullOrWhiteSpace(_gameplayInputLockId))
+            return;
+
+        _uiEvents.OnGameplayInputUnlockRequested?.Invoke(_gameplayInputLockId);
+        _gameplayInputLocked = false;
     }
 }
 

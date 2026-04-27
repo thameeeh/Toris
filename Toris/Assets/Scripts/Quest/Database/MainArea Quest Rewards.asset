@@ -25,3 +25,9 @@ MonoBehaviour:
     ExperienceReward: 500
     ItemReward: {fileID: 0}
     ItemRewardQuantity: 1
+  - QuestName: Smith_Check_Forge
+    RewardGrantedVariableName: Smith_Check_Forge_RewardsGranted
+    GoldReward: 250
+    ExperienceReward: 100
+    ItemReward: {fileID: 0}
+    ItemRewardQuantity: 1

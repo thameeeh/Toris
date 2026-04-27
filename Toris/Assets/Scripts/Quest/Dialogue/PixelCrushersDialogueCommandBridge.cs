@@ -34,6 +34,11 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
     [SerializeField] private bool _createRuntimeQuestJournalCanvas = true;
     [Tooltip("Sorting order for the dedicated runtime quest journal Canvas.")]
     [SerializeField] private int _runtimeQuestJournalSortingOrder = 200;
+    [Header("Gameplay Input Locks")]
+    [Tooltip("When enabled, active Pixel Crushers conversations freeze Toris gameplay input while keeping dialogue UI input usable.")]
+    [SerializeField] private bool _lockGameplayInputDuringDialogue = true;
+    [Tooltip("Named gameplay input lock used while Pixel Crushers dialogue is active.")]
+    [SerializeField] private string _dialogueGameplayInputLockId = "PixelCrushersDialogue";
 
 #if UNITY_EDITOR
     [Tooltip("Logs dialogue command calls and invalid command names. Editor only.")]
@@ -42,6 +47,8 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
 
     private PixelCrushersQuestJournalWindow _runtimeQuestJournal;
     private Canvas _runtimeQuestJournalCanvas;
+    private bool _dialogueEventsSubscribed;
+    private bool _dialogueInputLocked;
 
     private void OnEnable()
     {
@@ -50,10 +57,18 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         Lua.RegisterFunction(ReportFactCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisReportFact(string.Empty, string.Empty, string.Empty, 1D, string.Empty)));
         Lua.RegisterFunction(OpenQuestOffersCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestOffers(string.Empty)));
         Lua.RegisterFunction(OpenQuestJournalCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestJournal(string.Empty)));
+        TrySubscribeDialogueEvents();
+    }
+
+    private void Start()
+    {
+        TrySubscribeDialogueEvents();
     }
 
     private void OnDisable()
     {
+        ReleaseDialogueGameplayInputLock();
+        UnsubscribeDialogueEvents();
         Lua.UnregisterFunction(OpenScreenCommandName);
         Lua.UnregisterFunction(CloseScreenCommandName);
         Lua.UnregisterFunction(ReportFactCommandName);
@@ -134,11 +149,13 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
             return;
         }
 
-        string normalizedMode = string.IsNullOrWhiteSpace(mode) ? "Active" : mode.Trim();
+        ParseQuestJournalMode(mode, out string normalizedMode, out string questGroupFilter);
         if (IsQuestJournalMode(normalizedMode, "Available") || IsQuestJournalMode(normalizedMode, "Jobs") || IsQuestJournalMode(normalizedMode, "Grantable"))
         {
-            questJournal.OpenAvailableJobs();
-            LogDebug("Opened quest journal in Available Jobs mode.");
+            questJournal.OpenAvailableJobs(questGroupFilter);
+            LogDebug(string.IsNullOrWhiteSpace(questGroupFilter)
+                ? "Opened quest journal in Available Jobs mode."
+                : $"Opened quest journal in Available Jobs mode for group '{questGroupFilter}'.");
             return;
         }
 
@@ -215,6 +232,22 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         return string.Equals(value, expected, StringComparison.OrdinalIgnoreCase);
     }
 
+    private static void ParseQuestJournalMode(string mode, out string normalizedMode, out string questGroupFilter)
+    {
+        normalizedMode = string.IsNullOrWhiteSpace(mode) ? "Active" : mode.Trim();
+        questGroupFilter = string.Empty;
+
+        int separatorIndex = normalizedMode.IndexOf(':');
+        if (separatorIndex < 0)
+            separatorIndex = normalizedMode.IndexOf('|');
+
+        if (separatorIndex < 0)
+            return;
+
+        questGroupFilter = normalizedMode.Substring(separatorIndex + 1).Trim();
+        normalizedMode = normalizedMode.Substring(0, separatorIndex).Trim();
+    }
+
     private bool TryFindScreenCommand(string commandId, out PixelCrushersDialogueScreenCommand command)
     {
         command = null;
@@ -233,6 +266,58 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void TrySubscribeDialogueEvents()
+    {
+        if (!_lockGameplayInputDuringDialogue || _dialogueEventsSubscribed || !DialogueManager.hasInstance)
+            return;
+
+        DialogueManager.instance.conversationStarted += HandleConversationStarted;
+        DialogueManager.instance.conversationEnded += HandleConversationEnded;
+        _dialogueEventsSubscribed = true;
+    }
+
+    private void UnsubscribeDialogueEvents()
+    {
+        if (!_dialogueEventsSubscribed)
+            return;
+
+        if (DialogueManager.hasInstance)
+        {
+            DialogueManager.instance.conversationStarted -= HandleConversationStarted;
+            DialogueManager.instance.conversationEnded -= HandleConversationEnded;
+        }
+
+        _dialogueEventsSubscribed = false;
+    }
+
+    private void HandleConversationStarted(Transform actor)
+    {
+        RequestDialogueGameplayInputLock();
+    }
+
+    private void HandleConversationEnded(Transform actor)
+    {
+        ReleaseDialogueGameplayInputLock();
+    }
+
+    private void RequestDialogueGameplayInputLock()
+    {
+        if (_uiEvents == null || _dialogueInputLocked || string.IsNullOrWhiteSpace(_dialogueGameplayInputLockId))
+            return;
+
+        _uiEvents.OnGameplayInputLockRequested?.Invoke(_dialogueGameplayInputLockId);
+        _dialogueInputLocked = true;
+    }
+
+    private void ReleaseDialogueGameplayInputLock()
+    {
+        if (_uiEvents == null || !_dialogueInputLocked || string.IsNullOrWhiteSpace(_dialogueGameplayInputLockId))
+            return;
+
+        _uiEvents.OnGameplayInputUnlockRequested?.Invoke(_dialogueGameplayInputLockId);
+        _dialogueInputLocked = false;
     }
 
     private void LogDebug(string message)

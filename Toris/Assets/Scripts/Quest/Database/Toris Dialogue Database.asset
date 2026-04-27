@@ -275,6 +275,69 @@ MonoBehaviour:
       value: Slay 3 Leader Wolves
       type: 0
       typeString: CustomFieldType_Text
+  - id: 4
+    fields:
+    - title: Name
+      value: Smith_Check_Forge
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: Optional work from the Smith to check in at the forge and prove Smith
+        job sourcing.
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Success Description
+      value:
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Failure Description
+      value:
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: State
+      value: unassigned
+      type: 0
+      typeString: CustomFieldType_QuestState
+    - title: Is Item
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Display Name
+      value: Check the Forge Ledger
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Group
+      value: SmithJobs
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Group Display Name
+      value: Smith Jobs
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Trackable
+      value: True
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Track
+      value: True
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Entry Count
+      value: 1
+      type: 1
+      typeString: CustomFieldType_Number
+    - title: Entry 1 State
+      value: unassigned
+      type: 0
+      typeString: CustomFieldType_QuestState
+    - title: Entry 1
+      value: Check back in with the Smith at the forge.
+      type: 0
+      typeString: CustomFieldType_Text
   locations: []
   variables:
   - id: 1
@@ -374,6 +437,34 @@ MonoBehaviour:
       typeString: CustomFieldType_Text
     - title: Description
       value: Guards the optional Guide wolf culling reward against duplicate payout.
+      type: 0
+      typeString: CustomFieldType_Text
+  - id: 8
+    fields:
+    - title: Name
+      value: SmithCheckForgeTalked
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: 0
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Description
+      value: Tracks the prototype Smith job check-in objective.
+      type: 0
+      typeString: CustomFieldType_Text
+  - id: 9
+    fields:
+    - title: Name
+      value: Smith_Check_Forge_RewardsGranted
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: 0
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Description
+      value: Guards the prototype Smith job reward against duplicate payout.
       type: 0
       typeString: CustomFieldType_Text
   conversations:
@@ -3487,8 +3578,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Forge is open. Bring me broken things and useful things. I can usually
-          turn one into the other.
+        value: Forge is open. Tools, trade, and a little work if you want coin
+          without begging the old man for it.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3502,7 +3593,25 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 10
+        originDialogueID: 1
+        destinationConversationID: 10
+        destinationDialogueID: 2
+        isConnector: 0
+        priority: 2
+      - originConversationID: 10
+        originDialogueID: 1
+        destinationConversationID: 10
+        destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
+      - originConversationID: 10
+        originDialogueID: 1
+        destinationConversationID: 10
+        destinationDialogueID: 4
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript:
       onExecute:
@@ -3512,6 +3621,322 @@ MonoBehaviour:
         serializedVersion: 2
         x: 160
         y: 80
+        width: 160
+        height: 30
+    - id: 2
+      fields:
+      - title: Title
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: Open shop.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Show me what you have.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 10
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 10
+        originDialogueID: 2
+        destinationConversationID: 10
+        destinationDialogueID: 5
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: TorisOpenScreen("SmithShop")
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 60
+        y: 130
+        width: 160
+        height: 30
+    - id: 3
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: Show me work.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Got any forge work?
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 10
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 10
+        originDialogueID: 3
+        destinationConversationID: 10
+        destinationDialogueID: 6
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 'if CurrentQuestState("Smith_Check_Forge") == "unassigned" then
+        SetQuestState("Smith_Check_Forge", "grantable") end
+
+        TorisOpenQuestJournal("Available:SmithJobs")'
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 130
+        width: 160
+        height: 30
+    - id: 4
+      fields:
+      - title: Title
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: Goodbye.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: I should go.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 10
+      isRoot: 0
+      isGroup: 0
+      nodeColor:
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 10
+        originDialogueID: 4
+        destinationConversationID: 10
+        destinationDialogueID: 7
+        isConnector: 0
+        priority: 2
+      conditionsString:
+      userScript:
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 260
+        y: 130
+        width: 160
+        height: 30
+    - id: 5
+      fields:
+      - title: Title
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Look, buy, sell. Try not to bleed on anything expensive.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 10
+      isRoot: 0
+      isGroup: 0
+      nodeColor:
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString:
+      userScript:
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 60
+        y: 180
+        width: 160
+        height: 30
+    - id: 6
+      fields:
+      - title: Title
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: My jobs are forge work, not hero songs. Pick one if you want honest
+          coin.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 10
+      isRoot: 0
+      isGroup: 0
+      nodeColor:
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString:
+      userScript:
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 180
+        width: 160
+        height: 30
+    - id: 7
+      fields:
+      - title: Title
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Mind the sparks.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 10
+      isRoot: 0
+      isGroup: 0
+      nodeColor:
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString:
+      userScript:
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 260
+        y: 180
         width: 160
         height: 30
     entryGroups: []
@@ -3524,7 +3949,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value: 
+      value:
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -3546,9 +3971,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence: 
-      defaultPlayerSequence: 
-      defaultResponseMenuSequence: 
+      defaultSequence:
+      defaultPlayerSequence:
+      defaultResponseMenuSequence:
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -3557,11 +3982,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName: 
+        buttonName:
       cancelConversation:
         key: 27
-        buttonName: 
-    nodeColor: 
+        buttonName:
+    nodeColor:
     dialogueEntries:
     - id: 0
       fields:
@@ -3570,7 +3995,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3582,11 +4007,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3596,7 +4021,7 @@ MonoBehaviour:
       conversationID: 11
       isRoot: 1
       isGroup: 0
-      nodeColor: 
+      nodeColor:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
@@ -3607,8 +4032,8 @@ MonoBehaviour:
         destinationDialogueID: 1
         isConnector: 0
         priority: 2
-      conditionsString: 
-      userScript: 
+      conditionsString:
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3621,11 +4046,11 @@ MonoBehaviour:
     - id: 1
       fields:
       - title: Title
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3637,7 +4062,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -3646,19 +4071,19 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 11
       isRoot: 0
       isGroup: 0
-      nodeColor: 
+      nodeColor:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: 
-      userScript: 
+      conditionsString:
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3678,7 +4103,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value: 
+      value:
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -3700,9 +4125,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence: 
-      defaultPlayerSequence: 
-      defaultResponseMenuSequence: 
+      defaultSequence:
+      defaultPlayerSequence:
+      defaultResponseMenuSequence:
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -3711,11 +4136,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName: 
+        buttonName:
       cancelConversation:
         key: 27
-        buttonName: 
-    nodeColor: 
+        buttonName:
+    nodeColor:
     dialogueEntries:
     - id: 0
       fields:
@@ -3724,7 +4149,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3736,11 +4161,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3750,7 +4175,7 @@ MonoBehaviour:
       conversationID: 12
       isRoot: 1
       isGroup: 0
-      nodeColor: 
+      nodeColor:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
@@ -3761,8 +4186,8 @@ MonoBehaviour:
         destinationDialogueID: 1
         isConnector: 0
         priority: 2
-      conditionsString: 
-      userScript: 
+      conditionsString:
+      userScript:
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3775,11 +4200,11 @@ MonoBehaviour:
     - id: 1
       fields:
       - title: Title
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3791,7 +4216,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -3800,18 +4225,18 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 12
       isRoot: 0
       isGroup: 0
-      nodeColor: 
+      nodeColor:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: 
+      conditionsString:
       userScript: SetQuestState("Guide_Cull_Wolves", "success")
       onExecute:
         m_PersistentCalls:
@@ -3832,7 +4257,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value: 
+      value:
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -3854,9 +4279,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence: 
-      defaultPlayerSequence: 
-      defaultResponseMenuSequence: 
+      defaultSequence:
+      defaultPlayerSequence:
+      defaultResponseMenuSequence:
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -3865,11 +4290,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName: 
+        buttonName:
       cancelConversation:
         key: 27
-        buttonName: 
-    nodeColor: 
+        buttonName:
+    nodeColor:
     dialogueEntries:
     - id: 0
       fields:
@@ -3878,7 +4303,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3890,11 +4315,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3966,7 +4391,313 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
+      userScript:
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 80
+        width: 160
+        height: 30
+    entryGroups: []
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 1
+  - id: 14
+    fields:
+    - title: Title
+      value: Smith_CheckForge_Active
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Description
+      value: 
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Actor
+      value: 1
+      type: 5
+      typeString: CustomFieldType_Actor
+    - title: Conversant
+      value: 3
+      type: 5
+      typeString: CustomFieldType_Actor
+    overrideSettings:
+      useOverrides: 0
+      overrideSubtitleSettings: 0
+      showNPCSubtitlesDuringLine: 1
+      showNPCSubtitlesWithResponses: 1
+      showPCSubtitlesDuringLine: 0
+      skipPCSubtitleAfterResponseMenu: 0
+      subtitleCharsPerSecond: 30
+      minSubtitleSeconds: 2
+      continueButton: 0
+      overrideSequenceSettings: 0
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
+      overrideInputSettings: 0
+      alwaysForceResponseMenu: 1
+      includeInvalidEntries: 0
+      responseTimeout: 0
+      emTagForOldResponses: 0
+      emTagForInvalidResponses: 0
+      cancelSubtitle:
+        key: 27
+        buttonName: 
+      cancelConversation:
+        key: 27
+        buttonName: 
+    nodeColor: 
+    dialogueEntries:
+    - id: 0
+      fields:
+      - title: Title
+        value: START
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 14
+      isRoot: 1
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 14
+        originDialogueID: 0
+        destinationConversationID: 14
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      conditionsString: 
       userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 30
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Good. You checked back in. Give me a breath to mark the ledger.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 14
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: TorisReportFact("InteractNpc", "SmithNPC", "Smith", 1, "MainArea")
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 80
+        width: 160
+        height: 30
+    entryGroups: []
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 1
+  - id: 15
+    fields:
+    - title: Title
+      value: Smith_CheckForge_TurnIn
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Description
+      value:
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Actor
+      value: 1
+      type: 5
+      typeString: CustomFieldType_Actor
+    - title: Conversant
+      value: 3
+      type: 5
+      typeString: CustomFieldType_Actor
+    overrideSettings:
+      useOverrides: 0
+      overrideSubtitleSettings: 0
+      showNPCSubtitlesDuringLine: 1
+      showNPCSubtitlesWithResponses: 1
+      showPCSubtitlesDuringLine: 0
+      skipPCSubtitleAfterResponseMenu: 0
+      subtitleCharsPerSecond: 30
+      minSubtitleSeconds: 2
+      continueButton: 0
+      overrideSequenceSettings: 0
+      defaultSequence:
+      defaultPlayerSequence:
+      defaultResponseMenuSequence:
+      overrideInputSettings: 0
+      alwaysForceResponseMenu: 1
+      includeInvalidEntries: 0
+      responseTimeout: 0
+      emTagForOldResponses: 0
+      emTagForInvalidResponses: 0
+      cancelSubtitle:
+        key: 27
+        buttonName:
+      cancelConversation:
+        key: 27
+        buttonName:
+    nodeColor:
+    dialogueEntries:
+    - id: 0
+      fields:
+      - title: Title
+        value: START
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 15
+      isRoot: 1
+      isGroup: 0
+      nodeColor:
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 15
+        originDialogueID: 0
+        destinationConversationID: 15
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      conditionsString:
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 30
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Ledger is marked. Here, take this before I change my mind.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value:
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 15
+      isRoot: 0
+      isGroup: 0
+      nodeColor:
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString:
+      userScript: SetQuestState("Smith_Check_Forge", "success")
       onExecute:
         m_PersistentCalls:
           m_Calls: []

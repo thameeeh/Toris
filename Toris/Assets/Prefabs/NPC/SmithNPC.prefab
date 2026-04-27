@@ -169,6 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersConversationInteractable
   _defaultConversation: Smith_Idle
   _questConversationRoutes:
+  - QuestName: Smith_Check_Forge
+    ConversationWhenUnassigned:
+    ConversationWhenActive: Smith_CheckForge_Active
+    ConversationWhenReturnToNpc: Smith_CheckForge_TurnIn
+    ConversationWhenSuccess:
   - QuestName: Guide_Talk_To_Smith
     ConversationWhenUnassigned:
     ConversationWhenActive: Smith_Intro

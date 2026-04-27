@@ -3911,6 +3911,8 @@ MonoBehaviour:
   _acceptedQuestEntryNumber: 1
   _enforceOneActiveQuestPerGroup: 1
   _sourceBlockedJobButtonText: Finish Current Job First
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _gameplayInputLockId: PixelCrushersQuestJournal
   foldoutToSelect: 
   questTitleToSelect: 
 --- !u!1 &165220

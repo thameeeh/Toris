@@ -9,6 +9,7 @@ using OutlandHaven.Inventory;
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, InputSystem_Actions.IUIActions
 {
     private readonly HashSet<ScreenType> _openBlockingScreens = new();
+    private readonly HashSet<string> _gameplayInputLocks = new();
 
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private ItemPickEventSO _itemPicker;
@@ -33,6 +34,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         {
             _uiEvents.OnScreenOpen += HandleScreenOpened;
             _uiEvents.OnScreenClose += HandleScreenClosed;
+            _uiEvents.OnGameplayInputLockRequested += HandleGameplayInputLockRequested;
+            _uiEvents.OnGameplayInputUnlockRequested += HandleGameplayInputUnlockRequested;
         }
 
         SceneManager.sceneLoaded += HandleSceneLoaded;
@@ -45,10 +48,13 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         {
             _uiEvents.OnScreenOpen -= HandleScreenOpened;
             _uiEvents.OnScreenClose -= HandleScreenClosed;
+            _uiEvents.OnGameplayInputLockRequested -= HandleGameplayInputLockRequested;
+            _uiEvents.OnGameplayInputUnlockRequested -= HandleGameplayInputUnlockRequested;
         }
 
         SceneManager.sceneLoaded -= HandleSceneLoaded;
         _openBlockingScreens.Clear();
+        _gameplayInputLocks.Clear();
 
         _inputActions.Player.SetCallbacks(null);
         _inputActions.UI.SetCallbacks(null);
@@ -231,6 +237,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _openBlockingScreens.Clear();
+        _gameplayInputLocks.Clear();
         RefreshGameplayInputState();
     }
 
@@ -249,6 +256,26 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             return;
 
         _openBlockingScreens.Remove(screenType);
+        RefreshGameplayInputState();
+    }
+
+    private void HandleGameplayInputLockRequested(string lockId)
+    {
+        string normalizedLockId = NormalizeGameplayInputLockId(lockId);
+        if (string.IsNullOrEmpty(normalizedLockId))
+            return;
+
+        _gameplayInputLocks.Add(normalizedLockId);
+        RefreshGameplayInputState();
+    }
+
+    private void HandleGameplayInputUnlockRequested(string lockId)
+    {
+        string normalizedLockId = NormalizeGameplayInputLockId(lockId);
+        if (string.IsNullOrEmpty(normalizedLockId))
+            return;
+
+        _gameplayInputLocks.Remove(normalizedLockId);
         RefreshGameplayInputState();
     }
 
@@ -288,12 +315,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     private bool AllowsMovementInput()
     {
-        return _openBlockingScreens.Count == 0;
+        return !HasGameplayInputBlockers();
     }
 
     private bool AllowsInteractionInput()
     {
-        return _openBlockingScreens.Count == 0;
+        return !HasGameplayInputBlockers();
     }
 
     private bool AllowsDashInput()
@@ -308,7 +335,17 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     private bool IsUiBlockingGameplay()
     {
-        return _openBlockingScreens.Count > 0;
+        return HasGameplayInputBlockers();
+    }
+
+    private bool HasGameplayInputBlockers()
+    {
+        return _openBlockingScreens.Count > 0 || _gameplayInputLocks.Count > 0;
+    }
+
+    private static string NormalizeGameplayInputLockId(string lockId)
+    {
+        return string.IsNullOrWhiteSpace(lockId) ? string.Empty : lockId.Trim();
     }
 
     private bool IsCombatDisabledInCurrentScene()

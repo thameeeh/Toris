@@ -17,6 +17,10 @@ namespace OutlandHaven.UIToolkit
         public UnityAction OnRequestCloseAll;
 
         public UnityAction<ScreenType> OnScreenOpen;
+
+        public UnityAction<string> OnGameplayInputLockRequested;
+
+        public UnityAction<string> OnGameplayInputUnlockRequested;
     }
 
 }

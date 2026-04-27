@@ -331,6 +331,11 @@ Current Smith setup:
 - the Smith collider uses `DialogueNpcProximity` so the normal `PlayerInteractor` path starts dialogue
 - the old scene-only `SmithStoryNPC` is deprecated and inactive
 - dialogue can open the real Smith shop inventory with `TorisOpenScreen("SmithShop")`
+- after the introduction, `Smith_AfterIntro` behaves like a small hub
+- Smith hub choices can open the shop, open Smith-specific available jobs, or leave
+- Smith-specific available jobs use Pixel Crushers quest group `SmithJobs`
+- Smith's current prototype job is `Smith_Check_Forge`
+- `Smith_Check_Forge` proves a talk/check-in job source outside the Guide flow
 
 ## Quest UI Rules
 
@@ -358,6 +363,10 @@ Important limitation:
 - Toris extends the Pixel Crushers quest log with `PixelCrushersQuestJournalWindow`.
 - `PixelCrushersQuestJournalWindow` adds an Available Jobs view for Pixel Crushers quests in the `Grantable` state.
 - `PixelCrushersDialogueCommandBridge` exposes `TorisOpenQuestJournal("Available")`, `TorisOpenQuestJournal("Active")`, and `TorisOpenQuestJournal("Completed")` to dialogue scripts.
+- `TorisOpenQuestJournal("Available")` shows all grantable jobs.
+- `TorisOpenQuestJournal("Available:GuideJobs")` shows only grantable quests whose Pixel Crushers `Group` is `GuideJobs`.
+- `TorisOpenQuestJournal("Available:SmithJobs")` shows only grantable quests whose Pixel Crushers `Group` is `SmithJobs`.
+- `TorisOpenQuestJournal("Available:JobBoardJobs")` is the intended pattern for job boards.
 - If no scene quest journal is assigned, the bridge can instantiate the configured quest journal prefab under a runtime overlay Canvas.
 - The current journal extension creates an `Available Jobs` button when the prefab does not already provide one.
 - The final direction should still feel like Pixel Crushers UI, not a separate Toris quest UI.
@@ -421,6 +430,68 @@ This proves the direction.
 The previous temporary `PixelCrushersQuestOfferWindow` popup is no longer the preferred flow.
 
 It can remain briefly as fallback while the journal is being hardened, but the target direction is the Pixel Crushers quest journal flow.
+
+## Gameplay Input Lock Rules
+
+Quest and dialogue UI should freeze gameplay input without disabling UI input.
+
+Current behavior:
+
+- Pixel Crushers conversations request a gameplay input lock through `UIEventsSO`
+- the Pixel Crushers quest journal requests a gameplay input lock while open
+- the temporary quest offer popup requests a gameplay input lock while open
+- `InputManager` stores named gameplay locks in a set
+- movement, interaction, dash, and combat are suppressed while any gameplay lock exists
+- UI actions remain available so dialogue choices, continue buttons, journal tabs, and quest acceptance still work
+- overlapping locks are safe because each system releases only its own lock id
+
+Current lock ids:
+
+- `PixelCrushersDialogue`
+- `PixelCrushersQuestJournal`
+- `PixelCrushersQuestOffers`
+
+Rule for future quest-related UI:
+
+- do not hard-reference the player controller
+- do not add one-off movement flags to dialogue scripts
+- request `UIEventsSO.OnGameplayInputLockRequested` when the UI opens
+- request `UIEventsSO.OnGameplayInputUnlockRequested` when the UI closes or disables
+- use a stable, descriptive lock id such as `JobBoardQuestJournal`
+
+This keeps dialogue, quest journals, job boards, and future Pixel Crushers windows from fighting over player control.
+
+## How To Add An NPC Job Source
+
+Use this pattern for Guide, Smith, and later NPCs.
+
+- create or choose a Pixel Crushers quest group, such as `GuideJobs` or `SmithJobs`
+- set that group on every job quest offered by that source
+- give the group a readable display name in Pixel Crushers
+- add dialogue that marks the job quest `Grantable` when it becomes available
+- open the journal with `TorisOpenQuestJournal("Available:GroupName")`
+- keep the quest progress generic through facts and progress rules
+- route active and turn-in conversations through `PixelCrushersConversationInteractable`
+- configure rewards in `PixelCrushersQuestRewardSetSO`
+- test that another active quest from the same group blocks accepting a second one
+
+Example Smith command:
+
+```lua
+if CurrentQuestState("Smith_Check_Forge") == "unassigned" then
+    SetQuestState("Smith_Check_Forge", "grantable")
+end
+TorisOpenQuestJournal("Available:SmithJobs")
+```
+
+Example Guide command:
+
+```lua
+if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
+    SetQuestState("Guide_Cull_Wolves", "grantable")
+end
+TorisOpenQuestJournal("Available:GuideJobs")
+```
 
 ## Fact Reporting Rules
 
@@ -616,6 +687,9 @@ No component should become `GuideOnlyQuestThing`.
 - Verify Save/Load keeps quest state and counters
 - Verify Safe Haven to Overworld transition keeps quest state
 - Verify Overworld to Safe Haven transition keeps quest state
+- Verify player movement is locked during Pixel Crushers dialogue
+- Verify player movement is locked while the quest journal is open
+- Verify dialogue choices and quest journal buttons still work while gameplay is locked
 
 ### Phase 2 - Turn Job Offers Into A Reusable Source System
 
@@ -627,6 +701,8 @@ No component should become `GuideOnlyQuestThing`.
 - Accept `Grantable` quests from the journal details panel
 - Support multiple offer groups such as `GuideJobs`, `SmithJobs`, `JobBoardJobs`
 - Enforce one active quest per source through the Pixel Crushers quest `Group` field
+- Open source-filtered available jobs with `TorisOpenQuestJournal("Available:GroupName")`
+- Prove Smith has his own job source using `SmithJobs`
 - Hide unavailable jobs based on quest state
 - Show accepted active job from that source
 - Show completed job state correctly

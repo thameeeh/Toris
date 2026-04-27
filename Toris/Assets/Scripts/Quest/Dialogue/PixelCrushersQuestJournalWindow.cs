@@ -1,3 +1,5 @@
+using System;
+using OutlandHaven.UIToolkit;
 using PixelCrushers.DialogueSystem;
 using PixelCrushers;
 using UnityEngine;
@@ -33,8 +35,15 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [SerializeField] private bool _enforceOneActiveQuestPerGroup = true;
     [Tooltip("Label shown when another quest from the same source/group is already active.")]
     [SerializeField] private string _sourceBlockedJobButtonText = "Finish Current Job First";
+    [Header("Gameplay Input Lock")]
+    [Tooltip("Project UI event channel used to freeze Toris gameplay input while this Pixel Crushers quest journal is open.")]
+    [SerializeField] private UIEventsSO _uiEvents;
+    [Tooltip("Named gameplay input lock used while the quest journal is open.")]
+    [SerializeField] private string _gameplayInputLockId = "PixelCrushersQuestJournal";
 
     private bool _availableJobsButtonBound;
+    private bool _gameplayInputLocked;
+    private string _availableJobsGroupFilter = string.Empty;
 
     public bool IsShowingAvailableJobs => currentQuestStateMask == AvailableQuestStateMask;
 
@@ -51,9 +60,27 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         UpdateAvailableJobsViewState();
     }
 
+    public override void OpenWindow(Action openedWindowHandler)
+    {
+        base.OpenWindow(openedWindowHandler);
+        RequestGameplayInputLock();
+    }
+
+    public override void CloseWindow(Action closedWindowHandler)
+    {
+        base.CloseWindow(closedWindowHandler);
+        ReleaseGameplayInputLock();
+    }
+
+    protected override void OnDisable()
+    {
+        ReleaseGameplayInputLock();
+        base.OnDisable();
+    }
+
     public virtual void ClickShowAvailableJobs(object data)
     {
-        ShowQuests(AvailableQuestStateMask);
+        OpenAvailableJobs(data as string);
     }
 
     public virtual void ClickShowAvailableJobsButton()
@@ -63,7 +90,13 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
     public virtual void OpenAvailableJobs()
     {
+        OpenAvailableJobs(string.Empty);
+    }
+
+    public virtual void OpenAvailableJobs(string questGroupFilter)
+    {
         currentQuestStateMask = AvailableQuestStateMask;
+        _availableJobsGroupFilter = NormalizeQuestGroup(questGroupFilter);
 
         if (isOpen)
         {
@@ -72,6 +105,32 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         }
 
         Open();
+    }
+
+    public override void ClickShowActiveQuests(object data)
+    {
+        _availableJobsGroupFilter = string.Empty;
+        base.ClickShowActiveQuests(data);
+    }
+
+    public override void ClickShowCompletedQuests(object data)
+    {
+        _availableJobsGroupFilter = string.Empty;
+        base.ClickShowCompletedQuests(data);
+    }
+
+    public override bool IsQuestVisible(string questTitle)
+    {
+        if (!base.IsQuestVisible(questTitle))
+            return false;
+
+        if (!IsShowingAvailableJobs || string.IsNullOrWhiteSpace(_availableJobsGroupFilter))
+            return true;
+
+        return string.Equals(
+            NormalizeQuestGroup(QuestLog.GetQuestGroup(questTitle)),
+            _availableJobsGroupFilter,
+            StringComparison.Ordinal);
     }
 
     protected override string GetNoQuestsMessage(QuestState questStateMask)
@@ -230,7 +289,10 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
     private static string NormalizeQuestGroup(string questGroup)
     {
-        return string.Equals(questGroup, "nil") ? string.Empty : questGroup;
+        if (string.IsNullOrWhiteSpace(questGroup) || string.Equals(questGroup, "nil"))
+            return string.Empty;
+
+        return questGroup.Trim();
     }
 
     private static void SetButtonText(Button button, string text)
@@ -243,5 +305,23 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         {
             labels[i].text = text;
         }
+    }
+
+    private void RequestGameplayInputLock()
+    {
+        if (_uiEvents == null || _gameplayInputLocked || string.IsNullOrWhiteSpace(_gameplayInputLockId))
+            return;
+
+        _uiEvents.OnGameplayInputLockRequested?.Invoke(_gameplayInputLockId);
+        _gameplayInputLocked = true;
+    }
+
+    private void ReleaseGameplayInputLock()
+    {
+        if (_uiEvents == null || !_gameplayInputLocked || string.IsNullOrWhiteSpace(_gameplayInputLockId))
+            return;
+
+        _uiEvents.OnGameplayInputUnlockRequested?.Invoke(_gameplayInputLockId);
+        _gameplayInputLocked = false;
     }
 }

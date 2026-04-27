@@ -46,3 +46,14 @@ MonoBehaviour:
     EntryNumber: 1
     EntryCompleteState: 4
     QuestCompleteState: 64
+  - FactType: 6
+    ExactId: SmithNPC
+    TypeOrTag:
+    ContextId: MainArea
+    QuestName: Smith_Check_Forge
+    RequireQuestActive: 1
+    ProgressVariableName: SmithCheckForgeTalked
+    RequiredAmount: 1
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64

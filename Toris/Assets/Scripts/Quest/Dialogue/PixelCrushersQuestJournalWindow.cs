@@ -25,6 +25,10 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [SerializeField] private bool _createAvailableJobsButtonIfMissing = true;
     [Tooltip("Label used for the generated Available Jobs button and heading fallback.")]
     [SerializeField] private string _availableJobsButtonText = "Available Jobs";
+    [Tooltip("Label used for the details-panel button that accepts a selected available job.")]
+    [SerializeField] private string _acceptAvailableJobButtonText = "Accept Job";
+    [Tooltip("Quest entry number to activate when accepting a grantable quest.")]
+    [SerializeField] private int _acceptedQuestEntryNumber = 1;
 
     private bool _availableJobsButtonBound;
 
@@ -89,6 +93,25 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         return base.GetSelectedQuestTitleTemplate(quest);
     }
 
+    protected override void RepaintSelectedQuest(QuestInfo quest)
+    {
+        base.RepaintSelectedQuest(quest);
+
+        if (!IsShowingAvailableJobs || quest == null || abandonButtonTemplate == null)
+            return;
+
+        // Basic Pixel Crushers prefabs only provide one action-button template, so reuse it for "Accept Job" until the UI is polished.
+        StandardUIButtonTemplate acceptButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
+        acceptButtonInstance.Assign(_acceptAvailableJobButtonText);
+        detailsPanelContentManager.Add(acceptButtonInstance, questDetailsContentContainer);
+        acceptButtonInstance.button.onClick.AddListener(ClickAcceptAvailableJobButton);
+    }
+
+    public virtual void ClickAcceptAvailableJobButton()
+    {
+        AcceptAvailableJob(selectedQuest);
+    }
+
     private void UpdateAvailableJobsViewState()
     {
         BindAvailableJobsButton();
@@ -141,6 +164,24 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
         _availableJobsButton.onClick.AddListener(ClickShowAvailableJobsButton);
         _availableJobsButtonBound = true;
+    }
+
+    private void AcceptAvailableJob(string questTitle)
+    {
+        if (string.IsNullOrWhiteSpace(questTitle) || QuestLog.GetQuestState(questTitle) != QuestState.Grantable)
+            return;
+
+        QuestLog.SetQuestState(questTitle, QuestState.Active);
+
+        if (_acceptedQuestEntryNumber > 0 && QuestLog.GetQuestEntryCount(questTitle) >= _acceptedQuestEntryNumber)
+            QuestLog.SetQuestEntryState(questTitle, _acceptedQuestEntryNumber, QuestState.Active);
+
+#if UNITY_EDITOR
+        Debug.Log($"[PixelCrushersQuestJournalWindow] Accepted available job '{questTitle}'.", this);
+#endif
+
+        ShowQuests(ActiveQuestStateMask);
+        SelectQuest(questTitle);
     }
 
     private static void SetButtonText(Button button, string text)

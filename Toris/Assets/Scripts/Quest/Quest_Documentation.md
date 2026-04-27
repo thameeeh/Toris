@@ -85,6 +85,82 @@ Toris should not become a second quest runtime.
 
 Toris should provide reusable glue.
 
+## Strategic Extensions
+
+These are not required before the current quest journal and job flow is hardened.
+
+They are important enough to keep in the architecture plan.
+
+### World-State Integration
+
+Quests should eventually be able to change the physical world.
+
+Examples:
+
+- clear a blockage
+- open a gate
+- activate a portal
+- reveal a site
+- disable a blocker after a quest state changes
+
+Preferred direction:
+
+- Pixel Crushers owns the quest state
+- Toris owns the world objects
+- a Toris bridge component observes Pixel Crushers quest state
+- the bridge enables, disables, or swaps world objects based on that state
+
+This should be generic.
+
+Avoid one-off scripts like `OpenSpecificGateAfterGuideQuest`.
+
+Prefer a reusable component such as `QuestStateWorldObjectActivator`.
+
+### Dynamic NPC Presence
+
+NPCs may eventually appear, disappear, or move based on quest state.
+
+This is useful, but should be handled carefully.
+
+Do not make `PixelCrushersConversationInteractable` own NPC visibility.
+
+Preferred direction:
+
+- keep conversation starting separate from NPC visibility
+- use a separate component for quest-state or Lua-condition visibility
+- let that component enable, disable, or swap NPC objects
+
+Possible future component:
+
+- `PixelCrushersConditionVisibility`
+
+This can use a Pixel Crushers Lua condition later, but it is not urgent yet.
+
+### Convention-Based Progress Mapping
+
+Manual `QuestFactProgressRuleSetSO` assets are useful for explicit control.
+
+However, creating a separate rule asset for every simple objective can become a bottleneck.
+
+Preferred direction:
+
+- keep explicit rule sets for complex quests
+- add convention-based progress for simple quest objectives
+- let the progress mapper attempt standard variable names before requiring manual setup
+
+Example convention:
+
+- fact: `Kill / LeaderWolf`
+- quest: `Guide_Cull_Wolves`
+- variable: `Guide_Cull_Wolves_Kill_LeaderWolf`
+- required amount can come from quest fields, entry fields, or a configured convention rule
+
+This should be a hybrid system, not a full replacement.
+
+Use conventions for boring repeated cases.
+
+Use explicit rule assets when the quest needs special behavior.
+
 ## Quest Source Rules
 
 Quests can come from:
@@ -304,6 +380,11 @@ The currently validated flow is:
 - dialogue calls `TorisOpenQuestJournal("Available")`
 - Toris opens the Pixel Crushers quest journal in Available Jobs mode
 - the journal shows Pixel Crushers quests in the `Grantable` state
+- selecting a grantable job shows its details
+- the details panel shows an `Accept Job` button
+- accepting the job changes the quest from `Grantable` to `Active`
+- accepting the job activates the configured first quest entry
+- the journal switches to Active quests and selects the accepted job
 - the generated `Available Jobs` button lets the player return to available jobs after viewing Active or Completed quests
 - the same journal can switch between Available Jobs, Active quests, and Completed quests
 
@@ -526,7 +607,7 @@ No component should become `GuideOnlyQuestThing`.
 - Show `Grantable` quests as available jobs
 - Add an Available Jobs tab/button to the Pixel Crushers quest journal
 - Open the quest journal from dialogue with `TorisOpenQuestJournal`
-- Add or extend journal behavior for accepting `Grantable` quests
+- Accept `Grantable` quests from the journal details panel
 - Support multiple offer groups such as `GuideJobs`, `SmithJobs`, `JobBoardJobs`
 - Enforce one active quest per source
 - Hide unavailable jobs based on quest state
@@ -569,6 +650,8 @@ No component should become `GuideOnlyQuestThing`.
 - Support quests with multiple active objectives
 - Support facts progressing multiple active quests
 - Support retroactive progress only when explicitly configured
+- Add convention-based progress mapping for simple repeated objectives
+- Keep explicit rule sets for complex or special-case quest behavior
 
 ### Phase 5 - Rewards And Unlocks
 
@@ -581,6 +664,8 @@ No component should become `GuideOnlyQuestThing`.
 - Add dialogue unlock rewards
 - Add future quest unlock rewards
 - Add simple world-state unlock rewards if feasible
+- Add reusable world-state activators for quest-state-driven world changes
+- Avoid one-off world unlock scripts tied to specific quests
 - Ensure rewards cannot duplicate after save/load
 
 ### Phase 6 - Dialogue Authoring Workflow
@@ -611,6 +696,7 @@ No component should become `GuideOnlyQuestThing`.
 - Add 3-5 meaningful story beats
 - Avoid rushing the main story in a few throwaway lines
 - Prove NPC-to-NPC story ownership transfer works
+- Consider dynamic NPC presence only after the basic story and job source flow is stable
 
 ### Phase 8 - Documentation For Future Content
 

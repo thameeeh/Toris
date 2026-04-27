@@ -101,12 +101,6 @@ public static class PixelCrushersQuestBridge
         return nextValue;
     }
 
-    // Kept as a compatibility wrapper while enemy producers move onto the shared fact model.
-    public static void ReportEnemyKilled(string enemyId)
-    {
-        PixelCrushersQuestFactReporter.Report(QuestFact.Kill(enemyId));
-    }
-
     public static void StartConversation(string conversationTitle, Transform actor, Transform conversant)
     {
         if (string.IsNullOrWhiteSpace(conversationTitle))

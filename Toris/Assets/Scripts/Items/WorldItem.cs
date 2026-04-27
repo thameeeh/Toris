@@ -1,5 +1,3 @@
-using OutlandHaven.UIToolkit;
-using System;
 using UnityEngine;
 
 namespace OutlandHaven.Inventory
@@ -11,6 +9,16 @@ namespace OutlandHaven.Inventory
         [Header("Data")]
         [SerializeField] private InventoryItemSO _itemData;
         [SerializeField] private int _quantity = 1;
+
+        [Header("Quest Facts")]
+        [Tooltip("Enable if picking up this item should report a PickUp fact for Pixel Crushers quest progress.")]
+        [SerializeField] private bool _reportQuestPickUpFact = false;
+        [Tooltip("Stable exact item ID reported to quest rules. Example: LostRelic. Do not rely on GameObject names.")]
+        [SerializeField] private string _questItemExactId = string.Empty;
+        [Tooltip("Optional item group/type reported to quest rules. Example: Potion, Herb, QuestItem.")]
+        [SerializeField] private string _questItemTypeOrTag = string.Empty;
+        [Tooltip("Optional pickup context for quest rules. Example: Plains, MainArea, Tutorial.")]
+        [SerializeField] private string _questItemContextId = string.Empty;
 
         public Vector3 InteractionPosition => transform.position + Vector3.up * 1.0f;
 
@@ -33,16 +41,16 @@ namespace OutlandHaven.Inventory
             ApplyVisuals();
         }
 
-        void OnValidate()
+#if UNITY_EDITOR
+        private void OnValidate()
         {
             if (Application.isPlaying)
                 return;
 
             if (_itemData == null)
-            {
                 Debug.LogWarning("<color=red>WorldItem</color> has no item data assigned!", this);
-            }
         }
+#endif
 
         public bool Interact(InventoryManager targetContainer)
         {
@@ -56,12 +64,15 @@ namespace OutlandHaven.Inventory
             if (success)
             {
                 // Visual feedback, sound effects go here
+                ReportQuestPickUpFactIfNeeded();
                 Destroy(gameObject);
                 return true;
             }
             else
             {
-                Debug.Log("Inventory is full!");
+#if UNITY_EDITOR
+                Debug.Log("Inventory is full!", this);
+#endif
                 return false;
             }
         }
@@ -78,6 +89,21 @@ namespace OutlandHaven.Inventory
 
             _renderer.sprite = _itemData.Icon;
             name = $"WorldItem_{_itemData.ItemName}";
+        }
+
+        private void ReportQuestPickUpFactIfNeeded()
+        {
+            if (!_reportQuestPickUpFact)
+                return;
+
+            if (string.IsNullOrWhiteSpace(_questItemExactId) && string.IsNullOrWhiteSpace(_questItemTypeOrTag))
+                return;
+
+            PixelCrushersQuestFactReporter.Report(QuestFact.PickUp(
+                _questItemExactId,
+                _questItemTypeOrTag,
+                _quantity,
+                _questItemContextId));
         }
     }
 

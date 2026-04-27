@@ -3,12 +3,13 @@ using OutlandHaven.Inventory;
 using OutlandHaven.UIToolkit;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Registers Toris gameplay commands that Pixel Crushers dialogue can call from conversation scripts.
 /// Keep these commands generic so dialogue content requests gameplay actions without owning gameplay logic.
 /// Add one active instance in a scene that contains the Dialogue Manager.
-/// Pixel Crushers scripts can call TorisOpenScreen, TorisCloseScreen, TorisReportFact, and TorisOpenQuestOffers.
+/// Pixel Crushers scripts can call TorisOpenScreen, TorisCloseScreen, TorisReportFact, TorisOpenQuestOffers, and TorisOpenQuestJournal.
 /// </summary>
 [DisallowMultipleComponent]
 public class PixelCrushersDialogueCommandBridge : MonoBehaviour
@@ -17,16 +18,30 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
     private const string CloseScreenCommandName = "TorisCloseScreen";
     private const string ReportFactCommandName = "TorisReportFact";
     private const string OpenQuestOffersCommandName = "TorisOpenQuestOffers";
+    private const string OpenQuestJournalCommandName = "TorisOpenQuestJournal";
 
     [Tooltip("Project UI event channel used to open or close Toris UI screens from dialogue commands.")]
     [SerializeField] private UIEventsSO _uiEvents;
     [Tooltip("Named commands for screens that need extra payloads, such as opening a shop with a specific NPC inventory.")]
     [SerializeField] private PixelCrushersDialogueScreenCommand[] _screenCommands = Array.Empty<PixelCrushersDialogueScreenCommand>();
+    [Tooltip("Optional scene instance of the Pixel Crushers quest journal.")]
+    [SerializeField] private PixelCrushersQuestJournalWindow _questJournalWindow;
+    [Tooltip("Optional quest journal prefab to instantiate if no scene instance is assigned.")]
+    [SerializeField] private PixelCrushersQuestJournalWindow _questJournalPrefab;
+    [Tooltip("Optional Canvas parent for the runtime quest journal prefab. Leave empty to create a dedicated runtime Canvas.")]
+    [SerializeField] private Canvas _questJournalCanvas;
+    [Tooltip("Create a dedicated runtime Canvas when using a quest journal prefab without a scene Canvas parent.")]
+    [SerializeField] private bool _createRuntimeQuestJournalCanvas = true;
+    [Tooltip("Sorting order for the dedicated runtime quest journal Canvas.")]
+    [SerializeField] private int _runtimeQuestJournalSortingOrder = 200;
 
 #if UNITY_EDITOR
     [Tooltip("Logs dialogue command calls and invalid command names. Editor only.")]
     [SerializeField] private bool _debugCommands = true;
 #endif
+
+    private PixelCrushersQuestJournalWindow _runtimeQuestJournal;
+    private Canvas _runtimeQuestJournalCanvas;
 
     private void OnEnable()
     {
@@ -34,6 +49,7 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         Lua.RegisterFunction(CloseScreenCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisCloseScreen(string.Empty)));
         Lua.RegisterFunction(ReportFactCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisReportFact(string.Empty, string.Empty, string.Empty, 1D, string.Empty)));
         Lua.RegisterFunction(OpenQuestOffersCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestOffers(string.Empty)));
+        Lua.RegisterFunction(OpenQuestJournalCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestJournal(string.Empty)));
     }
 
     private void OnDisable()
@@ -42,6 +58,7 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         Lua.UnregisterFunction(CloseScreenCommandName);
         Lua.UnregisterFunction(ReportFactCommandName);
         Lua.UnregisterFunction(OpenQuestOffersCommandName);
+        Lua.UnregisterFunction(OpenQuestJournalCommandName);
     }
 
     public void TorisOpenScreen(string commandOrScreenName)
@@ -106,6 +123,96 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
 
         offerWindow.Open(offerGroupId);
         LogDebug($"Opened quest offer group '{offerGroupId}'.");
+    }
+
+    public void TorisOpenQuestJournal(string mode)
+    {
+        PixelCrushersQuestJournalWindow questJournal = ResolveQuestJournalWindow();
+        if (questJournal == null)
+        {
+            LogWarning("Cannot open quest journal because no scene instance or prefab is assigned.");
+            return;
+        }
+
+        string normalizedMode = string.IsNullOrWhiteSpace(mode) ? "Active" : mode.Trim();
+        if (IsQuestJournalMode(normalizedMode, "Available") || IsQuestJournalMode(normalizedMode, "Jobs") || IsQuestJournalMode(normalizedMode, "Grantable"))
+        {
+            questJournal.OpenAvailableJobs();
+            LogDebug("Opened quest journal in Available Jobs mode.");
+            return;
+        }
+
+        if (IsQuestJournalMode(normalizedMode, "Active"))
+        {
+            if (!questJournal.isOpen)
+                questJournal.Open();
+
+            questJournal.ClickShowActiveQuests(null);
+            LogDebug("Opened quest journal in Active mode.");
+            return;
+        }
+
+        if (IsQuestJournalMode(normalizedMode, "Completed"))
+        {
+            if (!questJournal.isOpen)
+                questJournal.Open();
+
+            questJournal.ClickShowCompletedQuests(null);
+            LogDebug("Opened quest journal in Completed mode.");
+            return;
+        }
+
+        LogWarning($"Unknown quest journal mode '{mode}'. Use Available, Active, or Completed.");
+    }
+
+    private PixelCrushersQuestJournalWindow ResolveQuestJournalWindow()
+    {
+        if (_questJournalWindow != null)
+            return _questJournalWindow;
+
+        if (_runtimeQuestJournal != null)
+            return _runtimeQuestJournal;
+
+        if (_questJournalPrefab == null)
+            return null;
+
+        Transform journalParent = ResolveQuestJournalParent();
+        _runtimeQuestJournal = journalParent != null
+            ? Instantiate(_questJournalPrefab, journalParent, false)
+            : Instantiate(_questJournalPrefab);
+        _runtimeQuestJournal.name = _questJournalPrefab.name;
+        return _runtimeQuestJournal;
+    }
+
+    private Transform ResolveQuestJournalParent()
+    {
+        if (_questJournalCanvas != null)
+            return _questJournalCanvas.transform;
+
+        if (!_createRuntimeQuestJournalCanvas)
+            return null;
+
+        if (_runtimeQuestJournalCanvas != null)
+            return _runtimeQuestJournalCanvas.transform;
+
+        GameObject canvasObject = new GameObject("Runtime Quest Journal Canvas");
+        _runtimeQuestJournalCanvas = canvasObject.AddComponent<Canvas>();
+        _runtimeQuestJournalCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        _runtimeQuestJournalCanvas.sortingOrder = _runtimeQuestJournalSortingOrder;
+
+        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920, 1080);
+        scaler.matchWidthOrHeight = 0.5f;
+
+        canvasObject.AddComponent<GraphicRaycaster>();
+        LogDebug("Created runtime Canvas for the quest journal prefab.");
+        return _runtimeQuestJournalCanvas.transform;
+    }
+
+    private static bool IsQuestJournalMode(string value, string expected)
+    {
+        return string.Equals(value, expected, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool TryFindScreenCommand(string commandId, out PixelCrushersDialogueScreenCommand command)

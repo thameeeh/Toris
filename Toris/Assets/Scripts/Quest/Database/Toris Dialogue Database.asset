@@ -577,7 +577,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: SetVariable("Opening_PlayerIntroChoice", "Silent")
+      userScript: Variable["Opening_PlayerIntroChoice"] = "Silent"
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -632,7 +632,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: SetVariable("Opening_PlayerIntroChoice", "CastAway")
+      userScript: Variable["Opening_PlayerIntroChoice"] = "CastAway"
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1026,7 +1026,7 @@ MonoBehaviour:
 
         SetQuestEntryState("Kill_3_Leader_Wolves", 1, "active")
 
-        SetVariable("LeaderWolfKills", 0)'
+        Variable["LeaderWolfKills"] = 0'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1507,7 +1507,7 @@ MonoBehaviour:
 
         if CurrentQuestState("Guide_Talk_To_Smith") == "unassigned" then
         SetQuestState("Guide_Talk_To_Smith", "active"); SetQuestEntryState("Guide_Talk_To_Smith",
-        1, "active"); SetVariable("TalkedToSmith", 0) end'
+        1, "active"); Variable["TalkedToSmith"] = 0 end'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1663,7 +1663,7 @@ MonoBehaviour:
       conditionsString: 
       userScript: if CurrentQuestState("Guide_Talk_To_Smith") == "unassigned" then
         SetQuestState("Guide_Talk_To_Smith", "active"); SetQuestEntryState("Guide_Talk_To_Smith",
-        1, "active"); SetVariable("TalkedToSmith", 0) end
+        1, "active"); Variable["TalkedToSmith"] = 0 end
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -2640,7 +2640,14 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript: 'SetQuestState("Guide_Talk_To_Smith", "success")
+
+        Variable["SafeHavenSideWorkUnlocked"] = 1
+
+        if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
+        SetQuestState("Guide_Cull_Wolves", "grantable") end
+
+        TorisOpenQuestJournal("Available")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -2747,7 +2754,10 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Guide_Talk_To_Smith", "success")
 
-        SetVariable("SafeHavenSideWorkUnlocked", 1)'
+        Variable["SafeHavenSideWorkUnlocked"] = 1
+
+        if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
+        SetQuestState("Guide_Cull_Wolves", "grantable") end'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -2799,7 +2809,10 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Guide_Talk_To_Smith", "success")
 
-        SetVariable("SafeHavenSideWorkUnlocked", 1)'
+        Variable["SafeHavenSideWorkUnlocked"] = 1
+
+        if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
+        SetQuestState("Guide_Cull_Wolves", "grantable") end'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3020,7 +3033,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript: TorisOpenQuestJournal("Available")
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3125,7 +3138,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: TorisOpenQuestOffers("GuideJobs")
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []

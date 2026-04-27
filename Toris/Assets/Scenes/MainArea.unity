@@ -1617,6 +1617,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersDialogueCommandBridge
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _screenCommands: []
+  _questJournalWindow: {fileID: 0}
+  _questJournalPrefab: {fileID: 11400838, guid: cbafa25782ae5b0459de4d1242678002, type: 3}
   _debugCommands: 1
 --- !u!114 &1212992767
 MonoBehaviour:

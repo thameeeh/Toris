@@ -501,6 +501,41 @@ end
 TorisOpenQuestJournal("Available:GuideJobs")
 ```
 
+## How To Add A Job Board Source
+
+Use this pattern for a non-NPC job board that acts as the town's fast route for accepting work.
+
+- create a board GameObject in the scene
+- add `PixelCrushersQuestJournalInteractable`
+- assign the project `UIEventsSO`
+- set `Journal Mode` to `Available:All`
+- leave `Quests To Mark Grantable` empty if quests are unlocked by story/NPC logic
+- add quest names to `Quests To Mark Grantable` only for board-owned public jobs
+- add a child trigger collider
+- add `InteractableProximity` to the trigger object
+- make sure the trigger collider has `Is Trigger` enabled
+- test by walking up to the board and pressing interact
+
+Job board behavior:
+
+- shows every currently grantable job when opened with `Available:All`
+- allows accepting jobs from any source
+- does not replace NPC turn-in dialogue
+- does not need deep dialogue
+- helps reduce running back and forth just to accept available work
+
+If a board should only show board-specific jobs, use:
+
+```lua
+TorisOpenQuestJournal("Available:JobBoardJobs")
+```
+
+If a board should be the all-source town work hub, use:
+
+```lua
+TorisOpenQuestJournal("Available:All")
+```
+
 ## Fact Reporting Rules
 
 Gameplay systems report facts.
@@ -663,6 +698,7 @@ Current Toris-side bridge components:
 - `PixelCrushersQuestOfferWindow`
 - `PixelCrushersQuestBridge`
 - `PixelCrushersQuestFactReporter`
+- `PixelCrushersQuestJournalInteractable`
 - `PixelCrushersQuestJournalWindow`
 - `PixelCrushersQuestProgressMapper`
 - `PixelCrushersQuestRewardAdapter`
@@ -673,6 +709,7 @@ Current Toris-side bridge components:
 - `QuestFactSceneReporter`
 - `QuestFactTriggerReporter`
 - `DialogueNpcProximity`
+- `InteractableProximity`
 
 These must remain generic.
 

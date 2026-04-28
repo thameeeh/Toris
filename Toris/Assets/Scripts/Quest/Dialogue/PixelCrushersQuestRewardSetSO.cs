@@ -39,6 +39,8 @@ public class PixelCrushersQuestRewardDefinition
     public string QuestName = string.Empty;
     [Tooltip("Pixel Crushers Lua variable used to remember that this reward was already paid. Leave blank to use QuestName_RewardsGranted.")]
     public string RewardGrantedVariableName = string.Empty;
+    [Tooltip("How this reward is claimed after the quest reaches success.")]
+    public PixelCrushersQuestRewardClaimMode ClaimMode = PixelCrushersQuestRewardClaimMode.AutomaticOnSuccess;
 
     [Header("Toris Rewards")]
     [Tooltip("Gold added to the player when this reward is granted.")]
@@ -64,4 +66,19 @@ public class PixelCrushersQuestRewardDefinition
                 : $"{QuestName}_RewardsGranted";
         }
     }
+
+    public string ResolvedGoldRewardGrantedVariableName => $"{ResolvedRewardGrantedVariableName}_Gold";
+
+    public string ResolvedExperienceRewardGrantedVariableName => $"{ResolvedRewardGrantedVariableName}_Experience";
+
+    public string ResolvedItemRewardGrantedVariableName => $"{ResolvedRewardGrantedVariableName}_Item";
+}
+
+public enum PixelCrushersQuestRewardClaimMode
+{
+    [Tooltip("Attempt to grant rewards when the quest reaches success. Any blocked pieces can still be collected from the quest journal.")]
+    AutomaticOnSuccess = 0,
+
+    [Tooltip("Do not auto-grant. The player must collect this reward from the quest journal after the quest reaches success.")]
+    ManualFromJournal = 1
 }

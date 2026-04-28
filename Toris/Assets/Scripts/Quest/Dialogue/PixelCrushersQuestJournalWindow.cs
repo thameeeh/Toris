@@ -37,6 +37,9 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [SerializeField] private string _sourceBlockedJobButtonText = "Finish Current Job First";
     [Tooltip("Label shown in the global quest book when an available job can be inspected but must be accepted at its source.")]
     [SerializeField] private string _sourceRequiredJobButtonText = "Visit Job Source";
+    [Header("Reward Claiming")]
+    [Tooltip("Label used for the details-panel button that collects unclaimed rewards from completed quests.")]
+    [SerializeField] private string _collectRewardsButtonText = "Collect Rewards";
     [Header("Gameplay Input Lock")]
     [Tooltip("Project UI event channel used to freeze Toris gameplay input while this Pixel Crushers quest journal is open.")]
     [SerializeField] private UIEventsSO _uiEvents;
@@ -191,9 +194,40 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     {
         base.RepaintSelectedQuest(quest);
 
-        if (!IsShowingAvailableJobs || quest == null || abandonButtonTemplate == null)
+        if (quest == null || abandonButtonTemplate == null)
             return;
 
+        if (IsShowingAvailableJobs)
+        {
+            AddAvailableJobActionButton(quest);
+            return;
+        }
+
+        AddCollectRewardsButtonIfNeeded(quest);
+    }
+
+    public virtual void ClickCollectSelectedQuestRewardsButton()
+    {
+        string questTitle = selectedQuest;
+        if (string.IsNullOrWhiteSpace(questTitle))
+            return;
+
+        bool fullyCollected = PixelCrushersQuestRewardAdapter.TryCollectRewards(questTitle);
+
+#if UNITY_EDITOR
+        Debug.Log(
+            fullyCollected
+                ? $"[PixelCrushersQuestJournalWindow] Collected rewards for completed quest '{questTitle}'."
+                : $"[PixelCrushersQuestJournalWindow] Rewards for completed quest '{questTitle}' are still pending.",
+            this);
+#endif
+
+        // Refresh in place. Calling SelectQuest again can toggle the selected quest off in Pixel Crushers.
+        ShowQuests(currentQuestStateMask);
+    }
+
+    private void AddAvailableJobActionButton(QuestInfo quest)
+    {
         // Basic Pixel Crushers prefabs only provide one action-button template, so reuse it for "Accept Job" until the UI is polished.
         StandardUIButtonTemplate acceptButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
         bool canAcceptFromSource = _canAcceptAvailableJobs && CanAcceptQuestFromSource(quest.Title, out _);
@@ -203,6 +237,17 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
         if (canAcceptFromSource)
             acceptButtonInstance.button.onClick.AddListener(ClickAcceptAvailableJobButton);
+    }
+
+    private void AddCollectRewardsButtonIfNeeded(QuestInfo quest)
+    {
+        if (!PixelCrushersQuestRewardAdapter.HasUnclaimedRewards(quest.Title))
+            return;
+
+        StandardUIButtonTemplate collectButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
+        collectButtonInstance.Assign(_collectRewardsButtonText);
+        detailsPanelContentManager.Add(collectButtonInstance, questDetailsContentContainer);
+        collectButtonInstance.button.onClick.AddListener(ClickCollectSelectedQuestRewardsButton);
     }
 
     public virtual void ClickAcceptAvailableJobButton()

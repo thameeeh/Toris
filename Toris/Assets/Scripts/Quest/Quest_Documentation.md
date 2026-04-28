@@ -597,6 +597,36 @@ If the inventory is full:
 - keep the quest reward claim available until the missing rewards can be claimed
 - do not exhaust the claim button while required rewards are still blocked
 
+Current reward adapter behavior:
+
+- `PixelCrushersQuestRewardAdapter` grants gold, XP, and item rewards as separate guarded reward pieces
+- the full reward guard is only marked after every configured reward piece has been granted
+- gold and XP are not duplicated while an item reward is still pending
+- reward definitions choose whether rewards are attempted automatically when the quest reaches `Success` or claimed manually from the quest journal
+- automatic rewards are attempted when the quest changes to `Success`
+- if automatic rewards are blocked, the remaining reward pieces can be collected from the completed quest in the journal
+- manual rewards are claimed from the completed quest in the journal with `Collect Rewards`
+- item rewards are currently all-or-nothing for the configured item stack because `InventoryManager.AddItem` is an all-or-nothing transaction
+- if the item stack cannot fit, the adapter logs `Inventory full!` in the editor and keeps the item reward pending
+- true partial item reward insertion should be handled as a separate inventory-system extension if needed later
+- `PixelCrushersQuestJournalWindow` shows `Collect Rewards` on completed quests that have unclaimed reward pieces
+
+Reward guard variables:
+
+- full reward guard defaults to `QuestName_RewardsGranted`
+- gold piece guard uses `QuestName_RewardsGranted_Gold`
+- XP piece guard uses `QuestName_RewardsGranted_Experience`
+- item piece guard uses `QuestName_RewardsGranted_Item`
+
+If a custom `Reward Granted Variable Name` is set on a reward definition, the piece guards are based on that custom name.
+
+Reward claim modes:
+
+- `Automatic On Success` should be used for normal NPC turn-ins where the dialogue sets the quest to `Success`
+- `Manual From Journal` should be used for quests that complete without an NPC reward moment, such as auto-complete jobs or world objectives
+- blocked automatic rewards still become journal-claimable so inventory-full cases do not lose rewards
+- the journal collect button should be treated as a recovery and manual-claim path, not as a second quest runtime
+
 ## Quest Completion Rules
 
 Some quests require returning to an NPC.

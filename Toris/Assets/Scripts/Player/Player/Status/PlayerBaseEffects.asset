@@ -16,8 +16,8 @@ MonoBehaviour:
   healthRegenPerSecond: 0
   maxStamina: 488
   staminaRegenPerSecond: 50
-  moveSpeedMultiplier: 2.5
-  dashSpeedMultiplier: 2.5
+  moveSpeedMultiplier: 3
+  dashSpeedMultiplier: 3
   outgoingDamageMultiplier: 1
   incomingDamageMultiplier: 1
   isPoisonImmune: 0

@@ -644,6 +644,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ToggleQuestJournal",
+                    "type": "Button",
+                    "id": "7a7c3627-a094-4d3d-8c09-47f98ef9b1d4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Point",
                     "type": "PassThrough",
                     "id": "32b35790-4ed0-4e9a-aa41-69ac6d629449",
@@ -1024,6 +1033,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "ToggleSkills",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e38f345b-57d2-4767-82fb-15197a68ce28",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleQuestJournal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

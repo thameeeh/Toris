@@ -2746,7 +2746,7 @@ MonoBehaviour:
         if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
         SetQuestState("Guide_Cull_Wolves", "grantable") end
 
-        TorisOpenQuestJournal("Available")'
+        TorisOpenQuestJournal("Available:GuideJobs")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3132,7 +3132,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: TorisOpenQuestJournal("Available")
+      userScript: TorisOpenQuestJournal("Available:GuideJobs")
       onExecute:
         m_PersistentCalls:
           m_Calls: []

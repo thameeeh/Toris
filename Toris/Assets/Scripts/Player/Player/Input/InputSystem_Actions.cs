@@ -730,6 +730,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ToggleQuestJournal"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a7c3627-a094-4d3d-8c09-47f98ef9b1d4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Point"",
                     ""type"": ""PassThrough"",
                     ""id"": ""32b35790-4ed0-4e9a-aa41-69ac6d629449"",
@@ -1115,6 +1124,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e38f345b-57d2-4767-82fb-15197a68ce28"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleQuestJournal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c52c8e0b-8179-41d3-b8a1-d149033bbe86"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
@@ -1336,6 +1356,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_ToggleInventory = m_UI.FindAction("ToggleInventory", throwIfNotFound: true);
         m_UI_ToggleSkills = m_UI.FindAction("ToggleSkills", throwIfNotFound: true);
+        m_UI_ToggleQuestJournal = m_UI.FindAction("ToggleQuestJournal", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
@@ -1680,6 +1701,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_ToggleInventory;
     private readonly InputAction m_UI_ToggleSkills;
+    private readonly InputAction m_UI_ToggleQuestJournal;
     private readonly InputAction m_UI_Point;
     private readonly InputAction m_UI_Click;
     private readonly InputAction m_UI_RightClick;
@@ -1722,6 +1744,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/ToggleSkills".
         /// </summary>
         public InputAction @ToggleSkills => m_Wrapper.m_UI_ToggleSkills;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/ToggleQuestJournal".
+        /// </summary>
+        public InputAction @ToggleQuestJournal => m_Wrapper.m_UI_ToggleQuestJournal;
         /// <summary>
         /// Provides access to the underlying input action "UI/Point".
         /// </summary>
@@ -1794,6 +1820,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleSkills.started += instance.OnToggleSkills;
             @ToggleSkills.performed += instance.OnToggleSkills;
             @ToggleSkills.canceled += instance.OnToggleSkills;
+            @ToggleQuestJournal.started += instance.OnToggleQuestJournal;
+            @ToggleQuestJournal.performed += instance.OnToggleQuestJournal;
+            @ToggleQuestJournal.canceled += instance.OnToggleQuestJournal;
             @Point.started += instance.OnPoint;
             @Point.performed += instance.OnPoint;
             @Point.canceled += instance.OnPoint;
@@ -1844,6 +1873,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleSkills.started -= instance.OnToggleSkills;
             @ToggleSkills.performed -= instance.OnToggleSkills;
             @ToggleSkills.canceled -= instance.OnToggleSkills;
+            @ToggleQuestJournal.started -= instance.OnToggleQuestJournal;
+            @ToggleQuestJournal.performed -= instance.OnToggleQuestJournal;
+            @ToggleQuestJournal.canceled -= instance.OnToggleQuestJournal;
             @Point.started -= instance.OnPoint;
             @Point.performed -= instance.OnPoint;
             @Point.canceled -= instance.OnPoint;
@@ -2125,6 +2157,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleSkills(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleQuestJournal" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleQuestJournal(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Point" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

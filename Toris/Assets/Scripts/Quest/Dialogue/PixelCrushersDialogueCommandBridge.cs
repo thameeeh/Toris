@@ -57,6 +57,10 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         Lua.RegisterFunction(ReportFactCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisReportFact(string.Empty, string.Empty, string.Empty, 1D, string.Empty)));
         Lua.RegisterFunction(OpenQuestOffersCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestOffers(string.Empty)));
         Lua.RegisterFunction(OpenQuestJournalCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestJournal(string.Empty)));
+
+        if (_uiEvents != null)
+            _uiEvents.OnQuestJournalOpenRequested += HandleQuestJournalOpenRequested;
+
         TrySubscribeDialogueEvents();
     }
 
@@ -69,6 +73,10 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
     {
         ReleaseDialogueGameplayInputLock();
         UnsubscribeDialogueEvents();
+
+        if (_uiEvents != null)
+            _uiEvents.OnQuestJournalOpenRequested -= HandleQuestJournalOpenRequested;
+
         Lua.UnregisterFunction(OpenScreenCommandName);
         Lua.UnregisterFunction(CloseScreenCommandName);
         Lua.UnregisterFunction(ReportFactCommandName);
@@ -161,19 +169,14 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
 
         if (IsQuestJournalMode(normalizedMode, "Active"))
         {
-            if (!questJournal.isOpen)
-                questJournal.Open();
-
-            questJournal.ClickShowActiveQuests(null);
+            questJournal.OpenQuestBook();
             LogDebug("Opened quest journal in Active mode.");
             return;
         }
 
         if (IsQuestJournalMode(normalizedMode, "Completed"))
         {
-            if (!questJournal.isOpen)
-                questJournal.Open();
-
+            questJournal.OpenQuestBook();
             questJournal.ClickShowCompletedQuests(null);
             LogDebug("Opened quest journal in Completed mode.");
             return;
@@ -266,6 +269,11 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void HandleQuestJournalOpenRequested(string mode)
+    {
+        TorisOpenQuestJournal(mode);
     }
 
     private void TrySubscribeDialogueEvents()

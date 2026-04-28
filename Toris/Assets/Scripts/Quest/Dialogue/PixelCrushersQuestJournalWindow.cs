@@ -35,6 +35,8 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [SerializeField] private bool _enforceOneActiveQuestPerGroup = true;
     [Tooltip("Label shown when another quest from the same source/group is already active.")]
     [SerializeField] private string _sourceBlockedJobButtonText = "Finish Current Job First";
+    [Tooltip("Label shown in the global quest book when an available job can be inspected but must be accepted at its source.")]
+    [SerializeField] private string _sourceRequiredJobButtonText = "Visit Job Source";
     [Header("Gameplay Input Lock")]
     [Tooltip("Project UI event channel used to freeze Toris gameplay input while this Pixel Crushers quest journal is open.")]
     [SerializeField] private UIEventsSO _uiEvents;
@@ -43,6 +45,7 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
     private bool _availableJobsButtonBound;
     private bool _gameplayInputLocked;
+    private bool _canAcceptAvailableJobs;
     private string _availableJobsGroupFilter = string.Empty;
 
     public bool IsShowingAvailableJobs => currentQuestStateMask == AvailableQuestStateMask;
@@ -80,7 +83,21 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
     public virtual void ClickShowAvailableJobs(object data)
     {
-        OpenAvailableJobs(data as string);
+        if (data is string questGroupFilter)
+        {
+            OpenAvailableJobs(questGroupFilter);
+            return;
+        }
+
+        currentQuestStateMask = AvailableQuestStateMask;
+
+        if (isOpen)
+        {
+            ShowQuests(AvailableQuestStateMask);
+            return;
+        }
+
+        Open();
     }
 
     public virtual void ClickShowAvailableJobsButton()
@@ -96,7 +113,8 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     public virtual void OpenAvailableJobs(string questGroupFilter)
     {
         currentQuestStateMask = AvailableQuestStateMask;
-        _availableJobsGroupFilter = NormalizeQuestGroup(questGroupFilter);
+        _canAcceptAvailableJobs = true;
+        _availableJobsGroupFilter = NormalizeAvailableJobsGroupFilter(questGroupFilter);
 
         if (isOpen)
         {
@@ -107,15 +125,28 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         Open();
     }
 
+    public virtual void OpenQuestBook()
+    {
+        currentQuestStateMask = ActiveQuestStateMask;
+        _canAcceptAvailableJobs = false;
+        _availableJobsGroupFilter = string.Empty;
+
+        if (isOpen)
+        {
+            ShowQuests(ActiveQuestStateMask);
+            return;
+        }
+
+        Open();
+    }
+
     public override void ClickShowActiveQuests(object data)
     {
-        _availableJobsGroupFilter = string.Empty;
         base.ClickShowActiveQuests(data);
     }
 
     public override void ClickShowCompletedQuests(object data)
     {
-        _availableJobsGroupFilter = string.Empty;
         base.ClickShowCompletedQuests(data);
     }
 
@@ -165,8 +196,8 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
         // Basic Pixel Crushers prefabs only provide one action-button template, so reuse it for "Accept Job" until the UI is polished.
         StandardUIButtonTemplate acceptButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
-        bool canAcceptFromSource = CanAcceptQuestFromSource(quest.Title, out _);
-        acceptButtonInstance.Assign(canAcceptFromSource ? _acceptAvailableJobButtonText : _sourceBlockedJobButtonText);
+        bool canAcceptFromSource = _canAcceptAvailableJobs && CanAcceptQuestFromSource(quest.Title, out _);
+        acceptButtonInstance.Assign(GetAvailableJobActionText(canAcceptFromSource));
         detailsPanelContentManager.Add(acceptButtonInstance, questDetailsContentContainer);
         acceptButtonInstance.button.interactable = canAcceptFromSource;
 
@@ -287,12 +318,32 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         return true;
     }
 
+    private string GetAvailableJobActionText(bool canAcceptFromSource)
+    {
+        if (canAcceptFromSource)
+            return _acceptAvailableJobButtonText;
+
+        return _canAcceptAvailableJobs ? _sourceBlockedJobButtonText : _sourceRequiredJobButtonText;
+    }
+
     private static string NormalizeQuestGroup(string questGroup)
     {
         if (string.IsNullOrWhiteSpace(questGroup) || string.Equals(questGroup, "nil"))
             return string.Empty;
 
         return questGroup.Trim();
+    }
+
+    private static string NormalizeAvailableJobsGroupFilter(string questGroup)
+    {
+        string normalizedGroup = NormalizeQuestGroup(questGroup);
+        if (string.Equals(normalizedGroup, "*", StringComparison.Ordinal)
+            || string.Equals(normalizedGroup, "All", StringComparison.OrdinalIgnoreCase))
+        {
+            return string.Empty;
+        }
+
+        return normalizedGroup;
     }
 
     private static void SetButtonText(Button button, string text)

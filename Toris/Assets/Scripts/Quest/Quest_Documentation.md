@@ -201,9 +201,10 @@ Job board flow:
 
 - player walks up to a job board
 - player interacts
-- quest journal / available jobs view opens
-- player chooses a job from that board
+- quest journal / available jobs view opens in all-source accept mode
+- player chooses any currently grantable public job
 - the job board does not need deep dialogue
+- the player still returns to the relevant NPC/source for dialogue and turn-in when the quest requires it
 
 Example polish objective:
 
@@ -366,14 +367,20 @@ Important limitation:
 - `TorisOpenQuestJournal("Available")` shows all grantable jobs.
 - `TorisOpenQuestJournal("Available:GuideJobs")` shows only grantable quests whose Pixel Crushers `Group` is `GuideJobs`.
 - `TorisOpenQuestJournal("Available:SmithJobs")` shows only grantable quests whose Pixel Crushers `Group` is `SmithJobs`.
-- `TorisOpenQuestJournal("Available:JobBoardJobs")` is the intended pattern for job boards.
+- `TorisOpenQuestJournal("Available:All")` or `TorisOpenQuestJournal("Available:*")` is the intended pattern for a job board that lets the player accept every currently grantable job.
+- `TorisOpenQuestJournal("Available:JobBoardJobs")` remains available if a board should show only board-specific jobs.
+- the global `J` input opens the quest book in Active mode for inspection.
+- global quest book inspection can show available jobs, but available jobs are read-only there.
+- accepting available jobs should happen only when the journal is opened by a source such as Guide, Smith, or a job board.
 - If no scene quest journal is assigned, the bridge can instantiate the configured quest journal prefab under a runtime overlay Canvas.
 - The current journal extension creates an `Available Jobs` button when the prefab does not already provide one.
 - The final direction should still feel like Pixel Crushers UI, not a separate Toris quest UI.
 
 The Guide should open available jobs through dialogue.
 
-No quest-log hotkey is required for now.
+The quest-log hotkey is:
+
+- `J` opens the personal quest book / journal.
 
 Minimum quest information:
 
@@ -401,7 +408,7 @@ The currently validated flow is:
 - player talks to Guide
 - Guide starts `Guide_Hub`
 - player chooses `Show me the extra jobs`
-- dialogue calls `TorisOpenQuestJournal("Available")`
+- dialogue calls `TorisOpenQuestJournal("Available:GuideJobs")`
 - Toris opens the Pixel Crushers quest journal in Available Jobs mode
 - the journal shows Pixel Crushers quests in the `Grantable` state
 - selecting a grantable job shows its details
@@ -411,7 +418,7 @@ The currently validated flow is:
 - the journal switches to Active quests and selects the accepted job
 - jobs use the Pixel Crushers `Group` field as their source bucket
 - if another quest in the same group is already active, the accept button is disabled
-- the generated `Available Jobs` button lets the player return to available jobs after viewing Active or Completed quests
+- the generated `Available Jobs` button preserves the source scope after viewing Active or Completed quests
 - the same journal can switch between Available Jobs, Active quests, and Completed quests
 
 The first-time post-Smith side-work route is also validated:
@@ -422,7 +429,7 @@ The first-time post-Smith side-work route is also validated:
 - the dialogue marks `Guide_Talk_To_Smith` as `success`
 - the dialogue unlocks side work with `SafeHavenSideWorkUnlocked`
 - the dialogue sets `Guide_Cull_Wolves` to `grantable` if it is still unassigned
-- the dialogue calls `TorisOpenQuestJournal("Available")`
+- the dialogue calls `TorisOpenQuestJournal("Available:GuideJobs")`
 - the journal opens immediately without requiring the player to restart the conversation
 
 This proves the direction.
@@ -444,6 +451,7 @@ Current behavior:
 - movement, interaction, dash, and combat are suppressed while any gameplay lock exists
 - UI actions remain available so dialogue choices, continue buttons, journal tabs, and quest acceptance still work
 - overlapping locks are safe because each system releases only its own lock id
+- opening the personal quest book with `J` also uses the quest journal lock because the journal window owns the lock
 
 Current lock ids:
 
@@ -689,6 +697,11 @@ No component should become `GuideOnlyQuestThing`.
 - Verify Overworld to Safe Haven transition keeps quest state
 - Verify player movement is locked during Pixel Crushers dialogue
 - Verify player movement is locked while the quest journal is open
+- Verify `J` opens the quest book in Active mode
+- Verify available jobs in the global quest book cannot be accepted away from their source
+- Verify source-opened available jobs can still be accepted
+- Verify source-opened available jobs stay source-filtered after switching tabs
+- Verify future job board all-source mode can accept every currently grantable job
 - Verify dialogue choices and quest journal buttons still work while gameplay is locked
 
 ### Phase 2 - Turn Job Offers Into A Reusable Source System
@@ -702,6 +715,7 @@ No component should become `GuideOnlyQuestThing`.
 - Support multiple offer groups such as `GuideJobs`, `SmithJobs`, `JobBoardJobs`
 - Enforce one active quest per source through the Pixel Crushers quest `Group` field
 - Open source-filtered available jobs with `TorisOpenQuestJournal("Available:GroupName")`
+- Open all-source job board available jobs with `TorisOpenQuestJournal("Available:All")`
 - Prove Smith has his own job source using `SmithJobs`
 - Hide unavailable jobs based on quest state
 - Show accepted active job from that source

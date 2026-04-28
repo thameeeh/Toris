@@ -21,6 +21,8 @@ namespace OutlandHaven.UIToolkit
         public UnityAction<string> OnGameplayInputLockRequested;
 
         public UnityAction<string> OnGameplayInputUnlockRequested;
+
+        public UnityAction<string> OnQuestJournalOpenRequested;
     }
 
 }

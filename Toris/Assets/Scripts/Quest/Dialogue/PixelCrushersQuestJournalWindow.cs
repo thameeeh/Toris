@@ -38,6 +38,10 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [Tooltip("Label shown in the global quest book when an available job can be inspected but must be accepted at its source.")]
     [SerializeField] private string _sourceRequiredJobButtonText = "Visit Job Source";
     [Header("Reward Claiming")]
+    [Tooltip("Show configured Toris rewards in the quest details panel when reward data exists for the selected quest.")]
+    [SerializeField] private bool _showRewardPreview = true;
+    [Tooltip("Heading shown above the reward preview block.")]
+    [SerializeField] private string _rewardPreviewHeadingText = "Rewards";
     [Tooltip("Label used for the details-panel button that collects unclaimed rewards from completed quests.")]
     [SerializeField] private string _collectRewardsButtonText = "Collect Rewards";
     [Header("Gameplay Input Lock")]
@@ -194,7 +198,12 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     {
         base.RepaintSelectedQuest(quest);
 
-        if (quest == null || abandonButtonTemplate == null)
+        if (quest == null)
+            return;
+
+        AddRewardPreviewIfNeeded(quest);
+
+        if (abandonButtonTemplate == null)
             return;
 
         if (IsShowingAvailableJobs)
@@ -237,6 +246,20 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
 
         if (canAcceptFromSource)
             acceptButtonInstance.button.onClick.AddListener(ClickAcceptAvailableJobButton);
+    }
+
+    private void AddRewardPreviewIfNeeded(QuestInfo quest)
+    {
+        if (!_showRewardPreview || questDescriptionTextTemplate == null)
+            return;
+
+        bool includeClaimStatus = QuestLog.GetQuestState(quest.Title) == QuestState.Success;
+        if (!PixelCrushersQuestRewardAdapter.TryGetRewardPreviewText(quest.Title, includeClaimStatus, out string rewardPreviewText))
+            return;
+
+        StandardUITextTemplate rewardPreviewInstance = detailsPanelContentManager.Instantiate<StandardUITextTemplate>(questDescriptionTextTemplate);
+        rewardPreviewInstance.Assign($"{_rewardPreviewHeadingText}\n{rewardPreviewText}");
+        detailsPanelContentManager.Add(rewardPreviewInstance, questDetailsContentContainer);
     }
 
     private void AddCollectRewardsButtonIfNeeded(QuestInfo quest)

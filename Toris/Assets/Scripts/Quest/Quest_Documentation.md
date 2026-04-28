@@ -610,6 +610,9 @@ Current reward adapter behavior:
 - if the item stack cannot fit, the adapter logs `Inventory full!` in the editor and keeps the item reward pending
 - true partial item reward insertion should be handled as a separate inventory-system extension if needed later
 - `PixelCrushersQuestJournalWindow` shows `Collect Rewards` on completed quests that have unclaimed reward pieces
+- `PixelCrushersQuestJournalWindow` shows a reward preview block in quest details when a selected quest has configured rewards
+- available and active quests show configured rewards without claim status
+- completed successful quests show each reward piece as `claimed` or `pending`
 
 Reward guard variables:
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using OutlandHaven.Inventory;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
@@ -126,6 +127,28 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
         return foundRewards && allFoundRewardsClaimed;
     }
 
+    public static bool TryGetRewardPreviewText(string questName, bool includeClaimStatus, out string rewardPreviewText)
+    {
+        rewardPreviewText = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(questName))
+            return false;
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < ActiveAdapters.Count; i++)
+        {
+            PixelCrushersQuestRewardAdapter adapter = ActiveAdapters[i];
+            if (adapter == null)
+                continue;
+
+            adapter.AppendRewardPreviewText(questName, includeClaimStatus, builder);
+        }
+
+        rewardPreviewText = builder.ToString().TrimEnd();
+        return rewardPreviewText.Length > 0;
+    }
+
     private bool HasUnclaimedRewardsInternal(string questName)
     {
         if (!IsQuestSuccessful(questName))
@@ -164,6 +187,21 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
         }
 
         return foundRewards;
+    }
+
+    private void AppendRewardPreviewText(string questName, bool includeClaimStatus, StringBuilder builder)
+    {
+        if (builder == null)
+            return;
+
+        for (int i = 0; i < _runtimeRewards.Count; i++)
+        {
+            PixelCrushersQuestRewardDefinition reward = _runtimeRewards[i];
+            if (!IsRewardForQuest(reward, questName) || !HasConfiguredRewardPieces(reward))
+                continue;
+
+            AppendRewardPreviewLines(reward, includeClaimStatus, builder);
+        }
     }
 
     private void RebuildRuntimeRewards()
@@ -306,6 +344,38 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
             && IsItemRewardGranted(reward);
     }
 
+    private void AppendRewardPreviewLines(PixelCrushersQuestRewardDefinition reward, bool includeClaimStatus, StringBuilder builder)
+    {
+        if (reward.GoldReward > 0)
+            AppendRewardPreviewLine(builder, $"Gold: {reward.GoldReward}", includeClaimStatus, IsGoldRewardGranted(reward));
+
+        if (reward.ExperienceReward > 0)
+            AppendRewardPreviewLine(builder, $"XP: {reward.ExperienceReward}", includeClaimStatus, IsExperienceRewardGranted(reward));
+
+        if (reward.ItemReward != null)
+        {
+            int quantity = Mathf.Max(1, reward.ItemRewardQuantity);
+            string itemName = string.IsNullOrWhiteSpace(reward.ItemReward.ItemName)
+                ? reward.ItemReward.name
+                : reward.ItemReward.ItemName;
+            AppendRewardPreviewLine(builder, $"{itemName} x{quantity}", includeClaimStatus, IsItemRewardGranted(reward));
+        }
+    }
+
+    private static void AppendRewardPreviewLine(StringBuilder builder, string rewardText, bool includeClaimStatus, bool rewardPieceClaimed)
+    {
+        if (string.IsNullOrWhiteSpace(rewardText))
+            return;
+
+        builder.Append("- ");
+        builder.Append(rewardText);
+
+        if (includeClaimStatus)
+            builder.Append(rewardPieceClaimed ? " (claimed)" : " (pending)");
+
+        builder.AppendLine();
+    }
+
     private static bool HasConfiguredRewardPieces(PixelCrushersQuestRewardDefinition reward)
     {
         return reward != null
@@ -329,18 +399,21 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
     private bool IsGoldRewardGranted(PixelCrushersQuestRewardDefinition reward)
     {
         return reward.GoldReward <= 0
+            || RewardsWereAlreadyGranted(reward)
             || PixelCrushersQuestBridge.GetIntVariable(reward.ResolvedGoldRewardGrantedVariableName, 0) > 0;
     }
 
     private bool IsExperienceRewardGranted(PixelCrushersQuestRewardDefinition reward)
     {
         return reward.ExperienceReward <= 0
+            || RewardsWereAlreadyGranted(reward)
             || PixelCrushersQuestBridge.GetIntVariable(reward.ResolvedExperienceRewardGrantedVariableName, 0) > 0;
     }
 
     private bool IsItemRewardGranted(PixelCrushersQuestRewardDefinition reward)
     {
         return reward.ItemReward == null
+            || RewardsWereAlreadyGranted(reward)
             || PixelCrushersQuestBridge.GetIntVariable(reward.ResolvedItemRewardGrantedVariableName, 0) > 0;
     }
 

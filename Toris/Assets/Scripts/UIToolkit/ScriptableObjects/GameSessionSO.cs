@@ -262,6 +262,9 @@ namespace OutlandHaven.UIToolkit
             saveData.PlayerBackpack = ExtractInventoryData(PlayerInventory);
             saveData.PlayerEquipment = ExtractInventoryData(PlayerEquipment);
 
+            // Quest bridge: keep Toris as the save-file owner while Pixel Crushers owns dialogue/quest state.
+            saveData.PixelCrushersDialogueSaveData = global::PixelCrushersDialogueSaveBridge.CaptureSaveData();
+
             return saveData;
         }
 
@@ -298,6 +301,10 @@ namespace OutlandHaven.UIToolkit
             {
                 RestoreInventoryData(PlayerEquipment, saveData.PlayerEquipment, itemDatabase);
             }
+
+            // Quest bridge: future menu save-slot loads may import before MainArea/Dialogue Manager exists.
+            // The bridge applies immediately when possible, otherwise queues the Pixel Crushers blob until scene load.
+            global::PixelCrushersDialogueSaveBridge.RequestApplySaveData(saveData.PixelCrushersDialogueSaveData);
         }
 
         private sealed class RuntimeInventorySnapshot

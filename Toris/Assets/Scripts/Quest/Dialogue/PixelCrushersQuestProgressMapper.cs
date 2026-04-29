@@ -176,14 +176,18 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
         if (rule.RequireQuestActive && PixelCrushersQuestBridge.GetQuestState(rule.QuestName) != QuestState.Active)
             return;
 
-        int nextValue = PixelCrushersQuestBridge.IncrementIntVariable(rule.ProgressVariableName, fact.Amount);
+        string progressVariableName = rule.ResolvedProgressVariableName;
+        if (string.IsNullOrWhiteSpace(progressVariableName))
+            return;
+
+        int nextValue = PixelCrushersQuestBridge.IncrementIntVariable(progressVariableName, fact.Amount);
         int clampedValue = Mathf.Min(nextValue, rule.RequiredAmount);
         if (clampedValue != nextValue)
-            PixelCrushersQuestBridge.SetIntVariable(rule.ProgressVariableName, clampedValue);
+            PixelCrushersQuestBridge.SetIntVariable(progressVariableName, clampedValue);
 
 #if UNITY_EDITOR
         if (_debugMapping)
-            Debug.Log($"[PixelCrushersQuestProgressMapper] '{rule.QuestName}' {rule.ProgressVariableName}={clampedValue}/{rule.RequiredAmount}.", this);
+            Debug.Log($"[PixelCrushersQuestProgressMapper] '{rule.QuestName}' {progressVariableName}={clampedValue}/{rule.RequiredAmount}.", this);
 #endif
 
         if (clampedValue < rule.RequiredAmount)
@@ -217,7 +221,7 @@ public class QuestFactProgressRule
     public string QuestName = string.Empty;
     [Tooltip("If enabled, this rule only progresses while the Pixel Crushers quest is active.")]
     public bool RequireQuestActive = true;
-    [Tooltip("Pixel Crushers Lua variable used as the progress counter. Example: LeaderWolfKills.")]
+    [Tooltip("Pixel Crushers Lua variable used as the progress counter. Leave blank to use QuestName_FactType_TargetId.")]
     public string ProgressVariableName = string.Empty;
     [Tooltip("Amount needed before the quest entry and quest state are updated.")]
     [Min(1)] public int RequiredAmount = 1;
@@ -229,6 +233,17 @@ public class QuestFactProgressRule
     public QuestState EntryCompleteState = QuestState.Success;
     [Tooltip("State assigned to the overall quest when the required amount is reached. Usually ReturnToNPC.")]
     public QuestState QuestCompleteState = QuestState.ReturnToNPC;
+
+    public string ResolvedProgressVariableName
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(ProgressVariableName))
+                return ProgressVariableName;
+
+            return PixelCrushersQuestNaming.ProgressVariable(QuestName, FactType, ExactId, TypeOrTag, ContextId);
+        }
+    }
 
     public bool Matches(QuestFact fact)
     {
@@ -245,7 +260,7 @@ public class QuestFactProgressRule
             return false;
 
         return !string.IsNullOrWhiteSpace(QuestName)
-               && !string.IsNullOrWhiteSpace(ProgressVariableName);
+               && !string.IsNullOrWhiteSpace(ResolvedProgressVariableName);
     }
 
     private static bool MatchesOptional(string expected, string actual)

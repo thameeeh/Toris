@@ -463,6 +463,7 @@ The first-time post-Smith side-work route is also validated:
 - the dialogue marks `Guide_Talk_To_Smith` as `success`
 - the dialogue unlocks side work with `SafeHavenSideWorkUnlocked`
 - the dialogue sets `Guide_Cull_Wolves` to `grantable` if it is still unassigned
+- the dialogue sets `Guide_Buy_Ore` to `grantable` if it is still unassigned
 - the dialogue calls `TorisOpenQuestJournal("Available:GuideJobs")`
 - the journal opens immediately without requiring the player to restart the conversation
 
@@ -532,6 +533,9 @@ Example Guide command:
 if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
     SetQuestState("Guide_Cull_Wolves", "grantable")
 end
+if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then
+    SetQuestState("Guide_Buy_Ore", "grantable")
+end
 TorisOpenQuestJournal("Available:GuideJobs")
 ```
 
@@ -583,12 +587,28 @@ Examples:
 - `Kill / LeaderWolf`
 - `InteractNpc / SmithNPC`
 - `PickUp / ItemId`
-- `EnterBiome / Plains`
+- `Collect / ItemId`
+- `Deliver / DeliveryId`
+- `BiomeReached / Plains`
 - `VisitSite / Grave`
 - `ClearSite / WolfDen`
 - `BuyItem / ItemId`
 - `SellItem / ItemId`
-- `LevelReached / Player`
+- `LevelReached / Level_5`
+- `InteractWorldObject / AncientGate`
+- `Explore / RuinedWatchtower`
+
+Current fact sources:
+
+- enemies report `Kill` facts after confirmed death
+- NPC dialogue/interactions report `InteractNpc` facts
+- world items always report generic `PickUp` after inventory accepts the item
+- world items can override the generic pickup with custom `PickUp` or `Collect` details when needed
+- shops report `BuyItem` and `SellItem` after successful transactions
+- player XP gains report `LevelReached` facts when a real level-up happens
+- scene reporters can report scene or area facts
+- trigger reporters can report visit, clear, biome, explore, or other trigger-based facts
+- manual reporters can be called from UnityEvents, buttons, dialogue hooks, or one-off world objects
 
 Quest progress rules decide which facts matter.
 
@@ -708,6 +728,7 @@ Current abandon behavior:
 Current configured abandonable jobs:
 
 - `Guide_Cull_Wolves`
+- `Guide_Buy_Ore`
 - `Smith_Check_Forge`
 
 Abandon authoring rules:
@@ -801,11 +822,13 @@ Current Toris-side bridge components:
 - `PixelCrushersQuestFactReporter`
 - `PixelCrushersQuestJournalInteractable`
 - `PixelCrushersQuestJournalWindow`
+- `PixelCrushersQuestNaming`
 - `PixelCrushersQuestProgressMapper`
 - `PixelCrushersQuestRewardAdapter`
 - `QuestFact`
 - `QuestFactType`
 - `QuestFactProgressRuleSetSO`
+- `QuestFactManualReporter`
 - `PixelCrushersQuestRewardSetSO`
 - `QuestFactSceneReporter`
 - `QuestFactTriggerReporter`

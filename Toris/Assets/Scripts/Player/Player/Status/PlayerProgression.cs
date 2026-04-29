@@ -87,7 +87,13 @@ public class PlayerProgression : MonoBehaviour
 
         OnExperienceChanged?.Invoke(_runtimeProgression.CurrentExperience, _runtimeProgression.CurrentLevel);
 
-        if (_runtimeProgression.CurrentLevel != previousLevel)
+        if (_runtimeProgression.CurrentLevel > previousLevel)
+        {
+            // Quest bridge: only real XP gains report level facts; save/load state restores use SetRuntimeState and stay silent.
+            ReportLevelReachedQuestFacts(previousLevel, _runtimeProgression.CurrentLevel);
+            OnLevelChanged?.Invoke(_runtimeProgression.CurrentLevel, _runtimeProgression.CurrentExperience);
+        }
+        else if (_runtimeProgression.CurrentLevel != previousLevel)
         {
             OnLevelChanged?.Invoke(_runtimeProgression.CurrentLevel, _runtimeProgression.CurrentExperience);
         }
@@ -190,6 +196,14 @@ public class PlayerProgression : MonoBehaviour
     {
         int recalculatedLevel = Mathf.FloorToInt(CurrentExperience / ExperiencePerLevel) + 1;
         _runtimeProgression.SetLevel(recalculatedLevel);
+    }
+
+    private void ReportLevelReachedQuestFacts(int previousLevel, int currentLevel)
+    {
+        for (int level = previousLevel + 1; level <= currentLevel; level++)
+        {
+            PixelCrushersQuestFactReporter.Report(QuestFact.LevelReached(level));
+        }
     }
 
     private int GetStartingLevel()

@@ -249,9 +249,9 @@ public class PixelCrushersRepeatableQuestCooldownAdapter : MonoBehaviour
             return;
 
         PixelCrushersQuestBridge.SetIntVariable(rewardGrantedVariable, 0);
-        PixelCrushersQuestBridge.SetIntVariable($"{rewardGrantedVariable}_Gold", 0);
-        PixelCrushersQuestBridge.SetIntVariable($"{rewardGrantedVariable}_Experience", 0);
-        PixelCrushersQuestBridge.SetIntVariable($"{rewardGrantedVariable}_Item", 0);
+        PixelCrushersQuestBridge.SetIntVariable(PixelCrushersQuestNaming.RewardGoldGrantedVariable(rewardGrantedVariable), 0);
+        PixelCrushersQuestBridge.SetIntVariable(PixelCrushersQuestNaming.RewardExperienceGrantedVariable(rewardGrantedVariable), 0);
+        PixelCrushersQuestBridge.SetIntVariable(PixelCrushersQuestNaming.RewardItemGrantedVariable(rewardGrantedVariable), 0);
     }
 
     private static void ResetQuestEntries(PixelCrushersRepeatableQuestCooldownDefinition cooldown)

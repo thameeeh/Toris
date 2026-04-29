@@ -81,9 +81,7 @@ public class PixelCrushersRepeatableQuestCooldownDefinition
             if (!string.IsNullOrWhiteSpace(CooldownEndVariableName))
                 return CooldownEndVariableName;
 
-            return string.IsNullOrWhiteSpace(QuestName)
-                ? string.Empty
-                : $"{QuestName}_CooldownEndsAtUtc";
+            return PixelCrushersQuestNaming.CooldownEndVariable(QuestName);
         }
     }
 
@@ -94,9 +92,7 @@ public class PixelCrushersRepeatableQuestCooldownDefinition
             if (!string.IsNullOrWhiteSpace(CompletionCountVariableName))
                 return CompletionCountVariableName;
 
-            return string.IsNullOrWhiteSpace(QuestName)
-                ? string.Empty
-                : $"{QuestName}_CompletionCount";
+            return PixelCrushersQuestNaming.CompletionCountVariable(QuestName);
         }
     }
 
@@ -107,9 +103,7 @@ public class PixelCrushersRepeatableQuestCooldownDefinition
             if (!string.IsNullOrWhiteSpace(RewardGrantedVariableNameToReset))
                 return RewardGrantedVariableNameToReset;
 
-            return string.IsNullOrWhiteSpace(QuestName)
-                ? string.Empty
-                : $"{QuestName}_RewardsGranted";
+            return PixelCrushersQuestNaming.RewardGrantedVariable(QuestName);
         }
     }
 

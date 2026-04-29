@@ -102,6 +102,9 @@ namespace OutlandHaven.UIToolkit
 
                         InventoryEvents?.OnShopInventoryUpdated?.Invoke();
 
+                        // Quest bridge: report only after the buy succeeds so quests follow authoritative shop/inventory state.
+                        ReportShopQuestFact(global::QuestFactType.BuyItem, item, quantity);
+
 #if UNITY_EDITOR
                         //Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {PlayerAnchor.Instance.CurrentGold}");
 #endif
@@ -149,6 +152,9 @@ namespace OutlandHaven.UIToolkit
                 PlayerAnchor.Instance.AddGold(totalValue);
                 InventoryEvents?.OnInventoryUpdated?.Invoke();
 
+                // Quest bridge: report only after the sell succeeds so quests follow authoritative shop/inventory state.
+                ReportShopQuestFact(global::QuestFactType.SellItem, item, quantity);
+
                 if (addedToShop)
                 {
                     InventoryEvents?.OnShopInventoryUpdated?.Invoke();
@@ -164,6 +170,22 @@ namespace OutlandHaven.UIToolkit
                 Debug.LogWarning("Could not sell item. Not found in inventory.");
 #endif
             }
+        }
+
+        private void ReportShopQuestFact(global::QuestFactType factType, ItemInstance item, int quantity)
+        {
+            if (item == null || item.BaseItem == null || quantity <= 0)
+                return;
+
+            string exactId = !string.IsNullOrWhiteSpace(item.BaseItem.name)
+                ? item.BaseItem.name
+                : item.BaseItem.ItemName;
+            string typeOrTag = !string.IsNullOrWhiteSpace(item.BaseItem.ItemName)
+                ? item.BaseItem.ItemName
+                : exactId;
+            string contextId = CurrentShopInventory != null ? CurrentShopInventory.name : string.Empty;
+
+            global::PixelCrushersQuestFactReporter.Report(new global::QuestFact(factType, exactId, typeOrTag, quantity, contextId));
         }
     }
 }

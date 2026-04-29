@@ -89,9 +89,7 @@ public class PixelCrushersQuestAbandonDefinition
             if (!string.IsNullOrWhiteSpace(CooldownEndVariableNameToReset))
                 return CooldownEndVariableNameToReset;
 
-            return string.IsNullOrWhiteSpace(QuestName)
-                ? string.Empty
-                : $"{QuestName}_CooldownEndsAtUtc";
+            return PixelCrushersQuestNaming.CooldownEndVariable(QuestName);
         }
     }
 
@@ -102,9 +100,7 @@ public class PixelCrushersQuestAbandonDefinition
             if (!string.IsNullOrWhiteSpace(AbandonCountVariableName))
                 return AbandonCountVariableName;
 
-            return string.IsNullOrWhiteSpace(QuestName)
-                ? string.Empty
-                : $"{QuestName}_AbandonCount";
+            return PixelCrushersQuestNaming.AbandonCountVariable(QuestName);
         }
     }
 

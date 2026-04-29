@@ -43,3 +43,18 @@ MonoBehaviour:
     GoldPenaltyPercent: 0
     FlatExperiencePenalty: 0
     ExperiencePenaltyPercent: 0
+  - QuestName: Guide_Buy_Ore
+    CanAbandon: 1
+    StateAfterAbandon: 32
+    ProgressVariableNamesToReset:
+    - GuideBuyOreCount
+    ResetAllQuestEntries: 1
+    QuestEntryResetState: 1
+    ResetRewardClaimState: 1
+    ResetCooldownState: 1
+    CooldownEndVariableNameToReset:
+    AbandonCountVariableName:
+    FlatGoldPenalty: 0
+    GoldPenaltyPercent: 0
+    FlatExperiencePenalty: 0
+    ExperiencePenaltyPercent: 0

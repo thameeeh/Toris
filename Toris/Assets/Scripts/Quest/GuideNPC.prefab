@@ -100,6 +100,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersConversationInteractable
   _defaultConversation: Guide_Intro
   _questConversationRoutes:
+  - QuestName: Guide_Buy_Ore
+    ConversationWhenUnassigned:
+    ConversationWhenActive: Guide_Hub
+    ConversationWhenReturnToNpc:
+    ConversationWhenSuccess: Guide_Hub
   - QuestName: Guide_Cull_Wolves
     ConversationWhenUnassigned: 
     ConversationWhenActive: Guide_CullWolves_Active
@@ -215,6 +220,13 @@ MonoBehaviour:
     - QuestName: Guide_Cull_Wolves
       EntryNumber: 1
       ProgressVariableName: GuideCullWolfKills
+      ShowWhenUnassigned: 1
+      ShowWhenGrantable: 1
+      ShowWhenActive: 0
+      ShowWhenReturnToNpc: 0
+    - QuestName: Guide_Buy_Ore
+      EntryNumber: 1
+      ProgressVariableName: GuideBuyOreCount
       ShowWhenUnassigned: 1
       ShowWhenGrantable: 1
       ShowWhenActive: 0

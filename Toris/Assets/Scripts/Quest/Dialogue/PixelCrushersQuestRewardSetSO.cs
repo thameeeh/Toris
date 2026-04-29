@@ -61,17 +61,15 @@ public class PixelCrushersQuestRewardDefinition
             if (!string.IsNullOrWhiteSpace(RewardGrantedVariableName))
                 return RewardGrantedVariableName;
 
-            return string.IsNullOrWhiteSpace(QuestName)
-                ? string.Empty
-                : $"{QuestName}_RewardsGranted";
+            return PixelCrushersQuestNaming.RewardGrantedVariable(QuestName);
         }
     }
 
-    public string ResolvedGoldRewardGrantedVariableName => $"{ResolvedRewardGrantedVariableName}_Gold";
+    public string ResolvedGoldRewardGrantedVariableName => PixelCrushersQuestNaming.RewardGoldGrantedVariable(ResolvedRewardGrantedVariableName);
 
-    public string ResolvedExperienceRewardGrantedVariableName => $"{ResolvedRewardGrantedVariableName}_Experience";
+    public string ResolvedExperienceRewardGrantedVariableName => PixelCrushersQuestNaming.RewardExperienceGrantedVariable(ResolvedRewardGrantedVariableName);
 
-    public string ResolvedItemRewardGrantedVariableName => $"{ResolvedRewardGrantedVariableName}_Item";
+    public string ResolvedItemRewardGrantedVariableName => PixelCrushersQuestNaming.RewardItemGrantedVariable(ResolvedRewardGrantedVariableName);
 }
 
 public enum PixelCrushersQuestRewardClaimMode

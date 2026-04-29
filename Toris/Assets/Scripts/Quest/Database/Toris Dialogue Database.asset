@@ -338,6 +338,68 @@ MonoBehaviour:
       value: Check back in with the Smith at the forge.
       type: 0
       typeString: CustomFieldType_Text
+  - id: 5
+    fields:
+    - title: Name
+      value: Guide_Buy_Ore
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: Prototype Guide job that proves shop purchases can complete quest objectives.
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Success Description
+      value:
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Failure Description
+      value:
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: State
+      value: unassigned
+      type: 0
+      typeString: CustomFieldType_QuestState
+    - title: Is Item
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Display Name
+      value: Buy Ore From The Smith
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Group
+      value: GuideJobs
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Group Display Name
+      value: Guide Jobs
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Trackable
+      value: True
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Track
+      value: True
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Entry Count
+      value: 1
+      type: 1
+      typeString: CustomFieldType_Number
+    - title: Entry 1 State
+      value: unassigned
+      type: 0
+      typeString: CustomFieldType_QuestState
+    - title: Entry 1
+      value: Buy 1 Ore from the Smith.
+      type: 0
+      typeString: CustomFieldType_Text
   locations: []
   variables:
   - id: 1
@@ -465,6 +527,34 @@ MonoBehaviour:
       typeString: CustomFieldType_Text
     - title: Description
       value: Guards the prototype Smith job reward against duplicate payout.
+      type: 0
+      typeString: CustomFieldType_Text
+  - id: 10
+    fields:
+    - title: Name
+      value: GuideBuyOreCount
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: 0
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Description
+      value: Tracks the prototype Guide buy-item objective.
+      type: 0
+      typeString: CustomFieldType_Text
+  - id: 11
+    fields:
+    - title: Name
+      value: Guide_Buy_Ore_RewardsGranted
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: 0
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Description
+      value: Guards the prototype Guide buy-item reward against duplicate payout.
       type: 0
       typeString: CustomFieldType_Text
   conversations:
@@ -2746,6 +2836,9 @@ MonoBehaviour:
         if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
         SetQuestState("Guide_Cull_Wolves", "grantable") end
 
+        if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then
+        SetQuestState("Guide_Buy_Ore", "grantable") end
+
         TorisOpenQuestJournal("Available:GuideJobs")'
       onExecute:
         m_PersistentCalls:
@@ -2856,7 +2949,10 @@ MonoBehaviour:
         Variable["SafeHavenSideWorkUnlocked"] = 1
 
         if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
-        SetQuestState("Guide_Cull_Wolves", "grantable") end'
+        SetQuestState("Guide_Cull_Wolves", "grantable") end
+
+        if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then
+        SetQuestState("Guide_Buy_Ore", "grantable") end'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3132,7 +3228,13 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: TorisOpenQuestJournal("Available:GuideJobs")
+      userScript: 'if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
+        SetQuestState("Guide_Cull_Wolves", "grantable") end
+
+        if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then SetQuestState("Guide_Buy_Ore",
+        "grantable") end
+
+        TorisOpenQuestJournal("Available:GuideJobs")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []

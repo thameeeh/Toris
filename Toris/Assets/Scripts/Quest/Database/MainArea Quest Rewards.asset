@@ -31,3 +31,9 @@ MonoBehaviour:
     ExperienceReward: 100
     ItemReward: {fileID: 0}
     ItemRewardQuantity: 1
+  - QuestName: Guide_Buy_Ore
+    RewardGrantedVariableName: Guide_Buy_Ore_RewardsGranted
+    GoldReward: 50
+    ExperienceReward: 25
+    ItemReward: {fileID: 0}
+    ItemRewardQuantity: 1

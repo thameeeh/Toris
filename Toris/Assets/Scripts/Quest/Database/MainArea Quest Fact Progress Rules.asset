@@ -57,3 +57,14 @@ MonoBehaviour:
     EntryNumber: 1
     EntryCompleteState: 4
     QuestCompleteState: 64
+  - FactType: 9
+    ExactId: Ore_Prog
+    TypeOrTag:
+    ContextId:
+    QuestName: Guide_Buy_Ore
+    RequireQuestActive: 1
+    ProgressVariableName: GuideBuyOreCount
+    RequiredAmount: 1
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 4

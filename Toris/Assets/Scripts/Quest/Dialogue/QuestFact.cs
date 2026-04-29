@@ -52,4 +52,45 @@ public struct QuestFact
     {
         return new QuestFact(QuestFactType.ClearSite, exactId, typeOrTag, amount, contextId);
     }
+
+    public static QuestFact Collect(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.Collect, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact Deliver(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.Deliver, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact BuyItem(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.BuyItem, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact SellItem(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.SellItem, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact LevelReached(int level, string contextId = "")
+    {
+        int safeLevel = Math.Max(1, level);
+        return new QuestFact(QuestFactType.LevelReached, $"Level_{safeLevel}", "PlayerLevel", 1, contextId);
+    }
+
+    public static QuestFact BiomeReached(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.BiomeReached, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact InteractWorldObject(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.InteractWorldObject, exactId, typeOrTag, amount, contextId);
+    }
+
+    public static QuestFact Explore(string exactId, string typeOrTag = "", int amount = 1, string contextId = "")
+    {
+        return new QuestFact(QuestFactType.Explore, exactId, typeOrTag, amount, contextId);
+    }
 }

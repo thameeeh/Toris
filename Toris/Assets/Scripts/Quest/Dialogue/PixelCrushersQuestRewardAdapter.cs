@@ -127,6 +127,15 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
         return foundRewards && allFoundRewardsClaimed;
     }
 
+    public static void ResetRewardClaimState(string questName)
+    {
+        if (string.IsNullOrWhiteSpace(questName))
+            return;
+
+        for (int i = 0; i < ActiveAdapters.Count; i++)
+            ActiveAdapters[i]?.ResetRewardClaimStateInternal(questName);
+    }
+
     public static bool TryGetRewardPreviewText(string questName, bool includeClaimStatus, out string rewardPreviewText)
     {
         rewardPreviewText = string.Empty;
@@ -187,6 +196,22 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
         }
 
         return foundRewards;
+    }
+
+    private void ResetRewardClaimStateInternal(string questName)
+    {
+        for (int i = 0; i < _runtimeRewards.Count; i++)
+        {
+            PixelCrushersQuestRewardDefinition reward = _runtimeRewards[i];
+            if (!IsRewardForQuest(reward, questName))
+                continue;
+
+            PixelCrushersQuestBridge.SetIntVariable(reward.ResolvedRewardGrantedVariableName, 0);
+            PixelCrushersQuestBridge.SetIntVariable(reward.ResolvedGoldRewardGrantedVariableName, 0);
+            PixelCrushersQuestBridge.SetIntVariable(reward.ResolvedExperienceRewardGrantedVariableName, 0);
+            PixelCrushersQuestBridge.SetIntVariable(reward.ResolvedItemRewardGrantedVariableName, 0);
+            _inventoryFullRewardWarningsShown.Remove(reward.ResolvedItemRewardGrantedVariableName);
+        }
     }
 
     private void AppendRewardPreviewText(string questName, bool includeClaimStatus, StringBuilder builder)

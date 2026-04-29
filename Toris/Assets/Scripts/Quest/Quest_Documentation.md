@@ -285,6 +285,40 @@ Cooldown values should be configurable per quest.
 
 Cooldowns can start simple and be adjusted through Inspector/content values rather than hardcoded constants.
 
+Current repeatable cooldown behavior:
+
+- `PixelCrushersRepeatableQuestCooldownAdapter` watches configured repeatable quests
+- cooldown starts after a repeatable quest reaches `Success` and all configured rewards are claimed
+- while cooldown is active, the quest remains completed and does not appear as an available job
+- cooldown end time is stored in a Pixel Crushers Lua variable as a UTC unix timestamp
+- completion count is stored in a Pixel Crushers Lua variable
+- when cooldown ends, the adapter resets configured progress variables
+- when cooldown ends, the adapter can reset all quest entries to `Unassigned`
+- when cooldown ends, the adapter resets reward claim guards so the next completion can pay again
+- when cooldown ends, the adapter sets the quest back to `Grantable`
+- if `Available State After Cooldown` is accidentally left unset, `Unassigned`, or another invalid flags value, the adapter treats it as `Grantable` for repeatable job safety
+- if an older or misconfigured repeatable is already `Unassigned` after a previous completion and has no active cooldown, the adapter repairs it back to `Grantable`
+
+Repeatable cooldown authoring rules:
+
+- create a `PixelCrushersRepeatableQuestCooldownSetSO`
+- add one entry per repeatable quest
+- set `Quest Name` to the exact Pixel Crushers quest name
+- set `Cooldown Seconds`
+- add every progress variable that must reset, such as `GuideCullWolfKills`
+- set `Available State After Cooldown` to `Grantable`
+- leave `Cooldown End Variable Name` blank unless a custom Lua variable is needed
+- leave `Completion Count Variable Name` blank unless a custom Lua variable is needed
+- leave `Reward Granted Variable Name To Reset` blank unless the reward definition uses a custom reward guard variable
+- add `PixelCrushersRepeatableQuestCooldownAdapter` to the quest bootstrap scene object
+- assign the cooldown set asset to the adapter
+
+Important limitation:
+
+- progress variables must be listed explicitly for now
+- if a kill/count variable is not reset, the repeated quest may complete immediately on the next accepted run
+- convention-based progress mapping can reduce this authoring burden later
+
 ## Dialogue Rules
 
 Not every quest needs deep dialogue.
@@ -728,6 +762,8 @@ Current Toris-side bridge components:
 
 - `PixelCrushersConversationInteractable`
 - `PixelCrushersDialogueCommandBridge`
+- `PixelCrushersRepeatableQuestCooldownAdapter`
+- `PixelCrushersRepeatableQuestCooldownSetSO`
 - `PixelCrushersQuestOfferWindow`
 - `PixelCrushersQuestBridge`
 - `PixelCrushersQuestFactReporter`

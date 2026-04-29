@@ -77,6 +77,14 @@ public static class PixelCrushersQuestBridge
         SendTrackerRefreshIfReady();
     }
 
+    public static int GetQuestEntryCount(string questName)
+    {
+        if (string.IsNullOrWhiteSpace(questName))
+            return 0;
+
+        return QuestLog.GetQuestEntryCount(questName);
+    }
+
     public static int GetIntVariable(string variableName, int defaultValue = 0)
     {
         if (string.IsNullOrWhiteSpace(variableName))

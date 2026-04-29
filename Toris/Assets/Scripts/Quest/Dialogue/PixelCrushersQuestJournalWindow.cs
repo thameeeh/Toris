@@ -44,6 +44,13 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
     [SerializeField] private string _rewardPreviewHeadingText = "Rewards";
     [Tooltip("Label used for the details-panel button that collects unclaimed rewards from completed quests.")]
     [SerializeField] private string _collectRewardsButtonText = "Collect Rewards";
+    [Header("Abandon Jobs")]
+    [Tooltip("Show configured Toris abandon behavior in the quest details panel for active abandonable jobs.")]
+    [SerializeField] private bool _showAbandonPreview = true;
+    [Tooltip("Heading shown above the abandon preview block.")]
+    [SerializeField] private string _abandonPreviewHeadingText = "Abandon";
+    [Tooltip("Label used for the details-panel button that abandons an active job.")]
+    [SerializeField] private string _abandonJobButtonText = "Abandon Job";
     [Header("Gameplay Input Lock")]
     [Tooltip("Project UI event channel used to freeze Toris gameplay input while this Pixel Crushers quest journal is open.")]
     [SerializeField] private UIEventsSO _uiEvents;
@@ -202,6 +209,7 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
             return;
 
         AddRewardPreviewIfNeeded(quest);
+        AddAbandonPreviewIfNeeded(quest);
 
         if (abandonButtonTemplate == null)
             return;
@@ -213,6 +221,44 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         }
 
         AddCollectRewardsButtonIfNeeded(quest);
+        AddTorisAbandonButtonIfNeeded(quest);
+    }
+
+    public override void ClickAbandonQuest(object data)
+    {
+        if (string.IsNullOrWhiteSpace(selectedQuest))
+            return;
+
+        if (PixelCrushersQuestAbandonAdapter.CanAbandonQuest(selectedQuest))
+        {
+            ConfirmAbandonQuest(selectedQuest, OnConfirmAbandonQuest);
+            return;
+        }
+
+        base.ClickAbandonQuest(data);
+    }
+
+    protected override void OnConfirmAbandonQuest()
+    {
+        string questTitle = selectedQuest;
+        if (PixelCrushersQuestAbandonAdapter.CanAbandonQuest(questTitle))
+        {
+            if (PixelCrushersQuestAbandonAdapter.TryAbandonQuest(questTitle, out string resultText))
+            {
+#if UNITY_EDITOR
+                Debug.Log($"[PixelCrushersQuestJournalWindow] {resultText}", this);
+#endif
+                selectedQuest = string.Empty;
+                ShowQuests(currentQuestStateMask);
+                DialogueManager.instance.BroadcastMessage(DialogueSystemMessages.OnQuestTrackingDisabled, questTitle, SendMessageOptions.DontRequireReceiver);
+                string sequence = QuestLog.GetQuestAbandonSequence(questTitle);
+                if (!string.IsNullOrWhiteSpace(sequence))
+                    DialogueManager.PlaySequence(sequence);
+                return;
+            }
+        }
+
+        base.OnConfirmAbandonQuest();
     }
 
     public virtual void ClickCollectSelectedQuestRewardsButton()
@@ -271,6 +317,36 @@ public class PixelCrushersQuestJournalWindow : StandardUIQuestLogWindow
         collectButtonInstance.Assign(_collectRewardsButtonText);
         detailsPanelContentManager.Add(collectButtonInstance, questDetailsContentContainer);
         collectButtonInstance.button.onClick.AddListener(ClickCollectSelectedQuestRewardsButton);
+    }
+
+    private void AddAbandonPreviewIfNeeded(QuestInfo quest)
+    {
+        if (!_showAbandonPreview || questDescriptionTextTemplate == null || IsShowingAvailableJobs)
+            return;
+
+        if (!PixelCrushersQuestAbandonAdapter.CanAbandonQuest(quest.Title))
+            return;
+
+        if (!PixelCrushersQuestAbandonAdapter.TryGetAbandonPreviewText(quest.Title, out string abandonPreviewText))
+            return;
+
+        StandardUITextTemplate abandonPreviewInstance = detailsPanelContentManager.Instantiate<StandardUITextTemplate>(questDescriptionTextTemplate);
+        abandonPreviewInstance.Assign($"{_abandonPreviewHeadingText}\n{abandonPreviewText}");
+        detailsPanelContentManager.Add(abandonPreviewInstance, questDetailsContentContainer);
+    }
+
+    private void AddTorisAbandonButtonIfNeeded(QuestInfo quest)
+    {
+        if (!isShowingActiveQuests || QuestLog.IsQuestAbandonable(quest.Title))
+            return;
+
+        if (!PixelCrushersQuestAbandonAdapter.CanAbandonQuest(quest.Title))
+            return;
+
+        StandardUIButtonTemplate abandonButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
+        abandonButtonInstance.Assign(_abandonJobButtonText);
+        detailsPanelContentManager.Add(abandonButtonInstance, questDetailsContentContainer);
+        abandonButtonInstance.button.onClick.AddListener(ClickAbandonQuestButton);
     }
 
     public virtual void ClickAcceptAvailableJobButton()

@@ -691,6 +691,36 @@ Penalty values should be configurable per quest.
 
 Penalty values can start as simple Inspector/content values and be tuned later.
 
+Current abandon behavior:
+
+- `PixelCrushersQuestAbandonAdapter` watches configured abandon rules
+- only active quests listed in a `PixelCrushersQuestAbandonSetSO` can use the Toris abandon flow
+- main/story quests stay protected by not adding them to the abandon set
+- abandoning resets configured progress variables
+- abandoning can reset all quest entries to `Unassigned`
+- abandoning can reset reward claim guards so no partial reward state leaks into the next run
+- abandoning can reset an active repeatable cooldown timestamp
+- abandoning increments a Pixel Crushers Lua abandon-count variable
+- abandoning sets the quest to the configured post-abandon state
+- abandoning can apply flat or percentage gold and XP penalties
+- penalties are clamped to what the player currently has, so abandoning never fails because the player cannot pay
+
+Current configured abandonable jobs:
+
+- `Guide_Cull_Wolves`
+- `Smith_Check_Forge`
+
+Abandon authoring rules:
+
+- create or update a `PixelCrushersQuestAbandonSetSO`
+- add one entry per abandonable side job
+- do not add main story quests unless they are intentionally abandonable
+- set `Quest Name` to the exact Pixel Crushers quest name
+- set `State After Abandon` to `Grantable` for reusable jobs
+- add every progress variable that must reset, such as `GuideCullWolfKills`
+- set flat or percentage penalties as content values
+- assign the abandon set to `PixelCrushersQuestAbandonAdapter`
+
 ## Persistence Rules
 
 The following must save:
@@ -762,6 +792,8 @@ Current Toris-side bridge components:
 
 - `PixelCrushersConversationInteractable`
 - `PixelCrushersDialogueCommandBridge`
+- `PixelCrushersQuestAbandonAdapter`
+- `PixelCrushersQuestAbandonSetSO`
 - `PixelCrushersRepeatableQuestCooldownAdapter`
 - `PixelCrushersRepeatableQuestCooldownSetSO`
 - `PixelCrushersQuestOfferWindow`

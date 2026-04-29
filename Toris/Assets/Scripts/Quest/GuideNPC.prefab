@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7401220315921892549}
   - component: {fileID: 153906591188603896}
   - component: {fileID: 7337916850770722796}
+  - component: {fileID: 6285173142799082713}
   - component: {fileID: 7310965067122716731}
   - component: {fileID: 476312681164151100}
   - component: {fileID: 7632691695311389638}
@@ -136,6 +137,22 @@ MonoBehaviour:
   _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   _debugRewardFlow: 1
+--- !u!114 &6285173142799082713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874577071310736719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b27dfd0d5884cefa7a9bb2b15b0c401, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestAbandonAdapter
+  _abandonSets:
+  - {fileID: 11400000, guid: c29b5ca598914460951f6f70bca26c3c, type: 2}
+  _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+  _debugAbandonFlow: 1
 --- !u!114 &7310965067122716731
 MonoBehaviour:
   m_ObjectHideFlags: 0

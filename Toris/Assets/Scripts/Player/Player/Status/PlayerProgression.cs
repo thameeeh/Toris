@@ -93,6 +93,27 @@ public class PlayerProgression : MonoBehaviour
         }
     }
 
+    public void RemoveExperience(float amount)
+    {
+        if (_runtimeProgression == null)
+            return;
+
+        float validatedAmount = Mathf.Max(0f, amount);
+        if (validatedAmount <= 0f)
+            return;
+
+        int previousLevel = _runtimeProgression.CurrentLevel;
+        _runtimeProgression.SetExperience(_runtimeProgression.CurrentExperience - validatedAmount);
+        RecalculateLevelFromExperience();
+
+        OnExperienceChanged?.Invoke(_runtimeProgression.CurrentExperience, _runtimeProgression.CurrentLevel);
+
+        if (_runtimeProgression.CurrentLevel != previousLevel)
+        {
+            OnLevelChanged?.Invoke(_runtimeProgression.CurrentLevel, _runtimeProgression.CurrentExperience);
+        }
+    }
+
     public void AddGold(int amount)
     {
         if (_runtimeProgression == null)

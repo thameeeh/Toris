@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61f71dfbca9c4e9488ff49bdf15ab301, type: 3}
+  m_Name: PixelCrushersQuestAbandonSet
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestAbandonSetSO
+  _abandons:
+  - QuestName: Guide_Cull_Wolves
+    CanAbandon: 1
+    StateAfterAbandon: 32
+    ProgressVariableNamesToReset:
+    - GuideCullWolfKills
+    ResetAllQuestEntries: 1
+    QuestEntryResetState: 1
+    ResetRewardClaimState: 1
+    ResetCooldownState: 1
+    CooldownEndVariableNameToReset:
+    AbandonCountVariableName:
+    FlatGoldPenalty: 0
+    GoldPenaltyPercent: 5
+    FlatExperiencePenalty: 0
+    ExperiencePenaltyPercent: 0
+  - QuestName: Smith_Check_Forge
+    CanAbandon: 1
+    StateAfterAbandon: 32
+    ProgressVariableNamesToReset:
+    - SmithCheckForgeTalked
+    ResetAllQuestEntries: 1
+    QuestEntryResetState: 1
+    ResetRewardClaimState: 1
+    ResetCooldownState: 1
+    CooldownEndVariableNameToReset:
+    AbandonCountVariableName:
+    FlatGoldPenalty: 0
+    GoldPenaltyPercent: 0
+    FlatExperiencePenalty: 0
+    ExperiencePenaltyPercent: 0

@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 6285173142799082713}
   - component: {fileID: 7310965067122716731}
   - component: {fileID: 476312681164151100}
-  - component: {fileID: 7632691695311389638}
   m_Layer: 0
   m_Name: GuideNPC
   m_TagString: Untagged
@@ -200,46 +199,6 @@ MonoBehaviour:
   _lockGameplayInputDuringDialogue: 1
   _dialogueGameplayInputLockId: PixelCrushersDialogue
   _debugCommands: 1
---- !u!114 &7632691695311389638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874577071310736719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b1e7e71f95a4937a7a4da6b8fc13f4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestOfferWindow
-  _offerGroups:
-  - GroupId: GuideJobs
-    Title: Safe Haven Jobs
-    EmptyText: No jobs available right now.
-    Offers:
-    - QuestName: Guide_Cull_Wolves
-      EntryNumber: 1
-      ProgressVariableName: GuideCullWolfKills
-      ShowWhenUnassigned: 1
-      ShowWhenGrantable: 1
-      ShowWhenActive: 0
-      ShowWhenReturnToNpc: 0
-    - QuestName: Guide_Buy_Ore
-      EntryNumber: 1
-      ProgressVariableName: GuideBuyOreCount
-      ShowWhenUnassigned: 1
-      ShowWhenGrantable: 1
-      ShowWhenActive: 0
-      ShowWhenReturnToNpc: 0
-  _defaultTitle: Available Jobs
-  _panelSize: {x: 620, y: 420}
-  _backdropColor: {r: 0, g: 0, b: 0, a: 0.65}
-  _panelColor: {r: 0.08, g: 0.07, b: 0.06, a: 0.95}
-  _buttonColor: {r: 0.26, g: 0.2, b: 0.12, a: 1}
-  _textColor: {r: 1, g: 1, b: 1, a: 1}
-  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  _gameplayInputLockId: PixelCrushersQuestOffers
-  _debugOffers: 1
 --- !u!1 &6699620849272730480
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,8 @@ using System.Text;
 /// </summary>
 public static class PixelCrushersQuestNaming
 {
-    private const string EmptyTargetSegment = "Any";
+    public const string AnyTargetSegment = "Any";
+    public const string RequiredAmountSegment = "Required";
 
     public static string RewardGrantedVariable(string questName)
     {
@@ -55,6 +56,15 @@ public static class PixelCrushersQuestNaming
 
         string targetSegment = FirstNonEmptySegment(exactId, typeOrTag, contextId);
         return $"{safeQuestName}_{factType}_{targetSegment}";
+    }
+
+    public static string ProgressVariable(string questName, QuestFactType factType, string exactId, string typeOrTag, string contextId, int requiredAmount)
+    {
+        string baseVariableName = ProgressVariable(questName, factType, exactId, typeOrTag, contextId);
+        if (string.IsNullOrWhiteSpace(baseVariableName) || requiredAmount <= 1)
+            return baseVariableName;
+
+        return $"{baseVariableName}_{RequiredAmountSegment}_{requiredAmount}";
     }
 
     public static string SanitizeSegment(string value)
@@ -111,6 +121,6 @@ public static class PixelCrushersQuestNaming
         if (!string.IsNullOrWhiteSpace(contextSegment))
             return contextSegment;
 
-        return EmptyTargetSegment;
+        return AnyTargetSegment;
     }
 }

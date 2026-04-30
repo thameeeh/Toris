@@ -18,7 +18,7 @@ MonoBehaviour:
     CooldownEndVariableName: 
     CompletionCountVariableName: 
     ProgressVariableNamesToReset:
-    - GuideCullWolfKills
+    - Guide_Cull_Wolves_Kill_LeaderWolf_Required_3
     ResetAllQuestEntries: 1
     QuestEntryResetState: 1
     AvailableStateAfterCooldown: 32

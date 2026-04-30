@@ -35,17 +35,6 @@ MonoBehaviour:
     EntryNumber: 1
     EntryCompleteState: 4
     QuestCompleteState: 64
-  - FactType: 1
-    ExactId: LeaderWolf
-    TypeOrTag: 
-    ContextId: 
-    QuestName: Guide_Cull_Wolves
-    RequireQuestActive: 1
-    ProgressVariableName: GuideCullWolfKills
-    RequiredAmount: 3
-    EntryNumber: 1
-    EntryCompleteState: 4
-    QuestCompleteState: 64
   - FactType: 6
     ExactId: SmithNPC
     TypeOrTag:

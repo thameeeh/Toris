@@ -476,7 +476,7 @@ MonoBehaviour:
   - id: 6
     fields:
     - title: Name
-      value: GuideCullWolfKills
+      value: Guide_Cull_Wolves_Kill_LeaderWolf_Required_3
       type: 0
       typeString: CustomFieldType_Text
     - title: Initial Value

@@ -12,6 +12,8 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
 {
     [Tooltip("Rule set assets that translate generic Toris facts into Pixel Crushers quest variables and states.")]
     [SerializeField] private QuestFactProgressRuleSetSO[] _ruleSets = Array.Empty<QuestFactProgressRuleSetSO>();
+    [Tooltip("Optional fallback mapping that progresses active quests from Pixel Crushers variables named QuestName_FactType_Target or QuestName_FactType_Target_Required_3.")]
+    [SerializeField] private QuestFactConventionProgressSettings _conventionProgress = new QuestFactConventionProgressSettings();
     [Tooltip("Creates a DontDestroyOnLoad runtime listener from these rule sets. Keep enabled when quests must progress across scene changes.")]
     [SerializeField] private bool _installPersistentRuntime = true;
 
@@ -71,7 +73,7 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
             return;
 
         QuestFactProgressRule[] rules = BuildRuntimeRules();
-        if (rules.Length == 0)
+        if (rules.Length == 0 && !IsConventionProgressEnabled())
             return;
 
         GameObject runtimeObject = new GameObject("Pixel Crushers Quest Progress Mapper");
@@ -90,21 +92,22 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
 
         _persistentRuntime = runtime;
 #if UNITY_EDITOR
-        runtime.ConfigurePersistentRuntime(rules, _debugMapping);
+        runtime.ConfigurePersistentRuntime(rules, _conventionProgress, _debugMapping);
         if (_debugMapping)
-            Debug.Log($"[PixelCrushersQuestProgressMapper] Installed persistent runtime with {rules.Length} rule(s).", this);
+            Debug.Log($"[PixelCrushersQuestProgressMapper] Installed persistent runtime with {rules.Length} explicit rule(s).", this);
 #else
-        runtime.ConfigurePersistentRuntime(rules);
+        runtime.ConfigurePersistentRuntime(rules, _conventionProgress);
 #endif
     }
 
 #if UNITY_EDITOR
-    private void ConfigurePersistentRuntime(QuestFactProgressRule[] rules, bool debugMapping)
+    private void ConfigurePersistentRuntime(QuestFactProgressRule[] rules, QuestFactConventionProgressSettings conventionProgress, bool debugMapping)
 #else
-    private void ConfigurePersistentRuntime(QuestFactProgressRule[] rules)
+    private void ConfigurePersistentRuntime(QuestFactProgressRule[] rules, QuestFactConventionProgressSettings conventionProgress)
 #endif
     {
         _runtimeRules = rules ?? Array.Empty<QuestFactProgressRule>();
+        _conventionProgress = conventionProgress == null ? new QuestFactConventionProgressSettings() : conventionProgress.Clone();
         _installPersistentRuntime = false;
         _isPersistentRuntime = true;
 
@@ -157,28 +160,37 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
 
     private void HandleFactReported(QuestFact fact)
     {
-        QuestFactProgressRule[] rules = GetRulesForFactProcessing();
-        if (!PixelCrushersQuestBridge.HasDialogueManager || rules.Length == 0)
+        if (!PixelCrushersQuestBridge.HasDialogueManager)
             return;
 
+        HashSet<string> appliedProgressKeys = null;
+        QuestFactProgressRule[] rules = GetRulesForFactProcessing();
         for (int i = 0; i < rules.Length; i++)
         {
             QuestFactProgressRule rule = rules[i];
             if (rule == null || !rule.Matches(fact))
                 continue;
 
-            ApplyRule(rule, fact);
+            if (!ApplyRule(rule, fact))
+                continue;
+
+            if (appliedProgressKeys == null)
+                appliedProgressKeys = new HashSet<string>(StringComparer.Ordinal);
+
+            appliedProgressKeys.Add(BuildProgressKey(rule.QuestName, rule.ResolvedProgressVariableName));
         }
+
+        ApplyConventionProgress(fact, appliedProgressKeys);
     }
 
-    private void ApplyRule(QuestFactProgressRule rule, QuestFact fact)
+    private bool ApplyRule(QuestFactProgressRule rule, QuestFact fact)
     {
         if (rule.RequireQuestActive && PixelCrushersQuestBridge.GetQuestState(rule.QuestName) != QuestState.Active)
-            return;
+            return false;
 
         string progressVariableName = rule.ResolvedProgressVariableName;
         if (string.IsNullOrWhiteSpace(progressVariableName))
-            return;
+            return false;
 
         int nextValue = PixelCrushersQuestBridge.IncrementIntVariable(progressVariableName, fact.Amount);
         int clampedValue = Mathf.Min(nextValue, rule.RequiredAmount);
@@ -191,7 +203,7 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
 #endif
 
         if (clampedValue < rule.RequiredAmount)
-            return;
+            return true;
 
         PixelCrushersQuestBridge.SetQuestEntryState(rule.QuestName, rule.EntryNumber, rule.EntryCompleteState);
         PixelCrushersQuestBridge.SetQuestState(rule.QuestName, rule.QuestCompleteState);
@@ -200,6 +212,186 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
         if (_debugMapping)
             Debug.Log($"[PixelCrushersQuestProgressMapper] Quest '{rule.QuestName}' reached '{PixelCrushersQuestBridge.GetQuestStateString(rule.QuestName)}'.", this);
 #endif
+
+        return true;
+    }
+
+    private bool IsConventionProgressEnabled()
+    {
+        if (_conventionProgress == null)
+            _conventionProgress = new QuestFactConventionProgressSettings();
+
+        return _conventionProgress.Enabled;
+    }
+
+    private void ApplyConventionProgress(QuestFact fact, HashSet<string> appliedProgressKeys)
+    {
+        if (!IsConventionProgressEnabled() || fact.Type == QuestFactType.None)
+            return;
+
+        DialogueDatabase database = DialogueManager.masterDatabase;
+        if (database == null || database.items == null || database.variables == null)
+            return;
+
+        string factSegment = PixelCrushersQuestNaming.SanitizeSegment(fact.Type.ToString());
+        if (string.IsNullOrWhiteSpace(factSegment))
+            return;
+
+        for (int i = 0; i < database.items.Count; i++)
+        {
+            Item quest = database.items[i];
+            if (quest == null || quest.IsItem)
+                continue;
+
+            string questName = quest.Name;
+            if (string.IsNullOrWhiteSpace(questName))
+                continue;
+
+            if (_conventionProgress.RequireQuestActive && PixelCrushersQuestBridge.GetQuestState(questName) != QuestState.Active)
+                continue;
+
+            ApplyConventionProgressForQuest(fact, questName, factSegment, database.variables, appliedProgressKeys);
+        }
+    }
+
+    private void ApplyConventionProgressForQuest(
+        QuestFact fact,
+        string questName,
+        string factSegment,
+        List<Variable> variables,
+        HashSet<string> appliedProgressKeys)
+    {
+        string questSegment = PixelCrushersQuestNaming.SanitizeSegment(questName);
+        if (string.IsNullOrWhiteSpace(questSegment))
+            return;
+
+        string variablePrefix = $"{questSegment}_{factSegment}_";
+        for (int i = 0; i < variables.Count; i++)
+        {
+            Variable variable = variables[i];
+            if (variable == null || string.IsNullOrWhiteSpace(variable.Name))
+                continue;
+
+            string variableName = variable.Name.Trim();
+            if (!variableName.StartsWith(variablePrefix, StringComparison.Ordinal))
+                continue;
+
+            int requiredAmount;
+            if (!TryParseConventionProgressVariable(variableName, variablePrefix.Length, fact, out requiredAmount))
+                continue;
+
+            string progressKey = BuildProgressKey(questName, variableName);
+            if (appliedProgressKeys != null && appliedProgressKeys.Contains(progressKey))
+                continue;
+
+            ApplyConventionProgressVariable(fact, questName, variableName, requiredAmount);
+        }
+    }
+
+    private void ApplyConventionProgressVariable(QuestFact fact, string questName, string progressVariableName, int requiredAmount)
+    {
+        int safeRequiredAmount = Mathf.Max(1, requiredAmount);
+        int nextValue = PixelCrushersQuestBridge.IncrementIntVariable(progressVariableName, fact.Amount);
+        int clampedValue = Mathf.Min(nextValue, safeRequiredAmount);
+        if (clampedValue != nextValue)
+            PixelCrushersQuestBridge.SetIntVariable(progressVariableName, clampedValue);
+
+#if UNITY_EDITOR
+        if (_debugMapping)
+            Debug.Log($"[PixelCrushersQuestProgressMapper] Convention '{questName}' {progressVariableName}={clampedValue}/{safeRequiredAmount}.", this);
+#endif
+
+        if (clampedValue < safeRequiredAmount)
+            return;
+
+        int entryNumber = Mathf.Max(1, _conventionProgress.EntryNumber);
+        PixelCrushersQuestBridge.SetQuestEntryState(questName, entryNumber, _conventionProgress.EntryCompleteState);
+        PixelCrushersQuestBridge.SetQuestState(questName, _conventionProgress.QuestCompleteState);
+
+#if UNITY_EDITOR
+        if (_debugMapping)
+            Debug.Log($"[PixelCrushersQuestProgressMapper] Convention quest '{questName}' reached '{PixelCrushersQuestBridge.GetQuestStateString(questName)}'.", this);
+#endif
+    }
+
+    private bool TryParseConventionProgressVariable(string variableName, int targetStartIndex, QuestFact fact, out int requiredAmount)
+    {
+        requiredAmount = Mathf.Max(1, _conventionProgress.DefaultRequiredAmount);
+
+        if (targetStartIndex < 0 || targetStartIndex >= variableName.Length)
+            return false;
+
+        string targetSegment = variableName.Substring(targetStartIndex);
+        string requiredMarker = $"_{PixelCrushersQuestNaming.RequiredAmountSegment}_";
+        int requiredMarkerIndex = targetSegment.LastIndexOf(requiredMarker, StringComparison.Ordinal);
+        if (requiredMarkerIndex >= 0)
+        {
+            string requiredAmountText = targetSegment.Substring(requiredMarkerIndex + requiredMarker.Length);
+            int parsedRequiredAmount;
+            if (!int.TryParse(requiredAmountText, out parsedRequiredAmount) || parsedRequiredAmount < 1)
+                return false;
+
+            requiredAmount = parsedRequiredAmount;
+            targetSegment = targetSegment.Substring(0, requiredMarkerIndex);
+        }
+
+        return MatchesConventionTarget(targetSegment, fact);
+    }
+
+    private static bool MatchesConventionTarget(string targetSegment, QuestFact fact)
+    {
+        string safeTarget = PixelCrushersQuestNaming.SanitizeSegment(targetSegment);
+        if (string.IsNullOrWhiteSpace(safeTarget))
+            return false;
+
+        if (string.Equals(safeTarget, PixelCrushersQuestNaming.AnyTargetSegment, StringComparison.Ordinal))
+            return true;
+
+        return MatchesConventionTargetSegment(safeTarget, fact.ExactId)
+               || MatchesConventionTargetSegment(safeTarget, fact.TypeOrTag)
+               || MatchesConventionTargetSegment(safeTarget, fact.ContextId);
+    }
+
+    private static bool MatchesConventionTargetSegment(string expectedSegment, string actualValue)
+    {
+        string actualSegment = PixelCrushersQuestNaming.SanitizeSegment(actualValue);
+        return !string.IsNullOrWhiteSpace(actualSegment)
+               && string.Equals(expectedSegment, actualSegment, StringComparison.Ordinal);
+    }
+
+    private static string BuildProgressKey(string questName, string progressVariableName)
+    {
+        return $"{questName}|{progressVariableName}";
+    }
+}
+
+[Serializable]
+public class QuestFactConventionProgressSettings
+{
+    [Tooltip("When enabled, active quests can progress from Pixel Crushers variables named QuestName_FactType_Target or QuestName_FactType_Target_Required_3.")]
+    public bool Enabled = true;
+    [Tooltip("If enabled, convention variables only progress while their quest is active.")]
+    public bool RequireQuestActive = true;
+    [Tooltip("Required amount used when a convention variable does not end with _Required_#.")]
+    [Min(1)] public int DefaultRequiredAmount = 1;
+    [Tooltip("Pixel Crushers quest entry number to update when a convention variable reaches its required amount.")]
+    [Min(1)] public int EntryNumber = 1;
+    [Tooltip("State assigned to the quest entry when the convention variable reaches its required amount.")]
+    public QuestState EntryCompleteState = QuestState.Success;
+    [Tooltip("State assigned to the quest when the convention variable reaches its required amount.")]
+    public QuestState QuestCompleteState = QuestState.ReturnToNPC;
+
+    public QuestFactConventionProgressSettings Clone()
+    {
+        return new QuestFactConventionProgressSettings
+        {
+            Enabled = Enabled,
+            RequireQuestActive = RequireQuestActive,
+            DefaultRequiredAmount = DefaultRequiredAmount,
+            EntryNumber = EntryNumber,
+            EntryCompleteState = EntryCompleteState,
+            QuestCompleteState = QuestCompleteState
+        };
     }
 }
 

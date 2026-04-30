@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// Registers Toris gameplay commands that Pixel Crushers dialogue can call from conversation scripts.
 /// Keep these commands generic so dialogue content requests gameplay actions without owning gameplay logic.
 /// Add one active instance in a scene that contains the Dialogue Manager.
-/// Pixel Crushers scripts can call TorisOpenScreen, TorisCloseScreen, TorisReportFact, TorisOpenQuestOffers, and TorisOpenQuestJournal.
+/// Pixel Crushers scripts can call TorisOpenScreen, TorisCloseScreen, TorisReportFact, and TorisOpenQuestJournal.
 /// </summary>
 [DisallowMultipleComponent]
 public class PixelCrushersDialogueCommandBridge : MonoBehaviour
@@ -17,7 +17,6 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
     private const string OpenScreenCommandName = "TorisOpenScreen";
     private const string CloseScreenCommandName = "TorisCloseScreen";
     private const string ReportFactCommandName = "TorisReportFact";
-    private const string OpenQuestOffersCommandName = "TorisOpenQuestOffers";
     private const string OpenQuestJournalCommandName = "TorisOpenQuestJournal";
 
     [Tooltip("Project UI event channel used to open or close Toris UI screens from dialogue commands.")]
@@ -55,7 +54,6 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         Lua.RegisterFunction(OpenScreenCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenScreen(string.Empty)));
         Lua.RegisterFunction(CloseScreenCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisCloseScreen(string.Empty)));
         Lua.RegisterFunction(ReportFactCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisReportFact(string.Empty, string.Empty, string.Empty, 1D, string.Empty)));
-        Lua.RegisterFunction(OpenQuestOffersCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestOffers(string.Empty)));
         Lua.RegisterFunction(OpenQuestJournalCommandName, this, SymbolExtensions.GetMethodInfo(() => TorisOpenQuestJournal(string.Empty)));
 
         if (_uiEvents != null)
@@ -80,7 +78,6 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
         Lua.UnregisterFunction(OpenScreenCommandName);
         Lua.UnregisterFunction(CloseScreenCommandName);
         Lua.UnregisterFunction(ReportFactCommandName);
-        Lua.UnregisterFunction(OpenQuestOffersCommandName);
         Lua.UnregisterFunction(OpenQuestJournalCommandName);
     }
 
@@ -131,21 +128,6 @@ public class PixelCrushersDialogueCommandBridge : MonoBehaviour
 
         int roundedAmount = Mathf.Max(1, Mathf.RoundToInt((float)amount));
         PixelCrushersQuestFactReporter.Report(new QuestFact(parsedFactType, exactId, typeOrTag, roundedAmount, contextId));
-    }
-
-    public void TorisOpenQuestOffers(string offerGroupId)
-    {
-        if (string.IsNullOrWhiteSpace(offerGroupId))
-            return;
-
-        if (!TryGetComponent(out PixelCrushersQuestOfferWindow offerWindow))
-        {
-            LogWarning($"Cannot open quest offer group '{offerGroupId}' because this bridge has no PixelCrushersQuestOfferWindow.");
-            return;
-        }
-
-        offerWindow.Open(offerGroupId);
-        LogDebug($"Opened quest offer group '{offerGroupId}'.");
     }
 
     public void TorisOpenQuestJournal(string mode)

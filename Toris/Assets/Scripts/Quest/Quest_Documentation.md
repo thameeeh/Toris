@@ -138,28 +138,41 @@ This can use a Pixel Crushers Lua condition later, but it is not urgent yet.
 
 ### Convention-Based Progress Mapping
 
-Manual `QuestFactProgressRuleSetSO` assets are useful for explicit control.
+Manual `QuestFactProgressRuleSetSO` assets remain useful for explicit control.
 
-However, creating a separate rule asset for every simple objective can become a bottleneck.
+Simple objectives can now use convention variables in the Pixel Crushers dialogue database instead.
 
-Preferred direction:
+Convention format:
 
-- keep explicit rule sets for complex quests
-- add convention-based progress for simple quest objectives
-- let the progress mapper attempt standard variable names before requiring manual setup
+- `QuestName_FactType_Target`
+- `QuestName_FactType_Target_Required_#`
 
-Example convention:
+Examples:
 
-- fact: `Kill / LeaderWolf`
-- quest: `Guide_Cull_Wolves`
-- variable: `Guide_Cull_Wolves_Kill_LeaderWolf`
-- required amount can come from quest fields, entry fields, or a configured convention rule
+- `Guide_Buy_Ore_BuyItem_Ore_Prog`
+- `Guide_Cull_Wolves_Kill_LeaderWolf_Required_3`
+- `Find_Silent_Gate_Explore_SilentGate`
+- `Reach_Level_5_LevelReached_Level_5`
 
-This should be a hybrid system, not a full replacement.
+Use `Any` as the target segment only when any fact of that type should count.
+
+Current migrated example:
+
+- `Guide_Cull_Wolves` uses `Guide_Cull_Wolves_Kill_LeaderWolf_Required_3`
+- the cooldown and abandon sets reset that same convention variable
+- there is no explicit progress rule asset entry for this objective anymore
+
+How it works:
+
+- Toris reports a `QuestFact`
+- the progress mapper checks active Pixel Crushers quests
+- if a matching convention variable exists, that variable is incremented
+- if the variable reaches its required amount, entry `1` is completed
+- the quest moves to the mapper's configured convention completion state
 
 Use conventions for boring repeated cases.
 
-Use explicit rule assets when the quest needs special behavior.
+Use explicit rule assets when the quest needs special behavior, a different entry number, a different final state, or non-standard matching.
 
 ## Quest Source Rules
 
@@ -315,9 +328,9 @@ Repeatable cooldown authoring rules:
 
 Important limitation:
 
-- progress variables must be listed explicitly for now
+- repeatable reset variables must still be listed explicitly in cooldown and abandon sets
 - if a kill/count variable is not reset, the repeated quest may complete immediately on the next accepted run
-- convention-based progress mapping can reduce this authoring burden later
+- convention-based progress mapping reduces objective rule authoring, but it does not yet auto-fill cooldown or abandon reset lists
 
 ## Dialogue Rules
 
@@ -469,9 +482,9 @@ The first-time post-Smith side-work route is also validated:
 
 This proves the direction.
 
-The previous temporary `PixelCrushersQuestOfferWindow` popup is no longer the preferred flow.
+The previous temporary Toris runtime job popup has been retired.
 
-It can remain briefly as fallback while the journal is being hardened, but the target direction is the Pixel Crushers quest journal flow.
+All authored job offers should now open through the Pixel Crushers quest journal by calling `TorisOpenQuestJournal("Available:GroupName")`, or `TorisOpenQuestJournal("Available:All")` for shared job boards.
 
 ## Gameplay Input Lock Rules
 
@@ -481,7 +494,6 @@ Current behavior:
 
 - Pixel Crushers conversations request a gameplay input lock through `UIEventsSO`
 - the Pixel Crushers quest journal requests a gameplay input lock while open
-- the temporary quest offer popup requests a gameplay input lock while open
 - `InputManager` stores named gameplay locks in a set
 - movement, interaction, dash, and combat are suppressed while any gameplay lock exists
 - UI actions remain available so dialogue choices, continue buttons, journal tabs, and quest acceptance still work
@@ -492,7 +504,6 @@ Current lock ids:
 
 - `PixelCrushersDialogue`
 - `PixelCrushersQuestJournal`
-- `PixelCrushersQuestOffers`
 
 Rule for future quest-related UI:
 
@@ -817,7 +828,6 @@ Current Toris-side bridge components:
 - `PixelCrushersQuestAbandonSetSO`
 - `PixelCrushersRepeatableQuestCooldownAdapter`
 - `PixelCrushersRepeatableQuestCooldownSetSO`
-- `PixelCrushersQuestOfferWindow`
 - `PixelCrushersQuestBridge`
 - `PixelCrushersQuestFactReporter`
 - `PixelCrushersQuestJournalInteractable`
@@ -826,6 +836,7 @@ Current Toris-side bridge components:
 - `PixelCrushersQuestProgressMapper`
 - `PixelCrushersQuestRewardAdapter`
 - `QuestFact`
+- `QuestFactConventionProgressSettings`
 - `QuestFactType`
 - `QuestFactProgressRuleSetSO`
 - `QuestFactManualReporter`
@@ -886,7 +897,7 @@ No component should become `GuideOnlyQuestThing`.
 - Add support for job unlock conditions
 - Add support for reward preview
 - Add support for partial reward granting and `Inventory full!` feedback
-- Remove the temporary Toris runtime job popup after the journal replacement works
+- Temporary Toris runtime job popup retired after the journal replacement proved stable
 
 ### Phase 3 - Expand Generic Fact Reporting
 
@@ -918,7 +929,7 @@ No component should become `GuideOnlyQuestThing`.
 - Support quests with multiple active objectives
 - Support facts progressing multiple active quests
 - Support retroactive progress only when explicitly configured
-- Add convention-based progress mapping for simple repeated objectives
+- Convention-based progress mapping exists for simple active quest objectives
 - Keep explicit rule sets for complex or special-case quest behavior
 
 ### Phase 5 - Rewards And Unlocks

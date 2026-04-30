@@ -55,7 +55,7 @@ public class PixelCrushersQuestAbandonDefinition
     [Header("After Abandon")]
     [Tooltip("Quest state assigned after abandoning. Use Grantable for reusable jobs, Unassigned for hidden/locked work, or Abandoned for permanent abandoned state.")]
     public QuestState StateAfterAbandon = QuestState.Grantable;
-    [Tooltip("Pixel Crushers progress variables to reset to 0 when abandoning. Example: GuideCullWolfKills.")]
+    [Tooltip("Pixel Crushers progress variables to reset to 0 when abandoning. Example: Guide_Cull_Wolves_Kill_LeaderWolf_Required_3.")]
     public string[] ProgressVariableNamesToReset = Array.Empty<string>();
     [Tooltip("Reset all quest entry states when abandoning so the next acceptance starts cleanly.")]
     public bool ResetAllQuestEntries = true;

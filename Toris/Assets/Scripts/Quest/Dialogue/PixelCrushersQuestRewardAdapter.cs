@@ -28,6 +28,10 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
     [SerializeField] private bool _debugRewardFlow = true;
 #endif
 
+    [Header("Recovery")]
+    [Tooltip("On enable, scan already-successful automatic rewards that were not granted while this adapter was offline.")]
+    [SerializeField] private bool _grantMissedAutomaticRewardsOnEnable = true;
+
     private static readonly List<PixelCrushersQuestRewardAdapter> ActiveAdapters = new List<PixelCrushersQuestRewardAdapter>();
 
     private readonly List<PixelCrushersQuestRewardDefinition> _runtimeRewards = new List<PixelCrushersQuestRewardDefinition>();
@@ -50,7 +54,11 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
         for (int i = 0; i < _runtimeRewards.Count; i++)
         {
             PixelCrushersQuestRewardDefinition reward = _runtimeRewards[i];
-            _lastObservedQuestStates[i] = PixelCrushersQuestBridge.GetQuestStateString(reward.QuestName);
+            string currentState = PixelCrushersQuestBridge.GetQuestStateString(reward.QuestName);
+            _lastObservedQuestStates[i] = currentState;
+
+            if (_grantMissedAutomaticRewardsOnEnable)
+                TryGrantMissedAutomaticReward(reward, currentState);
         }
     }
 
@@ -245,6 +253,34 @@ public class PixelCrushersQuestRewardAdapter : MonoBehaviour
         }
 
         _lastObservedQuestStates = new string[_runtimeRewards.Count];
+    }
+
+    private void TryGrantMissedAutomaticReward(PixelCrushersQuestRewardDefinition reward, string currentState)
+    {
+        if (!PixelCrushersQuestBridge.HasDialogueManager)
+            return;
+
+        if (reward == null
+            || !reward.IsConfigured
+            || reward.ClaimMode != PixelCrushersQuestRewardClaimMode.AutomaticOnSuccess
+            || RewardsWereAlreadyGranted(reward))
+        {
+            return;
+        }
+
+        if (!string.Equals(currentState, PixelCrushersQuestBridge.SuccessState, StringComparison.Ordinal))
+            return;
+
+#if UNITY_EDITOR
+        if (_debugRewardFlow)
+        {
+            Debug.Log(
+                $"[PixelCrushersQuestRewardAdapter] Recovering missed automatic rewards for already-successful quest '{reward.QuestName}'.",
+                this);
+        }
+#endif
+
+        TryGrantRewards(reward);
     }
 
     private bool TryGrantRewards(PixelCrushersQuestRewardDefinition reward)

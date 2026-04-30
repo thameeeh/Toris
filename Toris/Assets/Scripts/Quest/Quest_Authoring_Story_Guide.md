@@ -6,6 +6,36 @@ Use this document when you are authoring content.
 
 Use `Quest_Documentation.md` when you need technical details about the quest system itself.
 
+## Architecture Status
+
+The quest bridge is frozen for content work.
+
+That means new quests should use the existing Pixel Crushers + Toris bridge instead of changing the backbone.
+
+Use the current system unless a quest truly needs a missing generic feature.
+
+Stable authoring path:
+
+- define quests, entries, groups, dialogue, and states in Pixel Crushers
+- report gameplay through reusable Toris quest facts
+- map simple objectives with convention variables
+- use explicit progress rule assets for special cases
+- configure rewards, abandon rules, and cooldowns through Toris assets
+- open NPC jobs with source-filtered journal modes
+- open job board jobs with all-source available jobs mode
+- run the Quest Authoring Validator before calling content done
+
+Deferred systems should stay deferred until content needs them.
+
+Current deferred items:
+
+- quest-driven world object activation
+- dynamic NPC/object visibility
+- extra unlock reward types
+- auto-suggested convention reset lists
+- deeper save-slot/menu-load verification
+- quest journal refactors if the window gets too heavy
+
 ## Current Quest Philosophy
 
 Quests should do at least one of these things:
@@ -80,12 +110,20 @@ Examples:
 
 ```text
 Guide_Cull_Wolves_Kill_LeaderWolf_Required_3
-Guide_Buy_Ore_BuyItem_Ore_Prog
+Guide_Buy_Ore_BuyItem_Ore
 Find_Silent_Gate_Explore_SilentGate
 Reach_Level_5_LevelReached_Level_5
 ```
 
 Use `Required_#` when the player must do something more than once.
+
+The target segment matches a reported fact's `ExactId`, `TypeOrTag`, or `ContextId`.
+
+For item/shop quests, prefer a stable tag-like target such as `Ore` when the reporter provides one.
+
+Avoid adding extra suffixes like `_Prog` unless the reporter actually emits that exact id and that is the target you want.
+
+Only create one convention variable for a single objective.
 
 Use explicit `QuestFactProgressRuleSetSO` rules when the quest needs special behavior.
 
@@ -280,6 +318,7 @@ Use conventions when:
 - one fact increments one variable
 - entry `1` should complete
 - the quest can move to the mapper's default convention completion state
+- the repeatable or abandon reset set explicitly clears the same convention variable
 
 ## Testing Checklist
 

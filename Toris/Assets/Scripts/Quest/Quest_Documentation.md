@@ -85,11 +85,47 @@ Toris should not become a second quest runtime.
 
 Toris should provide reusable glue.
 
+## Architecture Freeze
+
+Freeze point: May 2026.
+
+The current quest bridge architecture is considered stable enough for content authoring.
+
+Do not rebuild the backbone unless a content requirement proves the existing pattern cannot support it.
+
+Frozen production contract:
+
+- Pixel Crushers is the source of truth for dialogue, quest definitions, quest entries, quest states, quest groups, and dialogue/quest persistence.
+- Toris reports gameplay facts and applies gameplay consequences.
+- Toris bridge scripts must stay generic and reusable.
+- New normal quests should be authored through Pixel Crushers plus data assets, not new one-off C# scripts.
+- Simple one-objective quests should prefer convention progress variables.
+- Complex, multi-step, or unusual objectives should use explicit `QuestFactProgressRuleSetSO` rules.
+- Rewards should go through `PixelCrushersQuestRewardAdapter` and reward set assets.
+- Side-job availability should go through `TorisOpenQuestJournal("Available:GroupName")`.
+- Global journal inspection should stay separate from source-based job acceptance.
+- Abandon and repeatable cooldown behavior should stay data-driven through their set assets.
+- Save/load for quest state should remain Pixel Crushers data in the Toris save payload.
+
+Content mode rules:
+
+- Build story and jobs on top of this architecture.
+- Run the Quest Authoring Validator after adding or changing quest content.
+- Prefer documentation updates and validator checks over new hardcoded safety scripts.
+- If a quest needs something the bridge does not support, first ask whether the missing feature should be a generic bridge extension.
+
+Non-goals during content mode:
+
+- do not replace Pixel Crushers quest state with a Toris quest runtime
+- do not create quest-specific scripts like `GuideOnlyQuestThing`
+- do not build a second quest UI when a Pixel Crushers extension can handle it
+- do not optimize theoretical future cases before a real quest needs them
+
 ## Strategic Extensions
 
-These are not required before the current quest journal and job flow is hardened.
+These are deferred architecture extensions.
 
-They are important enough to keep in the architecture plan.
+They are important enough to keep in the plan, but they should not block current story and job authoring.
 
 ### World-State Integration
 
@@ -149,10 +185,16 @@ Convention format:
 
 Examples:
 
-- `Guide_Buy_Ore_BuyItem_Ore_Prog`
+- `Guide_Buy_Ore_BuyItem_Ore`
 - `Guide_Cull_Wolves_Kill_LeaderWolf_Required_3`
 - `Find_Silent_Gate_Explore_SilentGate`
 - `Reach_Level_5_LevelReached_Level_5`
+
+The target segment matches the reported fact's `ExactId`, `TypeOrTag`, or `ContextId` after sanitizing.
+
+For shop facts, prefer the stable item tag/type when possible, such as `Ore`, instead of a prototype exact id such as `Ore_Prog`.
+
+Only create one convention variable per objective, or one reported fact may advance more than one counter.
 
 Use `Any` as the target segment only when any fact of that type should count.
 
@@ -173,6 +215,33 @@ How it works:
 Use conventions for boring repeated cases.
 
 Use explicit rule assets when the quest needs special behavior, a different entry number, a different final state, or non-standard matching.
+
+## Deferred Backlog
+
+These are known gaps or polish items that are intentionally not blocking content production.
+
+High-value later systems:
+
+- `QuestStateWorldObjectActivator` for generic quest-driven gates, blockers, portals, revealed sites, and other physical world changes.
+- `PixelCrushersConditionVisibility` or a similar generic component for NPC/object visibility based on Pixel Crushers conditions.
+- Optional convention reset helper that can suggest or auto-fill reset variables for repeatable and abandonable convention objectives.
+- Pre-build or CI-style authoring validation if quest content grows enough that manual validator runs become easy to forget.
+- Additional reward/unlock types for shop unlocks, dialogue unlocks, world-state unlocks, and future quest unlocks.
+
+Good-to-have hardening:
+
+- merge late-loaded scene-local quest bridge config into persistent runtimes if future scenes own independent quest assets
+- extract helper classes from `PixelCrushersQuestJournalWindow` if it becomes difficult to maintain
+- extend save/load verification once the Toris save system supports full save slots and menu-driven loads
+- add more fact sources only when content needs them, especially world-object/site interactions
+- keep fact reporter debug logging disabled unless diagnosing objective flow
+
+Deferred risks to remember:
+
+- string references can still silently fail if names drift
+- repeatable and abandonable quests still need explicit progress reset variables
+- global journal visibility must stay clear when jobs are visible but not source-acceptible
+- world-state changes are planned but not implemented as a generic bridge yet
 
 ## Quest Source Rules
 
@@ -318,7 +387,7 @@ Repeatable cooldown authoring rules:
 - add one entry per repeatable quest
 - set `Quest Name` to the exact Pixel Crushers quest name
 - set `Cooldown Seconds`
-- add every progress variable that must reset, such as `GuideCullWolfKills`
+- add every progress variable that must reset, such as `Guide_Cull_Wolves_Kill_LeaderWolf_Required_3`
 - set `Available State After Cooldown` to `Grantable`
 - leave `Cooldown End Variable Name` blank unless a custom Lua variable is needed
 - leave `Completion Count Variable Name` blank unless a custom Lua variable is needed
@@ -330,7 +399,8 @@ Important limitation:
 
 - repeatable reset variables must still be listed explicitly in cooldown and abandon sets
 - if a kill/count variable is not reset, the repeated quest may complete immediately on the next accepted run
-- convention-based progress mapping reduces objective rule authoring, but it does not yet auto-fill cooldown or abandon reset lists
+- convention-based progress mapping reduces objective rule authoring, but cooldown and abandon reset lists still need explicit variables
+- run the Quest Authoring Validator after adding repeatable or abandonable convention objectives
 
 ## Dialogue Rules
 
@@ -668,7 +738,7 @@ Current reward adapter behavior:
 - the full reward guard is only marked after every configured reward piece has been granted
 - gold and XP are not duplicated while an item reward is still pending
 - reward definitions choose whether rewards are attempted automatically when the quest reaches `Success` or claimed manually from the quest journal
-- automatic rewards are attempted when the quest changes to `Success`
+- automatic rewards are attempted when the quest changes to `Success`, and on adapter enable if a successful quest still has unclaimed automatic rewards
 - if automatic rewards are blocked, the remaining reward pieces can be collected from the completed quest in the journal
 - manual rewards are claimed from the completed quest in the journal with `Collect Rewards`
 - item rewards are currently all-or-nothing for the configured item stack because `InventoryManager.AddItem` is an all-or-nothing transaction
@@ -749,7 +819,7 @@ Abandon authoring rules:
 - do not add main story quests unless they are intentionally abandonable
 - set `Quest Name` to the exact Pixel Crushers quest name
 - set `State After Abandon` to `Grantable` for reusable jobs
-- add every progress variable that must reset, such as `GuideCullWolfKills`
+- add every progress variable that must reset, such as `Guide_Cull_Wolves_Kill_LeaderWolf_Required_3`
 - set flat or percentage penalties as content values
 - assign the abandon set to `PixelCrushersQuestAbandonAdapter`
 
@@ -781,6 +851,10 @@ Debugging should be useful but not flood the console.
 Keep debug flags available on bridge components.
 
 Editor debug logs should stay behind `#if UNITY_EDITOR`.
+
+`PixelCrushersQuestFactReporter` fact logs are disabled by default.
+
+Add `PixelCrushersQuestFactReporterDebugSettings` to a quest bootstrap object and enable `Debug Facts` when diagnosing raw fact flow.
 
 Useful debug output:
 

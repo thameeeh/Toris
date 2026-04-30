@@ -57,7 +57,7 @@ public class PixelCrushersRepeatableQuestCooldownDefinition
     public string CompletionCountVariableName = string.Empty;
 
     [Header("Reset When Cooldown Ends")]
-    [Tooltip("Pixel Crushers progress variables to reset to 0 when the cooldown ends. Example: GuideCullWolfKills.")]
+    [Tooltip("Pixel Crushers progress variables to reset to 0 when the cooldown ends. Example: Guide_Cull_Wolves_Kill_LeaderWolf_Required_3.")]
     public string[] ProgressVariableNamesToReset = Array.Empty<string>();
     [Tooltip("Reset all quest entry states when the cooldown ends so the next acceptance starts cleanly.")]
     public bool ResetAllQuestEntries = true;

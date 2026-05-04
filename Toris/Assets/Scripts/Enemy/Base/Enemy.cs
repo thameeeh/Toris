@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
-    //temporary for testing
     private bool _isAggroed;
     public bool IsAggroed
     {
@@ -23,7 +22,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public float CurrentHealth { get; set; }
     public bool IsFacingRight { get; set; } = true;
     [field: SerializeField] public Rigidbody2D rb { get; set; }
-    //public bool IsAggroed { get; set; }
     public bool AlwaysAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
 
@@ -43,6 +41,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [Header("Health Bar")]
     [SerializeField] private bool autoCreateHealthBar = true;
     [SerializeField] private EnemyHealthBar healthBar;
+
+    [Header("Alert Indicator")]
+    [SerializeField] private bool autoCreateAlertIndicator = true;
+    [SerializeField] private EnemyAlertIndicator alertIndicator;
 
     // Quest reporting stays data-driven: enemies expose stable IDs, then report facts.
     // Quest-specific progress mapping stays outside enemy gameplay code.
@@ -66,6 +68,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public event Action<Enemy> Died;
     public event Action<Enemy> Despawned;
     public event Action<float> Damaged; // for sfx
+    public event Action<Enemy, EnemyAlertReason> AlertTriggered;
 
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
@@ -78,9 +81,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         StateMachine = new EnemyStateMachine();
         animator = GetComponentInChildren<Animator>();
         CacheOwnedColliders();
-        EnsureHealthBar();
-
         _baseMaxHealth = MaxHealth;
+        CurrentHealth = MaxHealth;
+        EnsureHealthBar();
+        EnsureAlertIndicator();
         
         if (animator == null)
             Debug.LogError("Animator component is missing on the enemy.");
@@ -119,7 +123,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         CurrentHealth -= damageAmount;
 
         Damaged?.Invoke(damageAmount);
-        //Debug.Log($"Health left: {CurrentHealth}");
+        if (CurrentHealth > 0f)
+            TriggerAlert(EnemyAlertReason.Damaged);
+
         if (CurrentHealth <= 0f)
         {
             Die();
@@ -130,7 +136,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     public virtual void Die()
     {
-        //Debug.Log("Dead");
         if (CurrentHealth > 0f) return;
         DisableCollidersForDeath();
         TryResolveDeathLoot();
@@ -158,17 +163,22 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     #region Distance Checks
     //those two are set by enemy children trigger_check scripts
     //also children have colliders set as triggers for those checks
-    //public void SetAggroStatus(bool isAggroed)
-    //{
-    //    IsAggroed = isAggroed;
+    public void SetAggroStatus(bool isAggroed)
+    {
+        IsAggroed = isAggroed;
 
-    //    if (AlwaysAggroed)
-    //    {
-    //        IsAggroed = true;
-    //        return;
-    //    }
-    //}
-    public void SetAggroStatus(bool isAggroed) => IsAggroed = isAggroed;
+        if (isAggroed)
+            TriggerAlert(EnemyAlertReason.PlayerDetected);
+    }
+
+    public void TriggerAlert(EnemyAlertReason reason)
+    {
+        if (CurrentHealth <= 0f)
+            return;
+
+        AlertTriggered?.Invoke(this, reason);
+    }
+
     public void SetStrikingDistanceBool(bool isWithinStrikingDistance)
     {
         IsWithinStrikingDistance = isWithinStrikingDistance;
@@ -255,6 +265,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     {
         ClearStatusEffects();
         AggroStatusChanged = null;
+        AlertTriggered = null;
         Despawned?.Invoke(this);
         Despawned = null;
         Died = null;
@@ -369,6 +380,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
         if (healthBar == null)
             healthBar = gameObject.AddComponent<EnemyHealthBar>();
+    }
+
+    private void EnsureAlertIndicator()
+    {
+        if (!autoCreateAlertIndicator)
+            return;
+
+        if (alertIndicator == null)
+            TryGetComponent(out alertIndicator);
+
+        if (alertIndicator == null)
+            alertIndicator = gameObject.AddComponent<EnemyAlertIndicator>();
     }
 
     private void TryResolveDeathLoot()

@@ -63,6 +63,7 @@ public class Wolf : Enemy
         InvestigationUntilTime = Time.time + Mathf.Max(0f, duration);
         InvestigationStandDurationBonus = Mathf.Max(0f, standDurationBonus);
         HasInvestigationTarget = true;
+        TriggerAlert(EnemyAlertReason.SiteAlerted);
     }
 
     public void ClearInvestigationTarget()

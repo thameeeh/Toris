@@ -11,7 +11,6 @@ public class EnemyAggroCheck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("Aggro Check entered by: " + collision.name);
         if (IsPlayerCollision(collision))
         {
             _enemy.SetAggroStatus(true);

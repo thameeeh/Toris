@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4107402781561907441}
   - component: {fileID: 8057200069195693602}
   - component: {fileID: 1331929433903837469}
+  - component: {fileID: 1332133597857367367}
   - component: {fileID: -652129463887021437}
   - component: {fileID: 5282169703739860041}
   m_Layer: 7
@@ -102,6 +103,24 @@ CapsuleCollider2D:
   m_Offset: {x: -0.05, y: 0.5}
   m_Size: {x: 0.3, y: 1}
   m_Direction: 0
+--- !u!114 &1332133597857367367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396674782226241983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1505b050a147d241bdb3f3f2ca60b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
+  indicatorOffset: {x: 0, y: 1.45, z: 0}
+  displayDuration: 1.25
+  alertSprite: {fileID: 21300000, guid: 87c3c62b424df364f9c2ee6e733a60f9, type: 3}
+  indicatorColor: {r: 0.96, g: 0.06, b: 0.1, a: 1}
+  indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
+  sortingOrder: 100
 --- !u!114 &-652129463887021437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +137,12 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 8057200069195693602}
   playerTransform: {fileID: 0}
   lootTable: {fileID: 0}
+  autoCreateHealthBar: 1
+  healthBar: {fileID: 0}
+  autoCreateAlertIndicator: 1
+  alertIndicator: {fileID: 0}
+  questEnemyId: 
+  questEnemyTypeOrTag: 
   AttackDamage: 8
   MovementSpeed: 2.2
   castPoint: {fileID: 2979183751253149904}

@@ -143,7 +143,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         isPausedAtPoint = false;
         isStandingAtInvestigatePoint = false;
 
-        if (alertIndicator != null)
+        if (alertIndicator != null && !enemy.IsAggroed)
             alertIndicator.HideIndicator();
     }
 

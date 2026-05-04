@@ -11,23 +11,39 @@ This plan describes how to expand the `ProceduralTiles` grid into a clearer laye
 
 The goal is to keep rendering, collision, and navigation responsibilities separated so the system remains easy to reason about as the world grows.
 
+Scope boundary:
+- this document is about the procedural world generation scene and runtime world output
+- it is not about decorating or restructuring `MainArea`
+- Safe Haven / Main Area can remain hand-authored while this track focuses on generated wilderness, roads, lakes, sites, and traversal spaces
+
 ## Current Scene Baseline
-The `ProceduralTiles` scene currently uses one Unity `Grid` with these child Tilemaps:
+The procedural world currently uses one Unity `Grid` with these child Tilemaps:
 - `Terrain`
-- `Interactible`
+- `Decoration`
+- `Obstacle`
+- `Canopy`
 - `Water`
 
 Current runtime wiring:
 - `Terrain` is the world ground tilemap
 - `Water` is the world water tilemap and has a `TilemapCollider2D`
-- `Interactible` is currently used as the generated decor layer
+- `Decoration` is the non-blocking visual dressing tilemap
+- `Obstacle` is the obstacle/base visual tilemap
+- `Canopy` is the high visual overlay tilemap
 
 Current runtime behavior:
-- generation writes only three tilemap arrays: ground, water, and decor
+- generation writes five tilemap arrays: ground, water, decoration, obstacle, and canopy
+- `TileResult`, `ChunkResult`, `TileResolver`, `TilemapApplier`, and `WorldGenRunner` all support these five channels
+- biome tree variants can output an `Obstacle` tile and a `Canopy` tile
+- biome road settings support deterministic visual variants for generated roads
 - navigation reads ground and water, then applies explicit blocker contributions
-- decor visuals do not automatically block navigation
+- visual overlays do not automatically block navigation
 
-This means the project already has the right conceptual split for visuals versus movement blocking. The next step is to make that split more explicit and more extensible.
+This means the project already has the right conceptual split for visuals versus movement blocking.
+
+The next step is not more layer plumbing.
+
+The next step is improving procedural world feel using the existing layer stack.
 
 ## Recommended Grid Layer Model
 Keep a single shared `Grid` GameObject. Do not introduce multiple world grids.
@@ -192,43 +208,33 @@ Important design rule:
 - keep the cheap decorative version for most trees
 - reserve runtime site objects for special trees that actually need interaction or persistence
 
-## Recommended Technical Expansion Path
-Implement the grid expansion in this order:
+## Current Technical State And Expansion Path
+The grid/layer expansion and generated output channels are already in place.
 
-### 1. Clarify the visual tilemap naming
-Rename or repurpose the current visual layers so their intent is obvious:
-- keep `Terrain`
-- keep `Water`
-- rename `Interactible` to `Decoration` or `Obstacle`
-
-Preferred result:
-- current `Interactible` becomes `Decoration`
-- add new `Obstacle`
-- add new `Canopy`
-
-### 2. Extend generation output only when needed
-Right now generation writes:
-- ground
-- water
-- decor
-
-If the procedural generator should author more than one visual overlay layer, extend:
-- `TileResult`
-- `ChunkResult`
-- `TileResolver`
-- `TilemapApplier`
-- `WorldGenRunner` tilemap references
-
-Suggested future generated outputs:
+Current generated outputs:
 - ground
 - water
 - decoration
 - obstacle
 - canopy
 
-Do not extend these until there is a real generator use case. For manual scene-only experimentation, extra tilemaps can be added without changing generation code yet.
+Current code path:
+- `TileResolver` decides which layer tiles a world tile should produce
+- `ChunkGenerator` writes those layers into `ChunkResult`
+- `TilemapApplier` applies each layer to its matching Tilemap
+- `BiomeTreeVariant` can provide trunk/base visuals through `Obstacle` and upper visuals through `Canopy`
 
-### 3. Keep blockers separate from visuals
+Do not add more visual channels until there is a proven content need.
+
+Near-term work should focus on:
+- better placement rules
+- better biome palettes
+- shoreline and road-edge dressing
+- road visual variety through biome road variant palettes
+- explicit blocker data for genuinely blocking generated obstacles
+- authored vignettes for special procedural sites
+
+### Keep blockers separate from visuals
 Continue to drive blocking through blocker contributions rather than tying walkability directly to obstacle visuals.
 
 For generated trees and large props:
@@ -236,7 +242,7 @@ For generated trees and large props:
 - stamp obstacle visuals
 - stamp blocker footprint
 
-### 4. Use canopy only for tall overlap cases
+### Use canopy only for tall overlap cases
 Do not put every bush or plant into a canopy layer.
 
 Use `Canopy` only for art that must visually sit above actors, such as:
@@ -304,11 +310,16 @@ The design is successful when:
 - future choppable trees can be introduced without converting every decorative tree into a GameObject
 
 ## Recommended Next Step
-If this plan is implemented later, the first practical milestone should be:
-- add `Decoration`, `Obstacle`, and `Canopy` tilemaps under the existing `Grid`
-- keep the current generator writing to the existing three channels for now
-- manually validate the visual stack in `ProceduralTiles`
-- then decide whether the procedural generation output should be extended to write obstacle and canopy layers directly
+The first practical milestone is no longer layer creation.
+
+That work is already done.
+
+The next practical milestone should be:
+- keep the five-layer procedural output stable
+- add or tune world dressing rules that use the existing `Decoration`, `Obstacle`, and `Canopy` layers
+- start with ordinary procedural spaces rather than Main Area
+- prefer broad improvements such as shoreline dressing, road-edge dressing, and biome-specific vegetation variation
+- only add new blocker rules when the generated obstacle should actually affect movement
 
 ## Concrete Implementation Plan
 
@@ -321,6 +332,9 @@ If this plan is implemented later, the first practical milestone should be:
 - Treat canopy as visual-only.
 
 ### Phase 1 - Scene Layer Expansion
+Status:
+- completed
+
 Goal:
 Create a clearer tilemap stack in the scene before changing procedural generation.
 
@@ -347,6 +361,9 @@ Validation:
 - Canopy can visually overlap the player without affecting movement.
 
 ### Phase 2 - Clarify Layer Ownership In Code
+Status:
+- completed
+
 Goal:
 Make the runtime explicit about what each tilemap is for before adding new generated outputs.
 
@@ -366,7 +383,10 @@ Validation:
 - Existing world generation still targets the same visible layers it used before.
 - No code path assumes that obstacle visuals automatically block navigation.
 
-### Phase 3 - Add Procedural Obstacle And Canopy Output Only When Needed
+### Phase 3 - Add Procedural Obstacle And Canopy Output
+Status:
+- completed for the base output pipeline
+
 Goal:
 Extend the procedural output model only when there is a real use case for authored tree and obstacle layering.
 
@@ -384,8 +404,8 @@ Steps:
 - Keep water and terrain rules unchanged.
 
 Rules:
-- Do not extend generation output just because the scene can support more tilemaps.
-- Only add procedural obstacle and canopy channels once the content genuinely needs them.
+- Do not extend beyond the current five generated channels unless content proves the need.
+- Keep `Obstacle` and `Canopy` as visual output channels, not automatic navigation channels.
 
 Validation:
 - Generated chunks can write obstacle visuals and optional canopy visuals independently.
@@ -473,17 +493,26 @@ Validation:
 - Persistent trees restore the correct state after reload.
 
 ## Practical Build Order
-Use this order when implementation begins:
+Historical build order:
 
 1. Expand the `Grid` hierarchy in `ProceduralTiles`.
 2. Validate rendering order manually with test tiles.
 3. Rename or repurpose the current decor layer into `Decoration`.
-4. Add `Obstacle` and `Canopy` as scene layers only.
-5. Keep generation unchanged until the visual stack is stable.
-6. Add blocker-authoring rules for tree stumps and rocks.
-7. Extend procedural outputs for `Obstacle` and `Canopy` only when needed.
+4. Add `Obstacle` and `Canopy` scene layers.
+5. Extend procedural outputs for `Obstacle` and `Canopy`.
+6. Keep blocker-authoring rules separate from visuals.
+7. Add blocker-authoring rules for generated tree stumps, rocks, or obstacles only when those visuals should affect movement.
 8. Add one special tree prototype only after the decorative path is proven.
 9. If chopping is needed, build it as a stateful special-tree path, not as a rewrite of all trees.
+
+Current next build order:
+
+1. Keep the five-layer pipeline stable.
+2. Improve biome and world dressing rules.
+3. Tune shoreline vignette placement and road-edge dressing.
+4. Add generated blocker data only for visuals that must be solid.
+5. Use layout-authored vignettes for memorable local compositions.
+6. Keep Main Area work separate from this procedural-world track.
 
 ## Implementation Progress
 
@@ -506,11 +535,6 @@ What was completed:
 - renamed the current generated visual output path from `decor` to `decoration` in the runtime code
 
 What remains intentionally unchanged:
-- generation still writes only to:
-  - ground
-  - water
-  - decoration
-- `Obstacle` and `Canopy` are present in the scene but are not generator-driven yet
 - blocker behavior is unchanged in this slice
 - choppable trees remain deferred and are not part of the current implementation scope
 
@@ -518,6 +542,81 @@ Why this slice matters:
 - it establishes the readable tilemap stack in the scene first
 - it aligns runtime naming with the intended layer model
 - it keeps the first implementation step low risk before any blocker or generator expansion begins
+
+### Verified Slice 2 - Generated Obstacle And Canopy Channels
+Status:
+- verified by code inspection
+
+What is currently supported:
+- `TileResult` stores:
+  - ground
+  - water
+  - decoration
+  - obstacle
+  - canopy
+- `ChunkResult` stores arrays for all five layers
+- `ChunkGenerator` fills all five layers from `TileResolver`
+- `TilemapApplier` applies and clears all five layer arrays
+- `TileResolver` can place tree obstacle/canopy variants and small decoration variants
+
+What remains intentionally unchanged:
+- obstacle and canopy visuals still do not imply navigation blocking
+- blocker behavior still comes from explicit blocker contributions
+- choppable trees remain deferred
+- Main Area beautification is outside this procedural-world track
+
+Why this slice matters:
+- procedural world visuals can now use the full layer model
+- future dressing work can focus on art rules and density instead of plumbing
+- the generator can create richer wilderness without turning every object into a runtime prefab
+
+### Verified Slice 3 - Road Visual Variety
+Status:
+- implemented by code inspection
+
+What is currently supported:
+- `BiomeProfile` exposes:
+  - base road tile
+  - optional road variant tiles
+  - road variant chance
+  - road variant patch size
+- `RoadSurfaceBuilder` deterministically mixes road variants into generated road terrain overrides
+- road visual variation is seed-stable and grouped into small patches instead of per-tile noise
+
+What remains intentionally unchanged:
+- roads still write to the ground/terrain output path
+- road variants are visual only
+- road-edge decorations such as flowers, stones, and grass clumps remain a future dressing pass
+
+Why this slice matters:
+- roads can now look less stamped and repetitive without changing road layout logic
+- each biome can control its own road palette from data
+- future road-edge dressing can build on top of this instead of replacing it
+
+### Verified Slice 4 - Shoreline Vignette Placement
+Status:
+- implemented by code inspection
+
+What is currently supported:
+- a `ShorelineVignettePlacementRuleDefinition` can be added to a biome site placement rule step
+- the rule accepts a list of baked `SiteTileLayoutDefinition` shoreline layouts
+- each rule declares which cell/grid direction is water-facing in its authored layouts
+- shoreline rules support counted feature placement and repeatable filler placement
+- runtime placement finds land tiles adjacent to generated lake water
+- shoreline candidates are gathered from the real generated lake edges before choosing spaced anchors
+- the selected layout rotates so its authored water-facing side points toward the actual lake water
+- land-side layout cells are clipped if they would stamp onto generated lake water
+- repeatable filler rules can run after rare/common features and avoid overwriting existing stamps
+
+What remains intentionally unchanged:
+- shoreline vignettes are visual stamps, not runtime sites
+- no blocker footprints are added by default
+- no full handcrafted lake replacement is attempted
+
+Why this slice matters:
+- lake edges can now receive authored local compositions without hand-authoring whole lakes
+- new shoreline variants can be added through data instead of new code
+- the system matches the grave layout workflow while staying procedural-world focused
 
 ## Acceptance Criteria For The Plan
 This plan is ready to implement when:

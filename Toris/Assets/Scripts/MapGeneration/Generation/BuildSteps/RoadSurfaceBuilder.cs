@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public static class RoadSurfaceBuilder
 {
@@ -14,6 +15,8 @@ public static class RoadSurfaceBuilder
     private const int PlatformHeight = 9;
     private const int InitialRoadOffsetTiles = 6;
     private const uint RoadHashSalt = 5001u;
+    private const uint RoadVariantChanceHashSalt = 5011u;
+    private const uint RoadVariantSelectionHashSalt = 5021u;
     private const int MinAllowedRoadWidth = 3;
     private const int MaxAllowedRoadWidth = 5;
     private const int MinimumRoadScanTiles = 128;
@@ -72,7 +75,7 @@ public static class RoadSurfaceBuilder
 
     private static void StampRoadAt(WorldContext ctx, Vector2Int centerTile, Vector2Int perpendicularDirection)
     {
-        if (ctx.Biome == null || ctx.Biome.roadTile == null)
+        if (ctx.Biome == null || !HasAnyRoadTile(ctx.Biome))
             return;
 
         uint roadHash = DeterministicHash.Hash(
@@ -95,10 +98,94 @@ public static class RoadSurfaceBuilder
 
         for (int i = -halfWidth; i <= halfWidth; i++)
         {
+            Vector2Int roadTilePosition = centerTile + perpendicularDirection * i;
             ctx.BuildOutput.TerrainOverrides.SetGround(
-                centerTile + perpendicularDirection * i,
-                ctx.Biome.roadTile);
+                roadTilePosition,
+                PickRoadTile(ctx, roadTilePosition));
         }
+    }
+
+    private static bool HasAnyRoadTile(BiomeProfile biome)
+    {
+        if (biome == null)
+            return false;
+
+        if (biome.roadTile != null)
+            return true;
+
+        TileBase[] variants = biome.roadVariantTiles;
+        if (variants == null)
+            return false;
+
+        for (int i = 0; i < variants.Length; i++)
+        {
+            if (variants[i] != null)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static TileBase PickRoadTile(WorldContext ctx, Vector2Int tilePosition)
+    {
+        BiomeProfile biome = ctx.Biome;
+        TileBase fallbackTile = biome.roadTile;
+        TileBase[] variants = biome.roadVariantTiles;
+        if (variants == null || variants.Length == 0)
+            return fallbackTile;
+
+        int patchSize = Mathf.Max(1, biome.roadVariantPatchSize);
+        Vector2Int patchPosition = new Vector2Int(
+            FloorDiv(tilePosition.x, patchSize),
+            FloorDiv(tilePosition.y, patchSize));
+
+        uint chanceHash = DeterministicHash.Hash(
+            (uint)ctx.ActiveBiome.Seed,
+            patchPosition.x,
+            patchPosition.y,
+            RoadVariantChanceHashSalt);
+
+        if (fallbackTile != null && DeterministicHash.Hash01(chanceHash) > biome.roadVariantChance)
+            return fallbackTile;
+
+        uint variantHash = DeterministicHash.Hash(
+            (uint)ctx.ActiveBiome.Seed,
+            patchPosition.x,
+            patchPosition.y,
+            RoadVariantSelectionHashSalt);
+
+        TileBase variantTile = PickVariant(variants, variantHash);
+        return variantTile != null ? variantTile : fallbackTile;
+    }
+
+    private static TileBase PickVariant(TileBase[] variants, uint variantHash)
+    {
+        if (variants == null || variants.Length == 0)
+            return null;
+
+        int startIndex = Mathf.Clamp(
+            Mathf.FloorToInt(DeterministicHash.Hash01(variantHash) * variants.Length),
+            0,
+            variants.Length - 1);
+
+        for (int i = 0; i < variants.Length; i++)
+        {
+            int index = (startIndex + i) % variants.Length;
+            if (variants[index] != null)
+                return variants[index];
+        }
+
+        return null;
+    }
+
+    private static int FloorDiv(int value, int divisor)
+    {
+        int quotient = value / divisor;
+        int remainder = value % divisor;
+        if (remainder != 0 && value < 0)
+            quotient--;
+
+        return quotient;
     }
 
     private static Vector2Int Step(Direction direction)

@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 9038641558441596822, guid: 236368b4cb36b894990c48bf76c163fb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.59748423, g: 0.59748423, b: 0.59748423, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -295,6 +295,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: a4ec415f3e5157e47b9fba0eaf6c43b3, type: 2}
   questEnemyId: LeaderWolf
+  questEnemyTypeOrTag: 
   AttackDamage: 35
   MovementSpeed: 3
   role: 0

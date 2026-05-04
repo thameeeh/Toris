@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiomeProfile
   displayName: Plains
   landRadius01: 1
-  coastlineNoiseScale: 0.0025
-  coastlineNoiseStrength01: 0.25
+  coastlineNoiseScale: 0.02
+  coastlineNoiseStrength01: 0.1
   vegetationRegionScale: 0.01
   vegetationDensity: 1
-  lakeNoiseScale: 0.004
-  lakeThreshold01: 0.72
+  lakeNoiseScale: 0.04
+  lakeThreshold01: 0.8
   groundVariants:
   - {fileID: 11400000, guid: 8580bf5f853c1ea47981924efdfd26af, type: 2}
   - {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
@@ -34,7 +34,6 @@ MonoBehaviour:
   flowerBaseProb: 0.12
   smallVegetationDecorVariants:
   - {fileID: 11400000, guid: f5b6c8d9c0aa5974cbefb5b082aa0737, type: 2}
-  - {fileID: 11400000, guid: 850646365503f6543b81dab048a9db29, type: 2}
   - {fileID: 11400000, guid: 9c8d33b80e23cac44b219c04d8248b8e, type: 2}
   smallVegetationMaxProb: 0.03
   treeVariants:
@@ -42,6 +41,13 @@ MonoBehaviour:
     canopyTile: {fileID: 11400000, guid: 341d008024432b34884a54ea05576254, type: 2}
   treeMaxProb: 0.01
   roadTile: {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
+  roadVariantTiles:
+  - {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
+  - {fileID: 11400000, guid: 20fad384e2a3d9c4885a78af14069614, type: 2}
+  - {fileID: 11400000, guid: afde096de0569d8449ca7a843ad292ea, type: 2}
+  - {fileID: 11400000, guid: da462f8e9f746b54ea37bba671ff7eb7, type: 2}
+  roadVariantChance: 0.8
+  roadVariantPatchSize: 1
   roadWidthMin: 3
   roadWidthMax: 5
   maxRoadScanTiles: 4000

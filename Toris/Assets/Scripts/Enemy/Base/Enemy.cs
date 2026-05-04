@@ -40,6 +40,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [Header("Loot")]
     [SerializeField] private EnemyLootTableSO lootTable;
 
+    [Header("Health Bar")]
+    [SerializeField] private bool autoCreateHealthBar = true;
+    [SerializeField] private EnemyHealthBar healthBar;
+
     // Quest reporting stays data-driven: enemies expose stable IDs, then report facts.
     // Quest-specific progress mapping stays outside enemy gameplay code.
     [Header("Quest Reporting")]
@@ -74,6 +78,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         StateMachine = new EnemyStateMachine();
         animator = GetComponentInChildren<Animator>();
         CacheOwnedColliders();
+        EnsureHealthBar();
 
         _baseMaxHealth = MaxHealth;
         
@@ -352,6 +357,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         }
 
         _collidersDisabledForDeath = false;
+    }
+
+    private void EnsureHealthBar()
+    {
+        if (!autoCreateHealthBar)
+            return;
+
+        if (healthBar == null)
+            TryGetComponent(out healthBar);
+
+        if (healthBar == null)
+            healthBar = gameObject.AddComponent<EnemyHealthBar>();
     }
 
     private void TryResolveDeathLoot()

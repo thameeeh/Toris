@@ -218,6 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1529744663789177046}
   - component: {fileID: 3307974329703168885}
+  - component: {fileID: 126515286727453683}
   - component: {fileID: 7255815159274722986}
   - component: {fileID: -2298867679096013564}
   - component: {fileID: -4774567673522461205}
@@ -278,6 +279,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &126515286727453683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211954740449028837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a40ee2737834ab5b38a771923f9f6c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  enemy: {fileID: 0}
+  localOffset: {x: 0, y: 1, z: 0}
+  width: 0.75
+  height: 0.12
+  borderSize: 0.015
+  hideWhenFull: 1
+  hideWhenDead: 1
+  backgroundColor: {r: 0.12, g: 0.02, b: 0.02, a: 0.85}
+  fillColor: {r: 0.85, g: 0.12, b: 0.08, a: 0.95}
+  sortingOrder: 10000
+  sortingLayerName: 
 --- !u!114 &7255815159274722986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +318,8 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: a4ec415f3e5157e47b9fba0eaf6c43b3, type: 2}
+  autoCreateHealthBar: 1
+  healthBar: {fileID: 0}
   questEnemyId: LeaderWolf
   questEnemyTypeOrTag: 
   AttackDamage: 35

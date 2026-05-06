@@ -15,8 +15,6 @@ public class MainMenuController : MonoBehaviour
     private MainMenuView _view;
     private MainMenuUIManager _uiManager;
 
-    // Memory Management: Track spawned slots so we can properly dispose of them
-    private List<SaveSlotView> _slotViews = new List<SaveSlotView>();
     private bool _slotsGenerated = false;
 
     private void Awake()
@@ -34,12 +32,14 @@ public class MainMenuController : MonoBehaviour
 
         // 2. Construct and Initialize the View
         _view = new MainMenuView(menuInstance, _uiEvents);
+        _view.SetSaveSlotTemplate(_saveSlotTemplate);
         _view.Initialize();
 
         // 3. Subscribe to the Main Menu buttons
         _view.OnPlayClicked += OnPlayRequested;
         _view.OnSettingsClicked += OnSettingsRequested;
         _view.OnExitClicked += OnExitRequested;
+        _view.OnSaveSlotSelected += HandleSlotSelected;
 
         // 4. Register the view with the Manager
         _uiManager.RegisterView(_view);
@@ -47,37 +47,20 @@ public class MainMenuController : MonoBehaviour
 
     private void GenerateMockSaveSlots()
     {
-        if (_saveSlotTemplate == null)
-        {
-            Debug.LogWarning("Save Slot Template is missing from the Inspector!");
-            return;
-        }
-
-        // --- THE FIX: Tell the View to clear the slots ---
-        _view.ClearSaveSlots();
-        // -------------------------------------------------
+        List<SaveSlotData> mockSlots = new List<SaveSlotData>();
 
         for (int i = 1; i <= 3; i++)
         {
-            TemplateContainer slotInstance = _saveSlotTemplate.Instantiate();
-            slotInstance.AddToClassList("save-slot-wrapper");
-
-            SaveSlotView slotView = new SaveSlotView(slotInstance, i);
-            slotView.Initialize();
-
-            int mockLevel = i * 5;
-            int mockGold = i * 1250;
-            string mockDate = $"2026-05-0{i + 4} 14:30";
-
-            slotView.SetData(mockLevel, mockGold, mockDate);
-            slotView.OnSlotSelected += HandleSlotSelected;
-
-            _slotViews.Add(slotView);
-
-            // Ask the view to add the generated element ---
-            _view.AddSaveSlot(slotInstance);
-            // ----------------------------------------------------------
+            mockSlots.Add(new SaveSlotData
+            {
+                SlotIndex = i,
+                Level = i * 5,
+                Gold = i * 1250,
+                Timestamp = $"2026-05-0{i + 4} 14:30"
+            });
         }
+
+        _view.PopulateSaveSlots(mockSlots);
     }
 
     // --- Intent Handlers ---
@@ -126,15 +109,8 @@ public class MainMenuController : MonoBehaviour
             _view.OnPlayClicked -= OnPlayRequested;
             _view.OnSettingsClicked -= OnSettingsRequested;
             _view.OnExitClicked -= OnExitRequested;
+            _view.OnSaveSlotSelected -= HandleSlotSelected;
             _view.Dispose();
         }
-
-        // Clean up our dynamically generated slots to prevent memory leaks and ghost events
-        foreach (var slotView in _slotViews)
-        {
-            slotView.OnSlotSelected -= HandleSlotSelected;
-            slotView.Dispose();
-        }
-        _slotViews.Clear();
     }
 }

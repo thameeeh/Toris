@@ -1,3 +1,14 @@
+## [Current/Recent] - Refactor Main Menu to Mature MVP Architecture
+* **Structural Decoupling:** Shifted responsibility for Save Slot instantiation and lifecycle management from `MainMenuController` to `MainMenuView`, ensuring the Presenter only handles high-level intent and data.
+* **Data Transfer Objects:** Introduced `SaveSlotData` DTO to encapsulate save metadata, eliminating "Data Clump" anti-patterns in View signatures.
+* **Memory Management:** Implemented explicit disposal logic for all dynamically generated sub-views within `MainMenuView.ClearSaveSlots()`, preventing event leaks and memory overhead.
+* **Event Streamlining:** Consolidated individual sub-view selection events into a single `OnSaveSlotSelected(int index)` stream on the main View.
+
+## [Current/Recent] - Fix Main Menu Save Slot Visibility
+* Modified `SaveSlotView.cs` to set `m_HideOnAwake = false` in the constructor, preventing dynamically instantiated sub-views from defaulting to a hidden state during initialization.
+* Updated `MainMenuController.cs` to explicitly call `slotView.Show()` after initialization in `GenerateMockSaveSlots`, ensuring the slots are visible when added to the `ScrollView`.
+* Confirmed `MainMenuView.cs` correctly utilizes `contentContainer` for `Add` and `Clear` operations on the `ScrollView` to preserve its internal viewport and scrollbars.
+
 ## [Current/Recent] - Performance Optimization: PlayerBowController
 * Cached `Camera.main` in `PlayerBowController.cs` to reduce overhead from frequent property access in `Update` and aim logic.
 * Optimized `transform.position` usage in `PlayerBowController.GetAimDirection` by caching it in a local variable, minimizing native-to-managed bridge calls.
@@ -351,6 +362,14 @@ This update implements click-to-equip and click-to-unequip functionality for the
 * Renamed `Item_System_Architecture_Documentation.md` to `Item_Architecture_Documentation.md` and `UI_System_Documentation.md` to `UI_Architecture_Documentation.md` for naming consistency.
 * Fixed typos in `General_Scripting_Conventions.md` pathing examples (e.g., `ScritableObjects` to `ScriptableObjects`).
 
+## [Current/Recent] - UI Inventory Events Compilation Fix
+This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by exceeding the maximum number of type arguments supported by `UnityAction`.
+
+### 1. Fixed `OnRequestMoveItem` Delegate
+* Changed the `OnRequestMoveItem` event from `UnityAction` to `System.Action` to support 5 type arguments (`InventoryManager`, `InventorySlot`, `InventoryManager`, `InventorySlot`, `int`).
+
+---
+
 ## [Unreleased]
 ### Changed
 - **UI Architecture:** Fixed broken drag-and-drop and click interactions on dynamically instantiated UI Toolkit inventory slots by updating the `TemplateContainer` wrapper's picking mode to `Ignore` and correctly registering pointer events directly onto the inner `.item-slot` element in `InventorySlotView.cs`.
@@ -539,8 +558,4 @@ This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by e
 
 ## [Unreleased]
 ### Changed
-- **UI Architecture:** Fixed vertical scrollbar bug in the player inventory UI (`PlayerInventory.uxml`) by forcing the `vertical-scroller-visibility` to `Hidden`, correctly addressing the layout calculation bug on subsequent openings for the fixed 21-slot grid.
-- **UI Architecture:** Removed hardcoded dummy slot instances from `PlayerInventory.uxml` grid, ensuring a purely data-driven template instantiation approach in compliance with project architectural directives.
-- **UI Architecture:** Refactored the UI Toolkit inventory assets (`PlayerInventory`, `Mage`, `Smith`, `ShopSubView`, `ForgeSubView_Smith`, `SalvageSubView_Smith`, `Slot`) to strictly follow BEM naming conventions.
-- **UI Architecture:** Extracted all inline UXML styles into a new `GlobalStyles.uss` file using `:root` CSS variables and applied them correctly across the project in `Inventory.uss`.
-- **UI Controllers:** Updated C# View controllers (`InventorySlotView`, `PlayerEquipmentView`) to query the newly named BEM classes, preventing runtime query failures.
+- **UI Architecture:** Fixed broken drag-and-drop and click interactions on dynamically instantiated UI Toolkit inventory slots by updating the `TemplateContainer` wrapper's picking mode to `Ignore` and correctly registering pointer events directly onto the inner `.item-slot` element in `InventorySlotView.cs`.

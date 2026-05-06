@@ -13,9 +13,14 @@ public class MainMenuView : GameView
     private Button _exitButton;
     private ScrollView _saveSlotsContainer;
 
+    // Sub-View Management
+    private VisualTreeAsset _saveSlotTemplate;
+    private List<SaveSlotView> _slotViews = new List<SaveSlotView>();
+
     public event Action OnPlayClicked;
     public event Action OnSettingsClicked;
     public event Action OnExitClicked;
+    public event Action<int> OnSaveSlotSelected;
 
     public MainMenuView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement, uiEvents) { }
 
@@ -45,15 +50,42 @@ public class MainMenuView : GameView
         if (_exitButton != null) _exitButton.clicked += HandleExitClicked;
     }
 
-    // ADDED: Let the View handle adding elements to its own DOM
-    public void AddSaveSlot(VisualElement slotElement)
+    public void SetSaveSlotTemplate(VisualTreeAsset template) => _saveSlotTemplate = template;
+
+    public void PopulateSaveSlots(System.Collections.Generic.IEnumerable<SaveSlotData> slots)
     {
-        if (_saveSlotsContainer != null) _saveSlotsContainer.contentContainer.Add(slotElement);
+        ClearSaveSlots();
+
+        if (_saveSlotTemplate == null) return;
+
+        foreach (var data in slots)
+        {
+            TemplateContainer slotInstance = _saveSlotTemplate.Instantiate();
+            slotInstance.AddToClassList("save-slot-wrapper");
+
+            SaveSlotView slotView = new SaveSlotView(slotInstance, data.SlotIndex);
+            slotView.Initialize();
+            slotView.Show();
+            slotView.SetData(data);
+
+            slotView.OnSlotSelected += HandleSlotSelected;
+            _slotViews.Add(slotView);
+            _saveSlotsContainer.contentContainer.Add(slotInstance);
+        }
     }
 
-    // ADDED: Let the View handle clearing its own DOM
+    private void HandleSlotSelected(int index) => OnSaveSlotSelected?.Invoke(index);
+
+    // ADDED: Let the View handle clearing its own DOM and disposing sub-views
     public void ClearSaveSlots()
     {
+        foreach (var view in _slotViews)
+        {
+            view.OnSlotSelected -= HandleSlotSelected;
+            view.Dispose();
+        }
+        _slotViews.Clear();
+
         if (_saveSlotsContainer != null) _saveSlotsContainer.contentContainer.Clear();
     }
 
@@ -72,6 +104,7 @@ public class MainMenuView : GameView
 
     public override void Dispose()
     {
+        ClearSaveSlots();
         if (_playButton != null) _playButton.clicked -= HandlePlayClicked;
         if (_settingsButton != null) _settingsButton.clicked -= HandleSettingsClicked;
         if (_exitButton != null) _exitButton.clicked -= HandleExitClicked;

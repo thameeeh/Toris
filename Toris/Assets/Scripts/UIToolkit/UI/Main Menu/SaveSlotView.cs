@@ -16,6 +16,7 @@ public class SaveSlotView : UIView
     public SaveSlotView(VisualElement root, int index) : base(root)
     {
         _slotIndex = index;
+        m_HideOnAwake = false;
     }
 
     protected override void SetVisualElements()
@@ -39,12 +40,12 @@ public class SaveSlotView : UIView
     }
 
     // Injects data from the Save System DTO[cite: 1]
-    public void SetData(int level, int gold, string timestamp)
+    public void SetData(SaveSlotData data)
     {
-        if (_indexLabel != null) _indexLabel.text = $"Slot {_slotIndex}";
-        if (_levelLabel != null) _levelLabel.text = level.ToString();
-        if (_goldLabel != null) _goldLabel.text = gold.ToString();
-        if (_timestampLabel != null) _timestampLabel.text = timestamp;
+        if (_indexLabel != null) _indexLabel.text = $"Slot {data.SlotIndex}";
+        if (_levelLabel != null) _levelLabel.text = data.Level.ToString();
+        if (_goldLabel != null) _goldLabel.text = data.Gold.ToString();
+        if (_timestampLabel != null) _timestampLabel.text = data.Timestamp;
     }
 
     public override void Dispose()

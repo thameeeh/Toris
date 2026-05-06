@@ -227,4 +227,9 @@ public class Wolf : Enemy
     {
         base.DamagePlayer(damage, _hitData);
     }
+
+    public void DamageCurrentTarget(float damage)
+    {
+        DamageAggroTarget(damage, _hitData);
+    }
 }

@@ -865,10 +865,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
   - {fileID: 11400000, guid: 428be3393294c6e4da003b9de5f14f20, type: 2}
   - {fileID: 11400000, guid: f4bd39bea1b60ad49b5a2f712e8037f3, type: 2}
-  - {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
   - {fileID: 11400000, guid: 741009e719f2ada4c802260dfa493118, type: 2}
-  - {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
   - {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
+  - {fileID: 11400000, guid: 32d248484ca33fb40824a4681b085979, type: 2}
+  - {fileID: 11400000, guid: d615b1b2b42cf8a4ab705ed462e1ffee, type: 2}
+  - {fileID: 11400000, guid: 20fad384e2a3d9c4885a78af14069614, type: 2}
+  - {fileID: 11400000, guid: afde096de0569d8449ca7a843ad292ea, type: 2}
+  - {fileID: 11400000, guid: da462f8e9f746b54ea37bba671ff7eb7, type: 2}
   blockingTiles:
   - {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
 --- !u!4 &632992832
@@ -1644,6 +1647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
+  SaveID: 
   ContainerBlueprint: {fileID: 11400000, guid: 1ea796bb121ca6149a4fa41c9b53f6ef, type: 2}
   LiveSlots:
   - HeldItem:
@@ -2002,6 +2006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
+  SaveID: 
   ContainerBlueprint: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
   LiveSlots:
   - HeldItem:
@@ -2389,6 +2394,14 @@ MonoBehaviour:
   clearOnDisable: 0
   gateCooldownSeconds: 1
   poiPool: {fileID: 101758321}
+  deerPrefab: {fileID: 5929809391116375468, guid: 45dd31abf88760743980bb55fb6f6831, type: 3}
+  deerHerdChancePerChunk: 0.02
+  deerHerdMinSize: 2
+  deerHerdMaxSize: 4
+  deerHerdSpawnAttemptsPerChunk: 1
+  deerHerdMemberRadiusTiles: 4
+  deerHerdMemberSearchRadiusTiles: 6
+  deerWolfDenAvoidanceRadiusTiles: 28
 --- !u!1001 &1845959081
 PrefabInstance:
   m_ObjectHideFlags: 0

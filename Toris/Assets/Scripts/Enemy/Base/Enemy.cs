@@ -52,10 +52,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [SerializeField] private string questEnemyId = string.Empty;
     [SerializeField] private string questEnemyTypeOrTag = string.Empty;
 
+    [Header("Targeting")]
+    [SerializeField] private bool isPassivePrey;
+    [SerializeField] private bool threatensPassiveCreatures;
+
     public EnemyLoadout ActiveLoadout { get; private set; }
     public Transform SpawnPoint { get; private set; }
     public string FactionId { get; private set; } = string.Empty;
     public int DifficultyTier { get; private set; }
+    public bool IsPassivePrey => isPassivePrey;
+    public bool ThreatensPassiveCreatures => threatensPassiveCreatures;
+    public Transform AggroTargetTransform => ResolveAggroTargetTransform();
+    public Enemy AggroTargetEnemy => IsAggroTargetEnemyValid() ? aggroTargetEnemy : null;
 
     private readonly List<IStatusEffect> _statusEffects = new List<IStatusEffect>();
     private bool _isReleasing;
@@ -73,6 +81,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
     private PlayerProgression _playerProgression;
+    private Transform aggroTargetTransform;
+    private Enemy aggroTargetEnemy;
     public EnemyLootTableSO LootTable => lootTable;
     public string QuestEnemyId => questEnemyId;
     public string QuestEnemyTypeOrTag => questEnemyTypeOrTag;
@@ -165,10 +175,33 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     //also children have colliders set as triggers for those checks
     public void SetAggroStatus(bool isAggroed)
     {
+        if (!isAggroed)
+            ClearAggroTarget();
+
         IsAggroed = isAggroed;
 
         if (isAggroed)
             TriggerAlert(EnemyAlertReason.PlayerDetected);
+    }
+
+    public void SetAggroTarget(Transform targetTransform, Enemy targetEnemy = null)
+    {
+        if (targetTransform == null)
+            return;
+
+        aggroTargetTransform = targetTransform;
+        aggroTargetEnemy = targetEnemy;
+        IsAggroed = true;
+        TriggerAlert(EnemyAlertReason.PlayerDetected);
+    }
+
+    public void ClearAggroTarget(Transform targetTransform)
+    {
+        if (targetTransform == null)
+            return;
+
+        if (aggroTargetTransform == targetTransform || aggroTargetTransform != null && aggroTargetTransform.root == targetTransform.root)
+            SetAggroStatus(false);
     }
 
     public void TriggerAlert(EnemyAlertReason reason)
@@ -198,6 +231,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
             hitData.damage = amount;
             _playerDamageReceiver.ReceiveHit(hitData);
         }
+    }
+
+    public void DamageAggroTarget(float amount, HitData hitData)
+    {
+        Enemy targetEnemy = AggroTargetEnemy;
+        if (targetEnemy != null)
+        {
+            if (IsWithinStrikingDistance)
+                targetEnemy.Damage(amount);
+
+            return;
+        }
+
+        DamagePlayer(amount, hitData);
     }
 
     #region Animation
@@ -248,6 +295,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         RestoreCachedColliderStates();
         CurrentHealth = MaxHealth;
         IsAggroed = false;
+        ClearAggroTarget();
         IsWithinStrikingDistance = false;
         AlwaysAggroed = false;
         if (rb != null)
@@ -279,6 +327,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
         IsAggroed = false;
+        ClearAggroTarget();
         IsWithinStrikingDistance = false;
         AlwaysAggroed = false;
         CurrentHealth = MaxHealth;
@@ -435,6 +484,42 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     private static bool IsSceneObjectValid(GameObject sceneObject)
     {
         return sceneObject != null && sceneObject.scene.IsValid();
+    }
+
+    private Transform ResolveAggroTargetTransform()
+    {
+        if (aggroTargetEnemy != null)
+        {
+            if (IsAggroTargetEnemyValid())
+                return aggroTargetEnemy.transform;
+
+            ClearAggroTarget();
+            return null;
+        }
+
+        if (aggroTargetTransform != null && aggroTargetTransform.gameObject.scene.IsValid())
+            return aggroTargetTransform;
+
+        if (aggroTargetTransform != null)
+        {
+            ClearAggroTarget();
+            return null;
+        }
+
+        return playerTransform;
+    }
+
+    private bool IsAggroTargetEnemyValid()
+    {
+        return aggroTargetEnemy != null
+            && aggroTargetEnemy.CurrentHealth > 0f
+            && aggroTargetEnemy.gameObject.scene.IsValid();
+    }
+
+    private void ClearAggroTarget()
+    {
+        aggroTargetTransform = null;
+        aggroTargetEnemy = null;
     }
 
     #endregion

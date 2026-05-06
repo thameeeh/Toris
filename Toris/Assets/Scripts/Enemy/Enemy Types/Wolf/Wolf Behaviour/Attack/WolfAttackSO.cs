@@ -42,8 +42,9 @@ public class WolfAttackSO : AttackSOBase<Wolf>
 
         Vector2 moveDirection = Vector2.zero;
 
-        if (_pathAgent != null && TileNavWorld.Instance != null)
-            moveDirection = _pathAgent.GetMoveDirection(playerTransform.position);
+        Transform targetTransform = enemy.AggroTargetTransform;
+        if (_pathAgent != null && TileNavWorld.Instance != null && targetTransform != null)
+            moveDirection = _pathAgent.GetMoveDirection(targetTransform.position);
 
         if (moveDirection.sqrMagnitude > 0.0001f)
             enemy.MoveEnemy(moveDirection * enemy.MovementSpeed);
@@ -62,7 +63,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
 
         if (triggerType == Enemy.AnimationTriggerType.Attack)
         {
-            enemy.DamagePlayer(enemy.AttackDamage);
+            enemy.DamageCurrentTarget(enemy.AttackDamage);
         }
 
         if (triggerType == Enemy.AnimationTriggerType.AttackFinished)

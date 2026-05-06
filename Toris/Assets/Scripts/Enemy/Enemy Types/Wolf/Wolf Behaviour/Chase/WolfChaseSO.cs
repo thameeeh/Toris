@@ -48,13 +48,21 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
     {
         base.DoFrameUpdateLogic();
 
+        Transform targetTransform = enemy.AggroTargetTransform;
+        if (targetTransform == null)
+        {
+            enemy.animator.SetBool("IsMoving", false);
+            enemy.MoveEnemy(Vector2.zero);
+            return;
+        }
+
         Vector2 wolfPos = enemy.transform.position;
-        Vector2 playerPos = playerTransform.position;
-        Vector2 toPlayer = playerPos - wolfPos;
+        Vector2 targetPos = targetTransform.position;
+        Vector2 toTarget = targetPos - wolfPos;
 
-        float distToPlayer = toPlayer.magnitude;
+        float distToTarget = toTarget.magnitude;
 
-        bool canHoldBitePosition = enemy.IsWithinStrikingDistance && distToPlayer <= _stopDistance;
+        bool canHoldBitePosition = enemy.IsWithinStrikingDistance && distToTarget <= _stopDistance;
 
         // 1. Only stop if the wolf is actually in striking range.
         // Otherwise it can park just outside the bite trigger and appear to run in place.
@@ -68,14 +76,14 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
         // 2. Decide whether we should be in PATH mode or DIRECT mode (with hysteresis)
         if (_usingPath)
         {
-            if (distToPlayer < _pathChaseDistance - _pathHysteresis)
+            if (distToTarget < _pathChaseDistance - _pathHysteresis)
             {
                 _usingPath = false;
             }
         }
         else
         {
-            if (distToPlayer > _pathChaseDistance + _pathHysteresis)
+            if (distToTarget > _pathChaseDistance + _pathHysteresis)
             {
                 _usingPath = true;
             }
@@ -86,16 +94,16 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
 
         if (_usingPath && _pathAgent != null)
         {
-            moveDir = _pathAgent.GetMoveDirection(playerPos);
+            moveDir = _pathAgent.GetMoveDirection(targetPos);
 
             if (moveDir.sqrMagnitude < 0.0001f)
             {
-                moveDir = distToPlayer > 0.0001f ? (toPlayer / distToPlayer) : Vector2.zero;
+                moveDir = distToTarget > 0.0001f ? (toTarget / distToTarget) : Vector2.zero;
             }
         }
         else
         {
-            moveDir = distToPlayer > 0.0001f ? (toPlayer / distToPlayer) : Vector2.zero;
+            moveDir = distToTarget > 0.0001f ? (toTarget / distToTarget) : Vector2.zero;
         }
 
         // 4. Apply movement

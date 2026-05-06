@@ -60,9 +60,7 @@ public class MainMenuController : MonoBehaviour
         for (int i = 1; i <= 3; i++)
         {
             TemplateContainer slotInstance = _saveSlotTemplate.Instantiate();
-            slotInstance.style.flexShrink = 0;
-            slotInstance.style.width = 280;
-            slotInstance.style.height = 180;
+            slotInstance.AddToClassList("save-slot-wrapper");
 
             SaveSlotView slotView = new SaveSlotView(slotInstance, i);
             slotView.Initialize();

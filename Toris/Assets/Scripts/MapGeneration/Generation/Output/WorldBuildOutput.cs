@@ -5,6 +5,7 @@ public sealed class WorldBuildOutput
     private readonly SiteBlockerMap siteBlockers = new();
     private readonly SiteVisualClearMap siteVisualClears = new();
     private readonly RoadAnchorMap roadAnchors = new();
+    private readonly WildlifeSpawnPlacementIndex wildlifeSpawns = new();
 
     public FeatureStamps TerrainOverrides => terrainOverrides;
     public SitePlacementIndex SitePlacements => sitePlacements;
@@ -12,6 +13,7 @@ public sealed class WorldBuildOutput
     public SiteVisualClearMap SiteVisualClears => siteVisualClears;
     public ITileNavigationContributionSource NavigationContributions => siteBlockers;
     public RoadAnchorMap RoadAnchors => roadAnchors;
+    public WildlifeSpawnPlacementIndex WildlifeSpawns => wildlifeSpawns;
 
     public void Clear()
     {
@@ -20,6 +22,7 @@ public sealed class WorldBuildOutput
         siteBlockers.Clear();
         siteVisualClears.Clear();
         roadAnchors.Clear();
+        wildlifeSpawns.Clear();
     }
 
     public void RegisterSite(
@@ -36,6 +39,20 @@ public sealed class WorldBuildOutput
             centerTile,
             chunkSize,
             lifecycleScope));
+    }
+
+    public void RegisterWildlifeSpawn(
+        WorldWildlifeSpawnDefinition spawnDefinition,
+        UnityEngine.Vector2Int centerTile,
+        int chunkSize)
+    {
+        if (spawnDefinition == null || !spawnDefinition.IsValid)
+            return;
+
+        wildlifeSpawns.Add(WildlifeSpawnPlacement.Create(
+            spawnDefinition,
+            centerTile,
+            chunkSize));
     }
 
     public BuildOutputDiagnosticsSnapshot CreateDiagnosticsSnapshot()

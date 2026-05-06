@@ -125,11 +125,12 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
         worldNavigationLifecycle.Initialize(ctx.NavigationContributions);
         WorldSceneServices worldSceneServices = new WorldSceneServices(grid, TileNavWorld.Instance);
         chunkStreamingSystem = new ChunkStreamingSystem();
+        EnemySpawnService enemySpawnService = new EnemySpawnService(gameplayPoolManager);
 
         WorldEncounterServices worldEncounterServices = new WorldEncounterServices(
             worldSceneServices,
             new PlayerLocatorService(followTarget),
-            new EnemySpawnService(gameplayPoolManager));
+            enemySpawnService);
 
         worldTransitionSystem = new WorldTransitionSystem(
             profile,
@@ -158,9 +159,15 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             poiPool,
             worldSiteActivationPipeline);
 
+        WorldWildlifeLifecycle wildlifeLifecycle = new WorldWildlifeLifecycle(
+            ctx,
+            worldSceneServices,
+            enemySpawnService);
+
         worldFeatureLifecycleSystem = new WorldFeatureLifecycleSystem(
             chunkFeatureLifecycle,
-            persistentFeatureLifecycle);
+            persistentFeatureLifecycle,
+            wildlifeLifecycle);
 
         chunkProcessingPipeline = new ChunkProcessingPipeline(
             profile,

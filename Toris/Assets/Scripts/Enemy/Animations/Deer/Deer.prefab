@@ -133,7 +133,7 @@ MonoBehaviour:
   waypointReachThreshold: 0.1
   targetChangeThreshold: 0.5
   allowDirectFallbackWhenNoPath: 0
-  debugPathing: 1
+  debugPathing: 0
 --- !u!50 &3005107034901539011
 Rigidbody2D:
   serializedVersion: 5

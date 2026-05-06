@@ -27,6 +27,7 @@ public class Deer : Enemy
     private Color[] cachedSpriteColors = System.Array.Empty<Color>();
     private Coroutine fallbackDeathRoutine;
     private bool hasStarted;
+    private bool behaviorInstancesReady;
     private string currentAnimationStateName = string.Empty;
     private float fleeUntilTime;
     private bool hasLastThreatPosition;
@@ -60,10 +61,13 @@ public class Deer : Enemy
         CacheRenderers();
         Damaged += HandleDamaged;
 
-        EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
-        EnemyWalkBaseInstance = Instantiate(EnemyWalkBase);
-        EnemyRunAwayBaseInstance = Instantiate(EnemyRunAwayBase);
-        EnemyDeadBaseInstance = Instantiate(EnemyDeadBase);
+        if (!TryCreateBehaviorInstances())
+        {
+            enabled = false;
+            return;
+        }
+
+        behaviorInstancesReady = true;
 
         IdleState = new DeerIdleState(this, StateMachine);
         WalkState = new DeerWalkState(this, StateMachine);
@@ -75,6 +79,9 @@ public class Deer : Enemy
     {
         base.Start();
 
+        if (!behaviorInstancesReady)
+            return;
+
         EnemyIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyWalkBaseInstance.Initialize(gameObject, this, PlayerTransform);
         EnemyRunAwayBaseInstance.Initialize(gameObject, this, PlayerTransform);
@@ -82,6 +89,33 @@ public class Deer : Enemy
 
         InitializeRuntimeState();
         hasStarted = true;
+    }
+
+    private bool TryCreateBehaviorInstances()
+    {
+        if (EnemyIdleBase == null
+            || EnemyWalkBase == null
+            || EnemyRunAwayBase == null
+            || EnemyDeadBase == null)
+        {
+#if UNITY_EDITOR
+            Debug.LogError(
+                $"[Deer:{name}] Missing one or more Deer behavior ScriptableObjects. " +
+                "Assign Idle, Walk, RunAway, and Dead assets before using this prefab.",
+                this);
+#endif
+            return false;
+        }
+
+        EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
+        EnemyWalkBaseInstance = Instantiate(EnemyWalkBase);
+        EnemyRunAwayBaseInstance = Instantiate(EnemyRunAwayBase);
+        EnemyDeadBaseInstance = Instantiate(EnemyDeadBase);
+
+        return EnemyIdleBaseInstance != null
+            && EnemyWalkBaseInstance != null
+            && EnemyRunAwayBaseInstance != null
+            && EnemyDeadBaseInstance != null;
     }
 
     protected override void Update()
@@ -99,6 +133,9 @@ public class Deer : Enemy
 
         base.Die();
 
+        if (DeadState == null)
+            return;
+
         if (StateMachine.CurrentEnemyState == null)
         {
             StateMachine.Initialize(DeadState);
@@ -113,7 +150,7 @@ public class Deer : Enemy
     {
         base.OnSpawned();
 
-        if (EnemyIdleBaseInstance == null)
+        if (!behaviorInstancesReady)
             return;
 
         if (!hasStarted)
@@ -133,6 +170,9 @@ public class Deer : Enemy
 
     public void InitializeRuntimeState()
     {
+        if (!behaviorInstancesReady || IdleState == null)
+            return;
+
         CurrentHealth = MaxHealth;
         AlwaysAggroed = false;
         SetAggroStatus(false);
@@ -188,9 +228,11 @@ public class Deer : Enemy
         if (hasLastThreatPosition)
             return;
 
-        Vector2 currentPosition = GetPosition2D();
-        lastThreatPosition = currentPosition - lastMoveDirection;
-        hasLastThreatPosition = true;
+        if (TryGetFallbackThreatPosition(out Vector2 threatPosition))
+        {
+            lastThreatPosition = threatPosition;
+            hasLastThreatPosition = true;
+        }
     }
 
     public bool TryGetFleeThreatPosition(out Vector2 threatPosition)
@@ -234,7 +276,7 @@ public class Deer : Enemy
 
     private void HandleDamaged(float damageAmount)
     {
-        if (CurrentHealth <= 0f || StateMachine.CurrentEnemyState == DeadState)
+        if (!behaviorInstancesReady || CurrentHealth <= 0f || StateMachine.CurrentEnemyState == DeadState)
             return;
 
         BeginFearResponse();
@@ -338,6 +380,19 @@ public class Deer : Enemy
         lastThreatPosition = threat.position;
         hasLastThreatPosition = true;
         fleeUntilTime = Mathf.Max(fleeUntilTime, Time.time + calmDelayAfterThreatLost);
+    }
+
+    private bool TryGetFallbackThreatPosition(out Vector2 threatPosition)
+    {
+        Transform threat = PlayerTransform;
+        if (threat != null && threat.gameObject.scene.IsValid())
+        {
+            threatPosition = threat.position;
+            return true;
+        }
+
+        threatPosition = default;
+        return false;
     }
 
     private void ResetFearMemory()

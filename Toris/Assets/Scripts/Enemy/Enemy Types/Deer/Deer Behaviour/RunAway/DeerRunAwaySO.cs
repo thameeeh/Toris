@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Deer_RunAway", menuName = "Enemy Logic/Chase Logic/Deer Run Away")]
@@ -7,6 +8,7 @@ public class DeerRunAwaySO : ChaseSOBase<Deer>
     [SerializeField, Min(0.1f)] private float fleeTargetDistance = 5f;
     [SerializeField, Min(0.01f)] private float targetTolerance = 0.25f;
     [SerializeField, Min(1)] private int maxCandidateChecks = 12;
+    [SerializeField, Min(1)] private int maxCandidatePathRange = 25;
     [SerializeField, Min(1)] private int nearestWalkableSearchRadius = 6;
     [SerializeField, Range(0f, 180f)] private float fleeAngleSpread = 70f;
     [SerializeField, Range(0.1f, 1f)] private float minFleeDistanceMultiplier = 0.6f;
@@ -17,6 +19,7 @@ public class DeerRunAwaySO : ChaseSOBase<Deer>
     private Vector2 currentMoveDirection;
     private float nextRetargetTime;
     private GridPathAgent pathAgent;
+    private readonly List<Vector3> candidatePath = new List<Vector3>();
 
     public override void Initialize(GameObject gameObject, Deer enemy, Transform player)
     {
@@ -78,10 +81,13 @@ public class DeerRunAwaySO : ChaseSOBase<Deer>
 
         if (desiredDirection.sqrMagnitude < minMoveDirectionSqr)
         {
-            RetargetFlee();
+            if (TileNavWorld.Instance != null && Time.time >= nextRetargetTime)
+            {
+                RetargetFlee();
 
-            if (pathAgent != null)
-                desiredDirection = pathAgent.GetMoveDirection(fleeTarget);
+                if (pathAgent != null)
+                    desiredDirection = pathAgent.GetMoveDirection(fleeTarget);
+            }
         }
 
         if (desiredDirection.sqrMagnitude < minMoveDirectionSqr)
@@ -155,7 +161,7 @@ public class DeerRunAwaySO : ChaseSOBase<Deer>
             float distance = Random.Range(fleeTargetDistance * minFleeDistanceMultiplier, fleeTargetDistance);
             Vector2 candidate = currentPosition + candidateDirection.normalized * distance;
 
-            if (!nav.IsWalkableWorldPos(candidate))
+            if (!nav.IsWalkableWorldPos(candidate) || !IsReachable(candidate))
                 continue;
 
             float score = hasThreatPosition
@@ -185,34 +191,65 @@ public class DeerRunAwaySO : ChaseSOBase<Deer>
         Vector2Int startCell = nav.WorldToCell(desiredWorldPosition);
 
         if (nav.IsWalkableCell(startCell))
-            return nav.CellToWorldCenter(startCell);
+        {
+            Vector2 worldCenter = nav.CellToWorldCenter(startCell);
+            if (IsReachable(worldCenter))
+                return worldCenter;
+        }
 
         for (int radius = 1; radius <= nearestWalkableSearchRadius; radius++)
         {
             for (int x = -radius; x <= radius; x++)
             {
                 Vector2Int top = startCell + new Vector2Int(x, radius);
-                if (nav.IsWalkableCell(top))
-                    return nav.CellToWorldCenter(top);
+                if (TryResolveReachableCell(nav, top, out Vector2 topWorldPosition))
+                    return topWorldPosition;
 
                 Vector2Int bottom = startCell + new Vector2Int(x, -radius);
-                if (nav.IsWalkableCell(bottom))
-                    return nav.CellToWorldCenter(bottom);
+                if (TryResolveReachableCell(nav, bottom, out Vector2 bottomWorldPosition))
+                    return bottomWorldPosition;
             }
 
             for (int y = -radius + 1; y <= radius - 1; y++)
             {
                 Vector2Int right = startCell + new Vector2Int(radius, y);
-                if (nav.IsWalkableCell(right))
-                    return nav.CellToWorldCenter(right);
+                if (TryResolveReachableCell(nav, right, out Vector2 rightWorldPosition))
+                    return rightWorldPosition;
 
                 Vector2Int left = startCell + new Vector2Int(-radius, y);
-                if (nav.IsWalkableCell(left))
-                    return nav.CellToWorldCenter(left);
+                if (TryResolveReachableCell(nav, left, out Vector2 leftWorldPosition))
+                    return leftWorldPosition;
             }
         }
 
         return enemy.GetPosition2D();
+    }
+
+    private bool TryResolveReachableCell(TileNavWorld nav, Vector2Int cell, out Vector2 worldPosition)
+    {
+        worldPosition = default;
+        if (!nav.IsWalkableCell(cell))
+            return false;
+
+        worldPosition = nav.CellToWorldCenter(cell);
+        return IsReachable(worldPosition);
+    }
+
+    private bool IsReachable(Vector2 worldPosition)
+    {
+        TileNavWorld nav = TileNavWorld.Instance;
+        if (nav == null)
+            return true;
+
+        Vector2 currentPosition = enemy.GetPosition2D();
+        if (!nav.IsWalkableWorldPos(currentPosition))
+            return false;
+
+        return TilePathfinder.TryFindPath(
+            currentPosition,
+            worldPosition,
+            candidatePath,
+            maxCandidatePathRange);
     }
 
     private static Vector2 Rotate(Vector2 direction, float degrees)
@@ -233,6 +270,7 @@ public class DeerRunAwaySO : ChaseSOBase<Deer>
         fleeTargetDistance = Mathf.Max(0.1f, fleeTargetDistance);
         targetTolerance = Mathf.Max(0.01f, targetTolerance);
         maxCandidateChecks = Mathf.Max(1, maxCandidateChecks);
+        maxCandidatePathRange = Mathf.Max(1, maxCandidatePathRange);
         nearestWalkableSearchRadius = Mathf.Max(1, nearestWalkableSearchRadius);
         minFleeDistanceMultiplier = Mathf.Clamp(minFleeDistanceMultiplier, 0.1f, 1f);
         directionLerpSpeed = Mathf.Max(0.1f, directionLerpSpeed);

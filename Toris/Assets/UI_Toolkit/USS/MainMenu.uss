@@ -1,6 +1,6 @@
 /* --- Root Layout --- */
 .main-menu-root {
-    picking-mode: ignore;
+    picking-mode: Ignore;
     flex-shrink: 0;
     flex-grow: 1;
     width: 100%;

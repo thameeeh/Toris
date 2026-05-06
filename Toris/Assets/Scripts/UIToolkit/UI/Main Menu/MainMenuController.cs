@@ -82,6 +82,14 @@ public class MainMenuController : MonoBehaviour
     private void OnExitRequested()
     {
         Debug.Log("UI Intent: Exit Clicked. Closing Application.");
+
+        // If we are testing inside the Unity Editor, stop playing.
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+
+        // If we are running the actual built game, quit the application.
+#else
         Application.Quit();
+#endif
     }
 }

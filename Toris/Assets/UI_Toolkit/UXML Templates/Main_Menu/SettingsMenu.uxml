@@ -1,0 +1,16 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Main_Menu/SettingsMenu.uss?fileID=7433441132597879392&amp;guid=a56279cc27183fe47a6de56251d1fbea&amp;type=3#SettingsMenu"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <ui:VisualElement class="settings-root">
+        <ui:VisualElement name="VisualElement" class="settings-panel">
+            <ui:Label text="SETTINGS" class="panel-title settings-title"/>
+            <ui:VisualElement class="settings-content">
+                <ui:Label text="[ WIP ] Audio Volumes" class="stat-label"/>
+                <ui:Label text="[ WIP ] Display Resolution" class="stat-label"/>
+                <ui:Label text="[ WIP ] Keybindings" class="stat-label"/>
+            </ui:VisualElement>
+            <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

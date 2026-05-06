@@ -1,0 +1,40 @@
+/* The wrapper that fills the TemplateContainer */
+.settings-root {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    justify-content: flex-end; /* Pushes the child panel to the far right */
+    picking-mode: Ignore; /* Lets clicks pass through the invisible left side */
+}
+
+/* The visible right-side panel */
+.settings-panel {
+    width: 65%; /* Takes up roughly the right two-thirds of the screen */
+    height: 100%;
+    
+    /* Using your established theme variables */
+    background-color: var(--color-bg-dark); 
+    border-left-width: 2px;
+    border-left-color: var(--color-border-default);
+    
+    padding: 60px;
+    flex-direction: column;
+    picking-mode: Position; /* Catches clicks so they don't hit the main menu underneath */
+}
+
+.settings-title {
+    margin-bottom: 40px;
+}
+
+.settings-content {
+    flex-grow: 1; /* Fills all available vertical space, pushing the close button down */
+    flex-direction: column;
+}
+
+.settings-close-button {
+    height: 60px;
+    width: 250px;
+    align-self: flex-end; /* Aligns the button to the bottom right corner */
+    font-size: var(--font-size-body);
+}

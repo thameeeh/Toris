@@ -63,6 +63,9 @@ namespace OutlandHaven.UIToolkit
 
             view.Setup(payload);
             view.Show();
+
+            //Force the opened window to render on top of everything else
+            view.Root.BringToFront();
         }
 
         private void CloseWindow(ScreenType type)

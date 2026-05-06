@@ -34,7 +34,11 @@ public class DeerWalkSO : WalkSOBase<Deer>
         base.DoEnterLogic();
 
         Vector2 currentPosition = enemy.GetPosition2D();
-        targetPosition = GetWalkablePointNearOrigin(currentPosition, wanderRadius);
+        Vector2 wanderOrigin = enemy.TryGetHerdWalkOrigin(out Vector2 herdOrigin)
+            ? herdOrigin
+            : currentPosition;
+
+        targetPosition = GetWalkablePointNearOrigin(wanderOrigin, wanderRadius);
         currentMoveDirection = Vector2.zero;
         enemy.PlayWalkAnimation();
     }

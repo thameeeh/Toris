@@ -6,23 +6,27 @@ public readonly struct WildlifeSpawnPlacement
     public readonly Vector2Int CenterTile;
     public readonly Vector2Int ChunkCoord;
     public readonly int LocalIndex;
+    public readonly int GroupId;
 
     public WildlifeSpawnPlacement(
         WorldWildlifeSpawnDefinition spawnDefinition,
         Vector2Int centerTile,
         Vector2Int chunkCoord,
-        int localIndex)
+        int localIndex,
+        int groupId)
     {
         SpawnDefinition = spawnDefinition;
         CenterTile = centerTile;
         ChunkCoord = chunkCoord;
         LocalIndex = localIndex;
+        GroupId = groupId;
     }
 
     public static WildlifeSpawnPlacement Create(
         WorldWildlifeSpawnDefinition spawnDefinition,
         Vector2Int centerTile,
-        int chunkSize)
+        int chunkSize,
+        int groupId)
     {
         int resolvedChunkSize = Mathf.Max(1, chunkSize);
         Vector2Int chunkCoord = TileToChunk(centerTile, resolvedChunkSize);
@@ -32,7 +36,8 @@ public readonly struct WildlifeSpawnPlacement
             spawnDefinition,
             centerTile,
             chunkCoord,
-            localIndex);
+            localIndex,
+            groupId);
     }
 
     private static Vector2Int TileToChunk(Vector2Int tile, int chunkSize)

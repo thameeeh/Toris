@@ -44,7 +44,8 @@ public sealed class WorldBuildOutput
     public void RegisterWildlifeSpawn(
         WorldWildlifeSpawnDefinition spawnDefinition,
         UnityEngine.Vector2Int centerTile,
-        int chunkSize)
+        int chunkSize,
+        int groupId)
     {
         if (spawnDefinition == null || !spawnDefinition.IsValid)
             return;
@@ -52,7 +53,8 @@ public sealed class WorldBuildOutput
         wildlifeSpawns.Add(WildlifeSpawnPlacement.Create(
             spawnDefinition,
             centerTile,
-            chunkSize));
+            chunkSize,
+            groupId));
     }
 
     public BuildOutputDiagnosticsSnapshot CreateDiagnosticsSnapshot()

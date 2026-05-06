@@ -11,6 +11,10 @@ public sealed class WorldWildlifeLifecycle
         new Dictionary<Vector2Int, ActiveWildlifeChunk>();
     private readonly Dictionary<Enemy, Vector2Int> chunkByEnemy =
         new Dictionary<Enemy, Vector2Int>();
+    private readonly Dictionary<int, WildlifeGroup> groupById =
+        new Dictionary<int, WildlifeGroup>();
+    private readonly Dictionary<Enemy, WildlifeGroup> groupByEnemy =
+        new Dictionary<Enemy, WildlifeGroup>();
 
     private WildlifeSpawnPlacementIndex wildlifeSpawnIndex;
     private Transform rootContainer;
@@ -40,6 +44,8 @@ public sealed class WorldWildlifeLifecycle
 
         activeChunks.Clear();
         chunkByEnemy.Clear();
+        groupById.Clear();
+        groupByEnemy.Clear();
         wildlifeSpawnIndex = null;
 
         if (rootContainer != null)
@@ -123,6 +129,7 @@ public sealed class WorldWildlifeLifecycle
             return;
 
         enemy.transform.SetParent(activeChunk.Root, true);
+        TryAttachToWildlifeGroup(enemy, placement.GroupId);
         enemy.Despawned += HandleWildlifeDespawned;
         activeChunk.Enemies.Add(enemy);
         chunkByEnemy[enemy] = activeChunk.ChunkCoord;
@@ -134,6 +141,7 @@ public sealed class WorldWildlifeLifecycle
             return;
 
         enemy.Despawned -= HandleWildlifeDespawned;
+        DetachFromWildlifeGroup(enemy);
         chunkByEnemy.Remove(enemy);
         enemy.RequestDespawn();
     }
@@ -144,6 +152,7 @@ public sealed class WorldWildlifeLifecycle
             return;
 
         enemy.Despawned -= HandleWildlifeDespawned;
+        DetachFromWildlifeGroup(enemy);
 
         if (!chunkByEnemy.TryGetValue(enemy, out Vector2Int chunkCoord))
             return;
@@ -152,6 +161,43 @@ public sealed class WorldWildlifeLifecycle
 
         if (activeChunks.TryGetValue(chunkCoord, out ActiveWildlifeChunk activeChunk))
             activeChunk.Enemies.Remove(enemy);
+    }
+
+    private void TryAttachToWildlifeGroup(Enemy enemy, int groupId)
+    {
+        if (enemy == null || groupId <= 0)
+            return;
+
+        if (!(enemy is IWildlifeGroupMember groupMember))
+            return;
+
+        WildlifeGroup group = GetOrCreateGroup(groupId);
+        group.AddMember(groupMember);
+        groupByEnemy[enemy] = group;
+    }
+
+    private void DetachFromWildlifeGroup(Enemy enemy)
+    {
+        if (enemy == null || !groupByEnemy.TryGetValue(enemy, out WildlifeGroup group))
+            return;
+
+        if (enemy is IWildlifeGroupMember groupMember)
+            group.RemoveMember(groupMember);
+
+        groupByEnemy.Remove(enemy);
+
+        if (group.MemberCount <= 0)
+            groupById.Remove(group.GroupId);
+    }
+
+    private WildlifeGroup GetOrCreateGroup(int groupId)
+    {
+        if (groupById.TryGetValue(groupId, out WildlifeGroup existingGroup))
+            return existingGroup;
+
+        WildlifeGroup group = new WildlifeGroup(groupId);
+        groupById.Add(groupId, group);
+        return group;
     }
 
     private ActiveWildlifeChunk CreateActiveChunk(Vector2Int chunkCoord)

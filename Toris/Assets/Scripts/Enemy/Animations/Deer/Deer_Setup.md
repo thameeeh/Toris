@@ -169,8 +169,9 @@ Deer can be spawned by the map generation wildlife lane.
 Runtime flow:
 
 - `WildlifeSpawnBuildStepDefinition` samples valid wildlife tiles when a biome is built.
-- `WorldBuildOutput.WildlifeSpawns` stores those placements by chunk.
+- `WorldBuildOutput.WildlifeSpawns` stores those placements by chunk and group id.
 - `WorldWildlifeLifecycle` spawns the configured enemy prefab when that chunk loads.
+- `WildlifeGroup` links spawned family members together when the enemy implements `IWildlifeGroupMember`.
 - Chunk unload calls `RequestDespawn()` on owned wildlife so the existing `GameplayPoolManager` can reclaim the enemy.
 
 Unity setup:
@@ -184,14 +185,37 @@ Unity setup:
 
 Recommended starting values:
 
-- `Min Spawn Count = 4`
-- `Max Spawn Count = 8`
+- `Min Group Count = 3`
+- `Max Group Count = 5`
+- `Min Cluster Size = 2`
+- `Max Cluster Size = 4`
+- `Cluster Radius Tiles = 3`
+- `Min Cluster Member Spacing Tiles = 1`
 - `Min Spacing Tiles = 18`
 - `Placement Radius Factor = 0.9`
 - `Avoid Origin Radius Tiles = 18`
 - `Avoid Terrain Overrides = true`
 - `Avoid Navigation Blockers = true`
 - `Avoid Obstacles = true`
+
+## Herding
+
+Map-generated Deer in the same wildlife group act like a loose family.
+
+The group is intentionally soft:
+
+- calm Deer bias wander targets toward the active herd center
+- Deer can still choose slightly different local targets
+- frightened Deer ignore herd cohesion while fleeing
+- some frightened Deer detach from the herd permanently for that spawn
+- Deer that calm down nearby can continue roaming with the group
+
+Deer component tuning:
+
+- `Herd Preferred Radius`: distance where the Deer considers itself close enough to the group.
+- `Herd Cohesion Weight`: how strongly calm wandering bends toward the herd center.
+- `Herd Abandon Distance`: distance where a calm Deer gives up on the herd after getting too far away.
+- `Herd Panic Detach Chance`: chance that a fear response makes the Deer stop using herd cohesion for that spawn.
 
 ## Animator Contract
 
@@ -260,6 +284,8 @@ Validate in a generated scene with `TileNavWorld` active:
 - Wolf can chase and damage Deer when wolf predator flags are enabled.
 - Deer fades and despawns on death until real death animation exists.
 - Procedurally spawned Deer appear only on walkable generated land.
+- Procedurally spawned Deer appear in family clusters when cluster size is above 1.
+- Calm clustered Deer drift around the same area instead of choosing fully independent wander origins.
 - Procedurally spawned Deer despawn when their chunk unloads.
 
 Also validate setup failure:

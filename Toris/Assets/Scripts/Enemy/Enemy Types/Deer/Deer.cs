@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Deer : Enemy
+public class Deer : Enemy, IWildlifeGroupMember
 {
     [Header("Deer Movement")]
     [SerializeField, Min(0f)] private float walkSpeed = 1f;
@@ -10,6 +10,12 @@ public class Deer : Enemy
     [Header("Deer Fear")]
     [SerializeField, Min(0f)] private float minimumFleeDuration = 2f;
     [SerializeField, Min(0f)] private float calmDelayAfterThreatLost = 1f;
+
+    [Header("Deer Herding")]
+    [SerializeField, Min(0f)] private float herdPreferredRadius = 3.5f;
+    [SerializeField, Range(0f, 1f)] private float herdCohesionWeight = 0.65f;
+    [SerializeField, Min(0f)] private float herdAbandonDistance = 10f;
+    [SerializeField, Range(0f, 1f)] private float herdPanicDetachChance = 0.25f;
 
     [Header("Deer Animation")]
     [SerializeField] private string idleStateName = "Idle BT";
@@ -32,6 +38,8 @@ public class Deer : Enemy
     private float fleeUntilTime;
     private bool hasLastThreatPosition;
     private Vector2 lastThreatPosition;
+    private WildlifeGroup wildlifeGroup;
+    private bool hasDetachedFromHerd;
 
     public float WalkSpeed => walkSpeed;
     public float RunSpeed => runSpeed;
@@ -53,6 +61,13 @@ public class Deer : Enemy
     public DeerWalkSO EnemyWalkBaseInstance { get; private set; }
     public DeerRunAwaySO EnemyRunAwayBaseInstance { get; private set; }
     public DeerDeadSO EnemyDeadBaseInstance { get; private set; }
+
+    public Transform WildlifeTransform => transform;
+    public bool IsAvailableForWildlifeGroup =>
+        wildlifeGroup != null
+        && !hasDetachedFromHerd
+        && CurrentHealth > 0f
+        && !ShouldKeepFleeing;
 
     protected override void Awake()
     {
@@ -177,6 +192,7 @@ public class Deer : Enemy
         AlwaysAggroed = false;
         SetAggroStatus(false);
         ResetFearMemory();
+        hasDetachedFromHerd = false;
         currentAnimationStateName = string.Empty;
 
         StateMachine.Reset();
@@ -224,6 +240,7 @@ public class Deer : Enemy
     {
         RefreshFearFromCurrentAggroTarget();
         fleeUntilTime = Mathf.Max(fleeUntilTime, Time.time + minimumFleeDuration);
+        MaybeDetachFromHerdDuringPanic();
 
         if (hasLastThreatPosition)
             return;
@@ -260,6 +277,48 @@ public class Deer : Enemy
     {
         StopFallbackDeathRoutine();
         RestoreRendererColors();
+    }
+
+    public void JoinWildlifeGroup(WildlifeGroup group)
+    {
+        wildlifeGroup = group;
+        hasDetachedFromHerd = false;
+    }
+
+    public void LeaveWildlifeGroup(WildlifeGroup group)
+    {
+        if (wildlifeGroup != group)
+            return;
+
+        wildlifeGroup = null;
+        hasDetachedFromHerd = false;
+    }
+
+    public bool TryGetHerdWalkOrigin(out Vector2 walkOrigin)
+    {
+        walkOrigin = default;
+
+        if (wildlifeGroup == null || hasDetachedFromHerd || ShouldKeepFleeing)
+            return false;
+
+        if (!wildlifeGroup.TryGetCenter(this, out Vector2 herdCenter))
+            return false;
+
+        Vector2 currentPosition = GetPosition2D();
+        float distanceFromHerdSqr = (herdCenter - currentPosition).sqrMagnitude;
+        float abandonDistanceSqr = herdAbandonDistance * herdAbandonDistance;
+        if (abandonDistanceSqr > 0f && distanceFromHerdSqr > abandonDistanceSqr)
+        {
+            hasDetachedFromHerd = true;
+            return false;
+        }
+
+        float preferredRadiusSqr = herdPreferredRadius * herdPreferredRadius;
+        walkOrigin = preferredRadiusSqr > 0f && distanceFromHerdSqr <= preferredRadiusSqr
+            ? Vector2.Lerp(currentPosition, herdCenter, herdCohesionWeight)
+            : herdCenter;
+
+        return true;
     }
 
     private void PlayAnimationState(string stateName)
@@ -402,6 +461,28 @@ public class Deer : Enemy
         lastThreatPosition = default;
     }
 
+    private void MaybeDetachFromHerdDuringPanic()
+    {
+        if (wildlifeGroup == null || hasDetachedFromHerd)
+            return;
+
+        if (Random.value <= herdPanicDetachChance)
+        {
+            hasDetachedFromHerd = true;
+            return;
+        }
+
+        if (!wildlifeGroup.TryGetCenter(this, out Vector2 herdCenter))
+            return;
+
+        float abandonDistanceSqr = herdAbandonDistance * herdAbandonDistance;
+        if (abandonDistanceSqr <= 0f)
+            return;
+
+        if ((herdCenter - GetPosition2D()).sqrMagnitude > abandonDistanceSqr)
+            hasDetachedFromHerd = true;
+    }
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
@@ -409,6 +490,8 @@ public class Deer : Enemy
         runSpeed = Mathf.Max(0f, runSpeed);
         minimumFleeDuration = Mathf.Max(0f, minimumFleeDuration);
         calmDelayAfterThreatLost = Mathf.Max(0f, calmDelayAfterThreatLost);
+        herdPreferredRadius = Mathf.Max(0f, herdPreferredRadius);
+        herdAbandonDistance = Mathf.Max(0f, herdAbandonDistance);
     }
 #endif
 }

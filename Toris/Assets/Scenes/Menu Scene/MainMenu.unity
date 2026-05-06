@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   _mainMenuTemplate: {fileID: 9197481963319205126, guid: a6d27714c6210fc45a36c5e6c958bc42, type: 3}
+  _saveSlotTemplate: {fileID: 9197481963319205126, guid: 62c8702e483eadd4097c198448b38394, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
 --- !u!1 &970515767
 GameObject:

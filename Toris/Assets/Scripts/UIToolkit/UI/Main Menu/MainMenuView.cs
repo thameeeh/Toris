@@ -1,6 +1,7 @@
 using System;
+using UnityEngine;
 using UnityEngine.UIElements;
-using OutlandHaven.UIToolkit; // Assuming your namespace
+using OutlandHaven.UIToolkit;
 
 public class MainMenuView : GameView
 {
@@ -10,44 +11,70 @@ public class MainMenuView : GameView
     private Button _playButton;
     private Button _settingsButton;
     private Button _exitButton;
+    private ScrollView _saveSlotsContainer;
 
-    // Semantic Intents (Actions for the Controller to listen to)
     public event Action OnPlayClicked;
     public event Action OnSettingsClicked;
     public event Action OnExitClicked;
 
-    // CORRECTED: Constructor now matches GameView.cs requirements[cite: 10]
-    public MainMenuView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement, uiEvents)
-    {
-    }
+    public MainMenuView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement, uiEvents) { }
 
     public override void Initialize()
     {
-        base.Initialize(); // Let UIView handle m_HideOnAwake logic[cite: 11]
+        base.Initialize();
 
-        // Query elements using the name attribute as a strict lookup key[cite: 6]
         _playButton = Root.Q<Button>("Btn_Play");
         _settingsButton = Root.Q<Button>("Btn_Settings");
         _exitButton = Root.Q<Button>("Btn_Exit");
 
-        // Bind UI Toolkit hardware events
+        // --- ADDED VALIDATION ---
+        _saveSlotsContainer = Root.Q<ScrollView>("Container_SaveSlots");
+
+        if (_saveSlotsContainer == null)
+        {
+            Debug.LogError("CRITICAL UI ERROR: MainMenuView could not find 'Container_SaveSlots'.");
+        }
+        else
+        {
+            ToggleSaveSlots(false);
+        }
+        // ------------------------
+
         if (_playButton != null) _playButton.clicked += HandlePlayClicked;
         if (_settingsButton != null) _settingsButton.clicked += HandleSettingsClicked;
         if (_exitButton != null) _exitButton.clicked += HandleExitClicked;
     }
 
-    // Translating hardware clicks into pure C# intents[cite: 7]
+    // ADDED: Let the View handle adding elements to its own DOM
+    public void AddSaveSlot(VisualElement slotElement)
+    {
+        if (_saveSlotsContainer != null) _saveSlotsContainer.Add(slotElement);
+    }
+
+    // ADDED: Let the View handle clearing its own DOM
+    public void ClearSaveSlots()
+    {
+        if (_saveSlotsContainer != null) _saveSlotsContainer.Clear();
+    }
+
+    // ADDED: MVP compliant method to change UI state[cite: 7]
+    public void ToggleSaveSlots(bool isVisible)
+    {
+        if (_saveSlotsContainer != null)
+        {
+            _saveSlotsContainer.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+    }
+
     private void HandlePlayClicked() => OnPlayClicked?.Invoke();
     private void HandleSettingsClicked() => OnSettingsClicked?.Invoke();
     private void HandleExitClicked() => OnExitClicked?.Invoke();
 
-    // IDisposable cleanup[cite: 7, 11]
     public override void Dispose()
     {
         if (_playButton != null) _playButton.clicked -= HandlePlayClicked;
         if (_settingsButton != null) _settingsButton.clicked -= HandleSettingsClicked;
         if (_exitButton != null) _exitButton.clicked -= HandleExitClicked;
-
         base.Dispose();
     }
 }

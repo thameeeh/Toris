@@ -3,6 +3,7 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <ui:VisualElement class="settings-root">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.76);"/>
         <ui:VisualElement name="VisualElement" class="settings-panel">
             <ui:Label text="SETTINGS" class="panel-title settings-title"/>
             <ui:VisualElement class="settings-content">

@@ -1,0 +1,39 @@
+.save-slot-card {
+    width: 280px;
+    height: 180px;
+    margin: 15px;
+    padding: 20px;
+    flex-shrink: 0; /* Strict compliance with Rule 3.4[cite: 19] */
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-bg-panel); /*[cite: 17] */
+}
+
+.slot-header {
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border-default);
+    padding-bottom: 10px;
+}
+
+.slot-date {
+    font-size: var(--font-size-small); /*[cite: 17] */
+    opacity: 0.7;
+}
+
+.slot-stats-container {
+    flex-grow: 1;
+    margin-top: 15px;
+}
+
+.slot-stat-row {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    color: var(--color-border-highlight); /* Golden color for emphasized stats[cite: 17] */
+    -unity-font-style: bold;
+}

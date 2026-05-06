@@ -13,6 +13,6 @@
                 <ui:Button name="Btn_Exit" text="Exit" class="standard-button main-menu-button"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Container_SaveSlots" class="main-menu-slots-container"/>
+        <ui:ScrollView name="Container_SaveSlots" class="main-menu-slots-container"/>
     </ui:VisualElement>
 </ui:UXML>

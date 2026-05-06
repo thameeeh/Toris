@@ -51,9 +51,13 @@
 .main-menu-slots-container {
     flex-grow: 1; /* Takes up the remaining space on the right[cite: 19] */
     height: 100%;
+}
+
+.main-menu-slots-container .unity-scroll-view__content-container {
     flex-direction: row;
-    flex-wrap: wrap; /* Allows save cards to wrap if there are many */
-    align-items: center;
-    justify-content: center;
+    flex-wrap: wrap; /* Allows save cards to wrap to the next line */
+    align-items: flex-start;
+    justify-content: flex-start;
     padding: 40px;
+    padding-bottom: 100px; /* Add extra padding at the bottom so the last slot isn't cut off */
 }

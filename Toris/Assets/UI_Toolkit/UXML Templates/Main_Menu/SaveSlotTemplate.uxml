@@ -1,0 +1,21 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Main_Menu/SaveSlot.uss?fileID=7433441132597879392&amp;guid=3e84c3724cd18fe43b8f6c1d024ade04&amp;type=3#SaveSlot"/>
+    <ui:Button name="Btn_SlotFrame" class="standard-button save-slot-card">
+        <ui:VisualElement class="slot-header">
+            <ui:Label name="Label_SlotIndex" text="Slot 1" class="text-white-bald"/>
+            <ui:Label name="Label_Timestamp" text="2026-05-07 14:30" class="stat-label slot-date"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="slot-stats-container">
+            <ui:VisualElement class="slot-stat-row">
+                <ui:Label text="Level:" class="stat-label"/>
+                <ui:Label name="Label_Level" text="15" class="stat-label stat-value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="slot-stat-row">
+                <ui:Label text="Gold:" class="stat-label"/>
+                <ui:Label name="Label_Gold" text="1,250" class="stat-label stat-value"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:Button>
+</ui:UXML>

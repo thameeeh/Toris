@@ -1,0 +1,59 @@
+/* --- Root Layout --- */
+.main-menu-root {
+    picking-mode: ignore;
+    flex-shrink: 0;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    background-color: var(--color-bg-dark); /* Exact var from theme-variables.uss[cite: 17] */
+}
+
+/* --- Left Navigation Panel --- */
+.main-menu-nav-panel {
+    width: 350px;
+    height: 100%;
+    flex-shrink: 0; /* Prevents squishing by the right panel[cite: 19] */
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    
+    background-color: var(--color-bg-panel); /*[cite: 17] */
+    border-right-width: 2px;
+    border-right-color: var(--color-border-default); /*[cite: 17] */
+}
+
+.main-menu-title {
+    font-size: var(--font-size-h1); /* Upgrading the font size specifically for the main menu[cite: 17] */
+    -unity-text-align: middle-center;
+    margin-bottom: 60px;
+    white-space: normal;
+    /* Color is natively handled by the .panel-title class inherited from Components.uss */
+}
+
+/* --- Buttons --- */
+.main-menu-button-group {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.main-menu-button {
+    height: 60px;
+    margin-bottom: 15px;
+    font-size: var(--font-size-h3); /*[cite: 17] */
+    
+    /* Background colors, borders, fonts, and hover animations 
+       are all safely handled by .standard-button[cite: 18]. 
+       We only define the specific sizing/spacing here. */
+}
+
+/* --- Right Content Panel (Save Slots) --- */
+.main-menu-slots-container {
+    flex-grow: 1; /* Takes up the remaining space on the right[cite: 19] */
+    height: 100%;
+    flex-direction: row;
+    flex-wrap: wrap; /* Allows save cards to wrap if there are many */
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}

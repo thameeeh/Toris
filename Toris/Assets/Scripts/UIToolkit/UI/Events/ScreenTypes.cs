@@ -5,14 +5,21 @@ namespace OutlandHaven.UIToolkit
 {
     public enum ScreenType
     {
+//----- Game Play -----------------
         None,
-        HUD,
+        HUD, // Always on display
+
         Inventory,
-        PauseMenu,
-        CharacterSheet,
         Smith,
         Mage,
-        Skills
+
+        CharacterSheet,
+        Skills,
+        PauseMenu,
+
+//----- Main Menu -----------------
+        MainMenu,
+        SettingsModal
     }
     public enum ScreenZone
     {

@@ -48,13 +48,13 @@ public class MainMenuView : GameView
     // ADDED: Let the View handle adding elements to its own DOM
     public void AddSaveSlot(VisualElement slotElement)
     {
-        if (_saveSlotsContainer != null) _saveSlotsContainer.Add(slotElement);
+        if (_saveSlotsContainer != null) _saveSlotsContainer.contentContainer.Add(slotElement);
     }
 
     // ADDED: Let the View handle clearing its own DOM
     public void ClearSaveSlots()
     {
-        if (_saveSlotsContainer != null) _saveSlotsContainer.Clear();
+        if (_saveSlotsContainer != null) _saveSlotsContainer.contentContainer.Clear();
     }
 
     // ADDED: MVP compliant method to change UI state[cite: 7]

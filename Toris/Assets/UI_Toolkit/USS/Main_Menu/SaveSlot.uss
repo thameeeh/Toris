@@ -37,3 +37,9 @@
     color: var(--color-border-highlight); /* Golden color for emphasized stats[cite: 17] */
     -unity-font-style: bold;
 }
+/* --- Save Slot Wrapper --- */
+.save-slot-wrapper {
+    flex-shrink: 0;
+    width: 280px;
+    height: 180px;
+}

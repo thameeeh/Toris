@@ -5,12 +5,12 @@ This document outlines our high-level goals and progress for connecting the Main
 ---
 
 ## 🤖 Session Hand-off Message
-**Status:** The core plumbing is finished. The Main Menu is now successfully wired to the Save System and can trigger scene transitions for both existing saves and new games.
+**Status:** The Main Menu now successfully displays dynamic player statistics by "peeking" at save files. The core plumbing for both loading existing saves and starting new games is fully operational.
 
-**Next Immediate Task:** Implement **Dynamic Menu Information**. 
-- Currently, `MainMenuController.GenerateMockSaveSlots` is still using hardcoded mock data.
-- **Goal:** Create a "Peek" method in `SaveManager.cs` that can quickly deserialize only the metadata (Level, Gold, SaveTime) from `save_1.json`, `save_2.json`, etc., without fully importing them into the `GameSessionSO`.
-- **UI update:** Pass this real data into the `SaveSlotData` DTOs so the Main Menu cards show the player's actual progress before they click "Play".
+**Next Immediate Task:** Implement **Save Deletion**.
+- **Goal:** Add a "Delete" button to the Save Slot cards in the Main Menu.
+- **Logic:** Create a `DeleteSave(SaveSlotIndex slot)` method in `SaveManager.cs` that removes the physical file.
+- **UI update:** Refresh the `SaveSlotView` after deletion to show it as an "Empty Slot".
 
 ---
 
@@ -23,10 +23,12 @@ Ensure that selecting a save slot from the Main Menu instantly restores the play
 - [X] **Data Restoration** (COMPLETED)
 - [X] **World Transition** (COMPLETED)
 - [X] **Fresh Starts** (COMPLETED)
+- [X] **Dynamic Menu Information** (COMPLETED)
 
 ---
 
 ## Backlog & Future Polish
 
-- [ ] **Dynamic Menu Information**
-  Replace the current placeholder text on the save slots with actual player statistics (like their current level, gold, and playtime). The system needs to "peek" at the save files to display this information without fully loading the entire game.
+- [ ] **Save Deletion**
+  Allow players to clear save slots directly from the menu. This requires file system operations in `SaveManager` and a UI update in `MainMenuController`.
+

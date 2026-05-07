@@ -1,3 +1,9 @@
+## [Current/Recent] - Dynamic Main Menu Information
+* **Save Peeking Logic:** Implemented `PeekSaveMetadata` in `SaveManager.cs` using `JObject` to robustly bypass polymorphic type handling conflicts.
+* **Testing Fallback:** Added a fallback in `SaveManager` that redirects Slot 1 to `quicksave.json` if a dedicated slot save doesn't exist, allowing immediate testing of the menu UI via the F5 quicksave.
+* **Real Data Injection:** Refactored `MainMenuController.cs` to replace mock data with actual file-based statistics, ensuring the Save Slot cards accurately reflect player progress.
+* **Metadata DTO:** Introduced `SaveMetadata` in `GameSaveData.cs` as a lightweight container for efficient JSON deserialization during menu initialization.
+
 ## [Current/Recent] - Connected Main Menu to Gameplay via Save System
 * **Fresh Start Logic:** Implemented a fallback in `MainMenuController.cs` that recognizes empty slots and initializes a default game session in the "MainArea" scene.
 * **File Path Fix:** Updated `SaveManager.cs` to use numerical indices for save files (e.g., `save_1.json`) instead of enum strings, ensuring consistency with the UI selection.

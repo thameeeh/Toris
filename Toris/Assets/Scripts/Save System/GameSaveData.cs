@@ -28,6 +28,17 @@ namespace OutlandHaven.SaveSystem
         public string PixelCrushersDialogueSaveData;
     }
 
+    /// <summary>
+    /// A lightweight DTO for "peeking" at save files without full deserialization.
+    /// </summary>
+    [System.Serializable]
+    public class SaveMetadata
+    {
+        public string SaveTime;
+        public int Level;
+        public int Gold;
+    }
+
     [System.Serializable]
     public class SavedInventoryData
     {

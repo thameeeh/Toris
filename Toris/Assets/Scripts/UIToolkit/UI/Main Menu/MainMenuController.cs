@@ -53,22 +53,41 @@ public class MainMenuController : MonoBehaviour
         _uiManager.RegisterView(_view);
     }
 
-    private void GenerateMockSaveSlots()
+    private void PopulateSaveSlotsFromFiles()
     {
-        List<SaveSlotData> mockSlots = new List<SaveSlotData>();
+        if (_saveManager == null) return;
 
-        for (int i = 1; i <= 3; i++)
+        List<SaveSlotData> slotDataList = new List<SaveSlotData>();
+
+        // We currently support 3 slots (Slot1, Slot2, Slot3)
+        for (int i = 0; i < 3; i++)
         {
-            mockSlots.Add(new SaveSlotData
+            SaveSlotIndex enumIndex = (SaveSlotIndex)i;
+            SaveMetadata metadata = _saveManager.PeekSaveMetadata(enumIndex);
+
+            if (metadata != null)
             {
-                SlotIndex = i,
-                Level = i * 5,
-                Gold = i * 1250,
-                Timestamp = $"2026-05-0{i + 4} 14:30"
-            });
+                slotDataList.Add(new SaveSlotData
+                {
+                    SlotIndex = i + 1,
+                    Level = metadata.Level,
+                    Gold = metadata.Gold,
+                    Timestamp = metadata.SaveTime
+                });
+            }
+            else
+            {
+                slotDataList.Add(new SaveSlotData
+                {
+                    SlotIndex = i + 1,
+                    Level = 0,
+                    Gold = 0,
+                    Timestamp = "Empty Slot"
+                });
+            }
         }
 
-        _view.PopulateSaveSlots(mockSlots);
+        _view.PopulateSaveSlots(slotDataList);
     }
 
     // --- Intent Handlers ---
@@ -116,7 +135,7 @@ public class MainMenuController : MonoBehaviour
 
         if (!_slotsGenerated)
         {
-            GenerateMockSaveSlots();
+            PopulateSaveSlotsFromFiles();
             _slotsGenerated = true;
         }
 

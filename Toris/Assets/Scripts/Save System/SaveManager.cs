@@ -116,6 +116,13 @@ namespace OutlandHaven.SaveSystem
         public GameSaveData LoadGameData(SaveSlotIndex slotIndex)
         {
             string path = GetSaveFilePath(slotIndex);
+
+            // Fallback for testing: if slot 1 is requested but doesn't exist, try loading the quicksave
+            if (!File.Exists(path) && slotIndex == SaveSlotIndex.Slot1)
+            {
+                path = _quickSavePath;
+            }
+
             if (!File.Exists(path))
             {
                 Debug.LogWarning("[SaveManager] No save file found at " + path);
@@ -124,6 +131,44 @@ namespace OutlandHaven.SaveSystem
 
             string json = File.ReadAllText(path);
             return JsonConvert.DeserializeObject<GameSaveData>(json, _jsonSettings);
+        }
+
+        /// <summary>
+        /// Reads only the basic metadata from a save file without fully deserializing inventories or quest data.
+        /// Uses JObject to safely bypass polymorphic type handling during the peek.
+        /// </summary>
+        public SaveMetadata PeekSaveMetadata(SaveSlotIndex slotIndex)
+        {
+            string path = GetSaveFilePath(slotIndex);
+            
+            // Fallback for testing: if slot 1 is empty, check if a quicksave exists
+            if (!File.Exists(path) && slotIndex == SaveSlotIndex.Slot1)
+            {
+                path = _quickSavePath;
+            }
+
+            if (!File.Exists(path)) return null;
+
+            try
+            {
+                string json = File.ReadAllText(path);
+                Newtonsoft.Json.Linq.JObject jobj = Newtonsoft.Json.Linq.JObject.Parse(json);
+                
+                string timestamp = jobj.Value<string>("SaveTime") ?? "Unknown";
+                if (path == _quickSavePath) timestamp = "[QuickSave] " + timestamp;
+
+                return new SaveMetadata
+                {
+                    SaveTime = timestamp,
+                    Level = jobj.Value<int>("Level"),
+                    Gold = jobj.Value<int>("Gold")
+                };
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[SaveManager] Failed to peek save metadata at {path}: {ex.Message}");
+                return null;
+            }
         }
 
         private string GetSaveFilePath(SaveSlotIndex slot)

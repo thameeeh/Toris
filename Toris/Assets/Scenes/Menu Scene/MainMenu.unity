@@ -262,6 +262,7 @@ MonoBehaviour:
   _mainMenuTemplate: {fileID: 9197481963319205126, guid: a6d27714c6210fc45a36c5e6c958bc42, type: 3}
   _saveSlotTemplate: {fileID: 9197481963319205126, guid: 62c8702e483eadd4097c198448b38394, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _saveManager: {fileID: 6374564660408957763, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
 --- !u!1 &970515767
 GameObject:
   m_ObjectHideFlags: 0

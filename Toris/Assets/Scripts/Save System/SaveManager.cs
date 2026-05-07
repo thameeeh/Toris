@@ -128,7 +128,8 @@ namespace OutlandHaven.SaveSystem
 
         private string GetSaveFilePath(SaveSlotIndex slot)
         {
-            return Path.Combine(Application.persistentDataPath, $"save_{slot}.json");
+            int slotNumber = (int)slot + 1;
+            return Path.Combine(Application.persistentDataPath, $"save_{slotNumber}.json");
         }
     }
 }

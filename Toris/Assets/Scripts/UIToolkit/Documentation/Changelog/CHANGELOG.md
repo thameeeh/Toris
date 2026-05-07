@@ -1,3 +1,10 @@
+## [Current/Recent] - Connected Main Menu to Gameplay via Save System
+* **Fresh Start Logic:** Implemented a fallback in `MainMenuController.cs` that recognizes empty slots and initializes a default game session in the "MainArea" scene.
+* **File Path Fix:** Updated `SaveManager.cs` to use numerical indices for save files (e.g., `save_1.json`) instead of enum strings, ensuring consistency with the UI selection.
+* **Load Integration:** Updated `MainMenuController.cs` to communicate with `SaveManager`, enabling real save data restoration from selected slots.
+* **Scene Transition:** Integrated `SceneTransitionService` to automatically transport the player to the `CurrentSceneName` stored in the save file (with "MainArea" as a safe fallback).
+* **Data Flow:** Verified that the `GameSessionSO` successfully imports the `GameSaveData` DTO before the scene load, ensuring the player's stats and inventory are ready upon arrival.
+
 ## [Current/Recent] - Refactor Main Menu to Mature MVP Architecture
 * **Structural Decoupling:** Shifted responsibility for Save Slot instantiation and lifecycle management from `MainMenuController` to `MainMenuView`, ensuring the Presenter only handles high-level intent and data.
 * **Data Transfer Objects:** Introduced `SaveSlotData` DTO to encapsulate save metadata, eliminating "Data Clump" anti-patterns in View signatures.

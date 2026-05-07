@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using OutlandHaven.UIToolkit;
+using OutlandHaven.SaveSystem;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class MainMenuController : MonoBehaviour
 
     [Header("Dependencies")]
     [SerializeField] private UIEventsSO _uiEvents;
+    [SerializeField] private SaveManager _saveManager;
 
     private MainMenuView _view;
     private MainMenuUIManager _uiManager;
@@ -20,6 +22,12 @@ public class MainMenuController : MonoBehaviour
     private void Awake()
     {
         _uiManager = FindFirstObjectByType<MainMenuUIManager>();
+        
+        // Ensure we have a SaveManager if not manually assigned
+        if (_saveManager == null)
+        {
+            _saveManager = FindFirstObjectByType<SaveManager>();
+        }
     }
 
     private void Start()
@@ -67,10 +75,39 @@ public class MainMenuController : MonoBehaviour
 
     private void HandleSlotSelected(int slotIndex)
     {
-        Debug.Log($"UI Intent: Selected Save Slot {slotIndex}. Commencing load sequence...");
-        // Future Integration: 
-        // 1. Pass slotIndex to SaveManager so it knows which file to read.
-        // 2. Trigger SceneTransitionService to load the gameplay scene.
+        if (_saveManager == null)
+        {
+            Debug.LogError("[MainMenuController] SaveManager reference is missing! Cannot load game.");
+            return;
+        }
+
+        // Convert the 1-based UI index back to the 0-based Enum
+        SaveSlotIndex enumIndex = (SaveSlotIndex)(slotIndex - 1);
+
+        Debug.Log($"UI Intent: Selected Save Slot {slotIndex} ({enumIndex}). Requesting Load...");
+
+        // 1. Load the data
+        GameSaveData loadedData = _saveManager.LoadGameData(enumIndex);
+
+        if (loadedData != null)
+        {
+            // 2. Apply to session
+            _saveManager.ActiveSession.ImportFromSaveData(loadedData, _saveManager.MasterItemDatabase);
+
+            // 3. Transition Scene
+            string sceneToLoad = string.IsNullOrEmpty(loadedData.CurrentSceneName) ? "MainArea" : loadedData.CurrentSceneName;
+            SceneTransitionService.Instance.LoadScene(sceneToLoad);
+        }
+        else
+        {
+            Debug.Log($"[MainMenuController] Slot {slotIndex} is empty. Initializing New Game sequence...");
+
+            // 1. Reset the session to default state
+            _saveManager.ActiveSession.ClearRuntimeSnapshots();
+
+            // 2. Load the starting scene
+            SceneTransitionService.Instance.LoadScene("MainArea");
+        }
     }
 
     private void OnPlayRequested()

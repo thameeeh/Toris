@@ -32,6 +32,35 @@
     flex-direction: column;
 }
 
+/* --- Added Slider Styles --- */
+.settings-section-header {
+    font-size: 24px;
+    -unity-font-style: bold;
+    color: var(--color-border-highlight);
+    margin-bottom: 15px;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border-default);
+    padding-bottom: 5px;
+}
+
+.settings-section-spacing {
+    margin-top: 40px;
+}
+
+.settings-slider-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-right: 20%; /* Keep sliders from hitting the very edge */
+}
+
+.settings-slider {
+    width: 250px;
+}
+
+/* -------------------------- */
+
 .settings-close-button {
     height: 60px;
     width: 250px;

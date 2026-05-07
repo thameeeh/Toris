@@ -66,6 +66,11 @@ public class SettingsMenuController : MonoBehaviour
         // Listen for the close button click
         _view.OnCloseClicked += OnCloseRequested;
 
+        // Listen for slider changes
+        _view.OnMasterVolumeChanged += (val) => Debug.Log($"[Settings] Master Volume changed to {val:F2}");
+        _view.OnMusicVolumeChanged += (val) => Debug.Log($"[Settings] Music Volume changed to {val:F2}");
+        _view.OnSFXVolumeChanged += (val) => Debug.Log($"[Settings] SFX Volume changed to {val:F2}");
+
         // Register it (it will automatically hide on start)
         _uiManager.RegisterView(_view);
     }

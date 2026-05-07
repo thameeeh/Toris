@@ -7,7 +7,7 @@
         <ui:VisualElement name="VisualElement" class="settings-panel">
             <ui:Label text="SETTINGS" class="panel-title settings-title"/>
             <ui:VisualElement class="settings-content">
-                <ui:Label text="Audio" class="stat-label" style="font-size: 24px; margin-bottom: 10px;"/>
+                <ui:Label text="Audio" class="settings-section-header"/>
                 
                 <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Master Volume" class="stat-label"/>
@@ -24,7 +24,7 @@
                     <ui:Slider name="Slider_SFXVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
                 </ui:VisualElement>
 
-                <ui:Label text="[ WIP ] Display Resolution" class="stat-label" style="margin-top: 30px;"/>
+                <ui:Label text="[ WIP ] Display Resolution" class="stat-label settings-section-spacing"/>
                 <ui:Label text="[ WIP ] Keybindings" class="stat-label"/>
             </ui:VisualElement>
             <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>

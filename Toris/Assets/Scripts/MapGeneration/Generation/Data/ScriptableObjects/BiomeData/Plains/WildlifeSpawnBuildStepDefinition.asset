@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WildlifeSpawnBuildStepDefinition
   wildlifeRules:
   - spawnDefinition: {fileID: 11400000, guid: bd6f776ea8065404a9b07904ab108f9b, type: 2}
-    minSpawnCount: 12
-    maxSpawnCount: 36
-    minSpacingTiles: 20
+    minGroupCount: 4
+    maxGroupCount: 16
+    minClusterSize: 2
+    maxClusterSize: 5
+    clusterRadiusTiles: 3
+    minClusterMemberSpacingTiles: 1
+    minSpacingTiles: 40
     placementRadiusFactor: 0.7
-    avoidOriginRadiusTiles: 20
+    avoidOriginRadiusTiles: 50
     avoidTerrainOverrides: 1
     avoidNavigationBlockers: 1
     avoidObstacles: 1

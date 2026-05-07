@@ -9,8 +9,10 @@ public class SaveSlotView : UIView
     private Label _timestampLabel;
     private Label _indexLabel;
     private Button _slotButton;
+    private Button _deleteButton;
 
     public event Action<int> OnSlotSelected;
+    public event Action<int> OnDeleteRequested;
     private int _slotIndex;
 
     public SaveSlotView(VisualElement root, int index) : base(root)
@@ -26,6 +28,7 @@ public class SaveSlotView : UIView
         _timestampLabel = m_TopElement.Q<Label>("Label_Timestamp");
         _indexLabel = m_TopElement.Q<Label>("Label_SlotIndex");
         _slotButton = m_TopElement.Q<Button>("Btn_SlotFrame");
+        _deleteButton = m_TopElement.Q<Button>("Btn_Delete");
     }
 
     private void HandleSlotClicked()
@@ -33,10 +36,21 @@ public class SaveSlotView : UIView
         OnSlotSelected?.Invoke(_slotIndex);
     }
 
+    private void HandleDeleteClicked(ClickEvent evt)
+    {
+        // Prevent the parent Btn_SlotFrame from receiving this click
+        evt.StopImmediatePropagation();
+        
+        OnDeleteRequested?.Invoke(_slotIndex);
+    }
+
     protected override void RegisterButtonCallbacks()
     {
         if (_slotButton != null)
-            _slotButton.clicked += HandleSlotClicked; // Subscribe
+            _slotButton.clicked += HandleSlotClicked;
+
+        if (_deleteButton != null)
+            _deleteButton.RegisterCallback<ClickEvent>(HandleDeleteClicked);
     }
 
     // Injects data from the Save System DTO[cite: 1]
@@ -46,12 +60,22 @@ public class SaveSlotView : UIView
         if (_levelLabel != null) _levelLabel.text = data.Level.ToString();
         if (_goldLabel != null) _goldLabel.text = data.Gold.ToString();
         if (_timestampLabel != null) _timestampLabel.text = data.Timestamp;
+
+        // Hide delete button if slot is empty
+        if (_deleteButton != null)
+        {
+            _deleteButton.style.display = (data.Timestamp == "Empty Slot" || data.Timestamp == "Unknown") 
+                ? DisplayStyle.None : DisplayStyle.Flex;
+        }
     }
 
     public override void Dispose()
     {
         if (_slotButton != null)
             _slotButton.clicked -= HandleSlotClicked;
+
+        if (_deleteButton != null)
+            _deleteButton.UnregisterCallback<ClickEvent>(HandleDeleteClicked);
 
         base.Dispose();
     }

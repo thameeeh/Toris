@@ -17,19 +17,25 @@ namespace OutlandHaven.SaveSystem
         public ItemDatabaseSO MasterItemDatabase;
 
         private JsonSerializerSettings _jsonSettings;
-        private string _quickSavePath; // Added missing variable
-
-        private void Awake()
+        private JsonSerializerSettings Settings
         {
-            // Configure Newtonsoft to handle your polymorphic ItemComponentStates
-            _jsonSettings = new JsonSerializerSettings
+            get
             {
-                TypeNameHandling = TypeNameHandling.Auto,
-                Formatting = Formatting.Indented
-            };
-
-            // Added missing initialization for the quicksave path
-            _quickSavePath = Path.Combine(Application.persistentDataPath, "quicksave.json");
+                if (_jsonSettings == null)
+                {
+                    _jsonSettings = new JsonSerializerSettings
+                    {
+                        // All ensures that every object includes its type metadata, 
+                        // which is essential for abstract/polymorphic lists like ItemComponentState.
+                        TypeNameHandling = TypeNameHandling.All,
+                        // ReadAhead ensures that metadata properties like $type are processed 
+                        // even if they aren't the first property in the JSON object.
+                        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
+                        Formatting = Formatting.Indented
+                    };
+                }
+                return _jsonSettings;
+            }
         }
 
         private void Update()
@@ -38,63 +44,36 @@ namespace OutlandHaven.SaveSystem
             if (Input.GetKeyDown(KeyCode.F9)) QuickLoad();
         }
 
-        // --- QUICKSAVE SYSTEM (For Editor Testing) ---
+        // --- QUICKSAVE SYSTEM (Uses Active Slot) ---
 
         [ContextMenu("Execute Quick Save")]
         public void QuickSave()
         {
-            if (ActiveSession == null)
-            {
-                Debug.LogError("[SaveManager] ActiveSession is missing! Drag the GameSessionSO into the inspector.");
-                return;
-            }
+            if (ActiveSession == null) return;
 
-            Debug.Log("[SaveManager] Starting Quick Save...");
-
-            // 1. Get the pure data from the Session
-            GameSaveData dataToSave = ActiveSession.ExportToSaveData();
-
-            // 2. Convert to JSON text
-            string json = JsonConvert.SerializeObject(dataToSave, _jsonSettings);
-
-            // 3. Write to Hard Drive
-            File.WriteAllText(_quickSavePath, json);
-
-            Debug.Log($"[SaveManager] Quicksave successful! File located at: {_quickSavePath}");
+            Debug.Log($"[SaveManager] Quick Saving to Slot {ActiveSession.ActiveSaveSlot}...");
+            SaveGame(ActiveSession.ActiveSaveSlot);
         }
 
         [ContextMenu("Execute Quick Load")]
         public void QuickLoad()
         {
-            if (ActiveSession == null || MasterItemDatabase == null)
-            {
-                Debug.LogError("[SaveManager] Missing references! Check the Inspector.");
-                return;
-            }
+            if (ActiveSession == null || MasterItemDatabase == null) return;
 
-            if (!File.Exists(_quickSavePath))
-            {
-                Debug.LogWarning("[SaveManager] No quicksave file found to load!");
-                return;
-            }
+            Debug.Log($"[SaveManager] Quick Loading from Slot {ActiveSession.ActiveSaveSlot}...");
 
-            Debug.Log("[SaveManager] Starting Quick Load...");
-
-            // 1. Read the JSON string from the hard drive
-            string json = File.ReadAllText(_quickSavePath);
-
-            // 2. Deserialize it back into the pure C# DTO
-            GameSaveData loadedData = JsonConvert.DeserializeObject<GameSaveData>(json, _jsonSettings);
+            // 1. Read the JSON data
+            GameSaveData loadedData = LoadGameData(ActiveSession.ActiveSaveSlot);
 
             if (loadedData != null)
             {
-                // 3. Ensure the database dictionary is built before we try to look up items
+                // 2. Ensure the database dictionary is built
                 MasterItemDatabase.Initialize();
 
-                // 4. Push the data into the live session
+                // 3. Push the data into the live session
                 ActiveSession.ImportFromSaveData(loadedData, MasterItemDatabase);
 
-                Debug.Log("[SaveManager] Quicksave loaded successfully!");
+                Debug.Log($"[SaveManager] Slot {ActiveSession.ActiveSaveSlot} loaded successfully!");
             }
         }
 
@@ -105,7 +84,7 @@ namespace OutlandHaven.SaveSystem
             if (ActiveSession == null) return;
 
             GameSaveData dataToSave = ActiveSession.ExportToSaveData();
-            string json = JsonConvert.SerializeObject(dataToSave, _jsonSettings);
+            string json = JsonConvert.SerializeObject(dataToSave, Settings);
             string path = GetSaveFilePath(slotIndex);
 
             File.WriteAllText(path, json);
@@ -113,15 +92,31 @@ namespace OutlandHaven.SaveSystem
             Debug.Log($"[SaveManager] Game Saved successfully to {path}");
         }
 
+        public void DeleteSave(SaveSlotIndex slotIndex)
+        {
+            string path = GetSaveFilePath(slotIndex);
+            
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                Debug.Log($"[SaveManager] Deleted save file at: {path}");
+            }
+
+            // Also clean up the quicksave fallback if it exists and we're clearing slot 1
+            if (slotIndex == SaveSlotIndex.Slot1)
+            {
+                string quickSavePath = Path.Combine(Application.persistentDataPath, "quicksave.json");
+                if (File.Exists(quickSavePath))
+                {
+                    File.Delete(quickSavePath);
+                    Debug.Log($"[SaveManager] Deleted legacy quicksave fallback at: {quickSavePath}");
+                }
+            }
+        }
+
         public GameSaveData LoadGameData(SaveSlotIndex slotIndex)
         {
             string path = GetSaveFilePath(slotIndex);
-
-            // Fallback for testing: if slot 1 is requested but doesn't exist, try loading the quicksave
-            if (!File.Exists(path) && slotIndex == SaveSlotIndex.Slot1)
-            {
-                path = _quickSavePath;
-            }
 
             if (!File.Exists(path))
             {
@@ -130,7 +125,7 @@ namespace OutlandHaven.SaveSystem
             }
 
             string json = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<GameSaveData>(json, _jsonSettings);
+            return JsonConvert.DeserializeObject<GameSaveData>(json, Settings);
         }
 
         /// <summary>
@@ -141,12 +136,6 @@ namespace OutlandHaven.SaveSystem
         {
             string path = GetSaveFilePath(slotIndex);
             
-            // Fallback for testing: if slot 1 is empty, check if a quicksave exists
-            if (!File.Exists(path) && slotIndex == SaveSlotIndex.Slot1)
-            {
-                path = _quickSavePath;
-            }
-
             if (!File.Exists(path)) return null;
 
             try
@@ -154,14 +143,13 @@ namespace OutlandHaven.SaveSystem
                 string json = File.ReadAllText(path);
                 Newtonsoft.Json.Linq.JObject jobj = Newtonsoft.Json.Linq.JObject.Parse(json);
                 
-                string timestamp = jobj.Value<string>("SaveTime") ?? "Unknown";
-                if (path == _quickSavePath) timestamp = "[QuickSave] " + timestamp;
+                string timestamp = jobj.GetValue("SaveTime", System.StringComparison.OrdinalIgnoreCase)?.ToString() ?? "Unknown";
 
                 return new SaveMetadata
                 {
                     SaveTime = timestamp,
-                    Level = jobj.Value<int>("Level"),
-                    Gold = jobj.Value<int>("Gold")
+                    Level = jobj.GetValue("Level", System.StringComparison.OrdinalIgnoreCase)?.ToObject<int>() ?? 0,
+                    Gold = jobj.GetValue("Gold", System.StringComparison.OrdinalIgnoreCase)?.ToObject<int>() ?? 0
                 };
             }
             catch (System.Exception ex)

@@ -983,6 +983,14 @@ PrefabInstance:
       propertyPath: _equipmentInventory
       value: 
       objectReference: {fileID: 2091433943}
+    - target: {fileID: 1738574752484829038, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _equipment
+      value: 
+      objectReference: {fileID: 2014174152}
+    - target: {fileID: 2003589166597666773, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _gameSession
+      value: 
+      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.6
@@ -1035,6 +1043,10 @@ PrefabInstance:
       propertyPath: _equipmentInventory
       value: 
       objectReference: {fileID: 2091433943}
+    - target: {fileID: 8137892244548921797, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _gameSession
+      value: 
+      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

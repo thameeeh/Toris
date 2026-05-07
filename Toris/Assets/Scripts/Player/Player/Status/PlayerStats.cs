@@ -297,10 +297,12 @@ public class PlayerStats : MonoBehaviour
         if (_gameSession == null || _runtimeStats == null)
             return;
 
-        if (!_gameSession.TryGetPlayerStatsState(out float currentHealthValue, out float currentStaminaValue))
-            return;
-
-        SetRuntimeState(currentHealthValue, currentStaminaValue);
+        // TryGetPlayerStatsState returns false if no snapshot exists.
+        // We only call SetRuntimeState if it returns true.
+        if (_gameSession.TryGetPlayerStatsState(out float currentHealthValue, out float currentStaminaValue))
+        {
+            SetRuntimeState(currentHealthValue, currentStaminaValue);
+        }
     }
 
     private void CaptureTransferredState()

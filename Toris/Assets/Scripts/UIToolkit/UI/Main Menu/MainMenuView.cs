@@ -22,6 +22,7 @@ public class MainMenuView : GameView
     public event Action OnSettingsClicked;
     public event Action OnExitClicked;
     public event Action<int> OnSaveSlotSelected;
+    public event Action<int> OnSaveSlotDeleteRequested;
 
     public MainMenuView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement, uiEvents) { }
 
@@ -70,12 +71,14 @@ public class MainMenuView : GameView
             slotView.SetData(data);
 
             slotView.OnSlotSelected += HandleSlotSelected;
+            slotView.OnDeleteRequested += HandleDeleteRequested;
             _slotViews.Add(slotView);
             _saveSlotsContainer.contentContainer.Add(slotInstance);
         }
     }
 
     private void HandleSlotSelected(int index) => OnSaveSlotSelected?.Invoke(index);
+    private void HandleDeleteRequested(int index) => OnSaveSlotDeleteRequested?.Invoke(index);
 
     // ADDED: Let the View handle clearing its own DOM and disposing sub-views
     public void ClearSaveSlots()
@@ -83,6 +86,7 @@ public class MainMenuView : GameView
         foreach (var view in _slotViews)
         {
             view.OnSlotSelected -= HandleSlotSelected;
+            view.OnDeleteRequested -= HandleDeleteRequested;
             view.Dispose();
         }
         _slotViews.Clear();

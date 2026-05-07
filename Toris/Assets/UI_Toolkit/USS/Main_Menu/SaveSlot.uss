@@ -37,6 +37,38 @@
     color: var(--color-border-highlight); /* Golden color for emphasized stats[cite: 17] */
     -unity-font-style: bold;
 }
+
+/* --- Delete Button --- */
+.save-slot__delete-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #c0392b;
+    color: white;
+    -unity-font-style: bold;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    border-width: 1px;
+    border-color: white;
+    transition-duration: 0.15s;
+}
+
+.save-slot__delete-btn:hover {
+    background-color: #e74c3c;
+    scale: 1.1;
+}
+
+.save-slot__delete-btn:active {
+    background-color: #962d22;
+    scale: 0.95;
+}
+
 /* --- Save Slot Wrapper --- */
 .save-slot-wrapper {
     flex-shrink: 0;

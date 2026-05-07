@@ -48,6 +48,7 @@ public class MainMenuController : MonoBehaviour
         _view.OnSettingsClicked += OnSettingsRequested;
         _view.OnExitClicked += OnExitRequested;
         _view.OnSaveSlotSelected += HandleSlotSelected;
+        _view.OnSaveSlotDeleteRequested += HandleSlotDelete;
 
         // 4. Register the view with the Manager
         _uiManager.RegisterView(_view);
@@ -92,6 +93,19 @@ public class MainMenuController : MonoBehaviour
 
     // --- Intent Handlers ---
 
+    private void HandleSlotDelete(int slotIndex)
+    {
+        if (_saveManager == null) return;
+
+        SaveSlotIndex enumIndex = (SaveSlotIndex)(slotIndex - 1);
+        Debug.Log($"UI Intent: Delete Save Slot {slotIndex} ({enumIndex}).");
+
+        _saveManager.DeleteSave(enumIndex);
+
+        // Refresh the list immediately
+        PopulateSaveSlotsFromFiles();
+    }
+
     private void HandleSlotSelected(int slotIndex)
     {
         if (_saveManager == null)
@@ -104,6 +118,9 @@ public class MainMenuController : MonoBehaviour
         SaveSlotIndex enumIndex = (SaveSlotIndex)(slotIndex - 1);
 
         Debug.Log($"UI Intent: Selected Save Slot {slotIndex} ({enumIndex}). Requesting Load...");
+
+        // Store the active slot in the session
+        _saveManager.ActiveSession.ActiveSaveSlot = enumIndex;
 
         // 1. Load the data
         GameSaveData loadedData = _saveManager.LoadGameData(enumIndex);
@@ -166,6 +183,7 @@ public class MainMenuController : MonoBehaviour
             _view.OnSettingsClicked -= OnSettingsRequested;
             _view.OnExitClicked -= OnExitRequested;
             _view.OnSaveSlotSelected -= HandleSlotSelected;
+            _view.OnSaveSlotDeleteRequested -= HandleSlotDelete;
             _view.Dispose();
         }
     }

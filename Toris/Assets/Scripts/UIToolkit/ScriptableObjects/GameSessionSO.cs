@@ -42,6 +42,11 @@ namespace OutlandHaven.UIToolkit
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
+        public SaveSlotIndex ActiveSaveSlot
+        {
+            get => (SaveSlotIndex)CurrentSaveSlotIndex;
+            set => CurrentSaveSlotIndex = (int)value;
+        }
         [SerializeField] private string targetSpawnPointID;
 
         [Header("Skill System")]
@@ -69,6 +74,11 @@ namespace OutlandHaven.UIToolkit
             _playerInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
         }
 
+        public void CapturePlayerInventoryState(SavedInventoryData data, ItemDatabaseSO database)
+        {
+            _playerInventorySnapshot = RuntimeInventorySnapshot.CreateFromSavedData(data, database);
+        }
+
         public bool TryApplyPlayerInventoryState(InventoryManager inventoryManager)
         {
             if (_playerInventorySnapshot == null)
@@ -82,6 +92,11 @@ namespace OutlandHaven.UIToolkit
         public void CaptureEquipmentInventoryState(InventoryManager inventoryManager)
         {
             _equipmentInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
+        }
+
+        public void CaptureEquipmentInventoryState(SavedInventoryData data, ItemDatabaseSO database)
+        {
+            _equipmentInventorySnapshot = RuntimeInventorySnapshot.CreateFromSavedData(data, database);
         }
 
         public bool TryApplyEquipmentInventoryState(InventoryManager inventoryManager)
@@ -112,7 +127,6 @@ namespace OutlandHaven.UIToolkit
             level = _playerProgressionSnapshot.Level;
             experience = _playerProgressionSnapshot.Experience;
             gold = _playerProgressionSnapshot.Gold;
-            _playerProgressionSnapshot = null;
             return true;
         }
 
@@ -132,7 +146,6 @@ namespace OutlandHaven.UIToolkit
 
             currentHealth = _playerStatsSnapshot.CurrentHealth;
             currentStamina = _playerStatsSnapshot.CurrentStamina;
-            _playerStatsSnapshot = null;
             return true;
         }
 
@@ -294,12 +307,18 @@ namespace OutlandHaven.UIToolkit
             // --- 2. RESTORE INVENTORIES ---
             if (saveData.PlayerBackpack != null)
             {
-                RestoreInventoryData(PlayerInventory, saveData.PlayerBackpack, itemDatabase);
+                if (PlayerInventory != null)
+                    RestoreInventoryData(PlayerInventory, saveData.PlayerBackpack, itemDatabase);
+                else
+                    CapturePlayerInventoryState(saveData.PlayerBackpack, itemDatabase);
             }
 
             if (saveData.PlayerEquipment != null)
             {
-                RestoreInventoryData(PlayerEquipment, saveData.PlayerEquipment, itemDatabase);
+                if (PlayerEquipment != null)
+                    RestoreInventoryData(PlayerEquipment, saveData.PlayerEquipment, itemDatabase);
+                else
+                    CaptureEquipmentInventoryState(saveData.PlayerEquipment, itemDatabase);
             }
 
             // Quest bridge: future menu save-slot loads may import before MainArea/Dialogue Manager exists.
@@ -337,6 +356,39 @@ namespace OutlandHaven.UIToolkit
                 }
 
                 return new RuntimeInventorySnapshot(slots);
+            }
+
+            public static RuntimeInventorySnapshot CreateFromSavedData(SavedInventoryData data, ItemDatabaseSO database)
+            {
+                if (data == null || data.Slots == null || database == null)
+                    return new RuntimeInventorySnapshot(Array.Empty<RuntimeInventorySlotSnapshot>());
+
+                // We don't know the exact slot count of the live manager yet, 
+                // but we can find the highest index in the saved data to determine the minimum size.
+                int maxIndex = -1;
+                foreach (var s in data.Slots) if (s.SlotIndex > maxIndex) maxIndex = s.SlotIndex;
+
+                RuntimeInventorySlotSnapshot[] snapshots = new RuntimeInventorySlotSnapshot[maxIndex + 1];
+
+                foreach (var savedSlot in data.Slots)
+                {
+                    if (savedSlot.ItemData != null && savedSlot.Count > 0)
+                    {
+                        InventoryItemSO blueprint = database.GetItemByID(savedSlot.ItemData.BaseItemID);
+                        if (blueprint != null)
+                        {
+                            ItemInstance item = new ItemInstance
+                            {
+                                InstanceID = savedSlot.ItemData.InstanceID,
+                                BaseItem = blueprint,
+                                States = savedSlot.ItemData.States ?? new System.Collections.Generic.List<ItemComponentState>()
+                            };
+                            snapshots[savedSlot.SlotIndex] = new RuntimeInventorySlotSnapshot(item, savedSlot.Count);
+                        }
+                    }
+                }
+
+                return new RuntimeInventorySnapshot(snapshots);
             }
 
             public void ApplyTo(InventoryManager inventoryManager)

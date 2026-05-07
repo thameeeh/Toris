@@ -1,8 +1,19 @@
-## [Current/Recent] - Dynamic Main Menu Information
+## [Current/Recent] - Feature: Save Deletion from Main Menu
+* **Delete Interaction:** Added a red "×" delete button to each Save Slot card. It is styled using BEM conventions (`.save-slot__delete-btn`) and positioned absolutely for a clean UI overlay.
+* **Event Propagation Safety:** Implemented `evt.StopImmediatePropagation()` in `SaveSlotView.cs` to ensure that clicking the delete button does not accidentally trigger the slot's loading logic.
+* **File System Logic:** Added `DeleteSave` to `SaveManager.cs`, which physically removes the `.json` file from the disk and handles the cleanup of Slot 1's quicksave fallback.
+* **UI Refresh:** Integrated the delete intent into `MainMenuController.cs`, ensuring the save slot list is instantly repopulated and refreshed after a deletion.
+
+## [Current/Recent] - Critical Fixes: Save Restoration & Serialization
+* **Automatic Data Restoration:** Fixed the "F9 required" issue by implementing inventory snapshots in `GameSessionSO`. Item data is now buffered during Main Menu loads and automatically applied when the player object initializes in the new scene.
+* **Player State Persistence:** Refactored `GameSessionSO` to prevent premature snapshot clearing. Fixed the "Level 1 reset" bug by ensuring `PlayerProgression` and `PlayerStats` only initialize from snapshots if valid data exists.
+* **Robust Polymorphic Serialization:** Upgraded `SaveManager.cs` to use `TypeNameHandling.All` and `MetadataPropertyHandling.ReadAhead`. This fixes the `JsonSerializationException` when handling abstract `ItemComponentState` classes (e.g., Consumables).
+* **Metadata Peeking Fix:** Resolved compilation errors in `SaveManager.cs` by switching to `.ToObject<T>()` and implemented case-insensitive property lookups for more resilient metadata extraction.
+
+## [Current/Recent] - Dynamic Main Menu Information & Active Slot Saving
+* **Active Slot QuickSave:** Refactored `SaveManager.cs` to unify F5/F9 keys with the active save slot. Quick saving now writes directly to `save_1.json`, `save_2.json`, etc., based on the loaded session, eliminating the redundant `quicksave.json`.
+* **Session Tracking:** Updated `GameSessionSO.cs` and `MainMenuController.cs` to track and persist the currently active `SaveSlotIndex` during gameplay.
 * **Save Peeking Logic:** Implemented `PeekSaveMetadata` in `SaveManager.cs` using `JObject` to robustly bypass polymorphic type handling conflicts.
-* **Testing Fallback:** Added a fallback in `SaveManager` that redirects Slot 1 to `quicksave.json` if a dedicated slot save doesn't exist, allowing immediate testing of the menu UI via the F5 quicksave.
-* **Real Data Injection:** Refactored `MainMenuController.cs` to replace mock data with actual file-based statistics, ensuring the Save Slot cards accurately reflect player progress.
-* **Metadata DTO:** Introduced `SaveMetadata` in `GameSaveData.cs` as a lightweight container for efficient JSON deserialization during menu initialization.
 
 ## [Current/Recent] - Connected Main Menu to Gameplay via Save System
 * **Fresh Start Logic:** Implemented a fallback in `MainMenuController.cs` that recognizes empty slots and initializes a default game session in the "MainArea" scene.

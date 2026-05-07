@@ -228,10 +228,12 @@ public class PlayerProgression : MonoBehaviour
         if (_gameSession == null || _runtimeProgression == null)
             return;
 
-        if (!_gameSession.TryGetPlayerProgressionState(out int level, out float experience, out int gold))
-            return;
-
-        SetRuntimeState(level, experience, gold);
+        // TryGetPlayerProgressionState returns false if no snapshot exists.
+        // We only call SetRuntimeState if it returns true.
+        if (_gameSession.TryGetPlayerProgressionState(out int level, out float experience, out int gold))
+        {
+            SetRuntimeState(level, experience, gold);
+        }
     }
 
     private void CaptureTransferredState()

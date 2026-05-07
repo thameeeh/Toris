@@ -12,10 +12,37 @@ public class SettingsMenuController : MonoBehaviour
 
     private SettingsMenuView _view;
     private MainMenuUIManager _uiManager;
+    private InputSystem_Actions _input;
 
     private void Awake()
     {
         _uiManager = FindFirstObjectByType<MainMenuUIManager>();
+        _input = new InputSystem_Actions();
+    }
+
+    private void OnEnable()
+    {
+        _input?.UI.Enable();
+        if (_input != null)
+        {
+            _input.UI.Cancel.performed += OnCancelPerformed;
+        }
+    }
+
+    private void OnDisable()
+    {
+        _input?.UI.Disable();
+        if (_input != null)
+        {
+            _input.UI.Cancel.performed -= OnCancelPerformed;
+        }
+    }
+
+    private void OnCancelPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        // Only close if the view is actually showing (UI Manager handles this logic usually, 
+        // but we emit the intent)
+        OnCloseRequested();
     }
 
     private void Start()

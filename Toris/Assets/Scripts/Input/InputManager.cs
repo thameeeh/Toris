@@ -242,6 +242,22 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
     }
 
+    public void QuickSave(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents?.OnQuickSaveRequested?.Invoke();
+        }
+    }
+
+    public void QuickLoad(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents?.OnQuickLoadRequested?.Invoke();
+        }
+    }
+
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _openBlockingScreens.Clear();

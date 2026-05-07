@@ -3,7 +3,6 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Main_Menu/SaveSlot.uss?fileID=7433441132597879392&amp;guid=3e84c3724cd18fe43b8f6c1d024ade04&amp;type=3#SaveSlot"/>
     <ui:Button name="Btn_SlotFrame" class="standard-button save-slot-card">
-        <ui:Button name="Btn_Delete" text="×" class="save-slot__delete-btn" />
         <ui:VisualElement class="slot-header">
             <ui:Label name="Label_SlotIndex" text="Slot 1" class="text-white-bald"/>
             <ui:Label name="Label_Timestamp" text="2026-05-07 14:30" class="stat-label slot-date"/>
@@ -18,5 +17,6 @@
                 <ui:Label name="Label_Gold" text="1,250" class="stat-label stat-value"/>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Button name="Btn_Delete" text="Delete" class="save-slot__delete-btn" />
     </ui:Button>
 </ui:UXML>

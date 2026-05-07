@@ -1,3 +1,17 @@
+## [Current/Recent] - UI Polish & In-Game Pause Menu Implementation
+* **In-Game Pause Menu:** Created a new MVP-based Pause Menu system.
+    * **View:** `PauseMenuView.cs` handles visual layout and emits semantic events for Resume, Settings, and Main Menu.
+    * **Controller:** `PauseMenuController.cs` manages `Time.timeScale`, input map switching (Player vs. UI), and scene transitions.
+    * **Assets:** Created `PauseMenu.uxml` and `PauseMenu.uss` with a semi-transparent overlay and themed button group.
+* **Settings Menu QoL:** Updated `SettingsMenuController.cs` to support closing the modal via the Escape key (mapped to `UI/Cancel` in the new Input System).
+* **Save Slot Redesign:**
+    * **Layout:** Repositioned the delete button to the bottom of the Save Slot card for better visual balance.
+    * **Textual UI:** Replaced the "×" symbol with the word "Delete" as requested, styled to match the game's theme.
+* **Event-Driven Quick Save/Load:** 
+    * **Decoupling:** Migrated legacy `Input.GetKeyDown` logic in `SaveManager.cs` to a decoupled event-driven architecture.
+    * **Event Bus:** Added `OnQuickSaveRequested` and `OnQuickLoadRequested` to `UIEventsSO.cs`.
+    * **Input Bridging:** `InputManager.cs` now bridges the Unity Input System callbacks to these global UI events.
+
 ## [Current/Recent] - Feature: Save Deletion from Main Menu
 * **Delete Interaction:** Added a red "×" delete button to each Save Slot card. It is styled using BEM conventions (`.save-slot__delete-btn`) and positioned absolutely for a clean UI overlay.
 * **Event Propagation Safety:** Implemented `evt.StopImmediatePropagation()` in `SaveSlotView.cs` to ensure that clicking the delete button does not accidentally trigger the slot's loading logic.

@@ -16,6 +16,9 @@ namespace OutlandHaven.SaveSystem
         [Tooltip("Drag the MainItemDatabase asset here.")]
         public ItemDatabaseSO MasterItemDatabase;
 
+        [Header("UI Events")]
+        [SerializeField] private UIEventsSO _uiEvents;
+
         private JsonSerializerSettings _jsonSettings;
         private JsonSerializerSettings Settings
         {
@@ -38,10 +41,22 @@ namespace OutlandHaven.SaveSystem
             }
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.F5)) QuickSave();
-            if (Input.GetKeyDown(KeyCode.F9)) QuickLoad();
+            if (_uiEvents != null)
+            {
+                _uiEvents.OnQuickSaveRequested += QuickSave;
+                _uiEvents.OnQuickLoadRequested += QuickLoad;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_uiEvents != null)
+            {
+                _uiEvents.OnQuickSaveRequested -= QuickSave;
+                _uiEvents.OnQuickLoadRequested -= QuickLoad;
+            }
         }
 
         // --- QUICKSAVE SYSTEM (Uses Active Slot) ---

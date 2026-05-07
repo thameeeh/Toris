@@ -28,10 +28,8 @@ public struct ArrowRainCastSettings
 [System.Serializable]
 public sealed class ArrowRainRuntime : PlayerAbilityRuntime
 {
-    private const int MaxOverlapResults = 16;
     private const float MinDirectionSqrMagnitude = 0.0001f;
     private const float MinContinuousStrikeSpacing = 0.01f;
-    private const float VisualLifetimePadding = 0.05f;
 
     private struct PendingStrike
     {
@@ -52,7 +50,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
     private Vector2 _center;
     private ArrowRainCastSettings _settings;
     private readonly List<PendingStrike> _pendingStrikes = new List<PendingStrike>();
-    private readonly Collider2D[] _overlapResults = new Collider2D[MaxOverlapResults];
+    private readonly Collider2D[] _overlapResults = new Collider2D[BowAbilityTargetingUtility.DamageableOverlapResultCapacity];
     private readonly HashSet<IDamageable> _damagedTargets = new HashSet<IDamageable>();
 
     public bool IsActive => _isActive;
@@ -154,7 +152,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
             pendingStrike.point,
             safeImpactRadius,
             _overlapResults,
-            BowAbilityTargetingUtility.GetEnemyHurtBoxMask());
+            BowAbilityTargetingUtility.GetDamageableQueryMask());
 
         Log(context.bow,
             $"Strike resolved. point={FormatVector(pendingStrike.point)} distanceFromCastOrigin={Vector2.Distance(_settings.castOrigin, pendingStrike.point):F2} impactRadius={safeImpactRadius:F2} hitCount={hitCount}");
@@ -163,15 +161,18 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
         for (int i = 0; i < hitCount; i++)
         {
             Collider2D overlapCollider = _overlapResults[i];
-            if (!BowAbilityTargetingUtility.IsEnemyHurtBoxCollider(overlapCollider))
+            if (!BowAbilityTargetingUtility.TryResolveDamageable(
+                    overlapCollider,
+                    out IDamageable damageable,
+                    out Component damageableComponent))
+            {
                 continue;
+            }
 
-            IDamageable damageable = overlapCollider.GetComponentInParent<IDamageable>();
-            if (damageable == null || !_damagedTargets.Add(damageable))
+            if (!_damagedTargets.Add(damageable))
                 continue;
 
             Vector2 closestPoint = overlapCollider.ClosestPoint(pendingStrike.point);
-            Component damageableComponent = damageable as Component;
             string targetName = damageableComponent != null ? damageableComponent.name : damageable.GetType().Name;
             Vector2 targetPosition = damageableComponent != null
                 ? (Vector2)damageableComponent.transform.position
@@ -219,7 +220,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
         visual.Initialize(
             spawnPoint,
             strikePoint,
-            flightTime + VisualLifetimePadding);
+            flightTime);
 
         return flightTime;
     }

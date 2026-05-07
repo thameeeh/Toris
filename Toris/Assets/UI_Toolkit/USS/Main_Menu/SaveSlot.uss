@@ -1,12 +1,20 @@
 .save-slot-card {
-    width: 280px;
-    height: 180px;
-    margin: 15px;
-    padding: 20px;
-    flex-shrink: 0; /* Strict compliance with Rule 3.4[cite: 19] */
+    width: 360px;
+    margin: 25px;
+    padding: 25px;
+    flex-shrink: 0;
     flex-direction: column;
-    justify-content: space-between;
-    background-color: var(--color-bg-panel); /*[cite: 17] */
+    justify-content: flex-start;
+    background-color: var(--color-bg-panel);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--color-border-default);
+    min-height: 280px;
+}
+
+.save-slot-card:hover {
+    border-color: var(--color-border-highlight);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .slot-header {
@@ -14,58 +22,81 @@
     justify-content: space-between;
     border-bottom-width: 1px;
     border-bottom-color: var(--color-border-default);
-    padding-bottom: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
 }
 
 .slot-date {
-    font-size: var(--font-size-small); /*[cite: 17] */
+    font-size: 14px;
     opacity: 0.7;
 }
 
 .slot-stats-container {
     flex-grow: 1;
-    margin-top: 15px;
+    justify-content: center;
 }
 
 .slot-stat-row {
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
+}
+
+.stat-label {
+    font-size: 18px;
 }
 
 .stat-value {
-    color: var(--color-border-highlight); /* Golden color for emphasized stats[cite: 17] */
+    font-size: 20px;
+    color: var(--color-border-highlight);
     -unity-font-style: bold;
 }
 
-/* --- Delete Button --- */
-.save-slot__delete-btn {
-    height: 30px;
+.slot-footer {
+    flex-direction: row;
+    justify-content: flex-end;
     margin-top: 10px;
-    padding: 0 10px;
-    background-color: var(--color-bg-button-secondary);
+}
+
+.save-slot__delete-btn {
+    height: 35px;
+    padding: 0 15px;
+    background-color: rgba(255, 255, 255, 0.05);
     border-width: 1px;
     border-color: var(--color-border-default);
-    color: var(--color-text-default);
-    font-size: var(--font-size-small);
+    color: var(--color-text-light);
+    font-size: 14px;
     border-radius: 4px;
     transition-duration: 0.15s;
-    align-self: flex-end;
 }
 
 .save-slot__delete-btn:hover {
-    background-color: #c0392b;
+    background-color: rgb(192, 57, 43);
+    border-color: rgb(231, 76, 60);
     color: white;
 }
 
 .save-slot__delete-btn:active {
-    background-color: #962d22;
+    background-color: rgb(150, 45, 34);
     scale: 0.95;
 }
 
-/* --- Save Slot Wrapper --- */
+.save-slot__delete-btn--disabled {
+    background-color: #2c2c2c;
+    border-color: #1a1a1a;
+    color: #555555;
+    opacity: 0.5;
+}
+
+.save-slot__delete-btn--disabled:hover {
+    background-color: #2c2c2c;
+    border-color: #1a1a1a;
+    color: #555555;
+}
+
 .save-slot-wrapper {
     flex-shrink: 0;
-    width: 280px;
-    height: 180px;
+    width: 360px;
+    height: 240px;
+    margin: 10px;
 }

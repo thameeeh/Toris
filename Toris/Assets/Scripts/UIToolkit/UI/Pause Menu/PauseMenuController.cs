@@ -111,6 +111,10 @@ namespace OutlandHaven.UIToolkit
 
         private void QuitToMainMenu()
         {
+            // Auto-save before leaving
+            Debug.Log("[PauseMenu] Auto-saving progress before quitting to Main Menu...");
+            _uiEvents?.OnQuickSaveRequested?.Invoke();
+
             Time.timeScale = 1f;
             SceneManager.LoadScene("MainMenu");
         }

@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Main_Menu/ConfirmationModal.uss?fileID=7433441132597879392&amp;guid=b64a5b7389ab2964980cdd5246aed104&amp;type=3#ConfirmationModal"/>
+    <ui:VisualElement name="ModalOverlay" class="confirmation-overlay">
+        <ui:VisualElement name="ModalContainer" class="confirmation-container">
+            <ui:Label name="Label_Title" text="CONFIRM ACTION" class="panel-title"/>
+            <ui:Label name="Label_Message" text="Are you sure you want to proceed?" class="stat-label" style="white-space: normal; -unity-text-align: middle-center; margin-bottom: 30px;"/>
+            <ui:VisualElement class="confirmation-button-group">
+                <ui:Button name="Btn_Cancel" text="Cancel" class="standard-button confirmation-btn btn--cancel"/>
+                <ui:Button name="Btn_Confirm" text="Confirm" class="standard-button confirmation-btn btn--confirm"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

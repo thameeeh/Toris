@@ -8,11 +8,14 @@
         <ui:VisualElement class="main-menu-nav-panel">
             <ui:Label text="OUTLAND HAVEN" class="panel-title main-menu-title"/>
             <ui:VisualElement class="main-menu-button-group">
-                <ui:Button name="Btn_Play" text="Play" class="standard-button main-menu-button"/>
-                <ui:Button name="Btn_Settings" text="Settings" class="standard-button main-menu-button"/>
-                <ui:Button name="Btn_Exit" text="Exit" class="standard-button main-menu-button"/>
+                <ui:Button name="Btn_Play" text="Play" class="standard-button main-menu-button btn-nav--play"/>
+                <ui:Button name="Btn_Settings" text="Settings" class="standard-button main-menu-button btn-nav--settings"/>
+                <ui:Button name="Btn_Exit" text="Exit" class="standard-button main-menu-button btn-nav--exit"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:ScrollView name="Container_SaveSlots" class="main-menu-slots-container"/>
+        <ui:VisualElement name="Panel_SaveSlots" class="main-menu-slots-container">
+            <ui:ScrollView name="Container_SaveSlots" style="flex-grow: 1;"/>
+            <ui:Button name="Btn_CloseSlots" text="×" class="main-menu-close-button"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

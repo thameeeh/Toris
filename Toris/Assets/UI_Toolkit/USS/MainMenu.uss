@@ -47,6 +47,25 @@
        We only define the specific sizing/spacing here. */
 }
 
+/* --- Navigation Button Hovers --- */
+.btn-nav--play:hover {
+    background-color: rgba(39, 174, 96, 0.15);
+    border-color: rgba(46, 204, 113, 0.3);
+    scale: 1.02;
+}
+
+.btn-nav--settings:hover {
+    background-color: rgba(243, 156, 18, 0.15);
+    border-color: rgba(241, 196, 15, 0.3);
+    scale: 1.02;
+}
+
+.btn-nav--exit:hover {
+    background-color: rgba(192, 57, 43, 0.15);
+    border-color: rgba(231, 76, 60, 0.3);
+    scale: 1.02;
+}
+
 /* --- Right Content Panel (Save Slots) --- */
 .main-menu-slots-container {
     flex-grow: 1; /* Takes up the remaining space on the right[cite: 19] */
@@ -60,4 +79,25 @@
     justify-content: flex-start;
     padding: 40px;
     padding-bottom: 100px; /* Add extra padding at the bottom so the last slot isn't cut off */
+}
+
+/* --- Close Button --- */
+.main-menu-close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+    background-color: transparent;
+    border-width: 0;
+    color: var(--color-text-light);
+    -unity-font-style: bold;
+    transition-duration: 0.1s;
+    z-index: 100;
+}
+
+.main-menu-close-button:hover {
+    color: #c0392b;
+    scale: 1.2;
 }

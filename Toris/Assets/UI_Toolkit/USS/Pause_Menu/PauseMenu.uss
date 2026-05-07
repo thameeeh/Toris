@@ -11,7 +11,7 @@
 }
 
 .pause-menu-container {
-    background-color: var(--color-bg-panel);
+    background-color: var(--color-bg-dark);
     padding: 40px;
     border-width: 2px;
     border-color: var(--color-border-default);
@@ -35,4 +35,24 @@
     height: 50px;
     margin-bottom: 15px;
     font-size: 24px;
+    -unity-font-style: bold;
+}
+
+/* --- Specific Button Hovers --- */
+.pause-btn--resume:hover {
+    background-color: rgba(39, 174, 96, 0.15);
+    border-color: rgba(46, 204, 113, 0.3);
+    scale: 1.02;
+}
+
+.pause-btn--settings:hover {
+    background-color: rgba(243, 156, 18, 0.15);
+    border-color: rgba(241, 196, 15, 0.3);
+    scale: 1.02;
+}
+
+.pause-btn--main-menu:hover {
+    background-color: rgba(41, 128, 185, 0.15);
+    border-color: rgba(52, 152, 219, 0.3);
+    scale: 1.02;
 }

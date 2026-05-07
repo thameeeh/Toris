@@ -53,7 +53,7 @@ public class SaveSlotView : UIView
             _deleteButton.RegisterCallback<ClickEvent>(HandleDeleteClicked);
     }
 
-    // Injects data from the Save System DTO[cite: 1]
+    // Injects data from the Save System DTO
     public void SetData(SaveSlotData data)
     {
         if (_indexLabel != null) _indexLabel.text = $"Slot {data.SlotIndex}";
@@ -61,11 +61,23 @@ public class SaveSlotView : UIView
         if (_goldLabel != null) _goldLabel.text = data.Gold.ToString();
         if (_timestampLabel != null) _timestampLabel.text = data.Timestamp;
 
-        // Hide delete button if slot is empty
+        // Handle delete button state
         if (_deleteButton != null)
         {
-            _deleteButton.style.display = (data.Timestamp == "Empty Slot" || data.Timestamp == "Unknown") 
-                ? DisplayStyle.None : DisplayStyle.Flex;
+            bool isEmpty = data.Timestamp == "Empty Slot" || data.Timestamp == "Unknown";
+            
+            // Keep it visible but disable interaction
+            _deleteButton.SetEnabled(!isEmpty);
+            _deleteButton.pickingMode = isEmpty ? PickingMode.Ignore : PickingMode.Position;
+            
+            if (isEmpty)
+            {
+                _deleteButton.AddToClassList("save-slot__delete-btn--disabled");
+            }
+            else
+            {
+                _deleteButton.RemoveFromClassList("save-slot__delete-btn--disabled");
+            }
         }
     }
 

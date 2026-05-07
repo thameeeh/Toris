@@ -1,3 +1,9 @@
+## [Current/Recent] - Feature: Save Deletion Confirmation & Reusable Modal
+* **Generic Confirmation System:** Implemented a reusable `ConfirmationModal` architecture using a `ConfirmationPayload` DTO, allowing any system to request user validation before executing destructive actions.
+* **Deletion Protection:** Integrated the confirmation modal into `MainMenuController.cs`, requiring explicit user consent before deleting save slots.
+* **Application Exit Safety:** Added confirmation prompt when clicking the "Exit" button in the Main Menu to prevent accidental closure.
+* **Architecture:** Followed strict MVP patterns with `ConfirmationModalView` (visuals) and `ConfirmationModalController` (logic/routing).
+
 ## [Current/Recent] - UI Polish & In-Game Pause Menu Implementation
 * **In-Game Pause Menu:** Created a new MVP-based Pause Menu system.
     * **View:** `PauseMenuView.cs` handles visual layout and emits semantic events for Resume, Settings, and Main Menu.

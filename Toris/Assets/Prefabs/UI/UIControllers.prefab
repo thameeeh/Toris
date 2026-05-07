@@ -34,6 +34,7 @@ Transform:
   - {fileID: 180366022929772154}
   - {fileID: 2400825557549935903}
   - {fileID: 342389609701446431}
+  - {fileID: 9093414168165497564}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &914425266194693906
@@ -97,6 +98,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5757813914554567377, guid: 5223b9f75dbff0142aefe6148b763d7e, type: 3}
   m_PrefabInstance: {fileID: 914425266194693906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1342126494058431637
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5899826444343102557}
+    m_Modifications:
+    - target: {fileID: 2362197258206423763, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_Name
+      value: PauseMenuScreenController
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.60809
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.83662
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+--- !u!4 &9093414168165497564 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7823452867309370953, guid: efefd892ce7674a48a90840b653173eb, type: 3}
+  m_PrefabInstance: {fileID: 1342126494058431637}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5887272846249921306
 PrefabInstance:
@@ -234,6 +297,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryScreenCotroller
       objectReference: {fileID: 0}
+    - target: {fileID: 3086192249901852686, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
+      propertyPath: _equipmentInventory
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8268620254510869029, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -335,6 +402,10 @@ PrefabInstance:
     - target: {fileID: 7521786267576235075, guid: 6fdffb60e7917824ca1b00463f035d58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7616839350192638993, guid: 6fdffb60e7917824ca1b00463f035d58, type: 3}
+      propertyPath: _playerHudBridge
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

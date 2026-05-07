@@ -12,6 +12,8 @@ public class MainMenuView : GameView
     private Button _playButton;
     private Button _settingsButton;
     private Button _exitButton;
+    private Button _closeSlotsButton;
+    private VisualElement _saveSlotsPanel;
     private ScrollView _saveSlotsContainer;
 
     // Sub-View Management
@@ -21,6 +23,7 @@ public class MainMenuView : GameView
     public event Action OnPlayClicked;
     public event Action OnSettingsClicked;
     public event Action OnExitClicked;
+    public event Action OnCloseSlotsClicked;
     public event Action<int> OnSaveSlotSelected;
     public event Action<int> OnSaveSlotDeleteRequested;
 
@@ -33,13 +36,15 @@ public class MainMenuView : GameView
         _playButton = Root.Q<Button>("Btn_Play");
         _settingsButton = Root.Q<Button>("Btn_Settings");
         _exitButton = Root.Q<Button>("Btn_Exit");
+        _closeSlotsButton = Root.Q<Button>("Btn_CloseSlots");
 
         // --- ADDED VALIDATION ---
+        _saveSlotsPanel = Root.Q<VisualElement>("Panel_SaveSlots");
         _saveSlotsContainer = Root.Q<ScrollView>("Container_SaveSlots");
 
-        if (_saveSlotsContainer == null)
+        if (_saveSlotsPanel == null)
         {
-            Debug.LogError("CRITICAL UI ERROR: MainMenuView could not find 'Container_SaveSlots'.");
+            Debug.LogError("CRITICAL UI ERROR: MainMenuView could not find 'Panel_SaveSlots'.");
         }
         else
         {
@@ -50,6 +55,7 @@ public class MainMenuView : GameView
         if (_playButton != null) _playButton.clicked += HandlePlayClicked;
         if (_settingsButton != null) _settingsButton.clicked += HandleSettingsClicked;
         if (_exitButton != null) _exitButton.clicked += HandleExitClicked;
+        if (_closeSlotsButton != null) _closeSlotsButton.clicked += HandleCloseSlotsClicked;
     }
 
     public void SetSaveSlotTemplate(VisualTreeAsset template) => _saveSlotTemplate = template;
@@ -97,15 +103,16 @@ public class MainMenuView : GameView
     // ADDED: MVP compliant method to change UI state[cite: 7]
     public void ToggleSaveSlots(bool isVisible)
     {
-        if (_saveSlotsContainer != null)
+        if (_saveSlotsPanel != null)
         {
-            _saveSlotsContainer.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
+            _saveSlotsPanel.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 
     private void HandlePlayClicked() => OnPlayClicked?.Invoke();
     private void HandleSettingsClicked() => OnSettingsClicked?.Invoke();
     private void HandleExitClicked() => OnExitClicked?.Invoke();
+    private void HandleCloseSlotsClicked() => OnCloseSlotsClicked?.Invoke();
 
     public override void Dispose()
     {
@@ -113,6 +120,7 @@ public class MainMenuView : GameView
         if (_playButton != null) _playButton.clicked -= HandlePlayClicked;
         if (_settingsButton != null) _settingsButton.clicked -= HandleSettingsClicked;
         if (_exitButton != null) _exitButton.clicked -= HandleExitClicked;
+        if (_closeSlotsButton != null) _closeSlotsButton.clicked -= HandleCloseSlotsClicked;
         base.Dispose();
     }
 }

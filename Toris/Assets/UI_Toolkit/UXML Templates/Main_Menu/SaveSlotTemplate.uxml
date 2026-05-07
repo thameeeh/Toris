@@ -17,6 +17,8 @@
                 <ui:Label name="Label_Gold" text="1,250" class="stat-label stat-value"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Button name="Btn_Delete" text="Delete" class="save-slot__delete-btn" />
+        <ui:VisualElement class="slot-footer">
+            <ui:Button name="Btn_Delete" text="Delete" class="save-slot__delete-btn" />
+        </ui:VisualElement>
     </ui:Button>
 </ui:UXML>

@@ -242,7 +242,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
     }
 
-    public void QuickSave(InputAction.CallbackContext context)
+    public void OnQuickSave(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -250,7 +250,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
     }
 
-    public void QuickLoad(InputAction.CallbackContext context)
+    public void OnQuickLoad(InputAction.CallbackContext context)
     {
         if (context.performed)
         {

@@ -16,17 +16,46 @@ public class MainMenuController : MonoBehaviour
 
     private MainMenuView _view;
     private MainMenuUIManager _uiManager;
+    private InputSystem_Actions _input;
 
     private bool _slotsGenerated = false;
+    private bool _isShowingSlots = false;
 
     private void Awake()
     {
         _uiManager = FindFirstObjectByType<MainMenuUIManager>();
+        _input = new InputSystem_Actions();
         
         // Ensure we have a SaveManager if not manually assigned
         if (_saveManager == null)
         {
             _saveManager = FindFirstObjectByType<SaveManager>();
+        }
+    }
+
+    private void OnEnable()
+    {
+        _input?.UI.Enable();
+        if (_input != null)
+        {
+            _input.UI.Cancel.performed += OnCancelPerformed;
+        }
+    }
+
+    private void OnDisable()
+    {
+        _input?.UI.Disable();
+        if (_input != null)
+        {
+            _input.UI.Cancel.performed -= OnCancelPerformed;
+        }
+    }
+
+    private void OnCancelPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        if (_isShowingSlots)
+        {
+            OnCloseSlotsRequested();
         }
     }
 
@@ -47,6 +76,7 @@ public class MainMenuController : MonoBehaviour
         _view.OnPlayClicked += OnPlayRequested;
         _view.OnSettingsClicked += OnSettingsRequested;
         _view.OnExitClicked += OnExitRequested;
+        _view.OnCloseSlotsClicked += OnCloseSlotsRequested;
         _view.OnSaveSlotSelected += HandleSlotSelected;
         _view.OnSaveSlotDeleteRequested += HandleSlotDelete;
 
@@ -93,17 +123,29 @@ public class MainMenuController : MonoBehaviour
 
     // --- Intent Handlers ---
 
+    private void OnCloseSlotsRequested()
+    {
+        _isShowingSlots = false;
+        _view.ToggleSaveSlots(false);
+    }
+
     private void HandleSlotDelete(int slotIndex)
     {
         if (_saveManager == null) return;
 
         SaveSlotIndex enumIndex = (SaveSlotIndex)(slotIndex - 1);
-        Debug.Log($"UI Intent: Delete Save Slot {slotIndex} ({enumIndex}).");
+        
+        ConfirmationPayload payload = new ConfirmationPayload(
+            "DELETE SAVE",
+            $"Are you sure you want to permanently delete Slot {slotIndex}?\nThis action cannot be undone.",
+            () => {
+                Debug.Log($"UI Intent: Delete Save Slot {slotIndex} ({enumIndex}).");
+                _saveManager.DeleteSave(enumIndex);
+                PopulateSaveSlotsFromFiles();
+            }
+        );
 
-        _saveManager.DeleteSave(enumIndex);
-
-        // Refresh the list immediately
-        PopulateSaveSlotsFromFiles();
+        _uiEvents.OnRequestOpen?.Invoke(ScreenType.ConfirmationModal, payload);
     }
 
     private void HandleSlotSelected(int slotIndex)
@@ -156,6 +198,7 @@ public class MainMenuController : MonoBehaviour
             _slotsGenerated = true;
         }
 
+        _isShowingSlots = true;
         _view.ToggleSaveSlots(true);
     }
 
@@ -167,12 +210,20 @@ public class MainMenuController : MonoBehaviour
 
     private void OnExitRequested()
     {
-        Debug.Log("UI Intent: Exit Clicked. Closing Application.");
+        ConfirmationPayload payload = new ConfirmationPayload(
+            "EXIT GAME",
+            "Are you sure you want to quit to desktop?",
+            () => {
+                Debug.Log("UI Intent: Exit Confirmed. Closing Application.");
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+                Application.Quit();
 #endif
+            }
+        );
+
+        _uiEvents.OnRequestOpen?.Invoke(ScreenType.ConfirmationModal, payload);
     }
 
     private void OnDestroy()

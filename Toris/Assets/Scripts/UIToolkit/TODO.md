@@ -5,11 +5,26 @@ This document outlines our high-level goals and progress for connecting the Main
 ---
 
 ## 🤖 Session Hand-off Message
-**Status:** The Save & Load system is now fully featured and robust. Players can now create, load, and delete save slots directly from the Main Menu. All data restoration (stats, inventories, and progression) is handled automatically.
+**Status:** The UI polishing phase and Pause Menu implementation are complete. The Save/Load system is now fully integrated with a robust, event-driven architecture and user-friendly confirmation workflows.
 
-**Next Immediate Task:** (Optional) Add a **Confirmation Modal** for Save Deletion.
-- **Goal:** Prevent accidental deletion of save files.
-- **Logic:** When the "Delete" button is clicked, open a small modal asking "Are you sure you want to delete this save?". Only execute `DeleteSave` if they confirm.
+**Key Achievements Today:**
+- **In-Game Pause Menu:** Fully functional with time-scaling, input map switching (Player vs. UI), and auto-saving progress when returning to the Main Menu.
+- **Generic Confirmation Modal:** Implemented a reusable modal system for destructive actions (Delete Save, Exit Game) with a centered, absolute-positioned UI.
+- **Main Menu Polish:** 
+    - Redesigned Save Slots to be larger and more readable.
+    - Repositioned the Delete button to a dedicated footer.
+    - Added subtle, professional colored hover effects to all menu buttons.
+    - Implemented Escape key and a Close button for the Save Slots panel.
+- **Architecture:** Migrated QuickSave/Load to a decoupled event-bus system using `UIEventsSO`.
+
+**Next Steps:**
+- Monitor the **Known Issues** below regarding the inventory drag-and-drop bug when you return to inventory systems.
+- The UI architecture is now highly modular and ready for further screen implementations using the established MVP patterns.
+
+---
+
+## 🚩 Known Issues (Pending Later Phase)
+- **Inventory Drag-and-Drop Bug:** Dynamically instantiated slots sometimes lose pointer interaction or fail to register drops due to `TemplateContainer` wrapper properties. (Requires targeted fix in `InventorySlotView.cs` and layout analysis).
 
 ---
 
@@ -26,5 +41,6 @@ Ensure that selecting a save slot from the Main Menu instantly restores the play
 - [X] **Automatic Restoration (No F9 required)** (COMPLETED)
 - [X] **Polymorphic State Serialization** (COMPLETED)
 - [X] **Save Deletion** (COMPLETED)
-
-
+- [X] **Confirmation Modal (Save Deletion & Exit)** (COMPLETED)
+- [X] **Pause Menu Implementation** (COMPLETED)
+- [X] **UI Polish & Consistency** (COMPLETED)

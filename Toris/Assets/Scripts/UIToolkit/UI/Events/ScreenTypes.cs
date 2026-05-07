@@ -19,7 +19,8 @@ namespace OutlandHaven.UIToolkit
 
 //----- Main Menu -----------------
         MainMenu,
-        SettingsModal
+        SettingsModal,
+        ConfirmationModal
     }
     public enum ScreenZone
     {

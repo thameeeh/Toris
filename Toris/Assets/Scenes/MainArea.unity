@@ -101886,6 +101886,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6374564660408957763, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
+      propertyPath: _uiEvents
+      value: 
+      objectReference: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
     - target: {fileID: 8217643317894173914, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
       propertyPath: m_Name
       value: UIViews

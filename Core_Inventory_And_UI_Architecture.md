@@ -1,93 +1,95 @@
 # Core Inventory and UI Architecture
 
-This document serves as the master reference for the Item, Inventory, and UI systems in Outland Haven. It consolidates technical documentation with real-time analysis of the current implementation.
+This document serves as the master reference for the Item, Inventory, and UI systems in Outland Haven. It consolidates technical documentation with a deep-dive analysis of the actual codebase, explaining not just *what* exists, but *how* the various scripts interact to create a cohesive system.
 
 ---
 
 ## 1. Architectural Overview & Patterns
 
-The system is built on a strict **Model-View-Presenter (MVP)** pattern, heavily leveraging **ScriptableObject-based Event Channels** to maintain decoupling.
+The system is built on a strict **Model-View-Presenter (MVP)** pattern, heavily leveraging **ScriptableObject-based Event Channels** to maintain decoupling. This approach solves the common Unity problem of "spaghetti code" where UI elements are tightly coupled to game state.
 
-### 1.1 Model-View-Presenter (MVP)
-*   **Model**: Data containers like `InventoryManager` and ScriptableObjects (`ShopManagerSO`, `CraftingManagerSO`). They own the state and logic but have no reference to the UI.
-*   **View**: Pure C# classes (`UIView`, `GameView`, `PlayerInventoryView`, `InventorySlotView`) that manipulate UI Toolkit `VisualElement`s. They are "dumb" and only broadcast user intents.
-*   **Presenter (Controller)**: `MonoBehaviour` classes (`InventoryScreenController`, `SmithScreenController`) that bridge the gap. they instantiate Views, inject dependencies (Models, Events), and manage the Unity lifecycle.
+### 1.1 The MVP Framework in Action
+*   **Model (The State & Data)**:
+    *   `InventoryManager`: The primary container for items. It is a `MonoBehaviour` but behaves like a pure data store.
+    *   `ShopManagerSO`, `CraftingManagerSO`: ScriptableObject managers that handle business logic. They are "Models" in the sense that they own the rules of transaction and transformation.
+*   **View (The Presentation Layer)**:
+    *   `UIView` / `GameView`: Base classes that wrap the UI Toolkit's `VisualElement` hierarchy.
+    *   `PlayerInventoryView`, `ShopSubView`: Specific implementations that map backend data to the screen.
+    *   `InventorySlotView`: A granular view class that manages a single slot's visual state and handles raw pointer events.
+*   **Presenter / Controller (The Orchestrator)**:
+    *   `InventoryScreenController`, `SmithScreenController`: These are the "glue." They live in the Unity scene, hold references to both the Models (Managers) and the UXML templates, and instantiate the Views. They inject the necessary dependencies into the Views during `Initialize()`.
 
-### 1.2 Data Flow & Synchronization
-The UI remains synchronized with the backend via an **Observer Pattern**:
-1.  **Mutation**: A backend manager (e.g., `InventoryTransferManagerSO`) modifies an `InventorySlot`.
-2.  **Notification**: The `InventoryManager` or Manager SO invokes an event on a global channel (`UIInventoryEventsSO`).
-    *   `OnInventoryUpdated`: Triggers a full redraw of a container (expensive).
-    *   `OnSpecificSlotsUpdated(source, target)`: Triggers a targeted redraw of only the affected visual slots (performant).
-3.  **Reception**: Views subscribed to these channels receive the data and update their internal `InventorySlotView` instances.
+### 1.2 Data Flow & Event Synchronization
+Synchronization between the data (Model) and the screen (View) is entirely event-driven, using **`UIInventoryEventsSO`** as a global bus.
+
+1.  **Intent**: A user interacts with a View (e.g., Right-Clicking a potion).
+2.  **Request**: The View broadcasts a semantic intent (e.g., `OnRequestUse.Invoke(slot)`).
+3.  **Validation & Execution**: A specialized controller (like `InventoryActionController`) or manager listens for the request, validates the game rules, and modifies the data in the `InventoryManager`.
+4.  **Notification**: Upon modification, the `InventoryManager` or Manager SO triggers a response event (e.g., `OnSpecificSlotsUpdated`).
+5.  **Reaction**: Any active View (like `PlayerInventoryView` or `HUDView`) listening to that event updates its visual representation.
 
 ---
 
 ## 2. Item Components & Inventory Logic
 
-### 2.1 Item Architecture (Blueprint/State Pattern)
-The system uses a **Blueprint/State** pattern to separate static definitions from mutable runtime data.
-*   **`InventoryItemSO` (Blueprint)**: A ScriptableObject containing static data (Name, Icon, MaxStackSize) and a list of `ItemComponent` modules.
-*   **`ItemComponent`**: Defines modular logic. If it requires tracking data (e.g., Durability, Charges), it generates an `ItemComponentState`.
-*   **`ItemInstance` (Runtime)**: A C# class wrapping the SO. It holds a list of `ItemComponentState` objects.
-*   **`ItemComponentState`**: Holds the actual mutable data. It implements `IsStackableWith` to determine if two instances can merge based on their current state (e.g., same charges, same level).
+### 2.1 Blueprint/State Pattern: Decoupling Definitions from Data
+The item system is designed for high extensibility using a modular approach.
+*   **`InventoryItemSO` (The Blueprint)**: This is a static asset created in the Editor. It defines the "what" (Icon, Name, Max Stack). It holds a list of `ItemComponent` objects.
+*   **`ItemComponent` (The Behavior Definition)**: Abstract classes like `EquipableComponent` or `ConsumableComponent`. These define the rules.
+*   **`ItemInstance` (The Runtime Object)**: When an item is created in-game, it is wrapped in an `ItemInstance`. This class holds a `Guid` for persistence and a list of `ItemComponentState` objects.
+*   **`ItemComponentState` (The Live Data)**: This is where mutable data lives (e.g., `ConsumableState.CurrentCharges`).
+    *   **Logic Example**: `ItemInstance.IsStackableWith(other)` doesn't just check the item type; it iterates through every `ItemComponentState` and asks them if they are compatible. This is why two identical swords with different durability or levels might not stack.
 
-### 2.2 Inventory Logic
-*   **`InventoryManager`**: Manages a list of `InventorySlot`s. It handles authoritative addition and removal of items, including stack calculation.
-*   **`InventorySlot`**: Holds the `ItemInstance`, `Count`, and a `SlotFilterType`.
-    *   **Smart Validation**: The `CanAccept(ItemInstance)` method is the gatekeeper for slot restrictions (e.g., ensuring only "Head" items go in the "Head" slot).
-*   **`InventoryTransferManagerSO`**: The central authority for moving items. It handles:
-    *   **Stacking**: Merging items into existing stacks.
-    *   **Splitting**: Moving partial stacks (triggered by Shift-Click).
-    *   **Swapping**: Exchanging items between slots.
+### 2.2 Inventory Management Scripts
+*   **`InventoryManager.cs`**: Handles the authoritative `AddItem` and `RemoveItem` logic. It is responsible for finding empty slots or existing stacks and cloning `ItemInstance` objects to prevent shared reference bugs.
+*   **`InventorySlot.cs`**: A pure C# class representing a single storage unit. It includes the `CanAccept(ItemInstance)` method, which uses the `SlotFilterType` to enforce equipment restrictions.
+*   **`InventoryTransferManagerSO.cs`**: A critical ScriptableObject that handles the logic of moving items between containers. It acts as a "Banker," ensuring that if a swap fails (e.g., trying to put a weapon in a potion slot), the items remain safely in their original locations.
 
 ---
 
-## 3. UI Runtime Interactions
+## 3. UI Runtime Interactions: The "Dumb" View Pattern
 
-### 3.1 Click & Drag Mechanics (`InventorySlotView`)
-The UI uses Unity's **UI Toolkit Event System** to capture hardware input:
-1.  **`PointerDownEvent`**: Captures the pointer and records the start position.
-2.  **`PointerMoveEvent`**: Checks the `DragThreshold`. If exceeded, it initiates a visual drag by broadcasting `OnGlobalDragStarted`.
-    *   **Shift-Click**: Calculates `Mathf.CeilToInt(count / 2f)` for splitting.
-3.  **`PointerUpEvent`**: Resolves the drop.
-    *   **Drop Detection**: Uses `panel.Pick(evt.position)` to find the element under the cursor.
-    *   **Data Retrieval**: It traverses up the visual tree to find `userData` containing `SlotDropData` (for standard slots) or a `string` (for Proxy Slots like Forge/Salvage).
-    *   **Request Emission**: If a target is found, it fires `OnRequestMoveItem` or `OnRequestSelectForProcessing`.
+### 3.1 Drag and Drop Mechanics in `InventorySlotView.cs`
+The `InventorySlotView` is one of the most complex scripts in the UI system because it must translate raw pointer movements into high-level game actions.
 
-### 3.2 Contextual Actions
-Right-clicks are routed based on the global `InventoryInteractionContext`:
-*   **Shop**: Triggers `OnRequestSell`.
-*   **Salvage**: Triggers `OnRequestSalvage`.
-*   **Normal**: Triggers `OnRequestUse` (for consumables) or `OnRequestEquip` (for equipment).
-*   **Equipment Rule**: `PlayerEquipmentView` ignores global context and always interprets right-clicks as `OnRequestUnequip`.
+1.  **Pointer Capture**: On `PointerDown`, the slot captures the pointer to ensure it receives all subsequent move/up events even if the cursor leaves the slot's bounds.
+2.  **The Threshold**: Dragging doesn't start instantly. It waits for a 10px move threshold to prevent accidental drags during simple clicks.
+3.  **Visual Ghosting**: Once the threshold is met, the view broadcasts `OnGlobalDragStarted`. The **`UIDragManager.cs`** (a scene singleton) listens to this to create and move a floating icon following the cursor.
+4.  **Raycast Resolution**: On `PointerUp`, the script uses `panel.Pick(evt.position)`. Because UI Toolkit hierarchies can be deep, the script uses a recursive **`FindTargetDropData`** helper to climb the parent tree until it finds a `VisualElement` with valid `userData` (either `SlotDropData` or a proxy ID).
+
+### 3.2 Context-Sensitive Interactions
+The system uses the **`InventoryInteractionContext`** enum to redefine what a right-click does without changing the underlying View code.
+*   **Script Role**: `PlayerInventoryView` listens to `OnInteractionContextChanged`.
+    *   If the context is `Shop`, a right-click invokes `OnRequestSell`.
+    *   If the context is `Normal`, it checks the item's components: if it has an `EquipableComponent`, it fires `OnRequestEquip`.
 
 ---
 
 ## 4. Undiscovered / Unmentioned Functionalities
 
-*   **`EvolvingItemModule`**: A "hidden" mechanic where items track kills (`EvolvingState.CurrentKills`). Once a threshold (`KillsRequired`) is met, the item becomes "Awakened," gaining a damage bonus.
-*   **`UpgradeableModule`**: Supports item leveling (`UpgradeableState.CurrentLevel`). While the UI for upgrading is minimal, the data structures support per-item level tracking and stacking restrictions for items of different levels.
-*   **`ProgressionModule`**: Categorizes items (Material, QuestItem, Key, Junk) to support future sorting and filtering logic.
-*   **Proxy Visual Slots**: Found in the Smithy (Forge/Salvage). These are visual-only containers that pass `null` as their `owningContainer`. They allow users to "place" items for processing without actually moving them out of the player's inventory until the final action (Forge/Salvage) is executed.
-*   **`InventoryManager` Auto-Binding**: The `InventoryManager` attempts to "guess" if it is the Player Backpack or Equipment container by checking `ContainerBlueprint` properties or searching for "Equip" in the GameObject name, automatically binding itself to the `GameSessionSO`.
+Analysis of the scripts reveals several systems that are implemented but may not be immediately obvious in the UI:
+
+*   **`EvolvingItemModule.cs`**: Implements a "Kill Tracker" for weapons. The `EvolvingState` tracks `CurrentKills` and `IsAwakened`. Once the `KillsRequired` limit is reached (defined in the `EvolvingComponent`), the weapon is flagged as awakened.
+*   **`UpgradeableModule.cs`**: A generic system for item leveling. It prevents items of different levels from stacking and provides a foundation for a blacksmith upgrade system.
+*   **Proxy Slot Processing**: In `ForgeSubView.cs` and `SalvageSubView.cs`, items are placed into "Proxy Slots." These slots are visually independent of the player's inventory. The `userData` of these visual elements is set to a string (e.g., `"forge-slot-1"`), which tells the drag-and-drop system to trigger a "processing request" rather than a standard "move request."
+*   **Auto-Resolution (`PlayerInventorySceneResolver.cs`)**: A utility used by `InventoryActionController` to dynamically find the player's inventory and equipment containers at runtime if they weren't manually assigned in the Inspector.
 
 ---
 
 ## 5. Critical Analysis (Flaws, Bugs, and Patterns)
 
-### Good Patterns
-*   **Event-Driven Decoupling**: The use of ScriptableObject event channels (`UIInventoryEventsSO`) allows systems like `ShopManagerSO` to work without ever knowing the UI exists.
-*   **Targeted Redraws**: The `OnSpecificSlotsUpdated` event prevents the common "Unity UI lag" by only updating the two slots involved in a move rather than the entire grid.
-*   **Modular Items**: The Blueprint/State pattern makes it trivial to add new item behaviors (e.g., a "SocketableModule") without changing the core `ItemInstance` class.
+### 5.1 Good Patterns (The "Wins")
+*   **Targeted Redraws**: By using `OnSpecificSlotsUpdated(source, target)`, the UI avoids re-instantiating dozens of `VisualElement`s during a simple item move. This keeps the UI responsive even with large inventories.
+*   **Strict MVP Separation**: The fact that `InventoryManager` can exist and function perfectly in a scene without any UI at all is a testament to the architecture's modularity.
+*   **Modular Component States**: Adding a new feature (like "Cursed Items" or "Gem Sockets") only requires creating a new `ItemComponent` and `ItemComponentState`, leaving the core inventory logic untouched.
 
-### Bad Patterns & Technical Debt
-*   **Hardcoded Equipment Mapping**: Both `PlayerEquipmentController` and `InventoryActionController` contain hardcoded integer mappings (0=Head, 1=Chest, 2=Legs, 3=Arms, 4=Weapon). If the equipment layout changes, logic breaks in multiple disconnected scripts.
-*   **Fragile Container Identification**: `InventoryManager.LooksLikeEquipmentContainer()` relies on string-matching the GameObject name for "Equip". This is highly prone to human error and scene reorganization.
-*   **Inconsistent Input Handling**: While `PlayerInventoryView` reads `evt.shiftKey` from the event payload (Good), `ShopSubView` queries the global `Input.GetKey(KeyCode.LeftShift)` (Bad). This creates coupling to the old Input system and can lead to race conditions.
+### 5.2 Bad Patterns & Technical Debt (The "Flaws")
+*   **Hardcoded Index Dependencies**: The `PlayerEquipmentController` assumes a rigid array structure (0=Head, 1=Chest, etc.). This makes the system fragile; adding a "Ring" slot would require updating hardcoded integers across multiple scripts (`PlayerEquipmentController`, `InventoryActionController`).
+*   **String-Based Identification**: `InventoryManager` identifies the player's equipment container by checking if the GameObject name contains "Equip". This is an anti-pattern that relies on scene naming conventions rather than explicit references or robust tags.
+*   **Input System Fragmentation**: The project is in a transitional state between the old Unity Input Manager and the new Input System. `InventorySlotView` uses `evt.shiftKey` (UI Toolkit), while `ShopSubView` uses `Input.GetKey` (Legacy), and other parts of the game use `InputSystem_Actions`.
 
-### Known Bugs & Edge Cases
-*   **Null Drop Handling**: When an item is dropped outside the UI bounds, `panel.Pick` returns null. The current implementation in `InventorySlotView` logs a debug message but does not have a "Drop into World" or "Cancel Drag" fallback logic clearly defined beyond just stopping the visual ghost.
-*   **Partial Stack Swap Block**: `InventoryTransferManagerSO` explicitly blocks swapping items if the player is dragging a partial stack. While intended to prevent logic complexity, it can feel like a "dead" interaction to the user.
-*   **Shop Refund Risk**: If a player buys an item but their inventory is full, the item is "refunded" to the shop. However, if the shop is also full (unlikely but possible), the item could potentially be deleted or cause a stack overflow.
-*   **Constructor Defaulting**: `InventorySlot` defaults `AllowedFilter` to `Any` in its constructor. However, `InventoryManager` initializes slots using `new InventorySlot()`, which may bypass intended Blueprint filters if not carefully managed during initialization.
+### 5.3 Known Bugs & Unhandled Edge Cases
+*   **The "Void" Drop**: If a player drops an item into the empty space between UI windows, `panel.Pick` returns null. Currently, the drag simply stops. There is no logic to "drop the item on the ground" in the 3D world or to "return to sender" in a way that provides clear feedback to the player.
+*   **Partial Stack Swap Logic**: The `InventoryTransferManagerSO` prevents swapping if the `amountToMove` is less than the full stack. While this avoids complex "split-and-swap" math, it can feel like a bug to players who expect the UI to handle the logic for them.
+*   **Missing UI Feedback for Locked Slots**: While `InventorySlot.CanAccept` correctly prevents putting a potion in a sword slot, the UI provides no visual feedback (like a red highlight) *during* the drag to show which slots are valid targets.
+*   **Serialization Risks**: `ItemInstance` uses `[SerializeReference]` for its states. While powerful, this can lead to "Missing types" errors if classes are renamed or moved between namespaces without proper migration.

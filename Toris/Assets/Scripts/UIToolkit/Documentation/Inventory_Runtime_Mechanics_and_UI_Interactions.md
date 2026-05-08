@@ -1,71 +1,81 @@
 # Inventory Runtime Mechanics and UI Interactions
 
-This document acts as a deep dive into the runtime mechanics and the UI-to-Logic bridge within the Outland Haven inventory system, focusing on interaction lifecycles, event-driven data flow, and specific technical implementation details.
+This document serves as a comprehensive deep dive into the runtime mechanics and the UI-to-Logic bridge within the Outland Haven inventory system. It explains the interaction lifecycles, event-driven data flow, the exact roles of specific scripts, and highlights critical technical edge cases and architectural quirks.
 
-## 1. Preamble: UI Toolkit & MVP Architecture
+## 1. Preamble: The UI Toolkit & MVP Architecture Context
 
-The project employs an **MVP (Model-View-Presenter)** architectural pattern combined with Unity's UI Toolkit.
+The Outland Haven user interface is built on Unity's **UI Toolkit** and adheres to a strict **MVP (Model-View-Presenter)** architectural pattern. This design prevents "god objects" and heavily couples logic directly to UI visual elements.
 
-*   **Model:** Data containers like `InventoryManager`, `InventorySlot`, and item states.
-*   **View:** Pure C# classes (`InventorySlotView`, `PlayerInventoryView`, `PlayerEquipmentView`) that wrap UXML visual elements. They handle low-level UI input (pointers, clicks) and reflect data state visually. They do not contain game logic.
-*   **Presenter:** Controllers (`InventoryScreenController`, `InventoryActionController`) that mediate between the UI Views and the core gameplay systems.
+*   **Model (The Data Layer):** This encompasses classes like `InventoryManager` (a `MonoBehaviour` managing a list of slots) and `InventorySlot` (a raw data structure holding an `ItemInstance` and a `Count`). The Model is completely ignorant of the UI.
+*   **View (The Presentation Layer):** Pure C# classes such as `InventorySlotView`, `PlayerInventoryView`, and `PlayerEquipmentView`. These classes wrap `.uxml` visual elements and manage low-level UI Toolkit input events (like pointers and clicks). Their sole responsibility is to translate user input into C# events and visually reflect data state.
+*   **Presenter (The Logic & Mediation Layer):** Controllers like `InventoryActionController`, `InventoryTransferManagerSO`, and various `ScreenController` scripts. They listen to the generic intents broadcast by the Views and execute actual game logic by interacting with the Model.
 
-This separation of concerns relies heavily on ScriptableObject-based event buses (e.g., `UIInventoryEventsSO`) to communicate intent without direct references, maintaining a decoupled and modular architecture.
+To facilitate communication between these layers without creating tight coupling, the architecture heavily utilizes **ScriptableObject-based event buses** (specifically `UIInventoryEventsSO`).
 
-## 2. The Drag-and-Drop State Machine
+## 2. Script Roles in the Architecture
 
-The drag-and-drop lifecycle is a complex state machine driven by low-level UI Toolkit pointer events within `InventorySlotView` and orchestrated globally by `UIDragManager` and `InventoryTransferManagerSO`.
+To fully grasp the UI interaction loop, one must understand how the different scripts collaborate:
 
-### 2.1 The Lifecycle
+1.  **`InventorySlotView` (The Raw Input Receptor):** This is the lowest-level UI component. It attaches to a single `.uxml` item slot. It handles `PointerDownEvent`, `PointerMoveEvent`, and `PointerUpEvent`. It knows nothing about the game context (e.g., whether it's a shop or a player's bag). It simply broadcasts raw local events like `OnLocalClicked`, `OnLocalRightClicked`, and `OnLocalDragStarted`.
+2.  **`PlayerInventoryView` / `PlayerEquipmentView` (The Translators):** These parent views manage a grid of `InventorySlotView` instances. They subscribe to the local events of their children and translate them into global, semantic intents. For example, when a child fires `OnLocalRightClicked`, `PlayerInventoryView` checks the global `InventoryInteractionContext` (is the shop open?) and broadcasts either `OnRequestSell` or `OnRequestUse` via `UIInventoryEventsSO`.
+3.  **`UIDragManager` (The Visual Coordinator):** A global `MonoBehaviour` that listens to `OnGlobalDragStarted`. It entirely manages the visual "ghost icon" that follows the mouse cursor on an absolute UI layer. It doesn't move data; it only moves pixels.
+4.  **`InventoryTransferManagerSO` (The Authoritative Bank):** The core Presenter for drag-and-drop. It listens to `OnRequestMoveItem`. When an item drop is requested, it performs strict validation (`CanAccept`), handles fractional splits, validates stack merges, and ensures same-slot drops are safely aborted before mutating the `InventoryManager` data.
+5.  **`InventoryActionController` (The Executor):** A `MonoBehaviour` listening for usage intents like `OnRequestEquip`, `OnRequestUse`, or `OnRequestUnequip`. It serves as the bridge between the inventory data and the player's physical avatar, interacting with `PlayerStats` or `PlayerConsumableController` to apply effects.
 
-1.  **Initiation (`OnPointerDown`):**
-    *   A left (0) or right (1) click on an occupied slot triggers `OnPointerDown`.
-    *   The `VisualElement` captures the pointer (`_root.CapturePointer(evt.pointerId)`). This prevents other UI elements from receiving pointer events until release.
-    *   *Note:* The drag does not visually start here. It waits for movement to pass a threshold.
+## 3. The Drag-and-Drop State Machine
 
-2.  **Movement (`OnPointerMove`):**
-    *   If the pointer moves beyond `DragThreshold` (10 pixels) while captured, the drag officially begins.
-    *   The slot calculates the drag amount. Holding `Shift` splits the stack (`Mathf.CeilToInt(_slotData.Count / 2f)`).
+The drag-and-drop lifecycle is a complex, multi-script state machine driven by low-level pointer events.
+
+### 3.1 The Lifecycle Breakdown
+
+1.  **Initiation (`InventorySlotView.OnPointerDown`):**
+    *   A left (0) or right (1) click on an occupied slot triggers this event.
+    *   The `VisualElement` immediately captures the pointer (`_root.CapturePointer(evt.pointerId)`). This guarantees that subsequent move and up events route to this specific slot, even if the mouse leaves its visual bounds.
+    *   *Note:* The visual drag ghost does not appear here. The system waits for movement to pass a threshold to distinguish a drag from a click.
+
+2.  **Movement & Splitting (`InventorySlotView.OnPointerMove`):**
+    *   If the pointer moves beyond `DragThreshold` (10 pixels) while captured, the drag state is confirmed.
+    *   The slot calculates the drag amount. Holding `Shift` splits the stack. It uses `Mathf.CeilToInt(_slotData.Count / 2f)` so that odd-numbered stacks yield the larger half to the active drag.
     *   It fires `OnLocalDragStarted`, which propagates to `UIInventoryEventsSO.OnGlobalDragStarted`.
-    *   `UIDragManager` listens to this event, creating a ghost icon (`_ghostIcon`) on an absolute UI layer and binding its position to the pointer.
+    *   `UIDragManager` receives this event, instantiates/shows the ghost icon (`_ghostIcon`), and continuously updates its absolute position.
 
-3.  **Release & Resolution (`OnPointerUp`):**
-    *   The slot releases the pointer capture.
-    *   The ghost icon is hidden.
-    *   `_root.panel.Pick(evt.position)` performs a raycast to find the underlying UI element at the drop location.
-    *   The system traverses up the visual tree (`FindTargetDropData`) to find an element containing `SlotDropData` (a valid inventory slot container) or a `proxySlotID`.
-    *   If a valid target is found, `OnLocalMoveItemRequested` fires, propagating to `UIInventoryEventsSO.OnRequestMoveItem`.
-    *   `InventoryTransferManagerSO` intercepts the request, validates it via `targetSlot.CanAccept(sourceSlot.HeldItem)` and handles the actual data swap, stack merge, or rejection.
+3.  **Release & Resolution (`InventorySlotView.OnPointerUp`):**
+    *   The originating slot releases pointer capture and the ghost icon is hidden.
+    *   A programmatic raycast (`_root.panel.Pick(evt.position)`) is executed to identify the underlying UI element at the exact drop coordinate.
+    *   The system traverses up the visual tree (`FindTargetDropData`) to locate a `SlotDropData` object (which holds the target `InventorySlot` and `InventoryManager`) or a `proxySlotID`.
+    *   If a valid data target is found, `OnLocalMoveItemRequested` fires, propagating globally.
+    *   `InventoryTransferManagerSO` intercepts the request. It queries the target data slot (`targetSlot.CanAccept(sourceSlot.HeldItem)`). If validated, it executes the mathematical data swap or stack merge.
 
-### 2.2 Edge Cases and Technical Quirks
+### 3.2 Undiscovered Functionalities, Edge Cases, & Quirks
 
-*   **`evt.button` Unreliability during `PointerMoveEvent`:** `evt.button` is unreliable during pointer movement. The implementation relies on the `evt.pressedButtons` bitmask to ensure the left mouse button is held down (`(evt.pressedButtons & 1) != 0`).
-*   **UI Toolkit Flexbox Resolution Delay:** When initiating a drag, the UI Toolkit may not have resolved the flexbox dimensions of the slot icon, resulting in `NaN` or `0` values. A failsafe in `InventorySlotView` forces a default `80f x 80f` size if resolution fails.
-*   **Raycast Interference:** Child elements of the slot (like the icon or quantity label) must have their `pickingMode` set to `Ignore`. If they don't, the `panel.Pick()` raycast hits the child instead of the root, and the `SlotDropData` might not be found on that specific child element, causing the drop to fail silently.
-*   **Partial Stack Swapping:** A swap action (dropping an item onto a different item type) will fail if the user is dragging a partial stack (via Shift-drag). `InventoryTransferManagerSO` blocks this operation.
-*   **Same Slot Drop:** Dropping an item onto the exact slot it originated from is safely aborted by `InventoryTransferManagerSO`.
+*   **`evt.button` Unreliability (`FACTUAL FIX 2`):** During `PointerMoveEvent`s in UI Toolkit, querying `evt.button` directly is notoriously unreliable and can return incorrect states. `InventorySlotView` bypasses this bug by utilizing the `evt.pressedButtons` bitmask to ensure the left mouse button is continuously held down (`(evt.pressedButtons & 1) != 0`).
+*   **UI Toolkit Flexbox Resolution Failsafe:** When a drag initiates very quickly, the UI Toolkit layout engine may not have finished resolving the flexbox dimensions of the slot icon, resulting in width/height values of `NaN` or `0`. A failsafe in `InventorySlotView` detects this and forces a default `80f x 80f` size for the ghost icon to prevent invisible drags.
+*   **Raycast Interference (`FACTUAL FIX 1`):** The `panel.Pick()` raycast stops at the first element it hits. Therefore, child visual elements of the slot (such as the item image or quantity text label) *must* have their `pickingMode` set to `Ignore`. If they are set to `Position`, the raycast hits the child, and because the `SlotDropData` is attached to the parent root, the drop will silently fail.
+*   **Partial Stack Swapping Block:** `InventoryTransferManagerSO` enforces a strict rule: you cannot perform a swap action (dropping an item onto a different item type) if you are currently dragging a partial stack (via Shift-drag). This prevents data duplication/loss edge cases.
+*   **Contextual Right-Click Rules:** Right-clicking serves as a Contextual Fast-Action. While `PlayerInventoryView` relies on the `InventoryInteractionContext` (Shop, Salvage, Normal) to decide whether to sell, scrap, or consume, `PlayerEquipmentView` strictly enforces an RPG UX rule: it *ignores* context and always interprets a right-click as an unequip action.
 
-## 3. Data Binding & Syncing
+## 4. Data Binding & Syncing
 
-The UI system reflects data changes immediately through an event-driven observer pattern, utilizing a hybrid architecture for performance and decoupling.
+To ensure the UI is decoupled from core game logic, the system utilizes a hybrid architecture for data binding and performance-optimized UI updates.
 
-### 3.1 The Hybrid Architecture: `PlayerHUDBridge`
+### 4.1 The Hybrid Architecture: `PlayerHUDBridge`
 
-The UI must accurately reflect player stats and inventory without tightly coupling to the gameplay logic (e.g., `PlayerStats`, `PlayerProgression`).
+The UI must accurately reflect player stats (health, stamina, level) and inventory states without tightly coupling to the underlying gameplay MonoBehaviours (e.g., `PlayerStats`, `PlayerProgression`).
 
-*   `PlayerHUDBridge` acts as a facade attached to the player prefab. It subscribes to internal gameplay events (like `_playerStats.OnHealthChanged`).
-*   When a gameplay event fires, the Bridge re-emits a generic C# Action (e.g., `OnHealthChanged(current, max)`).
-*   UI Views (like `HUDView` or `PlayerStatsView`) receive the `PlayerHUDBridge` during initialization and subscribe to its events. This ensures the UI is strictly a consumer of presentation-ready data.
+*   **The Problem:** If UI Views directly referenced `PlayerStats`, changing how health is calculated would break the UI, violating the separation of concerns.
+*   **The Solution:** `PlayerHUDBridge` acts as an intermediary facade attached to the player prefab. It subscribes to internal, gameplay-specific events (`_playerStats.OnHealthChanged`).
+*   **The Re-emission:** When an internal event fires, the Bridge re-emits it as a clean, generic C# Action (`OnHealthChanged(current, max)`).
+*   **The Consumption:** UI Views (`HUDView`, `PlayerStatsView`, `ShopSubView`) are passed the `PlayerHUDBridge` during their initialization setup. They subscribe strictly to the Bridge's generic events. This completely insulates the UI; it is entirely ignorant of how the game logic calculates the values it displays.
 
-### 3.2 Targeted Redraws: `OnSpecificSlotsUpdated`
+### 4.2 Targeted Redraws: The `OnSpecificSlotsUpdated` Optimization
 
-To avoid severe performance penalties, the inventory UI does not rebuild its entire grid when a single item moves.
+Redrawing the entire UI Toolkit layout is a costly operation. The inventory UI prevents severe performance penalties by avoiding full grid rebuilds when single items are moved.
 
-*   When `InventoryTransferManagerSO` completes a move/swap, it fires `_uiInventoryEvents.OnSpecificSlotsUpdated(sourceSlot, targetSlot)`.
-*   Views like `PlayerInventoryView` and `PlayerEquipmentView` maintain a dictionary mapping data (`InventorySlot`) to visual representations (`InventorySlotView`).
-*   Instead of calling `RefreshGrid()` and re-instantiating UXML templates, the View looks up the specific `sourceSlot` and `targetSlot` in the dictionary and calls `Update()` only on those two specific `InventorySlotView` instances.
+*   When `InventoryTransferManagerSO` completes a drag-and-drop transaction, it intentionally avoids firing a generic `OnInventoryUpdated` event. Instead, it fires `_uiInventoryEvents.OnSpecificSlotsUpdated(sourceSlot, targetSlot)`.
+*   Views that display grids (`PlayerInventoryView`, `PlayerEquipmentView`) maintain a private Dictionary (`_slotDictionary`). This dictionary maps the raw data structure (`InventorySlot`) directly to its corresponding visual wrapper (`InventorySlotView`).
+*   Upon receiving `OnSpecificSlotsUpdated`, the View performs an O(1) dictionary lookup for the `sourceSlot` and `targetSlot`. It then calls `Update()` exclusively on those two `InventorySlotView` instances. The rest of the grid remains untouched, massively optimizing rendering overhead.
 
-### 3.3 Architectural Risks
+### 4.3 Architectural Risks & Limitations
 
-*   **Memory Leaks via Unsubscription:** The event-driven architecture relies heavily on proper disposal. Views implement `IDisposable` and must unsubscribe from global `UIInventoryEventsSO` events in their `Hide()` or `Dispose()` methods. Failure to do so will result in memory leaks and NullReferenceExceptions as the game attempts to update destroyed visual elements.
-*   **Dictionary Stale State:** The optimization in `OnSpecificSlotsUpdated` requires the `_slotDictionary` to remain perfectly synchronized with the underlying `InventoryManager`. If a slot is completely removed or the inventory structure changes drastically without a full `OnInventoryUpdated` event to rebuild the dictionary, the UI will break.
+*   **Memory Leaks via Unsubscription Negligence:** This heavy reliance on an event-driven architecture makes proper lifecycle management critical. Views are pure C# classes implementing `IDisposable`. They *must* unsubscribe from global `UIInventoryEventsSO` and `PlayerHUDBridge` events in their `Hide()` or `Dispose()` methods. Failure to do so creates memory leaks and causes `NullReferenceExceptions` when the game attempts to update visual elements that have been destroyed or removed from the DOM.
+*   **Dictionary Stale State:** The `OnSpecificSlotsUpdated` optimization relies on the `_slotDictionary` being perfectly synchronized with the `InventoryManager`'s backend list. If a slot is completely destroyed or the data structure is radically altered without a full `OnInventoryUpdated` event forcing a complete UI rebuild, the dictionary lookups will fail or update the wrong elements, leading to a broken UI state.

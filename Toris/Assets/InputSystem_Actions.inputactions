@@ -732,6 +732,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleSmith",
+                    "type": "Button",
+                    "id": "d6e80fc4-0a4f-4447-9254-9f68def36722",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1216,6 +1225,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "QuickLoad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55041b27-0068-40a2-bd9b-6aa0aa63469b",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ToggleSmith",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -70,6 +70,9 @@ namespace OutlandHaven.UIToolkit
             _playerAbilitySlotSnapshot = null;
         }
 
+        public RuntimeInventorySnapshot GetPlayerInventorySnapshot() => _playerInventorySnapshot;
+        public RuntimeInventorySnapshot GetEquipmentInventorySnapshot() => _equipmentInventorySnapshot;
+
         public void CapturePlayerInventoryState(InventoryManager inventoryManager)
         {
             _playerInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
@@ -327,7 +330,7 @@ namespace OutlandHaven.UIToolkit
             global::PixelCrushersDialogueSaveBridge.RequestApplySaveData(saveData.PixelCrushersDialogueSaveData);
         }
 
-        private sealed class RuntimeInventorySnapshot
+        public sealed class RuntimeInventorySnapshot
         {
             private readonly RuntimeInventorySlotSnapshot[] _slots;
 

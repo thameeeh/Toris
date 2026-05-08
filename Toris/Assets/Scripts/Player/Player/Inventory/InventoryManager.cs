@@ -311,17 +311,29 @@ namespace OutlandHaven.Inventory
                 return;
 
             bool restored = false;
+            string type = "";
 
             if (IsPlayerBackpackContainer())
+            {
+                type = "Backpack";
                 restored = GlobalSession.TryApplyPlayerInventoryState(this);
+            }
             else if (LooksLikeEquipmentContainer())
+            {
+                type = "Equipment";
                 restored = GlobalSession.TryApplyEquipmentInventoryState(this);
+            }
 
-            if (!restored)
-                return;
-
-            EnsureSlotItemStates();
-            NotifyInventoryUpdated();
+            if (restored)
+            {
+                Debug.Log($"[Inventory] Successfully RESTORED {type} state from GameSession snapshot for '{gameObject.name}'.");
+                EnsureSlotItemStates();
+                NotifyInventoryUpdated();
+            }
+            else if (!string.IsNullOrEmpty(type))
+            {
+                Debug.Log($"[Inventory] No {type} snapshot found in GameSession for '{gameObject.name}'. Starting with fresh/blueprint slots.");
+            }
         }
 
         private void CaptureTransferredState()
@@ -332,38 +344,46 @@ namespace OutlandHaven.Inventory
 
             if (IsPlayerBackpackContainer())
             {
+                Debug.Log($"[Inventory] CAPTURING Backpack state for '{gameObject.name}' into GameSession snapshot.");
                 GlobalSession.CapturePlayerInventoryState(this);
-                return;
             }
-
-            if (LooksLikeEquipmentContainer())
+            else if (LooksLikeEquipmentContainer())
+            {
+                Debug.Log($"[Inventory] CAPTURING Equipment state for '{gameObject.name}' into GameSession snapshot.");
                 GlobalSession.CaptureEquipmentInventoryState(this);
+            }
         }
 
         private bool IsPlayerBackpackContainer()
         {
             return ContainerBlueprint != null
-                   && ContainerBlueprint.AssociatedView == ScreenType.Inventory;
+                   && ContainerBlueprint.AssociatedView == ScreenType.Inventory
+                   && !ContainerBlueprint.IsEquipment;
         }
 
         private bool LooksLikeEquipmentContainer()
         {
-            if (ContainerBlueprint != null
-                && ContainerBlueprint.PredefinedFilters != null
-                && ContainerBlueprint.PredefinedFilters.Length > 0)
+            if (ContainerBlueprint != null)
             {
-                // If the first filter is an equipment type, it's likely the equipment container
-                SlotFilterType firstFilter = ContainerBlueprint.PredefinedFilters[0];
-                if (firstFilter == SlotFilterType.Head || 
-                    firstFilter == SlotFilterType.Chest || 
-                    firstFilter == SlotFilterType.Legs ||
-                    firstFilter == SlotFilterType.Arms ||
-                    firstFilter == SlotFilterType.Weapon)
+                // Primary check: The explicit flag we added to the blueprint
+                if (ContainerBlueprint.IsEquipment) return true;
+
+                // Secondary check: Predefined filters
+                if (ContainerBlueprint.PredefinedFilters != null && ContainerBlueprint.PredefinedFilters.Length > 0)
                 {
-                    return true;
+                    SlotFilterType firstFilter = ContainerBlueprint.PredefinedFilters[0];
+                    if (firstFilter == SlotFilterType.Head || 
+                        firstFilter == SlotFilterType.Chest || 
+                        firstFilter == SlotFilterType.Legs ||
+                        firstFilter == SlotFilterType.Arms ||
+                        firstFilter == SlotFilterType.Weapon)
+                    {
+                        return true;
+                    }
                 }
             }
 
+            // Fallback: GameObject name contains "Equip"
             string objectName = gameObject != null ? gameObject.name : string.Empty;
             return !string.IsNullOrEmpty(objectName)
                    && objectName.IndexOf(EquipmentNameToken, StringComparison.OrdinalIgnoreCase) >= 0;

@@ -1,4 +1,5 @@
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 using UnityEngine;
 
 namespace OutlandHaven.UIToolkit
@@ -20,6 +21,8 @@ namespace OutlandHaven.UIToolkit
 
         // Data Reference
         private PlayerHUDBridge _playerHudBridge;
+        private PlayerPotionHUDView _potionHUDView;
+        private VisualTreeAsset _slotTemplate;
         
         // Progress Bar is 0-100
         private const float PROGRESS_BAR_MAX = 100f;
@@ -27,10 +30,13 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, VisualTreeAsset buttonTemplate) : base(topElement, uiEvents)
+        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, VisualTreeAsset buttonTemplate, VisualTreeAsset slotTemplate) : base(topElement, uiEvents)
         {
             _playerHudBridge = data;
             _buttonTemplate = buttonTemplate;
+            _slotTemplate = slotTemplate;
+
+            _potionHUDView = new PlayerPotionHUDView(topElement, _slotTemplate, null); // We will set events in Setup if needed
         }
 
         public override void Setup(object payload)
@@ -51,6 +57,13 @@ namespace OutlandHaven.UIToolkit
                     Debug.LogError("HUDView: PlayerHUDBridge data reference is null! HUD will not display player info.");
                 }
                 _isSetup = true;
+            }
+
+            // The payload for HUD setup can be a tuple or a custom struct if we want to pass multiple things.
+            // For now, let's assume we might receive the Potion Inventory Manager here.
+            if (payload is InventoryManager potionInventory)
+            {
+                _potionHUDView?.Setup(potionInventory);
             }
         }
 

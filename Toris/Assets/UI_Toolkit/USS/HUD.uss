@@ -136,3 +136,41 @@
 #hud__xp-bar .unity-progress-bar__progress { background-color: var(--color-xp); }
 #hud__health-bar .unity-progress-bar__progress { background-color: var(--color-health); }
 #hud__mana-bar .unity-progress-bar__progress { background-color: var(--color-mana); }
+
+/* --- Potion Quickbar --- */
+.hud-potion-bar {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.potion-slot--hud {
+    width: 64px;
+    height: 64px;
+    margin: 0 5px;
+    background-color: rgba(15, 15, 15, 0.8);
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    border-radius: 8px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hud-potion-hotkey {
+    position: absolute;
+    top: -12px;
+    color: var(--color-text-light);
+    font-size: 14px;
+    -unity-font-style: bold;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: var(--color-border-highlight);
+}

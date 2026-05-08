@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -8,8 +9,10 @@ namespace OutlandHaven.UIToolkit
         [Header("Dependencies")]
         [SerializeField] private VisualTreeAsset _hudMainTemplate; // <--- Drag HUD.uxml here
         [SerializeField] private VisualTreeAsset _buttonTemplate;
+        [SerializeField] private VisualTreeAsset _slotTemplate;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
+        [SerializeField] private InventoryManager _potionInventory;
 
         private HUDView _view;
         private UIManager _uiManager;
@@ -43,8 +46,9 @@ namespace OutlandHaven.UIToolkit
             }
 
             // 2. Pass the INSTANCE to the View
-            _view = new HUDView(hudInstance, _playerHudBridge, _uiEvents, _buttonTemplate);
+            _view = new HUDView(hudInstance, _playerHudBridge, _uiEvents, _buttonTemplate, _slotTemplate);
             _view.Initialize();
+            _view.Setup(_potionInventory);
 
             // 3. Register to the HUD Zone
             _uiManager.RegisterView(_view, ScreenZone.HUD);

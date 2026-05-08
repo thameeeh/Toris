@@ -136,6 +136,14 @@ PrefabInstance:
       value: UIControllers
       objectReference: {fileID: 0}
     - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerHUDBridge
+      value: 
+      objectReference: {fileID: 2014174153}
+    - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _potionInventory
+      value: 
+      objectReference: {fileID: 771230528}
+    - target: {fileID: 5223709282705812623, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: _equipmentInventory
       value: 
       objectReference: {fileID: 2091433943}
@@ -179,6 +187,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _slotTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+    - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _potionInventory
+      value: 
+      objectReference: {fileID: 771230528}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -955,6 +971,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+--- !u!114 &771230528 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+  m_PrefabInstance: {fileID: 771230527}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
 --- !u!114 &845357115 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6502680495092571403, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7584297309565093339}
   - component: {fileID: 4034736806102976344}
   - component: {fileID: 7379342914277460611}
+  - component: {fileID: 4229668889692262144}
   m_Layer: 0
   m_Name: Player_InventoryManager
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
+  SaveID: Player_Equipment_Inventory
   ContainerBlueprint: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
   LiveSlots:
   - HeldItem:
@@ -86,15 +88,15 @@ MonoBehaviour:
     AllowedFilter: -1
   - HeldItem:
       InstanceID: 40bb7e0b-4a25-4146-877b-f961489fc3a9
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
       States: []
-    Count: 0
+    Count: 4
     AllowedFilter: -1
   - HeldItem:
       InstanceID: 0ac7eaec-9442-4fc0-929f-041da40585ca
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
       States: []
-    Count: 0
+    Count: 3
     AllowedFilter: -1
   - HeldItem:
       InstanceID: 950bd790-b85a-46cb-a274-cec7c815369b
@@ -192,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentFromInventoryTester
   _inventory: {fileID: 7584297309565093339}
-  _equipment: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  _equipment: {fileID: 0}
   _testSlotIndex: 0
 --- !u!114 &7379342914277460611
 MonoBehaviour:
@@ -206,4 +208,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b1f2963dd7b2b84b9029baf732fd9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquippedItemStatsDebugger
-  _equipment: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  _equipment: {fileID: 0}
+--- !u!114 &4229668889692262144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3664642269554074775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df23bb524fc56343bc69721e6fdf544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Debugging.GameSessionDebugger
+  Session: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  LogOnSceneChange: 1

@@ -234,6 +234,14 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         }
     }
 
+    public void OnToggleSmith(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
+        }
+    }
+
     public void OnToggleQuestJournal(InputAction.CallbackContext context)
     {
         if (context.performed && !HasGameplayInputBlockers())

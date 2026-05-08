@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: Container_Player-Equipments
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryContainerSO
   SlotCount: 5
-  AssociatedView: 3
-  PredefinedFilters:
-  - 0
-  - 1
-  - 2
-  - 3
-  - 4
+  AssociatedView: 5
+  IsEquipment: 1
+  PredefinedFilters: 0000000001000000020000000300000004000000

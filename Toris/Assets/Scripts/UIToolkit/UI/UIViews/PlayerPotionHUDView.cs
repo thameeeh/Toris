@@ -2,25 +2,25 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 using System.Collections.Generic;
-using OutlandHaven.UIToolkit;
+using OutlandHaven.Inventory;
 
-namespace OutlandHaven.Inventory
+namespace OutlandHaven.UIToolkit
 {
-    public class PlayerPotionView : IDisposable
+    public class PlayerPotionHUDView : IDisposable
     {
         private VisualElement _topElement;
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
 
-        private Dictionary<InventorySlot, InventorySlotView> _potionSlotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
+        private Dictionary<InventorySlot, InventorySlotView> _slotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
 
-        private VisualElement _slotPotion1Container;
-        private VisualElement _slotPotion2Container;
+        private VisualElement _slot1Container;
+        private VisualElement _slot2Container;
 
         private InventoryManager _potionInventory;
         private bool _eventsBound = false;
 
-        public PlayerPotionView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents)
+        public PlayerPotionHUDView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents)
         {
             _topElement = topElement;
             _slotTemplate = slotTemplate;
@@ -31,12 +31,8 @@ namespace OutlandHaven.Inventory
 
         private void SetVisualElements()
         {
-            _slotPotion1Container = _topElement.Q<VisualElement>("slot-potion-1");
-            _slotPotion2Container = _topElement.Q<VisualElement>("slot-potion-2");
-        }
-
-        public void Initialize()
-        {
+            _slot1Container = _topElement.Q<VisualElement>("hud__potion-slot-1");
+            _slot2Container = _topElement.Q<VisualElement>("hud__potion-slot-2");
         }
 
         public void Setup(InventoryManager potionInventory)
@@ -73,12 +69,12 @@ namespace OutlandHaven.Inventory
 
         private void HandleSpecificSlotsUpdated(InventorySlot sourceSlot, InventorySlot targetSlot)
         {
-            if (sourceSlot != null && _potionSlotDictionary.TryGetValue(sourceSlot, out var sourceView))
+            if (sourceSlot != null && _slotDictionary.TryGetValue(sourceSlot, out var sourceView))
             {
                 sourceView.Update(sourceSlot);
             }
 
-            if (targetSlot != null && _potionSlotDictionary.TryGetValue(targetSlot, out var targetView))
+            if (targetSlot != null && _slotDictionary.TryGetValue(targetSlot, out var targetView))
             {
                 targetView.Update(targetSlot);
             }
@@ -88,17 +84,22 @@ namespace OutlandHaven.Inventory
         {
             if (_potionInventory == null || _potionInventory.LiveSlots == null) return;
 
-            _potionSlotDictionary.Clear();
+            _slotDictionary.Clear();
 
-            RefreshSingleSlot(0, _slotPotion1Container);
-            RefreshSingleSlot(1, _slotPotion2Container);
+            RefreshSingleSlot(0, _slot1Container);
+            RefreshSingleSlot(1, _slot2Container);
         }
 
         private void RefreshSingleSlot(int index, VisualElement containerRoot)
         {
             if (containerRoot == null) return;
 
+            // Clear previous items but keep the hotkey label if it exists
+            // Or just clear and rely on the template? 
+            // In UXML I added a label. Let's preserve it or re-add it.
+            Label hotkeyLabel = containerRoot.Q<Label>(className: "hud-potion-hotkey");
             containerRoot.Clear();
+            if (hotkeyLabel != null) containerRoot.Add(hotkeyLabel);
 
             if (index >= _potionInventory.LiveSlots.Count)
                 return;
@@ -107,31 +108,31 @@ namespace OutlandHaven.Inventory
 
             TemplateContainer slotInstance = _slotTemplate.Instantiate();
             slotInstance.pickingMode = PickingMode.Ignore;
-            slotInstance.style.flexGrow = 1; // Ensure the data-carrying element fills the container target
+            slotInstance.style.flexGrow = 1;
             slotInstance.AddToClassList("item-slot--potion");
             containerRoot.Add(slotInstance);
 
             var slotView = new InventorySlotView(slotInstance, _potionInventory);
 
-            slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
-            slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
+            // Important: Right click on HUD also uses the potion
+            slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestUse?.Invoke(slot);
+            
+            // Drag and drop support on HUD
+            slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => 
+                _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
 
             slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
             slotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
             slotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
+            
             slotView.Update(slotData);
 
-            _potionSlotDictionary.Add(slotData, slotView);
+            _slotDictionary.Add(slotData, slotView);
         }
 
         public void Dispose()
         {
-            if (_eventsBound && _uiInventoryEvents != null)
-            {
-                _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
-                _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
-                _eventsBound = false;
-            }
+            Hide();
         }
     }
 }

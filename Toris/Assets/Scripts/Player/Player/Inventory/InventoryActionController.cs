@@ -7,6 +7,8 @@ public class InventoryActionController : MonoBehaviour
     [Header("Runtime References")]
     [SerializeField] private InventoryManager _playerInventory;
     [SerializeField] private InventoryManager _equipmentInventory;
+    [SerializeField] private InventoryManager _potionInventory;
+    [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;

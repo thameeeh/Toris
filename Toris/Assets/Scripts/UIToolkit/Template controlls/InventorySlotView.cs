@@ -13,6 +13,7 @@ namespace OutlandHaven.Inventory
 
         private InventorySlot _slotData;
         private InventoryManager _owningContainer;
+
         public event Action<InventorySlot> OnLocalClicked;
         public event Action<InventorySlot> OnLocalRightClicked;
         public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnLocalMoveItemRequested;
@@ -43,7 +44,7 @@ namespace OutlandHaven.Inventory
             _icon = _root.Q<Image>("slot-icon");
             _qtyLabel = _root.Q<Label>("slot-qty");
 
-            // FACTUAL FIX 1: Force child elements to ignore raycasts so _root catches the click cleanly
+            // Force child elements to ignore raycasts so _root catches the click cleanly
             if (_icon != null) _icon.pickingMode = PickingMode.Ignore;
             if (_qtyLabel != null) _qtyLabel.pickingMode = PickingMode.Ignore;
 
@@ -111,7 +112,7 @@ namespace OutlandHaven.Inventory
         {
             if (!_root.HasPointerCapture(evt.pointerId)) return;
 
-            // FACTUAL FIX 2: evt.button is unreliable during a move. 
+            // evt.button is unreliable during a move. 
             // Check the evt.pressedButtons bitmask instead. (1 = Left Click held down)
             if ((evt.pressedButtons & 1) == 0) return;
 

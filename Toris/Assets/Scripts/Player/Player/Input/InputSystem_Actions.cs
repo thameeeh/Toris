@@ -818,6 +818,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleSmith"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6e80fc4-0a4f-4447-9254-9f68def36722"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1304,6 +1313,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""QuickLoad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""55041b27-0068-40a2-bd9b-6aa0aa63469b"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ToggleSmith"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1406,6 +1426,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_QuickSave = m_UI.FindAction("QuickSave", throwIfNotFound: true);
         m_UI_QuickLoad = m_UI.FindAction("QuickLoad", throwIfNotFound: true);
+        m_UI_ToggleSmith = m_UI.FindAction("ToggleSmith", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1753,6 +1774,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_QuickSave;
     private readonly InputAction m_UI_QuickLoad;
+    private readonly InputAction m_UI_ToggleSmith;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1829,6 +1851,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @QuickLoad => m_Wrapper.m_UI_QuickLoad;
         /// <summary>
+        /// Provides access to the underlying input action "UI/ToggleSmith".
+        /// </summary>
+        public InputAction @ToggleSmith => m_Wrapper.m_UI_ToggleSmith;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_UI; }
@@ -1902,6 +1928,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @QuickLoad.started += instance.OnQuickLoad;
             @QuickLoad.performed += instance.OnQuickLoad;
             @QuickLoad.canceled += instance.OnQuickLoad;
+            @ToggleSmith.started += instance.OnToggleSmith;
+            @ToggleSmith.performed += instance.OnToggleSmith;
+            @ToggleSmith.canceled += instance.OnToggleSmith;
         }
 
         /// <summary>
@@ -1961,6 +1990,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @QuickLoad.started -= instance.OnQuickLoad;
             @QuickLoad.performed -= instance.OnQuickLoad;
             @QuickLoad.canceled -= instance.OnQuickLoad;
+            @ToggleSmith.started -= instance.OnToggleSmith;
+            @ToggleSmith.performed -= instance.OnToggleSmith;
+            @ToggleSmith.canceled -= instance.OnToggleSmith;
         }
 
         /// <summary>
@@ -2291,5 +2323,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnQuickLoad(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleSmith" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleSmith(InputAction.CallbackContext context);
     }
 }

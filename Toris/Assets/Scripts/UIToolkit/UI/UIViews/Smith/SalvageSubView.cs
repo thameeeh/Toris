@@ -46,6 +46,7 @@ namespace OutlandHaven.UIToolkit
             if (_inputSlotContainer != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.pickingMode = PickingMode.Ignore;
                 instance.userData = "salvage-input"; // Set proxy ID
                 _inputSlotContainer.Add(instance);
                 _inputSlotView = new InventorySlotView(instance, null);
@@ -71,6 +72,7 @@ namespace OutlandHaven.UIToolkit
             if (_itemYieldContainer != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.pickingMode = PickingMode.Ignore;
                 _itemYieldContainer.Add(instance);
                 _itemYieldView = new InventorySlotView(instance, null);
 

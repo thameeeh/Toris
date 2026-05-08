@@ -124,6 +124,7 @@ namespace OutlandHaven.Inventory
             InventorySlot slotData = _equipmentInventory.LiveSlots[index];
 
             TemplateContainer slotInstance = _slotTemplate.Instantiate();
+            slotInstance.pickingMode = PickingMode.Ignore; // Ensure the wrapper ignores picking
             containerRoot.Add(slotInstance);
 
             var slotView = new InventorySlotView(slotInstance, _equipmentInventory);

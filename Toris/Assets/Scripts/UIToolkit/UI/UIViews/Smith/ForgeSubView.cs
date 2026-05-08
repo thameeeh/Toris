@@ -46,6 +46,7 @@ namespace OutlandHaven.UIToolkit
             if (_slot1Container != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.pickingMode = PickingMode.Ignore;
                 instance.userData = "forge-slot-1";
                 _slot1Container.Add(instance);
                 _slot1View = new InventorySlotView(instance, null);
@@ -71,6 +72,7 @@ namespace OutlandHaven.UIToolkit
             if (_slot2Container != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.pickingMode = PickingMode.Ignore;
                 instance.userData = "forge-slot-2";
                 _slot2Container.Add(instance);
                 _slot2View = new InventorySlotView(instance, null);
@@ -96,6 +98,7 @@ namespace OutlandHaven.UIToolkit
             if (_resultSlotContainer != null)
             {
                 TemplateContainer instance = _slotTemplate.Instantiate();
+                instance.pickingMode = PickingMode.Ignore;
                 _resultSlotContainer.Add(instance);
                 _resultSlotView = new InventorySlotView(instance, null);
 

@@ -119,6 +119,7 @@ namespace OutlandHaven.UIToolkit
 
                 // Only instantiate the UI if the slot actually contains an item
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
+                slotInstance.pickingMode = PickingMode.Ignore;
                 _shopGrid.Add(slotInstance);
 
                 var slotView = new InventorySlotView(slotInstance, _shopContainer);

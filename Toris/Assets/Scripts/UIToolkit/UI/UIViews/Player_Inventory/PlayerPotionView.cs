@@ -106,6 +106,7 @@ namespace OutlandHaven.Inventory
             InventorySlot slotData = _potionInventory.LiveSlots[index];
 
             TemplateContainer slotInstance = _slotTemplate.Instantiate();
+            slotInstance.pickingMode = PickingMode.Ignore;
             slotInstance.AddToClassList("item-slot--potion");
             containerRoot.Add(slotInstance);
 

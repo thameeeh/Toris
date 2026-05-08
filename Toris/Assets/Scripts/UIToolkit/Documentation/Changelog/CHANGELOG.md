@@ -1,3 +1,21 @@
+## [Current/Recent] - GDD Finalization & Scope Alignment
+* **GDD Finalization:** Updated `Toris/README.md` to precisely reflect the current Hub-and-Expedition loop and item-based economy.
+* **Economic Reality Check:** Updated documentation to distinguish between abstract currencies (Gold/XP) and physical inventory resources (Food/Materials).
+* **Scope Refinement:** Formally deprecated town-building references to ensure project documentation matches the implementation timeline.
+
+## [Current/Recent] - GDD Update & Scope Refinement
+* **GDD Overhaul:** Updated `Toris/README.md` to reflect the removal of the town-building system.
+* **Scope Realignment:** Refocused the project's core loop on **Hub-and-Expedition** dynamics, emphasizing exploration, combat, and gear progression over infrastructure management.
+* **Economic Simplification:** Streamlined the resource descriptions to focus on Gold, Materials, and XP, aligning with the current implementation.
+
+## [Current/Recent] - Inventory Stability & UI Polish
+* **Drag-and-Drop Fix:** Resolved a critical bug where dynamically instantiated inventory slots would lose pointer interaction.
+    * **Template Isolation:** Explicitly set `pickingMode = PickingMode.Ignore` on all `TemplateContainer` wrappers in `PlayerInventoryView`, `PlayerEquipmentView`, `PlayerPotionView`, and `Smith` sub-views.
+    * **Event Reliability:** Verified that `InventorySlotView.cs` correctly captures `PointerUpEvent` and resolves drop targets using `panel.Pick()`.
+* **UI Toolkit Consistency:** 
+    * **Flexbox Sizing:** Confirmed `flex-shrink: 0` is applied to all `.item-slot` and `.potion-slot` classes in `Components.uss` to prevent layout squishing.
+    * **Theme Variables:** Verified that inventory stylesheets adhere to the `theme-variables.uss` system.
+
 ## [Current/Recent] - Feature: Save Deletion Confirmation & Reusable Modal
 * **Generic Confirmation System:** Implemented a reusable `ConfirmationModal` architecture using a `ConfirmationPayload` DTO, allowing any system to request user validation before executing destructive actions.
 * **Deletion Protection:** Integrated the confirmation modal into `MainMenuController.cs`, requiring explicit user consent before deleting save slots.

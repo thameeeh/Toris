@@ -122,6 +122,7 @@ namespace OutlandHaven.Inventory
             {
                 // Instantiate the UXML Template
                 TemplateContainer slotInstance = _slotTemplate.Instantiate();
+                slotInstance.pickingMode = PickingMode.Ignore; // Ensure the wrapper ignores picking
                 gridRoot.Add(slotInstance);
 
                 // Initialize the wrapper and update it

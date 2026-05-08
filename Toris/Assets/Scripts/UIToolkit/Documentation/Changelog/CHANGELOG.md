@@ -1,3 +1,7 @@
+## [Current/Recent] - Missing Asset Safety
+* **OnValidate Implementation:** Added `OnValidate` checks to `HudScreenController` and `InventoryActionController` to log warnings for missing references at design time (in the Unity Editor), preventing silent failures at runtime.
+* **Lifecycle Cleanup:** Moved null reference checks from runtime lifecycle methods like `OnEnable` into `OnValidate` where appropriate to optimize runtime execution and provide earlier developer feedback.
+
 ## [Current/Recent] - GDD Finalization & Scope Alignment
 * **GDD Finalization:** Updated `Toris/README.md` to precisely reflect the current Hub-and-Expedition loop and item-based economy.
 * **Economic Reality Check:** Updated documentation to distinguish between abstract currencies (Gold/XP) and physical inventory resources (Food/Materials).

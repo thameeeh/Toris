@@ -5,17 +5,16 @@ This document outlines our high-level goals and progress for connecting the Main
 ---
 
 ## 🤖 Session Hand-off Message
-**Status:** The UI polishing phase and Pause Menu implementation are complete. The Save/Load system is now fully integrated with a robust, event-driven architecture and user-friendly confirmation workflows.
+**Status:** Potion HUD and Hotkey integration task is fully complete. The Save/Load system and Pause menus are stable.
 
 **Key Achievements Today:**
-- **In-Game Pause Menu:** Fully functional with time-scaling, input map switching (Player vs. UI), and auto-saving progress when returning to the Main Menu.
-- **Generic Confirmation Modal:** Implemented a reusable modal system for destructive actions (Delete Save, Exit Game) with a centered, absolute-positioned UI.
-- **Main Menu Polish:** 
-    - Redesigned Save Slots to be larger and more readable.
-    - Repositioned the Delete button to a dedicated footer.
-    - Added subtle, professional colored hover effects to all menu buttons.
-    - Implemented Escape key and a Close button for the Save Slots panel.
-- **Architecture:** Migrated QuickSave/Load to a decoupled event-bus system using `UIEventsSO`.
+- **Potion HUD Integration:** Added a central potion quickbar to the HUD with two slots. The HUD dynamically tracks the Potion Inventory, allowing for visual feedback and immediate right-click usage.
+- **Hotkey Usage:** Mapped keyboard inputs ('1' and '2') to trigger item consumption directly from the Potion quickbar slots, properly handling charges and item depletion.
+- **Standardization:** Universal right-click consumption confirmed across all item containers.
+
+**Action Required (Unity Inspector Final Setup):**
+1. **HudScreenController:** Assign `_slotTemplate` and `_potionInventory`.
+2. **InventoryActionController:** Assign `_potionInventory` and `_inputReader`.
 
 **Next Steps:**
 - Monitor the **Known Issues** below regarding the inventory drag-and-drop bug when you return to inventory systems.
@@ -49,3 +48,4 @@ Ensure that selecting a save slot from the Main Menu instantly restores the play
 - [X] **Pause Menu Implementation** (COMPLETED)
 - [X] **UI Polish & Consistency** (COMPLETED)
 - [X] **Equippable Stacking Refactor** (COMPLETED) - Enforced MaxStackSize=1 for equippables and implemented swap-on-drag behavior.
+- [X] **Hotkey-Driven Potion Consumption** (COMPLETED) - Added potion HUD quickbar, hotkey inputs ('1' and '2'), and unified consumable usage.

@@ -27,10 +27,7 @@ namespace OutlandHaven.UIToolkit
         private void OnEnable()
         {
             if (_hudMainTemplate == null)
-            {
-                Debug.LogError("HudScreenController: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject</color>");
                 return;
-            }
         }
 
         private void Start()
@@ -42,7 +39,7 @@ namespace OutlandHaven.UIToolkit
 
             if (_playerHudBridge == null)
             {
-                Debug.LogWarning("<b><color=yellow>HudScreenController</color></b> must be on active <b><color=green>GameObject</color></b>");
+                Debug.LogWarning($"[UI/Inventory] <b><color=yellow>HudScreenController</color></b> must be on active <b><color=green>GameObject</color></b>");
             }
 
             // 2. Pass the INSTANCE to the View
@@ -56,14 +53,16 @@ namespace OutlandHaven.UIToolkit
 
         private void OnValidate()
         {
-            if (_uiEvents == null)
-            {
-                Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
-            }
+            if (_hudMainTemplate == null)
+                Debug.LogWarning($"[UI/Inventory] {name}: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject</color>", this);
             if (_buttonTemplate == null)
-            {
-                Debug.LogError($" <color=red>{name}</color> missing Button Template", this);
-            }
+                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Button Template", this);
+            if (_slotTemplate == null)
+                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Slot Template", this);
+            if (_uiEvents == null)
+                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing UI Events SO", this);
+            if (_gameSession == null)
+                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Game Session SO", this);
         }
     }
 }

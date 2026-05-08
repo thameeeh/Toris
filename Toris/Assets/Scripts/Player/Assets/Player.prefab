@@ -305,6 +305,8 @@ MonoBehaviour:
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _itemPicker: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _combatDisabledSceneNames:
+  - MainArea
 --- !u!114 &6347703112388059557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,6 +749,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventoryActionController
   _playerInventory: {fileID: 0}
   _equipmentInventory: {fileID: 0}
+  _potionInventory: {fileID: 0}
+  _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   _playerStats: {fileID: 8137892244548921797}
   _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}

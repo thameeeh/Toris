@@ -19,5 +19,19 @@ namespace OutlandHaven.Inventory
         public EquipmentSlot TargetSlot;
         public float StrengthBonus;
         public float DefenceBonus;
+
+        public override string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
+        {
+            if (maxStackSize > 1)
+            {
+                return $"Equippable item '{owner.ItemName}' has MaxStackSize={maxStackSize}. Equippables must always have MaxStackSize=1.";
+            }
+            return null;
+        }
+
+        public override int GetMaxStackSizeLimit()
+        {
+            return 1;
+        }
     }
 }

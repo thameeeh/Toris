@@ -15,7 +15,7 @@ MonoBehaviour:
   ItemName: Chest def
   Description: 
   Icon: {fileID: 21300000, guid: 408ecc27b712ced45bf29515c296d02f, type: 3}
-  MaxStackSize: 99
+  MaxStackSize: 1
   GoldValue: 10
   Components:
   - rid: 7555928020692500488

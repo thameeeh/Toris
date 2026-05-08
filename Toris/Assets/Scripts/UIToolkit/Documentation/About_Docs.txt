@@ -1,0 +1,15 @@
+The `Assets/Scripts/UIToolkit/Documentation` folder contains several key architectural documents for the UI and Inventory systems:
+
+- **MVP_UI_Architecture_Guide.md**: Details the Model-View-Presenter pattern used in the project, explaining the separation between data models, passive visual views, and orchestrating controllers/presenters.
+
+- **UI_Interaction_And_Event_System.md**: Describes the decoupled, event-driven architecture using `ScriptableObject` event buses for cross-system communication and transaction requests.
+
+- **Inventory_Runtime_Mechanics_and_UI_Interactions.md**: Provides a deep dive into the drag-and-drop state machine, slot management, and how UI components translate user inputs into semantic game events.
+
+- **Item_And_Inventory_Data_Architecture.md**: Outlines the item blueprint system, dynamic `ItemInstance` state, and generic inventory container management.
+
+- **Scripts_Architecture_Overview.md**: A high-level, consolidated map of the codebase, categorizing scripts by responsibility (Events, Models, Views, Controllers).
+
+- **World_Generation_Architecture_Guide.md**: Documents the decoupled, pipeline-based system for world generation, focusing on chunk streaming, lifecycle management, and site activation.
+
+These documents collectively define the strict standards for UI, inventory, and architectural design within the project.

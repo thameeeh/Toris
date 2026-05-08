@@ -898,6 +898,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
+--- !u!1001 &771230527
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.60809
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.83662
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7489259955781345588, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: m_Name
+      value: Potion_InventoryManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
 --- !u!114 &845357115 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6502680495092571403, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
@@ -1127,7 +1184,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3664642269554074775, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
       propertyPath: m_Name
-      value: InventoryManager
+      value: Player_InventoryManager
       objectReference: {fileID: 0}
     - target: {fileID: 4034736806102976344, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
       propertyPath: _equipment
@@ -1181,6 +1238,22 @@ PrefabInstance:
       propertyPath: SaveID
       value: Player_Equipment_Inventory
       objectReference: {fileID: 0}
+    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+      propertyPath: LiveSlots.Array.data[6].Count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+      propertyPath: LiveSlots.Array.data[7].Count
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+      propertyPath: LiveSlots.Array.data[6].HeldItem.BaseItem
+      value: 
+      objectReference: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
+    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+      propertyPath: LiveSlots.Array.data[7].HeldItem.BaseItem
+      value: 
+      objectReference: {fileID: 11400000, guid: f60e2d3e9b8747147bf804f8fb45d8aa, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -102235,7 +102308,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3923781557562625885, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4443428452464939475, guid: 503116f6b03c19245b3aae6ac8d69ca4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -102471,6 +102548,7 @@ SceneRoots:
   - {fileID: 1010793782}
   - {fileID: 7791549711008354426}
   - {fileID: 1252678292}
+  - {fileID: 771230527}
   - {fileID: 3341100861679724228}
   - {fileID: 913442532}
   - {fileID: 1383614956}

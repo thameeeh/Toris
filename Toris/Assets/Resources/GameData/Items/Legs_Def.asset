@@ -15,7 +15,7 @@ MonoBehaviour:
   ItemName: Leg Defence
   Description: 
   Icon: {fileID: 21300000, guid: 3552d99ffbe0a44fa9bdecfe068d83db, type: 3}
-  MaxStackSize: 99
+  MaxStackSize: 1
   GoldValue: 10
   Components:
   - rid: 7555928020692500492

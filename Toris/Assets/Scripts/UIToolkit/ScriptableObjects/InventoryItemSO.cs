@@ -33,7 +33,21 @@ namespace OutlandHaven.Inventory
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            MaxStackSize = Mathf.Max(1, MaxStackSize);
+            // 1. Calculate the combined limit from all components
+            int stackLimit = int.MaxValue;
+            if (Components != null)
+            {
+                for (int i = 0; i < Components.Count; i++)
+                {
+                    if (Components[i] != null)
+                    {
+                        stackLimit = Mathf.Min(stackLimit, Components[i].GetMaxStackSizeLimit());
+                    }
+                }
+            }
+
+            // 2. Enforce the limit (Minimum 1, Maximum determined by components)
+            MaxStackSize = Mathf.Clamp(MaxStackSize, 1, stackLimit);
 
             // We iterate backwards when removing elements from a list 
             // to prevent index shifting bugs.

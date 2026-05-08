@@ -39,6 +39,7 @@ namespace OutlandHaven.Inventory
             _gameSession = session;
             _uiInventoryEvents = uiInventoryEvents;
             _equipmentInventory = equipmentInventory;
+            _potionInventory = potionInventory; // Fixed: Now correctly assigned
             _hudBridge = hudBridge;
         }
 
@@ -67,6 +68,7 @@ namespace OutlandHaven.Inventory
             }
             _equipmentView?.Show();
             _statsView?.Show();
+            _playerPotionView?.Show();
         }
 
         public override void Hide()
@@ -82,6 +84,7 @@ namespace OutlandHaven.Inventory
             }
             _equipmentView?.Hide();
             _statsView?.Hide();
+            _playerPotionView?.Hide();
         }
 
         protected override void SetVisualElements()

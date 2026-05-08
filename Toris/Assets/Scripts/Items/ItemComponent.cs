@@ -19,6 +19,15 @@ namespace OutlandHaven.Inventory
         {
             return null;
         }
+
+        /// <summary>
+        /// Allows a component to impose a hard limit on the Item's MaxStackSize.
+        /// Returns int.MaxValue by default (no limit).
+        /// </summary>
+        public virtual int GetMaxStackSizeLimit()
+        {
+            return int.MaxValue;
+        }
     }
 
 }

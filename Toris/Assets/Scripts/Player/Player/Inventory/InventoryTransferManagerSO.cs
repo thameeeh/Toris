@@ -58,7 +58,7 @@ namespace OutlandHaven.Inventory
                 sourceSlot.DecreaseCount(actualAmount);
             }
             // 2. Is the target slot holding the same stackable item type? (Stack)
-            else if (targetSlot.HeldItem.IsStackableWith(sourceSlot.HeldItem))
+            else if (targetSlot.HeldItem.IsStackableWith(sourceSlot.HeldItem) && targetSlot.HeldItem.BaseItem.MaxStackSize > 1)
             {
                 int maxStackSize = targetSlot.HeldItem.BaseItem.MaxStackSize;
                 int spaceInTarget = maxStackSize - targetSlot.Count;
@@ -70,8 +70,13 @@ namespace OutlandHaven.Inventory
                     targetSlot.IncreaseCount(amountWeCanMove);
                     sourceSlot.DecreaseCount(amountWeCanMove);
                 }
+                else
+                {
+                    // Stack is full, perform a swap instead
+                    SwapSlots(sourceSlot, targetSlot);
+                }
             }
-            // 3. Is the target slot holding a different item? (Swap)
+            // 3. Different items or non-stackable: Perform a Swap
             else
             {
                 // You cannot perform a swap if you are only moving a partial stack.
@@ -81,12 +86,7 @@ namespace OutlandHaven.Inventory
                     return;
                 }
 
-                // Perform a direct swap of the item instances and counts
-                ItemInstance tempItem = targetSlot.HeldItem;
-                int tempCount = targetSlot.Count;
-
-                targetSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
-                sourceSlot.SetItem(tempItem, tempCount);
+                SwapSlots(sourceSlot, targetSlot);
             }
 
             // Cleanup: If the source slot is now empty after a partial move or stack, clear it.
@@ -97,6 +97,15 @@ namespace OutlandHaven.Inventory
 
             // Fire events to notify listeners that inventories have changed
             _uiInventoryEvents.OnSpecificSlotsUpdated?.Invoke(sourceSlot, targetSlot);
+        }
+
+        private void SwapSlots(InventorySlot source, InventorySlot target)
+        {
+            ItemInstance tempItem = target.HeldItem;
+            int tempCount = target.Count;
+
+            target.SetItem(source.HeldItem, source.Count);
+            source.SetItem(tempItem, tempCount);
         }
     }
 }

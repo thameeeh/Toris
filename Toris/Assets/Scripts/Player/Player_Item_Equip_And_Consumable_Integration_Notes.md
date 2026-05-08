@@ -16,7 +16,7 @@ The current player-owned runtime now supports:
 * timed buff consumables through the player effect pipeline
 * health regeneration over time through `HealthRegenPerSecond`
 * per-item cooldown handling
-* charge consumption and depletion cleanup
+* item depletion and cleanup upon use
 
 Treat that as the stable baseline.
 
@@ -107,11 +107,9 @@ Consumables may support:
 The item data already exists:
 
 * `ConsumableComponent`
-* `ConsumableState`
 * payload
 * amount
 * cooldown
-* max charges
 
 The first runtime use path is now active.
 
@@ -184,10 +182,8 @@ Recommended responsibilities:
 
 * apply instant effects
 * apply timed buff effects
-* manage charges
 * manage cooldowns
 * manage active timed source expiry
-* handle stack cleanup
 * emit inventory refresh after authoritative mutation
 
 Keep `InventoryActionController` small by forwarding use requests into that controller.
@@ -204,27 +200,20 @@ Use this main inventory right-click behavior in `Normal` context:
 
 That fits the current interaction architecture better than inventing a new parallel click system.
 
-## Stack And Charge Rule
+## Stack Rule
 
-Treat stacked charged consumables as a split-on-use case.
+Treat consumables as stackable items that are consumed one by one.
 
 Current data model:
 
 * `InventorySlot` stores one `HeldItem` and one `Count`
-* `ItemInstance` stores runtime state
-* `ConsumableState` stores `CurrentCharges`
+* `ItemInstance` stores runtime state (if any)
 
 Current runtime rule:
 
-* charged consumables may stack if their runtime states match
-* when the player uses one item from a charged stack, the system splits one copy out into a partially used item instance
-* that partially used copy is added into a compatible stack or empty slot
-* if there is no room for that partial copy, use is refused
-
-This keeps loot quantity and inventory stacking separate:
-
-* loot tables decide how many copies drop
-* `MaxStackSize` decides how many identical copies fit in one slot
+* consumables stack up to their `MaxStackSize` defined in the `InventoryItemSO`.
+* when the player uses a consumable, the `Count` of the slot is decreased by 1.
+* if the `Count` reaches 0, the item is removed from the slot.
 
 ## Active V1 Scope
 
@@ -237,7 +226,6 @@ Keep the current consumable pass narrow.
 * instant stamina restore
 * timed buff consumables through `PlayerEffectSourceController`
 * health-over-time consumables through `HealthRegenPerSecond`
-* charge consumption
 * item removal when depleted
 * inventory refresh after successful use
 

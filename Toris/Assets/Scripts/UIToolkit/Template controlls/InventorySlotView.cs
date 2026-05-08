@@ -91,10 +91,6 @@ namespace OutlandHaven.Inventory
             if (slotData.Count > 1)
                 return slotData.Count.ToString();
 
-            ConsumableState consumableState = slotData.HeldItem?.GetState<ConsumableState>();
-            if (consumableState != null && consumableState.CurrentCharges > 1)
-                return consumableState.CurrentCharges.ToString();
-
             return string.Empty;
         }
 

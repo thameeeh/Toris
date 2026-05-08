@@ -31,14 +31,27 @@ namespace OutlandHaven.Inventory
                 while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
                     int index = LiveSlots.Count;
-                    /*SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
+                    SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
                         ? ContainerBlueprint.PredefinedFilters[index]
-                        : SlotFilterType.Any;*/
-                    LiveSlots.Add(new InventorySlot());
+                        : SlotFilterType.Any;
+                    LiveSlots.Add(new InventorySlot(filter));
                 }
                 while (LiveSlots.Count > ContainerBlueprint.SlotCount)
                 {
                     LiveSlots.RemoveAt(LiveSlots.Count - 1);
+                }
+
+                // Update filters on existing slots in case the blueprint changed
+                for (int i = 0; i < LiveSlots.Count; i++)
+                {
+                    if (ContainerBlueprint.PredefinedFilters != null && i < ContainerBlueprint.PredefinedFilters.Length)
+                    {
+                        LiveSlots[i].AllowedFilter = ContainerBlueprint.PredefinedFilters[i];
+                    }
+                    else
+                    {
+                        LiveSlots[i].AllowedFilter = SlotFilterType.Any;
+                    }
                 }
             }
 
@@ -59,25 +72,34 @@ namespace OutlandHaven.Inventory
                 while (LiveSlots.Count < ContainerBlueprint.SlotCount)
                 {
                     int index = LiveSlots.Count;
-                    /*SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
+                    SlotFilterType filter = (ContainerBlueprint.PredefinedFilters != null && index < ContainerBlueprint.PredefinedFilters.Length)
                         ? ContainerBlueprint.PredefinedFilters[index]
-                        : SlotFilterType.Any;*/
-                    LiveSlots.Add(new InventorySlot());
+                        : SlotFilterType.Any;
+                    LiveSlots.Add(new InventorySlot(filter));
                 }
                 while (LiveSlots.Count > ContainerBlueprint.SlotCount)
                 {
                     LiveSlots.RemoveAt(LiveSlots.Count - 1);
                 }
 
-                foreach (var slot in LiveSlots)
+                for (int i = 0; i < LiveSlots.Count; i++)
                 {
+                    var slot = LiveSlots[i];
                     if (slot != null)
                     {
+                        // Update the filter from the blueprint
+                        if (ContainerBlueprint.PredefinedFilters != null && i < ContainerBlueprint.PredefinedFilters.Length)
+                        {
+                            slot.AllowedFilter = ContainerBlueprint.PredefinedFilters[i];
+                        }
+                        else
+                        {
+                            slot.AllowedFilter = SlotFilterType.Any;
+                        }
+
                         // If an item is assigned but the count is 0 (or negative), force it to 1
                         if (slot.HeldItem != null && slot.HeldItem.BaseItem != null && slot.Count <= 0)
                         {
-                            // Note: Depending on how InventorySlot is written, you might need to adjust this line.
-                            // If Count is read-only, use your SetItem method:
                             slot.SetItem(slot.HeldItem, 1);
                         }
                         // Optional cleanup: If the item was deleted from the inspector but the count remained, clear it
@@ -140,36 +162,48 @@ namespace OutlandHaven.Inventory
                 return false; // Safely abort without corrupting data
             }
 
-            // 2. We know it fits, so we can safely add it to existing stacks
-            foreach (var slot in LiveSlots)
+            bool isStackable = itemInstance.BaseItem.MaxStackSize > 1;
+
+            // 2. We know it fits. If it's stackable, try to fill existing stacks first.
+            if (isStackable)
             {
-                if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance) && slot.Count < itemInstance.BaseItem.MaxStackSize)
+                foreach (var slot in LiveSlots)
                 {
-                    int spaceInStack = itemInstance.BaseItem.MaxStackSize - slot.Count;
-                    int amountToAdd = Mathf.Min(spaceInStack, quantity);
+                    if (!slot.IsEmpty && slot.HeldItem.IsStackableWith(itemInstance) && slot.Count < itemInstance.BaseItem.MaxStackSize)
+                    {
+                        int spaceInStack = itemInstance.BaseItem.MaxStackSize - slot.Count;
+                        int amountToAdd = Mathf.Min(spaceInStack, quantity);
 
-                    slot.IncreaseCount(amountToAdd);
-                    quantity -= amountToAdd;
+                        slot.IncreaseCount(amountToAdd);
+                        quantity -= amountToAdd;
 
-                    if (quantity <= 0) break;
+                        if (quantity <= 0) break;
+                    }
                 }
             }
 
-            // 3. Put any leftovers into empty slots
+            // 3. Put any leftovers (or all of it if non-stackable) into empty slots
             if (quantity > 0)
             {
                 foreach (var slot in LiveSlots)
                 {
                     if (slot.IsEmpty)
                     {
-                        int spaceInStack = itemInstance.BaseItem.MaxStackSize;
-                        int amountToAdd = Mathf.Min(spaceInStack, quantity);
+                        if (isStackable)
+                        {
+                            int spaceInStack = itemInstance.BaseItem.MaxStackSize;
+                            int amountToAdd = Mathf.Min(spaceInStack, quantity);
 
-                        // CRITICAL FIX: Clone the item so the new slot gets its own memory reference
-                        ItemInstance newStack = itemInstance.Clone();
-
-                        slot.SetItem(newStack, amountToAdd);
-                        quantity -= amountToAdd;
+                            ItemInstance newStack = itemInstance.Clone();
+                            slot.SetItem(newStack, amountToAdd);
+                            quantity -= amountToAdd;
+                        }
+                        else
+                        {
+                            // Non-stackable: Add items one by one into separate slots
+                            slot.SetItem(itemInstance.Clone(), 1);
+                            quantity -= 1;
+                        }
 
                         if (quantity <= 0) break;
                     }
@@ -233,13 +267,17 @@ namespace OutlandHaven.Inventory
         private int CalculateAvailableSpace(ItemInstance itemInstance)
         {
             int space = 0;
+            bool isStackable = itemInstance.BaseItem.MaxStackSize > 1;
+
             foreach (var slot in LiveSlots)
             {
                 if (slot.IsEmpty)
                 {
-                    space += itemInstance.BaseItem.MaxStackSize;
+                    // For stackable items, an empty slot provides MaxStackSize space.
+                    // For non-stackable items, an empty slot only provides 1 space.
+                    space += isStackable ? itemInstance.BaseItem.MaxStackSize : 1;
                 }
-                else if (slot.HeldItem.IsStackableWith(itemInstance))
+                else if (isStackable && slot.HeldItem.IsStackableWith(itemInstance))
                 {
                     space += (itemInstance.BaseItem.MaxStackSize - slot.Count);
                 }
@@ -310,17 +348,21 @@ namespace OutlandHaven.Inventory
 
         private bool LooksLikeEquipmentContainer()
         {
-            /*if (ContainerBlueprint != null
+            if (ContainerBlueprint != null
                 && ContainerBlueprint.PredefinedFilters != null
-                && ContainerBlueprint.PredefinedFilters.Length >= 5
-                && ContainerBlueprint.PredefinedFilters[0] == SlotFilterType.Head
-                && ContainerBlueprint.PredefinedFilters[1] == SlotFilterType.Chest
-                && ContainerBlueprint.PredefinedFilters[2] == SlotFilterType.Legs
-                && ContainerBlueprint.PredefinedFilters[3] == SlotFilterType.Arms
-                && ContainerBlueprint.PredefinedFilters[4] == SlotFilterType.Weapon)
+                && ContainerBlueprint.PredefinedFilters.Length > 0)
             {
-                return true;
-            }*/
+                // If the first filter is an equipment type, it's likely the equipment container
+                SlotFilterType firstFilter = ContainerBlueprint.PredefinedFilters[0];
+                if (firstFilter == SlotFilterType.Head || 
+                    firstFilter == SlotFilterType.Chest || 
+                    firstFilter == SlotFilterType.Legs ||
+                    firstFilter == SlotFilterType.Arms ||
+                    firstFilter == SlotFilterType.Weapon)
+                {
+                    return true;
+                }
+            }
 
             string objectName = gameObject != null ? gameObject.name : string.Empty;
             return !string.IsNullOrEmpty(objectName)

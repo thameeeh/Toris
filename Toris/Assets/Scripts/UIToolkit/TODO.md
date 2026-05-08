@@ -23,8 +23,12 @@ This document outlines our high-level goals and progress for connecting the Main
 
 ---
 
-## 🚩 Known Issues (Pending Later Phase)
+## 🚩 Known Issues & Architectural Debt
 - **Inventory Drag-and-Drop Bug:** Dynamically instantiated slots sometimes lose pointer interaction or fail to register drops due to `TemplateContainer` wrapper properties. (Requires targeted fix in `InventorySlotView.cs` and layout analysis).
+- **Logic Fragmentation (Consumables):** Consumption logic is split between `PlayerConsumableController` and `ConsumableManagerSO`. Future logic (sounds, cast times) must be duplicated or consolidated into an `IUsable` component pattern.
+- **O(N) Component Lookups:** Frequent calls to `GetComponent<T>()` on `ItemInstance` use linear searches through `[SerializeReference]` lists. This may cause performance micro-stuttering in late-game scenarios with high item counts.
+- **Closed-for-Extension Controllers:** `InventoryActionController` uses hardcoded type checks for `ConsumableComponent` and `EquipableComponent`. This should be refactored to a Command or Interface-based approach (`IInteractable`) to support new item behaviors without modifying the controller.
+- **Passive UI Updates:** UI relies on manual pokes from controllers rather than the Model (`ItemInstance`) broadcasting its own state changes. Durability or background timer updates will be difficult to synchronize.
 
 ---
 
@@ -44,3 +48,4 @@ Ensure that selecting a save slot from the Main Menu instantly restores the play
 - [X] **Confirmation Modal (Save Deletion & Exit)** (COMPLETED)
 - [X] **Pause Menu Implementation** (COMPLETED)
 - [X] **UI Polish & Consistency** (COMPLETED)
+- [X] **Equippable Stacking Refactor** (COMPLETED) - Enforced MaxStackSize=1 for equippables and implemented swap-on-drag behavior.

@@ -62,6 +62,7 @@ namespace OutlandHaven.UIToolkit
         public void ClearRuntimeSnapshots()
         {
             PlayerInventory = null;
+            PlayerEquipment = null;
             _playerInventorySnapshot = null;
             _equipmentInventorySnapshot = null;
             _playerProgressionSnapshot = null;

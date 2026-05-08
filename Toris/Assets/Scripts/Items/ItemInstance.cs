@@ -15,7 +15,7 @@ namespace OutlandHaven.Inventory
 
         public event Action<ItemInstance> OnStateChanged; // for auto update of item stats
 
-        // Holds the runtime data (e.g., DurabilityState, ConsumableState)
+        // Holds the runtime data (e.g., DurabilityState, UpgradeableState)
         [SerializeReference]
         public List<ItemComponentState> States = new List<ItemComponentState>();
 

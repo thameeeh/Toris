@@ -21,7 +21,11 @@ public enum PlayerSfxEventType
     PlayerDied = 60,
     StatusApplied = 70,
     StatusRemoved = 71,
-    StatusDamageTick = 72
+    StatusDamageTick = 72,
+    ConsumableUsed = 80,
+    HealthConsumableUsed = 81,
+    ManaConsumableUsed = 82,
+    TimedConsumableUsed = 83
 }
 
 public enum PlayerSfxResourceKind
@@ -52,6 +56,7 @@ public readonly struct PlayerSfxEventContext
     public readonly float Amount;
     public readonly float CurrentValue;
     public readonly float MaxValue;
+    public readonly PlayerResourceChangeReason ResourceChangeReason;
     public readonly PlayerStatusEffectType StatusType;
     public readonly bool HasStatusType;
 
@@ -73,6 +78,7 @@ public readonly struct PlayerSfxEventContext
         float amount,
         float currentValue,
         float maxValue,
+        PlayerResourceChangeReason resourceChangeReason,
         PlayerStatusEffectType statusType,
         bool hasStatusType)
     {
@@ -93,6 +99,7 @@ public readonly struct PlayerSfxEventContext
         Amount = amount;
         CurrentValue = currentValue;
         MaxValue = maxValue;
+        ResourceChangeReason = resourceChangeReason;
         StatusType = statusType;
         HasStatusType = hasStatusType;
     }

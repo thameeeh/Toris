@@ -478,11 +478,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c4cb29378184a489269998929517b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSfx
-  rules: []
+  rules:
+  - {fileID: 11400000, guid: 758f9ed52e4891640ad4827edb4a360c, type: 2}
   legacyModules:
   - {fileID: 11400000, guid: c3499cca59d0d2a469a97d013ed6de67, type: 2}
   - {fileID: 11400000, guid: ce6563ef3412d8c4095aea9496ef8e90, type: 2}
   - {fileID: 11400000, guid: 3ea2e61512cc04d46aa784e990b8f510, type: 2}
+  debugLogEvents: 0
 --- !u!114 &8647224738935113748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,7 +505,9 @@ MonoBehaviour:
   facing: {fileID: 1884929689371088939}
   stats: {fileID: 8137892244548921797}
   statusController: {fileID: 957290264796575780}
+  inventoryActions: {fileID: 7812172008567482713}
   movementStartSpeed: 0.1
+  debugLogSfxEvents: 0
 --- !u!114 &277378599010215229
 MonoBehaviour:
   m_ObjectHideFlags: 0

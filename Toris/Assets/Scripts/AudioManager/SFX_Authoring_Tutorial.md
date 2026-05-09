@@ -31,10 +31,10 @@ Existing bow, dash, and footstep module assets can remain in `PlayerSfx.legacyMo
 
 Create `PlayerSfxRule_HealPotion`.
 
-- Trigger: `Healed`.
-- Playback Mode: `AttachedOneShot`.
+- Trigger: `HealthConsumableUsed`.
+- Playback Mode: `OneShotAtEventPosition`, `AttachedOneShot`, or `OneShot2D`.
 - SFX ID: `Player_HealPotion`.
-- Minimum Amount: set this above passive regeneration if passive regen should stay silent.
+- Minimum Amount: optional. Leave it at `0` unless only larger HP consumables should play this rule.
 - Cooldown Seconds: optional, such as `0.05`.
 - Force 2D: enabled if the heal should always sound centered.
 
@@ -42,12 +42,14 @@ Create `PlayerSfxRule_HealPotion`.
 
 Create `PlayerSfxRule_StaminaPotion`.
 
-- Trigger: `StaminaRestored`.
+- Trigger: `ManaConsumableUsed`.
 - Playback Mode: `AttachedOneShot` or `OneShot2D`.
 - SFX ID: `Player_StaminaPotion`.
-- Minimum Amount: set above normal regeneration if only potion-sized restores should play.
+- Minimum Amount: optional. Leave it at `0` unless only larger mana/stamina consumables should play this rule.
 
-If the game later has a separate mana resource, add a new player event in the bridge for mana and reuse the same rule pattern.
+Use `Healed`, `Damaged`, `StaminaRestored`, and `StaminaSpent` for general resource-change sounds. Use the consumable triggers for potion/item-use sounds so startup restoration, passive regeneration, and stat recalculation stay silent.
+Resource-change triggers are silent during initialization, world-transfer restoration, and resolved-stat recalculation.
+For a broad `HealthChanged` or `StaminaChanged` rule that should react to direct damage/restores but not passive regen or heal-over-time ticks, enable `Ignore Regeneration Resource Changes`.
 
 ## Add A Poison Loop
 

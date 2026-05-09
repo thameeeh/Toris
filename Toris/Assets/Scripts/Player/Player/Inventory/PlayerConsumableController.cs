@@ -3,6 +3,29 @@ using UnityEngine;
 
 namespace OutlandHaven.Inventory
 {
+    public readonly struct PlayerConsumableUseContext
+    {
+        public readonly InventoryItemSO Item;
+        public readonly ConsumableEffectMode EffectMode;
+        public readonly ConsumptionSlot Payload;
+        public readonly float Amount;
+        public readonly float Duration;
+
+        public PlayerConsumableUseContext(
+            InventoryItemSO item,
+            ConsumableEffectMode effectMode,
+            ConsumptionSlot payload,
+            float amount,
+            float duration)
+        {
+            Item = item;
+            EffectMode = effectMode;
+            Payload = payload;
+            Amount = amount;
+            Duration = duration;
+        }
+    }
+
     /// <summary>
     /// Runtime owner for consumable usage rules, cooldowns, and slot mutation.
     /// </summary>
@@ -17,6 +40,8 @@ namespace OutlandHaven.Inventory
         private readonly Dictionary<InventoryItemSO, float> _nextUseByItem = new();
         private readonly Dictionary<string, float> _timedConsumableExpirations = new();
         private readonly List<string> _expiredTimedConsumableKeys = new();
+
+        public event System.Action<PlayerConsumableUseContext> ConsumableUsed;
 
         public PlayerConsumableController(
             UIInventoryEventsSO uiInventoryEvents,
@@ -83,7 +108,7 @@ namespace OutlandHaven.Inventory
             if (!CanConsumeUse(inventoryManager, slot, item, state))
                 return false;
 
-            if (!TryApplyEffect(item, consumable))
+            if (!TryApplyEffect(item, consumable, out PlayerConsumableUseContext useContext))
             {
                 return false;
             }
@@ -94,6 +119,7 @@ namespace OutlandHaven.Inventory
                 _nextUseByItem[item.BaseItem] = Time.time + consumable.CooldownDuration;
 
             _uiInventoryEvents?.OnSpecificSlotsUpdated?.Invoke(slot, null);
+            ConsumableUsed?.Invoke(useContext);
             return true;
         }
 
@@ -153,8 +179,13 @@ namespace OutlandHaven.Inventory
             return nextAllowedTime > Time.time;
         }
 
-        private bool TryApplyEffect(ItemInstance item, ConsumableComponent consumable)
+        private bool TryApplyEffect(
+            ItemInstance item,
+            ConsumableComponent consumable,
+            out PlayerConsumableUseContext useContext)
         {
+            useContext = default;
+
             switch (consumable.EffectMode)
             {
                 case ConsumableEffectMode.InstantResource:
@@ -165,24 +196,32 @@ namespace OutlandHaven.Inventory
                         return false;
                     }
 
-                    return ApplyInstantEffect(consumable, playerStats, item);
+                    return ApplyInstantEffect(consumable, playerStats, item, out useContext);
                 case ConsumableEffectMode.TimedPlayerEffect:
-                    return ApplyTimedEffect(item, consumable);
+                    return ApplyTimedEffect(item, consumable, out useContext);
                 default:
                     Debug.LogWarning($"[PlayerConsumableController] Consumable '{item?.BaseItem?.ItemName}' uses unsupported effect mode '{consumable.EffectMode}'.");
                     return false;
             }
         }
 
-        private static bool ApplyInstantEffect(ConsumableComponent consumable, PlayerStats playerStats, ItemInstance item)
+        private static bool ApplyInstantEffect(
+            ConsumableComponent consumable,
+            PlayerStats playerStats,
+            ItemInstance item,
+            out PlayerConsumableUseContext useContext)
         {
+            useContext = default;
+
             switch (consumable.EffectPayload)
             {
                 case ConsumptionSlot.HP:
                     playerStats.RestoreHealth(consumable.amount);
+                    useContext = CreateUseContext(item, consumable);
                     return true;
                 case ConsumptionSlot.Mana:
                     playerStats.RestoreStamina(consumable.amount);
+                    useContext = CreateUseContext(item, consumable);
                     return true;
                 default:
                     Debug.LogWarning($"[PlayerConsumableController] Consumable '{item?.BaseItem?.ItemName}' uses unsupported payload '{consumable.EffectPayload}'.");
@@ -190,8 +229,13 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        private bool ApplyTimedEffect(ItemInstance item, ConsumableComponent consumable)
+        private bool ApplyTimedEffect(
+            ItemInstance item,
+            ConsumableComponent consumable,
+            out PlayerConsumableUseContext useContext)
         {
+            useContext = default;
+
             if (_playerEffectSourceController == null)
             {
                 Debug.LogWarning("[PlayerConsumableController] Cannot use timed consumable because PlayerEffectSourceController could not be resolved.");
@@ -213,7 +257,18 @@ namespace OutlandHaven.Inventory
             string sourceKey = BuildTimedConsumableSourceKey(item);
             _playerEffectSourceController.SetSource(sourceKey, consumable.TimedEffectDefinition);
             _timedConsumableExpirations[sourceKey] = Time.time + consumable.TimedEffectDuration;
+            useContext = CreateUseContext(item, consumable);
             return true;
+        }
+
+        private static PlayerConsumableUseContext CreateUseContext(ItemInstance item, ConsumableComponent consumable)
+        {
+            return new PlayerConsumableUseContext(
+                item?.BaseItem,
+                consumable.EffectMode,
+                consumable.EffectPayload,
+                consumable.amount,
+                consumable.TimedEffectDuration);
         }
 
         private static string BuildTimedConsumableSourceKey(ItemInstance item)

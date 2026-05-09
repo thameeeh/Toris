@@ -32,7 +32,11 @@ public sealed class SfxManager : ISfxManager
 
     public AudioVoiceHandle Play(string id, SfxPlayRequest request)
     {
-        if (!TryGetDefinition(id, out SfxDefinition definition)) return AudioVoiceHandle.Invalid;
+        if (!TryGetDefinition(id, out SfxDefinition definition))
+        {
+            DebugLogMissingDefinition(id, nameof(Play));
+            return AudioVoiceHandle.Invalid;
+        }
 
         Vector3 worldPosition = request.explicitWorldPosition ?? Vector3.zero;
         return PlayAtInternal(definition, worldPosition, request);
@@ -42,7 +46,12 @@ public sealed class SfxManager : ISfxManager
 
     public AudioVoiceHandle PlayAt(string id, Vector3 worldPosition, SfxPlayRequest request)
     {
-        if (!TryGetDefinition(id, out SfxDefinition definition)) return AudioVoiceHandle.Invalid;
+        if (!TryGetDefinition(id, out SfxDefinition definition))
+        {
+            DebugLogMissingDefinition(id, nameof(PlayAt));
+            return AudioVoiceHandle.Invalid;
+        }
+
         return PlayAtInternal(definition, worldPosition, request);
     }
 
@@ -51,32 +60,58 @@ public sealed class SfxManager : ISfxManager
 
     public AudioVoiceHandle PlayAttached(string id, Transform target, Vector3 localOffset, SfxPlayRequest request)
     {
-        if (target == null) return AudioVoiceHandle.Invalid;
-        if (!TryGetDefinition(id, out SfxDefinition definition)) return AudioVoiceHandle.Invalid;
+        if (target == null)
+        {
+            DebugLogRejected(nameof(PlayAttached), id, "target is null");
+            return AudioVoiceHandle.Invalid;
+        }
+
+        if (!TryGetDefinition(id, out SfxDefinition definition))
+        {
+            DebugLogMissingDefinition(id, nameof(PlayAttached));
+            return AudioVoiceHandle.Invalid;
+        }
 
         if (voicePool.TryPlayAttached(definition, target, localOffset, request, out AudioVoiceHandle handle))
             return handle;
 
+        DebugLogRejected(nameof(PlayAttached), id, "voice pool rejected request");
         return AudioVoiceHandle.Invalid;
     }
+
     public AudioVoiceHandle PlayAttachedLoop(string id, Transform target, Vector3 localOffset, SfxPlayRequest request)
-{
-    if (target == null) return AudioVoiceHandle.Invalid;
-    if (!TryGetDefinition(id, out SfxDefinition definition)) return AudioVoiceHandle.Invalid;
+    {
+        if (target == null)
+        {
+            DebugLogRejected(nameof(PlayAttachedLoop), id, "target is null");
+            return AudioVoiceHandle.Invalid;
+        }
 
-    if (voicePool.TryPlayAttachedLoop(definition, target, localOffset, request, out AudioVoiceHandle handle))
-        return handle;
+        if (!TryGetDefinition(id, out SfxDefinition definition))
+        {
+            DebugLogMissingDefinition(id, nameof(PlayAttachedLoop));
+            return AudioVoiceHandle.Invalid;
+        }
 
-    return AudioVoiceHandle.Invalid;
-}
+        if (voicePool.TryPlayAttachedLoop(definition, target, localOffset, request, out AudioVoiceHandle handle))
+            return handle;
+
+        DebugLogRejected(nameof(PlayAttachedLoop), id, "voice pool rejected request");
+        return AudioVoiceHandle.Invalid;
+    }
 
     public AudioVoiceHandle PlayLoop(string id, Vector3 worldPosition, SfxPlayRequest request)
     {
-        if (!TryGetDefinition(id, out SfxDefinition definition)) return AudioVoiceHandle.Invalid;
+        if (!TryGetDefinition(id, out SfxDefinition definition))
+        {
+            DebugLogMissingDefinition(id, nameof(PlayLoop));
+            return AudioVoiceHandle.Invalid;
+        }
 
         if (voicePool.TryPlayLoop(definition, worldPosition, request, out AudioVoiceHandle handle))
             return handle;
 
+        DebugLogRejected(nameof(PlayLoop), id, "voice pool rejected request");
         return AudioVoiceHandle.Invalid;
     }
 
@@ -95,6 +130,21 @@ public sealed class SfxManager : ISfxManager
         if (voicePool.TryPlayOneShot(definition, worldPosition, request, out AudioVoiceHandle handle))
             return handle;
 
+        DebugLogRejected(nameof(PlayAtInternal), definition != null ? definition.Id : string.Empty, "voice pool rejected request");
         return AudioVoiceHandle.Invalid;
+    }
+
+    private void DebugLogMissingDefinition(string id, string operation)
+    {
+#if UNITY_EDITOR
+        Debug.LogWarning($"[SfxManager] {operation} failed: SFX id '{id}' was not found, or the SfxLibrary is missing.");
+#endif
+    }
+
+    private void DebugLogRejected(string operation, string id, string reason)
+    {
+#if UNITY_EDITOR
+        Debug.LogWarning($"[SfxManager] {operation} failed for SFX id '{id}': {reason}.");
+#endif
     }
 }

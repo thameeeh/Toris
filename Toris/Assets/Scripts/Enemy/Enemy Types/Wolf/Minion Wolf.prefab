@@ -303,6 +303,7 @@ MonoBehaviour:
   questEnemyTypeOrTag: 
   isPassivePrey: 0
   threatensPassiveCreatures: 1
+  debugAttackLogs: 0
   AttackDamage: 15
   MovementSpeed: 1.8
   role: 1

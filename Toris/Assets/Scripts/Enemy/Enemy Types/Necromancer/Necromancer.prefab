@@ -81,6 +81,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753bbfb22f7111b46a64894c444bffee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAggroCheck
+  detectPlayer: 1
+  detectPassivePrey: 0
+  detectThreatsToPassiveCreatures: 0
 --- !u!1 &4493627601285047705
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120c57c5114fc584c87c7ed754f6554e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStrikingDistanceCheck
+  detectPlayer: 1
+  detectPassivePrey: 0
 --- !u!1 &7028104305884219924
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +666,9 @@ MonoBehaviour:
   alertIndicator: {fileID: 0}
   questEnemyId: 
   questEnemyTypeOrTag: 
+  isPassivePrey: 0
+  threatensPassiveCreatures: 0
+  debugAttackLogs: 0
   AttackDamage: 16
   MovementSpeed: 1.5
   castPoint: {fileID: 6703678301246532537}

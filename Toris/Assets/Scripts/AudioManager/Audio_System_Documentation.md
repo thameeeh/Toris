@@ -267,8 +267,12 @@ Supported player rule triggers:
 - Dash: `DashStarted`, `DashCompleted`.
 - Movement: `MovementStarted`, `MovementStopped`.
 - Resources: `HealthChanged`, `Healed`, `Damaged`, `StaminaChanged`, `StaminaRestored`, `StaminaSpent`.
+- Consumables: `ConsumableUsed`, `HealthConsumableUsed`, `ManaConsumableUsed`, `TimedConsumableUsed`.
 - Life state: `PlayerDied`.
 - Status effects: `StatusApplied`, `StatusRemoved`, `StatusDamageTick`.
+
+Resource triggers are emitted from reason-aware player stat changes. Initialization, save/world-transfer restoration, and resolved-effect/stat recalculation update the SFX bridge snapshot silently and do not emit `Healed` or `Damaged`.
+Rules can filter to a specific `PlayerResourceChangeReason` or ignore regeneration changes to prevent passive regeneration/heal-over-time ticks from spamming broad resource triggers.
 
 ScriptableObject modules must remain stateless and reusable.
 
@@ -290,18 +294,18 @@ Gameplay scripts should not reference `AudioSource` components or audio prefabs 
 
 Healing potion burst:
 
-- Trigger: `Healed`.
-- Playback Mode: `AttachedOneShot` or `OneShot2D`.
+- Trigger: `HealthConsumableUsed`.
+- Playback Mode: `OneShotAtEventPosition`, `AttachedOneShot`, or `OneShot2D`.
 - SFX ID: healing sound ID from `SfxLibrary`.
-- Minimum Amount: set above passive regeneration if regen should not trigger it.
+- Minimum Amount: optional. Leave at `0` unless only larger HP consumables should trigger it.
 - Cooldown Seconds: optional throttle if several heals happen quickly.
 
 Stamina or mana-style restore:
 
-- Trigger: `StaminaRestored`.
+- Trigger: `ManaConsumableUsed`.
 - Playback Mode: `AttachedOneShot` or `OneShot2D`.
 - SFX ID: restore sound ID.
-- Minimum Amount: set above normal regeneration if only potions should trigger it.
+- Minimum Amount: optional. Leave at `0` unless only larger mana/stamina consumables should trigger it.
 
 Poison loop:
 

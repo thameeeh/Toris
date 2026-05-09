@@ -1,3 +1,4 @@
+using OutlandHaven.Inventory;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -13,9 +14,13 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
     [SerializeField] private PlayerFacing facing;
     [SerializeField] private PlayerStats stats;
     [SerializeField] private PlayerStatusController statusController;
+    [SerializeField] private InventoryActionController inventoryActions;
 
     [Header("Movement Events")]
     [SerializeField] private float movementStartSpeed = 0.1f;
+
+    [Header("Diagnostics")]
+    [SerializeField] private bool debugLogSfxEvents;
 
     private DashAbility boundDash;
     private bool eventsBound;
@@ -94,6 +99,9 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
 
         if (statusController == null)
             TryGetComponent(out statusController);
+
+        if (inventoryActions == null)
+            TryGetComponent(out inventoryActions);
     }
 
     private void InitializeResourceSnapshots()
@@ -137,8 +145,8 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
 
         if (stats != null)
         {
-            stats.OnHealthChanged += HandleHealthChanged;
-            stats.OnStaminaChanged += HandleStaminaChanged;
+            stats.OnHealthResourceChanged += HandleHealthResourceChanged;
+            stats.OnStaminaResourceChanged += HandleStaminaResourceChanged;
             stats.OnPlayerDied += HandlePlayerDied;
         }
 
@@ -147,6 +155,11 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             statusController.OnStatusApplied += HandleStatusApplied;
             statusController.OnStatusRemoved += HandleStatusRemoved;
             statusController.OnStatusDamageTick += HandleStatusDamageTick;
+        }
+
+        if (inventoryActions != null)
+        {
+            inventoryActions.ConsumableUsed += HandleConsumableUsed;
         }
 
         eventsBound = true;
@@ -179,8 +192,8 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
 
         if (stats != null)
         {
-            stats.OnHealthChanged -= HandleHealthChanged;
-            stats.OnStaminaChanged -= HandleStaminaChanged;
+            stats.OnHealthResourceChanged -= HandleHealthResourceChanged;
+            stats.OnStaminaResourceChanged -= HandleStaminaResourceChanged;
             stats.OnPlayerDied -= HandlePlayerDied;
         }
 
@@ -189,6 +202,11 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             statusController.OnStatusApplied -= HandleStatusApplied;
             statusController.OnStatusRemoved -= HandleStatusRemoved;
             statusController.OnStatusDamageTick -= HandleStatusDamageTick;
+        }
+
+        if (inventoryActions != null)
+        {
+            inventoryActions.ConsumableUsed -= HandleConsumableUsed;
         }
 
         eventsBound = false;
@@ -251,6 +269,7 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             0f,
             0f,
             0f,
+            PlayerResourceChangeReason.Unknown,
             default,
             false));
     }
@@ -260,39 +279,82 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
         Emit(PlayerSfxEventType.DashCompleted);
     }
 
-    private void HandleHealthChanged(float current, float maximum)
+    private void HandleHealthResourceChanged(PlayerResourceChangeContext change)
     {
-        float delta = hasHealthSnapshot ? current - previousHealth : 0f;
-        previousHealth = current;
+        float delta = hasHealthSnapshot ? change.Delta : 0f;
+        previousHealth = change.CurrentValue;
         hasHealthSnapshot = true;
 
-        EmitResource(PlayerSfxEventType.HealthChanged, PlayerSfxResourceKind.Health, delta, current, maximum);
+        if (!ShouldEmitResourceEvents(change.Reason))
+            return;
+
+        EmitResource(
+            PlayerSfxEventType.HealthChanged,
+            PlayerSfxResourceKind.Health,
+            delta,
+            change.CurrentValue,
+            change.MaxValue,
+            change.Reason);
 
         if (delta > 0f)
         {
-            EmitResource(PlayerSfxEventType.Healed, PlayerSfxResourceKind.Health, delta, current, maximum);
+            EmitResource(
+                PlayerSfxEventType.Healed,
+                PlayerSfxResourceKind.Health,
+                delta,
+                change.CurrentValue,
+                change.MaxValue,
+                change.Reason);
         }
         else if (delta < 0f)
         {
-            EmitResource(PlayerSfxEventType.Damaged, PlayerSfxResourceKind.Health, -delta, current, maximum);
+            float damageAmount = -delta;
+            EmitResource(
+                PlayerSfxEventType.Damaged,
+                PlayerSfxResourceKind.Health,
+                damageAmount,
+                change.CurrentValue,
+                change.MaxValue,
+                change.Reason);
         }
     }
 
-    private void HandleStaminaChanged(float current, float maximum)
+    private void HandleStaminaResourceChanged(PlayerResourceChangeContext change)
     {
-        float delta = hasStaminaSnapshot ? current - previousStamina : 0f;
-        previousStamina = current;
+        float delta = hasStaminaSnapshot ? change.Delta : 0f;
+        previousStamina = change.CurrentValue;
         hasStaminaSnapshot = true;
 
-        EmitResource(PlayerSfxEventType.StaminaChanged, PlayerSfxResourceKind.Stamina, delta, current, maximum);
+        if (!ShouldEmitResourceEvents(change.Reason))
+            return;
+
+        EmitResource(
+            PlayerSfxEventType.StaminaChanged,
+            PlayerSfxResourceKind.Stamina,
+            delta,
+            change.CurrentValue,
+            change.MaxValue,
+            change.Reason);
 
         if (delta > 0f)
         {
-            EmitResource(PlayerSfxEventType.StaminaRestored, PlayerSfxResourceKind.Stamina, delta, current, maximum);
+            EmitResource(
+                PlayerSfxEventType.StaminaRestored,
+                PlayerSfxResourceKind.Stamina,
+                delta,
+                change.CurrentValue,
+                change.MaxValue,
+                change.Reason);
         }
         else if (delta < 0f)
         {
-            EmitResource(PlayerSfxEventType.StaminaSpent, PlayerSfxResourceKind.Stamina, -delta, current, maximum);
+            EmitResource(
+                PlayerSfxEventType.StaminaSpent,
+                PlayerSfxResourceKind.Stamina,
+                -delta,
+                change.CurrentValue,
+                change.MaxValue,
+                change.Reason);
         }
     }
 
@@ -316,6 +378,27 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
         EmitStatus(PlayerSfxEventType.StatusDamageTick, statusType, damage);
     }
 
+    private void HandleConsumableUsed(PlayerConsumableUseContext useContext)
+    {
+        EmitConsumable(PlayerSfxEventType.ConsumableUsed, useContext);
+
+        if (useContext.EffectMode == ConsumableEffectMode.TimedPlayerEffect)
+        {
+            EmitConsumable(PlayerSfxEventType.TimedConsumableUsed, useContext);
+            return;
+        }
+
+        switch (useContext.Payload)
+        {
+            case ConsumptionSlot.HP:
+                EmitConsumable(PlayerSfxEventType.HealthConsumableUsed, useContext);
+                break;
+            case ConsumptionSlot.Mana:
+                EmitConsumable(PlayerSfxEventType.ManaConsumableUsed, useContext);
+                break;
+        }
+    }
+
     private void Emit(PlayerSfxEventType eventType)
     {
         Emit(CreateContext(eventType));
@@ -326,7 +409,8 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
         PlayerSfxResourceKind resourceKind,
         float amount,
         float current,
-        float maximum)
+        float maximum,
+        PlayerResourceChangeReason resourceChangeReason = PlayerResourceChangeReason.Unknown)
     {
         Emit(CreateContext(
             eventType,
@@ -336,6 +420,7 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             amount,
             current,
             maximum,
+            resourceChangeReason,
             default,
             false));
     }
@@ -350,13 +435,41 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             amount,
             0f,
             0f,
+            PlayerResourceChangeReason.Unknown,
             statusType,
             true));
     }
 
+    private void EmitConsumable(PlayerSfxEventType eventType, PlayerConsumableUseContext useContext)
+    {
+        PlayerSfxResourceKind resourceKind = ResolveConsumableResourceKind(useContext);
+        float current = ResolveCurrentResourceValue(resourceKind);
+        float maximum = ResolveMaxResourceValue(resourceKind);
+
+        Emit(CreateContext(
+            eventType,
+            resourceKind,
+            transform.position,
+            Vector2.zero,
+            useContext.Amount,
+            current,
+            maximum,
+            ResolveConsumableResourceChangeReason(useContext),
+            default,
+            false));
+    }
+
     private void Emit(in PlayerSfxEventContext context)
     {
-        playerSfx?.HandleEvent(context);
+        DebugLogEvent(context);
+
+        if (playerSfx == null)
+        {
+            DebugLogMissingHub(context);
+            return;
+        }
+
+        playerSfx.HandleEvent(context);
     }
 
     private PlayerSfxEventContext CreateContext(PlayerSfxEventType eventType)
@@ -369,6 +482,7 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             0f,
             0f,
             0f,
+            PlayerResourceChangeReason.Unknown,
             default,
             false);
     }
@@ -381,6 +495,7 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
         float amount,
         float currentValue,
         float maxValue,
+        PlayerResourceChangeReason resourceChangeReason,
         PlayerStatusEffectType statusType,
         bool hasStatusType)
     {
@@ -406,7 +521,90 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
             amount,
             currentValue,
             maxValue,
+            resourceChangeReason,
             statusType,
             hasStatusType);
     }
+
+    private static PlayerSfxResourceKind ResolveConsumableResourceKind(PlayerConsumableUseContext useContext)
+    {
+        if (useContext.EffectMode != ConsumableEffectMode.InstantResource)
+            return PlayerSfxResourceKind.None;
+
+        return useContext.Payload switch
+        {
+            ConsumptionSlot.HP => PlayerSfxResourceKind.Health,
+            ConsumptionSlot.Mana => PlayerSfxResourceKind.Stamina,
+            _ => PlayerSfxResourceKind.None
+        };
+    }
+
+    private static PlayerResourceChangeReason ResolveConsumableResourceChangeReason(PlayerConsumableUseContext useContext)
+    {
+        return useContext.EffectMode == ConsumableEffectMode.InstantResource
+            ? PlayerResourceChangeReason.Restore
+            : PlayerResourceChangeReason.Unknown;
+    }
+
+    private float ResolveCurrentResourceValue(PlayerSfxResourceKind resourceKind)
+    {
+        if (stats == null)
+            return 0f;
+
+        return resourceKind switch
+        {
+            PlayerSfxResourceKind.Health => stats.currentHP,
+            PlayerSfxResourceKind.Stamina => stats.currentStamina,
+            _ => 0f
+        };
+    }
+
+    private float ResolveMaxResourceValue(PlayerSfxResourceKind resourceKind)
+    {
+        if (stats == null)
+            return 0f;
+
+        return resourceKind switch
+        {
+            PlayerSfxResourceKind.Health => stats.maxHP,
+            PlayerSfxResourceKind.Stamina => stats.maxStamina,
+            _ => 0f
+        };
+    }
+
+    private static bool ShouldEmitResourceEvents(PlayerResourceChangeReason reason)
+    {
+        return reason switch
+        {
+            PlayerResourceChangeReason.Initialization => false,
+            PlayerResourceChangeReason.RuntimeStateSync => false,
+            PlayerResourceChangeReason.ResolvedEffectsChanged => false,
+            _ => true
+        };
+    }
+
+    private void DebugLogEvent(in PlayerSfxEventContext context)
+    {
+#if UNITY_EDITOR
+        if (!debugLogSfxEvents)
+            return;
+
+        Debug.Log(
+            $"[PlayerSfxEventBridge] Emitting {context.EventType}. hasHub={playerSfx != null}, hasAudio={context.HasAudio}, amount={context.Amount:0.###}, current={context.CurrentValue:0.###}, max={context.MaxValue:0.###}, world={context.WorldPosition}",
+            this);
+#endif
+    }
+
+    private void DebugLogMissingHub(in PlayerSfxEventContext context)
+    {
+#if UNITY_EDITOR
+        if (!debugLogSfxEvents)
+            return;
+
+        Debug.LogWarning(
+            $"[PlayerSfxEventBridge] Cannot dispatch {context.EventType}: PlayerSfx hub is missing.",
+            this);
+#endif
+    }
+
 }

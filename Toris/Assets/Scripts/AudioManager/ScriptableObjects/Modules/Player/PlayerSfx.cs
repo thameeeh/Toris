@@ -9,6 +9,9 @@ public sealed class PlayerSfx : MonoBehaviour
     [Header("Legacy Modules")]
     [SerializeField] private PlayerSfxModule[] legacyModules;
 
+    [Header("Diagnostics")]
+    [SerializeField] private bool debugLogEvents;
+
     private readonly Dictionary<string, AudioVoiceHandle> loopHandles = new();
     private readonly Dictionary<PlayerSfxRuleSO, float> ruleCooldownTimes = new();
     private AudioVoiceHandle footstepLoopHandle;
@@ -82,11 +85,20 @@ public sealed class PlayerSfx : MonoBehaviour
         latestContext = context;
         hasLatestContext = true;
 
+        DebugLogEvent(context);
+
         if (rules != null)
         {
             for (int i = 0; i < rules.Length; i++)
             {
-                rules[i]?.Evaluate(context);
+                PlayerSfxRuleSO rule = rules[i];
+                if (rule == null)
+                {
+                    DebugLogNullRule(i, context);
+                    continue;
+                }
+
+                rule.Evaluate(context);
             }
         }
 
@@ -280,5 +292,31 @@ public sealed class PlayerSfx : MonoBehaviour
             dash: context.Dash,
             motor: context.Motor,
             rb: context.Rb);
+    }
+
+    private void DebugLogEvent(in PlayerSfxEventContext context)
+    {
+#if UNITY_EDITOR
+        if (!debugLogEvents)
+            return;
+
+        int ruleCount = rules != null ? rules.Length : 0;
+        int legacyModuleCount = legacyModules != null ? legacyModules.Length : 0;
+        Debug.Log(
+            $"[PlayerSfx] Event {context.EventType} received. rules={ruleCount}, legacyModules={legacyModuleCount}, hasAudio={context.HasAudio}, amount={context.Amount:0.###}, world={context.WorldPosition}",
+            this);
+#endif
+    }
+
+    private void DebugLogNullRule(int index, in PlayerSfxEventContext context)
+    {
+#if UNITY_EDITOR
+        if (!debugLogEvents)
+            return;
+
+        Debug.LogWarning(
+            $"[PlayerSfx] Rule slot {index} is empty while handling {context.EventType}.",
+            this);
+#endif
     }
 }

@@ -143,6 +143,9 @@ MonoBehaviour:
   alertIndicator: {fileID: 0}
   questEnemyId: 
   questEnemyTypeOrTag: 
+  isPassivePrey: 0
+  threatensPassiveCreatures: 0
+  debugAttackLogs: 0
   AttackDamage: 8
   MovementSpeed: 2.2
   castPoint: {fileID: 2979183751253149904}
@@ -397,6 +400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120c57c5114fc584c87c7ed754f6554e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStrikingDistanceCheck
+  detectPlayer: 1
+  detectPassivePrey: 0
 --- !u!1 &8049371277262346970
 GameObject:
   m_ObjectHideFlags: 0

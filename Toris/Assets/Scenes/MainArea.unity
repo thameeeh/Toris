@@ -188,10 +188,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
-      propertyPath: _slotTemplate
-      value: 
-      objectReference: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
-    - target: {fileID: 7141497543022629664, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: _potionInventory
       value: 
       objectReference: {fileID: 771230528}
@@ -922,6 +918,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: LiveSlots.Array.data[1].Count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+      propertyPath: LiveSlots.Array.data[1].HeldItem.BaseItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
     - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26.60809
@@ -1261,6 +1265,14 @@ PrefabInstance:
       propertyPath: _equipment
       value: 
       objectReference: {fileID: 2014174152}
+    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+      propertyPath: LiveSlots.Array.data[8].Count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+      propertyPath: LiveSlots.Array.data[8].HeldItem.BaseItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -101966,10 +101978,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6374564660408957763, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
-      propertyPath: _uiEvents
-      value: 
-      objectReference: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
     - target: {fileID: 8217643317894173914, guid: 7079425380f8c0648b67514fb646fc5c, type: 3}
       propertyPath: m_Name
       value: UIViews
@@ -102433,10 +102441,6 @@ PrefabInstance:
     - target: {fileID: 292515193771215231, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
-      propertyPath: SaveID
-      value: Player_Inventory
       objectReference: {fileID: 0}
     - target: {fileID: 4643913618560284739, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
       propertyPath: m_Name

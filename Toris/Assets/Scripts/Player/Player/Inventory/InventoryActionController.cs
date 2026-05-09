@@ -65,7 +65,9 @@ public class InventoryActionController : MonoBehaviour
             return;
 
         EnsureConsumableController();
-        _consumableController?.TryUseConsumable(_playerInventory, slot);
+        
+        // Pass control directly to the interface
+        slot.HeldItem.BaseItem.UsableBehavior.TryUse(_consumableController, _playerInventory, slot);
     }
 
     private void HandleRequestUnequip(EquipmentSlot slot)
@@ -104,7 +106,7 @@ public class InventoryActionController : MonoBehaviour
             return false;
         }
 
-        EquipableComponent equipable = sourceSlot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
+        IEquipable equipable = sourceSlot.HeldItem.BaseItem.EquipableBehavior;
         if (equipable == null)
         {
             Debug.LogWarning("[InventoryActionController] Item is not equippable.");
@@ -180,7 +182,7 @@ public class InventoryActionController : MonoBehaviour
         return slot != null &&
                !slot.IsEmpty &&
                slot.HeldItem?.BaseItem != null &&
-               slot.HeldItem.BaseItem.GetComponent<EquipableComponent>() != null;
+               slot.HeldItem.BaseItem.EquipableBehavior != null;
     }
 
     public bool CanUse(InventorySlot slot)
@@ -188,7 +190,7 @@ public class InventoryActionController : MonoBehaviour
         return slot != null &&
                !slot.IsEmpty &&
                slot.HeldItem?.BaseItem != null &&
-               slot.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null;
+               slot.HeldItem.BaseItem.UsableBehavior != null;
     }
 
     private void EnsureConsumableController()

@@ -17,7 +17,7 @@ namespace OutlandHaven.Inventory
 
     // --- THE BLUEPRINT (Static Rules) ---
     [Serializable]
-    public class ConsumableComponent : ItemComponent
+    public class ConsumableComponent : ItemComponent, IUsable
     {
         [Tooltip("How this consumable applies its gameplay effect.")]
         public ConsumableEffectMode EffectMode = ConsumableEffectMode.InstantResource;
@@ -40,6 +40,17 @@ namespace OutlandHaven.Inventory
         public override string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
         {
             return null;
+        }
+
+        public bool TryUse(PlayerConsumableController consumableController, InventoryManager inventoryManager, InventorySlot slot)
+        {
+            // The logic from PlayerConsumableController has been migrated directly into the interface method.
+            if (consumableController == null || slot == null || slot.IsEmpty || slot.HeldItem == null)
+            {
+                return false;
+            }
+
+            return consumableController.ExecuteConsumption(this, slot);
         }
     }
 }

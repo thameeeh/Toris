@@ -28,7 +28,6 @@ MonoBehaviour:
         EffectMode: 0
         EffectPayload: 0
         amount: 20
-        TimedEffectDefinition: {fileID: 0}
+        TimedEffectDefinition: {fileID: 11400000, guid: b28b6e4a0d5b31348bdf3d83a130d22a, type: 2}
         TimedEffectDuration: 5
         CooldownDuration: 1.5
-        MaxCharges: 1

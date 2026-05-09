@@ -437,7 +437,14 @@ This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by e
 ---
 
 ## [Unreleased]
+### Added
+- Created `IUsable` and `IEquipable` interfaces in `OutlandHaven.Inventory` to establish capability contracts for items.
+- Added caching properties `UsableBehavior` and `EquipableBehavior` to `InventoryItemSO` to provide O(1) access to item capabilities.
+
 ### Changed
+- Refactored `ConsumableComponent` and `EquipableComponent` to implement their respective capability interfaces.
+- Migrated consumption routing logic from `PlayerConsumableController.TryUseConsumable` to `ConsumableComponent.TryUse`.
+- Refactored `InventoryActionController` to utilize cached interface properties (`UsableBehavior`, `EquipableBehavior`) instead of O(N) `GetComponent<T>()` lookups.
 - **UI Architecture:** Fixed broken drag-and-drop and click interactions on dynamically instantiated UI Toolkit inventory slots by updating the `TemplateContainer` wrapper's picking mode to `Ignore` and correctly registering pointer events directly onto the inner `.item-slot` element in `InventorySlotView.cs`.
 # General Project Changelog
 
@@ -623,5 +630,12 @@ This update resolves a compilation error in `UIInventoryEventsSO.cs` caused by e
 ---
 
 ## [Unreleased]
+### Added
+- Created `IUsable` and `IEquipable` interfaces in `OutlandHaven.Inventory` to establish capability contracts for items.
+- Added caching properties `UsableBehavior` and `EquipableBehavior` to `InventoryItemSO` to provide O(1) access to item capabilities.
+
 ### Changed
+- Refactored `ConsumableComponent` and `EquipableComponent` to implement their respective capability interfaces.
+- Migrated consumption routing logic from `PlayerConsumableController.TryUseConsumable` to `ConsumableComponent.TryUse`.
+- Refactored `InventoryActionController` to utilize cached interface properties (`UsableBehavior`, `EquipableBehavior`) instead of O(N) `GetComponent<T>()` lookups.
 - **UI Architecture:** Fixed broken drag-and-drop and click interactions on dynamically instantiated UI Toolkit inventory slots by updating the `TemplateContainer` wrapper's picking mode to `Ignore` and correctly registering pointer events directly onto the inner `.item-slot` element in `InventorySlotView.cs`.

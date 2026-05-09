@@ -14,11 +14,15 @@ namespace OutlandHaven.Inventory
     }
 
     [Serializable]
-    public class EquipableComponent : ItemComponent
+    public class EquipableComponent : ItemComponent, IEquipable
     {
         public EquipmentSlot TargetSlot;
         public float StrengthBonus;
         public float DefenceBonus;
+
+        EquipmentSlot IEquipable.TargetSlot => TargetSlot;
+        float IEquipable.StrengthBonus => StrengthBonus;
+        float IEquipable.DefenceBonus => DefenceBonus;
 
         public override string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
         {

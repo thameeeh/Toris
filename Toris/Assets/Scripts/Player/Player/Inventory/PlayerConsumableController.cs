@@ -64,10 +64,14 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        public bool TryUseConsumable(InventoryManager inventoryManager, InventorySlot slot)
+        public bool ExecuteConsumption(ConsumableComponent consumable, InventorySlot slot)
         {
-            if (!TryResolveConsumable(slot, out ItemInstance item, out ConsumableComponent consumable))
+            if (consumable == null || slot == null || slot.IsEmpty || slot.HeldItem == null)
+            {
                 return false;
+            }
+
+            ItemInstance item = slot.HeldItem;
 
             if (IsOnCooldown(item.BaseItem))
             {
@@ -86,23 +90,6 @@ namespace OutlandHaven.Inventory
 
             _uiInventoryEvents?.OnSpecificSlotsUpdated?.Invoke(slot, null);
             return true;
-        }
-
-        private bool TryResolveConsumable(
-            InventorySlot slot,
-            out ItemInstance item,
-            out ConsumableComponent consumable)
-        {
-            item = null;
-            consumable = null;
-
-            if (slot == null || slot.IsEmpty || slot.HeldItem?.BaseItem == null)
-                return false;
-
-            item = slot.HeldItem;
-            consumable = item.BaseItem.GetComponent<ConsumableComponent>();
-            
-            return consumable != null;
         }
 
         private PlayerStats ResolvePlayerStats()

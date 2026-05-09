@@ -18,6 +18,28 @@ namespace OutlandHaven.Inventory
         [SerializeReference]
         public List<ItemComponent> Components = new List<ItemComponent>();
 
+        public IUsable UsableBehavior { get; private set; }
+        public IEquipable EquipableBehavior { get; private set; }
+
+        private void OnEnable()
+        {
+            CacheBehaviors();
+        }
+
+        private void CacheBehaviors()
+        {
+            UsableBehavior = null;
+            EquipableBehavior = null;
+
+            if (Components == null) return;
+
+            foreach (var component in Components)
+            {
+                if (component is IUsable usable) UsableBehavior = usable;
+                if (component is IEquipable equipable) EquipableBehavior = equipable;
+            }
+        }
+
         public T GetComponent<T>() where T : ItemComponent
         {
             if (Components == null) return null;

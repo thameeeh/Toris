@@ -173,7 +173,7 @@ namespace OutlandHaven.Inventory
                 // 2. Add this Debug.Log to see exactly what UI Toolkit hit
                 if (targetElement != null)
                 {
-                    Debug.Log($"[Drag Test] Picked Element Name: '{targetElement.name}', Type: '{targetElement.GetType().Name}'");
+                    //Debug.Log($"[Drag Test] Picked Element Name: '{targetElement.name}', Type: '{targetElement.GetType().Name}'");
 
                     // Optional: If you want to see the hierarchy of what was hit to make sure you 
                     // aren't hitting a child element (like an icon or a label instead of the slot root),
@@ -185,7 +185,7 @@ namespace OutlandHaven.Inventory
                         current = current.parent;
                         path = $"{current.name} -> {path}";
                     }
-                    Debug.Log($"[Drag Test] Element Path: {path}");
+                    //Debug.Log($"[Drag Test] Element Path: {path}");
                 }
                 else
                 {
@@ -204,7 +204,8 @@ namespace OutlandHaven.Inventory
                         {
                             // Invoke the cross-container swap logic
                             OnLocalMoveItemRequested?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot, _dragAmount);
-                            Debug.Log($"FIRING EVENT: Moving {_slotData.HeldItem.BaseItem.ItemName} to new slot.");
+                            string itemName = (_slotData.HeldItem?.BaseItem != null) ? _slotData.HeldItem.BaseItem.ItemName : "Unknown Item";
+                            Debug.Log($"FIRING EVENT: Moving {itemName} to new slot.");
                         }
                     }
                 }

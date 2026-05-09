@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
-  SaveID: 
+  SaveID: Player_Potion_Inventory
   ContainerBlueprint: {fileID: 11400000, guid: 2697082ad3b39b4439ba5ad17f4028b5, type: 2}
   LiveSlots:
   - HeldItem:

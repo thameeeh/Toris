@@ -30,13 +30,13 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, VisualTreeAsset buttonTemplate, VisualTreeAsset slotTemplate) : base(topElement, uiEvents)
+        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, VisualTreeAsset buttonTemplate, VisualTreeAsset slotTemplate) : base(topElement, uiEvents)
         {
             _playerHudBridge = data;
             _buttonTemplate = buttonTemplate;
             _slotTemplate = slotTemplate;
 
-            _potionHUDView = new PlayerPotionHUDView(topElement, _slotTemplate, null); // We will set events in Setup if needed
+            _potionHUDView = new PlayerPotionHUDView(topElement, _slotTemplate, uiInventoryEvents); 
         }
 
         public override void Setup(object payload)
@@ -145,6 +145,8 @@ namespace OutlandHaven.UIToolkit
         public override void Show()
         {
             base.Show();
+            _potionHUDView?.Show();
+            
             // Subscribe to ALL events
             if (_playerHudBridge != null)
             {
@@ -160,6 +162,8 @@ namespace OutlandHaven.UIToolkit
         public override void Hide()
         {
             base.Hide();
+            _potionHUDView?.Hide();
+
             // Unsubscribe from ALL events
             if (_playerHudBridge != null)
             {

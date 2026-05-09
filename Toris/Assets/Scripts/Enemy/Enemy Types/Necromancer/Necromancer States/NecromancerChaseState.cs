@@ -28,6 +28,7 @@ public class NecromancerChaseState : EnemyState<Necromancer>
         if (!enemy.IsAggroed)
         {
 #if UNITY_EDITOR
+            enemy.DebugAttackLog("NecromancerChaseState -> IdleState because IsAggroed=false.");
             enemy.DebugAnimationLog("ChaseState -> IdleState because IsAggroed=false.");
 #endif
             enemyStateMachine.ChangeState(enemy.IdleState);
@@ -43,6 +44,7 @@ public class NecromancerChaseState : EnemyState<Necromancer>
         {
             enemy.SetPendingAttackType(chaseLogic.SelectedAttackType);
 #if UNITY_EDITOR
+            enemy.DebugAttackLog($"NecromancerChaseState -> AttackState with {chaseLogic.SelectedAttackType}. {enemy.GetAttackDebugTargetSummary()}");
             enemy.DebugAnimationLog($"ChaseState -> AttackState with {chaseLogic.SelectedAttackType} because range, cooldown, and floater form are ready.");
 #endif
             enemyStateMachine.ChangeState(enemy.AttackState);

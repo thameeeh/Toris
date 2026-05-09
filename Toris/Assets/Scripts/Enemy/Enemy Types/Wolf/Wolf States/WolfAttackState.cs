@@ -12,6 +12,10 @@ public class WolfAttackState : EnemyState<Wolf>
         enemy.MoveEnemy(Vector2.zero);
 
         enemy.EnemyAttackBaseInstance.DoEnterLogic();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog("WolfAttackState enter -> animator Attack trigger set.");
+#endif
+        enemy.animator.ResetTrigger("Attack");
         enemy.animator.SetTrigger("Attack");
     }
 
@@ -20,6 +24,10 @@ public class WolfAttackState : EnemyState<Wolf>
         base.ExitState();
 
         enemy.EnemyAttackBaseInstance.DoExitLogic();
+        enemy.animator.ResetTrigger("Attack");
+#if UNITY_EDITOR
+        enemy.DebugAttackLog("WolfAttackState exit.");
+#endif
     }
 
     public override void FrameUpdate()
@@ -30,6 +38,10 @@ public class WolfAttackState : EnemyState<Wolf>
         // aggro/range checks are allowed to push the wolf back out.
         if (!enemy.EnemyAttackBaseInstance.isComplete)
             return;
+
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"WolfAttackState complete -> next state. aggro={enemy.IsAggroed} home={enemy.HasHome}");
+#endif
 
         if (!enemy.IsAggroed)
         {

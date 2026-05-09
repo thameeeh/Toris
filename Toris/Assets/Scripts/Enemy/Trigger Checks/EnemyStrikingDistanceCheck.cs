@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyStrikingDistanceCheck : MonoBehaviour
 {
-    private readonly System.Collections.Generic.List<Transform> trackedTargets = new System.Collections.Generic.List<Transform>();
+    private readonly System.Collections.Generic.List<IEnemyAggroTarget> trackedTargets = new System.Collections.Generic.List<IEnemyAggroTarget>();
 
     [SerializeField] private bool detectPlayer = true;
     [SerializeField] private bool detectPassivePrey;
@@ -12,80 +12,138 @@ public class EnemyStrikingDistanceCheck : MonoBehaviour
     private void Awake()
     {
         _enemy = GetComponentInParent<Enemy>();
+        if (_enemy != null)
+            _enemy.AggroTargetChanged += HandleAggroTargetChanged;
+    }
+
+    private void OnDestroy()
+    {
+        if (_enemy != null)
+            _enemy.AggroTargetChanged -= HandleAggroTargetChanged;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_enemy == null || !TryResolveTarget(collision, out Transform targetTransform))
+        if (_enemy == null || !TryResolveTarget(collision, out IEnemyAggroTarget target))
             return;
 
-        TrackTarget(targetTransform);
-        _enemy.SetStrikingDistanceBool(trackedTargets.Count > 0);
+        TrackTarget(target);
+        RefreshStrikingDistance();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_enemy == null || !TryResolveTarget(collision, out Transform targetTransform))
+        if (_enemy == null || !TryResolveTarget(collision, out IEnemyAggroTarget target))
             return;
 
-        UntrackTarget(targetTransform);
-        _enemy.SetStrikingDistanceBool(trackedTargets.Count > 0);
+        UntrackTarget(target);
+        RefreshStrikingDistance();
     }
 
-    private bool TryResolveTarget(Collider2D collision, out Transform targetTransform)
+    private bool TryResolveTarget(Collider2D collision, out IEnemyAggroTarget target)
     {
-        targetTransform = null;
+        target = null;
         if (collision == null)
             return false;
 
-        if (detectPlayer && TryResolvePlayerTarget(collision, out targetTransform))
+        if (detectPlayer && TryResolvePlayerTarget(collision, out target))
             return true;
 
-        Enemy targetEnemy = collision.GetComponentInParent<Enemy>();
-        if (targetEnemy == null || targetEnemy == _enemy || targetEnemy.CurrentHealth <= 0f)
+        target = collision.GetComponentInParent<IEnemyAggroTarget>();
+        if (target == null || ReferenceEquals(target, _enemy))
             return false;
 
-        if (!detectPassivePrey || !targetEnemy.IsPassivePrey)
-            return false;
+        if (target is PlayerDamageReceiver)
+            return detectPlayer;
 
-        targetTransform = targetEnemy.transform;
+        Enemy targetEnemy = target as Enemy;
+        if (targetEnemy != null)
+            return detectPassivePrey && targetEnemy.IsPassivePrey
+                || _enemy.IsCurrentAggroTarget(target);
+
         return true;
     }
 
-    private static bool TryResolvePlayerTarget(Collider2D collision, out Transform targetTransform)
+    private static bool TryResolvePlayerTarget(Collider2D collision, out IEnemyAggroTarget target)
     {
-        targetTransform = null;
+        target = null;
 
-        if (collision.CompareTag("Player"))
+        PlayerDamageReceiver damageReceiver = collision.GetComponentInParent<PlayerDamageReceiver>();
+        if (damageReceiver != null)
         {
-            targetTransform = collision.transform;
+            target = damageReceiver;
             return true;
         }
 
-        PlayerDamageReceiver damageReceiver = collision.GetComponentInParent<PlayerDamageReceiver>();
-        if (damageReceiver == null)
+        if (!collision.CompareTag("Player"))
             return false;
 
-        targetTransform = damageReceiver.transform;
-        return true;
+        target = collision.GetComponentInParent<IEnemyAggroTarget>();
+        return target != null;
     }
 
-    private void TrackTarget(Transform targetTransform)
+    private void TrackTarget(IEnemyAggroTarget target)
     {
-        UntrackTarget(targetTransform);
-        trackedTargets.Add(targetTransform);
+        UntrackTarget(target);
+        trackedTargets.Add(target);
     }
 
-    private void UntrackTarget(Transform targetTransform)
+    private void UntrackTarget(IEnemyAggroTarget target)
     {
-        if (targetTransform == null)
+        if (target == null)
             return;
 
         for (int i = trackedTargets.Count - 1; i >= 0; i--)
         {
-            Transform trackedTransform = trackedTargets[i];
-            if (trackedTransform == targetTransform || trackedTransform != null && trackedTransform.root == targetTransform.root)
+            if (AreSameTarget(trackedTargets[i], target))
                 trackedTargets.RemoveAt(i);
         }
+    }
+
+    private void RefreshStrikingDistance()
+    {
+        RemoveInvalidTargets();
+
+        bool hasCurrentTargetInRange = false;
+        for (int i = 0; i < trackedTargets.Count; i++)
+        {
+            if (_enemy.IsCurrentAggroTarget(trackedTargets[i]))
+            {
+                hasCurrentTargetInRange = true;
+                break;
+            }
+        }
+
+        _enemy.SetStrikingDistanceBool(hasCurrentTargetInRange);
+    }
+
+    private void RemoveInvalidTargets()
+    {
+        for (int i = trackedTargets.Count - 1; i >= 0; i--)
+        {
+            if (!_enemy.IsAggroTargetValid(trackedTargets[i]))
+                trackedTargets.RemoveAt(i);
+        }
+    }
+
+    private void HandleAggroTargetChanged(IEnemyAggroTarget target)
+    {
+        RefreshStrikingDistance();
+    }
+
+    private static bool AreSameTarget(IEnemyAggroTarget left, IEnemyAggroTarget right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+
+        if (left == null || right == null)
+            return false;
+
+        Transform leftTransform = left.TargetTransform;
+        Transform rightTransform = right.TargetTransform;
+        if (leftTransform == null || rightTransform == null)
+            return false;
+
+        return leftTransform == rightTransform || leftTransform.root == rightTransform.root;
     }
 }

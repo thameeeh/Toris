@@ -11,6 +11,7 @@ public class NecromancerAttackState : EnemyState<Necromancer>
 
         enemy.MoveEnemy(Vector2.zero);
 #if UNITY_EDITOR
+        enemy.DebugAttackLog($"NecromancerAttackState enter -> requesting {enemy.PendingAttackType} animation.");
         enemy.DebugAnimationLog($"Gameplay state enter -> AttackState. Requesting {enemy.PendingAttackType} animation.");
 #endif
         enemy.NecromancerAttackBaseInstance?.DoEnterLogic();
@@ -21,6 +22,7 @@ public class NecromancerAttackState : EnemyState<Necromancer>
     {
         base.ExitState();
 #if UNITY_EDITOR
+        enemy.DebugAttackLog("NecromancerAttackState exit.");
         enemy.DebugAnimationLog("Gameplay state exit -> AttackState.");
 #endif
         enemy.NecromancerAttackBaseInstance?.DoExitLogic();
@@ -35,6 +37,7 @@ public class NecromancerAttackState : EnemyState<Necromancer>
         if (!enemy.IsAggroed)
         {
 #if UNITY_EDITOR
+            enemy.DebugAttackLog("NecromancerAttackState -> IdleState because IsAggroed=false.");
             enemy.DebugAnimationLog("AttackState -> IdleState because IsAggroed=false.");
 #endif
             enemyStateMachine.ChangeState(enemy.IdleState);
@@ -44,6 +47,7 @@ public class NecromancerAttackState : EnemyState<Necromancer>
         if (enemy.NecromancerAttackBaseInstance != null && enemy.NecromancerAttackBaseInstance.IsComplete)
         {
 #if UNITY_EDITOR
+            enemy.DebugAttackLog("NecromancerAttackState -> ChaseState because attack animation finished.");
             enemy.DebugAnimationLog("AttackState -> ChaseState because attack animation finished.");
 #endif
             enemyStateMachine.ChangeState(enemy.ChaseState);

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
+public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable, IEnemyAggroTarget
 {
     private bool _isAggroed;
     public bool IsAggroed
@@ -56,14 +56,32 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [SerializeField] private bool isPassivePrey;
     [SerializeField] private bool threatensPassiveCreatures;
 
+#if UNITY_EDITOR
+    [Header("Debug")]
+    [SerializeField] private bool debugAttackLogs = true;
+#endif
+
     public EnemyLoadout ActiveLoadout { get; private set; }
     public Transform SpawnPoint { get; private set; }
     public string FactionId { get; private set; } = string.Empty;
     public int DifficultyTier { get; private set; }
     public bool IsPassivePrey => isPassivePrey;
     public bool ThreatensPassiveCreatures => threatensPassiveCreatures;
-    public Transform AggroTargetTransform => ResolveAggroTargetTransform();
-    public Enemy AggroTargetEnemy => IsAggroTargetEnemyValid() ? aggroTargetEnemy : null;
+    public IEnemyAggroTarget AggroTarget => ResolveAggroTarget();
+    public IEnemyAggroTarget ExplicitAggroTarget => ResolveExplicitAggroTarget();
+    public Transform AggroTargetTransform => AggroTarget?.TargetTransform;
+    public Enemy AggroTargetEnemy => AggroTarget as Enemy;
+    public bool HasAggroTarget => HasActiveCombatTarget;
+    public bool HasExplicitAggroTarget => ResolveExplicitAggroTarget() != null;
+    public bool HasActiveCombatTarget =>
+        HasExplicitAggroTarget
+        || (AlwaysAggroed && IsAggroTargetValid(playerAggroTarget));
+    public Transform TargetTransform => transform;
+    public Vector2 TargetPosition => GetTargetPosition();
+    public bool IsTargetable =>
+        CurrentHealth > 0f
+        && gameObject.activeInHierarchy
+        && gameObject.scene.IsValid();
 
     private readonly List<IStatusEffect> _statusEffects = new List<IStatusEffect>();
     private bool _isReleasing;
@@ -77,12 +95,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public event Action<Enemy> Despawned;
     public event Action<float> Damaged; // for sfx
     public event Action<Enemy, EnemyAlertReason> AlertTriggered;
+    public event Action<IEnemyAggroTarget> AggroTargetChanged;
 
     private GameObject _player;
     private PlayerDamageReceiver _playerDamageReceiver;
     private PlayerProgression _playerProgression;
-    private Transform aggroTargetTransform;
-    private Enemy aggroTargetEnemy;
+    private IEnemyAggroTarget sensorAggroTarget;
+    private IEnemyAggroTarget overrideAggroTarget;
+    private IEnemyAggroTarget playerAggroTarget;
+    private IEnemyAggroTarget lastResolvedAggroTarget;
     public EnemyLootTableSO LootTable => lootTable;
     public string QuestEnemyId => questEnemyId;
     public string QuestEnemyTypeOrTag => questEnemyTypeOrTag;
@@ -96,8 +117,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         EnsureHealthBar();
         EnsureAlertIndicator();
         
+#if UNITY_EDITOR
         if (animator == null)
             Debug.LogError("Animator component is missing on the enemy.");
+#endif
     }
     protected virtual void Start()
     {
@@ -116,6 +139,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     protected virtual void Update()
     {
+        RefreshAggroTargetState();
         StateMachine.CurrentEnemyState?.FrameUpdate();
     }
 
@@ -176,12 +200,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     public void SetAggroStatus(bool isAggroed)
     {
         if (!isAggroed)
-            ClearAggroTarget();
+            ClearSensorAggroTarget();
 
-        IsAggroed = isAggroed;
+        IsAggroed = isAggroed || HasActiveCombatTarget;
 
         if (isAggroed)
             TriggerAlert(EnemyAlertReason.PlayerDetected);
+
+        RefreshAggroTargetState();
     }
 
     public void SetAggroTarget(Transform targetTransform, Enemy targetEnemy = null)
@@ -189,10 +215,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (targetTransform == null)
             return;
 
-        aggroTargetTransform = targetTransform;
-        aggroTargetEnemy = targetEnemy;
-        IsAggroed = true;
-        TriggerAlert(EnemyAlertReason.PlayerDetected);
+        IEnemyAggroTarget target = targetEnemy != null
+            ? targetEnemy
+            : targetTransform.GetComponentInParent<IEnemyAggroTarget>();
+
+        if (target == null)
+            target = targetTransform.GetComponentInChildren<IEnemyAggroTarget>();
+
+        SetSensorAggroTarget(target);
     }
 
     public void ClearAggroTarget(Transform targetTransform)
@@ -200,8 +230,80 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (targetTransform == null)
             return;
 
-        if (aggroTargetTransform == targetTransform || aggroTargetTransform != null && aggroTargetTransform.root == targetTransform.root)
-            SetAggroStatus(false);
+        if (IsSameAggroTarget(sensorAggroTarget, targetTransform))
+            ClearSensorAggroTarget();
+    }
+
+    public void SetSensorAggroTarget(IEnemyAggroTarget target)
+    {
+        if (!IsAggroTargetValid(target))
+            return;
+
+        if (ReferenceEquals(sensorAggroTarget, target))
+        {
+            IsAggroed = true;
+            RefreshAggroTargetState();
+            return;
+        }
+
+        sensorAggroTarget = target;
+        IsAggroed = true;
+        TriggerAlert(EnemyAlertReason.PlayerDetected);
+        RefreshAggroTargetState();
+    }
+
+    public void ClearSensorAggroTarget(IEnemyAggroTarget target)
+    {
+        if (!ReferenceEquals(sensorAggroTarget, target))
+            return;
+
+        ClearSensorAggroTarget();
+    }
+
+    public void ClearSensorAggroTarget()
+    {
+        if (sensorAggroTarget == null)
+        {
+            RefreshAggroTargetState();
+            return;
+        }
+
+        sensorAggroTarget = null;
+        RefreshAggroTargetState();
+    }
+
+    public void SetOverrideAggroTarget(IEnemyAggroTarget target)
+    {
+        if (!IsAggroTargetValid(target))
+            return;
+
+        if (ReferenceEquals(overrideAggroTarget, target))
+        {
+            IsAggroed = true;
+            RefreshAggroTargetState();
+            return;
+        }
+
+        overrideAggroTarget = target;
+        IsAggroed = true;
+        TriggerAlert(EnemyAlertReason.SiteAlerted);
+        RefreshAggroTargetState();
+    }
+
+    public void ClearOverrideAggroTarget(IEnemyAggroTarget target)
+    {
+        if (!ReferenceEquals(overrideAggroTarget, target))
+            return;
+
+        overrideAggroTarget = null;
+        RefreshAggroTargetState();
+    }
+
+    public void ClearAllAggroTargets()
+    {
+        sensorAggroTarget = null;
+        overrideAggroTarget = null;
+        RefreshAggroTargetState();
     }
 
     public void TriggerAlert(EnemyAlertReason reason)
@@ -218,33 +320,136 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     }
     #endregion
 
-    public void DamagePlayer(float amount, HitData hitData) 
+    public void DamagePlayer(float amount, HitData hitData)
     {
-        if (_playerDamageReceiver == null || !IsSceneObjectValid(_playerDamageReceiver.gameObject))
+#if UNITY_EDITOR
+        DebugAttackLog($"Legacy DamagePlayer requested amount={amount:0.##} striking={IsWithinStrikingDistance}");
+#endif
+
+        if (!IsAggroTargetValid(playerAggroTarget))
             RefreshScenePlayerReferences();
 
-        if (_playerDamageReceiver == null)
+        if (!IsAggroTargetValid(playerAggroTarget))
+        {
+#if UNITY_EDITOR
+            DebugAttackLog("Legacy DamagePlayer aborted: no valid player target.");
+#endif
             return;
+        }
 
         if (IsWithinStrikingDistance)
         {
             hitData.damage = amount;
-            _playerDamageReceiver.ReceiveHit(hitData);
+#if UNITY_EDITOR
+            DebugAttackLog($"Legacy DamagePlayer hit -> {GetAttackDebugTargetSummary(playerAggroTarget)} amount={amount:0.##}");
+#endif
+            playerAggroTarget.ReceiveEnemyHit(amount, hitData);
         }
+#if UNITY_EDITOR
+        else
+        {
+            DebugAttackLog($"Legacy DamagePlayer blocked: target not in striking distance -> {GetAttackDebugTargetSummary(playerAggroTarget)}");
+        }
+#endif
     }
 
-    public void DamageAggroTarget(float amount, HitData hitData)
+    public void DamageAggroTarget(float amount, HitData hitData, bool requireStrikingDistance = true)
     {
-        Enemy targetEnemy = AggroTargetEnemy;
-        if (targetEnemy != null)
+        if (requireStrikingDistance && !IsWithinStrikingDistance)
         {
-            if (IsWithinStrikingDistance)
-                targetEnemy.Damage(amount);
-
+#if UNITY_EDITOR
+            DebugAttackLog($"DamageAggroTarget blocked: striking distance false amount={amount:0.##} target={GetAttackDebugTargetSummary()}");
+#endif
             return;
         }
 
-        DamagePlayer(amount, hitData);
+        IEnemyAggroTarget target = AggroTarget;
+        if (!IsAggroTargetValid(target))
+        {
+#if UNITY_EDITOR
+            DebugAttackLog($"DamageAggroTarget current target invalid -> {GetAttackDebugTargetSummary(target)}. Trying player fallback.");
+#endif
+            if (!IsAggroTargetValid(playerAggroTarget))
+                RefreshScenePlayerReferences();
+
+            target = playerAggroTarget;
+        }
+
+        if (!IsAggroTargetValid(target))
+        {
+#if UNITY_EDITOR
+            DebugAttackLog($"DamageAggroTarget aborted: no valid target amount={amount:0.##}");
+#endif
+            return;
+        }
+
+        hitData.damage = amount;
+#if UNITY_EDITOR
+        DebugAttackLog($"DamageAggroTarget hit -> {GetAttackDebugTargetSummary(target)} amount={amount:0.##}");
+#endif
+        target.ReceiveEnemyHit(amount, hitData);
+    }
+
+    public bool TryGetAggroTargetPosition(out Vector2 position)
+    {
+        IEnemyAggroTarget target = AggroTarget;
+        if (!IsAggroTargetValid(target))
+        {
+            position = default;
+            return false;
+        }
+
+        position = target.TargetPosition;
+        return true;
+    }
+
+    public Vector2 GetAggroTargetPositionOrSelf()
+    {
+        return TryGetAggroTargetPosition(out Vector2 position)
+            ? position
+            : (Vector2)transform.position;
+    }
+
+    public Vector2 GetDirectionToAggroTarget()
+    {
+        return GetDirectionToAggroTarget(transform.position);
+    }
+
+    public Vector2 GetDirectionToAggroTarget(Vector3 origin)
+    {
+        if (!TryGetAggroTargetPosition(out Vector2 targetPosition))
+            return Vector2.zero;
+
+        Vector2 direction = targetPosition - (Vector2)origin;
+        return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.zero;
+    }
+
+    public void FaceAggroTarget()
+    {
+        Vector2 direction = GetDirectionToAggroTarget();
+        if (direction.sqrMagnitude > 0.0001f)
+            UpdateAnimationDirection(direction);
+    }
+
+    public bool IsCurrentAggroTarget(IEnemyAggroTarget target)
+    {
+        IEnemyAggroTarget currentTarget = AggroTarget;
+        return IsAggroTargetValid(target)
+            && IsAggroTargetValid(currentTarget)
+            && AreSameAggroTargets(currentTarget, target);
+    }
+
+    public bool IsCurrentAggroTarget(Transform targetTransform)
+    {
+        return targetTransform != null && IsSameAggroTarget(AggroTarget, targetTransform);
+    }
+
+    public void ReceiveEnemyHit(float amount, HitData hitData)
+    {
+#if UNITY_EDITOR
+        DebugAttackLog($"Received enemy hit amount={amount:0.##} source={(hitData.source != null ? hitData.source.name : "null")}");
+#endif
+        Damage(amount);
     }
 
     #region Animation
@@ -295,9 +500,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         RestoreCachedColliderStates();
         CurrentHealth = MaxHealth;
         IsAggroed = false;
-        ClearAggroTarget();
         IsWithinStrikingDistance = false;
         AlwaysAggroed = false;
+        ClearAllAggroTargets();
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
         StateMachine.Reset();
@@ -327,9 +532,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
         IsAggroed = false;
-        ClearAggroTarget();
-        IsWithinStrikingDistance = false;
         AlwaysAggroed = false;
+        ClearAllAggroTargets();
+        IsWithinStrikingDistance = false;
         CurrentHealth = MaxHealth;
         ActiveLoadout = null;
         _hasResolvedDeathLoot = false;
@@ -399,6 +604,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         IsAggroed = false;
         IsWithinStrikingDistance = false;
         AlwaysAggroed = false;
+        ClearAllAggroTargets();
     }
 
     private void RestoreCachedColliderStates()
@@ -469,10 +675,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         if (_player == null)
         {
             _playerDamageReceiver = null;
+            playerAggroTarget = null;
             return;
         }
 
         _player.TryGetComponent(out _playerDamageReceiver);
+        if (_playerDamageReceiver == null)
+            _playerDamageReceiver = _player.GetComponentInChildren<PlayerDamageReceiver>();
+
+        playerAggroTarget = _playerDamageReceiver != null
+            ? _playerDamageReceiver
+            : _player.GetComponentInChildren<IEnemyAggroTarget>();
 
         if (ShouldBindScenePlayerTransform(playerTransform))
             playerTransform = _player.transform;
@@ -481,46 +694,139 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
             playerTransform.TryGetComponent(out _playerProgression);
     }
 
-    private static bool IsSceneObjectValid(GameObject sceneObject)
+    public bool IsAggroTargetValid(IEnemyAggroTarget target)
     {
-        return sceneObject != null && sceneObject.scene.IsValid();
+        if (target == null || IsUnityObjectDestroyed(target))
+            return false;
+
+        Transform targetTransform = target.TargetTransform;
+        if (targetTransform == null || !targetTransform.gameObject.scene.IsValid())
+            return false;
+
+        if (!target.IsTargetable)
+            return false;
+
+        return !(target is IDamageable damageable) || damageable.CurrentHealth > 0f;
     }
 
-    private Transform ResolveAggroTargetTransform()
+    private IEnemyAggroTarget ResolveAggroTarget()
     {
-        if (aggroTargetEnemy != null)
-        {
-            if (IsAggroTargetEnemyValid())
-                return aggroTargetEnemy.transform;
+        IEnemyAggroTarget explicitTarget = ResolveExplicitAggroTarget();
+        if (explicitTarget != null)
+            return explicitTarget;
 
-            ClearAggroTarget();
-            return null;
+        return AlwaysAggroed && IsAggroTargetValid(playerAggroTarget)
+            ? playerAggroTarget
+            : null;
+    }
+
+    private IEnemyAggroTarget ResolveExplicitAggroTarget()
+    {
+        if (overrideAggroTarget != null && !IsAggroTargetValid(overrideAggroTarget))
+            overrideAggroTarget = null;
+
+        if (overrideAggroTarget != null)
+            return overrideAggroTarget;
+
+        if (sensorAggroTarget != null && !IsAggroTargetValid(sensorAggroTarget))
+            sensorAggroTarget = null;
+
+        return sensorAggroTarget;
+    }
+
+    private void RefreshAggroTargetState()
+    {
+        IEnemyAggroTarget resolvedTarget = ResolveAggroTarget();
+        IsAggroed = resolvedTarget != null;
+
+        if (AreSameAggroTargets(lastResolvedAggroTarget, resolvedTarget))
+            return;
+
+        lastResolvedAggroTarget = resolvedTarget;
+        AggroTargetChanged?.Invoke(resolvedTarget);
+    }
+
+    private Vector2 GetTargetPosition()
+    {
+        if (_cachedColliders == null || _cachedColliders.Length == 0)
+            CacheOwnedColliders();
+
+        for (int i = 0; i < _cachedColliders.Length; i++)
+        {
+            Collider2D cachedCollider = _cachedColliders[i];
+            if (cachedCollider != null && cachedCollider.enabled && cachedCollider.gameObject.activeInHierarchy)
+                return cachedCollider.bounds.center;
         }
 
-        if (aggroTargetTransform != null && aggroTargetTransform.gameObject.scene.IsValid())
-            return aggroTargetTransform;
-
-        if (aggroTargetTransform != null)
-        {
-            ClearAggroTarget();
-            return null;
-        }
-
-        return playerTransform;
+        return transform.position;
     }
 
-    private bool IsAggroTargetEnemyValid()
+    private static bool AreSameAggroTargets(IEnemyAggroTarget left, IEnemyAggroTarget right)
     {
-        return aggroTargetEnemy != null
-            && aggroTargetEnemy.CurrentHealth > 0f
-            && aggroTargetEnemy.gameObject.scene.IsValid();
+        if (ReferenceEquals(left, right))
+            return true;
+
+        if (left == null || right == null || IsUnityObjectDestroyed(left) || IsUnityObjectDestroyed(right))
+            return false;
+
+        return AreSameTransforms(left.TargetTransform, right.TargetTransform);
     }
 
-    private void ClearAggroTarget()
+    private static bool IsSameAggroTarget(IEnemyAggroTarget target, Transform targetTransform)
     {
-        aggroTargetTransform = null;
-        aggroTargetEnemy = null;
+        if (target == null || targetTransform == null || IsUnityObjectDestroyed(target))
+            return false;
+
+        return AreSameTransforms(target.TargetTransform, targetTransform);
     }
+
+    private static bool AreSameTransforms(Transform left, Transform right)
+    {
+        if (left == null || right == null)
+            return false;
+
+        return left == right || left.root == right.root;
+    }
+
+    private static bool IsUnityObjectDestroyed(IEnemyAggroTarget target)
+    {
+        return target is UnityEngine.Object unityObject && unityObject == null;
+    }
+
+#if UNITY_EDITOR
+    public void DebugAttackLog(string message)
+    {
+        if (!debugAttackLogs)
+            return;
+
+        Debug.Log($"[EnemyAttack:{GetType().Name}:{name}:{GetInstanceID()}] {message}", this);
+    }
+
+    public string GetAttackDebugTargetSummary()
+    {
+        return GetAttackDebugTargetSummary(AggroTarget);
+    }
+
+    public string GetAttackDebugTargetSummary(IEnemyAggroTarget target)
+    {
+        if (target == null)
+            return "target=null";
+
+        if (IsUnityObjectDestroyed(target))
+            return "target=destroyed";
+
+        Transform targetTransform = target.TargetTransform;
+        string targetName = targetTransform != null ? targetTransform.name : "null-transform";
+        string targetPosition = targetTransform != null
+            ? $"pos=({targetTransform.position.x:0.##},{targetTransform.position.y:0.##})"
+            : "pos=n/a";
+        string health = target is IDamageable damageable
+            ? $"health={damageable.CurrentHealth:0.##}/{damageable.MaxHealth:0.##}"
+            : "health=n/a";
+
+        return $"target={target.GetType().Name}:{targetName} targetable={target.IsTargetable} {health} {targetPosition}";
+    }
+#endif
 
     #endregion
 }

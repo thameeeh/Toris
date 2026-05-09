@@ -6,6 +6,8 @@ public class WolfAttackSO : AttackSOBase<Wolf>
     public bool isComplete {  get; private set; }
 
     private GridPathAgent _pathAgent;
+    private bool _hasAppliedHit;
+    private bool _hasHandledFinish;
 
     public override void Initialize(GameObject gameObject, Wolf enemy, Transform player)
     {
@@ -14,7 +16,9 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         _pathAgent = enemy.GetComponent<GridPathAgent>();
         if (_pathAgent == null)
         {
+#if UNITY_EDITOR
             Debug.LogWarning($"[WolfAttackSO] No GridPathAgent on {enemy.name}. Attack lunge will not use pathfinding.");
+#endif
         }
     }
 
@@ -23,11 +27,18 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         base.DoEnterLogic();
 
         isComplete = false;
+        _hasAppliedHit = false;
+        _hasHandledFinish = false;
+        enemy.IsMovingWhileBiting = false;
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"Wolf bite enter. movingWhileBiting={enemy.IsMovingWhileBiting} {enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
     public override void DoExitLogic()
     {
         base.DoExitLogic();
+        enemy.IsMovingWhileBiting = false;
     }
 
     public override void DoFrameUpdateLogic()
@@ -63,12 +74,37 @@ public class WolfAttackSO : AttackSOBase<Wolf>
 
         if (triggerType == Enemy.AnimationTriggerType.Attack)
         {
+            if (_hasAppliedHit)
+            {
+#if UNITY_EDITOR
+                enemy.DebugAttackLog("Wolf bite duplicate Anim_AttackHit ignored.");
+#endif
+                return;
+            }
+
+            _hasAppliedHit = true;
+#if UNITY_EDITOR
+            enemy.DebugAttackLog($"Wolf bite Anim_AttackHit -> attempting damage {enemy.AttackDamage:0.##}. striking={enemy.IsWithinStrikingDistance} {enemy.GetAttackDebugTargetSummary()}");
+#endif
             enemy.DamageCurrentTarget(enemy.AttackDamage);
         }
 
         if (triggerType == Enemy.AnimationTriggerType.AttackFinished)
         {
+            if (_hasHandledFinish)
+            {
+#if UNITY_EDITOR
+                enemy.DebugAttackLog("Wolf bite duplicate Anim_AttackFinished ignored.");
+#endif
+                return;
+            }
+
+            _hasHandledFinish = true;
             isComplete = true;
+            enemy.IsMovingWhileBiting = false;
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("Wolf bite Anim_AttackFinished -> attack complete.");
+#endif
         }
     }
 
@@ -77,5 +113,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         base.ResetValues();
 
         isComplete = false;
+        _hasAppliedHit = false;
+        _hasHandledFinish = false;
     }
 }

@@ -124,7 +124,11 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 
         ChooseNewMode(force: true);
 
-        enemy.animator.SetBool("IsMoving", false);
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("IsMoving", true);
+            enemy.animator.Play("Idle");
+        }
     }
 
     public override void DoExitLogic()

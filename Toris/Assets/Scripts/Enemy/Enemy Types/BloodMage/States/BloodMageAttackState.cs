@@ -10,6 +10,9 @@ public class BloodMageAttackState : EnemyState<BloodMage>
         base.EnterState();
         enemy.MoveEnemy(Vector2.zero);
         enemy.BloodMageAttackBaseInstance?.DoEnterLogic();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog("BloodMageAttackState enter -> requesting attack animation.");
+#endif
         enemy.RequestAttackAnimation();
     }
 
@@ -17,6 +20,9 @@ public class BloodMageAttackState : EnemyState<BloodMage>
     {
         base.ExitState();
         enemy.BloodMageAttackBaseInstance?.DoExitLogic();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog("BloodMageAttackState exit.");
+#endif
     }
 
     public override void FrameUpdate()
@@ -25,6 +31,9 @@ public class BloodMageAttackState : EnemyState<BloodMage>
 
         if (!enemy.HasCombatContext)
         {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("BloodMageAttackState -> IdleState because combat context is missing.");
+#endif
             enemyStateMachine.ChangeState(enemy.IdleState);
             return;
         }
@@ -32,7 +41,12 @@ public class BloodMageAttackState : EnemyState<BloodMage>
         enemy.BloodMageAttackBaseInstance?.DoFrameUpdateLogic();
 
         if (enemy.BloodMageAttackBaseInstance != null && enemy.BloodMageAttackBaseInstance.IsComplete)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("BloodMageAttackState -> ChaseState because attack completed.");
+#endif
             enemyStateMachine.ChangeState(enemy.ChaseState);
+        }
     }
 
     public override void PhysicsUpdate()

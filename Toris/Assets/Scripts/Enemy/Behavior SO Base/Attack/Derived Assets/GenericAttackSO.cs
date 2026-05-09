@@ -12,6 +12,9 @@ public class GenericAttackSO : AttackSOBase<Generic>
     public override void DoEnterLogic()
     {
         base.DoEnterLogic();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"Generic attack enter. {enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
     public override void DoExitLogic()
@@ -31,6 +34,9 @@ public class GenericAttackSO : AttackSOBase<Generic>
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType)
     {
         base.DoAnimationTriggerEventLogic(triggerType);
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"Generic attack animation event={triggerType} {enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
     public override void ResetValues()

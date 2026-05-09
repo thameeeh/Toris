@@ -48,7 +48,9 @@ public class Wolf : Enemy
     public void SetChasingPlayer(bool chasingP) => IsChasingPlayer = chasingP;
     public void PrintMessage(string msg) 
     {
+#if UNITY_EDITOR
         Debug.Log(msg);
+#endif
     }
 
     [Header("Investigation")]
@@ -225,11 +227,17 @@ public class Wolf : Enemy
 
     public void DamagePlayer(float damage)
     {
+#if UNITY_EDITOR
+        DebugAttackLog($"Wolf legacy DamagePlayer wrapper damage={damage:0.##}");
+#endif
         base.DamagePlayer(damage, _hitData);
     }
 
     public void DamageCurrentTarget(float damage)
     {
+#if UNITY_EDITOR
+        DebugAttackLog($"Wolf bite DamageCurrentTarget damage={damage:0.##} {GetAttackDebugTargetSummary()}");
+#endif
         DamageAggroTarget(damage, _hitData);
     }
 }

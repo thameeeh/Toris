@@ -15,7 +15,7 @@ public class BloodMageIdleSO : IdleSOBase<BloodMage>
 
         enemy.MoveEnemy(Vector2.zero);
         enemy.SetMovementAnimation(false);
-        enemy.FacePlayer();
+        enemy.FaceAggroTarget();
         _settleTimer = summonedSettleDuration;
         IsReadyToLeaveIdle = false;
     }

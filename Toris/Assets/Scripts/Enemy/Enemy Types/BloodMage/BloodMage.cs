@@ -40,6 +40,7 @@ public class BloodMage : Enemy
     private bool _hasStarted;
     private bool _hasEnteredDeadState;
     private bool _isRegisteredWithOwner;
+    private IEnemyAggroTarget _ownerSyncedTarget;
     private Collider2D[] _selfColliders = Array.Empty<Collider2D>();
     private Collider2D[] _projectileIgnoreColliders = Array.Empty<Collider2D>();
     private SpriteRevealDriver _revealDriver;
@@ -48,8 +49,8 @@ public class BloodMage : Enemy
     public Necromancer Owner => owner;
     public int SummonIndex => summonIndex;
     public bool HasOwner => owner != null;
-    public bool HasCombatContext => owner != null && PlayerTransform != null;
-    public bool ShouldAttackOnOwnerCommand => owner != null && owner.ShouldCommandBloodMagesToAttack && PlayerTransform != null;
+    public bool HasCombatContext => owner != null && (HasAggroTarget || owner.HasAggroTarget);
+    public bool ShouldAttackOnOwnerCommand => owner != null && owner.ShouldCommandBloodMagesToAttack && HasAggroTarget;
     public bool IsWithinAttackRange => IsWithinStrikingDistance;
     public Collider2D[] ProjectileIgnoreColliders => _projectileIgnoreColliders;
 
@@ -143,6 +144,7 @@ public class BloodMage : Enemy
             return;
         }
 
+        SyncAggroTargetWithOwner();
         base.Update();
     }
 
@@ -204,6 +206,7 @@ public class BloodMage : Enemy
         summonGroupSize = Mathf.Max(1, groupSize);
         AlwaysAggroed = true;
         SetAggroStatus(true);
+        SyncAggroTargetWithOwner();
         RegisterWithOwnerIfNeeded();
         RefreshProjectileIgnoreColliders();
     }
@@ -227,8 +230,16 @@ public class BloodMage : Enemy
     public void RequestAttackAnimation()
     {
         if (animator == null)
+        {
+#if UNITY_EDITOR
+            DebugAttackLog("BloodMage RequestAttackAnimation aborted: animator null.");
+#endif
             return;
+        }
 
+#if UNITY_EDITOR
+        DebugAttackLog($"BloodMage RequestAttackAnimation -> trigger={AttackTrigger} {GetAttackDebugTargetSummary()}");
+#endif
         animator.ResetTrigger(AttackTrigger);
         animator.SetTrigger(AttackTrigger);
     }
@@ -244,18 +255,14 @@ public class BloodMage : Enemy
 
     public void FacePlayer()
     {
-        Vector2 direction = GetDirectionToPlayer(transform.position);
+        Vector2 direction = GetDirectionToAggroTarget(transform.position);
         if (direction.sqrMagnitude > MinDirectionSqr)
             UpdateAnimationDirection(direction);
     }
 
     public Vector2 GetDirectionToPlayer(Vector3 origin)
     {
-        if (PlayerTransform == null)
-            return Vector2.zero;
-
-        Vector2 direction = PlayerTransform.position - origin;
-        return direction.sqrMagnitude > MinDirectionSqr ? direction.normalized : Vector2.zero;
+        return GetDirectionToAggroTarget(origin);
     }
 
     public bool IsOutsideLeash(float leashRadius)
@@ -325,6 +332,7 @@ public class BloodMage : Enemy
 
     private void ResetSummonContext()
     {
+        ClearOwnerSyncedTarget();
         owner = null;
         summonIndex = -1;
         summonGroupSize = 1;
@@ -370,6 +378,7 @@ public class BloodMage : Enemy
 
     private void ResetRuntimeFlags()
     {
+        ClearOwnerSyncedTarget();
         SetAggroStatus(false);
         SetStrikingDistanceBool(false);
         AlwaysAggroed = false;
@@ -386,6 +395,34 @@ public class BloodMage : Enemy
 #if UNITY_EDITOR
         ResetMovementDebugState();
 #endif
+    }
+
+    private void SyncAggroTargetWithOwner()
+    {
+        if (owner == null || owner.CurrentHealth <= 0f)
+        {
+            ClearOwnerSyncedTarget();
+            return;
+        }
+
+        IEnemyAggroTarget ownerTarget = owner.AggroTarget;
+        if (!IsAggroTargetValid(ownerTarget))
+        {
+            ClearOwnerSyncedTarget();
+            return;
+        }
+
+        _ownerSyncedTarget = ownerTarget;
+        SetOverrideAggroTarget(ownerTarget);
+    }
+
+    private void ClearOwnerSyncedTarget()
+    {
+        if (_ownerSyncedTarget == null)
+            return;
+
+        ClearOverrideAggroTarget(_ownerSyncedTarget);
+        _ownerSyncedTarget = null;
     }
 
 #if UNITY_EDITOR

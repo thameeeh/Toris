@@ -77,9 +77,15 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
             return;
         }
 
+        if (!enemy.TryGetAggroTargetPosition(out Vector2 playerPosition))
+        {
+            LogDecision("No aggro target position -> StopMoving");
+            StopMoving();
+            return;
+        }
+
         Vector2 enemyPosition = enemy.transform.position;
         Vector2 ownerPosition = enemy.Owner.transform.position;
-        Vector2 playerPosition = playerTransform.position;
         Vector2 toPlayer = playerPosition - enemyPosition;
         Vector2 toOwner = ownerPosition - enemyPosition;
         float playerDistanceSqr = toPlayer.sqrMagnitude;
@@ -127,7 +133,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
             LogDecision(
                 $"Within attack range -> HoldAndFace playerDist={Mathf.Sqrt(playerDistanceSqr):0.##} canStartAttack={enemy.CanStartAttack}");
             StopMoving();
-            enemy.FacePlayer();
+            enemy.FaceAggroTarget();
             CanStartAttack = enemy.CanStartAttack;
             return;
         }

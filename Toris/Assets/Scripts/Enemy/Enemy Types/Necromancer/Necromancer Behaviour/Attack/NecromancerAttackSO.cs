@@ -75,7 +75,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         IsComplete = false;
         enemy.MoveEnemy(Vector2.zero);
         enemy.SetMovementAnimation(false);
-        enemy.FacePlayer();
+        enemy.FaceAggroTarget();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"Necromancer attack enter pending={enemy.PendingAttackType} {enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
     public override void DoFrameUpdateLogic()
@@ -83,7 +86,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         base.DoFrameUpdateLogic();
 
         enemy.MoveEnemy(Vector2.zero);
-        enemy.FacePlayer();
+        enemy.FaceAggroTarget();
     }
 
     public override void DoPhysicsLogic()
@@ -99,6 +102,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         if (triggerType == Enemy.AnimationTriggerType.Attack)
         {
 #if UNITY_EDITOR
+            enemy.DebugAttackLog($"Necromancer Anim_AttackHit pending={enemy.PendingAttackType} {enemy.GetAttackDebugTargetSummary()}");
             enemy.DebugAnimationLog($"Animation event -> Anim_AttackHit for {enemy.PendingAttackType}. Starting cooldown.");
 #endif
             if (enemy.PendingAttackType == NecromancerAttackType.SpellCast)
@@ -118,11 +122,15 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
             if (enemy.PendingAttackType != NecromancerAttackType.Summon)
                 StartCooldown(enemy.PendingAttackType);
+#if UNITY_EDITOR
+            enemy.DebugAttackLog($"Necromancer cooldown resolved for {enemy.PendingAttackType}.");
+#endif
         }
 
         if (triggerType == Enemy.AnimationTriggerType.AttackFinished)
         {
 #if UNITY_EDITOR
+            enemy.DebugAttackLog($"Necromancer Anim_AttackFinished pending={enemy.PendingAttackType} -> attack complete.");
             enemy.DebugAnimationLog("Animation event -> Anim_AttackFinished. Marking attack complete.");
 #endif
             if (enemy.PendingAttackType == NecromancerAttackType.SpellCast)
@@ -190,6 +198,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         if (spellProjectilePrefab == null)
         {
 #if UNITY_EDITOR
+            enemy.DebugAttackLog("Necromancer spell projectile spawn aborted: prefab missing.");
             enemy.DebugAnimationDecision("SpellCast hit event fired, but no spell projectile prefab is assigned.");
 #endif
             return;
@@ -198,7 +207,12 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         Vector3 spawnPosition = enemy.CastPoint.position;
         Vector2 forwardDirection = GetSpellForwardDirection(spawnPosition);
         if (forwardDirection.sqrMagnitude <= 0f)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("Necromancer spell projectile spawn aborted: forward direction is zero.");
+#endif
             return;
+        }
 
         if (!ShouldUsePhaseTwoSpellVolley())
         {
@@ -223,7 +237,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             SpawnProjectile(spawnPosition, projectileDirection, phaseTwoSpellProjectileDamageMultiplier);
         }
 
- #if UNITY_EDITOR
+#if UNITY_EDITOR
+        enemy.DebugAttackLog(
+            $"Necromancer phase-two volley spawned count={projectileCount} spread={phaseTwoSpellSpreadAngle:0.##} " +
+            $"damageMult={phaseTwoSpellProjectileDamageMultiplier:0.##} {enemy.GetAttackDebugTargetSummary()}");
         enemy.DebugAnimationLog(
             $"Spawned phase-two spell volley count={projectileCount}, spread={phaseTwoSpellSpreadAngle:0.##}, " +
             $"damageMult={phaseTwoSpellProjectileDamageMultiplier:0.##}.");
@@ -233,13 +250,24 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
     private void SpawnSummonProjectileBurst()
     {
         if (!enableSummonProjectileBurst || spellProjectilePrefab == null)
+        {
+#if UNITY_EDITOR
+            if (enableSummonProjectileBurst)
+                enemy.DebugAttackLog("Necromancer summon projectile burst aborted: spell projectile prefab missing.");
+#endif
             return;
+        }
 
         int projectileCount = Mathf.Max(1, summonProjectileBurstCount);
         Vector3 spawnPosition = enemy.CastPoint.position;
         Vector2 baseDirection = GetSpellForwardDirection(spawnPosition);
         if (baseDirection.sqrMagnitude <= 0f)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("Necromancer summon projectile burst aborted: base direction is zero.");
+#endif
             return;
+        }
 
         float angleStep = FullCircleDegrees / projectileCount;
         for (int i = 0; i < projectileCount; i++)
@@ -250,6 +278,9 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         }
 
 #if UNITY_EDITOR
+        enemy.DebugAttackLog(
+            $"Necromancer summon projectile burst spawned count={projectileCount} " +
+            $"damageMult={summonProjectileBurstDamageMultiplier:0.##} {enemy.GetAttackDebugTargetSummary()}");
         enemy.DebugAnimationLog(
             $"Summon released projectile burst count={projectileCount}, " +
             $"damageMult={summonProjectileBurstDamageMultiplier:0.##}.");
@@ -258,7 +289,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
     private void ApplyPanicSwingDamage()
     {
-        Vector2 hitDirection = enemy.GetDirectionToPlayer(enemy.transform.position);
+        Vector2 hitDirection = enemy.GetDirectionToAggroTarget(enemy.transform.position);
         float damageAmount = enemy.AttackDamage * panicSwingDamageMultiplier;
         HitData hitData = new HitData(
             enemy.transform.position,
@@ -267,9 +298,10 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             panicSwingKnockback,
             enemy.gameObject);
 
-        enemy.DamagePlayer(damageAmount, hitData);
+        enemy.DamageAggroTarget(damageAmount, hitData);
 
 #if UNITY_EDITOR
+        enemy.DebugAttackLog($"Necromancer panic swing attempted damage={damageAmount:0.##} knockback={panicSwingKnockback:0.##} {enemy.GetAttackDebugTargetSummary()}");
         enemy.DebugAnimationLog(
             $"Applied PanicSwing damage={damageAmount:0.##}, knockback={panicSwingKnockback:0.##}.");
 #endif
@@ -410,7 +442,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
     private Vector2 GetSpellForwardDirection(Vector3 spawnPosition)
     {
-        Vector2 direction = enemy.GetDirectionToPlayer(spawnPosition);
+        Vector2 direction = enemy.GetDirectionToAggroTarget(spawnPosition);
         if (direction.sqrMagnitude > 0.0001f)
             return direction;
 
@@ -443,7 +475,16 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             enemy.AttackDamage * damageMultiplier,
             spellProjectileLifetime,
             spellProjectileKnockback,
-            enemy.ProjectileIgnoreColliders);
+            enemy.ProjectileIgnoreColliders,
+            enemy.AggroTarget,
+            enemy.name);
+
+#if UNITY_EDITOR
+        enemy.DebugAttackLog(
+            $"Necromancer projectile spawned pos=({spawnPosition.x:0.##},{spawnPosition.y:0.##}) " +
+            $"dir=({direction.x:0.##},{direction.y:0.##}) speed={spellProjectileSpeed:0.##} " +
+            $"damage={enemy.AttackDamage * damageMultiplier:0.##} target={enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
     private static Vector2 RotateDirection(Vector2 direction, float angleDegrees)

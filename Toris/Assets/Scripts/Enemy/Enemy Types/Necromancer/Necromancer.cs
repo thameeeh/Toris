@@ -98,7 +98,7 @@ public class Necromancer : Enemy
     public bool ShouldDisplaySummonProtectionVisual => HasSummonProtectionShield;
     public bool ShouldCommandBloodMagesToAttack =>
         CurrentHealth > 0f
-        && PlayerTransform != null
+        && HasAggroTarget
         && (IsWithinCastingRange || IsWithinStrikingDistance || StateMachine.CurrentEnemyState == AttackState);
     public bool IsPhaseTwoSummonUnlocked =>
         enableHealthThresholdSummon
@@ -298,7 +298,7 @@ public class Necromancer : Enemy
 
     public void FacePlayer()
     {
-        Vector2 direction = GetDirectionToPlayer();
+        Vector2 direction = GetDirectionToAggroTarget();
         if (direction.sqrMagnitude > MinDirectionSqr)
             UpdateAnimationDirection(direction);
     }
@@ -316,12 +316,14 @@ public class Necromancer : Enemy
 
     public Vector2 GetDirectionToPlayer(Vector3 origin)
     {
-        Vector2 direction = GetPlayerAimPosition() - origin;
-        return direction.sqrMagnitude > MinDirectionSqr ? direction.normalized : Vector2.zero;
+        return GetDirectionToAggroTarget(origin);
     }
 
     public Vector3 GetPlayerAimPosition()
     {
+        if (TryGetAggroTargetPosition(out Vector2 aggroTargetPosition))
+            return aggroTargetPosition + projectileAimOffset;
+
         CachePlayerAimCollider();
 
         if (playerAimCollider != null)
@@ -414,9 +416,17 @@ public class Necromancer : Enemy
     public void RequestAttackAnimation()
     {
         if (animator == null)
+        {
+#if UNITY_EDITOR
+            DebugAttackLog($"Necromancer RequestAttackAnimation aborted: animator null. pending={PendingAttackType}");
+#endif
             return;
+        }
 
         EndTemporaryAnimatorHold();
+#if UNITY_EDITOR
+        DebugAttackLog($"Necromancer RequestAttackAnimation -> pending={PendingAttackType} trigger={GetAttackTrigger(PendingAttackType)} {GetAttackDebugTargetSummary()}");
+#endif
         animator.SetTrigger(GetAttackTrigger(PendingAttackType));
     }
 

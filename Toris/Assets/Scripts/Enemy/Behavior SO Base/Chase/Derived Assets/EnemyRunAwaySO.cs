@@ -23,7 +23,13 @@ public class EnemyRunAway : ChaseSOBase<Generic>
     {
         base.DoFrameUpdateLogic();
 
-        Vector2 moveDirection = (enemy.transform.position - playerTransform.position).normalized;
+        if (!enemy.TryGetAggroTargetPosition(out Vector2 targetPosition))
+        {
+            enemy.MoveEnemy(Vector2.zero);
+            return;
+        }
+
+        Vector2 moveDirection = ((Vector2)enemy.transform.position - targetPosition).normalized;
         enemy.MoveEnemy(moveDirection * _runawaySpeed);
 
         if (enemy.IsWithinStrikingDistance)

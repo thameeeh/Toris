@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4d7eab4f4234562a1edec8a0f1bb6ca, type: 3}
+  m_Name: DecoyTotemConfig
+  m_EditorClassIdentifier: Assembly-CSharp::DecoyTotemConfig
+  abilityID: DecoyTotemConfig
+  requiredSkillID: 
+  abilityName: Ability4
+  icon: {fileID: 0}
+  cooldownSeconds: 1
+  blocksBowDraw: 1
+  bowDrawLockDuration: 0.35
+  blocksMovement: 1
+  movementLockDuration: 0.25
+  maxPlacementRange: 1
+  totemPrefab: {fileID: 2539218971245041826, guid: 0f9dea2096a7cdb4b9a882910f2c445c, type: 3}
+  maxHealth: 50
+  duration: 6
+  retargetRadius: 6
+  retargetInterval: 0.25
+  targetColliderRadius: 0.45
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  affectPassivePrey: 0
+  replaceExistingTotem: 1
+  staminaCost: 25
+  playReleaseAnimation: 1

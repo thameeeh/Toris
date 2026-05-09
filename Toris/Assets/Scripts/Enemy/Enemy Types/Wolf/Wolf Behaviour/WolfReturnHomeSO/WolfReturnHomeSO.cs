@@ -44,7 +44,11 @@ public class WolfReturnHomeSO : EnemyBehaviourSO<Wolf>
         _repickTimer = 0f;
 
         PickReturnTarget();
-        enemy.animator.SetBool("IsMoving", true);
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("IsMoving", true);
+            enemy.animator.Play("Idle");
+        }    
     }
 
     public override void DoExitLogic()

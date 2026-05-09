@@ -37,6 +37,12 @@ public class InventoryActionController : MonoBehaviour
         _uiInventoryEvents.OnRequestEquip += HandleRequestEquip;
         _uiInventoryEvents.OnRequestUse += HandleRequestUse;
         _uiInventoryEvents.OnRequestUnequip += HandleRequestUnequip;
+
+        if (_inputReader != null)
+        {
+            _inputReader.OnPotion1Pressed += HandlePotion1Pressed;
+            _inputReader.OnPotion2Pressed += HandlePotion2Pressed;
+        }
     }
 
     private void OnDisable()
@@ -47,6 +53,50 @@ public class InventoryActionController : MonoBehaviour
         _uiInventoryEvents.OnRequestEquip -= HandleRequestEquip;
         _uiInventoryEvents.OnRequestUse -= HandleRequestUse;
         _uiInventoryEvents.OnRequestUnequip -= HandleRequestUnequip;
+
+        if (_inputReader != null)
+        {
+            _inputReader.OnPotion1Pressed -= HandlePotion1Pressed;
+            _inputReader.OnPotion2Pressed -= HandlePotion2Pressed;
+        }
+    }
+
+    private void HandlePotion1Pressed()
+    {
+        Debug.Log("[InventoryActionController] Potion 1 hotkey pressed.");
+        TryConsumePotionSlot(0);
+    }
+
+    private void HandlePotion2Pressed()
+    {
+        Debug.Log("[InventoryActionController] Potion 2 hotkey pressed.");
+        TryConsumePotionSlot(1);
+    }
+
+    private void TryConsumePotionSlot(int slotIndex)
+    {
+        if (_potionInventory == null)
+        {
+            Debug.LogWarning("[InventoryActionController] _potionInventory is null!");
+            return;
+        }
+
+        if (slotIndex < 0 || slotIndex >= _potionInventory.LiveSlots.Count)
+        {
+            Debug.LogWarning($"[InventoryActionController] slotIndex {slotIndex} is out of range. LiveSlots count: {_potionInventory.LiveSlots.Count}");
+            return;
+        }
+
+        InventorySlot slot = _potionInventory.LiveSlots[slotIndex];
+        
+        if (slot == null || slot.IsEmpty)
+        {
+            Debug.Log("[InventoryActionController] Potion slot is null or empty.");
+            return;
+        }
+
+        Debug.Log($"[InventoryActionController] Attempting to consume potion in slot {slotIndex}. Item: {slot.HeldItem.BaseItem.name}");
+        HandleRequestUse(slot);
     }
 
     private void HandleRequestEquip(InventorySlot slot)
@@ -215,6 +265,7 @@ public class InventoryActionController : MonoBehaviour
     {
         _playerInventory = PlayerInventorySceneResolver.ResolvePlayerInventory(this, _playerInventory);
         _equipmentInventory = PlayerInventorySceneResolver.ResolveEquipmentInventory(this, _equipmentInventory, _playerInventory);
+        _potionInventory = PlayerInventorySceneResolver.ResolvePotionInventory(_potionInventory);
 
         if (_playerStats == null)
             TryGetComponent(out _playerStats);

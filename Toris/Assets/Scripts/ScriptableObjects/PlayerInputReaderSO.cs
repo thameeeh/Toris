@@ -11,6 +11,8 @@ public class PlayerInputReaderSO : ScriptableObject
     public Action OnShootStarted;
     public Action OnShootReleased;
     public Action OnDashPressed;
+    public Action OnPotion1Pressed;
+    public Action OnPotion2Pressed;
     public Action OnAbility1Pressed;
     public Action<int> OnAbilitySlotStarted;
     public Action<int> OnAbilitySlotReleased;

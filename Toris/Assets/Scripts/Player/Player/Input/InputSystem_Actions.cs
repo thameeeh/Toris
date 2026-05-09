@@ -226,6 +226,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Potion_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""30dbee59-1615-4fd0-80c5-e549fdfa36f6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Potion_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1cf8874-389f-4f07-af23-57bcfbe8b752"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -666,6 +684,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""54fb5af1-4ef7-4014-9a72-c02bd9240297"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Potion_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7d41ebc-4820-4ac4-9231-e3caf858c95c"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Potion_2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1408,6 +1448,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Ability4 = m_Player.FindAction("Ability4", throwIfNotFound: true);
         m_Player_Ability5 = m_Player.FindAction("Ability5", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_Potion_1 = m_Player.FindAction("Potion_1", throwIfNotFound: true);
+        m_Player_Potion_2 = m_Player.FindAction("Potion_2", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1523,6 +1565,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Ability4;
     private readonly InputAction m_Player_Ability5;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_Potion_1;
+    private readonly InputAction m_Player_Potion_2;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1595,6 +1639,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         /// <summary>
+        /// Provides access to the underlying input action "Player/Potion_1".
+        /// </summary>
+        public InputAction @Potion_1 => m_Wrapper.m_Player_Potion_1;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Potion_2".
+        /// </summary>
+        public InputAction @Potion_2 => m_Wrapper.m_Player_Potion_2;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1665,6 +1717,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @Potion_1.started += instance.OnPotion_1;
+            @Potion_1.performed += instance.OnPotion_1;
+            @Potion_1.canceled += instance.OnPotion_1;
+            @Potion_2.started += instance.OnPotion_2;
+            @Potion_2.performed += instance.OnPotion_2;
+            @Potion_2.canceled += instance.OnPotion_2;
         }
 
         /// <summary>
@@ -1721,6 +1779,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @Potion_1.started -= instance.OnPotion_1;
+            @Potion_1.performed -= instance.OnPotion_1;
+            @Potion_1.canceled -= instance.OnPotion_1;
+            @Potion_2.started -= instance.OnPotion_2;
+            @Potion_2.performed -= instance.OnPotion_2;
+            @Potion_2.canceled -= instance.OnPotion_2;
         }
 
         /// <summary>
@@ -2203,6 +2267,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPause(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Potion_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPotion_1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Potion_2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPotion_2(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

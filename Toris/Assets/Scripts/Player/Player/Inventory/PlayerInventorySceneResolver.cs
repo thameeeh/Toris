@@ -36,6 +36,22 @@ namespace OutlandHaven.Inventory
             return null;
         }
 
+        public static InventoryManager ResolvePotionInventory(InventoryManager current)
+        {
+            if (IsPotionInventory(current))
+                return current;
+
+            InventoryManager[] inventoryManagers = UnityEngine.Object.FindObjectsByType<InventoryManager>(FindObjectsSortMode.None);
+            for (int i = 0; i < inventoryManagers.Length; i++)
+            {
+                InventoryManager candidate = inventoryManagers[i];
+                if (IsPotionInventory(candidate))
+                    return candidate;
+            }
+
+            return null;
+        }
+
         public static InventoryManager ResolveEquipmentInventory(Component context, InventoryManager current, InventoryManager playerInventory)
         {
             if (IsEquipmentInventory(current, playerInventory))
@@ -79,6 +95,13 @@ namespace OutlandHaven.Inventory
         private static GameSessionSO LoadGameSession()
         {
             return Resources.Load<GameSessionSO>(GameSessionResourcePath);
+        }
+
+        private static bool IsPotionInventory(InventoryManager inventoryManager)
+        {
+            return inventoryManager != null
+                   && inventoryManager.ContainerBlueprint != null
+                   && inventoryManager.ContainerBlueprint.AssociatedView == ScreenType.Potions;
         }
 
         private static bool IsPlayerInventory(InventoryManager inventoryManager)

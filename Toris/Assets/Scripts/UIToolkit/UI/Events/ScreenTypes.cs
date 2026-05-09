@@ -12,6 +12,7 @@ namespace OutlandHaven.UIToolkit
         Inventory,
         Smith,
         Mage,
+        Potions,
 
         CharacterSheet,
         Skills,

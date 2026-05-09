@@ -176,6 +176,22 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         HandleAbilitySlotInput(4, context);
     }
 
+    public void OnPotion_1(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _inputReader.OnPotion1Pressed?.Invoke();
+        }
+    }
+
+    public void OnPotion_2(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _inputReader.OnPotion2Pressed?.Invoke();
+        }
+    }
+
     private void HandleAbilitySlotInput(int slotIndex, InputAction.CallbackContext context)
     {
         if (!AllowsCombatInput())

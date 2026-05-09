@@ -1,3 +1,8 @@
+## [Current/Recent] - Potion Hotkey Integration
+* **Hotkey Consumption:** Implemented hotkey-driven potion consumption ('1' and '2') by wiring `PlayerInputReaderSO` to `InventoryActionController`, allowing direct item usage from the Potion quickbar slots.
+* **Resolution Resolver:** Added `ResolvePotionInventory` to `PlayerInventorySceneResolver` to ensure correct runtime reference handling for potion containers during controller initialization.
+* **UI/Inventory Fixes:** Added diagnostic logging in `InventoryActionController` for consumption events.
+
 ## [Current/Recent] - Missing Asset Safety
 * **OnValidate Implementation:** Added `OnValidate` checks to `HudScreenController` and `InventoryActionController` to log warnings for missing references at design time (in the Unity Editor), preventing silent failures at runtime.
 * **Lifecycle Cleanup:** Moved null reference checks from runtime lifecycle methods like `OnEnable` into `OnValidate` where appropriate to optimize runtime execution and provide earlier developer feedback.

@@ -75,7 +75,8 @@ public class PackController : MonoBehaviour
 
         for (int i = 0; i < spawnAmount; i++)
         {
-            Vector2 spawnPoint = GetRandomSpawnPoint(spawnCenter);
+            if (!TryGetRandomSpawnPoint(spawnCenter, out Vector2 spawnPoint))
+                continue;
 
             Wolf newMinion;
 
@@ -106,10 +107,38 @@ public class PackController : MonoBehaviour
         }
     }
 
-    private Vector2 GetRandomSpawnPoint(Vector2 spawnCenter)
+    private bool TryGetRandomSpawnPoint(Vector2 spawnCenter, out Vector2 spawnPoint)
     {
         const int maxSpawnAttempts = 8;
         const float spawnCheckRadius = 0.3f;
+
+        TileNavWorld nav = TileNavWorld.Instance;
+        if (nav != null)
+        {
+            for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
+            {
+                Vector2 direction = Random.insideUnitCircle.normalized;
+                if (direction == Vector2.zero) continue;
+
+                Vector2 candidatePos = spawnCenter + direction * spawnDistance;
+                if (nav.TryFindNearestWalkableWorldPosition(candidatePos, 0, out Vector3 resolvedPosition))
+                {
+                    spawnPoint = resolvedPosition;
+                    return true;
+                }
+            }
+
+            int nearestSearchRadius = Mathf.CeilToInt(spawnDistance) + 2;
+            if (nav.TryFindNearestWalkableWorldPosition(spawnCenter, nearestSearchRadius, out Vector3 nearestPosition))
+            {
+                spawnPoint = nearestPosition;
+                return true;
+            }
+
+            spawnPoint = spawnCenter;
+            return false;
+        }
+
         for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
         {
             Vector2 direction = Random.insideUnitCircle.normalized;
@@ -119,10 +148,15 @@ public class PackController : MonoBehaviour
             Collider2D hit = Physics2D.OverlapCircle(candidatePos, spawnCheckRadius,
                 LayerMask.GetMask("Default", "Ground", "Walls"));
 
-            if (hit == null) return candidatePos;
+            if (hit == null)
+            {
+                spawnPoint = candidatePos;
+                return true;
+            }
         }
 
-        return spawnCenter + Random.insideUnitCircle * spawnDistance * 0.5f;
+        spawnPoint = spawnCenter + Random.insideUnitCircle * spawnDistance * 0.5f;
+        return true;
     }
 
     private void RegisterLeader(Wolf leader)

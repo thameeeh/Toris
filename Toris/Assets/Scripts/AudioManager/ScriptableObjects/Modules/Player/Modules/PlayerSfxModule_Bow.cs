@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Player SFX Modules/Bow", fileName = "PlayerSfxModule_Bow")]
+[CreateAssetMenu(menuName = "Audio/Legacy/Player SFX Modules/Bow", fileName = "PlayerSfxModule_Bow")]
 public sealed class PlayerSfxModule_Bow : PlayerSfxModule
 {
     [Header("SFX IDs")]

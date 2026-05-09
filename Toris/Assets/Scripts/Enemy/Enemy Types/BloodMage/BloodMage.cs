@@ -9,6 +9,7 @@ public class BloodMage : Enemy
     private const string DeadTrigger = "Dead";
     private const string IsMovingParameter = "IsMoving";
     private const float MinDirectionSqr = 0.0001f;
+    private const int GuardAnchorSearchRadiusTiles = 6;
 
     [Space]
     [Header("Stats")]
@@ -289,7 +290,17 @@ public class BloodMage : Enemy
             Mathf.Cos(angleRadians),
             Mathf.Sin(angleRadians)) * guardRadius;
 
-        return (Vector2)owner.transform.position + offset;
+        Vector2 anchorPosition = (Vector2)owner.transform.position + offset;
+        TileNavWorld nav = TileNavWorld.Instance;
+        if (nav == null)
+            return anchorPosition;
+
+        if (nav.TryFindNearestWalkableWorldPosition(anchorPosition, GuardAnchorSearchRadiusTiles, out Vector3 resolvedPosition))
+            return resolvedPosition;
+
+        return nav.IsWalkableWorldPos(transform.position)
+            ? (Vector2)transform.position
+            : anchorPosition;
     }
 
     private void InitializeRuntimeState()

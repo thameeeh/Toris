@@ -16,6 +16,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
     [SerializeField, Min(1)] private int bloodMageSummonCount = 3;
     [SerializeField, Min(0.1f)] private float bloodMageSummonRadius = 1.5f;
     [SerializeField] private float bloodMageSummonStartAngleDegrees = 90f;
+    [SerializeField, Min(0)] private int bloodMageSummonWalkableSearchRadiusTiles = 6;
 
     [Header("Spell Projectile")]
     [SerializeField] private NecromancerShotProjectile spellProjectilePrefab;
@@ -355,7 +356,9 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
 
     private bool StartBloodMageSpawn(int summonIndex)
     {
-        Vector3 spawnPosition = GetBloodMageSpawnPosition(summonIndex);
+        if (!TryGetBloodMageSpawnPosition(summonIndex, out Vector3 spawnPosition))
+            return false;
+
         if (bloodMageSpawnEffectPrefab != null)
             return SpawnBloodMageSpawnEffect(summonIndex, spawnPosition);
 
@@ -420,7 +423,29 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
         return spawnedBloodMage;
     }
 
-    private Vector3 GetBloodMageSpawnPosition(int summonIndex)
+    private bool TryGetBloodMageSpawnPosition(int summonIndex, out Vector3 spawnPosition)
+    {
+        spawnPosition = GetRawBloodMageSpawnPosition(summonIndex);
+
+        TileNavWorld nav = TileNavWorld.Instance;
+        if (nav == null)
+            return true;
+
+        if (nav.TryFindNearestWalkableWorldPosition(spawnPosition, bloodMageSummonWalkableSearchRadiusTiles, out Vector3 resolvedPosition))
+        {
+            spawnPosition = resolvedPosition;
+            return true;
+        }
+
+#if UNITY_EDITOR
+        enemy.DebugAttackLog(
+            $"Blood Mage summon slot {summonIndex} skipped: no walkable spawn near " +
+            $"({spawnPosition.x:0.##},{spawnPosition.y:0.##}).");
+#endif
+        return false;
+    }
+
+    private Vector3 GetRawBloodMageSpawnPosition(int summonIndex)
     {
         float angleStep = 360f / bloodMageSummonCount;
         float angleDegrees = bloodMageSummonStartAngleDegrees + (angleStep * summonIndex);

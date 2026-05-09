@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Player SFX Modules/Footsteps", fileName = "PlayerSfxModule_Footsteps")]
+[CreateAssetMenu(menuName = "Audio/Legacy/Player SFX Modules/Footsteps", fileName = "PlayerSfxModule_Footsteps")]
 public sealed class PlayerSfxModule_Footsteps : PlayerSfxModule
 {
     [Header("SFX ID (loop)")]
@@ -33,7 +33,16 @@ public sealed class PlayerSfxModule_Footsteps : PlayerSfxModule
             return;
         }
 
-        float speed = ctx.Rb != null ? ctx.Rb.linearVelocity.magnitude : 0f;
+        float speed = 0f;
+        if (ctx.Rb != null)
+        {
+#if UNITY_2022_1_OR_NEWER
+            speed = ctx.Rb.linearVelocity.magnitude;
+#else
+            speed = ctx.Rb.velocity.magnitude;
+#endif
+        }
+
         bool isMoving = speed > minMoveThreshold;
 
         if (isMoving)

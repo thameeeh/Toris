@@ -202,6 +202,9 @@ GameObject:
   - component: {fileID: 5229613945364294266}
   - component: {fileID: 2003589166597666773}
   - component: {fileID: 503972616382245057}
+  - component: {fileID: 8647224738935113748}
+  - component: {fileID: 277378599010215229}
+  - component: {fileID: 4896050849110528461}
   - component: {fileID: 7014179871662737768}
   - component: {fileID: 4549348511874797031}
   - component: {fileID: 4055305976804400490}
@@ -305,6 +308,8 @@ MonoBehaviour:
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _itemPicker: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _combatDisabledSceneNames:
+  - MainArea
 --- !u!114 &6347703112388059557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,14 +478,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c4cb29378184a489269998929517b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSfx
+  rules: []
+  legacyModules:
+  - {fileID: 11400000, guid: c3499cca59d0d2a469a97d013ed6de67, type: 2}
+  - {fileID: 11400000, guid: ce6563ef3412d8c4095aea9496ef8e90, type: 2}
+  - {fileID: 11400000, guid: 3ea2e61512cc04d46aa784e990b8f510, type: 2}
+--- !u!114 &8647224738935113748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcd70f5931f44ab98b08f46a1cc613bc, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSfxEventBridge
+  playerSfx: {fileID: 503972616382245057}
   bow: {fileID: 1738574752484829038}
   playerController: {fileID: 7577956846138625648}
   motor: {fileID: 6347703112388059557}
   rb: {fileID: 4313767850351379256}
-  modules:
-  - {fileID: 11400000, guid: c3499cca59d0d2a469a97d013ed6de67, type: 2}
-  - {fileID: 11400000, guid: ce6563ef3412d8c4095aea9496ef8e90, type: 2}
-  - {fileID: 11400000, guid: 3ea2e61512cc04d46aa784e990b8f510, type: 2}
+  facing: {fileID: 1884929689371088939}
+  stats: {fileID: 8137892244548921797}
+  statusController: {fileID: 957290264796575780}
+  movementStartSpeed: 0.1
+--- !u!114 &277378599010215229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db47fec89064adf9de8f95167938fb8, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVfx
+  rules: []
+  legacyModules: []
+--- !u!114 &4896050849110528461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5044014f0cc445d394a1b0f535c003e1, type: 3}
+  m_Name: ""
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVfxEventBridge
+  playerVfx: {fileID: 277378599010215229}
+  bow: {fileID: 1738574752484829038}
+  playerController: {fileID: 7577956846138625648}
+  motor: {fileID: 6347703112388059557}
+  rb: {fileID: 4313767850351379256}
+  facing: {fileID: 1884929689371088939}
+  stats: {fileID: 8137892244548921797}
+  statusController: {fileID: 957290264796575780}
 --- !u!114 &7014179871662737768
 MonoBehaviour:
   m_ObjectHideFlags: 0

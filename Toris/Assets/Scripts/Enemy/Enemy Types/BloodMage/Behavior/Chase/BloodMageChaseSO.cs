@@ -6,6 +6,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
     private const float DefaultGuardRadius = 1.75f;
     private const float DefaultGuardPositionTolerance = 0.25f;
     private const float DefaultGuardPositionHysteresis = 0.2f;
+    private const float NavProbeDistance = 0.35f;
 
     [Header("Ranges")]
     [SerializeField, Min(0f)] private float retreatDistance = 1.5f;
@@ -203,8 +204,29 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
 
         LogDecision(
             $"MoveInDirection raw=({moveDirection.x:0.###}, {moveDirection.y:0.###}) speedMult={speedMultiplier:0.##}");
+        if (!CanMoveOnNavigation(moveDirection))
+        {
+            LogDecision("MoveInDirection blocked by navigation -> StopMoving");
+            StopMoving();
+            return;
+        }
+
         enemy.SetMovementAnimation(true);
         enemy.MoveEnemy(moveDirection.normalized * enemy.MovementSpeed * speedMultiplier);
+    }
+
+    private bool CanMoveOnNavigation(Vector2 moveDirection)
+    {
+        TileNavWorld nav = TileNavWorld.Instance;
+        if (nav == null)
+            return true;
+
+        Vector2 currentPosition = enemy.transform.position;
+        if (!nav.IsWalkableWorldPos(currentPosition))
+            return false;
+
+        Vector2 probePosition = currentPosition + moveDirection.normalized * NavProbeDistance;
+        return nav.IsWalkableWorldPos(probePosition);
     }
 
     private Vector2 GetTowardPositionDirection(Vector2 targetPosition, Vector2 fallbackDirection)
@@ -214,7 +236,7 @@ public class BloodMageChaseSO : ChaseSOBase<BloodMage>
         if (_pathAgent != null)
             moveDirection = _pathAgent.GetMoveDirection(targetPosition);
 
-        if (moveDirection.sqrMagnitude <= minimumMoveDirectionSqr)
+        if (moveDirection.sqrMagnitude <= minimumMoveDirectionSqr && TileNavWorld.Instance == null)
             moveDirection = fallbackDirection.sqrMagnitude > minimumMoveDirectionSqr ? fallbackDirection.normalized : Vector2.zero;
 
         return moveDirection;

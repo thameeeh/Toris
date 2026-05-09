@@ -3,10 +3,13 @@ using UnityEngine;
 public abstract class PlayerSfxModule : ScriptableObject
 {
     public virtual void Initialize(in PlayerSfxContext ctx) { }
+    public virtual void Dispose(in PlayerSfxContext ctx) { }
     public virtual void Tick(in PlayerSfxContext ctx, float unscaledDeltaTime) { }
 
     // Events the hub can forward (add more as you need)
     public virtual void OnBowDrawStarted(in PlayerSfxContext ctx) { }
+    public virtual void OnBowShootReady(in PlayerSfxContext ctx) { }
+    public virtual void OnBowShotReleased(in PlayerSfxContext ctx) { }
     public virtual void OnBowShotFired(in PlayerSfxContext ctx) { }
     public virtual void OnBowDryReleased(in PlayerSfxContext ctx) { }
 

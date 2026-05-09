@@ -272,7 +272,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
             desiredDir = pathAgent.GetMoveDirection(wanderPoint);
         }
 
-        if (desiredDir.sqrMagnitude < minMoveDirectionSqr)
+        if (desiredDir.sqrMagnitude < minMoveDirectionSqr && TileNavWorld.Instance == null)
         {
             Vector2 direct = wanderPoint - currentPos;
             if (direct.sqrMagnitude > minMoveDirectionSqr)

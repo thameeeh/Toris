@@ -188,6 +188,61 @@ public class TileNavWorld : MonoBehaviour
         return IsWalkableCell(new Vector2Int(cell.x, cell.y));
     }
 
+    public bool TryFindNearestWalkableWorldPosition(Vector3 desiredWorldPos, int maxTileRadius, out Vector3 resolvedPosition)
+    {
+        resolvedPosition = desiredWorldPos;
+
+        if (!groundMap || _chunkSize <= 0)
+            return false;
+
+        Vector2Int startCell = WorldToCell(desiredWorldPos);
+        if (IsWalkableCell(startCell))
+        {
+            resolvedPosition = CellToWorldCenter(startCell);
+            return true;
+        }
+
+        int searchRadius = Mathf.Max(0, maxTileRadius);
+        for (int radius = 1; radius <= searchRadius; radius++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2Int top = startCell + new Vector2Int(x, radius);
+                if (IsWalkableCell(top))
+                {
+                    resolvedPosition = CellToWorldCenter(top);
+                    return true;
+                }
+
+                Vector2Int bottom = startCell + new Vector2Int(x, -radius);
+                if (IsWalkableCell(bottom))
+                {
+                    resolvedPosition = CellToWorldCenter(bottom);
+                    return true;
+                }
+            }
+
+            for (int y = -radius + 1; y <= radius - 1; y++)
+            {
+                Vector2Int right = startCell + new Vector2Int(radius, y);
+                if (IsWalkableCell(right))
+                {
+                    resolvedPosition = CellToWorldCenter(right);
+                    return true;
+                }
+
+                Vector2Int left = startCell + new Vector2Int(-radius, y);
+                if (IsWalkableCell(left))
+                {
+                    resolvedPosition = CellToWorldCenter(left);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     // --- Tile rules (independent of MapGenerator) ---
 
     private bool IsTileWalkable(TileBase tile)

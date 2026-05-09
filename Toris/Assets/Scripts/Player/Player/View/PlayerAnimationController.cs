@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// Controller = animation-facing runtime glue between gameplay intent and Animator.
 /// Animator owns state routing, while this controller keeps shoot visuals aligned
-/// to gameplay timing and handles dash particle playback.
+/// to gameplay timing and handles animation-authored dash afterimages.
 public class PlayerAnimationController : MonoBehaviour
 {
     private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;
@@ -25,6 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private CharacterAnimSO _character;
     [SerializeField] private WeaponProfile _weapon;
 
+    [Header("Dash Afterimage")]
     [SerializeField] private int _dashParticleSortingOrderOffset = -1;
     [SerializeField] private float _dashParticleDestroyPadding = 0.05f;
 

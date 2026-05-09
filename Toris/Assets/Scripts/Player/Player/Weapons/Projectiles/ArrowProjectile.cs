@@ -21,16 +21,12 @@ public class ArrowProjectile : Projectile
     private bool _usesDamageLayerMask;
     private int _damageLayerMask = ~0;
     private Func<Collider2D, bool> _canDamageTargetPredicate;
-    private bool _playHitEffect = true;
     private string _debugSource = string.Empty;
     private string _pendingDespawnReason = string.Empty;
     private float _spawnTime;
     private float _configuredLifetime;
     private float _configuredSpeed;
     private Vector2 _spawnPosition;
-
-    //Effect spawning attempt
-    private const string ArrowHitEffectId = "hit_arrow_square";
 
     public event Action<ArrowProjectile, Collider2D, IDamageable, Vector2> DamageApplied;
     public event Action<ArrowProjectile> ProjectileDespawned;
@@ -98,7 +94,6 @@ public class ArrowProjectile : Projectile
         _usesDamageLayerMask = false;
         _damageLayerMask = ~0;
         _canDamageTargetPredicate = null;
-        _playHitEffect = true;
         _debugSource = string.Empty;
         _pendingDespawnReason = string.Empty;
         _spawnTime = 0f;
@@ -128,7 +123,6 @@ public class ArrowProjectile : Projectile
         _usesDamageLayerMask = false;
         _damageLayerMask = ~0;
         _canDamageTargetPredicate = null;
-        _playHitEffect = true;
         _debugSource = string.Empty;
         _pendingDespawnReason = string.Empty;
         _spawnTime = 0f;
@@ -202,7 +196,7 @@ public class ArrowProjectile : Projectile
 
     public void SetPlayHitEffect(bool playHitEffect)
     {
-        _playHitEffect = playHitEffect;
+        _ = playHitEffect;
     }
 
     /// <summary>Return to pool (or disable/destroy if no pool available).</summary>
@@ -243,8 +237,6 @@ public class ArrowProjectile : Projectile
         {
             Vector2 hitPoint = target.ClosestPoint(transform.position);
             dmgTarget.Damage(damage);
-            if (_playHitEffect)
-                SpawnHitEffect(hitPoint);
             DamageApplied?.Invoke(this, target, dmgTarget, hitPoint);
             return true;
         }
@@ -295,19 +287,4 @@ public class ArrowProjectile : Projectile
             Physics2D.IgnoreCollision(myCollider, ownerCollider, ignore);
     }
 
-    // effect spawn
-    private void SpawnHitEffect(Vector3 position)
-    {
-        var request = new EffectRequest
-        {
-            EffectId = ArrowHitEffectId,
-            Position = position,
-            Rotation = Quaternion.identity,
-            Parent = null,
-            Variant = default,
-            Magnitude = 1f
-        };
-
-        EffectManagerBehavior.Instance.Play(request);
-    }
 }

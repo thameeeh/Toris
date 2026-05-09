@@ -588,19 +588,8 @@ public class PlayerBowController : MonoBehaviour
 
     public void PlayDefaultArrowHitEffect(Vector2 position)
     {
-        if (EffectManagerBehavior.Instance == null)
-            return;
-
-        EffectRequest request = new EffectRequest
-        {
-            EffectId = "hit_arrow_square",
-            Position = position,
-            Rotation = Quaternion.identity,
-            Parent = null,
-            Variant = default,
-            Magnitude = 1f
-        };
-
-        EffectManagerBehavior.Instance.Play(request);
+        _ = position;
+        // Retained for legacy ability call sites.
+        // Hit VFX is now authored through VFX rules/modules instead of hardcoded here.
     }
 }

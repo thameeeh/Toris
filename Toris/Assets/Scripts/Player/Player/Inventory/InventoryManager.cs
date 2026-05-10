@@ -132,6 +132,10 @@ namespace OutlandHaven.Inventory
                 {
                     GlobalSession.PlayerEquipment = this; // Bind the equipment!
                 }
+                else if (IsPotionContainer())
+                {
+                    GlobalSession.PlayerPotionInventory = this;
+                }
             }
         }
 
@@ -149,6 +153,10 @@ namespace OutlandHaven.Inventory
                 else if (LooksLikeEquipmentContainer() && GlobalSession.PlayerEquipment == this)
                 {
                     GlobalSession.PlayerEquipment = null; // Unbind the equipment!
+                }
+                else if (IsPotionContainer() && GlobalSession.PlayerPotionInventory == this)
+                {
+                    GlobalSession.PlayerPotionInventory = null;
                 }
             }
         }
@@ -323,6 +331,11 @@ namespace OutlandHaven.Inventory
                 type = "Equipment";
                 restored = GlobalSession.TryApplyEquipmentInventoryState(this);
             }
+            else if (IsPotionContainer())
+            {
+                type = "Potion";
+                restored = GlobalSession.TryApplyPotionInventoryState(this);
+            }
 
             if (restored)
             {
@@ -352,6 +365,11 @@ namespace OutlandHaven.Inventory
                 Debug.Log($"[Inventory] CAPTURING Equipment state for '{gameObject.name}' into GameSession snapshot.");
                 GlobalSession.CaptureEquipmentInventoryState(this);
             }
+            else if (IsPotionContainer())
+            {
+                Debug.Log($"[Inventory] CAPTURING Potion state for '{gameObject.name}' into GameSession snapshot.");
+                GlobalSession.CapturePotionInventoryState(this);
+            }
         }
 
         private bool IsPlayerBackpackContainer()
@@ -359,6 +377,12 @@ namespace OutlandHaven.Inventory
             return ContainerBlueprint != null
                    && ContainerBlueprint.AssociatedView == ScreenType.Inventory
                    && !ContainerBlueprint.IsEquipment;
+        }
+
+        private bool IsPotionContainer()
+        {
+            return ContainerBlueprint != null
+                   && ContainerBlueprint.AssociatedView == ScreenType.Potions;
         }
 
         private bool LooksLikeEquipmentContainer()

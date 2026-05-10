@@ -29,6 +29,8 @@ namespace OutlandHaven.UIToolkit
         public InventoryManager PlayerInventory;
         [System.NonSerialized]
         public InventoryManager PlayerEquipment;
+        [System.NonSerialized]
+        public InventoryManager PlayerPotionInventory;
 
         [Header("Global Anchors")]
         public PlayerProgressionAnchorSO ProgressionAnchor;
@@ -36,6 +38,7 @@ namespace OutlandHaven.UIToolkit
 
         [System.NonSerialized] private RuntimeInventorySnapshot _playerInventorySnapshot;
         [System.NonSerialized] private RuntimeInventorySnapshot _equipmentInventorySnapshot;
+        [System.NonSerialized] private RuntimeInventorySnapshot _potionInventorySnapshot;
         [System.NonSerialized] private RuntimeProgressionSnapshot _playerProgressionSnapshot;
         [System.NonSerialized] private RuntimeStatsSnapshot _playerStatsSnapshot;
         [System.NonSerialized] private PlayerAbilitySO[] _playerAbilitySlotSnapshot;
@@ -63,8 +66,10 @@ namespace OutlandHaven.UIToolkit
         {
             PlayerInventory = null;
             PlayerEquipment = null;
+            PlayerPotionInventory = null;
             _playerInventorySnapshot = null;
             _equipmentInventorySnapshot = null;
+            _potionInventorySnapshot = null;
             _playerProgressionSnapshot = null;
             _playerStatsSnapshot = null;
             _playerAbilitySlotSnapshot = null;
@@ -72,6 +77,7 @@ namespace OutlandHaven.UIToolkit
 
         public RuntimeInventorySnapshot GetPlayerInventorySnapshot() => _playerInventorySnapshot;
         public RuntimeInventorySnapshot GetEquipmentInventorySnapshot() => _equipmentInventorySnapshot;
+        public RuntimeInventorySnapshot GetPotionInventorySnapshot() => _potionInventorySnapshot;
 
         public void CapturePlayerInventoryState(InventoryManager inventoryManager)
         {
@@ -89,7 +95,6 @@ namespace OutlandHaven.UIToolkit
                 return false;
 
             _playerInventorySnapshot.ApplyTo(inventoryManager);
-            _playerInventorySnapshot = null;
             return true;
         }
 
@@ -109,7 +114,25 @@ namespace OutlandHaven.UIToolkit
                 return false;
 
             _equipmentInventorySnapshot.ApplyTo(inventoryManager);
-            _equipmentInventorySnapshot = null;
+            return true;
+        }
+
+        public void CapturePotionInventoryState(InventoryManager inventoryManager)
+        {
+            _potionInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
+        }
+
+        public void CapturePotionInventoryState(SavedInventoryData data, ItemDatabaseSO database)
+        {
+            _potionInventorySnapshot = RuntimeInventorySnapshot.CreateFromSavedData(data, database);
+        }
+
+        public bool TryApplyPotionInventoryState(InventoryManager inventoryManager)
+        {
+            if (_potionInventorySnapshot == null)
+                return false;
+
+            _potionInventorySnapshot.ApplyTo(inventoryManager);
             return true;
         }
 
@@ -278,6 +301,7 @@ namespace OutlandHaven.UIToolkit
             // --- 3. EXPORT INVENTORIES ---
             saveData.PlayerBackpack = ExtractInventoryData(PlayerInventory);
             saveData.PlayerEquipment = ExtractInventoryData(PlayerEquipment);
+            saveData.PlayerPotion = ExtractInventoryData(PlayerPotionInventory);
 
             // Quest bridge: keep Toris as the save-file owner while Pixel Crushers owns dialogue/quest state.
             saveData.PixelCrushersDialogueSaveData = global::PixelCrushersDialogueSaveBridge.CaptureSaveData();
@@ -323,6 +347,14 @@ namespace OutlandHaven.UIToolkit
                     RestoreInventoryData(PlayerEquipment, saveData.PlayerEquipment, itemDatabase);
                 else
                     CaptureEquipmentInventoryState(saveData.PlayerEquipment, itemDatabase);
+            }
+
+            if (saveData.PlayerPotion != null)
+            {
+                if (PlayerPotionInventory != null)
+                    RestoreInventoryData(PlayerPotionInventory, saveData.PlayerPotion, itemDatabase);
+                else
+                    CapturePotionInventoryState(saveData.PlayerPotion, itemDatabase);
             }
 
             // Quest bridge: future menu save-slot loads may import before MainArea/Dialogue Manager exists.

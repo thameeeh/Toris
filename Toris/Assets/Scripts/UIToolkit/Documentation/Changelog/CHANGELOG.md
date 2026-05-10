@@ -1,3 +1,11 @@
+## [Current/Recent] - Fix Potion and Equipment Inventory Scene Loading
+* **Persistent Inventory Snapshots:** Refactored `GameSessionSO` to prevent clearing inventory snapshots after they are applied. This ensures inventory data remains available across multiple scene transitions and re-instantiations.
+* **Potion Inventory Integration:** Added full support for the Potion inventory to the scene transition and save systems.
+    * **Session Tracking:** Added `PlayerPotionInventory` and `_potionInventorySnapshot` to `GameSessionSO`.
+    * **Capture/Restore:** Implemented `CapturePotionInventoryState` and `TryApplyPotionInventoryState` in `GameSessionSO`.
+    * **Manager Binding:** Updated `InventoryManager` to automatically register and restore potion inventory state via `ScreenType.Potions` association.
+    * **Persistence:** Added `PlayerPotion` to `GameSaveData` and updated export/import logic in `GameSessionSO` to include potion data.
+
 ## [Current/Recent] - Potion Hotkey Integration
 * **Hotkey Consumption:** Implemented hotkey-driven potion consumption ('1' and '2') by wiring `PlayerInputReaderSO` to `InventoryActionController`, allowing direct item usage from the Potion quickbar slots.
 * **Resolution Resolver:** Added `ResolvePotionInventory` to `PlayerInventorySceneResolver` to ensure correct runtime reference handling for potion containers during controller initialization.

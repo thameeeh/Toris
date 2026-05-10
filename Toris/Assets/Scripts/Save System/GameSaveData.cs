@@ -21,7 +21,8 @@ namespace OutlandHaven.SaveSystem
 
         // Inventories
         public SavedInventoryData PlayerBackpack;
-        public SavedInventoryData PlayerEquipment; // MISSING ADDITION
+        public SavedInventoryData PlayerEquipment;
+        public SavedInventoryData PlayerPotion;
 
         // Quest bridge: Pixel Crushers serializes quest states, quest entries, and Lua variables into this blob.
         // Future menu save-slot loads may deserialize this before MainArea/Dialogue Manager exists, so GameSessionSO defers applying it through the quest save bridge.

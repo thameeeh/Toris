@@ -26,6 +26,9 @@ namespace OutlandHaven.Inventory
     {
         public int CurrentLevel;
 
+        // RULE 3.2: REQUIRED FOR JSON DESERIALIZATION!
+        public UpgradeableState() { }
+
         public UpgradeableState(int startLevel)
         {
             CurrentLevel = startLevel;

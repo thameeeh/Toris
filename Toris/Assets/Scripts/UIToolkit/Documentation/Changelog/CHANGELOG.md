@@ -1,3 +1,14 @@
+## [Current/Recent] - GameSessionSO Architectural Refactor
+* **Code Decoupling:** Refactored the monolithic `GameSessionSO` into a Facade that delegates specialized tasks to new service classes:
+    * `RuntimeSnapshotRegistry.cs`: Manages volatile in-memory state for scene transitions.
+    * `SaveDataOrchestrator.cs`: Handles persistence logic, inventory extraction, and DTO mapping for save/load operations.
+* **Documentation:** Added a stylized architectural overview header to `GameSessionSO` explaining the service roles.
+* **Backward Compatibility:** Maintained all existing public method signatures to ensure zero breaking changes for UI and gameplay systems.
+
+## [Current/Recent] - Item Module Serialization Compliance
+* **Serialization Fixes:** Added mandatory public parameterless constructors to `UpgradeableState` in `UpgradeableModule.cs` to comply with `Newtonsoft.Json` requirements for save/load stability. (Note: `EvolvingState` was verified and already contains a parameterless constructor).
+* **Verification Tools:** Created `SerializationSanityCheck.cs` in `Assets/Scripts/Debugging/` to provide a runtime context-menu test for validating `ItemComponentState` serialization.
+
 ## [Current/Recent] - Fix Potion and Equipment Inventory Scene Loading
 * **Persistent Inventory Snapshots:** Refactored `GameSessionSO` to prevent clearing inventory snapshots after they are applied. This ensures inventory data remains available across multiple scene transitions and re-instantiations.
 * **Potion Inventory Integration:** Added full support for the Potion inventory to the scene transition and save systems.

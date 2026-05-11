@@ -22,26 +22,30 @@ namespace OutlandHaven.UIToolkit
     [CreateAssetMenu(menuName = "UI/Scriptable Objects/GameSessionSO")]
     public class GameSessionSO : ScriptableObject
     {
+        /*
+        #########################################################################################
+        #                                                                                       #
+        #   GAMESESSIONSO ARCHITECTURE: FACADE & SERVICE DELEGATION                             #
+        #                                                                                       #
+        #   1. RuntimeSnapshotRegistry: Handles volatile, in-memory data for scene transitions. #
+        #      - Purpose: Bridges state when the player moves between Unity scenes.             #
+        #                                                                                       #
+        #   2. SaveDataOrchestrator: Handles persistence logic (JSON IO & DTO Mapping).        #
+        #      - Purpose: Converts live game state into a serializable SaveData format.         #
+        #                                                                                       #
+        #########################################################################################
+        */
+
         private const string DefaultResourcePath = "GameData/GameSession";
 
         [Header("Data References")]
-        [System.NonSerialized]
-        public InventoryManager PlayerInventory;
-        [System.NonSerialized]
-        public InventoryManager PlayerEquipment;
-        [System.NonSerialized]
-        public InventoryManager PlayerPotionInventory;
+        [System.NonSerialized] public InventoryManager PlayerInventory;
+        [System.NonSerialized] public InventoryManager PlayerEquipment;
+        [System.NonSerialized] public InventoryManager PlayerPotionInventory;
 
         [Header("Global Anchors")]
         public PlayerProgressionAnchorSO ProgressionAnchor;
         public PlayerStatsAnchorSO StatsAnchor;
-
-        [System.NonSerialized] private RuntimeInventorySnapshot _playerInventorySnapshot;
-        [System.NonSerialized] private RuntimeInventorySnapshot _equipmentInventorySnapshot;
-        [System.NonSerialized] private RuntimeInventorySnapshot _potionInventorySnapshot;
-        [System.NonSerialized] private RuntimeProgressionSnapshot _playerProgressionSnapshot;
-        [System.NonSerialized] private RuntimeStatsSnapshot _playerStatsSnapshot;
-        [System.NonSerialized] private PlayerAbilitySO[] _playerAbilitySlotSnapshot;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
@@ -54,464 +58,78 @@ namespace OutlandHaven.UIToolkit
 
         [Header("Skill System")]
         [SerializeField] private PlayerSkillTracker _playerSkills = new PlayerSkillTracker();
-
         public PlayerSkillTracker PlayerSkills => _playerSkills;
 
-        public static GameSessionSO LoadDefault()
-        {
-            return Resources.Load<GameSessionSO>(DefaultResourcePath);
-        }
+        // Specialized internal services
+        private RuntimeSnapshotRegistry _snapshotRegistry = new RuntimeSnapshotRegistry();
+
+        public static GameSessionSO LoadDefault() => Resources.Load<GameSessionSO>(DefaultResourcePath);
 
         public void ClearRuntimeSnapshots()
         {
             PlayerInventory = null;
             PlayerEquipment = null;
             PlayerPotionInventory = null;
-            _playerInventorySnapshot = null;
-            _equipmentInventorySnapshot = null;
-            _potionInventorySnapshot = null;
-            _playerProgressionSnapshot = null;
-            _playerStatsSnapshot = null;
-            _playerAbilitySlotSnapshot = null;
+            _snapshotRegistry.Clear();
         }
 
-        public RuntimeInventorySnapshot GetPlayerInventorySnapshot() => _playerInventorySnapshot;
-        public RuntimeInventorySnapshot GetEquipmentInventorySnapshot() => _equipmentInventorySnapshot;
-        public RuntimeInventorySnapshot GetPotionInventorySnapshot() => _potionInventorySnapshot;
+        #region Facade: Snapshot Delegation
+        public void CapturePlayerInventoryState(InventoryManager manager) => _snapshotRegistry.CapturePlayerInventory(manager);
+        public void CapturePlayerInventoryState(SavedInventoryData data, ItemDatabaseSO db) => _snapshotRegistry.CapturePlayerInventory(data, db);
+        public bool TryApplyPlayerInventoryState(InventoryManager manager) => _snapshotRegistry.ApplyPlayerInventory(manager);
 
-        public void CapturePlayerInventoryState(InventoryManager inventoryManager)
-        {
-            _playerInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
-        }
+        public void CaptureEquipmentInventoryState(InventoryManager manager) => _snapshotRegistry.CaptureEquipmentInventory(manager);
+        public void CaptureEquipmentInventoryState(SavedInventoryData data, ItemDatabaseSO db) => _snapshotRegistry.CaptureEquipmentInventory(data, db);
+        public bool TryApplyEquipmentInventoryState(InventoryManager manager) => _snapshotRegistry.ApplyEquipmentInventory(manager);
 
-        public void CapturePlayerInventoryState(SavedInventoryData data, ItemDatabaseSO database)
-        {
-            _playerInventorySnapshot = RuntimeInventorySnapshot.CreateFromSavedData(data, database);
-        }
+        public void CapturePotionInventoryState(InventoryManager manager) => _snapshotRegistry.CapturePotionInventory(manager);
+        public void CapturePotionInventoryState(SavedInventoryData data, ItemDatabaseSO db) => _snapshotRegistry.CapturePotionInventory(data, db);
+        public bool TryApplyPotionInventoryState(InventoryManager manager) => _snapshotRegistry.ApplyPotionInventory(manager);
 
-        public bool TryApplyPlayerInventoryState(InventoryManager inventoryManager)
-        {
-            if (_playerInventorySnapshot == null)
-                return false;
+        // Debugging accessors
+        public object GetPlayerInventorySnapshot() => _snapshotRegistry.PlayerInventory;
+        public object GetEquipmentInventorySnapshot() => _snapshotRegistry.EquipmentInventory;
+        public object GetPotionInventorySnapshot() => _snapshotRegistry.PotionInventory;
 
-            _playerInventorySnapshot.ApplyTo(inventoryManager);
-            return true;
-        }
+        public void CapturePlayerProgressionState(int lvl, float exp, int gold) => _snapshotRegistry.CaptureProgression(lvl, exp, gold);
+        public bool TryGetPlayerProgressionState(out int lvl, out float exp, out int gold) => _snapshotRegistry.TryGetProgression(out lvl, out exp, out gold);
 
-        public void CaptureEquipmentInventoryState(InventoryManager inventoryManager)
-        {
-            _equipmentInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
-        }
+        public void CapturePlayerStatsState(float hp, float stamina) => _snapshotRegistry.CaptureStats(hp, stamina);
+        public bool TryGetPlayerStatsState(out float hp, out float stamina) => _snapshotRegistry.TryGetStats(out hp, out stamina);
 
-        public void CaptureEquipmentInventoryState(SavedInventoryData data, ItemDatabaseSO database)
-        {
-            _equipmentInventorySnapshot = RuntimeInventorySnapshot.CreateFromSavedData(data, database);
-        }
+        public void CapturePlayerAbilitySlotState(PlayerAbilitySO[] slotted) => _snapshotRegistry.CaptureAbilities(slotted);
+        public bool TryGetPlayerAbilitySlotState(out PlayerAbilitySO[] slotted) => _snapshotRegistry.TryGetAbilities(out slotted);
+        #endregion
 
-        public bool TryApplyEquipmentInventoryState(InventoryManager inventoryManager)
-        {
-            if (_equipmentInventorySnapshot == null)
-                return false;
-
-            _equipmentInventorySnapshot.ApplyTo(inventoryManager);
-            return true;
-        }
-
-        public void CapturePotionInventoryState(InventoryManager inventoryManager)
-        {
-            _potionInventorySnapshot = RuntimeInventorySnapshot.Create(inventoryManager);
-        }
-
-        public void CapturePotionInventoryState(SavedInventoryData data, ItemDatabaseSO database)
-        {
-            _potionInventorySnapshot = RuntimeInventorySnapshot.CreateFromSavedData(data, database);
-        }
-
-        public bool TryApplyPotionInventoryState(InventoryManager inventoryManager)
-        {
-            if (_potionInventorySnapshot == null)
-                return false;
-
-            _potionInventorySnapshot.ApplyTo(inventoryManager);
-            return true;
-        }
-
-        public void CapturePlayerProgressionState(int level, float experience, int gold)
-        {
-            _playerProgressionSnapshot = new RuntimeProgressionSnapshot(level, experience, gold);
-        }
-
-        public bool TryGetPlayerProgressionState(out int level, out float experience, out int gold)
-        {
-            if (_playerProgressionSnapshot == null)
-            {
-                level = 1;
-                experience = 0f;
-                gold = 0;
-                return false;
-            }
-
-            level = _playerProgressionSnapshot.Level;
-            experience = _playerProgressionSnapshot.Experience;
-            gold = _playerProgressionSnapshot.Gold;
-            return true;
-        }
-
-        public void CapturePlayerStatsState(float currentHealth, float currentStamina)
-        {
-            _playerStatsSnapshot = new RuntimeStatsSnapshot(currentHealth, currentStamina);
-        }
-
-        public bool TryGetPlayerStatsState(out float currentHealth, out float currentStamina)
-        {
-            if (_playerStatsSnapshot == null)
-            {
-                currentHealth = 0f;
-                currentStamina = 0f;
-                return false;
-            }
-
-            currentHealth = _playerStatsSnapshot.CurrentHealth;
-            currentStamina = _playerStatsSnapshot.CurrentStamina;
-            return true;
-        }
-
-        public void CapturePlayerAbilitySlotState(PlayerAbilitySO[] slottedAbilities)
-        {
-            if (slottedAbilities == null)
-            {
-                _playerAbilitySlotSnapshot = Array.Empty<PlayerAbilitySO>();
-                return;
-            }
-
-            _playerAbilitySlotSnapshot = new PlayerAbilitySO[slottedAbilities.Length];
-            Array.Copy(slottedAbilities, _playerAbilitySlotSnapshot, slottedAbilities.Length);
-        }
-
-        public bool TryGetPlayerAbilitySlotState(out PlayerAbilitySO[] slottedAbilities)
-        {
-            if (_playerAbilitySlotSnapshot == null)
-            {
-                slottedAbilities = null;
-                return false;
-            }
-
-            slottedAbilities = new PlayerAbilitySO[_playerAbilitySlotSnapshot.Length];
-            Array.Copy(_playerAbilitySlotSnapshot, slottedAbilities, _playerAbilitySlotSnapshot.Length);
-            _playerAbilitySlotSnapshot = null;
-            return true;
-        }
-
-        private SavedInventoryData ExtractInventoryData(InventoryManager inventory)
-        {
-            if (inventory == null || inventory.LiveSlots == null) return null;
-
-            SavedInventoryData savedData = new SavedInventoryData();
-            for (int i = 0; i < inventory.LiveSlots.Count; i++)
-            {
-                var liveSlot = inventory.LiveSlots[i];
-                SavedSlotData slotData = new SavedSlotData { SlotIndex = i, Count = liveSlot.Count };
-
-                if (!liveSlot.IsEmpty)
-                {
-                    slotData.ItemData = new SavedItemData
-                    {
-                        InstanceID = liveSlot.HeldItem.InstanceID,
-                        BaseItemID = liveSlot.HeldItem.BaseItem.name,
-                        States = liveSlot.HeldItem.States
-                    };
-                }
-                savedData.Slots.Add(slotData);
-            }
-            return savedData;
-        }
-
-        private void RestoreInventoryData(InventoryManager inventory, SavedInventoryData savedData, ItemDatabaseSO itemDatabase)
-        {
-            if (inventory == null || inventory.LiveSlots == null || savedData == null) return;
-
-            // Wipe current inventory clean
-            foreach (var slot in inventory.LiveSlots) slot.Clear();
-
-            foreach (var savedSlot in savedData.Slots)
-            {
-                if (savedSlot.SlotIndex >= inventory.LiveSlots.Count) continue;
-
-                InventorySlot liveSlot = inventory.LiveSlots[savedSlot.SlotIndex];
-
-                if (savedSlot.ItemData != null && savedSlot.Count > 0)
-                {
-                    InventoryItemSO blueprint = itemDatabase.GetItemByID(savedSlot.ItemData.BaseItemID);
-                    if (blueprint != null)
-                    {
-                        ItemInstance restoredItem = new ItemInstance();
-                        restoredItem.InstanceID = savedSlot.ItemData.InstanceID;
-                        restoredItem.BaseItem = blueprint;
-                        restoredItem.States = savedSlot.ItemData.States ?? new System.Collections.Generic.List<ItemComponentState>();
-
-                        liveSlot.SetItem(restoredItem, savedSlot.Count);
-                    }
-                }
-            }
-            inventory.NotifyInventoryUpdated();
-        }
-
+        #region Facade: Persistence Delegation
         public GameSaveData ExportToSaveData()
         {
-            GameSaveData saveData = new GameSaveData();
-            saveData.SaveTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-            saveData.SpawnPointID = this.targetSpawnPointID;
-
-            // --- 1. EXPORT PROGRESSION ---
-            if (ProgressionAnchor != null && ProgressionAnchor.IsReady)
-            {
-                // Read directly from the live PlayerProgression MonoBehaviour
-                saveData.Level = ProgressionAnchor.Instance.CurrentLevel;
-                saveData.Experience = ProgressionAnchor.Instance.CurrentExperience;
-                saveData.Gold = ProgressionAnchor.Instance.CurrentGold;
-            }
-            else if (TryGetPlayerProgressionState(out int level, out float exp, out int gold))
-            {
-                // Fallback to snapshot if the player isn't actively loaded in the scene
-                saveData.Level = level;
-                saveData.Experience = exp;
-                saveData.Gold = gold;
-                CapturePlayerProgressionState(level, exp, gold); // Put it back
-            }
-            else
-            {
-                saveData.Level = 1; // Absolute fallback
-            }
-
-            // --- 2. EXPORT STATS ---
-            if (StatsAnchor != null && StatsAnchor.IsReady)
-            {
-                // Read directly from the live PlayerStats MonoBehaviour
-                saveData.CurrentHealth = StatsAnchor.Instance.currentHP;
-                saveData.CurrentStamina = StatsAnchor.Instance.currentStamina;
-            }
-            else if (TryGetPlayerStatsState(out float currentHealth, out float currentStamina))
-            {
-                // Fallback to snapshot
-                saveData.CurrentHealth = currentHealth;
-                saveData.CurrentStamina = currentStamina;
-                CapturePlayerStatsState(currentHealth, currentStamina); // Put it back
-            }
-
-            // --- 3. EXPORT INVENTORIES ---
-            saveData.PlayerBackpack = ExtractInventoryData(PlayerInventory);
-            saveData.PlayerEquipment = ExtractInventoryData(PlayerEquipment);
-            saveData.PlayerPotion = ExtractInventoryData(PlayerPotionInventory);
-
-            // Quest bridge: keep Toris as the save-file owner while Pixel Crushers owns dialogue/quest state.
-            saveData.PixelCrushersDialogueSaveData = global::PixelCrushersDialogueSaveBridge.CaptureSaveData();
-
-            return saveData;
+            return SaveDataOrchestrator.Export(
+                targetSpawnPointID,
+                ProgressionAnchor,
+                StatsAnchor,
+                PlayerInventory,
+                PlayerEquipment,
+                PlayerPotionInventory,
+                _snapshotRegistry
+            );
         }
 
         public void ImportFromSaveData(GameSaveData saveData, ItemDatabaseSO itemDatabase)
         {
-            if (saveData == null) return;
-
-            this.targetSpawnPointID = saveData.SpawnPointID;
-
-            // --- 1. RESTORE STATS & PROGRESSION ---
-            // A. Always update the snapshots so they are ready for standard scene transitions
-            CapturePlayerProgressionState(saveData.Level, saveData.Experience, saveData.Gold);
-            CapturePlayerStatsState(saveData.CurrentHealth, saveData.CurrentStamina);
-
-            // B. If the player is currently active in the scene (Quick Load mid-game), 
-            // inject the data directly using your existing SetRuntimeState methods.
-            if (ProgressionAnchor != null && ProgressionAnchor.IsReady)
-            {
-                ProgressionAnchor.Instance.SetRuntimeState(saveData.Level, saveData.Experience, saveData.Gold);
-            }
-
-            if (StatsAnchor != null && StatsAnchor.IsReady)
-            {
-                StatsAnchor.Instance.SetRuntimeState(saveData.CurrentHealth, saveData.CurrentStamina);
-            }
-
-            // --- 2. RESTORE INVENTORIES ---
-            if (saveData.PlayerBackpack != null)
-            {
-                if (PlayerInventory != null)
-                    RestoreInventoryData(PlayerInventory, saveData.PlayerBackpack, itemDatabase);
-                else
-                    CapturePlayerInventoryState(saveData.PlayerBackpack, itemDatabase);
-            }
-
-            if (saveData.PlayerEquipment != null)
-            {
-                if (PlayerEquipment != null)
-                    RestoreInventoryData(PlayerEquipment, saveData.PlayerEquipment, itemDatabase);
-                else
-                    CaptureEquipmentInventoryState(saveData.PlayerEquipment, itemDatabase);
-            }
-
-            if (saveData.PlayerPotion != null)
-            {
-                if (PlayerPotionInventory != null)
-                    RestoreInventoryData(PlayerPotionInventory, saveData.PlayerPotion, itemDatabase);
-                else
-                    CapturePotionInventoryState(saveData.PlayerPotion, itemDatabase);
-            }
-
-            // Quest bridge: future menu save-slot loads may import before MainArea/Dialogue Manager exists.
-            // The bridge applies immediately when possible, otherwise queues the Pixel Crushers blob until scene load.
-            global::PixelCrushersDialogueSaveBridge.RequestApplySaveData(saveData.PixelCrushersDialogueSaveData);
+            SaveDataOrchestrator.Import(
+                saveData,
+                itemDatabase,
+                (id) => targetSpawnPointID = id,
+                ProgressionAnchor,
+                StatsAnchor,
+                PlayerInventory,
+                PlayerEquipment,
+                PlayerPotionInventory,
+                _snapshotRegistry
+            );
         }
-
-        public sealed class RuntimeInventorySnapshot
-        {
-            private readonly RuntimeInventorySlotSnapshot[] _slots;
-
-            private RuntimeInventorySnapshot(RuntimeInventorySlotSnapshot[] slots)
-            {
-                _slots = slots ?? Array.Empty<RuntimeInventorySlotSnapshot>();
-            }
-
-            public static RuntimeInventorySnapshot Create(InventoryManager inventoryManager)
-            {
-                if (inventoryManager == null || inventoryManager.LiveSlots == null)
-                    return new RuntimeInventorySnapshot(Array.Empty<RuntimeInventorySlotSnapshot>());
-
-                RuntimeInventorySlotSnapshot[] slots = new RuntimeInventorySlotSnapshot[inventoryManager.LiveSlots.Count];
-                for (int i = 0; i < inventoryManager.LiveSlots.Count; i++)
-                {
-                    InventorySlot liveSlot = inventoryManager.LiveSlots[i];
-                    if (liveSlot == null || liveSlot.IsEmpty || liveSlot.HeldItem == null || liveSlot.Count <= 0)
-                    {
-                        slots[i] = new RuntimeInventorySlotSnapshot(null, 0);
-                        continue;
-                    }
-
-                    slots[i] = new RuntimeInventorySlotSnapshot(
-                        CloneForSceneTransfer(liveSlot.HeldItem),
-                        liveSlot.Count);
-                }
-
-                return new RuntimeInventorySnapshot(slots);
-            }
-
-            public static RuntimeInventorySnapshot CreateFromSavedData(SavedInventoryData data, ItemDatabaseSO database)
-            {
-                if (data == null || data.Slots == null || database == null)
-                    return new RuntimeInventorySnapshot(Array.Empty<RuntimeInventorySlotSnapshot>());
-
-                // We don't know the exact slot count of the live manager yet, 
-                // but we can find the highest index in the saved data to determine the minimum size.
-                int maxIndex = -1;
-                foreach (var s in data.Slots) if (s.SlotIndex > maxIndex) maxIndex = s.SlotIndex;
-
-                RuntimeInventorySlotSnapshot[] snapshots = new RuntimeInventorySlotSnapshot[maxIndex + 1];
-
-                foreach (var savedSlot in data.Slots)
-                {
-                    if (savedSlot.ItemData != null && savedSlot.Count > 0)
-                    {
-                        InventoryItemSO blueprint = database.GetItemByID(savedSlot.ItemData.BaseItemID);
-                        if (blueprint != null)
-                        {
-                            ItemInstance item = new ItemInstance
-                            {
-                                InstanceID = savedSlot.ItemData.InstanceID,
-                                BaseItem = blueprint,
-                                States = savedSlot.ItemData.States ?? new System.Collections.Generic.List<ItemComponentState>()
-                            };
-                            snapshots[savedSlot.SlotIndex] = new RuntimeInventorySlotSnapshot(item, savedSlot.Count);
-                        }
-                    }
-                }
-
-                return new RuntimeInventorySnapshot(snapshots);
-            }
-
-            public void ApplyTo(InventoryManager inventoryManager)
-            {
-                if (inventoryManager == null || inventoryManager.LiveSlots == null)
-                    return;
-
-                int targetSlotCount = inventoryManager.LiveSlots.Count;
-                for (int i = 0; i < targetSlotCount; i++)
-                {
-                    InventorySlot liveSlot = inventoryManager.LiveSlots[i];
-                    if (liveSlot == null)
-                        continue;
-
-                    if (_slots == null || i >= _slots.Length || _slots[i] == null || _slots[i].Count <= 0 || _slots[i].Item == null)
-                    {
-                        liveSlot.Clear();
-                        continue;
-                    }
-
-                    liveSlot.SetItem(CloneForSceneTransfer(_slots[i].Item), _slots[i].Count);
-                }
-            }
-
-            private static ItemInstance CloneForSceneTransfer(ItemInstance source)
-            {
-                if (source == null)
-                    return null;
-
-                ItemInstance clonedItem = new ItemInstance
-                {
-                    InstanceID = source.InstanceID,
-                    BaseItem = source.BaseItem,
-                    States = new System.Collections.Generic.List<ItemComponentState>()
-                };
-
-                if (source.States != null)
-                {
-                    for (int i = 0; i < source.States.Count; i++)
-                    {
-                        ItemComponentState state = source.States[i];
-                        if (state != null)
-                            clonedItem.States.Add(state.Clone());
-                    }
-                }
-
-                return clonedItem;
-            }
-        }
-
-        private sealed class RuntimeInventorySlotSnapshot
-        {
-            public RuntimeInventorySlotSnapshot(ItemInstance item, int count)
-            {
-                Item = item;
-                Count = Mathf.Max(0, count);
-            }
-
-            public ItemInstance Item { get; }
-            public int Count { get; }
-        }
-
-        private sealed class RuntimeProgressionSnapshot
-        {
-            public RuntimeProgressionSnapshot(int level, float experience, int gold)
-            {
-                Level = Mathf.Max(1, level);
-                Experience = Mathf.Max(0f, experience);
-                Gold = Mathf.Max(0, gold);
-            }
-
-            public int Level { get; }
-            public float Experience { get; }
-            public int Gold { get; }
-        }
-
-        private sealed class RuntimeStatsSnapshot
-        {
-            public RuntimeStatsSnapshot(float currentHealth, float currentStamina)
-            {
-                CurrentHealth = Mathf.Max(0f, currentHealth);
-                CurrentStamina = Mathf.Max(0f, currentStamina);
-            }
-
-            public float CurrentHealth { get; }
-            public float CurrentStamina { get; }
-        }
+        #endregion
     }
 
     internal static class GameSessionRuntimeBootstrap

@@ -102348,7 +102348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4643913618560284739, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
       propertyPath: m_Name
-      value: EquipmentInventory
+      value: Equipment_InventoryManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

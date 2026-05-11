@@ -694,7 +694,7 @@ Transform:
   m_GameObject: {fileID: 291675225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.8, y: 22.1, z: -10}
+  m_LocalPosition: {x: 4.06, y: 3.02, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -918,14 +918,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
-      propertyPath: LiveSlots.Array.data[1].Count
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
-      propertyPath: LiveSlots.Array.data[1].HeldItem.BaseItem
-      value: 
-      objectReference: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
     - target: {fileID: 3789707760675370514, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26.60809
@@ -1081,11 +1073,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.8
+      value: 4.06
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.1
+      value: 3.02
       objectReference: {fileID: 0}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1265,14 +1257,6 @@ PrefabInstance:
       propertyPath: _equipment
       value: 
       objectReference: {fileID: 2014174152}
-    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
-      propertyPath: LiveSlots.Array.data[8].Count
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
-      propertyPath: LiveSlots.Array.data[8].HeldItem.BaseItem
-      value: 
-      objectReference: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -101834,7 +101818,7 @@ Transform:
   m_GameObject: {fileID: 1924643740}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.8, y: 22.1, z: -10}
+  m_LocalPosition: {x: 4.06, y: 3.02, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101998,86 +101982,6 @@ PrefabInstance:
     - target: {fileID: 4676936000085796728, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_Name
       value: SmithNPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: SaveID
-      value: Smith_Shop_Inventory
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: 'managedReferences[-2]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[1].Count
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[2].Count
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[3].Count
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[4].Count
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[5].Count
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[1].AllowedFilter
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: 'managedReferences[6471051919503130629]'
-      value: Assembly-CSharp OutlandHaven.Inventory.ConsumableState
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[2].HeldItem.BaseItem
-      value: 
-      objectReference: {fileID: 11400000, guid: c084c4fee7e1e0f4fa738a67023be54e, type: 2}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[4].HeldItem.BaseItem
-      value: 
-      objectReference: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[5].HeldItem.BaseItem
-      value: 
-      objectReference: {fileID: 11400000, guid: 30a82d052c6934841897a2be59e7970c, type: 2}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[1].HeldItem.InstanceID
-      value: bow
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[3].HeldItem.InstanceID
-      value: 3f76910e-5b33-49e9-af68-2e281820f3fb
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[4].HeldItem.InstanceID
-      value: Potion
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[4].HeldItem.States.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: LiveSlots.Array.data[5].HeldItem.States.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: 'LiveSlots.Array.data[4].HeldItem.States.Array.data[0]'
-      value: 6471051919503130629
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: 'LiveSlots.Array.data[5].HeldItem.States.Array.data[0]'
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: managedReferences[6471051919503130629].CurrentCharges
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.x

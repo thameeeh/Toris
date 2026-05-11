@@ -89,14 +89,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: HudScreenController
       objectReference: {fileID: 0}
-    - target: {fileID: 8046528195049909298, guid: 5223b9f75dbff0142aefe6148b763d7e, type: 3}
-      propertyPath: _potionInventory
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8046528195049909298, guid: 5223b9f75dbff0142aefe6148b763d7e, type: 3}
-      propertyPath: _uiInventoryEvents
-      value: 
-      objectReference: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -305,18 +297,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryScreenCotroller
       objectReference: {fileID: 0}
-    - target: {fileID: 3086192249901852686, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
-      propertyPath: _playerHUDBridge
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3086192249901852686, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
-      propertyPath: _potionInventory
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3086192249901852686, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
-      propertyPath: _equipmentInventory
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8268620254510869029, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -418,10 +398,6 @@ PrefabInstance:
     - target: {fileID: 7521786267576235075, guid: 6fdffb60e7917824ca1b00463f035d58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7616839350192638993, guid: 6fdffb60e7917824ca1b00463f035d58, type: 3}
-      propertyPath: _playerHudBridge
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

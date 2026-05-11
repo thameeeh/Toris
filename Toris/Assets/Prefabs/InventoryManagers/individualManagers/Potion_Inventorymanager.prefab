@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3789707760675370514}
   - component: {fileID: 3744751151557766686}
   m_Layer: 0
-  m_Name: Potion_InventoryManager
+  m_Name: Potion_Inventorymanager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,9 +55,9 @@ MonoBehaviour:
     AllowedFilter: 99
   - HeldItem:
       InstanceID: 711b612c-0b71-4960-b344-0b9480961d7c
-      BaseItem: {fileID: 0}
+      BaseItem: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
       States: []
-    Count: 0
+    Count: 1
     AllowedFilter: 99
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}

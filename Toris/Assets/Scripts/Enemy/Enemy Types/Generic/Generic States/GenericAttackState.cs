@@ -9,6 +9,9 @@ public class GenericAttackState : EnemyState<Generic>
     {
         base.EnterState();
 
+#if UNITY_EDITOR
+        enemy.DebugAttackLog("GenericAttackState enter.");
+#endif
         enemy.EnemyAttackBaseInstance.DoEnterLogic();
     }
 
@@ -17,6 +20,9 @@ public class GenericAttackState : EnemyState<Generic>
         base.ExitState();
 
         enemy.EnemyAttackBaseInstance.DoExitLogic();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog("GenericAttackState exit.");
+#endif
     }
 
     public override void FrameUpdate()

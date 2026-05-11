@@ -48,6 +48,10 @@ public sealed class BiomeProfile : ScriptableObject
     #region Stamps
     [Header("Road")]
     public TileBase roadTile;
+    [Tooltip("Optional visual variants mixed into generated roads. The base road tile remains the fallback.")]
+    public TileBase[] roadVariantTiles;
+    [Range(0f, 1f)] public float roadVariantChance = 0.35f;
+    [Min(1)] public int roadVariantPatchSize = 3;
     [Range(3, 5)] public int roadWidthMin = 3;
     [Range(3, 5)] public int roadWidthMax = 5;
     public int maxRoadScanTiles = 4000;

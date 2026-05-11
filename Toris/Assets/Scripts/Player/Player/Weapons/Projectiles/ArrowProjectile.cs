@@ -21,10 +21,12 @@ public class ArrowProjectile : Projectile
     private bool _usesDamageLayerMask;
     private int _damageLayerMask = ~0;
     private Func<Collider2D, bool> _canDamageTargetPredicate;
-    private bool _playHitEffect = true;
-
-    //Effect spawning attempt
-    private const string ArrowHitEffectId = "hit_arrow_square";
+    private string _debugSource = string.Empty;
+    private string _pendingDespawnReason = string.Empty;
+    private float _spawnTime;
+    private float _configuredLifetime;
+    private float _configuredSpeed;
+    private Vector2 _spawnPosition;
 
     public event Action<ArrowProjectile, Collider2D, IDamageable, Vector2> DamageApplied;
     public event Action<ArrowProjectile> ProjectileDespawned;
@@ -48,27 +50,27 @@ public class ArrowProjectile : Projectile
         RotateTowardVelocity();
 
         if (Time.time >= despawnAtTime)
-            Despawn();
+            DespawnWithReason("lifetime-expired");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other == ownerCollider) return;
 
-        TryApplyDamage(other);
+        bool appliedDamage = TryApplyDamage(other);
 
         if (despawnOnFirstHit)
-            Despawn();
+            DespawnWithReason($"trigger-hit target={FormatCollider(other)} damaged={appliedDamage}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (ownerCollider && collision.collider == ownerCollider) return;
 
-        TryApplyDamage(collision.collider);
+        bool appliedDamage = TryApplyDamage(collision.collider);
 
         if (despawnOnFirstHit)
-            Despawn();
+            DespawnWithReason($"collision-hit target={FormatCollider(collision.collider)} damaged={appliedDamage}");
     }
 
     /// <summary>Called by the pool when the projectile is fetched (before your Initialize).</summary>
@@ -92,7 +94,12 @@ public class ArrowProjectile : Projectile
         _usesDamageLayerMask = false;
         _damageLayerMask = ~0;
         _canDamageTargetPredicate = null;
-        _playHitEffect = true;
+        _debugSource = string.Empty;
+        _pendingDespawnReason = string.Empty;
+        _spawnTime = 0f;
+        _configuredLifetime = 0f;
+        _configuredSpeed = 0f;
+        _spawnPosition = transform.position;
     }
 
     /// <summary>Called by the pool right before the projectile is returned to the pool.</summary>
@@ -116,7 +123,12 @@ public class ArrowProjectile : Projectile
         _usesDamageLayerMask = false;
         _damageLayerMask = ~0;
         _canDamageTargetPredicate = null;
-        _playHitEffect = true;
+        _debugSource = string.Empty;
+        _pendingDespawnReason = string.Empty;
+        _spawnTime = 0f;
+        _configuredLifetime = 0f;
+        _configuredSpeed = 0f;
+        _spawnPosition = transform.position;
         Action<ArrowProjectile> projectileDespawned = ProjectileDespawned;
         ProjectileDespawned = null;
         DamageApplied = null;
@@ -132,6 +144,7 @@ public class ArrowProjectile : Projectile
         despawnAtTime = Time.time + lifetimeSeconds;
         ownerCollider = owner;
         _isVisualOnly = false;
+        CaptureLaunchDebugData(speed, lifetimeSeconds);
 
         Vector2 dir = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
 
@@ -142,6 +155,7 @@ public class ArrowProjectile : Projectile
 
         SetOwnerIgnore(true);
         RotateTowardVelocity();
+        LogProjectile($"initialized dir={FormatVector(dir)} speed={speed:F2} damage={damage:F2} lifetime={lifetimeSeconds:F2}");
     }
 
     public void InitializeVisualOnly(Vector2 direction, float speed, float lifetimeSeconds)
@@ -150,6 +164,7 @@ public class ArrowProjectile : Projectile
         despawnAtTime = Time.time + lifetimeSeconds;
         ownerCollider = null;
         _isVisualOnly = true;
+        CaptureLaunchDebugData(speed, lifetimeSeconds);
 
         if (myCollider != null)
             myCollider.enabled = false;
@@ -160,6 +175,12 @@ public class ArrowProjectile : Projectile
             rb.linearVelocity = dir * speed;
 
         RotateTowardVelocity();
+        LogProjectile($"initialized-visual dir={FormatVector(dir)} speed={speed:F2} lifetime={lifetimeSeconds:F2}");
+    }
+
+    public void SetDebugSource(string debugSource)
+    {
+        _debugSource = string.IsNullOrEmpty(debugSource) ? string.Empty : debugSource;
     }
 
     public void SetDamageLayerMask(LayerMask layerMask)
@@ -175,11 +196,20 @@ public class ArrowProjectile : Projectile
 
     public void SetPlayHitEffect(bool playHitEffect)
     {
-        _playHitEffect = playHitEffect;
+        _ = playHitEffect;
     }
 
     /// <summary>Return to pool (or disable/destroy if no pool available).</summary>
-    public override void Despawn() => base.Despawn();
+    public override void Despawn()
+    {
+        if (string.IsNullOrEmpty(_pendingDespawnReason))
+            _pendingDespawnReason = "external";
+
+        LogProjectile(
+            $"despawn reason={_pendingDespawnReason} age={(Time.time - _spawnTime):F2}/{_configuredLifetime:F2} speed={_configuredSpeed:F2} distance={(Vector2.Distance(_spawnPosition, transform.position)):F2} pos={FormatVector(transform.position)}");
+
+        base.Despawn();
+    }
 
     // internals
     private void RotateTowardVelocity()
@@ -193,24 +223,61 @@ public class ArrowProjectile : Projectile
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
-    private void TryApplyDamage(Collider2D target)
+    private bool TryApplyDamage(Collider2D target)
     {
-        if (target == null) return;
-        if (_isVisualOnly) return;
+        if (target == null) return false;
+        if (_isVisualOnly) return false;
         if (_usesDamageLayerMask && (_damageLayerMask & (1 << target.gameObject.layer)) == 0)
-            return;
+            return false;
         if (_canDamageTargetPredicate != null && !_canDamageTargetPredicate(target))
-            return;
+            return false;
 
         var dmgTarget = target.GetComponentInParent<IDamageable>();
         if (dmgTarget != null)
         {
             Vector2 hitPoint = target.ClosestPoint(transform.position);
             dmgTarget.Damage(damage);
-            if (_playHitEffect)
-                SpawnHitEffect(hitPoint);
             DamageApplied?.Invoke(this, target, dmgTarget, hitPoint);
+            return true;
         }
+
+        return false;
+    }
+
+    private void DespawnWithReason(string reason)
+    {
+        _pendingDespawnReason = reason;
+        Despawn();
+    }
+
+    private void CaptureLaunchDebugData(float speed, float lifetimeSeconds)
+    {
+        _pendingDespawnReason = string.Empty;
+        _spawnTime = Time.time;
+        _configuredLifetime = lifetimeSeconds;
+        _configuredSpeed = speed;
+        _spawnPosition = transform.position;
+    }
+
+    private void LogProjectile(string message)
+    {
+        if (!string.Equals(_debugSource, "Rambow", StringComparison.Ordinal))
+            return;
+
+        PlayerShootDebug.Log(this, "ArrowProjectile", $"source={_debugSource} {message}");
+    }
+
+    private static string FormatCollider(Collider2D target)
+    {
+        if (target == null)
+            return "null";
+
+        return $"{target.name}/layer={LayerMask.LayerToName(target.gameObject.layer)} trigger={target.isTrigger}";
+    }
+
+    private static string FormatVector(Vector2 value)
+    {
+        return $"({value.x:F2}, {value.y:F2})";
     }
 
 
@@ -220,19 +287,4 @@ public class ArrowProjectile : Projectile
             Physics2D.IgnoreCollision(myCollider, ownerCollider, ignore);
     }
 
-    // effect spawn
-    private void SpawnHitEffect(Vector3 position)
-    {
-        var request = new EffectRequest
-        {
-            EffectId = ArrowHitEffectId,
-            Position = position,
-            Rotation = Quaternion.identity,
-            Parent = null,
-            Variant = default,
-            Magnitude = 1f
-        };
-
-        EffectManagerBehavior.Instance.Play(request);
-    }
 }

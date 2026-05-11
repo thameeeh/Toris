@@ -83,16 +83,15 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         IsInPanicRange = false;
         IsInCastingRange = false;
 
-        if (playerTransform == null)
+        if (!enemy.TryGetAggroTargetPosition(out Vector2 playerPosition))
         {
             ResetHumanToFloaterDelay();
             StopMoving();
-            LogChaseDecision("NoPlayer", 0f, enemy.IsWithinCastingRange, enemy.IsWithinStrikingDistance);
+            LogChaseDecision("NoTarget", 0f, enemy.IsWithinCastingRange, enemy.IsWithinStrikingDistance);
             return;
         }
 
         Vector2 enemyPosition = enemy.transform.position;
-        Vector2 playerPosition = playerTransform.position;
         Vector2 toPlayer = playerPosition - enemyPosition;
         float distanceToPlayerSqr = toPlayer.sqrMagnitude;
 
@@ -100,7 +99,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         {
             ResetHumanToFloaterDelay();
             StopMoving();
-            enemy.FacePlayer();
+            enemy.FaceAggroTarget();
             LogChaseDecision("ChangingForm", distanceToPlayerSqr, enemy.IsWithinCastingRange, enemy.IsWithinStrikingDistance);
             return;
         }
@@ -118,7 +117,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             if (enemy.IsHumanForm)
             {
                 StopMoving();
-                enemy.FacePlayer();
+                enemy.FaceAggroTarget();
                 LogChaseDecision("PanicRangeHumanDelay", distanceToPlayerSqr, IsInCastingRange, true);
                 TryRequestHumanToFloater();
                 return;
@@ -127,7 +126,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             if (enemy.IsReadyToCastAnimation && enemy.CanStartAttack(NecromancerAttackType.PanicSwing))
             {
                 StopMoving();
-                enemy.FacePlayer();
+                enemy.FaceAggroTarget();
                 ResetHumanToFloaterDelay();
                 SelectAttack(NecromancerAttackType.PanicSwing);
                 LogChaseDecision("PanicSwingReady", distanceToPlayerSqr, IsInCastingRange, true);
@@ -160,7 +159,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
             if (enemy.IsHumanForm)
             {
                 StopMoving();
-                enemy.FacePlayer();
+                enemy.FaceAggroTarget();
                 LogChaseDecision("RetreatBandHumanDelay", distanceToPlayerSqr, IsInCastingRange, false);
                 TryRequestHumanToFloater();
                 return;
@@ -175,7 +174,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         if (IsInCastingRange)
         {
             StopMoving();
-            enemy.FacePlayer();
+            enemy.FaceAggroTarget();
 
             if (enemy.IsHumanForm)
             {
@@ -409,7 +408,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
         if (enemy.IsHumanForm)
         {
             StopMoving();
-            enemy.FacePlayer();
+            enemy.FaceAggroTarget();
             TryRequestHumanToFloater();
             return true;
         }
@@ -420,7 +419,7 @@ public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 
         ResetHumanToFloaterDelay();
         StopMoving();
-        enemy.FacePlayer();
+        enemy.FaceAggroTarget();
         SelectAttack(rangedAttackType);
         return true;
     }

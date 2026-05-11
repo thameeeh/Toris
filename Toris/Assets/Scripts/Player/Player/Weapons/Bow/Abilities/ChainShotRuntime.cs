@@ -18,13 +18,34 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
     private const int MaxOverlapResults = 16;
     private const float MinDirectionSqrMagnitude = 0.0001f;
     private const float ChainShotSpawnOffset = 0.05f;
+    private const float MinimumProjectileSpeed = 0.1f;
+    private const float MinimumProjectileLifetime = 0.05f;
+    private const float MinimumLockedImpactDelay = 0.01f;
+    private const float LockedImpactLifetimePadding = 0.05f;
+
+    private sealed class DamageableTarget
+    {
+        public Collider2D collider;
+        public IDamageable damageable;
+        public Component component;
+        public int instanceId;
+    }
 
     private sealed class PendingBounce
     {
         public Vector2 startPoint;
-        public Collider2D previousHitCollider;
         public float executeAtTime;
         public int damageIndex;
+    }
+
+    private sealed class PendingImpact
+    {
+        public DamageableTarget target;
+        public Vector2 startPoint;
+        public float executeAtTime;
+        public float damage;
+        public int nextDamageIndex;
+        public ArrowProjectile visualProjectile;
     }
 
     private sealed class ChainShotSession
@@ -33,6 +54,7 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
         public ChainShotCastSettings settings;
         public readonly HashSet<int> visitedTargets = new HashSet<int>();
         public readonly List<PendingBounce> pendingBounces = new List<PendingBounce>();
+        public readonly List<PendingImpact> pendingImpacts = new List<PendingImpact>();
         public int activeProjectileCount;
     }
 
@@ -79,9 +101,14 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
         {
             ChainShotSession session = _activeSessions[sessionIndex];
             ProcessPendingBounces(session, currentTime);
+            ProcessPendingImpacts(session, currentTime);
 
-            if (session.activeProjectileCount <= 0 && session.pendingBounces.Count == 0)
+            if (session.activeProjectileCount <= 0
+                && session.pendingBounces.Count == 0
+                && session.pendingImpacts.Count == 0)
+            {
                 _activeSessions.RemoveAt(sessionIndex);
+            }
         }
     }
 
@@ -98,61 +125,69 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
         }
     }
 
+    private void ProcessPendingImpacts(ChainShotSession session, float currentTime)
+    {
+        for (int impactIndex = session.pendingImpacts.Count - 1; impactIndex >= 0; impactIndex--)
+        {
+            PendingImpact pendingImpact = session.pendingImpacts[impactIndex];
+            if (currentTime < pendingImpact.executeAtTime)
+                continue;
+
+            session.pendingImpacts.RemoveAt(impactIndex);
+            ResolveLockedImpact(session, pendingImpact);
+        }
+    }
+
     private void SpawnBounceProjectile(ChainShotSession session, PendingBounce pendingBounce)
     {
+        if (session.bow == null)
+            return;
+
         if (session.settings.damageMultipliers == null || pendingBounce.damageIndex >= session.settings.damageMultipliers.Length)
             return;
 
         float safeSearchRadius = Mathf.Max(0.05f, session.settings.chainSearchRadius);
-        Collider2D nextTargetCollider = FindNearestTarget(pendingBounce.startPoint, safeSearchRadius, session.visitedTargets);
-        if (nextTargetCollider == null)
+        if (!TryFindNearestTarget(pendingBounce.startPoint, safeSearchRadius, session.visitedTargets, out DamageableTarget nextTarget))
         {
             Log(session.bow,
                 $"Bounce stopped. No valid target found from point={FormatVector(pendingBounce.startPoint)} within radius={safeSearchRadius:F2}");
             return;
         }
 
-        Vector2 targetPoint = nextTargetCollider.ClosestPoint(pendingBounce.startPoint);
+        Vector2 targetPoint = GetTargetPoint(nextTarget, pendingBounce.startPoint);
         Vector2 direction = targetPoint - pendingBounce.startPoint;
-        if (direction.sqrMagnitude < MinDirectionSqrMagnitude)
-            return;
+        if (direction.sqrMagnitude < MinDirectionSqrMagnitude && nextTarget.component != null)
+            direction = (Vector2)nextTarget.component.transform.position - pendingBounce.startPoint;
 
-        float safeProjectileSpeed = Mathf.Max(0.1f, session.settings.chainProjectileSpeed);
-        float safeProjectileLifetime = Mathf.Max(0.05f, session.settings.chainProjectileLifetime);
+        float travelDistance = direction.magnitude;
+        Vector2 bounceDirection = direction.sqrMagnitude >= MinDirectionSqrMagnitude ? direction.normalized : Vector2.right;
+        float safeProjectileSpeed = Mathf.Max(MinimumProjectileSpeed, session.settings.chainProjectileSpeed);
+        float travelTime = Mathf.Max(MinimumLockedImpactDelay, travelDistance / safeProjectileSpeed);
+        float safeProjectileLifetime = Mathf.Max(MinimumProjectileLifetime, session.settings.chainProjectileLifetime);
+        float visualLifetime = Mathf.Max(
+            safeProjectileLifetime,
+            travelTime + LockedImpactLifetimePadding);
         float damageMultiplier = session.settings.damageMultipliers[pendingBounce.damageIndex];
+        float resolvedDamage = session.bow.ResolveOutgoingDamage(session.settings.baseDamage * damageMultiplier);
 
-        BowSO.ShotStats bounceShotStats = new BowSO.ShotStats
+        Vector3 spawnPoint = pendingBounce.startPoint + (bounceDirection * ChainShotSpawnOffset);
+        ArrowProjectile visualProjectile = SpawnVisualBounceArrow(session, spawnPoint, bounceDirection, safeProjectileSpeed, visualLifetime);
+
+        session.pendingImpacts.Add(new PendingImpact
         {
-            power = 1f,
-            speed = safeProjectileSpeed,
-            damage = session.bow.ResolveOutgoingDamage(session.settings.baseDamage * damageMultiplier),
-            spreadDeg = 0f
-        };
-
-        float escapeDistance = ChainShotSpawnOffset;
-        if (pendingBounce.previousHitCollider != null)
-            escapeDistance += pendingBounce.previousHitCollider.bounds.extents.magnitude;
-
-        Vector2 bounceDirection = direction.normalized;
-        Vector3 spawnPoint = pendingBounce.startPoint + (bounceDirection * escapeDistance);
-        ArrowProjectile projectile = session.bow.SpawnArrowFromWorld(
-            bounceShotStats,
-            bounceDirection,
-            spawnPoint,
-            false,
-            "chain",
-            safeProjectileLifetime);
-
-        if (projectile == null)
-            return;
+            target = nextTarget,
+            startPoint = pendingBounce.startPoint,
+            executeAtTime = Time.time + travelTime,
+            damage = resolvedDamage,
+            nextDamageIndex = pendingBounce.damageIndex + 1,
+            visualProjectile = visualProjectile
+        });
 
         Log(session.bow,
-            $"Bounce spawned. index={pendingBounce.damageIndex} from={FormatVector(pendingBounce.startPoint)} to={FormatVector(targetPoint)} damage={bounceShotStats.damage:F2} speed={bounceShotStats.speed:F2}");
-
-        ConfigureProjectile(session, projectile, pendingBounce.damageIndex + 1);
+            $"Bounce locked. index={pendingBounce.damageIndex} from={FormatVector(pendingBounce.startPoint)} to={FormatVector(targetPoint)} damage={resolvedDamage:F2} speed={safeProjectileSpeed:F2} impactIn={travelTime:F2}s");
     }
 
-    private Collider2D FindNearestTarget(Vector2 origin, float searchRadius, HashSet<int> visitedTargets)
+    private bool TryFindNearestTarget(Vector2 origin, float searchRadius, HashSet<int> visitedTargets, out DamageableTarget nearestTarget)
     {
         int hitCount = Physics2D.OverlapCircleNonAlloc(
             origin,
@@ -160,7 +195,7 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
             _overlapResults,
             BowAbilityTargetingUtility.GetEnemyHurtBoxMask());
 
-        Collider2D nearestCollider = null;
+        nearestTarget = null;
         float nearestDistanceSqr = float.PositiveInfinity;
 
         for (int i = 0; i < hitCount; i++)
@@ -173,8 +208,15 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
             if (damageableTarget == null)
                 continue;
 
+            if (damageableTarget.CurrentHealth <= 0f)
+                continue;
+
             Component damageableComponent = damageableTarget as Component;
-            if (damageableComponent != null && visitedTargets.Contains(damageableComponent.GetInstanceID()))
+            if (damageableComponent == null)
+                continue;
+
+            int targetId = damageableComponent.GetInstanceID();
+            if (visitedTargets.Contains(targetId))
                 continue;
 
             Vector2 candidatePoint = overlapCollider.ClosestPoint(origin);
@@ -182,11 +224,112 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
             if (distanceSqr < nearestDistanceSqr)
             {
                 nearestDistanceSqr = distanceSqr;
-                nearestCollider = overlapCollider;
+                nearestTarget = new DamageableTarget
+                {
+                    collider = overlapCollider,
+                    damageable = damageableTarget,
+                    component = damageableComponent,
+                    instanceId = targetId
+                };
             }
         }
 
-        return nearestCollider;
+        return nearestTarget != null;
+    }
+
+    private void ResolveLockedImpact(ChainShotSession session, PendingImpact pendingImpact)
+    {
+        DespawnVisualProjectile(pendingImpact);
+
+        DamageableTarget target = pendingImpact.target;
+        if (target == null || target.damageable == null)
+            return;
+
+        if (target.component == null)
+            return;
+
+        if (!target.component.gameObject.activeInHierarchy)
+            return;
+
+        if (target.instanceId != 0 && session.visitedTargets.Contains(target.instanceId))
+            return;
+
+        if (target.damageable.CurrentHealth <= 0f)
+            return;
+
+        Vector2 hitPoint = GetTargetPoint(target, pendingImpact.startPoint);
+        target.damageable.Damage(pendingImpact.damage);
+
+        if (session.settings.playImpactEffect && session.bow != null)
+            session.bow.PlayDefaultArrowHitEffect(hitPoint);
+
+        if (target.instanceId != 0)
+            session.visitedTargets.Add(target.instanceId);
+
+        Log(session.bow,
+            $"Locked hit confirmed. target={target.component.name} hitPoint={FormatVector(hitPoint)} nextDamageIndex={pendingImpact.nextDamageIndex}");
+
+        if (session.settings.damageMultipliers == null || pendingImpact.nextDamageIndex >= session.settings.damageMultipliers.Length)
+            return;
+
+        session.pendingBounces.Add(new PendingBounce
+        {
+            startPoint = hitPoint,
+            executeAtTime = Time.time + Mathf.Max(0f, session.settings.chainJumpDelay),
+            damageIndex = pendingImpact.nextDamageIndex
+        });
+    }
+
+    private static Vector2 GetTargetPoint(DamageableTarget target, Vector2 origin)
+    {
+        if (target.collider != null && target.collider.enabled)
+            return target.collider.ClosestPoint(origin);
+
+        if (target.component != null)
+            return target.component.transform.position;
+
+        return origin;
+    }
+
+    private static void DespawnVisualProjectile(PendingImpact pendingImpact)
+    {
+        if (pendingImpact.visualProjectile == null)
+            return;
+
+        if (!pendingImpact.visualProjectile.gameObject.activeInHierarchy)
+            return;
+
+        pendingImpact.visualProjectile.Despawn();
+    }
+
+    private static ArrowProjectile SpawnVisualBounceArrow(
+        ChainShotSession session,
+        Vector3 spawnPoint,
+        Vector2 direction,
+        float speed,
+        float lifetimeSeconds)
+    {
+        BowSO bowConfig = session.bow != null ? session.bow.BowConfig : null;
+        if (bowConfig == null || bowConfig.arrowPrefab == null)
+            return null;
+
+        Projectile projectilePrefab = bowConfig.arrowPrefab;
+        GameplayPoolManager manager = GameplayPoolManager.Instance;
+        Projectile projectile = manager != null
+            ? manager.SpawnProjectile(projectilePrefab, spawnPoint, Quaternion.identity)
+            : Object.Instantiate(projectilePrefab, spawnPoint, Quaternion.identity);
+
+        ArrowProjectile arrow = projectile as ArrowProjectile;
+        if (arrow == null)
+        {
+            if (projectile != null)
+                projectile.Despawn();
+
+            return null;
+        }
+
+        arrow.InitializeVisualOnly(direction, speed, lifetimeSeconds);
+        return arrow;
     }
 
     private void ConfigureProjectile(ChainShotSession session, ArrowProjectile projectile, int nextDamageIndex)
@@ -234,7 +377,6 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
             session.pendingBounces.Add(new PendingBounce
             {
                 startPoint = hitPoint,
-                previousHitCollider = hitCollider,
                 executeAtTime = Time.time + Mathf.Max(0f, session.settings.chainJumpDelay),
                 damageIndex = nextDamageIndex
             });

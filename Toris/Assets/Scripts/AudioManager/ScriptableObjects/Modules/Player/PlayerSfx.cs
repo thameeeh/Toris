@@ -1,110 +1,212 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class PlayerSfx : MonoBehaviour
 {
-    [Header("Dependencies")]
-    [SerializeField] private PlayerBowController bow;
-    [SerializeField] private PlayerController playerController; // for dash
-    [SerializeField] private PlayerMotor motor;
-    [SerializeField] private Rigidbody2D rb;
+    [Header("Rules (ScriptableObjects)")]
+    [SerializeField] private PlayerSfxRuleSO[] rules;
 
-    [Header("Modules (ScriptableObjects)")]
-    [SerializeField] private PlayerSfxModule[] modules;
+    [Header("Legacy Modules")]
+    [SerializeField] private PlayerSfxModule[] legacyModules;
 
-    // Centralized runtime state (IMPORTANT: keep this out of ScriptableObjects)
+    [Header("Diagnostics")]
+    [SerializeField] private bool debugLogEvents;
+
+    private readonly Dictionary<string, AudioVoiceHandle> loopHandles = new();
+    private readonly Dictionary<PlayerSfxRuleSO, float> ruleCooldownTimes = new();
     private AudioVoiceHandle footstepLoopHandle;
 
-    private DashAbility dash;
-    private PlayerSfxContext ctx;
+    private PlayerSfxEventContext latestContext;
+    private bool hasLatestContext;
 
     public AudioVoiceHandle FootstepLoopHandle => footstepLoopHandle;
     public bool IsFootstepLoopActive => footstepLoopHandle.IsValid;
 
     private void Awake()
     {
-        // Resolve dependencies if not wired
-        if (!bow) bow = GetComponent<PlayerBowController>();
-        if (!playerController) playerController = GetComponent<PlayerController>();
-        if (!motor) motor = GetComponent<PlayerMotor>();
-        if (!rb) rb = GetComponent<Rigidbody2D>();
-
-        dash = playerController != null ? playerController.DashAbility : null;
-
-        ctx = new PlayerSfxContext(
-            hub: this,
-            transform: transform,
-            bow: bow,
-            dash: dash,
-            motor: motor,
-            rb: rb);
-
         footstepLoopHandle = AudioVoiceHandle.Invalid;
-    }
-
-    private void OnEnable()
-    {
-        // Hook gameplay events (no coupling into gameplay scripts; just listening)
-        if (bow != null)
-        {
-            bow.DrawStarted += OnBowDrawStarted;
-            bow.ShotFired += OnBowShotFired;
-            bow.DryReleased += OnBowDryReleased;
-        }
-
-        if (dash != null)
-        {
-            dash.Activated += OnDashStarted;
-            dash.Completed += OnDashCompleted;
-        }
-
-        // Initialize modules
-        if (modules != null)
-        {
-            for (int i = 0; i < modules.Length; i++)
-            {
-                if (modules[i] == null) continue;
-                modules[i].Initialize(ctx);
-            }
-        }
     }
 
     private void OnDisable()
     {
-        if (bow != null)
-        {
-            bow.DrawStarted -= OnBowDrawStarted;
-            bow.ShotFired -= OnBowShotFired;
-            bow.DryReleased -= OnBowDryReleased;
-        }
-
-        if (dash != null)
-        {
-            dash.Activated -= OnDashStarted;
-            dash.Completed -= OnDashCompleted;
-        }
-
         StopFootstepLoop(0.05f);
+        StopAllLoops(0.05f);
+        ruleCooldownTimes.Clear();
+        hasLatestContext = false;
     }
 
     private void Update()
     {
-        float dt = Time.unscaledDeltaTime;
+        if (legacyModules == null || !hasLatestContext)
+            return;
 
-        if (modules == null) return;
-
-        for (int i = 0; i < modules.Length; i++)
+        PlayerSfxContext legacyContext = CreateLegacyContext(latestContext);
+        float unscaledDeltaTime = Time.unscaledDeltaTime;
+        for (int i = 0; i < legacyModules.Length; i++)
         {
-            var m = modules[i];
-            if (m == null) continue;
-            m.Tick(ctx, dt);
+            legacyModules[i]?.Tick(legacyContext, unscaledDeltaTime);
         }
     }
 
-    // ---------- Hub-owned loop control ----------
+    public void InitializeRuntime(in PlayerSfxEventContext context)
+    {
+        latestContext = context;
+        hasLatestContext = true;
+
+        if (legacyModules == null)
+            return;
+
+        PlayerSfxContext legacyContext = CreateLegacyContext(context);
+        for (int i = 0; i < legacyModules.Length; i++)
+        {
+            legacyModules[i]?.Initialize(legacyContext);
+        }
+    }
+
+    public void DisposeRuntime(in PlayerSfxEventContext context)
+    {
+        if (legacyModules != null)
+        {
+            PlayerSfxContext legacyContext = CreateLegacyContext(context);
+            for (int i = 0; i < legacyModules.Length; i++)
+            {
+                legacyModules[i]?.Dispose(legacyContext);
+            }
+        }
+
+        StopFootstepLoop(0.05f);
+        StopAllLoops(0.05f);
+        ruleCooldownTimes.Clear();
+        hasLatestContext = false;
+    }
+
+    public void HandleEvent(in PlayerSfxEventContext context)
+    {
+        latestContext = context;
+        hasLatestContext = true;
+
+        DebugLogEvent(context);
+
+        if (rules != null)
+        {
+            for (int i = 0; i < rules.Length; i++)
+            {
+                PlayerSfxRuleSO rule = rules[i];
+                if (rule == null)
+                {
+                    DebugLogNullRule(i, context);
+                    continue;
+                }
+
+                rule.Evaluate(context);
+            }
+        }
+
+        DispatchLegacyModules(context);
+    }
+
+    public bool TryUseRuleCooldown(PlayerSfxRuleSO rule, float cooldownSeconds)
+    {
+        if (rule == null)
+            return false;
+
+        if (cooldownSeconds <= 0f)
+            return true;
+
+        float now = Time.time;
+        if (ruleCooldownTimes.TryGetValue(rule, out float lastPlayedTime) &&
+            now - lastPlayedTime < cooldownSeconds)
+        {
+            return false;
+        }
+
+        ruleCooldownTimes[rule] = now;
+        return true;
+    }
+
+    public AudioVoiceHandle PlayOneShot(string sfxId, Vector3 worldPosition, SfxPlayRequest request)
+    {
+        if (!HasAudio || string.IsNullOrWhiteSpace(sfxId))
+            return AudioVoiceHandle.Invalid;
+
+        return AudioBootstrap.Sfx.PlayAt(sfxId, worldPosition, request);
+    }
+
+    public AudioVoiceHandle PlayAttachedOneShot(string sfxId, Vector3 localOffset, SfxPlayRequest request)
+    {
+        if (!HasAudio || string.IsNullOrWhiteSpace(sfxId))
+            return AudioVoiceHandle.Invalid;
+
+        return AudioBootstrap.Sfx.PlayAttached(sfxId, transform, localOffset, request);
+    }
+
+    public AudioVoiceHandle StartAttachedLoop(string key, string sfxId, Vector3 localOffset, SfxPlayRequest request)
+    {
+        if (!HasAudio || string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(sfxId))
+            return AudioVoiceHandle.Invalid;
+
+        if (loopHandles.TryGetValue(key, out AudioVoiceHandle existingHandle))
+        {
+            if (existingHandle.IsValid)
+                return existingHandle;
+
+            loopHandles.Remove(key);
+        }
+
+        AudioVoiceHandle handle = AudioBootstrap.Sfx.PlayAttachedLoop(sfxId, transform, localOffset, request);
+        if (handle.IsValid)
+        {
+            loopHandles.Add(key, handle);
+        }
+
+        return handle;
+    }
+
+    public AudioVoiceHandle StartWorldLoop(string key, string sfxId, Vector3 worldPosition, SfxPlayRequest request)
+    {
+        if (!HasAudio || string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(sfxId))
+            return AudioVoiceHandle.Invalid;
+
+        if (loopHandles.TryGetValue(key, out AudioVoiceHandle existingHandle))
+        {
+            if (existingHandle.IsValid)
+                return existingHandle;
+
+            loopHandles.Remove(key);
+        }
+
+        AudioVoiceHandle handle = AudioBootstrap.Sfx.PlayLoop(sfxId, worldPosition, request);
+        if (handle.IsValid)
+        {
+            loopHandles.Add(key, handle);
+        }
+
+        return handle;
+    }
+
+    public void StopLoop(string key, float fadeOutSeconds)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return;
+
+        if (!loopHandles.TryGetValue(key, out AudioVoiceHandle handle))
+            return;
+
+        loopHandles.Remove(key);
+
+        if (handle.IsValid && HasAudio)
+        {
+            AudioBootstrap.Sfx.Stop(handle, fadeOutSeconds);
+        }
+    }
+
     public void StartFootstepLoop(string sfxId, SfxPlayRequest request)
     {
-        if (!ctx.HasAudio) return;
-        if (footstepLoopHandle.IsValid) return;
+        if (!HasAudio || string.IsNullOrWhiteSpace(sfxId))
+            return;
+
+        if (footstepLoopHandle.IsValid)
+            return;
 
         footstepLoopHandle = AudioBootstrap.Sfx.PlayAttachedLoop(
             sfxId,
@@ -116,41 +218,105 @@ public sealed class PlayerSfx : MonoBehaviour
 
     public void StopFootstepLoop(float fadeOutSeconds)
     {
-        if (!ctx.HasAudio) { footstepLoopHandle = AudioVoiceHandle.Invalid; return; }
-        if (!footstepLoopHandle.IsValid) return;
+        if (!footstepLoopHandle.IsValid)
+            return;
 
-        AudioBootstrap.Sfx.Stop(footstepLoopHandle, fadeOutSeconds);
+        if (HasAudio)
+        {
+            AudioBootstrap.Sfx.Stop(footstepLoopHandle, fadeOutSeconds);
+        }
+
         footstepLoopHandle = AudioVoiceHandle.Invalid;
     }
 
-    // ---------- Event forwarders ----------
-    private void OnBowDrawStarted()
+    private static bool HasAudio => AudioBootstrap.Sfx != null;
+
+    private void StopAllLoops(float fadeOutSeconds)
     {
-        if (modules == null) return;
-        for (int i = 0; i < modules.Length; i++) modules[i]?.OnBowDrawStarted(ctx);
+        foreach (AudioVoiceHandle handle in loopHandles.Values)
+        {
+            if (handle.IsValid && HasAudio)
+            {
+                AudioBootstrap.Sfx.Stop(handle, fadeOutSeconds);
+            }
+        }
+
+        loopHandles.Clear();
     }
 
-    private void OnBowShotFired()
+    private void DispatchLegacyModules(in PlayerSfxEventContext eventContext)
     {
-        if (modules == null) return;
-        for (int i = 0; i < modules.Length; i++) modules[i]?.OnBowShotFired(ctx);
+        if (legacyModules == null)
+            return;
+
+        PlayerSfxContext legacyContext = CreateLegacyContext(eventContext);
+        for (int i = 0; i < legacyModules.Length; i++)
+        {
+            PlayerSfxModule module = legacyModules[i];
+            if (module == null)
+                continue;
+
+            switch (eventContext.EventType)
+            {
+                case PlayerSfxEventType.BowDrawStarted:
+                    module.OnBowDrawStarted(legacyContext);
+                    break;
+                case PlayerSfxEventType.BowShootReady:
+                    module.OnBowShootReady(legacyContext);
+                    break;
+                case PlayerSfxEventType.BowShotReleased:
+                    module.OnBowShotReleased(legacyContext);
+                    break;
+                case PlayerSfxEventType.BowShotFired:
+                    module.OnBowShotFired(legacyContext);
+                    break;
+                case PlayerSfxEventType.BowDryReleased:
+                    module.OnBowDryReleased(legacyContext);
+                    break;
+                case PlayerSfxEventType.DashStarted:
+                    module.OnDashStarted(legacyContext);
+                    break;
+                case PlayerSfxEventType.DashCompleted:
+                    module.OnDashCompleted(legacyContext);
+                    break;
+            }
+        }
     }
 
-    private void OnBowDryReleased()
+    private static PlayerSfxContext CreateLegacyContext(in PlayerSfxEventContext context)
     {
-        if (modules == null) return;
-        for (int i = 0; i < modules.Length; i++) modules[i]?.OnBowDryReleased(ctx);
+        return new PlayerSfxContext(
+            hub: context.Hub,
+            transform: context.Transform,
+            bow: context.Bow,
+            dash: context.Dash,
+            motor: context.Motor,
+            rb: context.Rb);
     }
 
-    private void OnDashStarted()
+    private void DebugLogEvent(in PlayerSfxEventContext context)
     {
-        if (modules == null) return;
-        for (int i = 0; i < modules.Length; i++) modules[i]?.OnDashStarted(ctx);
+#if UNITY_EDITOR
+        if (!debugLogEvents)
+            return;
+
+        int ruleCount = rules != null ? rules.Length : 0;
+        int legacyModuleCount = legacyModules != null ? legacyModules.Length : 0;
+        Debug.Log(
+            $"[PlayerSfx] Event {context.EventType} received. rules={ruleCount}, legacyModules={legacyModuleCount}, hasAudio={context.HasAudio}, amount={context.Amount:0.###}, world={context.WorldPosition}",
+            this);
+#endif
     }
 
-    private void OnDashCompleted()
+    private void DebugLogNullRule(int index, in PlayerSfxEventContext context)
     {
-        if (modules == null) return;
-        for (int i = 0; i < modules.Length; i++) modules[i]?.OnDashCompleted(ctx);
+#if UNITY_EDITOR
+        if (!debugLogEvents)
+            return;
+
+        Debug.LogWarning(
+            $"[PlayerSfx] Rule slot {index} is empty while handling {context.EventType}.",
+            this);
+#endif
     }
 }

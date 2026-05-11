@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerDamageReceiver : MonoBehaviour
+public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
 {
     [Header("I-Frames")]
     [SerializeField] private float iFrameDuration = 0.35f;
@@ -21,6 +21,7 @@ public class PlayerDamageReceiver : MonoBehaviour
     private PlayerStats _stats;
     private Rigidbody2D _rb;
     private SpriteRenderer _sr;
+    private Collider2D _targetCollider;
 
     private Color _originalColor;
     private bool _flashActive;
@@ -29,11 +30,25 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     public bool IsInvulnerable => Time.time < _iFrameUntil;
 
+    public Transform TargetTransform => transform;
+    public Vector2 TargetPosition => _targetCollider != null ? _targetCollider.bounds.center : transform.position;
+    public bool IsTargetable =>
+        _stats != null
+        && !_stats.IsDead
+        && gameObject.activeInHierarchy
+        && gameObject.scene.IsValid();
+
     private void Awake()
     {
         _stats = GetComponent<PlayerStats>();
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponentInChildren<SpriteRenderer>();
+        PlayerHurtbox playerHurtbox = GetComponentInChildren<PlayerHurtbox>();
+        if (playerHurtbox != null)
+            playerHurtbox.TryGetComponent(out _targetCollider);
+
+        if (_targetCollider == null)
+            _targetCollider = GetComponentInChildren<Collider2D>();
 
         if (_statusController == null)
         {
@@ -75,6 +90,12 @@ public class PlayerDamageReceiver : MonoBehaviour
         _iFrameUntil = Time.time + iFrameDuration;
         OnHurtReceived?.Invoke();
         StartFlash();
+    }
+
+    public void ReceiveEnemyHit(float amount, HitData hitData)
+    {
+        hitData.damage = amount;
+        ReceiveHit(hitData);
     }
 
     private float CalculateFinalDamage(float baseDamage)

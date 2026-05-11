@@ -16,6 +16,8 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
     [SerializeField, Min(0f)] private float randomTargetRadius = 0.45f;
 
     private float _nextAllowedAttackTime;
+    private bool _hasSpawnedBubble;
+    private bool _hasHandledFinish;
 
     public bool IsComplete { get; private set; }
     public bool CanUseAttack => Time.time >= _nextAllowedAttackTime;
@@ -24,16 +26,21 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
     {
         base.DoEnterLogic();
         IsComplete = false;
+        _hasSpawnedBubble = false;
+        _hasHandledFinish = false;
         enemy.MoveEnemy(Vector2.zero);
         enemy.SetMovementAnimation(false);
-        enemy.FacePlayer();
+        enemy.FaceAggroTarget();
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"BloodMage attack enter. cooldownReady={CanUseAttack} {enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
     public override void DoFrameUpdateLogic()
     {
         base.DoFrameUpdateLogic();
         enemy.MoveEnemy(Vector2.zero);
-        enemy.FacePlayer();
+        enemy.FaceAggroTarget();
     }
 
     public override void DoPhysicsLogic()
@@ -48,32 +55,78 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
 
         if (triggerType == Enemy.AnimationTriggerType.Attack)
         {
+            if (_hasSpawnedBubble)
+            {
+#if UNITY_EDITOR
+                enemy.DebugAttackLog("BloodMage duplicate Anim_AttackHit ignored.");
+#endif
+                return;
+            }
+
+            _hasSpawnedBubble = true;
+#if UNITY_EDITOR
+            enemy.DebugAttackLog($"BloodMage Anim_AttackHit -> spawning bubble. damage={enemy.AttackDamage * bubbleDamageMultiplier:0.##} knockback={bubbleKnockback:0.##} {enemy.GetAttackDebugTargetSummary()}");
+#endif
             SpawnBubbleSpell();
             _nextAllowedAttackTime = Time.time + castCooldown;
+#if UNITY_EDITOR
+            enemy.DebugAttackLog($"BloodMage attack cooldown set. nextAllowed={_nextAllowedAttackTime:0.##}");
+#endif
         }
 
         if (triggerType == Enemy.AnimationTriggerType.AttackFinished)
+        {
+            if (_hasHandledFinish)
+            {
+#if UNITY_EDITOR
+                enemy.DebugAttackLog("BloodMage duplicate Anim_AttackFinished ignored.");
+#endif
+                return;
+            }
+
+            _hasHandledFinish = true;
             IsComplete = true;
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("BloodMage Anim_AttackFinished -> attack complete.");
+#endif
+        }
     }
 
     public override void ResetValues()
     {
         base.ResetValues();
         IsComplete = false;
+        _hasSpawnedBubble = false;
+        _hasHandledFinish = false;
     }
 
     public void ResetRuntimeState()
     {
         IsComplete = false;
+        _hasSpawnedBubble = false;
+        _hasHandledFinish = false;
         _nextAllowedAttackTime = 0f;
     }
 
     private void SpawnBubbleSpell()
     {
-        if (bubbleSpellPrefab == null || enemy.PlayerTransform == null)
+        if (bubbleSpellPrefab == null)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("BloodMage bubble spawn aborted: no bubbleSpellPrefab assigned.");
+#endif
             return;
+        }
 
-        Vector2 targetPosition = GetBubbleTargetPosition();
+        if (!enemy.TryGetAggroTargetPosition(out Vector2 targetPosition))
+        {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("BloodMage bubble spawn aborted: no valid aggro target position.");
+#endif
+            return;
+        }
+
+        targetPosition = GetBubbleTargetPosition(targetPosition);
         Quaternion spawnRotation = Quaternion.identity;
         BloodMageBubbleSpell spawnedSpell = null;
 
@@ -96,12 +149,18 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
             targetPosition,
             enemy.AttackDamage * bubbleDamageMultiplier,
             bubbleKnockback,
-            enemy.ProjectileIgnoreColliders);
+            enemy.ProjectileIgnoreColliders,
+            enemy.AggroTarget,
+            enemy.name);
+
+#if UNITY_EDITOR
+        enemy.DebugAttackLog($"BloodMage bubble spawned at=({targetPosition.x:0.##},{targetPosition.y:0.##}) target={enemy.GetAttackDebugTargetSummary()}");
+#endif
     }
 
-    private Vector2 GetBubbleTargetPosition()
+    private Vector2 GetBubbleTargetPosition(Vector2 baseTargetPosition)
     {
-        Vector2 targetPosition = (Vector2)enemy.PlayerTransform.position;
+        Vector2 targetPosition = baseTargetPosition;
 
         if (randomTargetRadius > 0f)
             targetPosition += Random.insideUnitCircle * randomTargetRadius;

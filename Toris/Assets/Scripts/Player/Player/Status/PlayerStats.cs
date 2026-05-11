@@ -7,6 +7,40 @@ using UnityEngine;
 // - PlayerRuntimeStats = owns mutable current HP / stamina
 // - PlayerStats = resource bridge for health/stamina + regen + UI compatibility
 
+public enum PlayerResourceChangeReason
+{
+    Unknown,
+    Initialization,
+    RuntimeStateSync,
+    ResolvedEffectsChanged,
+    Damage,
+    Restore,
+    Regeneration,
+    StaminaSpend
+}
+
+public readonly struct PlayerResourceChangeContext
+{
+    public readonly float PreviousValue;
+    public readonly float CurrentValue;
+    public readonly float MaxValue;
+    public readonly float Delta;
+    public readonly PlayerResourceChangeReason Reason;
+
+    public PlayerResourceChangeContext(
+        float previousValue,
+        float currentValue,
+        float maxValue,
+        PlayerResourceChangeReason reason)
+    {
+        PreviousValue = previousValue;
+        CurrentValue = currentValue;
+        MaxValue = maxValue;
+        Delta = currentValue - previousValue;
+        Reason = reason;
+    }
+}
+
 public class PlayerStats : MonoBehaviour
 {
     [Header("References")]
@@ -23,6 +57,8 @@ public class PlayerStats : MonoBehaviour
 
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnStaminaChanged;
+    public event Action<PlayerResourceChangeContext> OnHealthResourceChanged;
+    public event Action<PlayerResourceChangeContext> OnStaminaResourceChanged;
     public event Action OnPlayerDied;
     public event Action<PlayerResolvedEffects> OnResolvedEffectsChanged;
 
@@ -50,7 +86,7 @@ public class PlayerStats : MonoBehaviour
             _resolvedEffects.maxStamina,
             _fillResourcesToMaximumOnAwake);
 
-        BroadcastAll();
+        BroadcastAll(PlayerResourceChangeReason.Initialization, currentHP, currentStamina);
     }
 
     private void OnEnable()
@@ -108,7 +144,7 @@ public class PlayerStats : MonoBehaviour
 
         if (!Mathf.Approximately(previousHealth, _runtimeStats.CurrentHealth))
         {
-            BroadcastHealth();
+            BroadcastHealth(PlayerResourceChangeReason.Damage, previousHealth);
         }
 
         if (_runtimeStats.IsDead())
@@ -128,7 +164,7 @@ public class PlayerStats : MonoBehaviour
 
         if (!Mathf.Approximately(previousHealth, _runtimeStats.CurrentHealth))
         {
-            BroadcastHealth();
+            BroadcastHealth(PlayerResourceChangeReason.Restore, previousHealth);
         }
     }
 
@@ -137,11 +173,12 @@ public class PlayerStats : MonoBehaviour
         if (_runtimeStats == null)
             return false;
 
+        float previousStamina = _runtimeStats.CurrentStamina;
         bool consumed = _runtimeStats.TryConsumeStamina(cost);
 
         if (consumed)
         {
-            BroadcastStamina();
+            BroadcastStamina(PlayerResourceChangeReason.StaminaSpend, previousStamina);
         }
 
         return consumed;
@@ -157,7 +194,7 @@ public class PlayerStats : MonoBehaviour
 
         if (!Mathf.Approximately(previousStamina, _runtimeStats.CurrentStamina))
         {
-            BroadcastStamina();
+            BroadcastStamina(PlayerResourceChangeReason.Restore, previousStamina);
         }
     }
 
@@ -166,8 +203,9 @@ public class PlayerStats : MonoBehaviour
         if (_runtimeStats == null)
             return;
 
+        float previousHealth = _runtimeStats.CurrentHealth;
         _runtimeStats.SetCurrentHealth(value, _resolvedEffects.maxHealth);
-        BroadcastHealth();
+        BroadcastHealth(PlayerResourceChangeReason.RuntimeStateSync, previousHealth);
 
         if (!_isDead && _runtimeStats.IsDead())
         {
@@ -181,8 +219,9 @@ public class PlayerStats : MonoBehaviour
         if (_runtimeStats == null)
             return;
 
+        float previousStamina = _runtimeStats.CurrentStamina;
         _runtimeStats.SetCurrentStamina(value, _resolvedEffects.maxStamina);
-        BroadcastStamina();
+        BroadcastStamina(PlayerResourceChangeReason.RuntimeStateSync, previousStamina);
     }
 
     public void SetRuntimeState(float currentHealthValue, float currentStaminaValue)
@@ -190,10 +229,12 @@ public class PlayerStats : MonoBehaviour
         if (_runtimeStats == null)
             return;
 
+        float previousHealth = _runtimeStats.CurrentHealth;
+        float previousStamina = _runtimeStats.CurrentStamina;
         _runtimeStats.SetCurrentHealth(currentHealthValue, _resolvedEffects.maxHealth);
         _runtimeStats.SetCurrentStamina(currentStaminaValue, _resolvedEffects.maxStamina);
         _isDead = _runtimeStats.IsDead();
-        BroadcastAll();
+        BroadcastAll(PlayerResourceChangeReason.RuntimeStateSync, previousHealth, previousStamina);
     }
 
     private void HandleResolvedEffectsChanged(PlayerResolvedEffects resolvedEffects)
@@ -213,6 +254,9 @@ public class PlayerStats : MonoBehaviour
 
         _resolvedEffects = resolvedEffects;
 
+        float previousHealth = _runtimeStats != null ? _runtimeStats.CurrentHealth : 0f;
+        float previousStamina = _runtimeStats != null ? _runtimeStats.CurrentStamina : 0f;
+
         if (_runtimeStats != null)
         {
             if (_preserveResourceRatiosWhenEffectsChange)
@@ -227,7 +271,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         OnResolvedEffectsChanged?.Invoke(_resolvedEffects);
-        BroadcastAll();
+        BroadcastAll(PlayerResourceChangeReason.ResolvedEffectsChanged, previousHealth, previousStamina);
     }
 
     private void RegenerateStamina(float deltaTime)
@@ -248,7 +292,7 @@ public class PlayerStats : MonoBehaviour
 
         if (!Mathf.Approximately(previousStamina, _runtimeStats.CurrentStamina))
         {
-            BroadcastStamina();
+            BroadcastStamina(PlayerResourceChangeReason.Regeneration, previousStamina);
         }
     }
 
@@ -270,24 +314,29 @@ public class PlayerStats : MonoBehaviour
 
         if (!Mathf.Approximately(previousHealth, _runtimeStats.CurrentHealth))
         {
-            BroadcastHealth();
+            BroadcastHealth(PlayerResourceChangeReason.Regeneration, previousHealth);
         }
     }
 
-    private void BroadcastAll()
+    private void BroadcastAll(
+        PlayerResourceChangeReason reason,
+        float previousHealth,
+        float previousStamina)
     {
-        BroadcastHealth();
-        BroadcastStamina();
+        BroadcastHealth(reason, previousHealth);
+        BroadcastStamina(reason, previousStamina);
     }
 
-    private void BroadcastHealth()
+    private void BroadcastHealth(PlayerResourceChangeReason reason, float previousHealth)
     {
         OnHealthChanged?.Invoke(currentHP, maxHP);
+        OnHealthResourceChanged?.Invoke(new PlayerResourceChangeContext(previousHealth, currentHP, maxHP, reason));
     }
 
-    private void BroadcastStamina()
+    private void BroadcastStamina(PlayerResourceChangeReason reason, float previousStamina)
     {
         OnStaminaChanged?.Invoke(currentStamina, maxStamina);
+        OnStaminaResourceChanged?.Invoke(new PlayerResourceChangeContext(previousStamina, currentStamina, maxStamina, reason));
     }
 
     private void TryRestoreTransferredState()
@@ -337,11 +386,14 @@ public class PlayerStats : MonoBehaviour
             return;
         }
 
+        float previousHealth = _runtimeStats.CurrentHealth;
+        float previousStamina = _runtimeStats.CurrentStamina;
+
         _resolvedEffects = refreshedEffects;
         _runtimeStats.ClampToMaximums(_resolvedEffects.maxHealth, _resolvedEffects.maxStamina);
         _isDead = _runtimeStats.IsDead();
         OnResolvedEffectsChanged?.Invoke(_resolvedEffects);
-        BroadcastAll();
+        BroadcastAll(PlayerResourceChangeReason.ResolvedEffectsChanged, previousHealth, previousStamina);
     }
 
     private PlayerResolvedEffects ResolveValidResolvedEffects()

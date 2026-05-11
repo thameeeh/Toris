@@ -74,8 +74,7 @@ public class BadgerWalkSO : WalkSOBase<Badger>
             desiredDir = _pathAgent.GetMoveDirection(_wanderPoint);
         }
 
-        // Fallback: go straight to the point if no path / nav
-        if (desiredDir.sqrMagnitude < 0.0001f)
+        if (desiredDir.sqrMagnitude < 0.0001f && TileNavWorld.Instance == null)
         {
             Vector2 direct = _wanderPoint - currentPos;
             if (direct.sqrMagnitude > 0.0001f)

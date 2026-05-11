@@ -124,7 +124,11 @@ public class WolfIdleSO : IdleSOBase<Wolf>
 
         ChooseNewMode(force: true);
 
-        enemy.animator.SetBool("IsMoving", false);
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("IsMoving", true);
+            enemy.animator.Play("Idle");
+        }
     }
 
     public override void DoExitLogic()
@@ -143,7 +147,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
         isPausedAtPoint = false;
         isStandingAtInvestigatePoint = false;
 
-        if (alertIndicator != null)
+        if (alertIndicator != null && !enemy.IsAggroed)
             alertIndicator.HideIndicator();
     }
 
@@ -268,7 +272,7 @@ public class WolfIdleSO : IdleSOBase<Wolf>
             desiredDir = pathAgent.GetMoveDirection(wanderPoint);
         }
 
-        if (desiredDir.sqrMagnitude < minMoveDirectionSqr)
+        if (desiredDir.sqrMagnitude < minMoveDirectionSqr && TileNavWorld.Instance == null)
         {
             Vector2 direct = wanderPoint - currentPos;
             if (direct.sqrMagnitude > minMoveDirectionSqr)

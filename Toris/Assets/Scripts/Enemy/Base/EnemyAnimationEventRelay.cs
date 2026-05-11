@@ -8,16 +8,32 @@ public class EnemyAnimationEventRelay : MonoBehaviour
     {
         _enemy = GetComponentInParent<Enemy>();
         if (_enemy == null)
+        {
+#if UNITY_EDITOR
             Debug.LogError($"[EnemyAnimationEventRelay] No Enemy found in parents of {name}");
+#endif
+        }
     }
 
     public void Anim_AttackHit()
     {
+#if UNITY_EDITOR
+        if (_enemy != null)
+            _enemy.DebugAttackLog($"Animation event Anim_AttackHit received by relay={name}");
+        else
+            Debug.LogWarning($"[EnemyAnimationEventRelay:{name}] Anim_AttackHit fired with no Enemy reference.", this);
+#endif
         _enemy?.AnimationTriggerEvent(Enemy.AnimationTriggerType.Attack);
     }
 
     public void Anim_AttackFinished()
     {
+#if UNITY_EDITOR
+        if (_enemy != null)
+            _enemy.DebugAttackLog($"Animation event Anim_AttackFinished received by relay={name}");
+        else
+            Debug.LogWarning($"[EnemyAnimationEventRelay:{name}] Anim_AttackFinished fired with no Enemy reference.", this);
+#endif
         _enemy?.AnimationTriggerEvent(Enemy.AnimationTriggerType.AttackFinished);
     }
 
@@ -35,7 +51,13 @@ public class EnemyAnimationEventRelay : MonoBehaviour
     // follow same logic if (_enemy is X x) { }
     public void Anim_SetMoveWhileAttacking(int enabled)
     {
-        if (_enemy is Wolf wolf)
-            wolf.IsMovingWhileBiting = (enabled == 1);
+#if UNITY_EDITOR
+        if (_enemy != null)
+            _enemy.DebugAttackLog($"Animation event Anim_SetMoveWhileAttacking({enabled}) received by relay={name}");
+        else
+            Debug.LogWarning($"[EnemyAnimationEventRelay:{name}] Anim_SetMoveWhileAttacking fired with no Enemy reference.", this);
+#endif
+        if (_enemy is Wolf wolf && wolf.StateMachine?.CurrentEnemyState == wolf.AttackState)
+            wolf.IsMovingWhileBiting = enabled == 1;
     }
 }

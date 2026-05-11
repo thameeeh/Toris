@@ -81,6 +81,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753bbfb22f7111b46a64894c444bffee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAggroCheck
+  detectPlayer: 1
+  detectPassivePrey: 0
+  detectThreatsToPassiveCreatures: 0
 --- !u!1 &4493627601285047705
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120c57c5114fc584c87c7ed754f6554e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStrikingDistanceCheck
+  detectPlayer: 1
+  detectPassivePrey: 0
 --- !u!1 &7028104305884219924
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +552,7 @@ GameObject:
   - component: {fileID: 7535477299191739740}
   - component: {fileID: 4139749955504758593}
   - component: {fileID: 5282169703739860041}
+  - component: {fileID: 1935405487196941734}
   m_Layer: 7
   m_Name: Necromancer
   m_TagString: Enemy
@@ -654,6 +660,15 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 8686878537431172334}
   playerTransform: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
   lootTable: {fileID: 11400000, guid: 48b38a1c40f82354494007e8bf221954, type: 2}
+  autoCreateHealthBar: 1
+  healthBar: {fileID: 0}
+  autoCreateAlertIndicator: 1
+  alertIndicator: {fileID: 0}
+  questEnemyId: 
+  questEnemyTypeOrTag: 
+  isPassivePrey: 0
+  threatensPassiveCreatures: 0
+  debugAttackLogs: 0
   AttackDamage: 16
   MovementSpeed: 1.5
   castPoint: {fileID: 6703678301246532537}
@@ -692,6 +707,24 @@ MonoBehaviour:
   targetChangeThreshold: 0.5
   allowDirectFallbackWhenNoPath: 0
   debugPathing: 0
+--- !u!114 &1935405487196941734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028104305884219924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1505b050a147d241bdb3f3f2ca60b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
+  indicatorOffset: {x: 0, y: 1.45, z: 0}
+  displayDuration: 1.25
+  alertSprite: {fileID: 21300000, guid: 87c3c62b424df364f9c2ee6e733a60f9, type: 3}
+  indicatorColor: {r: 0.96, g: 0.06, b: 0.1, a: 1}
+  indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
+  sortingOrder: 100
 --- !u!1 &8803150979140353744
 GameObject:
   m_ObjectHideFlags: 0

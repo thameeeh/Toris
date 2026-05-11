@@ -127,6 +127,34 @@ public static class SiteStamping
         Vector2Int centerTile,
         SiteTileLayoutDefinition layoutDefinition)
     {
+        ApplyLayoutDefinition(
+            worldContext,
+            centerTile,
+            layoutDefinition,
+            TransformLayoutOffsetIdentity);
+    }
+
+    public static void ApplyLayoutDefinitionAuthoredWaterSouth(
+        WorldContext worldContext,
+        Vector2Int centerTile,
+        SiteTileLayoutDefinition layoutDefinition,
+        Vector2Int targetWaterDirection)
+    {
+        ApplyLayoutDefinition(
+            worldContext,
+            centerTile,
+            layoutDefinition,
+            offset => TransformAuthoredWaterSouthOffset(offset, targetWaterDirection));
+    }
+
+    private delegate Vector2Int TransformLayoutOffset(Vector2Int offset);
+
+    private static void ApplyLayoutDefinition(
+        WorldContext worldContext,
+        Vector2Int centerTile,
+        SiteTileLayoutDefinition layoutDefinition,
+        TransformLayoutOffset transformOffset)
+    {
         if (worldContext == null || layoutDefinition == null)
             return;
 
@@ -144,7 +172,7 @@ public static class SiteStamping
         for (int i = 0; i < cells.Count; i++)
         {
             SiteTileLayoutCell cell = cells[i];
-            Vector2Int worldTile = centerTile + cell.offset;
+            Vector2Int worldTile = centerTile + transformOffset(cell.offset);
 
             if (cell.ground != null)
                 terrainOverrides.SetGround(worldTile, cell.ground);
@@ -161,6 +189,52 @@ public static class SiteStamping
             if (cell.canopy != null)
                 terrainOverrides.SetCanopy(worldTile, cell.canopy);
         }
+    }
+
+    private static Vector2Int TransformLayoutOffsetIdentity(Vector2Int offset) => offset;
+
+    public static Vector2Int TransformAuthoredWaterSouthOffset(Vector2Int offset, Vector2Int targetWaterDirection)
+    {
+        return TransformOffsetTowardWaterDirection(offset, Vector2Int.down, targetWaterDirection);
+    }
+
+    public static Vector2Int TransformOffsetTowardWaterDirection(
+        Vector2Int offset,
+        Vector2Int authoredWaterDirection,
+        Vector2Int targetWaterDirection)
+    {
+        int authoredQuarterTurns = DirectionToQuarterTurnsFromAuthoredSouth(authoredWaterDirection);
+        int targetQuarterTurns = DirectionToQuarterTurnsFromAuthoredSouth(targetWaterDirection);
+        int quarterTurns = (targetQuarterTurns - authoredQuarterTurns + 4) % 4;
+
+        switch (quarterTurns)
+        {
+            case 1:
+                return new Vector2Int(-offset.y, offset.x);
+
+            case 2:
+                return new Vector2Int(-offset.x, -offset.y);
+
+            case 3:
+                return new Vector2Int(offset.y, -offset.x);
+
+            default:
+                return offset;
+        }
+    }
+
+    private static int DirectionToQuarterTurnsFromAuthoredSouth(Vector2Int direction)
+    {
+        if (direction == Vector2Int.up)
+            return 2;
+
+        if (direction == Vector2Int.right)
+            return 1;
+
+        if (direction == Vector2Int.left)
+            return 3;
+
+        return 0;
     }
 
     private static SiteTileLayoutDefinition ResolveLayoutDefinition(

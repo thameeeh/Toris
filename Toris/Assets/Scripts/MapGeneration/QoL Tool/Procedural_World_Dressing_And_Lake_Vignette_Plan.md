@@ -6,6 +6,35 @@ It belongs under `MapGeneration/QoL Tool` because this is primarily a world-gene
 
 It is a planning/design document, not a changelog.
 
+Scope boundary:
+- this is for the procedural world, wilderness, roads, lakes, and generated sites
+- this is not for Main Area / Safe Haven beautification
+- authored vignettes in this document are reusable procedural-world feature layouts, not hand-placed Main Area decorations
+
+## Current Generator Baseline
+
+The procedural world already has a five-layer visual output path:
+
+- ground
+- water
+- decoration
+- obstacle
+- canopy
+
+This means world dressing work can focus on rules and content rather than adding more tilemap plumbing.
+
+Generated roads now also support deterministic biome-authored visual variants. This improves the base path feel before adding separate road-edge decoration passes.
+
+Useful existing layers for this plan:
+
+- `Decoration` for flowers, reeds, pebbles, small plants, and non-blocking shoreline clutter
+- `Obstacle` for rocks, logs, trunks, and other base visuals that may need explicit blocker data
+- `Canopy` for tall trees or upper silhouettes that should remain visual-only
+
+Important rule:
+- placing an `Obstacle` tile still does not automatically block movement
+- any generated solid object must also provide explicit blocker data if it should affect navigation
+
 ## Problem
 
 The world currently has the large shapes it needs:
@@ -217,6 +246,12 @@ Example first palette:
 
 This alone should already improve lake readability and reduce visual emptiness.
 
+Roads can follow the same philosophy after the base road variant palette is tuned:
+
+1. keep the main road surface procedural
+2. use biome road variants for surface texture
+3. add separate road-edge dressing later for flowers, stones, grass, ruins, or signpost clutter
+
 ## Suggested Second Scope
 
 After the generic shoreline dressing pass works, add authored vignettes.
@@ -229,6 +264,44 @@ Start with a tiny set:
 - `LakeVignette_CampNook_A`
 
 These can use the same paint-and-bake layout workflow already proven by the grave system.
+
+Current implementation note:
+- authored shoreline vignettes are supported through `ShorelineVignettePlacementRuleDefinition`
+- the rule owns a list of `SiteTileLayoutDefinition` variants
+- each rule declares the authored water-facing direction in cell/grid space
+- each rule can run as a counted feature placement or as a repeatable shoreline filler
+- runtime placement finds lake-adjacent land tiles and rotates the chosen layout toward the real water direction
+- candidate anchors are collected from the actual shoreline instead of only random disk samples
+- layout land-side cells that would land on generated lake water are skipped so imperfect shoreline art still blends safely
+- repeatable filler rules can avoid existing stamps so rare/common features remain visible and filler appears in the gaps
+
+Unity setup:
+1. Bake one or more lake-edge layouts from the layout authoring tool.
+2. Create a `WorldGen/Biomes/Site Rules/Shoreline Vignette Rule` asset.
+3. Add the baked layouts to the rule's shoreline layout variant list.
+4. Set the authored water direction to match the layout's origin-to-water direction in cell space.
+5. Use `FeatureCount` for rare/common anchors or `FillAvailableShoreline` for repeatable grass/reed filler.
+6. Tune count, spacing, fill chance, and avoid-existing behavior.
+7. Add the shoreline rule to the biome's `SitePlacementRuleBuildStepDefinition` rule list.
+
+Recommended layered shoreline setup:
+1. `PlacementRare`
+   - mode: `FeatureCount`
+   - content: rich/hero shoreline layouts
+   - count: low
+   - spacing: high
+2. `PlacementCommon`
+   - mode: `FeatureCount`
+   - content: logs, rocks, visible local details
+   - count: medium
+   - spacing: medium
+3. `PlacementRepeatable`
+   - mode: `FillAvailableShoreline`
+   - content: reeds, grass, tiny shoreline clutter
+   - spacing: low
+   - avoid existing stamps: enabled
+
+Run repeatable filler after rare/common rules so it wraps the remaining shoreline gaps.
 
 ## Suggested Third Scope
 
@@ -286,3 +359,17 @@ That should define:
 - how to avoid ugly overlap and repetition
 
 Once that exists, authored lake-edge vignettes can layer on top cleanly.
+
+## Current Best Implementation Slice
+
+Recommended first procedural-world slice:
+
+1. Detect land tiles adjacent to generated lake water.
+2. Roll deterministic shoreline vignette anchors using biome seed and tile position.
+3. Pick one authored layout from the configured shoreline layout list.
+4. Rotate the layout so its authored water-facing side points toward the real lake water.
+5. Place non-blocking details on `Decoration`.
+6. Place occasional rock/log base visuals on `Obstacle` only when the art needs that layer.
+7. Do not add blocker footprints until a generated object truly needs to block movement.
+
+This keeps the work broad, cheap, and directly useful for making procedural wilderness feel more intentional.

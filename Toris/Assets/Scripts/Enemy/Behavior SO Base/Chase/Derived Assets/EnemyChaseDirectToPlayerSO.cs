@@ -23,7 +23,13 @@ public class EnemyChaseDirectToPlayer : ChaseSOBase<Generic>
     {
         base.DoFrameUpdateLogic();
 
-        Vector2 moveDirection = (playerTransform.position - enemy.transform.position).normalized;
+        if (!enemy.TryGetAggroTargetPosition(out Vector2 targetPosition))
+        {
+            enemy.MoveEnemy(Vector2.zero);
+            return;
+        }
+
+        Vector2 moveDirection = (targetPosition - (Vector2)enemy.transform.position).normalized;
         enemy.MoveEnemy(moveDirection * _movementSpeed);
 
         if (enemy.IsWithinStrikingDistance)

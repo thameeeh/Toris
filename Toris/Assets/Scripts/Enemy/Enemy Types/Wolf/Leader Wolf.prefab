@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 9038641558441596822, guid: 236368b4cb36b894990c48bf76c163fb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.59748423, g: 0.59748423, b: 0.59748423, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -208,6 +208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753bbfb22f7111b46a64894c444bffee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAggroCheck
+  detectPlayer: 1
+  detectPassivePrey: 1
+  detectThreatsToPassiveCreatures: 0
 --- !u!1 &5211954740449028837
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1529744663789177046}
   - component: {fileID: 3307974329703168885}
+  - component: {fileID: 126515286727453683}
   - component: {fileID: 7255815159274722986}
   - component: {fileID: -2298867679096013564}
   - component: {fileID: -4774567673522461205}
@@ -278,6 +282,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &126515286727453683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211954740449028837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a40ee2737834ab5b38a771923f9f6c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  enemy: {fileID: 0}
+  localOffset: {x: 0, y: 1, z: 0}
+  width: 0.75
+  height: 0.12
+  borderSize: 0.015
+  hideWhenFull: 1
+  hideWhenDead: 1
+  backgroundColor: {r: 0.12, g: 0.02, b: 0.02, a: 0.85}
+  fillColor: {r: 0.85, g: 0.12, b: 0.08, a: 0.95}
+  sortingOrder: 10000
+  sortingLayerName: 
 --- !u!114 &7255815159274722986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +321,15 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: a4ec415f3e5157e47b9fba0eaf6c43b3, type: 2}
+  autoCreateHealthBar: 1
+  healthBar: {fileID: 0}
+  autoCreateAlertIndicator: 1
+  alertIndicator: {fileID: 0}
   questEnemyId: LeaderWolf
+  questEnemyTypeOrTag: 
+  isPassivePrey: 0
+  threatensPassiveCreatures: 1
+  debugAttackLogs: 0
   AttackDamage: 35
   MovementSpeed: 3
   role: 0
@@ -557,6 +592,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120c57c5114fc584c87c7ed754f6554e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStrikingDistanceCheck
+  detectPlayer: 1
+  detectPassivePrey: 1
 --- !u!70 &1734266434773647486
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -52,7 +52,7 @@ public sealed class WolfEncounterCommandController
         float standBonus = alertRuntime.Level * encounterConfig.InvestigateStandBonusPerAlert;
 
         if (leader != null)
-            leader.SetInvestigationTarget(investigatePoint, investigateDuration, standBonus);
+            AlertWolfToInvestigate(leader, investigatePoint, investigateDuration, standBonus);
 
         for (int i = 0; i < occupants.Length; i++)
         {
@@ -60,7 +60,7 @@ public sealed class WolfEncounterCommandController
             if (occupant == null || occupant == leader)
                 continue;
 
-            occupant.SetInvestigationTarget(investigatePoint, investigateDuration, standBonus);
+            AlertWolfToInvestigate(occupant, investigatePoint, investigateDuration, standBonus);
         }
     }
 
@@ -91,6 +91,7 @@ public sealed class WolfEncounterCommandController
             return false;
 
         leader.ClearInvestigationTarget();
+        leader.TriggerAlert(EnemyAlertReason.SiteAlerted);
         leader.SetAggroStatus(true);
         leader.StateMachine.ChangeState(leader.HowlState);
 
@@ -100,6 +101,15 @@ public sealed class WolfEncounterCommandController
             encounterConfig.AlertLevelDecayDelay);
 
         return true;
+    }
+
+    private static void AlertWolfToInvestigate(
+        Wolf wolf,
+        Vector3 investigatePoint,
+        float investigateDuration,
+        float standBonus)
+    {
+        wolf.SetInvestigationTarget(investigatePoint, investigateDuration, standBonus);
     }
 
     private Vector3 BuildInvestigationPoint(

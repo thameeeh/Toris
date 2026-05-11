@@ -30,6 +30,10 @@ public class NecromancerShotProjectile : Projectile
     private Animator _animator;
 
     private Collider2D[] _ignoredOwnerColliders;
+    private IEnemyAggroTarget _intendedTarget;
+#if UNITY_EDITOR
+    private string _debugOwnerName;
+#endif
     private float _damage;
     private float _knockback;
     private float _despawnAtTime = float.PositiveInfinity;
@@ -105,6 +109,10 @@ public class NecromancerShotProjectile : Projectile
         }
 
         _ignoredOwnerColliders = null;
+        _intendedTarget = null;
+#if UNITY_EDITOR
+        _debugOwnerName = string.Empty;
+#endif
         _damage = 0f;
         _knockback = 0f;
         _baseSpeed = 0f;
@@ -129,6 +137,10 @@ public class NecromancerShotProjectile : Projectile
             _hitCollider.enabled = false;
 
         _ignoredOwnerColliders = null;
+        _intendedTarget = null;
+#if UNITY_EDITOR
+        _debugOwnerName = string.Empty;
+#endif
         _damage = 0f;
         _knockback = 0f;
         _baseSpeed = 0f;
@@ -158,7 +170,9 @@ public class NecromancerShotProjectile : Projectile
         float damage,
         float lifetimeSeconds,
         float knockback,
-        Collider2D[] ownerColliders = null)
+        Collider2D[] ownerColliders = null,
+        IEnemyAggroTarget intendedTarget = null,
+        string debugOwnerName = null)
     {
         _damage = damage;
         _knockback = knockback;
@@ -167,6 +181,15 @@ public class NecromancerShotProjectile : Projectile
         _lastTravelDirection = direction.sqrMagnitude > MinDirectionSqr ? direction.normalized : Vector2.right;
         _spawnPosition = transform.position;
         _ignoredOwnerColliders = ownerColliders;
+        _intendedTarget = intendedTarget;
+#if UNITY_EDITOR
+        _debugOwnerName = debugOwnerName;
+        Debug.Log(
+            $"[EnemyAttack:NecroProjectile:{name}:{GetInstanceID()}] Initialized by={_debugOwnerName ?? "unknown"} " +
+            $"dir=({direction.x:0.##},{direction.y:0.##}) speed={speed:0.##} damage={damage:0.##} " +
+            $"lifetime={lifetimeSeconds:0.##} intended={GetDebugTargetSummary(_intendedTarget)}",
+            this);
+#endif
         _nextAllowedSustainDamageTime = Time.time + sustainDamageInterval;
 
         SetOwnerIgnore(true);
@@ -186,7 +209,11 @@ public class NecromancerShotProjectile : Projectile
         if (IsIgnoredOwnerCollider(other))
             return;
 
-        if (TryApplyPlayerDamage(other, _damage, _knockback, false))
+#if UNITY_EDITOR
+        Debug.Log($"[EnemyAttack:NecroProjectile:{name}:{GetInstanceID()}] Impact with {other.name}.", this);
+#endif
+
+        if (TryApplyTargetDamage(other, _damage, _knockback, false))
             return;
 
         if (!despawnOnFirstImpact)
@@ -208,36 +235,85 @@ public class NecromancerShotProjectile : Projectile
 
         float sustainDamage = _damage * sustainDamageMultiplier;
         float sustainKnockback = _knockback * sustainKnockbackMultiplier;
-        if (!TryApplyPlayerDamage(other, sustainDamage, sustainKnockback, sustainDamageBypassesIFrames))
+        if (!TryApplyTargetDamage(other, sustainDamage, sustainKnockback, sustainDamageBypassesIFrames))
             return;
 
         _nextAllowedSustainDamageTime = Time.time + sustainDamageInterval;
     }
 
-    private bool TryApplyPlayerDamage(
+    private bool TryApplyTargetDamage(
         Collider2D other,
         float damageAmount,
         float knockbackAmount,
         bool bypassIFrames)
     {
-        PlayerDamageReceiver playerDamageReceiver = other.GetComponentInParent<PlayerDamageReceiver>();
-        if (playerDamageReceiver == null)
+        if (!TryResolveDamageTarget(other, out IEnemyAggroTarget damageTarget))
             return false;
 
-        Vector2 targetPosition = other.bounds.center;
+        Vector2 targetPosition = damageTarget.TargetPosition;
         Vector2 origin = _hitCollider != null
             ? _hitCollider.bounds.ClosestPoint(targetPosition)
             : transform.position;
 
         Vector2 hitDirection = GetCurrentTravelDirection(targetPosition);
         HitData hitData = new HitData(origin, hitDirection, damageAmount, knockbackAmount, gameObject, bypassIFrames);
-        playerDamageReceiver.ReceiveHit(hitData);
+#if UNITY_EDITOR
+        Debug.Log(
+            $"[EnemyAttack:NecroProjectile:{name}:{GetInstanceID()}] Hit {GetDebugTargetSummary(damageTarget)} " +
+            $"damage={damageAmount:0.##} knockback={knockbackAmount:0.##} bypassIFrames={bypassIFrames}",
+            this);
+#endif
+        damageTarget.ReceiveEnemyHit(damageAmount, hitData);
 
         if (despawnOnFirstImpact)
             _pendingDespawn = true;
 
         return true;
     }
+
+    private bool TryResolveDamageTarget(Collider2D other, out IEnemyAggroTarget damageTarget)
+    {
+        damageTarget = null;
+
+        PlayerDamageReceiver playerDamageReceiver = other.GetComponentInParent<PlayerDamageReceiver>();
+        if (playerDamageReceiver != null)
+            damageTarget = playerDamageReceiver;
+        else
+            damageTarget = other.GetComponentInParent<IEnemyAggroTarget>();
+
+        if (damageTarget == null || !damageTarget.IsTargetable)
+            return false;
+
+        return _intendedTarget == null || AreSameTarget(damageTarget, _intendedTarget);
+    }
+
+    private static bool AreSameTarget(IEnemyAggroTarget left, IEnemyAggroTarget right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+
+        if (left == null || right == null)
+            return false;
+
+        Transform leftTransform = left.TargetTransform;
+        Transform rightTransform = right.TargetTransform;
+        if (leftTransform == null || rightTransform == null)
+            return false;
+
+        return leftTransform == rightTransform || leftTransform.root == rightTransform.root;
+    }
+
+#if UNITY_EDITOR
+    private static string GetDebugTargetSummary(IEnemyAggroTarget target)
+    {
+        if (target == null)
+            return "target=null";
+
+        Transform targetTransform = target.TargetTransform;
+        string targetName = targetTransform != null ? targetTransform.name : "null-transform";
+        return $"{target.GetType().Name}:{targetName} targetable={target.IsTargetable}";
+    }
+#endif
 
     private Vector2 GetCurrentTravelDirection(Vector3 targetPosition)
     {

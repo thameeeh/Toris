@@ -208,6 +208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753bbfb22f7111b46a64894c444bffee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAggroCheck
+  detectPlayer: 1
+  detectPassivePrey: 1
+  detectThreatsToPassiveCreatures: 0
 --- !u!1 &5211954740449028837
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +295,15 @@ MonoBehaviour:
   <rb>k__BackingField: {fileID: 3307974329703168885}
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: 47f9e8cce7a114c4b8c7094127fbbaf1, type: 2}
+  autoCreateHealthBar: 1
+  healthBar: {fileID: 0}
+  autoCreateAlertIndicator: 1
+  alertIndicator: {fileID: 0}
+  questEnemyId: 
+  questEnemyTypeOrTag: 
+  isPassivePrey: 0
+  threatensPassiveCreatures: 1
+  debugAttackLogs: 0
   AttackDamage: 15
   MovementSpeed: 1.8
   role: 1
@@ -514,6 +526,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120c57c5114fc584c87c7ed754f6554e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStrikingDistanceCheck
+  detectPlayer: 1
+  detectPassivePrey: 1
 --- !u!70 &1734266434773647486
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

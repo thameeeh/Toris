@@ -11,8 +11,7 @@ public class GridPathAgent : MonoBehaviour
     [SerializeField] private float targetChangeThreshold = 0.5f;
 
     [Header("Behavior When No Path")]
-    [Tooltip("If true, when no path is found the agent will still walk straight towards the target (ignoring nav). " +
-             "If false, the agent will STOP when no path exists.")]
+    [Tooltip("If true, scenes without TileNavWorld can use direct movement. When TileNavWorld exists and no path is found, the agent always stops.")]
     [SerializeField] private bool allowDirectFallbackWhenNoPath = false;
 #if UNITY_EDITOR
     [Header("Debug")]
@@ -108,13 +107,6 @@ public class GridPathAgent : MonoBehaviour
 
         if (!_hasValidPath || _currentPath.Count == 0)
         {
-            if (allowDirectFallbackWhenNoPath)
-            {
-                Vector2 direct = desiredTargetWorld - transform.position;
-                LogPathing($"NoPath direct-fallback target={desiredTargetWorld} dir={direct.normalized}");
-                return direct.sqrMagnitude > 0.0001f ? direct.normalized : Vector2.zero;
-            }
-
             LogPathing($"NoPath stop target={desiredTargetWorld}");
             return Vector2.zero;
         }

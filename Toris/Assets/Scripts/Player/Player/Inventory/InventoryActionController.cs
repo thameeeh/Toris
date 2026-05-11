@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using OutlandHaven.Inventory;
 using OutlandHaven.UIToolkit;
@@ -15,6 +16,8 @@ public class InventoryActionController : MonoBehaviour
     [SerializeField] private PlayerEffectSourceController _playerEffectSourceController;
 
     private PlayerConsumableController _consumableController;
+
+    public event Action<PlayerConsumableUseContext> ConsumableUsed;
 
     private void Awake()
     {
@@ -97,6 +100,14 @@ public class InventoryActionController : MonoBehaviour
 
         Debug.Log($"[InventoryActionController] Attempting to consume potion in slot {slotIndex}. Item: {slot.HeldItem.BaseItem.name}");
         HandleRequestUse(slot);
+    }
+
+    private void OnDestroy()
+    {
+        if (_consumableController != null)
+        {
+            _consumableController.ConsumableUsed -= HandleConsumableUsed;
+        }
     }
 
     private void HandleRequestEquip(InventorySlot slot)
@@ -252,6 +263,7 @@ public class InventoryActionController : MonoBehaviour
                 _playerStatsAnchor,
                 _playerStats,
                 _playerEffectSourceController);
+            _consumableController.ConsumableUsed += HandleConsumableUsed;
             return;
         }
 
@@ -259,6 +271,11 @@ public class InventoryActionController : MonoBehaviour
             _playerStatsAnchor,
             _playerStats,
             _playerEffectSourceController);
+    }
+
+    private void HandleConsumableUsed(PlayerConsumableUseContext context)
+    {
+        ConsumableUsed?.Invoke(context);
     }
 
     private void ResolveRuntimeReferences()

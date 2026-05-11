@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RambowBowConfig", menuName = "Game/Abilities/Rambow")]
 public class RambowBowConfig : PlayerAbilitySO
 {
+    private const string ProjectileDebugSource = "Rambow";
+    private const float DefaultProjectileLifetime = 3f;
+    private const float MinimumProjectileLifetime = 0.05f;
+
     [Header("Unlock Requirements")]
     [Min(0)] public int killsRequired = 30;
 
@@ -11,6 +15,7 @@ public class RambowBowConfig : PlayerAbilitySO
     [Min(0f)] public float spreadDegrees = 6f;
     [Min(0f)] public float damagePerShot = 8f;
     [Min(0.1f)] public float speedPerShot = 12f;
+    [Min(0.05f)] public float projectileLifetime = 3f;
 
     [Header("Cost")]
     [Min(0f)] public float initialStaminaCost = 10f;
@@ -40,25 +45,34 @@ public class RambowBowConfig : PlayerAbilitySO
         if (playerStats == null || playerBow == null || ramboRuntime == null)
             return;
 
+        LogRambow(playerBow, "Button down.");
         ramboRuntime.SetHeld(true);
 
         if (!ramboRuntime.IsReady(context))
+        {
+            LogRambow(playerBow, $"Activation blocked. cooldownRemaining={ramboRuntime.CooldownRemaining:F2}");
             return;
+        }
 
         if (initialStaminaCost > 0f && !playerStats.TryConsumeStamina(initialStaminaCost))
+        {
+            LogRambow(playerBow, $"Activation blocked. Missing initial stamina cost={initialStaminaCost:F2}");
             return;
+        }
 
         ramboRuntime.Activate();
         ramboRuntime.BeginAbilityUse(context);
         FireRambowShot(context);
         ramboRuntime.ScheduleNextShot(shotsPerSecond);
         ramboRuntime.StartCooldown();
+        LogRambow(playerBow, $"Activated. shotsPerSecond={shotsPerSecond:F2} nextShotTime={ramboRuntime.NextShotTime:F3}");
     }
 
     public override void OnButtonUp(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         if (runtime is RamboBowRuntime ramboRuntime)
         {
+            LogRambow(context.bow, "Button up. Deactivating.");
             ramboRuntime.Deactivate();
         }
     }
@@ -77,12 +91,14 @@ public class RambowBowConfig : PlayerAbilitySO
 
         if (!ramboRuntime.IsHeld)
         {
+            LogRambow(playerBow, "Deactivated because button is no longer held.");
             ramboRuntime.Deactivate();
             return;
         }
 
         if (ramboRuntime.HasReachedMaxDuration(maxDuration))
         {
+            LogRambow(playerBow, $"Deactivated by maxDuration={maxDuration:F2}.");
             ramboRuntime.Deactivate();
             return;
         }
@@ -92,12 +108,14 @@ public class RambowBowConfig : PlayerAbilitySO
 
         if (staminaPerShot > 0f && !playerStats.TryConsumeStamina(staminaPerShot))
         {
+            LogRambow(playerBow, $"Deactivated because staminaPerShot={staminaPerShot:F2} could not be paid.");
             ramboRuntime.Deactivate();
             return;
         }
 
         FireRambowShot(context);
         ramboRuntime.ScheduleNextShot(shotsPerSecond);
+        LogRambow(playerBow, $"Shot scheduled. nextShotTime={ramboRuntime.NextShotTime:F3}");
     }
 
     private void FireRambowShot(PlayerAbilityContext context)
@@ -114,6 +132,30 @@ public class RambowBowConfig : PlayerAbilitySO
             spreadDeg = spreadDegrees
         };
 
-        playerBow.FireArrow(shotStats, playReleaseAnimation);
+        float resolvedProjectileLifetime = ResolveProjectileLifetime();
+        LogRambow(playerBow,
+            $"Firing shot. speed={shotStats.speed:F2} damage={shotStats.damage:F2} spread={shotStats.spreadDeg:F2} lifetime={resolvedProjectileLifetime:F2}");
+
+        playerBow.FireArrow(shotStats, playReleaseAnimation, ProjectileDebugSource, resolvedProjectileLifetime);
     }
+
+    private float ResolveProjectileLifetime()
+    {
+        return projectileLifetime > 0f
+            ? Mathf.Max(MinimumProjectileLifetime, projectileLifetime)
+            : DefaultProjectileLifetime;
+    }
+
+    private static void LogRambow(Object context, string message)
+    {
+        PlayerShootDebug.Log(context, ProjectileDebugSource, message);
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (projectileLifetime <= 0f)
+            projectileLifetime = DefaultProjectileLifetime;
+    }
+#endif
 }

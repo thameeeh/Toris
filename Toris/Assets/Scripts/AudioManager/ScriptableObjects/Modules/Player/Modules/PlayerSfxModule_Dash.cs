@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Player SFX Modules/Dash", fileName = "PlayerSfxModule_Dash")]
+[CreateAssetMenu(menuName = "Audio/Legacy/Player SFX Modules/Dash", fileName = "PlayerSfxModule_Dash")]
 public sealed class PlayerSfxModule_Dash : PlayerSfxModule
 {
     [Header("SFX IDs")]

@@ -15,3 +15,6 @@ MonoBehaviour:
   sitePlacementRules:
   - {fileID: 11400000, guid: b9d3902789965cf4eb2b3d40c2dd1949, type: 2}
   - {fileID: 11400000, guid: 9018c76545404224bbc3b6dd7072be54, type: 2}
+  - {fileID: 11400000, guid: 1dcc35a8fc741a343804af6bd6d712d4, type: 2}
+  - {fileID: 11400000, guid: 84a0796e45cb61c40b93a1f6199a3449, type: 2}
+  - {fileID: 11400000, guid: 2bdb12a1ec3f58745bc6c8078b79c85e, type: 2}

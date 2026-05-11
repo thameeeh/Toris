@@ -291,11 +291,11 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Success Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: Failure Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: State
@@ -353,11 +353,11 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Success Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: Failure Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: State
@@ -649,7 +649,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -682,8 +682,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Hello, traveler. You look worse for wear. Not many people make it this
-          far from the Kingdom. What brought you to the outskirts?
+        value: Hello, traveler. You look worse for wear. Not many people make it
+          this far from the Kingdom. What brought you to the outskirts?
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -711,7 +711,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -854,9 +854,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: I see. Not everyone wants to reveal their secrets at the first sight of
-          humanity. That is fine. Out here, people are allowed to keep things to
-          themselves.
+        value: I see. Not everyone wants to reveal their secrets at the first sight
+          of humanity. That is fine. Out here, people are allowed to keep things
+          to themselves.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -878,7 +878,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -935,7 +935,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -968,8 +968,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Well, nevertheless, you will need help if you plan to survive out here.
-          The outside world is not exactly pleasant, but it is not dead either.
+        value: Well, nevertheless, you will need help if you plan to survive out
+          here. The outside world is not exactly pleasant, but it is not dead either.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -991,7 +991,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1213,7 +1213,8 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Kill_3_Leader_Wolves", "active")
 
-        SetQuestEntryState("Kill_3_Leader_Wolves", 1, "active")
+        SetQuestEntryState("Kill_3_Leader_Wolves",
+        1, "active")
 
         Variable["LeaderWolfKills"] = 0'
       onExecute:
@@ -1227,7 +1228,7 @@ MonoBehaviour:
         height: 30
     entryGroups: []
     canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.97
+    canvasZoom: 0.94000006
   - id: 2
     fields:
     - title: Title
@@ -1369,7 +1370,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -1506,9 +1507,9 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: I did not expect you to come back so quickly. Fewer leaders means the
-          packs scatter instead of hunting travelers together. That road may hold for
-          a little longer.
+        value: I did not expect you to come back so quickly. Fewer leaders means
+          the packs scatter instead of hunting travelers together. That road may
+          hold for a little longer.
         type: 0
         typeString: 
       - title: Sequence
@@ -1694,8 +1695,8 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Kill_3_Leader_Wolves", "success")
 
-        if CurrentQuestState("Guide_Talk_To_Smith") == "unassigned" then
-        SetQuestState("Guide_Talk_To_Smith", "active"); SetQuestEntryState("Guide_Talk_To_Smith",
+        if CurrentQuestState("Guide_Talk_To_Smith")
+        == "unassigned" then SetQuestState("Guide_Talk_To_Smith", "active"); SetQuestEntryState("Guide_Talk_To_Smith",
         1, "active"); Variable["TalkedToSmith"] = 0 end'
       onExecute:
         m_PersistentCalls:
@@ -2100,8 +2101,7 @@ MonoBehaviour:
         typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: Since you're talking to me, I assume you passed his little test. The
-          old guy tends to scare everyone new around here. Always talking about
-          survival.
+          old guy tends to scare everyone new around here. Always talking about survival.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -2179,7 +2179,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -2324,8 +2324,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: You know where to find me. Swing by every now and then, maybe
-          something new will have arrived for you to check.
+        value: You know where to find me. Swing by every now and then, maybe something
+          new will have arrived for you to check.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -2745,8 +2745,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: This town may be broken, but it is not useless. With enough work, it
-          can become something again. I have extra tasks if you need more work.
+        value: This town may be broken, but it is not useless. With enough work,
+          it can become something again. I have extra tasks if you need more work.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -2831,13 +2831,14 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Guide_Talk_To_Smith", "success")
 
-        Variable["SafeHavenSideWorkUnlocked"] = 1
+        Variable["SafeHavenSideWorkUnlocked"]
+        = 1
 
         if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
         SetQuestState("Guide_Cull_Wolves", "grantable") end
 
-        if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then
-        SetQuestState("Guide_Buy_Ore", "grantable") end
+        if CurrentQuestState("Guide_Buy_Ore")
+        == "unassigned" then SetQuestState("Guide_Buy_Ore", "grantable") end
 
         TorisOpenQuestJournal("Available:GuideJobs")'
       onExecute:
@@ -2946,13 +2947,14 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Guide_Talk_To_Smith", "success")
 
-        Variable["SafeHavenSideWorkUnlocked"] = 1
+        Variable["SafeHavenSideWorkUnlocked"]
+        = 1
 
         if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
         SetQuestState("Guide_Cull_Wolves", "grantable") end
 
-        if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then
-        SetQuestState("Guide_Buy_Ore", "grantable") end'
+        if CurrentQuestState("Guide_Buy_Ore")
+        == "unassigned" then SetQuestState("Guide_Buy_Ore", "grantable") end'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3004,7 +3006,8 @@ MonoBehaviour:
       conditionsString: 
       userScript: 'SetQuestState("Guide_Talk_To_Smith", "success")
 
-        Variable["SafeHavenSideWorkUnlocked"] = 1
+        Variable["SafeHavenSideWorkUnlocked"]
+        = 1
 
         if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
         SetQuestState("Guide_Cull_Wolves", "grantable") end'
@@ -3231,8 +3234,8 @@ MonoBehaviour:
       userScript: 'if CurrentQuestState("Guide_Cull_Wolves") == "unassigned" then
         SetQuestState("Guide_Cull_Wolves", "grantable") end
 
-        if CurrentQuestState("Guide_Buy_Ore") == "unassigned" then SetQuestState("Guide_Buy_Ore",
-        "grantable") end
+        if CurrentQuestState("Guide_Buy_Ore")
+        == "unassigned" then SetQuestState("Guide_Buy_Ore", "grantable") end
 
         TorisOpenQuestJournal("Available:GuideJobs")'
       onExecute:
@@ -3680,8 +3683,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Forge is open. Tools, trade, and a little work if you want coin
-          without begging the old man for it.
+        value: Forge is open. Tools, trade, and a little work if you want coin without
+          begging the old man for it.
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -3715,7 +3718,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3728,7 +3731,7 @@ MonoBehaviour:
     - id: 2
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
@@ -3752,7 +3755,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 10
@@ -3841,7 +3844,7 @@ MonoBehaviour:
     - id: 4
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
@@ -3865,13 +3868,13 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 10
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
@@ -3882,8 +3885,8 @@ MonoBehaviour:
         destinationDialogueID: 7
         isConnector: 0
         priority: 2
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3896,11 +3899,11 @@ MonoBehaviour:
     - id: 5
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3912,7 +3915,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -3920,19 +3923,19 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 10
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3945,11 +3948,11 @@ MonoBehaviour:
     - id: 6
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -3961,7 +3964,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -3970,19 +3973,19 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 10
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -3995,11 +3998,11 @@ MonoBehaviour:
     - id: 7
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4011,7 +4014,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -4019,19 +4022,19 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 10
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -4051,7 +4054,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -4073,9 +4076,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence:
-      defaultPlayerSequence:
-      defaultResponseMenuSequence:
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -4084,11 +4087,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName:
+        buttonName: 
       cancelConversation:
         key: 27
-        buttonName:
-    nodeColor:
+        buttonName: 
+    nodeColor: 
     dialogueEntries:
     - id: 0
       fields:
@@ -4097,7 +4100,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4109,11 +4112,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -4123,7 +4126,7 @@ MonoBehaviour:
       conversationID: 11
       isRoot: 1
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
@@ -4134,8 +4137,8 @@ MonoBehaviour:
         destinationDialogueID: 1
         isConnector: 0
         priority: 2
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -4148,11 +4151,11 @@ MonoBehaviour:
     - id: 1
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4164,7 +4167,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -4173,19 +4176,19 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 11
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -4205,7 +4208,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -4227,9 +4230,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence:
-      defaultPlayerSequence:
-      defaultResponseMenuSequence:
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -4238,11 +4241,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName:
+        buttonName: 
       cancelConversation:
         key: 27
-        buttonName:
-    nodeColor:
+        buttonName: 
+    nodeColor: 
     dialogueEntries:
     - id: 0
       fields:
@@ -4251,7 +4254,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4263,11 +4266,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -4277,7 +4280,7 @@ MonoBehaviour:
       conversationID: 12
       isRoot: 1
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
@@ -4288,8 +4291,8 @@ MonoBehaviour:
         destinationDialogueID: 1
         isConnector: 0
         priority: 2
-      conditionsString:
-      userScript:
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -4302,11 +4305,11 @@ MonoBehaviour:
     - id: 1
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4318,7 +4321,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -4327,18 +4330,18 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 12
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString:
+      conditionsString: 
       userScript: SetQuestState("Guide_Cull_Wolves", "success")
       onExecute:
         m_PersistentCalls:
@@ -4359,7 +4362,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -4381,9 +4384,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence:
-      defaultPlayerSequence:
-      defaultResponseMenuSequence:
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -4392,11 +4395,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName:
+        buttonName: 
       cancelConversation:
         key: 27
-        buttonName:
-    nodeColor:
+        buttonName: 
+    nodeColor: 
     dialogueEntries:
     - id: 0
       fields:
@@ -4405,7 +4408,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4417,11 +4420,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -4493,7 +4496,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript:
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -4666,7 +4669,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
-      value:
+      value: 
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
@@ -4688,9 +4691,9 @@ MonoBehaviour:
       minSubtitleSeconds: 2
       continueButton: 0
       overrideSequenceSettings: 0
-      defaultSequence:
-      defaultPlayerSequence:
-      defaultResponseMenuSequence:
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
       overrideInputSettings: 0
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
@@ -4699,11 +4702,11 @@ MonoBehaviour:
       emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
-        buttonName:
+        buttonName: 
       cancelConversation:
         key: 27
-        buttonName:
-    nodeColor:
+        buttonName: 
+    nodeColor: 
     dialogueEntries:
     - id: 0
       fields:
@@ -4712,7 +4715,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4724,11 +4727,11 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -4738,7 +4741,7 @@ MonoBehaviour:
       conversationID: 15
       isRoot: 1
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
@@ -4749,7 +4752,7 @@ MonoBehaviour:
         destinationDialogueID: 1
         isConnector: 0
         priority: 2
-      conditionsString:
+      conditionsString: 
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -4763,11 +4766,11 @@ MonoBehaviour:
     - id: 1
       fields:
       - title: Title
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Description
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
@@ -4779,7 +4782,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
@@ -4787,18 +4790,18 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value:
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 15
       isRoot: 0
       isGroup: 0
-      nodeColor:
+      nodeColor: 
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString:
+      conditionsString: 
       userScript: SetQuestState("Smith_Check_Forge", "success")
       onExecute:
         m_PersistentCalls:

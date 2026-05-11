@@ -44,7 +44,11 @@ public class WolfReturnHomeSO : EnemyBehaviourSO<Wolf>
         _repickTimer = 0f;
 
         PickReturnTarget();
-        enemy.animator.SetBool("IsMoving", true);
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("IsMoving", true);
+            enemy.animator.Play("Idle");
+        }    
     }
 
     public override void DoExitLogic()
@@ -96,7 +100,7 @@ public class WolfReturnHomeSO : EnemyBehaviourSO<Wolf>
         if (_pathAgent != null)
             desiredDir = _pathAgent.GetMoveDirection(_returnTarget);
 
-        if (desiredDir.sqrMagnitude < minDirectionSqrMagnitude)
+        if (desiredDir.sqrMagnitude < minDirectionSqrMagnitude && TileNavWorld.Instance == null)
         {
             Vector2 direct = _returnTarget - enemy.transform.position;
             if (direct.sqrMagnitude > minDirectionSqrMagnitude)

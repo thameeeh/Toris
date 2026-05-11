@@ -19,6 +19,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d86046fafb7dd984db501440a09302a8, type: 2}
     - {fileID: 11400000, guid: 8f2814c941afdf64aa147b49c20ac968, type: 2}
     - {fileID: 11400000, guid: 4dfbee89ca9a3054085cc050466ce868, type: 2}
+    - {fileID: 11400000, guid: fbe116a300325b04189e27a37c6aa4da, type: 2}
   - categoryName: Enemy
     definitions:
     - {fileID: 11400000, guid: 0aec95896c079e345857bdd436937536, type: 2}

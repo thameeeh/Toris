@@ -21,6 +21,9 @@ public class BloodMageChaseState : EnemyState<BloodMage>
 
         if (!enemy.HasCombatContext)
         {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog("BloodMageChaseState -> IdleState because combat context is missing.");
+#endif
             enemyStateMachine.ChangeState(enemy.IdleState);
             return;
         }
@@ -28,7 +31,12 @@ public class BloodMageChaseState : EnemyState<BloodMage>
         enemy.BloodMageChaseBaseInstance?.DoFrameUpdateLogic();
 
         if (enemy.BloodMageChaseBaseInstance != null && enemy.BloodMageChaseBaseInstance.CanStartAttack)
+        {
+#if UNITY_EDITOR
+            enemy.DebugAttackLog($"BloodMageChaseState -> AttackState. {enemy.GetAttackDebugTargetSummary()}");
+#endif
             enemyStateMachine.ChangeState(enemy.AttackState);
+        }
     }
 
     public override void PhysicsUpdate()

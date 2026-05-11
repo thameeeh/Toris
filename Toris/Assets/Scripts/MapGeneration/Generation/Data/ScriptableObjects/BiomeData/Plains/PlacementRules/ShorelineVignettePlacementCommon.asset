@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c776a17357a54cfa92de7ae7c896625a, type: 3}
+  m_Name: ShorelineVignettePlacementCommon
+  m_EditorClassIdentifier: Assembly-CSharp::ShorelineVignettePlacementRuleDefinition
+  authoredWaterDirection: 3
+  shorelineLayoutVariants:
+  - {fileID: 11400000, guid: e4e4fa0f4e35e394f9b353e683b8dd53, type: 2}
+  - {fileID: 11400000, guid: 73bc2287f5be34340bee30a9b3290ad3, type: 2}
+  - {fileID: 11400000, guid: 90c549bba0267694bbbe9f91e7783e76, type: 2}
+  placementMode: 0
+  minVignetteCount: 25
+  maxVignetteCount: 45
+  shorelineMinSpacingTiles: 18
+  placementRadiusFactor: 1
+  avoidOriginRadiusTiles: 24
+  fillChance: 1
+  avoidExistingStamps: 1

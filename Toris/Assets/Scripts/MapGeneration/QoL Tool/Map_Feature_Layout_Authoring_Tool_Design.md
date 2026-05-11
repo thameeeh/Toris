@@ -6,6 +6,11 @@ It belongs under `MapGeneration/QoL Tool` because this is a map-generation workf
 
 It is a planning/design document, not a changelog.
 
+Scope boundary:
+- this tool is for authoring reusable procedural-world feature layouts
+- it is not for Main Area / Safe Haven scene decoration
+- use it for generated graves, camps, lake-edge pockets, shrines, ruins, and encounter spaces
+
 ## Purpose
 
 The procedural world already supports:
@@ -76,6 +81,18 @@ Long-term value:
 - designers spend time shaping actual spaces
 - less time mentally simulating coordinates
 - more layout variants become practical
+
+## Current Implementation Status
+
+The first useful version exists:
+
+- `SiteLayoutAuthoringRoot` exposes layered Tilemap references
+- the custom inspector validates painted cells
+- layouts can be baked into `SiteTileLayoutDefinition`
+- existing layout assets can be rebaked
+- supported layers are `Ground`, `Water`, `Decoration`, `Obstacle`, and `Canopy`
+
+The next tool work should be driven by procedural-world content needs, not by Main Area decoration.
 
 ## Existing Runtime Pieces To Reuse
 

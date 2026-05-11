@@ -287,7 +287,11 @@ public class PlayerBowController : MonoBehaviour
         ShotFired?.Invoke();
     }
 
-    public void FireArrow(BowSO.ShotStats stats, bool playReleaseAnimation = false)
+    public void FireArrow(
+        BowSO.ShotStats stats,
+        bool playReleaseAnimation = false,
+        string debugSourceLabel = null,
+        float lifetimeOverride = -1f)
     {
         if (_bow == null)
         {
@@ -302,10 +306,15 @@ public class PlayerBowController : MonoBehaviour
         }
 
         BowSO.ShotStats finalStats = ResolveOutgoingDamage(stats);
-        SpawnArrowFromAim(finalStats, playReleaseAnimation, true);
+        SpawnArrowFromAim(finalStats, playReleaseAnimation, true, debugSourceLabel, lifetimeOverride);
     }
 
-    public ArrowProjectile SpawnArrowFromAim(BowSO.ShotStats stats, bool playReleaseAnimation = false, bool applySpread = true)
+    public ArrowProjectile SpawnArrowFromAim(
+        BowSO.ShotStats stats,
+        bool playReleaseAnimation = false,
+        bool applySpread = true,
+        string debugSourceLabel = null,
+        float lifetimeOverride = -1f)
     {
         if (_bow == null)
         {
@@ -333,7 +342,7 @@ public class PlayerBowController : MonoBehaviour
             AbilityReleaseRequested?.Invoke(baseDir);
         }
 
-        return SpawnArrowInternal(stats, baseDir, applySpread);
+        return SpawnArrowInternal(stats, baseDir, applySpread, debugSourceLabel, lifetimeOverride);
     }
 
     public ArrowProjectile SpawnArrowFromWorld(
@@ -360,7 +369,12 @@ public class PlayerBowController : MonoBehaviour
         return SpawnArrowAtPosition(stats, dir, spawnPos, applySpread, spawnSourceLabel, lifetimeSeconds);
     }
 
-    private ArrowProjectile SpawnArrowInternal(BowSO.ShotStats stats, Vector2 dir, bool applySpread)
+    private ArrowProjectile SpawnArrowInternal(
+        BowSO.ShotStats stats,
+        Vector2 dir,
+        bool applySpread,
+        string debugSourceLabel = null,
+        float lifetimeOverride = -1f)
     {
         Vector3 spawnPos;
         Transform activeMuzzle = GetAimOriginTransform(dir);
@@ -369,8 +383,11 @@ public class PlayerBowController : MonoBehaviour
         else
             spawnPos = transform.position + (Vector3)(dir * spawnOffsetFromCenter);
 
-        string spawnSourceLabel = activeMuzzle != null ? activeMuzzle.name : "fallback";
-        return SpawnArrowAtPosition(stats, dir, spawnPos, applySpread, spawnSourceLabel, _bow.arrowLifetime);
+        string spawnSourceLabel = !string.IsNullOrEmpty(debugSourceLabel)
+            ? debugSourceLabel
+            : activeMuzzle != null ? activeMuzzle.name : "fallback";
+        float lifetimeSeconds = lifetimeOverride > 0f ? lifetimeOverride : _bow.arrowLifetime;
+        return SpawnArrowAtPosition(stats, dir, spawnPos, applySpread, spawnSourceLabel, lifetimeSeconds);
     }
 
     private ArrowProjectile SpawnArrowAtPosition(
@@ -406,6 +423,7 @@ public class PlayerBowController : MonoBehaviour
             return null;
         }
 
+        arrow.SetDebugSource(spawnSourceLabel);
         arrow.Initialize(dir, stats.speed, stats.damage, lifetimeSeconds, _ownerCollider);
         return arrow;
     }
@@ -570,19 +588,8 @@ public class PlayerBowController : MonoBehaviour
 
     public void PlayDefaultArrowHitEffect(Vector2 position)
     {
-        if (EffectManagerBehavior.Instance == null)
-            return;
-
-        EffectRequest request = new EffectRequest
-        {
-            EffectId = "hit_arrow_square",
-            Position = position,
-            Rotation = Quaternion.identity,
-            Parent = null,
-            Variant = default,
-            Magnitude = 1f
-        };
-
-        EffectManagerBehavior.Instance.Play(request);
+        _ = position;
+        // Retained for legacy ability call sites.
+        // Hit VFX is now authored through VFX rules/modules instead of hardcoded here.
     }
 }

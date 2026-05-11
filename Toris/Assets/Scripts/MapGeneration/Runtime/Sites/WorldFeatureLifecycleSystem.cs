@@ -4,37 +4,46 @@ public sealed class WorldFeatureLifecycleSystem
 {
     private readonly WorldFeatureLifecycle chunkFeatureLifecycle;
     private readonly PersistentWorldFeatureLifecycle persistentFeatureLifecycle;
+    private readonly WorldWildlifeLifecycle wildlifeLifecycle;
 
     public WorldFeatureLifecycleSystem(
         WorldFeatureLifecycle chunkFeatureLifecycle,
-        PersistentWorldFeatureLifecycle persistentFeatureLifecycle)
+        PersistentWorldFeatureLifecycle persistentFeatureLifecycle,
+        WorldWildlifeLifecycle wildlifeLifecycle)
     {
         this.chunkFeatureLifecycle = chunkFeatureLifecycle;
         this.persistentFeatureLifecycle = persistentFeatureLifecycle;
+        this.wildlifeLifecycle = wildlifeLifecycle;
     }
 
     public void RebuildForCurrentBiome()
     {
         chunkFeatureLifecycle?.ClearAll();
-        chunkFeatureLifecycle?.RebuildPlacements();
         persistentFeatureLifecycle?.ClearAll();
+        wildlifeLifecycle?.ClearAll();
+
+        chunkFeatureLifecycle?.RebuildPlacements();
         persistentFeatureLifecycle?.RebuildPlacements();
         persistentFeatureLifecycle?.ActivatePersistentSites();
+        wildlifeLifecycle?.RebuildPlacements();
     }
 
     public void ClearAll()
     {
         chunkFeatureLifecycle?.ClearAll();
         persistentFeatureLifecycle?.ClearAll();
+        wildlifeLifecycle?.ClearAll();
     }
 
     public void ActivateChunk(Vector2Int chunkCoord)
     {
         chunkFeatureLifecycle?.ActivateChunk(chunkCoord);
+        wildlifeLifecycle?.ActivateChunk(chunkCoord);
     }
 
     public void DeactivateChunk(Vector2Int chunkCoord)
     {
+        wildlifeLifecycle?.DeactivateChunk(chunkCoord);
         chunkFeatureLifecycle?.DeactivateChunk(chunkCoord);
     }
 

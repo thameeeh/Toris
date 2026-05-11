@@ -1,14 +1,24 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace OutlandHaven.Inventory
 {
+    public struct PlayerConsumableUseContext
+    {
+        public ConsumableEffectMode EffectMode;
+        public ConsumptionSlot Payload;
+        public float Amount;
+    }
+
     /// <summary>
     /// Runtime owner for consumable usage rules, cooldowns, and slot mutation.
     /// </summary>
     public sealed class PlayerConsumableController
     {
         private const string TIMED_CONSUMABLE_SOURCE_PREFIX = "ConsumableTimed_";
+
+        public event Action<PlayerConsumableUseContext> ConsumableUsed;
 
         private readonly UIInventoryEventsSO _uiInventoryEvents;
         private PlayerStatsAnchorSO _playerStatsAnchor;
@@ -87,6 +97,13 @@ namespace OutlandHaven.Inventory
 
             if (consumable.CooldownDuration > 0f)
                 _nextUseByItem[item.BaseItem] = Time.time + consumable.CooldownDuration;
+
+            ConsumableUsed?.Invoke(new PlayerConsumableUseContext
+            {
+                EffectMode = consumable.EffectMode,
+                Payload = consumable.EffectPayload,
+                Amount = consumable.amount
+            });
 
             _uiInventoryEvents?.OnSpecificSlotsUpdated?.Invoke(slot, null);
             return true;

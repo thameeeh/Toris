@@ -6,11 +6,14 @@ public sealed class WorldWildlifeLifecycle
     private readonly WorldContext worldContext;
     private readonly WorldSceneServices worldSceneServices;
     private readonly IEnemySpawnService enemySpawnService;
+    private readonly Camera streamCamera;
 
     private readonly Dictionary<Vector2Int, ActiveWildlifeChunk> activeChunks =
         new Dictionary<Vector2Int, ActiveWildlifeChunk>();
     private readonly Dictionary<Enemy, Vector2Int> chunkByEnemy =
         new Dictionary<Enemy, Vector2Int>();
+    private readonly Dictionary<Enemy, RetainedWildlife> retainedWildlife =
+        new Dictionary<Enemy, RetainedWildlife>();
     private readonly Dictionary<int, WildlifeGroup> groupById =
         new Dictionary<int, WildlifeGroup>();
     private readonly Dictionary<Enemy, WildlifeGroup> groupByEnemy =
@@ -18,15 +21,19 @@ public sealed class WorldWildlifeLifecycle
 
     private WildlifeSpawnPlacementIndex wildlifeSpawnIndex;
     private Transform rootContainer;
+    private const float RetainedReleaseDelaySeconds = 1.5f;
+    private const float ViewportReleasePadding = 0.15f;
 
     public WorldWildlifeLifecycle(
         WorldContext worldContext,
         WorldSceneServices worldSceneServices,
-        IEnemySpawnService enemySpawnService)
+        IEnemySpawnService enemySpawnService,
+        Camera streamCamera)
     {
         this.worldContext = worldContext;
         this.worldSceneServices = worldSceneServices;
         this.enemySpawnService = enemySpawnService;
+        this.streamCamera = streamCamera;
     }
 
     public void RebuildPlacements()
@@ -40,10 +47,13 @@ public sealed class WorldWildlifeLifecycle
     {
         List<Vector2Int> chunkKeys = new List<Vector2Int>(activeChunks.Keys);
         for (int i = 0; i < chunkKeys.Count; i++)
-            DeactivateChunk(chunkKeys[i]);
+            DeactivateChunk(chunkKeys[i], forceRelease: true);
+
+        ReleaseAllRetainedWildlife();
 
         activeChunks.Clear();
         chunkByEnemy.Clear();
+        retainedWildlife.Clear();
         groupById.Clear();
         groupByEnemy.Clear();
         wildlifeSpawnIndex = null;
@@ -72,19 +82,78 @@ public sealed class WorldWildlifeLifecycle
 
         ActiveWildlifeChunk activeChunk = CreateActiveChunk(chunkCoord);
 
+        int adoptedCount = AdoptRetainedWildlifeForChunk(chunkCoord, activeChunk);
+
         for (int i = 0; i < placements.Count; i++)
+        {
+            if (adoptedCount > 0)
+            {
+                adoptedCount--;
+                continue;
+            }
+
             SpawnWildlife(placements[i], activeChunk);
+        }
 
         activeChunks.Add(chunkCoord, activeChunk);
     }
 
     public void DeactivateChunk(Vector2Int chunkCoord)
     {
+        DeactivateChunk(chunkCoord, forceRelease: false);
+    }
+
+    public void Tick(float deltaTime)
+    {
+        if (retainedWildlife.Count == 0)
+            return;
+
+        List<Enemy> releaseBuffer = null;
+        List<Enemy> keys = new List<Enemy>(retainedWildlife.Keys);
+
+        for (int i = 0; i < keys.Count; i++)
+        {
+            Enemy enemy = keys[i];
+            if (enemy == null || !retainedWildlife.TryGetValue(enemy, out RetainedWildlife retained))
+                continue;
+
+            if (IsEnemyVisible(enemy, retained.Renderers))
+            {
+                retained.OffscreenTimer = 0f;
+                retainedWildlife[enemy] = retained;
+                continue;
+            }
+
+            retained.OffscreenTimer += deltaTime;
+            retainedWildlife[enemy] = retained;
+
+            if (retained.OffscreenTimer < RetainedReleaseDelaySeconds)
+                continue;
+
+            releaseBuffer ??= new List<Enemy>();
+            releaseBuffer.Add(enemy);
+        }
+
+        if (releaseBuffer == null)
+            return;
+
+        for (int i = 0; i < releaseBuffer.Count; i++)
+            ReleaseRetainedWildlife(releaseBuffer[i]);
+    }
+
+    private void DeactivateChunk(Vector2Int chunkCoord, bool forceRelease)
+    {
         if (!activeChunks.TryGetValue(chunkCoord, out ActiveWildlifeChunk activeChunk))
             return;
 
         for (int i = activeChunk.Enemies.Count - 1; i >= 0; i--)
-            ReleaseWildlife(activeChunk.Enemies[i]);
+        {
+            Enemy enemy = activeChunk.Enemies[i];
+            if (!forceRelease && TryRetainWildlifeOnChunkUnload(enemy, chunkCoord))
+                continue;
+
+            ReleaseWildlife(enemy);
+        }
 
         activeChunk.Enemies.Clear();
 
@@ -101,7 +170,7 @@ public sealed class WorldWildlifeLifecycle
 
     public int GetActiveWildlifeCount()
     {
-        int totalCount = 0;
+        int totalCount = retainedWildlife.Count;
 
         foreach (KeyValuePair<Vector2Int, ActiveWildlifeChunk> pair in activeChunks)
             totalCount += pair.Value.Enemies.Count;
@@ -142,6 +211,7 @@ public sealed class WorldWildlifeLifecycle
 
         enemy.Despawned -= HandleWildlifeDespawned;
         DetachFromWildlifeGroup(enemy);
+        retainedWildlife.Remove(enemy);
         chunkByEnemy.Remove(enemy);
         enemy.RequestDespawn();
     }
@@ -152,6 +222,7 @@ public sealed class WorldWildlifeLifecycle
             return;
 
         enemy.Despawned -= HandleWildlifeDespawned;
+        retainedWildlife.Remove(enemy);
         DetachFromWildlifeGroup(enemy);
 
         if (!chunkByEnemy.TryGetValue(enemy, out Vector2Int chunkCoord))
@@ -200,6 +271,96 @@ public sealed class WorldWildlifeLifecycle
         return group;
     }
 
+    private bool TryRetainWildlifeOnChunkUnload(Enemy enemy, Vector2Int sourceChunk)
+    {
+        if (enemy == null || enemy.CurrentHealth <= 0f)
+            return false;
+
+        Renderer[] renderers = enemy.GetComponentsInChildren<Renderer>(false);
+        if (!IsEnemyVisible(enemy, renderers))
+            return false;
+
+        EnsureRootContainer();
+        enemy.transform.SetParent(rootContainer, true);
+        chunkByEnemy.Remove(enemy);
+        retainedWildlife[enemy] = new RetainedWildlife(sourceChunk, renderers);
+        return true;
+    }
+
+    private int AdoptRetainedWildlifeForChunk(Vector2Int chunkCoord, ActiveWildlifeChunk activeChunk)
+    {
+        if (retainedWildlife.Count == 0)
+            return 0;
+
+        int adoptedCount = 0;
+        List<Enemy> keys = new List<Enemy>(retainedWildlife.Keys);
+        for (int i = 0; i < keys.Count; i++)
+        {
+            Enemy enemy = keys[i];
+            if (enemy == null || !retainedWildlife.TryGetValue(enemy, out RetainedWildlife retained))
+                continue;
+
+            if (retained.SourceChunk != chunkCoord)
+                continue;
+
+            retainedWildlife.Remove(enemy);
+            chunkByEnemy[enemy] = chunkCoord;
+            activeChunk.Enemies.Add(enemy);
+
+            if (activeChunk.Root != null)
+                enemy.transform.SetParent(activeChunk.Root, true);
+
+            adoptedCount++;
+        }
+
+        return adoptedCount;
+    }
+
+    private void ReleaseRetainedWildlife(Enemy enemy)
+    {
+        if (enemy == null)
+            return;
+
+        retainedWildlife.Remove(enemy);
+        ReleaseWildlife(enemy);
+    }
+
+    private void ReleaseAllRetainedWildlife()
+    {
+        if (retainedWildlife.Count == 0)
+            return;
+
+        List<Enemy> keys = new List<Enemy>(retainedWildlife.Keys);
+        for (int i = 0; i < keys.Count; i++)
+            ReleaseRetainedWildlife(keys[i]);
+    }
+
+    private bool IsEnemyVisible(Enemy enemy, Renderer[] renderers)
+    {
+        Camera camera = streamCamera != null ? streamCamera : Camera.main;
+        if (camera != null)
+        {
+            Vector3 viewportPosition = camera.WorldToViewportPoint(enemy.transform.position);
+            return viewportPosition.z > 0f
+                   && viewportPosition.x >= -ViewportReleasePadding
+                   && viewportPosition.x <= 1f + ViewportReleasePadding
+                   && viewportPosition.y >= -ViewportReleasePadding
+                   && viewportPosition.y <= 1f + ViewportReleasePadding;
+        }
+
+        if (renderers == null)
+            return false;
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer renderer = renderers[i];
+            if (renderer != null && renderer.isVisible)
+                return true;
+        }
+
+        return false;
+    }
+
     private ActiveWildlifeChunk CreateActiveChunk(Vector2Int chunkCoord)
     {
         EnsureRootContainer();
@@ -230,6 +391,20 @@ public sealed class WorldWildlifeLifecycle
         {
             ChunkCoord = chunkCoord;
             Root = root;
+        }
+    }
+
+    private struct RetainedWildlife
+    {
+        public readonly Vector2Int SourceChunk;
+        public readonly Renderer[] Renderers;
+        public float OffscreenTimer;
+
+        public RetainedWildlife(Vector2Int sourceChunk, Renderer[] renderers)
+        {
+            SourceChunk = sourceChunk;
+            Renderers = renderers;
+            OffscreenTimer = 0f;
         }
     }
 }

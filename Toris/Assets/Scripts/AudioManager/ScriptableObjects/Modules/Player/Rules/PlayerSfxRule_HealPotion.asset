@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7561721f6c24e918633397b58b40fe7, type: 3}
   m_Name: PlayerSfxRule_HealPotion
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSfxRuleSO
-  trigger: 81
+  trigger: 80
   filterStatusType: 0
   statusType: 0
   filterResourceChangeReason: 0

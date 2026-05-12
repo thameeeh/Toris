@@ -65,6 +65,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     public void OnSpawned()
     {
+        enabled = true;
         ResetRuntime();
         SubscribeToDen();
     }

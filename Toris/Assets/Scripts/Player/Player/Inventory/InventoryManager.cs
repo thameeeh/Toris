@@ -339,7 +339,7 @@ namespace OutlandHaven.Inventory
 
             if (restored)
             {
-                Debug.Log($"[Inventory] Successfully RESTORED {type} state from GameSession snapshot for '{gameObject.name}'.");
+                //Debug.Log($"[Inventory] Successfully RESTORED {type} state from GameSession snapshot for '{gameObject.name}'.");
                 EnsureSlotItemStates();
                 NotifyInventoryUpdated();
             }
@@ -357,17 +357,17 @@ namespace OutlandHaven.Inventory
 
             if (IsPlayerBackpackContainer())
             {
-                Debug.Log($"[Inventory] CAPTURING Backpack state for '{gameObject.name}' into GameSession snapshot.");
+                //Debug.Log($"[Inventory] CAPTURING Backpack state for '{gameObject.name}' into GameSession snapshot.");
                 GlobalSession.CapturePlayerInventoryState(this);
             }
             else if (LooksLikeEquipmentContainer())
             {
-                Debug.Log($"[Inventory] CAPTURING Equipment state for '{gameObject.name}' into GameSession snapshot.");
+                //Debug.Log($"[Inventory] CAPTURING Equipment state for '{gameObject.name}' into GameSession snapshot.");
                 GlobalSession.CaptureEquipmentInventoryState(this);
             }
             else if (IsPotionContainer())
             {
-                Debug.Log($"[Inventory] CAPTURING Potion state for '{gameObject.name}' into GameSession snapshot.");
+                //Debug.Log($"[Inventory] CAPTURING Potion state for '{gameObject.name}' into GameSession snapshot.");
                 GlobalSession.CapturePotionInventoryState(this);
             }
         }

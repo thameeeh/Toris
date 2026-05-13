@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Container_Smith_Shop
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.InventoryContainerSO
   SlotCount: 21
-  AssociatedView: 5
+  AssociatedView: 3
+  IsEquipment: 0
   PredefinedFilters: 

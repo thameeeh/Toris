@@ -71,7 +71,7 @@ namespace OutlandHaven.Inventory
             }
 
             UnityEditor.EditorUtility.SetDirty(this);
-            Debug.Log($"[ItemDatabase] Auto-populated {AllItems.Count} items.");
+            //Debug.Log($"[ItemDatabase] Auto-populated {AllItems.Count} items.");
         }
 #endif
     }

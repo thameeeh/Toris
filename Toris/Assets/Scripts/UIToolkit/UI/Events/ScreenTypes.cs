@@ -14,7 +14,7 @@ namespace OutlandHaven.UIToolkit
         Mage,
         Potions,
 
-        CharacterSheet,
+        PlayerEquipment,
         Skills,
         PauseMenu,
 

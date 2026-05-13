@@ -224,6 +224,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &138578570 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
+  m_PrefabInstance: {fileID: 1188657720}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
 --- !u!1 &225650374
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,7 +919,11 @@ PrefabInstance:
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _playerInventory
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1363309295}
+    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _potionInventory
+      value: 
+      objectReference: {fileID: 138578570}
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _playerStatsAnchor
       value: 
@@ -916,7 +931,7 @@ PrefabInstance:
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _equipmentInventory
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2009492054}
     - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: _playerEffectSourceController
       value: 
@@ -1976,6 +1991,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+--- !u!114 &1363309295 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+  m_PrefabInstance: {fileID: 1243415684}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
 --- !u!1001 &1408636595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2360,6 +2386,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2009492054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
+  m_PrefabInstance: {fileID: 1035095570}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
 --- !u!1 &2118321074
 GameObject:
   m_ObjectHideFlags: 0

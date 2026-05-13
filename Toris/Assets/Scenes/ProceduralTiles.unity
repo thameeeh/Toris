@@ -812,8 +812,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 20fad384e2a3d9c4885a78af14069614, type: 2}
   - {fileID: 11400000, guid: afde096de0569d8449ca7a843ad292ea, type: 2}
   - {fileID: 11400000, guid: da462f8e9f746b54ea37bba671ff7eb7, type: 2}
-  blockingTiles:
-  - {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
+  - {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+  - {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+  - {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+  blockingTiles: []
 --- !u!4 &632992832
 Transform:
   m_ObjectHideFlags: 0

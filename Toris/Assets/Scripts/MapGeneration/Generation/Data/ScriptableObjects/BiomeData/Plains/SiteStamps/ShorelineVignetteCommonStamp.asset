@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c776a17357a54cfa92de7ae7c896625a, type: 3}
-  m_Name: ShorelineVignettePlacementCommon
+  m_Name: ShorelineVignetteCommonStamp
   m_EditorClassIdentifier: Assembly-CSharp::ShorelineVignettePlacementRuleDefinition
   authoredWaterDirection: 3
   shorelineLayoutVariants:

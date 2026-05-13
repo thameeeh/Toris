@@ -2,6 +2,8 @@ using UnityEngine;
 
 public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContextConsumer
 {
+    private const float ViewportUnloadPadding = 0.15f;
+
     [SerializeField] private MonoBehaviour encounterSiteComponent;
 
     private WorldEncounterPackage encounterPackage;
@@ -65,6 +67,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     public void OnSpawned()
     {
+        enabled = true;
         ResetRuntime();
         SubscribeToDen();
     }
@@ -150,8 +153,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
         ready = false;
         respawnTimer = 0f;
 
-        if (pack != null)
-            pack.MinionSpawned -= OnPackMinionSpawned;
+        UnsubscribeFromPack();
 
         leader = null;
         pack = null;
@@ -174,6 +176,7 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private void DespawnTrackedExceptActiveChasers()
     {
         Transform player = FindPlayerTransform();
+        UnsubscribeFromPack();
 
         if (pack != null)
             pack.activeMinions.Clear();
@@ -200,6 +203,10 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         if (!occupantPolicy.KeepOccupantsOnUnloadIfChasingPlayer) return false;
         if (w == null) return false;
+
+        if (IsVisibleForUnload(w))
+            return true;
+
         if (player == null) return false;
 
         float maxDistance = occupantPolicy.KeepChaseIfWithinPlayerRange;
@@ -213,6 +220,33 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     private bool IsWolfActivelyChasingPlayer(Wolf w)
     {
         return w != null && w.IsChasingPlayer;
+    }
+
+    private static bool IsVisibleForUnload(Wolf w)
+    {
+        if (w == null)
+            return false;
+
+        Camera camera = Camera.main;
+        if (camera != null)
+        {
+            Vector3 viewportPosition = camera.WorldToViewportPoint(w.transform.position);
+            return viewportPosition.z > 0f
+                   && viewportPosition.x >= -ViewportUnloadPadding
+                   && viewportPosition.x <= 1f + ViewportUnloadPadding
+                   && viewportPosition.y >= -ViewportUnloadPadding
+                   && viewportPosition.y <= 1f + ViewportUnloadPadding;
+        }
+
+        Renderer[] renderers = w.GetComponentsInChildren<Renderer>(false);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer renderer = renderers[i];
+            if (renderer != null && renderer.isVisible)
+                return true;
+        }
+
+        return false;
     }
 
     private void DetachFromDen(Wolf w)
@@ -229,6 +263,8 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
 
     private void ForceDespawnAllTracked()
     {
+        UnsubscribeFromPack();
+
         if (pack != null)
             pack.activeMinions.Clear();
 
@@ -298,13 +334,18 @@ public sealed class WolfDenSpawner : MonoBehaviour, IPoolable, IWorldSiteContext
     {
         if (w == leader)
         {
-            if (pack != null)
-                pack.MinionSpawned -= OnPackMinionSpawned;
+            UnsubscribeFromPack();
 
             leader = null;
             pack = null;
             respawnTimer = 0f;
         }
+    }
+
+    private void UnsubscribeFromPack()
+    {
+        if (pack != null)
+            pack.MinionSpawned -= OnPackMinionSpawned;
     }
 
     private Vector3 FindNearestWalkableSpawn(Vector3 desiredWorldPos, int maxTileRadius = 6)

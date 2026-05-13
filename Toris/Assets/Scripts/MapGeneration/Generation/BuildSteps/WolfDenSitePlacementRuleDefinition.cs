@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {
     private const uint DenPickSalt = 0xD311C0DEu;
+    private const uint DenCountSalt = 0xD311C001u;
     private const int AvoidOriginRadiusTiles = 18;
     private const int BaseAttempts = 200;
     private const int AttemptsPerTarget = 250;
@@ -20,6 +21,8 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
     [SerializeField] private SiteStampDefinition wolfDenStampDefinition;
     [SerializeField]
     [Min(0)] private int minWolfDenCount = 3;
+    [SerializeField]
+    [Min(0)] private int maxWolfDenCount = 3;
     [SerializeField]
     [Min(1)] private int wolfDenMinSpacingTiles = 40;
     [SerializeField] private TileBase wolfDenGroundTile;
@@ -35,8 +38,8 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
         if (buildOutput == null)
             return;
 
-        int targetMin = Mathf.Max(0, minWolfDenCount);
-        if (targetMin == 0)
+        int targetCount = ResolveTargetCount(ctx.ActiveBiome.Seed);
+        if (targetCount == 0)
             return;
 
         int spacingTiles = Mathf.Max(1, wolfDenMinSpacingTiles);
@@ -49,7 +52,7 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
             ctx.ActiveBiome.Seed,
             originTile,
             radiusTiles,
-            targetMin,
+            targetCount,
             spacingTiles,
             AvoidOriginRadiusTiles,
             AttemptsPerTarget,
@@ -88,11 +91,36 @@ public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefini
             buildOutput.RegisterSite(wolfDenSiteDefinition, centerTile, ctx.World.chunkSize);
         }
 
-        if (chosenCenters.Count < targetMin)
+#if UNITY_EDITOR
+        if (chosenCenters.Count < targetCount)
         {
             Debug.LogWarning(
-                $"[WolfDenSiteRule] Only placed {chosenCenters.Count}/{targetMin} dens (area too constrained).",
+                $"[WolfDenSiteRule] Only placed {chosenCenters.Count}/{targetCount} dens (area too constrained).",
                 this);
         }
+#endif
     }
+
+    private int ResolveTargetCount(int biomeSeed)
+    {
+        int resolvedMin = Mathf.Max(0, minWolfDenCount);
+        int resolvedMax = Mathf.Max(resolvedMin, maxWolfDenCount);
+        if (resolvedMax == resolvedMin)
+            return resolvedMin;
+
+        uint countHash = DeterministicHash.Hash((uint)biomeSeed, resolvedMin, resolvedMax, DenCountSalt);
+        int range = resolvedMax - resolvedMin + 1;
+        int offset = Mathf.FloorToInt(DeterministicHash.Hash01(countHash) * range);
+        return Mathf.Clamp(resolvedMin + offset, resolvedMin, resolvedMax);
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        minWolfDenCount = Mathf.Max(0, minWolfDenCount);
+        maxWolfDenCount = Mathf.Max(minWolfDenCount, maxWolfDenCount);
+        wolfDenMinSpacingTiles = Mathf.Max(1, wolfDenMinSpacingTiles);
+        wolfDenStampSize = Mathf.Clamp(wolfDenStampSize, 1, 15);
+    }
+#endif
 }

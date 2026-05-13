@@ -47,6 +47,11 @@ public sealed class WorldFeatureLifecycleSystem
         chunkFeatureLifecycle?.DeactivateChunk(chunkCoord);
     }
 
+    public void Tick(float deltaTime)
+    {
+        wildlifeLifecycle?.Tick(deltaTime);
+    }
+
     public int GetActiveSiteChunkCount()
     {
         return chunkFeatureLifecycle != null ? chunkFeatureLifecycle.GetActiveSiteChunkCount() : 0;

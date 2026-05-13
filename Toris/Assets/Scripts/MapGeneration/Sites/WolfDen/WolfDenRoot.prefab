@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1932467628368269243}
   - component: {fileID: 5666942445163826691}
   - component: {fileID: 4454498568436566531}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CollapsedVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!61 &4454498568436566531
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,10 +147,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3762083291208101471}
-  - component: {fileID: 2775268617574141809}
   - component: {fileID: -4097853586496794636}
   - component: {fileID: 5021340337154736360}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WolfDenRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,52 +173,6 @@ Transform:
   - {fileID: 1932467628368269243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2775268617574141809
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5145460778764920192}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &-4097853586496794636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6607f3e3612a2444aeee5492c7acfb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WolfDenSpawner
-  encounterConfig: {fileID: 11400000, guid: 05f638bd5020f5a4d8edbd1ea702d5ab, type: 2}
+  encounterSiteComponent: {fileID: -4097853586496794636}
 --- !u!1 &8814487277129519714
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,8 +213,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2382379119891435621}
   - component: {fileID: 3352200219410182328}
-  - component: {fileID: 2432193994701638954}
-  m_Layer: 0
+  - component: {fileID: 1344969960131251824}
+  m_Layer: 14
   m_Name: ActiveVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,24 +285,24 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 0e6338f9aa59b444295337deec50b288, type: 3}
-  m_Color: {r: 0, g: 0.990566, b: 0.0029540062, a: 1}
+  m_Sprite: {fileID: 21300000, guid: e6c9ac03c3ea1544890166d18082043a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
---- !u!61 &2432193994701638954
-BoxCollider2D:
+  m_SpriteSortPoint: 1
+--- !u!60 &1344969960131251824
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8814487277129519714}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -379,12 +332,19 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.21875}
+    oldSize: {x: 3, y: 2}
+    newSize: {x: 3, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.96875, y: 0.09375}
+      - {x: 0.96875, y: 0.4375}
+      - {x: -1, y: 0.4375}
+      - {x: -1, y: 0.125}
+      - {x: -0.90625, y: -0.125}
+      - {x: 0.84375, y: -0.125}
+  m_UseDelaunayMesh: 1

@@ -162,7 +162,8 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
         WorldWildlifeLifecycle wildlifeLifecycle = new WorldWildlifeLifecycle(
             ctx,
             worldSceneServices,
-            enemySpawnService);
+            enemySpawnService,
+            streamCamera);
 
         worldFeatureLifecycleSystem = new WorldFeatureLifecycleSystem(
             chunkFeatureLifecycle,
@@ -207,6 +208,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             return;
 
         worldStreamingRuntime?.ProcessFrame();
+        worldFeatureLifecycleSystem?.Tick(Time.deltaTime);
     }
     private void OnDisable()
     {

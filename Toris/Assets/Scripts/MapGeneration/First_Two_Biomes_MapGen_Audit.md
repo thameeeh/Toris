@@ -27,6 +27,9 @@ Current Plains site-placement rules:
 - `PlacementRules/ShorelineVignetteCommonRule.asset`
 - `PlacementRules/ShorelineVignetteRareRule.asset`
 - `PlacementRules/ShorelineVignetteRepeatableRule.asset`
+- `PlacementRules/RoadsideVignetteRareRule.asset`
+- `PlacementRules/RoadsideVignetteCommonRule.asset`
+- `PlacementRules/RoadsideVignetteRepeatableRule.asset`
 
 Current Plains wildlife:
 
@@ -48,6 +51,9 @@ Current Forest site-placement rules:
 - `NecromancerGraveSitePlacementRuleDefinition.asset`
 - `WolfDenSiteRare.asset`
 - `WolfDenSiteCommon.asset`
+- `RoadsideVignetteRareRule.asset`
+- `RoadsideVignetteCommonRule.asset`
+- `RoadsideVignetteRepeatableRule.asset`
 
 Current Forest wildlife:
 
@@ -99,6 +105,11 @@ Current Forest wildlife:
    - Plains should show deer and quiet world texture before danger.
    - Forest should clearly read as wolf territory before rare supernatural content appears.
 
+8. Wire roadside vignette authoring slots.
+   - Plains and Forest now both have rare, common, and repeatable roadside vignette rule assets.
+   - The rules are wired after the existing site and shoreline rules.
+   - Their layout lists are intentionally empty, so they stay inactive until painted roadside layouts are assigned.
+
 ## Wolf Den Authoring Workflow
 
 1. Paint each wolf-den layout into a `SiteTileLayoutDefinition`.
@@ -110,10 +121,21 @@ Current Forest wildlife:
 7. Assign or verify the rare stamp on `Forest/PlacementRules/WolfDenSiteRare.asset` and `Plains/PlacementRules/WolfDenSiteRare.asset`.
 8. Keep `Wolf Den Site Definition` the same on both rules so both still spawn the wolf-den runtime site.
 
+## Roadside Vignette Authoring Workflow
+
+1. Paint each roadside layout into a `SiteTileLayoutDefinition`.
+2. Keep the road-facing side of the layout consistent while authoring.
+3. Open the biome's `PlacementRules/RoadsideVignetteRareRule.asset`, `RoadsideVignetteCommonRule.asset`, or `RoadsideVignetteRepeatableRule.asset`.
+4. Set `Authored Road Direction` to the cell-space direction from the layout origin toward the road.
+5. Add hero/memorable roadside layouts to the rare rule.
+6. Add readable ordinary details to the common rule.
+7. Add tiny filler details to the repeatable rule.
+8. Leave `Avoid Existing Stamps` enabled so filler does not overwrite rare/common road details or other placed content.
+
 ## Authoring Folder Map
 
 - `Plains/BuildSteps/` and `Forest/BuildSteps/`: biome pipeline entries referenced by each `BBD_*` asset.
-- `Plains/PlacementRules/` and `Forest/PlacementRules/`: author-facing spawn/placement budgets such as gates, shoreline vignettes, wolf dens, and necromancer graves.
+- `Plains/PlacementRules/` and `Forest/PlacementRules/`: author-facing spawn/placement budgets such as gates, shoreline vignettes, roadside vignettes, wolf dens, and necromancer graves.
 - `Shared/SiteDefinitions/`: runtime site definitions reused across biomes, including gates and wolf dens.
 - `Shared/SiteStamps/WolfDens/`: common and rare wolf-den stamp assets where painted wolf layout variants should be assigned.
 - `Forest/SiteStamps/`: Forest-only stamp assets, currently the necromancer grave stamp.

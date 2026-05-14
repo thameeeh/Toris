@@ -17,6 +17,57 @@ Primary design doc:
 
 Do not update `CHANGELOG.md` for this handoff work. Avoid global documentation unless it is necessary for coding patterns or implementation details.
 
+## Handoff Back - MapGeneration Pass
+
+Status: MapGeneration implementation setup is complete for this handoff.
+
+This pass stayed inside `MapGeneration/` and did not change enemy AI, enemy behavior, enemy prefabs, or combat logic.
+
+Completed MapGeneration work:
+
+- Created the MapGeneration-side audit and working matrix in `MapGeneration/First_Two_Biomes_MapGen_Audit.md`.
+- Reduced Plains wolf-den pressure so wolves are no longer the dominant Plains identity.
+- Added Forest common and rare wolf-den placement rules so Forest can become the main wolf-den biome.
+- Split wolf-den authoring into common and rare stamp assets.
+- Reused the shared wolf-den site definition and runtime encounter config instead of creating duplicate runtime site data.
+- Organized Plains, Forest, and Shared biome assets into clearer authoring folders.
+- Added author-facing wolf-den workflow notes for assigning painted layouts to common and rare stamps.
+- Added rare, common, and repeatable roadside vignette rule assets for Plains and Forest.
+- Wired the roadside rules into both biome site placement steps.
+- Left roadside rule layout lists empty so nothing new spawns until painted roadside layouts are assigned.
+- Kept Badger, Boar, and regular enemy behavior changes out of MapGeneration, as requested.
+
+Important data state:
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Plains deer | Done | Existing deer wildlife spawn remains the Plains wildlife baseline. |
+| Plains wolf dens | Done for first pass | Common budget is 4 to 6, rare budget is 0 to 1. Revisit after Badger/Boar content exists. |
+| Forest wolf dens | Done for first pass | Common budget is 8 to 12, rare budget is 0 to 2. |
+| Wolf den layouts | Authoring-ready | Add painted layouts to `Shared/SiteStamps/WolfDens/`. |
+| Shoreline vignettes | Existing system kept | Plains already has rare/common/repeatable shoreline rules. |
+| Roadside vignettes | Authoring-ready | Plains and Forest now have rare/common/repeatable roadside rules with empty layout lists. |
+| Necromancer graves | Preserved in Forest | Not added to Plains. Later density tuning may be needed. |
+| Badger | Not changed | Enemy/content behavior work, not MapGeneration work. |
+| Boar | Not changed | Enemy/content behavior work, not MapGeneration work. |
+| Blood Mages | Not changed | Remain encounter-bound, not generic biome content. |
+
+Handoff back to authoring:
+
+1. Paint more common wolf-den layouts and assign them to `Shared/SiteStamps/WolfDens/WolfSiteStampCommon.asset`.
+2. Paint rare wolf-den layouts and assign them to `Shared/SiteStamps/WolfDens/WolfSiteStampRare.asset`.
+3. Paint roadside layouts and assign them to the rare, common, or repeatable roadside rules in each biome.
+4. Seed-sample Plains and Forest after more layouts exist.
+5. Tune Plains wolf-den counts after Badger/Boar decisions are made.
+6. Tune Forest necromancer grave density if it competes with wolf identity.
+7. Decide later whether Forest should get background deer through a Forest wildlife build step.
+
+Verification notes:
+
+- New roadside rule assets have `.meta` files.
+- Plains and Forest site-placement build steps reference the new roadside rule GUIDs.
+- Unity play-mode validation was not run in this pass; final validation still needs seed sampling in the Editor.
+
 ## Current Direction
 
 ### Plains / Quiet Wildlands
@@ -115,9 +166,9 @@ Necromancer graves fit better in Forest or later. If used in Forest, keep them r
 
 Blood Mages stay encounter-bound to Necromancer.
 
-## First Implementation Steps
+## Original Implementation Steps - Status
 
-1. Audit current Plains and Forest spawning.
+1. [x] Audit current Plains and Forest spawning.
 
    Build a quick matrix of current content:
 
@@ -141,15 +192,30 @@ Blood Mages stay encounter-bound to Necromancer.
 
    - `MapGeneration/First_Two_Biomes_MapGen_Audit.md`
 
-2. Make Plains calmer using existing content first.
+   Status:
+
+   - Done in `MapGeneration/First_Two_Biomes_MapGen_Audit.md`.
+
+2. [x] Make Plains calmer using existing content first.
 
    Before writing new behavior, adjust data/config so Plains becomes less wolf-heavy and more wildlife-forward.
 
-3. Move wolf identity into Forest.
+   Status:
+
+   - Done for the MapGeneration first pass by lowering Plains wolf-den pressure.
+   - Plains deer remains the safe wildlife baseline.
+   - Final tuning should wait until Badger/Boar content decisions are ready.
+
+3. [x] Move wolf identity into Forest.
 
    Make Forest the place where wolf dens and regular wolf pressure belong.
 
-4. Repurpose Badger.
+   Status:
+
+   - Done for MapGeneration site placement by adding Forest common and rare wolf-den rules.
+   - Regular wolf patrol/spawn pressure remains future enemy/content work.
+
+4. [ ] Repurpose Badger.
 
    Implement passive/reactive behavior:
 
@@ -157,13 +223,28 @@ Blood Mages stay encounter-bound to Necromancer.
    - Burrow defensively.
    - Ignore damage while fully burrowed.
 
-5. Prototype Boar separately.
+   Status:
+
+   - Not done in this pass.
+   - Intentionally left outside MapGeneration because it requires enemy/content behavior work.
+
+5. [ ] Prototype Boar separately.
 
    Do not commit Boar to spawn tables until the run-charge behavior feels readable in a small test setup.
 
-6. Validate through seed sampling.
+   Status:
+
+   - Not done in this pass.
+   - Intentionally left outside MapGeneration until Boar behavior is prototyped.
+
+6. [ ] Validate through seed sampling.
 
    Do not design around a fixed 10-minute authored route. Sample multiple generated seeds and check whether the content mix reliably creates the intended biome identity.
+
+   Status:
+
+   - Pending.
+   - Best done after more wolf-den and roadside layouts are authored, because empty/newly wired rules will not show final world feel.
 
 ## Validation Questions
 

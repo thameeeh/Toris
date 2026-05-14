@@ -26,4 +26,5 @@ MonoBehaviour:
   clearVisualsWidth: 1
   clearVisualsHeight: 1
   tileLayoutDefinition: {fileID: 0}
-  tileLayoutVariants: []
+  tileLayoutVariants:
+  - {fileID: 0}

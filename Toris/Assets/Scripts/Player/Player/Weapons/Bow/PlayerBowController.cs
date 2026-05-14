@@ -72,6 +72,7 @@ public class PlayerBowController : MonoBehaviour
     public event System.Action DryReleased;
     public event System.Action ShotFired;
     public event System.Action<Vector2> AbilityReleaseRequested;
+    public event System.Action<Vector2> BowImpactRequested;
 
     public void RequestAbilityReleaseTowards(Vector2 worldPoint)
     {
@@ -588,8 +589,6 @@ public class PlayerBowController : MonoBehaviour
 
     public void PlayDefaultArrowHitEffect(Vector2 position)
     {
-        _ = position;
-        // Retained for legacy ability call sites.
-        // Hit VFX is now authored through VFX rules/modules instead of hardcoded here.
+        BowImpactRequested?.Invoke(position);
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5846277370212490649}
   - component: {fileID: 2266913376526256485}
   m_Layer: 1
-  m_Name: FX_HitWhiteSquare
+  m_Name: FX_ArrowImpact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

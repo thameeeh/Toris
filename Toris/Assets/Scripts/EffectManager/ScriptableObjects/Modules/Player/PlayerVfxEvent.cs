@@ -8,6 +8,7 @@ public enum PlayerVfxEventType
     BowShotReleased = 12,
     BowShotFired = 13,
     BowDryReleased = 14,
+    BowImpact = 15,
     DashStarted = 20,
     DashCompleted = 21,
     HealthChanged = 30,

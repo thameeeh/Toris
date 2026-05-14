@@ -30,6 +30,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
 {
     private const float MinDirectionSqrMagnitude = 0.0001f;
     private const float MinContinuousStrikeSpacing = 0.01f;
+    private const float VisualLifetimePadding = 0.05f;
 
     private struct PendingStrike
     {
@@ -220,7 +221,7 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
         visual.Initialize(
             spawnPoint,
             strikePoint,
-            flightTime);
+            flightTime + VisualLifetimePadding);
 
         return flightTime;
     }

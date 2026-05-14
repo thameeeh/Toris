@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerVfx))]
 public sealed class PlayerVfxEventBridge : MonoBehaviour
 {
+    private const float MinDirectionSqrMagnitude = 0.0001f;
+
     [Header("Dependencies")]
     [SerializeField] private PlayerVfx playerVfx;
     [SerializeField] private PlayerBowController bow;
@@ -101,6 +103,7 @@ public sealed class PlayerVfxEventBridge : MonoBehaviour
             bow.ShotReleased += HandleBowShotReleased;
             bow.ShotFired += HandleBowShotFired;
             bow.DryReleased += HandleBowDryReleased;
+            bow.BowImpactRequested += HandleBowImpactRequested;
         }
 
         if (motor != null)
@@ -146,6 +149,7 @@ public sealed class PlayerVfxEventBridge : MonoBehaviour
             bow.ShotReleased -= HandleBowShotReleased;
             bow.ShotFired -= HandleBowShotFired;
             bow.DryReleased -= HandleBowDryReleased;
+            bow.BowImpactRequested -= HandleBowImpactRequested;
         }
 
         if (motor != null)
@@ -199,6 +203,24 @@ public sealed class PlayerVfxEventBridge : MonoBehaviour
     private void HandleBowDryReleased()
     {
         Emit(PlayerVfxEventType.BowDryReleased);
+    }
+
+    private void HandleBowImpactRequested(Vector2 worldPosition)
+    {
+        Vector2 direction = worldPosition - (Vector2)transform.position;
+        if (direction.sqrMagnitude < MinDirectionSqrMagnitude && bow != null)
+            direction = bow.CurrentAimDirection;
+
+        Emit(CreateContext(
+            PlayerVfxEventType.BowImpact,
+            PlayerVfxResourceKind.None,
+            worldPosition,
+            direction,
+            0f,
+            0f,
+            0f,
+            default,
+            false));
     }
 
     private void HandleDashStarted(Vector2 direction)

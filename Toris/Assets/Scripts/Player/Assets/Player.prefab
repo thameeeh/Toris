@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcd70f5931f44ab98b08f46a1cc613bc, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSfxEventBridge
   playerSfx: {fileID: 503972616382245057}
   bow: {fileID: 1738574752484829038}
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6db47fec89064adf9de8f95167938fb8, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVfx
   rules:
   - {fileID: 11400000, guid: 4b36fa3eea7d44d7935802ecbdc0375e, type: 2}
@@ -533,7 +533,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5044014f0cc445d394a1b0f535c003e1, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVfxEventBridge
   playerVfx: {fileID: 277378599010215229}
   bow: {fileID: 1738574752484829038}
@@ -980,7 +980,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4277077414216047868}
   - component: {fileID: 3458214074690250577}
-  m_Layer: 14
+  m_Layer: 10
   m_Name: WorldCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

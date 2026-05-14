@@ -50,12 +50,22 @@ public class PackController : MonoBehaviour
         return true;
     }
 
-    public void HandleLeaderHowl(Wolf howlingWolf = null)
+    public bool TryReserveLeaderHowl(Wolf requester = null)
     {
-        if (!CanLeaderHowl(howlingWolf)) return;
+        if (!CanLeaderHowl(requester))
+            return false;
 
         _lastHowlTimestamp = Time.time;
-        SpawnMinions(minionsPerHowl, leaderWolf.transform.position);
+        return true;
+    }
+
+    public void HandleLeaderHowl(Wolf howlingWolf = null)
+    {
+        Wolf leader = ResolveLeader(howlingWolf);
+        if (leader == null) return;
+        if (!IsWolfAliveAndActive(leader)) return;
+
+        SpawnMinions(minionsPerHowl, leader.transform.position);
     }
 
     public int GetActiveMinionCount()

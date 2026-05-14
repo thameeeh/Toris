@@ -43,6 +43,16 @@ public class Wolf : Enemy
     private float _baseAttackDamage;
     private bool _hasStarted;
 
+    [Header("Combat Responsiveness")]
+    [SerializeField] private float minimumChaseCommitmentSeconds = 0.65f;
+    [SerializeField] private float lostTargetChaseGraceSeconds = 1.25f;
+    [SerializeField] private float forcedPlayerAggroSeconds = 6f;
+
+    private float _chaseCommitmentUntilTime;
+    private float _forcedPlayerAggroUntilTime;
+    private Vector2 _lastKnownAggroTargetPosition;
+    private bool _hasLastKnownAggroTargetPosition;
+
     public bool IsMovingWhileBiting { get; set; } = false;
     public bool IsChasingPlayer { get; private set; }
     public void SetChasingPlayer(bool chasingP) => IsChasingPlayer = chasingP;
@@ -133,6 +143,9 @@ public class Wolf : Enemy
         EnemyDeadBaseInstance = Instantiate(EnemyDeadBase);
         EnemyReturnHomeBaseInstance = Instantiate(EnemyReturnHomeBase);
 
+        SubscribeDamageHandler();
+        SubscribeAggroMemoryHandler();
+
         IdleState = new WolfIdleState(this, StateMachine);
         HowlState = new WolfHowlState(this, StateMachine);
         ChaseState = new WolfChaseState(this, StateMachine);
@@ -160,6 +173,8 @@ public class Wolf : Enemy
 
     protected override void Update()
     {
+        RefreshForcedPlayerAggro();
+        RefreshAggroTargetMemory();
         base.Update();
 
         if(CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
@@ -187,6 +202,8 @@ public class Wolf : Enemy
 
     public override void OnSpawned()
     {
+        SubscribeDamageHandler();
+        SubscribeAggroMemoryHandler();
         RefreshHomeAnchor();
         ApplyScaling();
         ClearInvestigationTarget();
@@ -197,6 +214,13 @@ public class Wolf : Enemy
             return;
 
         InitializeRuntimeState();
+    }
+
+    public override void OnDespawned()
+    {
+        Damaged -= HandleWolfDamaged;
+        AggroTargetChanged -= HandleAggroTargetChanged;
+        base.OnDespawned();
     }
     private float GetDifficultyMultiplier()
     {
@@ -214,12 +238,139 @@ public class Wolf : Enemy
         CurrentHealth = MaxHealth;
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
 
+        _chaseCommitmentUntilTime = 0f;
+        _forcedPlayerAggroUntilTime = 0f;
+        _hasLastKnownAggroTargetPosition = false;
+
         AlwaysAggroed = false;
         SetAggroStatus(false);
 
         StateMachine.Reset();
         StateMachine.Initialize(IdleState);
     }
+
+    public void BeginChaseCommitment()
+    {
+        ExtendChaseCommitment(minimumChaseCommitmentSeconds);
+        RefreshAggroTargetMemory();
+    }
+
+    public bool ShouldRemainInChase()
+    {
+        return IsAggroed || Time.time < _chaseCommitmentUntilTime;
+    }
+
+    public bool TryGetLastKnownAggroTargetPosition(out Vector2 position)
+    {
+        position = _lastKnownAggroTargetPosition;
+        return _hasLastKnownAggroTargetPosition;
+    }
+
+    public void ForcePlayerAggro()
+    {
+        if (CurrentHealth <= 0f)
+            return;
+
+        ClearInvestigationTarget();
+        AlwaysAggroed = true;
+        _forcedPlayerAggroUntilTime = Time.time + Mathf.Max(0f, forcedPlayerAggroSeconds);
+        SetAggroStatus(true);
+        BeginChaseCommitment();
+
+        if (StateMachine.CurrentEnemyState == DeadState
+            || StateMachine.CurrentEnemyState == AttackState
+            || StateMachine.CurrentEnemyState == HowlState)
+        {
+            return;
+        }
+
+        IEnemyState responseState = ShouldHowlBeforeChase() ? HowlState : ChaseState;
+
+        if (StateMachine.CurrentEnemyState == null)
+        {
+            StateMachine.Initialize(responseState);
+            return;
+        }
+
+        if (StateMachine.CurrentEnemyState == responseState)
+            return;
+
+        StateMachine.ChangeState(responseState);
+    }
+
+    private bool ShouldHowlBeforeChase()
+    {
+        return CanHowl
+               && pack != null
+               && pack.EnsureLeader(this)
+               && pack.CanLeaderHowl(this);
+    }
+
+    private void RefreshForcedPlayerAggro()
+    {
+        if (!AlwaysAggroed)
+            return;
+
+        if (_forcedPlayerAggroUntilTime <= 0f)
+            return;
+
+        if (Time.time < _forcedPlayerAggroUntilTime)
+            return;
+
+        AlwaysAggroed = false;
+        _forcedPlayerAggroUntilTime = 0f;
+    }
+
+    private void ExtendChaseCommitment(float duration)
+    {
+        float resolvedDuration = Mathf.Max(0f, duration);
+        _chaseCommitmentUntilTime = Mathf.Max(
+            _chaseCommitmentUntilTime,
+            Time.time + resolvedDuration);
+    }
+
+    private void RefreshAggroTargetMemory()
+    {
+        if (!TryGetAggroTargetPosition(out Vector2 position))
+            return;
+
+        _lastKnownAggroTargetPosition = position;
+        _hasLastKnownAggroTargetPosition = true;
+    }
+
+    private void SubscribeDamageHandler()
+    {
+        Damaged -= HandleWolfDamaged;
+        Damaged += HandleWolfDamaged;
+    }
+
+    private void SubscribeAggroMemoryHandler()
+    {
+        AggroTargetChanged -= HandleAggroTargetChanged;
+        AggroTargetChanged += HandleAggroTargetChanged;
+    }
+
+    private void HandleWolfDamaged(float damageAmount)
+    {
+        if (damageAmount <= 0f)
+            return;
+
+        ForcePlayerAggro();
+    }
+
+    private void HandleAggroTargetChanged(IEnemyAggroTarget target)
+    {
+        if (target != null)
+        {
+            RefreshAggroTargetMemory();
+            ExtendChaseCommitment(minimumChaseCommitmentSeconds);
+            return;
+        }
+
+        if (_hasLastKnownAggroTargetPosition)
+            ExtendChaseCommitment(lostTargetChaseGraceSeconds);
+    }
+
     public void DestroyGameObject()
     {
         RequestDespawn();

@@ -34,7 +34,7 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
         base.DoFrameUpdateLogic();
 
         Transform targetTransform = enemy.AggroTargetTransform;
-        if (targetTransform == null)
+        if (!TryResolveChaseTarget(out Vector2 targetPos, targetTransform))
         {
             enemy.animator.SetBool("IsMoving", false);
             enemy.MoveEnemy(Vector2.zero);
@@ -42,7 +42,6 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
         }
 
         Vector2 wolfPos = enemy.transform.position;
-        Vector2 targetPos = targetTransform.position;
         Vector2 toTarget = targetPos - wolfPos;
 
         float distToTarget = toTarget.magnitude;
@@ -92,4 +91,19 @@ public class WolfChaseSO : ChaseSOBase<Wolf>
     public override void DoPhysicsLogic() { base.DoPhysicsLogic(); }
     public override void DoAnimationTriggerEventLogic(Enemy.AnimationTriggerType triggerType) { base.DoAnimationTriggerEventLogic(triggerType); }
     public override void ResetValues() { base.ResetValues(); }
+
+    private bool TryResolveChaseTarget(out Vector2 targetPos, Transform targetTransform)
+    {
+        if (targetTransform != null)
+        {
+            targetPos = targetTransform.position;
+            return true;
+        }
+
+        if (enemy.ShouldRemainInChase() && enemy.TryGetLastKnownAggroTargetPosition(out targetPos))
+            return true;
+
+        targetPos = default;
+        return false;
+    }
 }

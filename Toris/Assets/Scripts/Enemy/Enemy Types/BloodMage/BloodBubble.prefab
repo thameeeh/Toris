@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 26147526669195075}
   - component: {fileID: 7438302903096765321}
   - component: {fileID: 7277248905559919144}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: BloodBubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}

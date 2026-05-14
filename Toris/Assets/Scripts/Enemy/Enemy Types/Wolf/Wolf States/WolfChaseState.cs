@@ -10,8 +10,9 @@ public class WolfChaseState : EnemyState<Wolf>
         base.EnterState();
 
         enemy.EnemyChaseBaseInstance.DoEnterLogic();
+        enemy.BeginChaseCommitment();
 
-        if (enemy.CanHowl && enemy.pack != null && enemy.pack.CanLeaderHowl())
+        if (enemy.CanHowl && enemy.pack != null && enemy.pack.CanLeaderHowl(enemy))
         {
             enemy.StateMachine.ChangeState(enemy.HowlState);
             return;
@@ -36,7 +37,7 @@ public class WolfChaseState : EnemyState<Wolf>
             enemyStateMachine.ChangeState(enemy.AttackState);
         }
 
-        if (!enemy.IsAggroed)
+        if (!enemy.ShouldRemainInChase())
         {
             if (enemy.HasHome)
                 enemyStateMachine.ChangeState(enemy.ReturnHomeState);

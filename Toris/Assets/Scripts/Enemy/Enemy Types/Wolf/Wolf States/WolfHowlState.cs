@@ -14,7 +14,7 @@ public class WolfHowlState : EnemyState<Wolf>
             enemy.CanHowl &&
             enemy.pack != null &&
             enemy.pack.EnsureLeader(enemy) &&
-            enemy.pack.CanLeaderHowl(enemy);
+            enemy.pack.TryReserveLeaderHowl(enemy);
 
         if (!canHowl)
         {

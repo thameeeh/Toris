@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945379faa91c55c419c18bc7fc9a5a1d, type: 3}
+  m_Name: WolfDenSiteRare
+  m_EditorClassIdentifier: Assembly-CSharp::WolfDenSitePlacementRuleDefinition
+  wolfDenSiteDefinition: {fileID: 11400000, guid: ae66dab130fa45344898bcee7f658562, type: 2}
+  wolfDenStampDefinition: {fileID: 11400000, guid: ea9f39e03f819044db04983f5ef22fad, type: 2}
+  wolfDenGroundTile: {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
+  wolfDenStampSize: 5
+  minWolfDenCount: 0
+  maxWolfDenCount: 2
+  wolfDenMinSpacingTiles: 70
+  placementRadiusFactor: 0.9
+  avoidOriginRadiusTiles: 24
+  avoidExistingWolfDens: 1
+  avoidExistingStamps: 1

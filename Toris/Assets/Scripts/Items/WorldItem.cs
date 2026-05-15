@@ -49,6 +49,8 @@ namespace OutlandHaven.Inventory
             if (Application.isPlaying)
                 return;
 
+            if (_itemData == null)
+                Debug.LogWarning("<color=red>WorldItem</color> has no item data assigned!", this);
         }
 #endif
 

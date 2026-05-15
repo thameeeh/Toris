@@ -53,5 +53,16 @@ namespace OutlandHaven.Inventory
             _uiManager.RegisterView(_view, ScreenZone.Right);
         }
 
+        private void OnValidate()
+        {
+            if (_uiEvents == null)
+            {
+                Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
+            }
+            if (_uiInventoryEvents == null)
+            {
+                Debug.LogError($" <color=red>{name}</color> missing UI Inventory Events SO", this);
+            }
+        }
     }
 }

@@ -135,7 +135,6 @@ public class PlayerBowController : MonoBehaviour
         _shootReadyRaised = false;
     }
 
-#if UNITY_EDITOR
     private void OnValidate()
     {
         if (_abilityController == null)
@@ -144,8 +143,11 @@ public class PlayerBowController : MonoBehaviour
         ResolveDirectionalMuzzles();
         SyncShootDebugToggle();
 
+        if (_input == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerBowController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
+        }
     }
-#endif
 
     private void Update()
     {

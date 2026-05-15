@@ -21,6 +21,13 @@ public class PlayerStatusController : MonoBehaviour
 
     public bool HasStatus(PlayerStatusEffectType statusType) => _activeStatuses.ContainsKey(statusType);
 
+    private void OnValidate()
+    {
+        if (_playerStats == null)
+        {
+            Debug.LogWarning($"[PlayerStatusController] Missing PlayerStats on {name}", this);
+        }
+    }
 
     private void Update()
     {

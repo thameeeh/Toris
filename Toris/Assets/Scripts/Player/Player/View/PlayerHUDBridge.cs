@@ -37,6 +37,23 @@ public class PlayerHUDBridge : MonoBehaviour
     public float ExperienceProgressNormalized =>
         _playerProgression != null ? _playerProgression.GetExperienceProgressNormalized() : 0f;
 
+    private void OnValidate()
+    {
+        if (_playerStats == null)
+        {
+            Debug.LogWarning($"[PlayerHUDBridge] Missing PlayerStats on {name}", this);
+        }
+
+        if (_playerProgression == null)
+        {
+            Debug.LogWarning($"[PlayerHUDBridge] Missing PlayerProgression on {name}", this);
+        }
+
+        if (_playerStatusController == null)
+        {
+            Debug.LogWarning($"[PlayerHUDBridge] Missing PlayerStatusController on {name}", this);
+        }
+    }
 
     private void OnEnable()
     {

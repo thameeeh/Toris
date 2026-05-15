@@ -61,6 +61,21 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         _inputActions.Disable();
     }
 
+    private void OnValidate()
+    {
+        if (_inputReader == null)
+        {
+            Debug.LogError($"<b>[InputReaderSO]</b> is missing on GameObject: <b>{name}<b>", this);
+        }
+        if (_itemPicker == null)
+        {
+            Debug.LogError($"<b><color=green>[ItemPickEventSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
+        }
+        if (_uiEvents == null)
+        {
+            Debug.LogError($"<b><color=red>[UIEventsSO]</color></b> is missing on GameObject: <b>{name}<b>", this);
+        }
+    }
 
     // -------- IPlayerActions implementation --------
     public void OnJump(InputAction.CallbackContext context) {}

@@ -71,12 +71,10 @@ public sealed class SiteLayoutAuthoringRoot : MonoBehaviour
         AutoAssignReferences();
     }
 
-#if UNITY_EDITOR
     private void OnValidate()
     {
         AutoAssignReferences();
     }
-#endif
 
     private void OnDrawGizmosSelected()
     {

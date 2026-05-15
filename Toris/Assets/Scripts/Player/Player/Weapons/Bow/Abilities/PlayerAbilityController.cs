@@ -150,6 +150,10 @@ public class PlayerAbilityController : MonoBehaviour
         EnsureSlotArray();
         MigrateLegacySlotsIfNeeded();
 
+        if (_input == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}</b>", this);
+        }
     }
 #endif
 

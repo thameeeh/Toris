@@ -22,6 +22,13 @@ public class PlayerEffectSourceController : MonoBehaviour
         RebuildResolvedEffects();
     }
 
+    private void OnValidate()
+    {
+        if (_baseEffects == null)
+        {
+            Debug.LogWarning($"[PlayerEffectSourceController] Missing PlayerBaseEffectsSO on {name}. Defaults will be used.", this);
+        }
+    }
 
     public void SetSource(IPlayerEffectSource source)
     {

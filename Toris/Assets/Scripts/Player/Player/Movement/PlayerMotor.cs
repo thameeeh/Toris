@@ -33,7 +33,6 @@ public class PlayerMotor : MonoBehaviour
         _dashAbility?.Initialize(rb, _moveSO, ApplyVelocity);
     }
 
-#if UNITY_EDITOR
     private void OnValidate()
     {
         if (!rb)
@@ -44,7 +43,6 @@ public class PlayerMotor : MonoBehaviour
 
         _dashAbility?.Initialize(rb, _moveSO, ApplyVelocity);
     }
-#endif
 
     public void SetMoveInput(Vector2 moveInput)
     {

@@ -20,6 +20,10 @@ namespace OutlandHaven.Core
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            if (_itemDatabase == null)
+            {
+                Debug.LogError($"[UIBootstraper] Missing required asset: <color=yellow>ItemDatabaseSO</color>!", this);
+            }
             else
             {
                 // Ensure the database is always up to date

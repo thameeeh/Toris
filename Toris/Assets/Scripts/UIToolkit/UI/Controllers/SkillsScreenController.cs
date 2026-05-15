@@ -96,14 +96,16 @@ namespace OutlandHaven.UIToolkit
             _view.Setup(dummyPayload);
         }
 
-#if UNITY_EDITOR
         private void OnValidate()
         {
+            if (_uiEvents == null)
+            {
+                Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
+            }
             if (_skillDatabase == null || _skillDatabase.Length == 0)
             {
                 Debug.LogWarning($"<color=yellow>{name}</color> has an empty Skill Database. Don't forget to assign your ScriptableObjects!", this);
             }
         }
-#endif
     }
 }

@@ -28,22 +28,10 @@ namespace OutlandHaven.Inventory
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (_itemPickerSO == null)
-            {
-                Debug.LogError($"<b><color=red>[ItemPicker]</color></b> is missing ItemPickEventSO on GameObject: <b>{name}<b>", this);
-            }
 
             if (!gameObject.scene.IsValid())
                 return;
 
-            if (_myInventoryManager == null)
-            {
-                Debug.LogWarning($"<b><color=yellow>[InventoryManager]</color></b> is not assigned on GameObject: <b>{name}</b>. ItemPicker will try to auto-resolve the player inventory at runtime.", this);
-            }
-            if (_interactionUI == null)
-            {
-                Debug.LogWarning($"<b><color=teal>[InteractionUI]</color></b> is not assigned on GameObject: <b>{name}</b>. ItemPicker will try to auto-resolve the prompt UI at runtime.", this);
-            }
         }
 #endif
         private void OnEnable()

@@ -37,10 +37,12 @@ public sealed class HomeAnchor : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         radius = Mathf.Max(0.01f, radius);
     }
+#endif
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

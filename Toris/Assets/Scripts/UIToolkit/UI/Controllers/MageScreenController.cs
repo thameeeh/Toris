@@ -86,12 +86,5 @@ namespace OutlandHaven.UIToolkit
             _uiManager.RegisterView(_view, ScreenZone.Left);
         }
 
-        private void OnValidate()
-        {
-            if (_uiEvents == null)
-            {
-                Debug.LogError($" <color=red>{name}</color> missing UI Events SO", this);
-            }
-        }
     }
 }

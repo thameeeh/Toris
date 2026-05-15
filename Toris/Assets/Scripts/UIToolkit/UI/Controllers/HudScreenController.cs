@@ -51,23 +51,5 @@ namespace OutlandHaven.UIToolkit
             // 3. Register to the HUD Zone
             _uiManager.RegisterView(_view, ScreenZone.HUD);
         }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (_hudMainTemplate == null)
-                Debug.LogWarning($"[UI/Inventory] {name}: HUD Main Template is missing! <color=yellow>HudScreenController must be on active GameObject</color>", this);
-            if (_buttonTemplate == null)
-                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Button Template", this);
-            if (_slotTemplate == null)
-                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Slot Template", this);
-            if (_uiInventoryEvents == null)
-                Debug.LogError($"<b><color=red>[HUD]</color></b> missing <b>UIInventoryEventsSO</b> on GameObject: <b>{name}</b>", this);
-            if (_uiEvents == null)
-                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing UI Events SO", this);
-            if (_gameSession == null)
-                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Game Session SO", this);
-        }
-#endif
     }
 }

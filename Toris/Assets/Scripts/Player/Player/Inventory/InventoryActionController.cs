@@ -293,20 +293,4 @@ public class InventoryActionController : MonoBehaviour
         _playerStatsAnchor = PlayerInventorySceneResolver.ResolvePlayerStatsAnchor(_playerStatsAnchor);
         EnsureConsumableController();
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (_playerInventory == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Player Inventory</b> reference on {name}.", this);
-        if (_equipmentInventory == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Equipment Inventory</b> reference on {name}.", this);
-        if (_potionInventory == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Potion Inventory</b> reference on {name}.", this);
-        if (_inputReader == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Player Input Reader SO</b> reference on {name}.", this);
-        if (_uiInventoryEvents == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>UI Inventory Events SO</b> reference on {name}.", this);
-    }
-#endif
 }

@@ -48,13 +48,6 @@ namespace OutlandHaven.UIToolkit
             _UIEvents.OnRequestCloseAll -= CloseAllWindows;
         }
 
-        private void OnValidate()
-        {
-            if(_UIEvents == null)
-            {
-                Debug.LogError($"<color=red>UIEvents</color> {name} is missing, put SO in the inspector!", this);
-            }
-        }
 
         // Call this from your Controllers (e.g. PlayerController) to register themselves
         public void RegisterView(GameView view, ScreenZone zone)

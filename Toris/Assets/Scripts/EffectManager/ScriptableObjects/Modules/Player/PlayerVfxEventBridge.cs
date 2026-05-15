@@ -46,10 +46,12 @@ public sealed class PlayerVfxEventBridge : MonoBehaviour
         UnbindEvents();
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         ResolveDependencies();
     }
+#endif
 
     private void ResolveDependencies()
     {

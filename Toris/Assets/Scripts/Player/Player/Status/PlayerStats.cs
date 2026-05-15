@@ -126,13 +126,6 @@ public class PlayerStats : MonoBehaviour
         RegenerateStamina(Time.deltaTime);
     }
 
-    private void OnValidate()
-    {
-        if (_effectSourceController == null)
-        {
-            Debug.LogWarning($"[PlayerStats] Missing PlayerEffectSourceController on {name}. Defaults will be used.", this);
-        }
-    }
 
     public void ApplyDamage(float amount)
     {

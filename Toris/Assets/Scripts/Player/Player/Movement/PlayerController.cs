@@ -33,28 +33,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnValidate()
-    {
-        if (_inputReader == null)
-        {
-            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}</b>", this);
-        }
-
-        if (_motor == null)
-        {
-            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerMotor on GameObject: <b>{name}</b>", this);
-        }
-
-        if (_stats == null)
-        {
-            Debug.LogError($"<b><color=red>[PlayerController]</color></b> is missing PlayerStats on GameObject: <b>{name}</b>", this);
-        }
-
-        if (_playerFacing == null)
-        {
-            Debug.LogWarning($"[PlayerController] Missing PlayerFacing on {name}", this);
-        }
-    }
 
     private void Update()
     {

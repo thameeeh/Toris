@@ -21,18 +21,6 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void OnValidate()
-        {
-            if (_uiEvents == null)
-            {
-                Debug.LogError($"<color=red>{name}</color> missing, put SO in the inspector!", this);
-            }
-
-            if(_containerData == null)
-            {
-                Debug.LogError($"<color=red>{name}</color> missing Container Data, put InventoryManager in the inspector!", this);
-            }
-        }
 
         private void Update()
         {

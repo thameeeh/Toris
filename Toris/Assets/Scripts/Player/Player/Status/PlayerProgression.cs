@@ -63,13 +63,6 @@ public class PlayerProgression : MonoBehaviour
         }
     }
 
-    private void OnValidate()
-    {
-        if (_config == null)
-        {
-            Debug.LogWarning($"[PlayerProgression] Missing PlayerProgressionConfigSO on {name}. Fallback defaults will be used.", this);
-        }
-    }
 
     public void AddExperience(int amount)
     {

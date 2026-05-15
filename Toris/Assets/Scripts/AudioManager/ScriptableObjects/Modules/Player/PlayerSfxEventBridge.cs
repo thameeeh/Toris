@@ -68,11 +68,13 @@ public sealed class PlayerSfxEventBridge : MonoBehaviour
         Emit(isMoving ? PlayerSfxEventType.MovementStarted : PlayerSfxEventType.MovementStopped);
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         ResolveDependencies();
         movementStartSpeed = Mathf.Max(0f, movementStartSpeed);
     }
+#endif
 
     private void ResolveDependencies()
     {

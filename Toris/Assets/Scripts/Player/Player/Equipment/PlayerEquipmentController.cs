@@ -45,6 +45,8 @@ public class PlayerEquipmentController : MonoBehaviour
         if (_equipmentInventory == null || _equipmentInventory.LiveSlots == null)
             return;
 
+        Debug.Log("[Equipment] Refreshing state due to global update event.");
+
         // Hardcoded equipment inventory layout:
         // 0 = Head, 1 = Chest, 2 = Legs, 3 = Arms, 4 = Weapon
         ProcessSlot(0, EquipmentSlot.Head);

@@ -17,6 +17,10 @@
     * **Manager Binding:** Updated `InventoryManager` to automatically register and restore potion inventory state via `ScreenType.Potions` association.
     * **Persistence:** Added `PlayerPotion` to `GameSaveData` and updated export/import logic in `GameSessionSO` to include potion data.
 
+## [Current/Recent] - Drag-and-Drop Stat Update Fix
+* **Event Synchronization:** Fixed a bug where player stats did not update when equipping/unequipping items via drag-and-drop.
+    * **Global Broadcast:** Updated `InventoryTransferManagerSO` to invoke the global `OnInventoryUpdated` event after a successful drag-and-drop transfer, ensuring that the `PlayerEquipmentController` correctly refreshes the player's stat modifiers.
+
 ## [Current/Recent] - Potion Hotkey Integration
 * **Hotkey Consumption:** Implemented hotkey-driven potion consumption ('1' and '2') by wiring `PlayerInputReaderSO` to `InventoryActionController`, allowing direct item usage from the Potion quickbar slots.
 * **Resolution Resolver:** Added `ResolvePotionInventory` to `PlayerInventorySceneResolver` to ensure correct runtime reference handling for potion containers during controller initialization.

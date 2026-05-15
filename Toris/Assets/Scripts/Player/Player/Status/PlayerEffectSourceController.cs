@@ -38,6 +38,7 @@ public class PlayerEffectSourceController : MonoBehaviour
             return;
         }
 
+        Debug.Log($"[Stats] Updating stats source: {source.SourceKey}");
         _activeSources[source.SourceKey] = source;
         RebuildResolvedEffects();
     }

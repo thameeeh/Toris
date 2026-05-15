@@ -97,6 +97,7 @@ namespace OutlandHaven.Inventory
 
             // Fire events to notify listeners that inventories have changed
             _uiInventoryEvents.OnSpecificSlotsUpdated?.Invoke(sourceSlot, targetSlot);
+            _uiInventoryEvents.OnInventoryUpdated?.Invoke();
         }
 
         private void SwapSlots(InventorySlot source, InventorySlot target)

@@ -54,7 +54,6 @@ namespace OutlandHaven.Inventory
                     }
                 }
             }
-
             EnsureSlotItemStates();
         }
 

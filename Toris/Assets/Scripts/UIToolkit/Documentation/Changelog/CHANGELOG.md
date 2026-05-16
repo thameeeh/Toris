@@ -1,13 +1,11 @@
-## [Current/Recent] - GameSessionSO Architectural Refactor
-* **Code Decoupling:** Refactored the monolithic `GameSessionSO` into a Facade that delegates specialized tasks to new service classes:
-    * `RuntimeSnapshotRegistry.cs`: Manages volatile in-memory state for scene transitions.
-    * `SaveDataOrchestrator.cs`: Handles persistence logic, inventory extraction, and DTO mapping for save/load operations.
-* **Documentation:** Added a stylized architectural overview header to `GameSessionSO` explaining the service roles.
-* **Backward Compatibility:** Maintained all existing public method signatures to ensure zero breaking changes for UI and gameplay systems.
-
-## [Current/Recent] - Item Module Serialization Compliance
-* **Serialization Fixes:** Added mandatory public parameterless constructors to `UpgradeableState` in `UpgradeableModule.cs` to comply with `Newtonsoft.Json` requirements for save/load stability. (Note: `EvolvingState` was verified and already contains a parameterless constructor).
-* **Verification Tools:** Created `SerializationSanityCheck.cs` in `Assets/Scripts/Debugging/` to provide a runtime context-menu test for validating `ItemComponentState` serialization.
+## [Current/Recent] - Code Dependency Visualizer Implementation
+* **AST-Based Parser:** Implemented `CodeDependencyParser.cs` using Microsoft.CodeAnalysis (Roslyn) to perform a two-pass scan of the codebase.
+    * **Type Registry:** Identifies all custom classes, interfaces, and structs to create a whitelist for dependency tracking.
+    * **Dependency Mapping:** Analyzes `IdentifierNameSyntax` nodes to build an edge list of script-to-script relationships.
+* **2D Physics Visualization:** Created `GraphVisualizer.cs` to render dependencies as a "floating balloon" graph using Unity's 2D physics engine.
+    * **Spring Dynamics:** Uses `SpringJoint2D` to create elastic connections between dependent scripts, allowing the graph to self-organize.
+    * **Drift Physics:** Implemented `BalloonPhysics2D.cs` to apply gentle centering forces and random wobble for a "living" visual effect.
+* **Smart Filtering:** Added a strict whitelist to the parser (filtering for `Assets/Scripts` and `Assets/UI`) and explicitly excluded `Editor` folders to ensure the graph only displays relevant game logic.
 
 ## [Current/Recent] - Fix Potion and Equipment Inventory Scene Loading
 * **Persistent Inventory Snapshots:** Refactored `GameSessionSO` to prevent clearing inventory snapshots after they are applied. This ensures inventory data remains available across multiple scene transitions and re-instantiations.
@@ -16,10 +14,6 @@
     * **Capture/Restore:** Implemented `CapturePotionInventoryState` and `TryApplyPotionInventoryState` in `GameSessionSO`.
     * **Manager Binding:** Updated `InventoryManager` to automatically register and restore potion inventory state via `ScreenType.Potions` association.
     * **Persistence:** Added `PlayerPotion` to `GameSaveData` and updated export/import logic in `GameSessionSO` to include potion data.
-
-## [Current/Recent] - Drag-and-Drop Stat Update Fix
-* **Event Synchronization:** Fixed a bug where player stats did not update when equipping/unequipping items via drag-and-drop.
-    * **Global Broadcast:** Updated `InventoryTransferManagerSO` to invoke the global `OnInventoryUpdated` event after a successful drag-and-drop transfer, ensuring that the `PlayerEquipmentController` correctly refreshes the player's stat modifiers.
 
 ## [Current/Recent] - Potion Hotkey Integration
 * **Hotkey Consumption:** Implemented hotkey-driven potion consumption ('1' and '2') by wiring `PlayerInputReaderSO` to `InventoryActionController`, allowing direct item usage from the Potion quickbar slots.

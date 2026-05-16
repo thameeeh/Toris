@@ -374,8 +374,7 @@ namespace OutlandHaven.Inventory
         private bool IsPlayerBackpackContainer()
         {
             return ContainerBlueprint != null
-                   && ContainerBlueprint.AssociatedView == ScreenType.Inventory
-                   && !ContainerBlueprint.IsEquipment;
+                   && (ContainerBlueprint.IsBackpack || (ContainerBlueprint.AssociatedView == ScreenType.Inventory && !ContainerBlueprint.IsEquipment));
         }
 
         private bool IsPotionContainer()

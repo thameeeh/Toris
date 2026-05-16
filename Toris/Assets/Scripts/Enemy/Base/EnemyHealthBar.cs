@@ -63,6 +63,10 @@ public sealed class EnemyHealthBar : MonoBehaviour
         if (!Application.isPlaying)
             return;
 
+        // Prevent modifying prefab assets during play mode validation to avoid hierarchy corruption errors
+        if (UnityEditor.PrefabUtility.IsPartOfPrefabAsset(this))
+            return;
+
         EnsureVisuals();
         ApplyVisualSettings();
         SyncHealthBar(true);

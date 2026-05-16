@@ -112,13 +112,13 @@ public class InventoryActionController : MonoBehaviour
 
     private void HandleRequestEquip(InventorySlot slot)
     {
+        ResolveRuntimeReferences();
         TryEquipFromInventorySlot(slot);
     }
 
     private void HandleRequestUse(InventorySlot slot)
     {
         ResolveRuntimeReferences();
-
         if (slot == null || slot.IsEmpty || slot.HeldItem?.BaseItem == null)
             return;
 
@@ -126,13 +126,14 @@ public class InventoryActionController : MonoBehaviour
             return;
 
         EnsureConsumableController();
-        
+
         // Pass control directly to the interface
         slot.HeldItem.BaseItem.UsableBehavior.TryUse(_consumableController, _playerInventory, slot);
     }
 
     private void HandleRequestUnequip(EquipmentSlot slot)
     {
+        ResolveRuntimeReferences();
         TryUnequip(slot);
     }
 
@@ -188,6 +189,7 @@ public class InventoryActionController : MonoBehaviour
 
         if (equipmentSlot.IsEmpty)
         {
+            Debug.Log($"[InventoryActionController] <b>EQUIP</b>: Moving '{sourceSlot.HeldItem.BaseItem.ItemName}' from <b>{_playerInventory.name}</b> (SaveID: {_playerInventory.SaveID}) to <b>{_equipmentInventory.name}</b> (Slot: {equipable.TargetSlot})");
             equipmentSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
             sourceSlot.Clear();
         }
@@ -195,6 +197,8 @@ public class InventoryActionController : MonoBehaviour
         {
             ItemInstance tempItem = equipmentSlot.HeldItem;
             int tempCount = equipmentSlot.Count;
+
+            Debug.Log($"[InventoryActionController] <b>SWAP-EQUIP</b>: Swapping '{sourceSlot.HeldItem.BaseItem.ItemName}' from <b>{_playerInventory.name}</b> with '{tempItem.BaseItem.ItemName}' in <b>{_equipmentInventory.name}</b>");
 
             equipmentSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
             sourceSlot.SetItem(tempItem, tempCount);
@@ -226,12 +230,15 @@ public class InventoryActionController : MonoBehaviour
             return false;
         }
 
+        string itemName = equipmentSlot.HeldItem.BaseItem.ItemName;
         bool addedBack = _playerInventory.AddItem(equipmentSlot.HeldItem, equipmentSlot.Count);
         if (!addedBack)
         {
-            Debug.LogWarning("[InventoryActionController] Could not unequip item because the player inventory has no space.");
+            Debug.LogWarning($"[InventoryActionController] Could not unequip '{itemName}' because the <b>{_playerInventory.name}</b> (SaveID: {_playerInventory.SaveID}) has no space.");
             return false;
         }
+
+        Debug.Log($"[InventoryActionController] <b>UNEQUIP</b>: Moving '{itemName}' from <b>{_equipmentInventory.name}</b> back to <b>{_playerInventory.name}</b> (SaveID: {_playerInventory.SaveID})");
 
         equipmentSlot.Clear();
         _uiInventoryEvents?.OnInventoryUpdated?.Invoke();

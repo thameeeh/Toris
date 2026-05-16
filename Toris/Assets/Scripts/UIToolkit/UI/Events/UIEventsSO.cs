@@ -27,6 +27,7 @@ namespace OutlandHaven.UIToolkit
         public UnityAction OnQuickSaveRequested;
 
         public UnityAction OnQuickLoadRequested;
-    }
 
+        public UnityAction OnSystemInitializationComplete;
+    }
 }

@@ -129,20 +129,23 @@ namespace OutlandHaven.Inventory
 
             var slotView = new InventorySlotView(slotInstance, _equipmentInventory);
 
-            slotView.OnLocalClicked += (slot) => { if (slot != null && !slot.IsEmpty && slot.HeldItem?.BaseItem != null) {
-                    var equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
-                    if (equipable != null) {
-                        _uiInventoryEvents.OnRequestUnequip?.Invoke(equipable.TargetSlot);
+            slotView.OnLocalClicked += (slot) => { 
+                if (slot != null && !slot.IsEmpty) {
+                    // Find the index of this slot in the inventory
+                    int slotIndex = _equipmentInventory.LiveSlots.IndexOf(slot);
+                    if (slotIndex >= 0) {
+                        _uiInventoryEvents.OnRequestUnequip?.Invoke((EquipmentSlot)slotIndex);
                     }
                 } 
             };
 
             slotView.OnLocalRightClicked += (slot) => {
                 // The equipment system always interprets right clicks as unequips, ignoring context.
-                if (slot != null && !slot.IsEmpty && slot.HeldItem?.BaseItem != null) {
-                    var equipable = slot.HeldItem.BaseItem.GetComponent<EquipableComponent>();
-                    if (equipable != null) {
-                        _uiInventoryEvents.OnRequestUnequip?.Invoke(equipable.TargetSlot);
+                if (slot != null && !slot.IsEmpty) {
+                    // Find the index of this slot in the inventory
+                    int slotIndex = _equipmentInventory.LiveSlots.IndexOf(slot);
+                    if (slotIndex >= 0) {
+                        _uiInventoryEvents.OnRequestUnequip?.Invoke((EquipmentSlot)slotIndex);
                     }
                 }
             };

@@ -13,6 +13,9 @@ namespace OutlandHaven.Inventory
         [Tooltip("If true, this container will be treated as the Player's active equipment for scene transfers and saving.")]
         public bool IsEquipment = false;
 
+        [Tooltip("If true, this container will be treated as the Player's main backpack inventory.")]
+        public bool IsBackpack = false;
+
         [Header("Optional. Predefined filters for specific slots by index.")]
         public SlotFilterType[] PredefinedFilters;
     }

@@ -149,6 +149,9 @@ namespace OutlandHaven.Inventory
 
             if (evt.button == 1)
             {
+                string itemName = (_slotData != null && !_slotData.IsEmpty) ? _slotData.HeldItem.BaseItem.ItemName : "Empty";
+                Debug.Log($"[UI/Inventory] <b>Right-Click RELEASE</b> detected on slot: {itemName} (Container: {_owningContainer?.name})");
+
                 // Stop dragging state and clear visual ghost if any
                 _isDragging = false;
                 OnLocalDragStopped?.Invoke();

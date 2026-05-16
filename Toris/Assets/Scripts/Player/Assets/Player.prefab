@@ -352,7 +352,7 @@ MonoBehaviour:
   _poolManager: {fileID: 0}
   _stats: {fileID: 8137892244548921797}
   _playerFacing: {fileID: 1884929689371088939}
-  _equipment: {fileID: 0}
+  _equipment: {fileID: 1016723389627658535}
   _abilityController: {fileID: 2003589166597666773}
   spawnOffsetFromCenter: 0.35
   _enableShootDebugLogs: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _effectSourceController: {fileID: 4459608157227879889}
   _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
-  _gameSession: {fileID: 0}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   _fillResourcesToMaximumOnAwake: 1
   _preserveResourceRatiosWhenEffectsChange: 1
 --- !u!114 &5229613945364294266
@@ -455,7 +455,7 @@ MonoBehaviour:
   _input: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
-  _gameSession: {fileID: 0}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   _abilitySlots:
   - _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   - _abilityDefinition: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcd70f5931f44ab98b08f46a1cc613bc, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSfxEventBridge
   playerSfx: {fileID: 503972616382245057}
   bow: {fileID: 1738574752484829038}
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6db47fec89064adf9de8f95167938fb8, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVfx
   rules: []
   legacyModules: []
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5044014f0cc445d394a1b0f535c003e1, type: 3}
-  m_Name: ""
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVfxEventBridge
   playerVfx: {fileID: 277378599010215229}
   bow: {fileID: 1738574752484829038}
@@ -582,7 +582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPicker
   _itemPickerSO: {fileID: 11400000, guid: d1ecd4d03d4c0684cb32ff84bce95926, type: 2}
-  _myInventoryManager: {fileID: 0}
+  _myInventoryManager: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
   _interactionPoint: {fileID: 2980662243367807876}
   _radius: 1.5
   _layerMask:
@@ -725,7 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
-  _equipmentInventory: {fileID: 0}
+  _equipmentInventory: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
 --- !u!114 &1606071663587447615
 MonoBehaviour:
@@ -806,9 +806,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c9caa956fe80c48b244b79f08f4d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryActionController
-  _playerInventory: {fileID: 0}
-  _equipmentInventory: {fileID: 0}
-  _potionInventory: {fileID: 0}
+  _playerInventory: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
+  _equipmentInventory: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
+  _potionInventory: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   _playerStats: {fileID: 8137892244548921797}

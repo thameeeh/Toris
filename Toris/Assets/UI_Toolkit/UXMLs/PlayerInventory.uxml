@@ -2,33 +2,27 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/Inventory.uss?fileID=7433441132597879392&amp;guid=a7d9c5c021b77f146b9a16b25929f48c&amp;type=3#Inventory"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
-    
     <ui:VisualElement name="VisualElement" class="player-inventory-root">
         <ui:VisualElement name="container__player" class="player-inventory-container">
-            
             <ui:VisualElement name="Top__Section" class="player-top-section">
-                
                 <ui:VisualElement name="Stats__Panel" class="player-stats-panel">
                     <ui:Label text="Stats" class="panel-title"/>
                     <ui:ScrollView class="stats-scroll-view">
-                        <ui:Label name="stat-maxHealth" text="Max Health: 0" class="stat-label"/>
-                        <ui:Label name="stat-maxStamina" text="Max Stamina: 0" class="stat-label"/>
-                        <ui:Label name="stat-moveSpeed" text="Move Speed: 1.0" class="stat-label"/>
-                        <ui:Label name="stat-outgoingDamage" text="Outgoing Damage: 1.0" class="stat-label"/>
+                        <ui:Label name="stat-maxHealth" text="HP: 0" class="stat-label"/>
+                        <ui:Label name="stat-maxStamina" text="Stamina: 0" class="stat-label"/>
+                        <ui:Label name="stat-moveSpeed" text="MS: 1.0" class="stat-label"/>
+                        <ui:Label name="stat-outgoingDamage" text="Damage: 1.0" class="stat-label"/>
                     </ui:ScrollView>
                 </ui:VisualElement>
-                
                 <ui:VisualElement name="Equipment__Wrapper" class="player-equipment-wrapper">
                     <ui:VisualElement name="Equipment__Header" class="player-equipment-header">
                         <ui:Label text="Equipment" class="panel-title"/>
                     </ui:VisualElement>
-                    
                     <ui:VisualElement name="PlayerEquipment__Panel" class="player-equipment-panel">
                         <ui:VisualElement name="Consumables__Player--Inventory" class="potion-slot-group potion-container--absolute">
                             <ui:VisualElement name="slot-potion-1" class="potion-slot"/>
                             <ui:VisualElement name="slot-potion-2" class="potion-slot"/>
                         </ui:VisualElement>
-                       
                         <ui:VisualElement name="slot-head" class="item-slot equip-slot--head"/>
                         <ui:VisualElement name="slot-arms" class="item-slot equip-slot--arms"/>
                         <ui:VisualElement name="slot-legs" class="item-slot equip-slot--legs"/>
@@ -36,15 +30,12 @@
                         <ui:VisualElement name="slot-chest" class="item-slot equip-slot--chest"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                
             </ui:VisualElement>
-            
             <ui:VisualElement name="Inventory__Slots--Panel" class="player-inventory-slots-panel inventory-grid">
                 <ui:ScrollView vertical-scroller-visibility="Hidden" class="inventory-slots-scroll">
                     <ui:VisualElement name="grid-player" class="inventory-grid-container"/>
                 </ui:ScrollView>
             </ui:VisualElement>
-            
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

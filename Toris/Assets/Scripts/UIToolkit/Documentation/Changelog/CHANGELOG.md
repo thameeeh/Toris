@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ## [Current/Recent] - Code Dependency Visualizer Implementation
 * **AST-Based Parser:** Implemented `CodeDependencyParser.cs` using Microsoft.CodeAnalysis (Roslyn) to perform a two-pass scan of the codebase.
     * **Type Registry:** Identifies all custom classes, interfaces, and structs to create a whitelist for dependency tracking.
@@ -6,6 +7,22 @@
     * **Spring Dynamics:** Uses `SpringJoint2D` to create elastic connections between dependent scripts, allowing the graph to self-organize.
     * **Drift Physics:** Implemented `BalloonPhysics2D.cs` to apply gentle centering forces and random wobble for a "living" visual effect.
 * **Smart Filtering:** Added a strict whitelist to the parser (filtering for `Assets/Scripts` and `Assets/UI`) and explicitly excluded `Editor` folders to ensure the graph only displays relevant game logic.
+=======
+## [Current/Recent] - Documentation & Issue Tracking
+* **Issue Tracking:** Created `KNOWN_ISSUES.md` in `Assets/Scripts/UIToolkit/Documentation/` to track long-term architectural risks and bugs.
+* **Bug Logged:** Added "Registration Race Condition" to the known issues list, documenting the synchronization risk between `InventoryManager` registration and UI initialization.
+
+## [Current/Recent] - GameSessionSO Architectural Refactor
+* **Code Decoupling:** Refactored the monolithic `GameSessionSO` into a Facade that delegates specialized tasks to new service classes:
+    * `RuntimeSnapshotRegistry.cs`: Manages volatile in-memory state for scene transitions.
+    * `SaveDataOrchestrator.cs`: Handles persistence logic, inventory extraction, and DTO mapping for save/load operations.
+* **Documentation:** Added a stylized architectural overview header to `GameSessionSO` explaining the service roles.
+* **Backward Compatibility:** Maintained all existing public method signatures to ensure zero breaking changes for UI and gameplay systems.
+
+## [Current/Recent] - Item Module Serialization Compliance
+* **Serialization Fixes:** Added mandatory public parameterless constructors to `UpgradeableState` in `UpgradeableModule.cs` to comply with `Newtonsoft.Json` requirements for save/load stability. (Note: `EvolvingState` was verified and already contains a parameterless constructor).
+* **Verification Tools:** Created `SerializationSanityCheck.cs` in `Assets/Scripts/Debugging/` to provide a runtime context-menu test for validating `ItemComponentState` serialization.
+>>>>>>> Stashed changes
 
 ## [Current/Recent] - Fix Potion and Equipment Inventory Scene Loading
 * **Persistent Inventory Snapshots:** Refactored `GameSessionSO` to prevent clearing inventory snapshots after they are applied. This ensures inventory data remains available across multiple scene transitions and re-instantiations.

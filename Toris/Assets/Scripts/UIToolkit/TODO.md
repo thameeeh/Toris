@@ -17,11 +17,30 @@ This document outlines our high-level goals and progress for connecting the Main
 
 ---
 
+---
+
 ## 🚩 Known Issues & Architectural Debt
-- **Logic Fragmentation (Consumables):** Consumption logic is split between `PlayerConsumableController` and `ConsumableManagerSO`. Future logic (sounds, cast times) must be duplicated or consolidated into an `IUsable` component pattern.
+- [X] **Registration Race Condition** (COMPLETED) - Resolved via `UIBootstraper` scene handshake.
 - **Passive UI Updates:** UI relies on manual pokes from controllers rather than the Model (`ItemInstance`) broadcasting its own state changes. Durability or background timer updates will be difficult to synchronize.
 
 ---
+
+## 🛠 Plan: Fix PlayerEquipmentController Scene Persistence
+
+### Problem Description
+The `PlayerEquipmentController` currently relies on a statically serialized `[SerializeField]` reference to the `InventoryManager` (equipment container). During scene transitions, the `GameObject` containing this manager is destroyed. The controller instance, if it persists or is re-instantiated, retains a "stale" (null/destroyed) reference. This causes the controller to fail silently during `RefreshEquipmentState()`, effectively halting all stat propagation and event broadcasting for equipment changes after the first scene load.
+
+### Implementation Strategy
+To align with the project's existing architectural patterns (as seen in `InventoryActionController`), we will implement a dynamic resolution mechanism:
+
+1.  **Introduce Resolution Helper:** Add a `ResolveRuntimeReferences()` method to `PlayerEquipmentController`.
+2.  **Bind via Resolver:** Inside `Awake()`, call `PlayerInventorySceneResolver.ResolveEquipmentInventory()` to re-bind the `_equipmentInventory` reference to the active instance in the new scene.
+3.  **Lifecycle Safety:** Update the component to ensure this resolution happens before `Start()` and `RefreshEquipmentState()` execution to prevent null reference early-exits.
+
+---
+
+## Main Objective: Item System Scalability & UX Polish
+Ensure the inventory and item systems are robust, easily extensible for new content, and provide excellent player feedback.
 
 ## Main Objective: Item System Scalability & UX Polish
 Ensure the inventory and item systems are robust, easily extensible for new content, and provide excellent player feedback.

@@ -19,6 +19,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
     private void OnEnable()
     {
+        ResolveRuntimeReferences();
         if (_uiInventoryEvents != null)
         {
             _uiInventoryEvents.OnInventoryUpdated += RefreshEquipmentState;
@@ -37,11 +38,18 @@ public class PlayerEquipmentController : MonoBehaviour
 
     private void Start()
     {
+        ResolveRuntimeReferences();
         RefreshEquipmentState();
+    }
+
+    private void ResolveRuntimeReferences()
+    {
+        _equipmentInventory = PlayerInventorySceneResolver.ResolveEquipmentInventory(this, _equipmentInventory, null);
     }
 
     public void RefreshEquipmentState()
     {
+        ResolveRuntimeReferences();
         if (_equipmentInventory == null || _equipmentInventory.LiveSlots == null)
             return;
 

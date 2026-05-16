@@ -4,8 +4,11 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - PlayerData: {fileID: 11400000, guid: b7ef0f7e20535c54ca15fd7f66c3f2a5, type: 2}
-  - PlayerInventory: {fileID: 11400000, guid: a83a8b4837ad4dc43b74180a6c9ccc79, type: 2}
+  - PlayerInventory: {instanceID: 0}
+  - PlayerEquipment: {instanceID: 0}
+  - PlayerPotionInventory: {instanceID: 0}
+  - ProgressionAnchor: {instanceID: 0}
+  - StatsAnchor: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -64,13 +64,13 @@ MonoBehaviour:
       BaseItem: {fileID: 0}
       States: []
     Count: 0
-    AllowedFilter: 2
+    AllowedFilter: 3
   - HeldItem:
       InstanceID: dc30c4da-a6e5-40a3-9351-8f76c1deed2a
       BaseItem: {fileID: 0}
       States: []
     Count: 0
-    AllowedFilter: 3
+    AllowedFilter: 2
   - HeldItem:
       InstanceID: bc46d080-5146-41b2-a5ee-db2edee2bdc4
       BaseItem: {fileID: 0}

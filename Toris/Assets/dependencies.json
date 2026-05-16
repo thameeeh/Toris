@@ -1,0 +1,2162 @@
+{
+    "nodes": [
+        {
+            "id": "CraftingRecipeSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\CraftingRecipeSO.cs"
+        },
+        {
+            "id": "CraftingRegistrySO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\CraftingRegistrySO.cs"
+        },
+        {
+            "id": "GameSessionSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\GameSessionSO.cs"
+        },
+        {
+            "id": "InventoryContainerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\InventoryContainerSO.cs"
+        },
+        {
+            "id": "InventoryItemSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\InventoryItemSO.cs"
+        },
+        {
+            "id": "SalvageRecipeSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\SalvageRecipeSO.cs"
+        },
+        {
+            "id": "InventorySlot",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\InventorySlot.cs"
+        },
+        {
+            "id": "InventorySlotView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\InventorySlotView.cs"
+        },
+        {
+            "id": "WorldContainer",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\WorldContainer.cs"
+        },
+        {
+            "id": "InventorySaveData",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Testing Saving data to hard drive\\InventorySaveData.cs"
+        },
+        {
+            "id": "MockItemDatabase",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Testing Saving data to hard drive\\MockItemDatabase.cs"
+        },
+        {
+            "id": "UIBootstraper",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIBootstraper.cs"
+        },
+        {
+            "id": "ConsumableManagerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\ConsumableManagerSO.cs"
+        },
+        {
+            "id": "CraftingManagerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\CraftingManagerSO.cs"
+        },
+        {
+            "id": "SalvageManagerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\SalvageManagerSO.cs"
+        },
+        {
+            "id": "ShopManagerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\ShopManagerSO.cs"
+        },
+        {
+            "id": "UpgradeSalvageManagerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\UpgradeSalvageManagerSO.cs"
+        },
+        {
+            "id": "GraphVisualizer2D",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\GraphVisualizer2D.cs"
+        },
+        {
+            "id": "HudScreenController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\HudScreenController.cs"
+        },
+        {
+            "id": "InventoryScreenController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\InventoryScreenController.cs"
+        },
+        {
+            "id": "MageScreenController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\MageScreenController.cs"
+        },
+        {
+            "id": "SkillMenuController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SkillMenuController.cs"
+        },
+        {
+            "id": "SkillsScreenController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SkillsScreenController.cs"
+        },
+        {
+            "id": "SmithScreenController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SmithScreenController.cs"
+        },
+        {
+            "id": "ConfirmationPayload",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\ConfirmationPayload.cs"
+        },
+        {
+            "id": "InventoryInteractionContext",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\InventoryInteractionContext.cs"
+        },
+        {
+            "id": "ScreenTypes",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\ScreenTypes.cs"
+        },
+        {
+            "id": "UIEventsSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UIEventsSO.cs"
+        },
+        {
+            "id": "UIInventoryEventsSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UIInventoryEventsSO.cs"
+        },
+        {
+            "id": "UISkillEventsSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UISkillEventsSO.cs"
+        },
+        {
+            "id": "MainMenuController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuController.cs"
+        },
+        {
+            "id": "MainMenuUIManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuUIManager.cs"
+        },
+        {
+            "id": "MainMenuView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuView.cs"
+        },
+        {
+            "id": "SaveSlotData",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\SaveSlotData.cs"
+        },
+        {
+            "id": "SaveSlotView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\SaveSlotView.cs"
+        },
+        {
+            "id": "SkillManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Managers\\SkillManager.cs"
+        },
+        {
+            "id": "PauseMenuController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Pause Menu\\PauseMenuController.cs"
+        },
+        {
+            "id": "PauseMenuView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Pause Menu\\PauseMenuView.cs"
+        },
+        {
+            "id": "GameView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\GameView.cs"
+        },
+        {
+            "id": "HUDView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\HUDView.cs"
+        },
+        {
+            "id": "MageView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\MageView.cs"
+        },
+        {
+            "id": "PlayerPotionHUDView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerPotionHUDView.cs"
+        },
+        {
+            "id": "PlayerSkillView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerSkillView.cs"
+        },
+        {
+            "id": "UIManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\UIManager.cs"
+        },
+        {
+            "id": "UIView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\UIView.cs"
+        },
+        {
+            "id": "ConfirmationModalController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Confirmation\\ConfirmationModalController.cs"
+        },
+        {
+            "id": "ConfirmationModalView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Confirmation\\ConfirmationModalView.cs"
+        },
+        {
+            "id": "SettingsMenuController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Settings\\SettingsMenuController.cs"
+        },
+        {
+            "id": "SettingsMenuView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Settings\\SettingsMenuView.cs"
+        },
+        {
+            "id": "UIDragManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\DragAndDrop\\UIDragManager.cs"
+        },
+        {
+            "id": "PlayerEquipmentView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerEquipmentView.cs"
+        },
+        {
+            "id": "PlayerInventoryView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerInventoryView.cs"
+        },
+        {
+            "id": "PlayerPotionView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerPotionView.cs"
+        },
+        {
+            "id": "PlayerStatsView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerStatsView.cs"
+        },
+        {
+            "id": "ForgeSubView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\ForgeSubView.cs"
+        },
+        {
+            "id": "SalvageSubView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\SalvageSubView.cs"
+        },
+        {
+            "id": "ShopSubView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\ShopSubView.cs"
+        },
+        {
+            "id": "SmithView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\SmithView.cs"
+        },
+        {
+            "id": "ItemComponent",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\ItemComponent.cs"
+        },
+        {
+            "id": "ItemComponentState",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\ItemComponentState.cs"
+        },
+        {
+            "id": "ItemInstance",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\ItemInstance.cs"
+        },
+        {
+            "id": "WorldItem",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\WorldItem.cs"
+        },
+        {
+            "id": "ConsumableModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\ConsumableModule.cs"
+        },
+        {
+            "id": "DefensiveModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\DefensiveModule.cs"
+        },
+        {
+            "id": "EquipableModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\EquipableModule.cs"
+        },
+        {
+            "id": "EvolvingItemModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\EvolvingItemModule.cs"
+        },
+        {
+            "id": "OffensiveModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\OffensiveModule.cs"
+        },
+        {
+            "id": "ProgressionModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\ProgressionModule.cs"
+        },
+        {
+            "id": "UpgradeableModule",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\UpgradeableModule.cs"
+        },
+        {
+            "id": "GameSaveData",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\GameSaveData.cs"
+        },
+        {
+            "id": "SaveManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\SaveManager.cs"
+        },
+        {
+            "id": "IInteractable",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\IInteractable.cs"
+        },
+        {
+            "id": "InventoryActionController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryActionController.cs"
+        },
+        {
+            "id": "InventoryManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryManager.cs"
+        },
+        {
+            "id": "InventoryTransferManagerSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryTransferManagerSO.cs"
+        },
+        {
+            "id": "ItemPicker",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\ItemPicker.cs"
+        },
+        {
+            "id": "PlayerConsumableController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerConsumableController.cs"
+        },
+        {
+            "id": "PlayerInventorySceneResolver",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerInventorySceneResolver.cs"
+        },
+        {
+            "id": "EquipmentEffectBridge",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquipmentEffectBridge.cs"
+        },
+        {
+            "id": "EquippedItemComputedStats",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquippedItemComputedStats.cs"
+        },
+        {
+            "id": "EquippedItemEffectSource",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquippedItemEffectSource.cs"
+        },
+        {
+            "id": "EquippedItemStatCalculator",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquippedItemStatCalculator.cs"
+        },
+        {
+            "id": "PlayerEquipmentController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\PlayerEquipmentController.cs"
+        },
+        {
+            "id": "IPlayerEffectSource",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\IPlayerEffectSource.cs"
+        },
+        {
+            "id": "PlayerBaseEffectsSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerBaseEffectsSO.cs"
+        },
+        {
+            "id": "PlayerEffectDefinitionSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectDefinitionSO.cs"
+        },
+        {
+            "id": "PlayerEffectModifier",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectModifier.cs"
+        },
+        {
+            "id": "PlayerEffectModifierMode",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectModifierMode.cs"
+        },
+        {
+            "id": "PlayerEffectResolver",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectResolver.cs"
+        },
+        {
+            "id": "PlayerEffectSourceController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectSourceController.cs"
+        },
+        {
+            "id": "PlayerEffectSourceRuntime",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectSourceRuntime.cs"
+        },
+        {
+            "id": "PlayerEffectType",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectType.cs"
+        },
+        {
+            "id": "PlayerProgression",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerProgression.cs"
+        },
+        {
+            "id": "PlayerProgressionConfigSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerProgressionConfigSO.cs"
+        },
+        {
+            "id": "PlayerResolvedEffects",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerResolvedEffects.cs"
+        },
+        {
+            "id": "PlayerRuntimeProgression",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerRuntimeProgression.cs"
+        },
+        {
+            "id": "PlayerRuntimeStats",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerRuntimeStats.cs"
+        },
+        {
+            "id": "PlayerStats",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStats.cs"
+        },
+        {
+            "id": "PlayerStatusController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStatusController.cs"
+        },
+        {
+            "id": "PlayerStatusEffectType",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStatusEffectType.cs"
+        },
+        {
+            "id": "PlayerStatusInstance",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStatusInstance.cs"
+        },
+        {
+            "id": "PlayerProgressionAnchorSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerProgressionAnchorSO.cs"
+        },
+        {
+            "id": "PlayerStatsAnchorSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerStatsAnchorSO.cs"
+        },
+        {
+            "id": "CharacterAnimSO",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\CharacterAnimSO.cs"
+        },
+        {
+            "id": "PlayerAnimationController",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerAnimationController.cs"
+        },
+        {
+            "id": "PlayerAnimationPresenter",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerAnimationPresenter.cs"
+        },
+        {
+            "id": "PlayerAnimationView",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerAnimationView.cs"
+        },
+        {
+            "id": "PlayerHUDBridge",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerHUDBridge.cs"
+        }
+    ],
+    "edges": [
+        {
+            "source": "CraftingRecipeSO",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "CraftingRecipeSO",
+            "target": "CraftingMaterialRequirement"
+        },
+        {
+            "source": "CraftingRegistrySO",
+            "target": "CraftingRecipeSO"
+        },
+        {
+            "source": "CraftingRegistrySO",
+            "target": "SalvageRecipeSO"
+        },
+        {
+            "source": "CraftingRegistrySO",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "PlayerStatsAnchorSO"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "RuntimeInventorySnapshot"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "RuntimeProgressionSnapshot"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "RuntimeStatsSnapshot"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "SaveSlotIndex"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "SavedInventoryData"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "SavedSlotData"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "SavedItemData"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "GameSaveData"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "RuntimeInventorySlotSnapshot"
+        },
+        {
+            "source": "InventoryContainerSO",
+            "target": "ScreenType"
+        },
+        {
+            "source": "InventoryContainerSO",
+            "target": "SlotFilterType"
+        },
+        {
+            "source": "InventoryItemSO",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "SalvageRecipeSO",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "SalvageRecipeSO",
+            "target": "CraftingMaterialRequirement"
+        },
+        {
+            "source": "InventorySlot",
+            "target": "EquipmentSlot"
+        },
+        {
+            "source": "InventorySlot",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "InventorySlot",
+            "target": "SlotFilterType"
+        },
+        {
+            "source": "InventorySlot",
+            "target": "ConsumableComponent"
+        },
+        {
+            "source": "InventorySlot",
+            "target": "EquipableComponent"
+        },
+        {
+            "source": "InventorySlotView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "InventorySlotView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "InventorySlotView",
+            "target": "SlotDropData"
+        },
+        {
+            "source": "WorldContainer",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "WorldContainer",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "WorldContainer",
+            "target": "ScreenType"
+        },
+        {
+            "source": "InventorySaveData",
+            "target": "SlotSaveData"
+        },
+        {
+            "source": "MockItemDatabase",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "ConsumableManagerSO",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "ConsumableManagerSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "ConsumableManagerSO",
+            "target": "ConsumableComponent"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "CraftingRegistrySO"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "CraftingRecipeSO"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "CraftingManagerSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "CraftingRegistrySO"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "SalvageRecipeSO"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "SalvageManagerSO",
+            "target": "SalvageType"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "UIEvents"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "ScreenType"
+        },
+        {
+            "source": "ShopManagerSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "CraftingRegistrySO"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "UpgradeableState"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "UpgradeableComponent"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "UpgradeSalvageManagerSO",
+            "target": "SalvageRecipeSO"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "HUDView"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "UIManager"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "PlayerInventoryView"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "UIManager"
+        },
+        {
+            "source": "InventoryScreenController",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "ShopManagerSO"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "MageView"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "UIManager"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "MageScreenController",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "SkillMenuController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "SkillMenuController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "UISkillEventsSO"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "PlayerSkillView"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "UIManager"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "SkillsScreenController",
+            "target": "SkillsPayload"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "ShopManagerSO"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "CraftingManagerSO"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "SalvageManagerSO"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "SmithView"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "UIManager"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "SmithScreenController",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "ScreenTypes",
+            "target": "ScreenType"
+        },
+        {
+            "source": "UIEventsSO",
+            "target": "ScreenType"
+        },
+        {
+            "source": "UIInventoryEventsSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "UIInventoryEventsSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "UIInventoryEventsSO",
+            "target": "SalvageType"
+        },
+        {
+            "source": "UIInventoryEventsSO",
+            "target": "EquipmentSlot"
+        },
+        {
+            "source": "UIInventoryEventsSO",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "UIInventoryEventsSO",
+            "target": "InventoryInteractionContext"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "SaveManager"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "MainMenuView"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "MainMenuUIManager"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "SaveSlotData"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "SaveSlotIndex"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "SaveMetadata"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "ConfirmationPayload"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "MainMenuController",
+            "target": "GameSaveData"
+        },
+        {
+            "source": "MainMenuUIManager",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "MainMenuUIManager",
+            "target": "GameView"
+        },
+        {
+            "source": "MainMenuUIManager",
+            "target": "ScreenType"
+        },
+        {
+            "source": "MainMenuView",
+            "target": "GameView"
+        },
+        {
+            "source": "MainMenuView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "MainMenuView",
+            "target": "SaveSlotView"
+        },
+        {
+            "source": "MainMenuView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "MainMenuView",
+            "target": "SaveSlotData"
+        },
+        {
+            "source": "SaveSlotView",
+            "target": "UIView"
+        },
+        {
+            "source": "SaveSlotView",
+            "target": "SaveSlotData"
+        },
+        {
+            "source": "SkillManager",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "SkillManager",
+            "target": "UISkillEventsSO"
+        },
+        {
+            "source": "PauseMenuController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "PauseMenuController",
+            "target": "PauseMenuView"
+        },
+        {
+            "source": "PauseMenuController",
+            "target": "UIManager"
+        },
+        {
+            "source": "PauseMenuController",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "PauseMenuController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "PauseMenuView",
+            "target": "GameView"
+        },
+        {
+            "source": "PauseMenuView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "PauseMenuView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "GameView",
+            "target": "UIView"
+        },
+        {
+            "source": "GameView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "GameView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "GameView",
+            "target": "UIEvents"
+        },
+        {
+            "source": "HUDView",
+            "target": "GameView"
+        },
+        {
+            "source": "HUDView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "HUDView",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "HUDView",
+            "target": "PlayerPotionHUDView"
+        },
+        {
+            "source": "HUDView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "HUDView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "HUDView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "HUDView",
+            "target": "UIEvents"
+        },
+        {
+            "source": "MageView",
+            "target": "GameView"
+        },
+        {
+            "source": "MageView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "MageView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "MageView",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "MageView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "MageView",
+            "target": "ShopManagerSO"
+        },
+        {
+            "source": "MageView",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "MageView",
+            "target": "ShopSubView"
+        },
+        {
+            "source": "MageView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "PlayerPotionHUDView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerPotionHUDView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "PlayerPotionHUDView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "PlayerPotionHUDView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "PlayerSkillView",
+            "target": "GameView"
+        },
+        {
+            "source": "PlayerSkillView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "PlayerSkillView",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "PlayerSkillView",
+            "target": "UISkillEventsSO"
+        },
+        {
+            "source": "PlayerSkillView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "UIManager",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "UIManager",
+            "target": "GameView"
+        },
+        {
+            "source": "UIManager",
+            "target": "ScreenZone"
+        },
+        {
+            "source": "UIManager",
+            "target": "ScreenType"
+        },
+        {
+            "source": "ConfirmationModalController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "ConfirmationModalController",
+            "target": "ConfirmationModalView"
+        },
+        {
+            "source": "ConfirmationModalController",
+            "target": "MainMenuUIManager"
+        },
+        {
+            "source": "ConfirmationModalController",
+            "target": "ConfirmationPayload"
+        },
+        {
+            "source": "ConfirmationModalController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "ConfirmationModalView",
+            "target": "GameView"
+        },
+        {
+            "source": "ConfirmationModalView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "ConfirmationModalView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "ConfirmationModalView",
+            "target": "ConfirmationPayload"
+        },
+        {
+            "source": "SettingsMenuController",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "SettingsMenuController",
+            "target": "SettingsMenuView"
+        },
+        {
+            "source": "SettingsMenuController",
+            "target": "MainMenuUIManager"
+        },
+        {
+            "source": "SettingsMenuController",
+            "target": "ScreenType"
+        },
+        {
+            "source": "SettingsMenuView",
+            "target": "GameView"
+        },
+        {
+            "source": "SettingsMenuView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "SettingsMenuView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "UIDragManager",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerEquipmentView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerEquipmentView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "PlayerEquipmentView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "PlayerEquipmentView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "PlayerEquipmentView",
+            "target": "EquipableComponent"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "GameView"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "PlayerEquipmentView"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "PlayerStatsView"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "PlayerPotionView"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "InventoryInteractionContext"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "SalvageType"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "ConsumableComponent"
+        },
+        {
+            "source": "PlayerInventoryView",
+            "target": "EquipableComponent"
+        },
+        {
+            "source": "PlayerPotionView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerPotionView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "PlayerPotionView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "PlayerPotionView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "PlayerStatsView",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "PlayerStatsView",
+            "target": "PlayerResolvedEffects"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "UIView"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "CraftingManagerSO"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "ForgeSubView",
+            "target": "CraftingRecipeSO"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "UIView"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "SalvageManagerSO"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "InventoryInteractionContext"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "SalvageRecipeSO"
+        },
+        {
+            "source": "SalvageSubView",
+            "target": "SalvageType"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "UIView"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "InventorySlotView"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "InventoryInteractionContext"
+        },
+        {
+            "source": "ShopSubView",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "SmithView",
+            "target": "GameView"
+        },
+        {
+            "source": "SmithView",
+            "target": "ScreenType"
+        },
+        {
+            "source": "SmithView",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "SmithView",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "SmithView",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "SmithView",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "SmithView",
+            "target": "CraftingManagerSO"
+        },
+        {
+            "source": "SmithView",
+            "target": "SalvageManagerSO"
+        },
+        {
+            "source": "SmithView",
+            "target": "ShopSubView"
+        },
+        {
+            "source": "SmithView",
+            "target": "ForgeSubView"
+        },
+        {
+            "source": "SmithView",
+            "target": "SalvageSubView"
+        },
+        {
+            "source": "SmithView",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "ItemComponent",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "ItemComponent",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "ItemInstance",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "ItemInstance",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "WorldItem",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "WorldItem",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "WorldItem",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "ConsumableEffectMode"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "ConsumptionSlot"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "PlayerEffectDefinitionSO"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "PlayerConsumableController"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "ConsumableModule",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "DefensiveModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "EquipableModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "EquipableModule",
+            "target": "EquipmentSlot"
+        },
+        {
+            "source": "EquipableModule",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "EvolvingItemModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "EvolvingItemModule",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "EvolvingItemModule",
+            "target": "EvolvingState"
+        },
+        {
+            "source": "OffensiveModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "ProgressionModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "ProgressionModule",
+            "target": "ProgressionCategory"
+        },
+        {
+            "source": "UpgradeableModule",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "UpgradeableModule",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "UpgradeableModule",
+            "target": "UpgradeableState"
+        },
+        {
+            "source": "GameSaveData",
+            "target": "SavedInventoryData"
+        },
+        {
+            "source": "GameSaveData",
+            "target": "SavedSlotData"
+        },
+        {
+            "source": "GameSaveData",
+            "target": "SavedItemData"
+        },
+        {
+            "source": "GameSaveData",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "SaveManager",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "SaveManager",
+            "target": "UIEventsSO"
+        },
+        {
+            "source": "SaveManager",
+            "target": "GameSaveData"
+        },
+        {
+            "source": "SaveManager",
+            "target": "SaveSlotIndex"
+        },
+        {
+            "source": "SaveManager",
+            "target": "SaveMetadata"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "PlayerStats"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "PlayerStatsAnchorSO"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "PlayerEffectSourceController"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "PlayerConsumableController"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "PlayerConsumableUseContext"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "EquipmentSlot"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "InventoryActionController",
+            "target": "PlayerInventorySceneResolver"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "InventoryContainerSO"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "SlotFilterType"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "ScreenType"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "InventoryManager",
+            "target": "ItemComponent"
+        },
+        {
+            "source": "InventoryTransferManagerSO",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "InventoryTransferManagerSO",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "InventoryTransferManagerSO",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "InventoryTransferManagerSO",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "ItemPicker",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "ItemPicker",
+            "target": "PlayerInventorySceneResolver"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "ConsumableEffectMode"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "ConsumptionSlot"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "PlayerConsumableUseContext"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "PlayerStatsAnchorSO"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "PlayerStats"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "PlayerEffectSourceController"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "ConsumableComponent"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "PlayerConsumableController",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "PlayerInventorySceneResolver",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "PlayerInventorySceneResolver",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "PlayerInventorySceneResolver",
+            "target": "PlayerStatsAnchorSO"
+        },
+        {
+            "source": "PlayerInventorySceneResolver",
+            "target": "ScreenType"
+        },
+        {
+            "source": "EquipmentEffectBridge",
+            "target": "PlayerEquipmentController"
+        },
+        {
+            "source": "EquipmentEffectBridge",
+            "target": "PlayerEffectSourceController"
+        },
+        {
+            "source": "EquipmentEffectBridge",
+            "target": "EquipmentSlot"
+        },
+        {
+            "source": "EquipmentEffectBridge",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "EquipmentEffectBridge",
+            "target": "EquippedItemEffectSource"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "IPlayerEffectSource"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "PlayerEffectModifier"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "EquippedItemComputedStats"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "EquippedItemStatCalculator"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "PlayerEffectType"
+        },
+        {
+            "source": "EquippedItemEffectSource",
+            "target": "PlayerEffectModifierMode"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "EquippedItemComputedStats"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "EquipableComponent"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "OffensiveComponent"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "DefensiveComponent"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "EvolvingComponent"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "UpgradeableState"
+        },
+        {
+            "source": "EquippedItemStatCalculator",
+            "target": "EvolvingState"
+        },
+        {
+            "source": "PlayerEquipmentController",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "PlayerEquipmentController",
+            "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "PlayerEquipmentController",
+            "target": "EquipmentSlot"
+        },
+        {
+            "source": "PlayerEquipmentController",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "PlayerEquipmentController",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "IPlayerEffectSource",
+            "target": "PlayerEffectModifier"
+        },
+        {
+            "source": "PlayerEffectDefinitionSO",
+            "target": "PlayerEffectModifier"
+        },
+        {
+            "source": "PlayerEffectModifier",
+            "target": "PlayerEffectType"
+        },
+        {
+            "source": "PlayerEffectModifier",
+            "target": "PlayerEffectModifierMode"
+        },
+        {
+            "source": "PlayerEffectResolver",
+            "target": "PlayerResolvedEffects"
+        },
+        {
+            "source": "PlayerEffectResolver",
+            "target": "PlayerBaseEffectsSO"
+        },
+        {
+            "source": "PlayerEffectResolver",
+            "target": "PlayerEffectModifier"
+        },
+        {
+            "source": "PlayerEffectResolver",
+            "target": "PlayerEffectType"
+        },
+        {
+            "source": "PlayerEffectResolver",
+            "target": "PlayerEffectModifierMode"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "PlayerBaseEffectsSO"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "IPlayerEffectSource"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "PlayerEffectModifier"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "PlayerResolvedEffects"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "PlayerEffectDefinitionSO"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "StaticPlayerEffectSource"
+        },
+        {
+            "source": "PlayerEffectSourceController",
+            "target": "PlayerEffectResolver"
+        },
+        {
+            "source": "PlayerEffectSourceRuntime",
+            "target": "IPlayerEffectSource"
+        },
+        {
+            "source": "PlayerEffectSourceRuntime",
+            "target": "PlayerEffectDefinitionSO"
+        },
+        {
+            "source": "PlayerEffectSourceRuntime",
+            "target": "PlayerEffectModifier"
+        },
+        {
+            "source": "PlayerProgression",
+            "target": "PlayerProgressionConfigSO"
+        },
+        {
+            "source": "PlayerProgression",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "PlayerProgression",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "PlayerProgression",
+            "target": "PlayerRuntimeProgression"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerResourceChangeReason"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerEffectSourceController"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerStatsAnchorSO"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerRuntimeStats"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerResolvedEffects"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerResourceChangeContext"
+        },
+        {
+            "source": "PlayerStats",
+            "target": "PlayerEffectResolver"
+        },
+        {
+            "source": "PlayerStatusController",
+            "target": "PlayerStats"
+        },
+        {
+            "source": "PlayerStatusController",
+            "target": "PlayerStatusEffectType"
+        },
+        {
+            "source": "PlayerStatusController",
+            "target": "PlayerStatusInstance"
+        },
+        {
+            "source": "PlayerStatusController",
+            "target": "PlayerResolvedEffects"
+        },
+        {
+            "source": "PlayerStatusInstance",
+            "target": "PlayerStatusEffectType"
+        },
+        {
+            "source": "PlayerProgressionAnchorSO",
+            "target": "PlayerProgression"
+        },
+        {
+            "source": "PlayerStatsAnchorSO",
+            "target": "PlayerStats"
+        },
+        {
+            "source": "CharacterAnimSO",
+            "target": "NameMap"
+        },
+        {
+            "source": "PlayerAnimationController",
+            "target": "PlayerAnimationView"
+        },
+        {
+            "source": "PlayerAnimationController",
+            "target": "CharacterAnimSO"
+        },
+        {
+            "source": "PlayerAnimationController",
+            "target": "AnimState"
+        },
+        {
+            "source": "PlayerAnimationController",
+            "target": "ActionRuntime"
+        },
+        {
+            "source": "PlayerAnimationPresenter",
+            "target": "PlayerAnimationController"
+        },
+        {
+            "source": "PlayerAnimationPresenter",
+            "target": "PlayerStats"
+        },
+        {
+            "source": "PlayerAnimationView",
+            "target": "CharacterAnimSO"
+        },
+        {
+            "source": "PlayerHUDBridge",
+            "target": "PlayerStats"
+        },
+        {
+            "source": "PlayerHUDBridge",
+            "target": "PlayerProgression"
+        },
+        {
+            "source": "PlayerHUDBridge",
+            "target": "PlayerStatusController"
+        },
+        {
+            "source": "PlayerHUDBridge",
+            "target": "PlayerStatusEffectType"
+        },
+        {
+            "source": "PlayerHUDBridge",
+            "target": "PlayerResolvedEffects"
+        }
+    ]
+}

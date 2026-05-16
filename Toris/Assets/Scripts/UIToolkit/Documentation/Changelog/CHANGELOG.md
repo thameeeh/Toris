@@ -1,3 +1,12 @@
+## [Current/Recent] - Code Dependency Visualizer Implementation
+* **AST-Based Parser:** Implemented `CodeDependencyParser.cs` using Microsoft.CodeAnalysis (Roslyn) to perform a two-pass scan of the codebase.
+    * **Type Registry:** Identifies all custom classes, interfaces, and structs to create a whitelist for dependency tracking.
+    * **Dependency Mapping:** Analyzes `IdentifierNameSyntax` nodes to build an edge list of script-to-script relationships.
+* **2D Physics Visualization:** Created `GraphVisualizer.cs` to render dependencies as a "floating balloon" graph using Unity's 2D physics engine.
+    * **Spring Dynamics:** Uses `SpringJoint2D` to create elastic connections between dependent scripts, allowing the graph to self-organize.
+    * **Drift Physics:** Implemented `BalloonPhysics2D.cs` to apply gentle centering forces and random wobble for a "living" visual effect.
+* **Smart Filtering:** Added a strict whitelist to the parser (filtering for `Assets/Scripts` and `Assets/UI`) and explicitly excluded `Editor` folders to ensure the graph only displays relevant game logic.
+
 ## [Current/Recent] - Fix Potion and Equipment Inventory Scene Loading
 * **Persistent Inventory Snapshots:** Refactored `GameSessionSO` to prevent clearing inventory snapshots after they are applied. This ensures inventory data remains available across multiple scene transitions and re-instantiations.
 * **Potion Inventory Integration:** Added full support for the Potion inventory to the scene transition and save systems.

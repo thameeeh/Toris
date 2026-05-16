@@ -142,15 +142,10 @@ namespace OutlandHaven.Inventory
 
         private static bool IsPlayerInventory(InventoryManager inventoryManager)
         {
-            if (inventoryManager == null || inventoryManager.ContainerBlueprint == null)
-                return false;
-
-            // Priority 1: Explicitly marked as backpack
-            if (inventoryManager.ContainerBlueprint.IsBackpack)
-                return true;
-
-            // Priority 2: Matches the standard inventory view and is NOT equipment
-            return inventoryManager.ContainerBlueprint.AssociatedView == ScreenType.Inventory
+            // CRITICAL FIX: Added !inventoryManager.ContainerBlueprint.IsEquipment
+            return inventoryManager != null
+                   && inventoryManager.ContainerBlueprint != null
+                   && inventoryManager.ContainerBlueprint.AssociatedView == ScreenType.Inventory
                    && !inventoryManager.ContainerBlueprint.IsEquipment;
         }
 
@@ -166,11 +161,27 @@ namespace OutlandHaven.Inventory
             if (inventoryManager == null)
                 return false;
 
-            // Check blueprint first (most reliable)
-            if (inventoryManager.ContainerBlueprint != null && inventoryManager.ContainerBlueprint.IsEquipment)
-                return true;
+            // CRITICAL FIX: Check the Blueprint and Filters first, just like InventoryManager.cs does
+            if (inventoryManager.ContainerBlueprint != null)
+            {
+                if (inventoryManager.ContainerBlueprint.IsEquipment) return true;
 
-            // Fallback to name-based check
+                if (inventoryManager.ContainerBlueprint.PredefinedFilters != null &&
+                    inventoryManager.ContainerBlueprint.PredefinedFilters.Length > 0)
+                {
+                    SlotFilterType firstFilter = inventoryManager.ContainerBlueprint.PredefinedFilters[0];
+                    if (firstFilter == SlotFilterType.Head ||
+                        firstFilter == SlotFilterType.Chest ||
+                        firstFilter == SlotFilterType.Legs ||
+                        firstFilter == SlotFilterType.Arms ||
+                        firstFilter == SlotFilterType.Weapon)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // Fallback to name check
             string objectName = inventoryManager.gameObject.name;
             return !string.IsNullOrEmpty(objectName)
                    && objectName.IndexOf("Equip", StringComparison.OrdinalIgnoreCase) >= 0;

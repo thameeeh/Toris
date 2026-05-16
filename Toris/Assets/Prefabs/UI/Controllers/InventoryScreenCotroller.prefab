@@ -51,4 +51,4 @@ MonoBehaviour:
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   _equipmentInventory: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
   _potionInventory: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
-  _playerHUDBridge: {fileID: 7521690604036978262, guid: 6659019b470d9fb469ea854cc5c8da24, type: 3}
+  _playerHUDBridge: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}

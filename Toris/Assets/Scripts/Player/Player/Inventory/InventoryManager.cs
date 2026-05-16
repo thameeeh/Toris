@@ -7,8 +7,6 @@ namespace OutlandHaven.Inventory
 {
     public class InventoryManager : MonoBehaviour
     {
-        private const string EquipmentNameToken = "Equip";
-
         [Tooltip("A unique string ID for the save system (e.g., 'PlayerBackpack' or 'Chest_01')")]
         public string SaveID;
 
@@ -110,7 +108,7 @@ namespace OutlandHaven.Inventory
                 }
 
                 EnsureSlotItemStates();
-                ValidateSceneSlotStacking();
+                //ValidateSceneSlotStacking();
             }
         }
 #endif
@@ -127,13 +125,13 @@ namespace OutlandHaven.Inventory
                 {
                     GlobalSession.PlayerInventory = this;
                 }
-                else if (LooksLikeEquipmentContainer())
-                {
-                    GlobalSession.PlayerEquipment = this; // Bind the equipment!
-                }
                 else if (IsPotionContainer())
                 {
                     GlobalSession.PlayerPotionInventory = this;
+                }
+                else if (LooksLikeEquipmentContainer())
+                {
+                    GlobalSession.PlayerEquipment = this; // Bind the equipment!
                 }
             }
         }
@@ -405,10 +403,8 @@ namespace OutlandHaven.Inventory
                 }
             }
 
-            // Fallback: GameObject name contains "Equip"
-            string objectName = gameObject != null ? gameObject.name : string.Empty;
-            return !string.IsNullOrEmpty(objectName)
-                   && objectName.IndexOf(EquipmentNameToken, StringComparison.OrdinalIgnoreCase) >= 0;
+            //Debug.LogError($"[Inventory] Container '{gameObject.name}' does not have a valid blueprint or identifiable type for state management.", this);
+            return false;
         }
 
         private GameSessionSO ResolveGlobalSession()

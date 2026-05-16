@@ -208,7 +208,7 @@ namespace OutlandHaven.Inventory
                             // Invoke the cross-container swap logic
                             OnLocalMoveItemRequested?.Invoke(_owningContainer, _slotData, targetSlotData.Container, targetSlotData.Slot, _dragAmount);
                             string itemName = (_slotData.HeldItem?.BaseItem != null) ? _slotData.HeldItem.BaseItem.ItemName : "Unknown Item";
-                            Debug.Log($"FIRING EVENT: Moving {itemName} to new slot.");
+                            //Debug.Log($"FIRING EVENT: Moving {itemName} to new slot.");
                         }
                     }
                 }

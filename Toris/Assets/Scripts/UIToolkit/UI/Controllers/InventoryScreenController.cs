@@ -17,6 +17,7 @@ namespace OutlandHaven.Inventory
         [Tooltip("The InventoryManager configured to act as the equipment container (e.g. 5 slots).")]
         [SerializeField] private InventoryManager _equipmentInventory;
         [SerializeField] private InventoryManager _potionInventory;
+        [SerializeField] private InventoryManager _playerInventory;
 
         [Header("Player Data")]
         [SerializeField] private PlayerHUDBridge _playerHUDBridge;
@@ -40,6 +41,13 @@ namespace OutlandHaven.Inventory
 
         private void Start()
         {
+            _playerInventory = PlayerInventorySceneResolver.
+                                ResolvePlayerInventory(this, _playerInventory);
+            _equipmentInventory = PlayerInventorySceneResolver.
+                                ResolveEquipmentInventory(this, _equipmentInventory, _playerInventory);
+            _potionInventory = PlayerInventorySceneResolver.
+                                ResolvePotionInventory(_potionInventory);
+
             TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
             
             inventoryInstance.style.flexGrow = 1; // Make it fill the parent container

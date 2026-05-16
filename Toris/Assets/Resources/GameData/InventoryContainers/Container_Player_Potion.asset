@@ -15,4 +15,5 @@ MonoBehaviour:
   SlotCount: 2
   AssociatedView: 5
   IsEquipment: 0
-  PredefinedFilters: 6300000063000000
+  IsBackpack: 0
+  PredefinedFilters: 63000000

@@ -49,6 +49,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryScreenCotroller
       objectReference: {fileID: 0}
+    - target: {fileID: 3086192249901852686, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
+      propertyPath: _playerInventory
+      value: 
+      objectReference: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
     - target: {fileID: 8268620254510869029, guid: 90c41f0a8f561e24d92029a7734075fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.01226

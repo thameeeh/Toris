@@ -119,7 +119,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &3267824547316367940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,3 +134,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BalloonPhysics
   centerForce: 0.5
   jitterAmount: 0.2
+  repulsionForce: 10
+  repulsionRange: 3

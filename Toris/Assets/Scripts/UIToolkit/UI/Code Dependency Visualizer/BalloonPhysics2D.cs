@@ -18,8 +18,13 @@ public class BalloonPhysics2D : MonoBehaviour
         Vector2 directionToCenter = (Vector2)transform.position * -1;
         rb.AddForce(directionToCenter * centerForce);
 
-        // 2. Repulsion from other balloons to prevent overlapping
+        // 2. Adaptive Repulsion (Crowding Awareness)
         Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, repulsionRange);
+        
+        // The more neighbors, the more "pressure" this node feels.
+        // This causes lines to 'extend' or stretch when a third-party script gets too close.
+        float pressureMultiplier = 1f + (nearby.Length * 2.0f);
+
         foreach (var other in nearby)
         {
             if (other.gameObject == gameObject) continue;
@@ -29,8 +34,10 @@ public class BalloonPhysics2D : MonoBehaviour
             
             if (distance < 0.1f) distance = 0.1f; // Prevent division by zero
             
-            // Stronger push the closer they are
-            rb.AddForce(diff.normalized * (repulsionForce / distance));
+            // Use Inverse Square for much stronger push at close range
+            // F = (Repulsion * Pressure) / Distance^2
+            float force = (repulsionForce * pressureMultiplier) / (distance * distance);
+            rb.AddForce(diff.normalized * force);
         }
 
         // 3. Tiny bit of noise/wobble

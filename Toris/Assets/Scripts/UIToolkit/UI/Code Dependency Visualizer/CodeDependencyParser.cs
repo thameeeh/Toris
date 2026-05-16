@@ -18,8 +18,6 @@ public class CodeDependencyParser : EditorWindow
             "Scripts/Items",
             "Scripts/Save System",
             "Scripts/Player/Player/Inventory",
-            "Scripts/Player/Player/Equipment",
-            "Scripts/Player/Player/Status",
             "Scripts/Player/Player/Anchors",
             "Scripts/Player/Player/View",
             "UI_Toolkit"
@@ -35,7 +33,15 @@ public class CodeDependencyParser : EditorWindow
             "GraphCameraController",
             "IUsable",
             "IEquipable",
-            "IContainerInteractable"
+            "IContainerInteractable",
+            "CharacterAnimSO",
+            "PlayerAnimationController",
+            "PlayerAnimationPresenter",
+            "PlayerAnimationView",
+            "PlayerAnimationController",
+            "ItemPicker",
+            "InventoryActionDebugger",
+            "IInteractable"
         };
 
         List<string> filesList = new List<string>();

@@ -1,4 +1,12 @@
 <<<<<<< Updated upstream
+## [Current/Recent] - Extended Global Registration: PlayerHUDBridge
+* **Consistency Refactor:** Extended the "Strict Global Registration" pattern to the `PlayerHUDBridge`, removing redundant `[SerializeField]` fields across all UI controllers.
+* **Centralized Access:** UI controllers (`HudScreenController`, `InventoryScreenController`, `MageScreenController`, `SkillsScreenController`, `SmithScreenController`) now resolve the `PlayerHUDBridge` reference exclusively via `GameSessionSO.PlayerHUD`.
+* **Simplified Initialization:**
+    * **Auto-Registration:** `PlayerHUDBridge` now handles its own registration with the global session during its `OnEnable` lifecycle.
+    * **Decoupled Discovery:** Removed manual `FindFirstObjectByType<PlayerHUDBridge>()` calls from controllers, improving scene load performance and reducing script coupling.
+* **Vulnerability Mitigation:** Further reduced the "Prefab Trap" surface area by eliminating more manual inspector assignments for core runtime components.
+
 ## [Current/Recent] - Inventory Architecture Refactor: Strict Global Registration
 * **Structural Safety:** Eliminated the "Prefab Trap" by removing redundant `[SerializeField]` fields for global inventories in `InventoryActionController`, `InventoryScreenController`, and `PlayerEquipmentController`.
 * **Single Source of Truth:** Refactored all controllers to exclusively query `GameSessionSO` for core player inventories (Backpack, Equipment, Potions), ensuring they always target live scene instances instead of project assets.

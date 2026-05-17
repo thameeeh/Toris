@@ -42,6 +42,7 @@ namespace OutlandHaven.UIToolkit
         [System.NonSerialized] public InventoryManager PlayerInventory;
         [System.NonSerialized] public InventoryManager PlayerEquipment;
         [System.NonSerialized] public InventoryManager PlayerPotionInventory;
+        [System.NonSerialized] public PlayerHUDBridge PlayerHUD;
 
         [Header("Global Anchors")]
         public PlayerProgressionAnchorSO ProgressionAnchor;
@@ -70,6 +71,7 @@ namespace OutlandHaven.UIToolkit
             PlayerInventory = null;
             PlayerEquipment = null;
             PlayerPotionInventory = null;
+            PlayerHUD = null;
             _snapshotRegistry.Clear();
         }
 

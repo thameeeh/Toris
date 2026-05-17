@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using OutlandHaven.UIToolkit;
 
 // PURPOSE:
 // - UI-facing bridge for player runtime data
@@ -12,6 +13,8 @@ public class PlayerHUDBridge : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerProgression _playerProgression;
     [SerializeField] private PlayerStatusController _playerStatusController;
+
+    private GameSessionSO _globalSession;
 
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnStaminaChanged;
@@ -57,6 +60,12 @@ public class PlayerHUDBridge : MonoBehaviour
 
     private void OnEnable()
     {
+        _globalSession = GameSessionSO.LoadDefault();
+        if (_globalSession != null)
+        {
+            _globalSession.PlayerHUD = this;
+        }
+
         if (_playerStats != null)
         {
             _playerStats.OnHealthChanged += HandleHealthChanged;
@@ -80,6 +89,11 @@ public class PlayerHUDBridge : MonoBehaviour
 
     private void OnDisable()
     {
+        if (_globalSession != null && _globalSession.PlayerHUD == this)
+        {
+            _globalSession.PlayerHUD = null;
+        }
+
         if (_playerStats != null)
         {
             _playerStats.OnHealthChanged -= HandleHealthChanged;

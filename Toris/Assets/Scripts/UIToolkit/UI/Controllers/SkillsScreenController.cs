@@ -9,7 +9,6 @@ namespace OutlandHaven.UIToolkit
         [Header("Dependencies")]
         [SerializeField] private VisualTreeAsset _skillsMainTemplate; // <--- Drag SkillScreen.uxml here
         [SerializeField] private UIEventsSO _uiEvents;
-        [SerializeField] private PlayerHUDBridge _playerHudBridge;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UISkillEventsSO uiSkillEvents;
 
@@ -23,12 +22,8 @@ namespace OutlandHaven.UIToolkit
         private void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
-            if (_playerHudBridge == null)
-            {
-                _playerHudBridge = FindFirstObjectByType<PlayerHUDBridge>();
-            }
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
         }
-
         private void Start()
         {
             if (_skillsMainTemplate == null)

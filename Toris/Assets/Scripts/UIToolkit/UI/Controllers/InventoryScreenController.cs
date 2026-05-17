@@ -14,8 +14,6 @@ namespace OutlandHaven.Inventory
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
 
         [Header("Player Data")]
-        [SerializeField] private PlayerHUDBridge _playerHUDBridge;
-
         private PlayerInventoryView _view;
         private UIManager _uiManager;
 
@@ -44,13 +42,12 @@ namespace OutlandHaven.Inventory
 
             _view = new PlayerInventoryView(inventoryInstance, _slotTemplate,
                 _gameSession, _uiEvents, _uiInventoryEvents,
-                _gameSession.PlayerEquipment, _gameSession.PlayerPotionInventory, _playerHUDBridge);
+                _gameSession.PlayerEquipment, _gameSession.PlayerPotionInventory, _gameSession.PlayerHUD);
             _view.Initialize();
 
             // Register to the RIGHT zone
             _uiManager.RegisterView(_view, ScreenZone.Right);
-        }
-        private void OnValidate()
+        }        private void OnValidate()
         {
             if (_uiEvents == null)
             {

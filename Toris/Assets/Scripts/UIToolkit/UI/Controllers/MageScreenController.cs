@@ -14,21 +14,18 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
-        [SerializeField] private PlayerHUDBridge _playerHudBridge;
         [SerializeField] private ShopManagerSO _shopManagerSO;
 
         private MageView _view;
         private UIManager _uiManager;
-        private PlayerHUDBridge _bridge;
 
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
-            _bridge = _playerHudBridge != null ? _playerHudBridge : FindFirstObjectByType<PlayerHUDBridge>();
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
 
             if(_shopManagerSO != null) _shopManagerSO.Initialize();
         }
-
         private void OnEnable()
         {
             if (_uiEvents != null)
@@ -77,10 +74,11 @@ namespace OutlandHaven.UIToolkit
         private void Start()
         {
             if (_mageMainTemplate == null || _slotTemplate == null) return;
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
 
             TemplateContainer mageInstance = _mageMainTemplate.Instantiate();
 
-            _view = new MageView(mageInstance, _slotTemplate, _shopTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopManagerSO, _bridge);
+            _view = new MageView(mageInstance, _slotTemplate, _shopTemplate, _uiEvents, _uiInventoryEvents, _gameSession, _shopManagerSO, _gameSession.PlayerHUD);
             _view.Initialize();
 
             _uiManager.RegisterView(_view, ScreenZone.Left);

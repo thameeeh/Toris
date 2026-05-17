@@ -14,12 +14,12 @@ The `GameSessionSO` (ScriptableObject) is the primary architectural hub of the p
 
 ### A. Runtime References (Pointers)
 The `GameSessionSO` holds references to live `MonoBehaviour` components currently in the scene.
-- **Fields:** `PlayerInventory`, `PlayerEquipment`, `PlayerPotionInventory`.
+- **Fields:** `PlayerInventory`, `PlayerEquipment`, `PlayerPotionInventory`, `PlayerHUD`.
 - **Constraint:** These fields are marked `[System.NonSerialized]`. They live only in RAM and are never saved into the ScriptableObject asset file itself.
 - **Safety Rule:** These references are "Volatile." They are cleared on `OnDisable` by the source components to prevent "MissingReferenceException" (Dangling Pointers) when a scene unloads.
 
 ### B. Progression & Stats
-- **Health/Stamina:** Managed via `PlayerStatsAnchorSO` to decouple the UI from the Player GameObject.
+- **Health/Stamina:** Managed via `PlayerHUDBridge` (available at `GlobalSession.PlayerHUD`) to decouple the UI from the Player GameObject.
 - **Gold/XP:** Stored in the session to ensure currency carries over between expeditions.
 
 ---

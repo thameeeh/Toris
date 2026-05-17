@@ -13,16 +13,15 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
-        [SerializeField] private InventoryManager _potionInventory;
 
         private HUDView _view;
         private UIManager _uiManager;
-        private PlayerHUDBridge _playerHudBridge;
+        private InventoryManager _potionInventory;
 
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
-            _playerHudBridge = FindFirstObjectByType<PlayerHUDBridge>();
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
         }
 
         private void OnEnable()
@@ -34,17 +33,20 @@ namespace OutlandHaven.UIToolkit
         private void Start()
         {
             if (_hudMainTemplate == null) return;
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
+
+            _potionInventory = _gameSession.PlayerPotionInventory;
 
             // 1. Instantiate the UI from the asset
             TemplateContainer hudInstance = _hudMainTemplate.Instantiate();
 
-            if (_playerHudBridge == null)
+            if (_gameSession.PlayerHUD == null)
             {
-                Debug.LogWarning($"[UI/Inventory] <b><color=yellow>HudScreenController</color></b> must be on active <b><color=green>GameObject</color></b>");
+                Debug.LogWarning($"[UI/Inventory] <b><color=yellow>HudScreenController</color></b>: PlayerHUD reference in GameSession is null! Ensure PlayerHUDBridge is active in the scene.");
             }
 
             // 2. Pass the INSTANCE to the View
-            _view = new HUDView(hudInstance, _playerHudBridge, _uiEvents, _uiInventoryEvents, _buttonTemplate, _slotTemplate);
+            _view = new HUDView(hudInstance, _gameSession.PlayerHUD, _uiEvents, _uiInventoryEvents, _buttonTemplate, _slotTemplate);
             _view.Initialize();
             _view.Setup(_potionInventory);
 

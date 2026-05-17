@@ -1,4 +1,12 @@
 <<<<<<< Updated upstream
+## [Current/Recent] - UI/UX: Refined Escape Key Behavior
+* **Input Priority:** Modified the Pause Menu logic to respect open UI windows. Pressing ESC while a window (Inventory, Skills, etc.) is open will now close the window first. A second press is required to open the Pause Menu.
+* **Architecture Enhancement:** Added `IsAnyWindowOpen()` to `UIManager` to provide a centralized check for active UI state across different controllers.
+
+## [Current/Recent] - HUD Layout Optimization: Potion Quickbar Relocation
+* **UI UX Improvement:** Relocated the HUD Potion Quickbar from the screen center to the left side, grouped with the player's core stats (Health/XP) for better visual focus.
+* **Flexbox Layout Fix:** Adjusted `HUD.uss` margins to group the `hud__left-container` and `hud-potion-bar` using flexbox alignment (`margin-right: auto` on the potion bar), ensuring the layout remains responsive without breaking container width constraints.
+
 ## [Current/Recent] - Extended Global Registration: PlayerHUDBridge
 * **Consistency Refactor:** Extended the "Strict Global Registration" pattern to the `PlayerHUDBridge`, removing redundant `[SerializeField]` fields across all UI controllers.
 * **Centralized Access:** UI controllers (`HudScreenController`, `InventoryScreenController`, `MageScreenController`, `SkillsScreenController`, `SmithScreenController`) now resolve the `PlayerHUDBridge` reference exclusively via `GameSessionSO.PlayerHUD`.

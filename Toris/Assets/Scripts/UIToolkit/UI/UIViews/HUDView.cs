@@ -92,8 +92,7 @@ namespace OutlandHaven.UIToolkit
 
             CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
             CreateMenuButton("Skills", "(U)", ScreenType.Skills);
-            CreateMenuButton("Shop", "(T)", ScreenType.PlayerEquipment);
-            CreateMenuButton("Map", "(P)", ScreenType.PlayerEquipment);
+            CreateMenuButton("Pause", "(ESC)", ScreenType.PauseMenu);
             // Add other buttons here
         }
 

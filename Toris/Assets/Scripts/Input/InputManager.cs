@@ -22,6 +22,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     [SerializeField] private string[] _combatDisabledSceneNames = { "MainArea" };
 
     private InputSystem_Actions _inputActions;
+    private int _lastFrameEscapeProcessed = -1;
 
     private void OnEnable()
     {
@@ -158,7 +159,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             _itemPicker.OnItemPick?.Invoke();
     }
     public void OnNext(InputAction.CallbackContext context) { /* Handle Next */ }
-    public void OnPause(InputAction.CallbackContext context) {}
+    public void OnPause(InputAction.CallbackContext context) 
+    {
+        HandleEscapeLogic(context);
+    }
     public void OnPrevious(InputAction.CallbackContext context) { /* Handle Previous */ }
 
     public void OnAbility3(InputAction.CallbackContext context)
@@ -213,10 +217,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnSubmit(InputAction.CallbackContext context) { }
     public void OnCancel(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            _uiEvents.OnRequestCloseAll?.Invoke();
-        }
+        HandleEscapeLogic(context);
     }
     public void OnPoint(InputAction.CallbackContext context) { }
     public void OnClick(InputAction.CallbackContext context) { }
@@ -225,6 +226,23 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnScrollWheel(InputAction.CallbackContext context) { }
     public void OnTrackedDevicePosition(InputAction.CallbackContext context) { }
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context) { }
+
+    private void HandleEscapeLogic(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (_lastFrameEscapeProcessed == Time.frameCount) return;
+
+        _lastFrameEscapeProcessed = Time.frameCount;
+
+        if (HasGameplayInputBlockers())
+        {
+            _uiEvents.OnRequestCloseAll?.Invoke();
+        }
+        else
+        {
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.PauseMenu, null);
+        }
+    }
 
     public void OnToggleInventory(InputAction.CallbackContext context)
     {

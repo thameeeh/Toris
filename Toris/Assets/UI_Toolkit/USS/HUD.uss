@@ -16,7 +16,6 @@
 
 #hud__left-container {
     width: 300px;
-    margin-right: auto;
     flex-shrink: 1;
     flex-grow: 0.1;
 }
@@ -144,6 +143,7 @@
     align-items: center;
     margin-bottom: 5px;
     margin-left: 20px;
+    margin-right: auto;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 12px;

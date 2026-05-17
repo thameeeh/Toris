@@ -129,12 +129,21 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void CloseAllWindows()
+        public void CloseAllWindows()
         {
             foreach (var view in _allViews)
             {
                 if (view.ID != ScreenType.HUD) view.Hide();
             }
+        }
+
+        public bool IsAnyWindowOpen()
+        {
+            foreach (var view in _allViews)
+            {
+                if (view.ID != ScreenType.HUD && !view.IsHidden) return true;
+            }
+            return false;
         }
     }
 }

@@ -12,29 +12,21 @@ namespace OutlandHaven.UIToolkit
 
         private PauseMenuView _view;
         private UIManager _uiManager;
-        private InputSystem_Actions _input;
         private bool _isPaused = false;
 
         private void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
-            _input = new InputSystem_Actions();
         }
 
         private void OnEnable()
         {
-            _input.Player.Pause.performed += OnPauseToggle;
-            _input.Enable();
-
             _uiEvents.OnScreenOpen += HandleScreenOpen;
             _uiEvents.OnScreenClose += HandleScreenClose;
         }
 
         private void OnDisable()
         {
-            _input.Player.Pause.performed -= OnPauseToggle;
-            _input.Disable();
-
             _uiEvents.OnScreenOpen -= HandleScreenOpen;
             _uiEvents.OnScreenClose -= HandleScreenClose;
         }
@@ -60,37 +52,13 @@ namespace OutlandHaven.UIToolkit
             _uiManager.RegisterView(_view, ScreenZone.FullScreen);
         }
 
-        private void OnPauseToggle(UnityEngine.InputSystem.InputAction.CallbackContext context)
-        {
-            if (_isPaused) Resume();
-            else Pause();
-        }
-
-        private void Pause()
-        {
-            _isPaused = true;
-            Time.timeScale = 0f;
-            _uiEvents.OnRequestOpen?.Invoke(ScreenType.PauseMenu, null);
-            
-            // Switch to UI input map
-            _input.Player.Disable();
-            _input.UI.Enable();
-        }
-
-        private void Resume()
-        {
-            _isPaused = false;
-            Time.timeScale = 1f;
-            _uiEvents.OnRequestClose?.Invoke(ScreenType.PauseMenu);
-
-            // Switch back to Player input map
-            _input.UI.Disable();
-            _input.Player.Enable();
-        }
-
         private void HandleScreenOpen(ScreenType screenType)
         {
-            if (screenType == ScreenType.PauseMenu) _isPaused = true;
+            if (screenType == ScreenType.PauseMenu) 
+            {
+                _isPaused = true;
+                Time.timeScale = 0f;
+            }
         }
 
         private void HandleScreenClose(ScreenType screenType)
@@ -99,9 +67,12 @@ namespace OutlandHaven.UIToolkit
             {
                 _isPaused = false;
                 Time.timeScale = 1f;
-                _input.UI.Disable();
-                _input.Player.Enable();
             }
+        }
+
+        private void Resume()
+        {
+            _uiEvents.OnRequestClose?.Invoke(ScreenType.PauseMenu);
         }
 
         private void OpenSettings()

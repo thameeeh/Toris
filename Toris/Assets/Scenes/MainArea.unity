@@ -398,10 +398,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_InventoryManager
       objectReference: {fileID: 0}
-    - target: {fileID: 3664642269554074775, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5817255668089340988, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.63089
@@ -804,6 +800,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _gameSession
+      value: 
+      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.55656
@@ -852,6 +852,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+      propertyPath: _gameSession
+      value: 
+      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1085,10 +1089,6 @@ PrefabInstance:
     - target: {fileID: 7489259955781345588, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
       propertyPath: m_Name
       value: Potion_InventoryManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7489259955781345588, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -102271,10 +102271,6 @@ PrefabInstance:
     - target: {fileID: 4643913618560284739, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
       propertyPath: m_Name
       value: Equipment_InventoryManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 4643913618560284739, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

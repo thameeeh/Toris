@@ -456,6 +456,7 @@ MonoBehaviour:
   _stats: {fileID: 8137892244548921797}
   _bow: {fileID: 1738574752484829038}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _uiSkillEvents: {fileID: 11400000, guid: 0ae4c50464db5c946aa2e579312de26c, type: 2}
   _abilitySlots:
   - _abilityDefinition: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}
   - _abilityDefinition: {fileID: 11400000, guid: 254aa88e504c74a409bd36e5768f8b12, type: 2}

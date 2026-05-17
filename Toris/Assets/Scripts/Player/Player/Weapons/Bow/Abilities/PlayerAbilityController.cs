@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using OutlandHaven.UIToolkit;
+using OutlandHaven.Skills;
 
 public class PlayerAbilityController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private PlayerBowController _bow;
     [SerializeField] private GameSessionSO _gameSession;
+    [SerializeField] private UISkillEventsSO _uiSkillEvents;
 
     [System.Serializable]
     public class AbilitySlot
@@ -87,12 +89,14 @@ public class PlayerAbilityController : MonoBehaviour
     }
 
     private PlayerAbilityContext _context;
+    private bool[] _wasOnCooldown;
 
     private void Awake()
     {
         EnsureSlotArray();
         MigrateLegacySlotsIfNeeded();
         _gameSession = ResolveGameSession();
+        _wasOnCooldown = new bool[DefaultSlotCount];
 
         _context = new PlayerAbilityContext
         {
@@ -137,9 +141,24 @@ public class PlayerAbilityController : MonoBehaviour
         for (int i = 0; i < SlotCount; i++)
         {
             PlayerAbilityRuntime runtime = GetRuntime(i);
-            if (runtime != null && runtime.IsUnlocked(_context))
+            if (runtime == null || !runtime.IsUnlocked(_context))
+                continue;
+
+            runtime.Tick(_context);
+
+            // Track cooldown state changes for UI events
+            bool isOnCooldown = runtime.IsOnCooldown;
+            if (isOnCooldown != _wasOnCooldown[i])
             {
-                runtime.Tick(_context);
+                if (isOnCooldown)
+                {
+                    _uiSkillEvents?.OnAbilityCooldownStarted?.Invoke(i, runtime.Definition.cooldownSeconds);
+                }
+                else
+                {
+                    _uiSkillEvents?.OnAbilityReady?.Invoke(i);
+                }
+                _wasOnCooldown[i] = isOnCooldown;
             }
         }
     }
@@ -152,7 +171,23 @@ public class PlayerAbilityController : MonoBehaviour
 
         if (_input == null)
         {
-            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}</b>", this);
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing <b>PlayerInputReaderSO</b> on GameObject: <b>{name}</b>", this);
+        }
+        if (_stats == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing <b>PlayerStats</b> on GameObject: <b>{name}</b>", this);
+        }
+        if (_bow == null)
+        {
+            Debug.LogWarning($"<b><color=orange>[PlayerAbilityController]</color></b> is missing <b>PlayerBowController</b> on GameObject: <b>{name}</b>. Some abilities may not function.", this);
+        }
+        if (_gameSession == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing <b>GameSessionSO</b> on GameObject: <b>{name}</b>", this);
+        }
+        if (_uiSkillEvents == null)
+        {
+            Debug.LogError($"<b><color=red>[PlayerAbilityController]</color></b> is missing <b>UISkillEventsSO</b> on GameObject: <b>{name}</b>", this);
         }
     }
 #endif
@@ -191,6 +226,7 @@ public class PlayerAbilityController : MonoBehaviour
 
     private void HandleAbilitySlotStarted(int slotIndex)
     {
+        _uiSkillEvents?.OnAbilitySlotPressed?.Invoke(slotIndex);
         TryActivateSlot(slotIndex);
     }
 

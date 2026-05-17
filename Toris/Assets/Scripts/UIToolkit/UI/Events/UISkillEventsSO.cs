@@ -10,6 +10,11 @@ namespace OutlandHaven.Skills
         public UnityAction<int> OnSPUpdated;
         public UnityAction<string> OnSkillUnlocked;
 
+        [Header("Ability Updates")]
+        public UnityAction<int> OnAbilitySlotPressed; // slotIndex
+        public UnityAction<int, float> OnAbilityCooldownStarted; // slotIndex, cooldownDuration
+        public UnityAction<int> OnAbilityReady; // slotIndex
+
         [Header("UI -> System Requests")]
         public UnityAction<SkillData> OnRequestUnlock;
     }

@@ -1,4 +1,12 @@
 <<<<<<< Updated upstream
+## [Current/Recent] - Inventory Architecture Refactor: Strict Global Registration
+* **Structural Safety:** Eliminated the "Prefab Trap" by removing redundant `[SerializeField]` fields for global inventories in `InventoryActionController`, `InventoryScreenController`, and `PlayerEquipmentController`.
+* **Single Source of Truth:** Refactored all controllers to exclusively query `GameSessionSO` for core player inventories (Backpack, Equipment, Potions), ensuring they always target live scene instances instead of project assets.
+* **Initialization Refinement:**
+    * **Automated Registration:** Leveraged `InventoryManager.OnEnable` for self-registration with the global session, removing the need for manual scene-wide searches or inspector assignments.
+    * **Bootstrap Cleanup:** Simplified `UIBootstraper.cs` by removing legacy manual binding logic, ensuring the session is loaded and events are fired while letting the models manage their own lifecycle registration.
+    * **Self-Healing Resolution:** Updated `ResolveRuntimeReferences` in all controllers to fetch from the session, providing a robust, error-resistant connection that handles dynamic spawning and scene transitions seamlessly.
+
 ## [Current/Recent] - Code Dependency Visualizer Implementation
 * **AST-Based Parser:** Implemented `CodeDependencyParser.cs` using Microsoft.CodeAnalysis (Roslyn) to perform a two-pass scan of the codebase.
     * **Type Registry:** Identifies all custom classes, interfaces, and structs to create a whitelist for dependency tracking.

@@ -13,12 +13,6 @@ namespace OutlandHaven.Inventory
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
 
-        [Header("Equipment")]
-        [Tooltip("The InventoryManager configured to act as the equipment container (e.g. 5 slots).")]
-        [SerializeField] private InventoryManager _equipmentInventory;
-        [SerializeField] private InventoryManager _potionInventory;
-        [SerializeField] private InventoryManager _playerInventory;
-
         [Header("Player Data")]
         [SerializeField] private PlayerHUDBridge _playerHUDBridge;
 
@@ -28,11 +22,12 @@ namespace OutlandHaven.Inventory
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
         }
 
         private void OnEnable()
         {
-            if (_inventoryMainTemplate == null) 
+            if (_inventoryMainTemplate == null)
             {
                 Debug.LogError("InventoryScreenController: Main Template is missing!");
                 return;
@@ -41,26 +36,20 @@ namespace OutlandHaven.Inventory
 
         private void Start()
         {
-            _playerInventory = PlayerInventorySceneResolver.
-                                ResolvePlayerInventory(this, _playerInventory);
-            _equipmentInventory = PlayerInventorySceneResolver.
-                                ResolveEquipmentInventory(this, _equipmentInventory, _playerInventory);
-            _potionInventory = PlayerInventorySceneResolver.
-                                ResolvePotionInventory(_potionInventory);
+            if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
 
             TemplateContainer inventoryInstance = _inventoryMainTemplate.Instantiate();
-            
+
             inventoryInstance.style.flexGrow = 1; // Make it fill the parent container
 
             _view = new PlayerInventoryView(inventoryInstance, _slotTemplate,
                 _gameSession, _uiEvents, _uiInventoryEvents,
-                _equipmentInventory, _potionInventory, _playerHUDBridge);
+                _gameSession.PlayerEquipment, _gameSession.PlayerPotionInventory, _playerHUDBridge);
             _view.Initialize();
 
             // Register to the RIGHT zone
             _uiManager.RegisterView(_view, ScreenZone.Right);
         }
-
         private void OnValidate()
         {
             if (_uiEvents == null)

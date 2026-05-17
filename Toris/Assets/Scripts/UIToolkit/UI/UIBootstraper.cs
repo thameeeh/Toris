@@ -35,19 +35,10 @@ namespace OutlandHaven.Core
                 _globalSession = GameSessionSO.LoadDefault();
             }
 
-            // Resolve and bind primary inventories to prevent race conditions during scene transitions
-            InventoryManager backpack = PlayerInventorySceneResolver.ResolvePlayerInventory(this, null);
-            InventoryManager equipment = PlayerInventorySceneResolver.ResolveEquipmentInventory(this, null, backpack);
-            InventoryManager potions = PlayerInventorySceneResolver.ResolvePotionInventory(null);
-
-            if (_globalSession != null)
-            {
-                _globalSession.PlayerInventory = backpack;
-                _globalSession.PlayerEquipment = equipment;
-                _globalSession.PlayerPotionInventory = potions;
-
-                Debug.Log("[UI/Inventory] UIBootstraper: GlobalSession bindings established.");
-            }
+            // GlobalSession bindings are now handled automatically by the 
+            // InventoryManager instances themselves during their OnEnable lifecycle.
+            // UIBootstraper remains responsible for ensuring the GameSession is loaded
+            // and broadcasting the initialization completion event.
 
             // Notify UI systems that the scene's core references are now ready
             if (_uiEvents != null)
@@ -55,7 +46,6 @@ namespace OutlandHaven.Core
                 _uiEvents.OnSystemInitializationComplete?.Invoke();
             }
         }
-
 #if UNITY_EDITOR
         private void OnValidate()
         {

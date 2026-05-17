@@ -6,14 +6,15 @@ using OutlandHaven.UIToolkit;
 public class InventoryActionController : MonoBehaviour
 {
     [Header("Runtime References")]
-    [SerializeField] private InventoryManager _playerInventory;
-    [SerializeField] private InventoryManager _equipmentInventory;
-    [SerializeField] private InventoryManager _potionInventory;
+    private InventoryManager _playerInventory;
+    private InventoryManager _equipmentInventory;
+    private InventoryManager _potionInventory;
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
     [SerializeField] private PlayerEffectSourceController _playerEffectSourceController;
+    [SerializeField] private GameSessionSO _gameSession;
 
     private PlayerConsumableController _consumableController;
 
@@ -21,6 +22,7 @@ public class InventoryActionController : MonoBehaviour
 
     private void Awake()
     {
+        _gameSession = GameSessionSO.LoadDefault();
         ResolveRuntimeReferences();
         EnsureConsumableController();
     }
@@ -32,6 +34,7 @@ public class InventoryActionController : MonoBehaviour
 
     private void OnEnable()
     {
+        _gameSession = GameSessionSO.LoadDefault();
         ResolveRuntimeReferences();
 
         if (_uiInventoryEvents == null)
@@ -287,9 +290,11 @@ public class InventoryActionController : MonoBehaviour
 
     private void ResolveRuntimeReferences()
     {
-        _playerInventory = PlayerInventorySceneResolver.ResolvePlayerInventory(this, _playerInventory);
-        _equipmentInventory = PlayerInventorySceneResolver.ResolveEquipmentInventory(this, _equipmentInventory, _playerInventory);
-        _potionInventory = PlayerInventorySceneResolver.ResolvePotionInventory(_potionInventory);
+        if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
+
+        _playerInventory = _gameSession.PlayerInventory;
+        _equipmentInventory = _gameSession.PlayerEquipment;
+        _potionInventory = _gameSession.PlayerPotionInventory;
 
         if (_playerStats == null)
             TryGetComponent(out _playerStats);
@@ -304,12 +309,6 @@ public class InventoryActionController : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if (_playerInventory == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Player Inventory</b> reference on {name}.", this);
-        if (_equipmentInventory == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Equipment Inventory</b> reference on {name}.", this);
-        if (_potionInventory == null)
-            Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Potion Inventory</b> reference on {name}.", this);
         if (_inputReader == null)
             Debug.LogWarning($"[UI/Inventory] <b><color=yellow>InventoryActionController</color></b>: Missing <b>Player Input Reader SO</b> reference on {name}.", this);
         if (_uiInventoryEvents == null)

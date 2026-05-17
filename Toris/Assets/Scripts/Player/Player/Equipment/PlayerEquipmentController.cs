@@ -7,9 +7,9 @@ using OutlandHaven.UIToolkit;
 public class PlayerEquipmentController : MonoBehaviour
 {
     [Header("Dependencies")]
-    [Tooltip("The InventoryManager configured to act as the equipment container (e.g. 5 slots).")]
-    [SerializeField] private InventoryManager _equipmentInventory;
+    private InventoryManager _equipmentInventory;
     [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+    [SerializeField] private GameSessionSO _gameSession;
 
     private readonly Dictionary<EquipmentSlot, ItemInstance> _equippedItems = new();
 
@@ -17,8 +17,15 @@ public class PlayerEquipmentController : MonoBehaviour
     public event Action<EquipmentSlot, ItemInstance> OnItemUnequipped;
     public event Action<EquipmentSlot, ItemInstance> OnEquippedItemChanged;
 
+    private void Awake()
+    {
+        if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
+        ResolveRuntimeReferences();
+    }
+
     private void OnEnable()
     {
+        if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
         ResolveRuntimeReferences();
         if (_uiInventoryEvents != null)
         {
@@ -44,7 +51,8 @@ public class PlayerEquipmentController : MonoBehaviour
 
     private void ResolveRuntimeReferences()
     {
-        _equipmentInventory = PlayerInventorySceneResolver.ResolveEquipmentInventory(this, _equipmentInventory, null);
+        if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
+        _equipmentInventory = _gameSession.PlayerEquipment;
     }
 
     public void RefreshEquipmentState()

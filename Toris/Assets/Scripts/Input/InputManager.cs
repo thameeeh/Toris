@@ -227,19 +227,27 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnTrackedDevicePosition(InputAction.CallbackContext context) { }
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context) { }
 
+    /// <summary>
+    /// Centralized logic for the Escape key. 
+    /// Priority: 1. Close any open UI windows. 2. If no windows are open, open the Pause Menu.
+    /// Uses frame-level coordination to prevent race conditions between Pause and Cancel actions.
+    /// </summary>
     private void HandleEscapeLogic(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        if (_lastFrameEscapeProcessed == Time.frameCount) return;
 
+        // Prevent processing both 'Pause' and 'Cancel' bindings in the same frame
+        if (_lastFrameEscapeProcessed == Time.frameCount) return;
         _lastFrameEscapeProcessed = Time.frameCount;
 
         if (HasGameplayInputBlockers())
         {
+            // If UI is open, we close it first. This satisfies the "Press ESC once to close" requirement.
             _uiEvents.OnRequestCloseAll?.Invoke();
         }
         else
         {
+            // If the screen is clear, we proceed to open the Pause Menu.
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.PauseMenu, null);
         }
     }

@@ -131,6 +131,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIControllers
       objectReference: {fileID: 0}
+    - target: {fileID: 2757728626901657891, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerHUDBridge
+      value: 
+      objectReference: {fileID: 675648105}
+    - target: {fileID: 4926544851189400491, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
+      propertyPath: _playerHudBridge
+      value: 
+      objectReference: {fileID: 675648105}
     - target: {fileID: 5899826444343102557, guid: 5e1364f7cf01a014e95b4e4f987e331b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -688,7 +696,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 0}
+    TrackingTarget: {fileID: 675648104}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -720,7 +728,7 @@ Transform:
   m_GameObject: {fileID: 291675225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.43128, y: 4.07093, z: -10}
+  m_LocalPosition: {x: 4.55656, y: 4.42671, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -796,14 +804,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1016723389627658535, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _gameSession
-      value: 
-      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     - target: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.55656
@@ -848,14 +848,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7812172008567482713, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
-      propertyPath: _gameSession
-      value: 
-      objectReference: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -977,6 +969,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &675648104 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2980662243367807876, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 361095633}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &675648105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7521690604036978262, guid: 95596c2ae0632284493d1d1f3ba1ebb5, type: 3}
+  m_PrefabInstance: {fileID: 361095633}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbff2081bf5b4644970bf74846acbe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHUDBridge
 --- !u!1001 &750314501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -101817,7 +101825,7 @@ Transform:
   m_GameObject: {fileID: 1924643740}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.43128, y: 4.07093, z: -10}
+  m_LocalPosition: {x: 4.55656, y: 4.42671, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

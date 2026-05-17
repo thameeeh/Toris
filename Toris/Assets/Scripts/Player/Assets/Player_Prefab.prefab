@@ -576,7 +576,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600970068102170111}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06a860f3d090e1444bd6fa027ebb6578, type: 3}
   m_Name: 
@@ -725,8 +725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3ba158f0731f24f80e10b869071e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipmentController
-  _equipmentInventory: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
 --- !u!114 &1606071663587447615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,14 +806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c9caa956fe80c48b244b79f08f4d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryActionController
-  _playerInventory: {fileID: 7584297309565093339, guid: 403ff9d072dd30e4f8c6bd037048f434, type: 3}
-  _equipmentInventory: {fileID: 825293917328394556, guid: e3593e7cfcc82ec41a446780d83e5836, type: 3}
-  _potionInventory: {fileID: 3744751151557766686, guid: cdfcb7ff96f0d9c4185709ab1172fa92, type: 3}
   _inputReader: {fileID: 11400000, guid: 7c22f317cdf78804984aae860eb98bac, type: 2}
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   _playerStats: {fileID: 8137892244548921797}
   _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
   _playerEffectSourceController: {fileID: 4459608157227879889}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
 --- !u!114 &9194752483613569355
 MonoBehaviour:
   m_ObjectHideFlags: 0

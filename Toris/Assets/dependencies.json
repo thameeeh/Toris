@@ -69,8 +69,24 @@
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\UpgradeSalvageManagerSO.cs"
         },
         {
+            "id": "AssetPinger",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\AssetPinger.cs"
+        },
+        {
+            "id": "BackgroundClickHandler",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\BackgroundClickHandler.cs"
+        },
+        {
             "id": "GraphVisualizer2D",
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\GraphVisualizer2D.cs"
+        },
+        {
+            "id": "NodeDragger",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\NodeDragger.cs"
+        },
+        {
+            "id": "NodeInteractionHandler",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\NodeInteractionHandler.cs"
         },
         {
             "id": "HudScreenController",
@@ -281,12 +297,16 @@
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\GameSaveData.cs"
         },
         {
-            "id": "SaveManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\SaveManager.cs"
+            "id": "RuntimeSnapshotRegistry",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\RuntimeSnapshotRegistry.cs"
         },
         {
-            "id": "IInteractable",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\IInteractable.cs"
+            "id": "SaveDataOrchestrator",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\SaveDataOrchestrator.cs"
+        },
+        {
+            "id": "SaveManager",
+            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\SaveManager.cs"
         },
         {
             "id": "InventoryActionController",
@@ -301,10 +321,6 @@
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryTransferManagerSO.cs"
         },
         {
-            "id": "ItemPicker",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\ItemPicker.cs"
-        },
-        {
             "id": "PlayerConsumableController",
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerConsumableController.cs"
         },
@@ -313,120 +329,12 @@
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerInventorySceneResolver.cs"
         },
         {
-            "id": "EquipmentEffectBridge",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquipmentEffectBridge.cs"
-        },
-        {
-            "id": "EquippedItemComputedStats",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquippedItemComputedStats.cs"
-        },
-        {
-            "id": "EquippedItemEffectSource",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquippedItemEffectSource.cs"
-        },
-        {
-            "id": "EquippedItemStatCalculator",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\EquippedItemStatCalculator.cs"
-        },
-        {
-            "id": "PlayerEquipmentController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Equipment\\PlayerEquipmentController.cs"
-        },
-        {
-            "id": "IPlayerEffectSource",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\IPlayerEffectSource.cs"
-        },
-        {
-            "id": "PlayerBaseEffectsSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerBaseEffectsSO.cs"
-        },
-        {
-            "id": "PlayerEffectDefinitionSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectDefinitionSO.cs"
-        },
-        {
-            "id": "PlayerEffectModifier",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectModifier.cs"
-        },
-        {
-            "id": "PlayerEffectModifierMode",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectModifierMode.cs"
-        },
-        {
-            "id": "PlayerEffectResolver",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectResolver.cs"
-        },
-        {
-            "id": "PlayerEffectSourceController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectSourceController.cs"
-        },
-        {
-            "id": "PlayerEffectSourceRuntime",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectSourceRuntime.cs"
-        },
-        {
-            "id": "PlayerEffectType",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerEffectType.cs"
-        },
-        {
-            "id": "PlayerProgression",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerProgression.cs"
-        },
-        {
-            "id": "PlayerProgressionConfigSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerProgressionConfigSO.cs"
-        },
-        {
-            "id": "PlayerResolvedEffects",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerResolvedEffects.cs"
-        },
-        {
-            "id": "PlayerRuntimeProgression",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerRuntimeProgression.cs"
-        },
-        {
-            "id": "PlayerRuntimeStats",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerRuntimeStats.cs"
-        },
-        {
-            "id": "PlayerStats",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStats.cs"
-        },
-        {
-            "id": "PlayerStatusController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStatusController.cs"
-        },
-        {
-            "id": "PlayerStatusEffectType",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStatusEffectType.cs"
-        },
-        {
-            "id": "PlayerStatusInstance",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Status\\PlayerStatusInstance.cs"
-        },
-        {
             "id": "PlayerProgressionAnchorSO",
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerProgressionAnchorSO.cs"
         },
         {
             "id": "PlayerStatsAnchorSO",
             "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerStatsAnchorSO.cs"
-        },
-        {
-            "id": "CharacterAnimSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\CharacterAnimSO.cs"
-        },
-        {
-            "id": "PlayerAnimationController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerAnimationController.cs"
-        },
-        {
-            "id": "PlayerAnimationPresenter",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerAnimationPresenter.cs"
-        },
-        {
-            "id": "PlayerAnimationView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerAnimationView.cs"
         },
         {
             "id": "PlayerHUDBridge",
@@ -460,6 +368,10 @@
         },
         {
             "source": "GameSessionSO",
+            "target": "PlayerHUDBridge"
+        },
+        {
+            "source": "GameSessionSO",
             "target": "PlayerProgressionAnchorSO"
         },
         {
@@ -468,19 +380,11 @@
         },
         {
             "source": "GameSessionSO",
-            "target": "RuntimeInventorySnapshot"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "RuntimeProgressionSnapshot"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "RuntimeStatsSnapshot"
-        },
-        {
-            "source": "GameSessionSO",
             "target": "SaveSlotIndex"
+        },
+        {
+            "source": "GameSessionSO",
+            "target": "RuntimeSnapshotRegistry"
         },
         {
             "source": "GameSessionSO",
@@ -488,35 +392,11 @@
         },
         {
             "source": "GameSessionSO",
-            "target": "SavedSlotData"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "SavedItemData"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "InventorySlot"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "InventoryItemSO"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "ItemInstance"
-        },
-        {
-            "source": "GameSessionSO",
-            "target": "ItemComponentState"
-        },
-        {
-            "source": "GameSessionSO",
             "target": "GameSaveData"
         },
         {
             "source": "GameSessionSO",
-            "target": "RuntimeInventorySlotSnapshot"
+            "target": "SaveDataOrchestrator"
         },
         {
             "source": "InventoryContainerSO",
@@ -589,6 +469,14 @@
         {
             "source": "MockItemDatabase",
             "target": "InventoryItemSO"
+        },
+        {
+            "source": "UIBootstraper",
+            "target": "GameSessionSO"
+        },
+        {
+            "source": "UIBootstraper",
+            "target": "UIEventsSO"
         },
         {
             "source": "ConsumableManagerSO",
@@ -739,6 +627,26 @@
             "target": "SalvageRecipeSO"
         },
         {
+            "source": "GraphVisualizer2D",
+            "target": "BackgroundClickHandler"
+        },
+        {
+            "source": "GraphVisualizer2D",
+            "target": "NodeDragger"
+        },
+        {
+            "source": "GraphVisualizer2D",
+            "target": "AssetPinger"
+        },
+        {
+            "source": "GraphVisualizer2D",
+            "target": "NodeInteractionHandler"
+        },
+        {
+            "source": "NodeInteractionHandler",
+            "target": "GraphVisualizer"
+        },
+        {
             "source": "HudScreenController",
             "target": "UIInventoryEventsSO"
         },
@@ -752,10 +660,6 @@
         },
         {
             "source": "HudScreenController",
-            "target": "InventoryManager"
-        },
-        {
-            "source": "HudScreenController",
             "target": "HUDView"
         },
         {
@@ -764,7 +668,7 @@
         },
         {
             "source": "HudScreenController",
-            "target": "PlayerHUDBridge"
+            "target": "InventoryManager"
         },
         {
             "source": "HudScreenController",
@@ -781,14 +685,6 @@
         {
             "source": "InventoryScreenController",
             "target": "UIInventoryEventsSO"
-        },
-        {
-            "source": "InventoryScreenController",
-            "target": "InventoryManager"
-        },
-        {
-            "source": "InventoryScreenController",
-            "target": "PlayerHUDBridge"
         },
         {
             "source": "InventoryScreenController",
@@ -813,10 +709,6 @@
         {
             "source": "MageScreenController",
             "target": "GameSessionSO"
-        },
-        {
-            "source": "MageScreenController",
-            "target": "PlayerHUDBridge"
         },
         {
             "source": "MageScreenController",
@@ -853,10 +745,6 @@
         {
             "source": "SkillsScreenController",
             "target": "UIEventsSO"
-        },
-        {
-            "source": "SkillsScreenController",
-            "target": "PlayerHUDBridge"
         },
         {
             "source": "SkillsScreenController",
@@ -897,10 +785,6 @@
         {
             "source": "SmithScreenController",
             "target": "GameSessionSO"
-        },
-        {
-            "source": "SmithScreenController",
-            "target": "PlayerHUDBridge"
         },
         {
             "source": "SmithScreenController",
@@ -1308,7 +1192,7 @@
         },
         {
             "source": "PlayerEquipmentView",
-            "target": "EquipableComponent"
+            "target": "EquipmentSlot"
         },
         {
             "source": "PlayerInventoryView",
@@ -1393,10 +1277,6 @@
         {
             "source": "PlayerStatsView",
             "target": "PlayerHUDBridge"
-        },
-        {
-            "source": "PlayerStatsView",
-            "target": "PlayerResolvedEffects"
         },
         {
             "source": "ForgeSubView",
@@ -1584,10 +1464,6 @@
         },
         {
             "source": "ConsumableModule",
-            "target": "PlayerEffectDefinitionSO"
-        },
-        {
-            "source": "ConsumableModule",
             "target": "InventoryItemSO"
         },
         {
@@ -1671,6 +1547,94 @@
             "target": "ItemComponentState"
         },
         {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "RuntimeInventorySnapshot"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "RuntimeProgressionSnapshot"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "RuntimeStatsSnapshot"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "SavedInventoryData"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "RuntimeInventorySlotSnapshot"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "RuntimeSnapshotRegistry",
+            "target": "ItemComponentState"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "GameSaveData"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "PlayerProgressionAnchorSO"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "PlayerStatsAnchorSO"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "InventoryManager"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "RuntimeSnapshotRegistry"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "SavedInventoryData"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "SavedSlotData"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "SavedItemData"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "InventorySlot"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "InventoryItemSO"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "ItemInstance"
+        },
+        {
+            "source": "SaveDataOrchestrator",
+            "target": "ItemComponentState"
+        },
+        {
             "source": "SaveManager",
             "target": "GameSessionSO"
         },
@@ -1700,15 +1664,11 @@
         },
         {
             "source": "InventoryActionController",
-            "target": "PlayerStats"
-        },
-        {
-            "source": "InventoryActionController",
             "target": "PlayerStatsAnchorSO"
         },
         {
             "source": "InventoryActionController",
-            "target": "PlayerEffectSourceController"
+            "target": "GameSessionSO"
         },
         {
             "source": "InventoryActionController",
@@ -1787,14 +1747,6 @@
             "target": "ItemInstance"
         },
         {
-            "source": "ItemPicker",
-            "target": "InventoryManager"
-        },
-        {
-            "source": "ItemPicker",
-            "target": "PlayerInventorySceneResolver"
-        },
-        {
             "source": "PlayerConsumableController",
             "target": "ConsumableEffectMode"
         },
@@ -1813,14 +1765,6 @@
         {
             "source": "PlayerConsumableController",
             "target": "PlayerStatsAnchorSO"
-        },
-        {
-            "source": "PlayerConsumableController",
-            "target": "PlayerStats"
-        },
-        {
-            "source": "PlayerConsumableController",
-            "target": "PlayerEffectSourceController"
         },
         {
             "source": "PlayerConsumableController",
@@ -1855,308 +1799,12 @@
             "target": "ScreenType"
         },
         {
-            "source": "EquipmentEffectBridge",
-            "target": "PlayerEquipmentController"
+            "source": "PlayerInventorySceneResolver",
+            "target": "SlotFilterType"
         },
         {
-            "source": "EquipmentEffectBridge",
-            "target": "PlayerEffectSourceController"
-        },
-        {
-            "source": "EquipmentEffectBridge",
-            "target": "EquipmentSlot"
-        },
-        {
-            "source": "EquipmentEffectBridge",
-            "target": "ItemInstance"
-        },
-        {
-            "source": "EquipmentEffectBridge",
-            "target": "EquippedItemEffectSource"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "IPlayerEffectSource"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "ItemInstance"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "PlayerEffectModifier"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "EquippedItemComputedStats"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "EquippedItemStatCalculator"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "PlayerEffectType"
-        },
-        {
-            "source": "EquippedItemEffectSource",
-            "target": "PlayerEffectModifierMode"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "EquippedItemComputedStats"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "ItemInstance"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "EquipableComponent"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "OffensiveComponent"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "DefensiveComponent"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "EvolvingComponent"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "UpgradeableState"
-        },
-        {
-            "source": "EquippedItemStatCalculator",
-            "target": "EvolvingState"
-        },
-        {
-            "source": "PlayerEquipmentController",
-            "target": "InventoryManager"
-        },
-        {
-            "source": "PlayerEquipmentController",
-            "target": "UIInventoryEventsSO"
-        },
-        {
-            "source": "PlayerEquipmentController",
-            "target": "EquipmentSlot"
-        },
-        {
-            "source": "PlayerEquipmentController",
-            "target": "ItemInstance"
-        },
-        {
-            "source": "PlayerEquipmentController",
-            "target": "InventorySlot"
-        },
-        {
-            "source": "IPlayerEffectSource",
-            "target": "PlayerEffectModifier"
-        },
-        {
-            "source": "PlayerEffectDefinitionSO",
-            "target": "PlayerEffectModifier"
-        },
-        {
-            "source": "PlayerEffectModifier",
-            "target": "PlayerEffectType"
-        },
-        {
-            "source": "PlayerEffectModifier",
-            "target": "PlayerEffectModifierMode"
-        },
-        {
-            "source": "PlayerEffectResolver",
-            "target": "PlayerResolvedEffects"
-        },
-        {
-            "source": "PlayerEffectResolver",
-            "target": "PlayerBaseEffectsSO"
-        },
-        {
-            "source": "PlayerEffectResolver",
-            "target": "PlayerEffectModifier"
-        },
-        {
-            "source": "PlayerEffectResolver",
-            "target": "PlayerEffectType"
-        },
-        {
-            "source": "PlayerEffectResolver",
-            "target": "PlayerEffectModifierMode"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "PlayerBaseEffectsSO"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "IPlayerEffectSource"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "PlayerEffectModifier"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "PlayerResolvedEffects"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "PlayerEffectDefinitionSO"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "StaticPlayerEffectSource"
-        },
-        {
-            "source": "PlayerEffectSourceController",
-            "target": "PlayerEffectResolver"
-        },
-        {
-            "source": "PlayerEffectSourceRuntime",
-            "target": "IPlayerEffectSource"
-        },
-        {
-            "source": "PlayerEffectSourceRuntime",
-            "target": "PlayerEffectDefinitionSO"
-        },
-        {
-            "source": "PlayerEffectSourceRuntime",
-            "target": "PlayerEffectModifier"
-        },
-        {
-            "source": "PlayerProgression",
-            "target": "PlayerProgressionConfigSO"
-        },
-        {
-            "source": "PlayerProgression",
-            "target": "PlayerProgressionAnchorSO"
-        },
-        {
-            "source": "PlayerProgression",
+            "source": "PlayerHUDBridge",
             "target": "GameSessionSO"
-        },
-        {
-            "source": "PlayerProgression",
-            "target": "PlayerRuntimeProgression"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerResourceChangeReason"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerEffectSourceController"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerStatsAnchorSO"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "GameSessionSO"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerRuntimeStats"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerResolvedEffects"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerResourceChangeContext"
-        },
-        {
-            "source": "PlayerStats",
-            "target": "PlayerEffectResolver"
-        },
-        {
-            "source": "PlayerStatusController",
-            "target": "PlayerStats"
-        },
-        {
-            "source": "PlayerStatusController",
-            "target": "PlayerStatusEffectType"
-        },
-        {
-            "source": "PlayerStatusController",
-            "target": "PlayerStatusInstance"
-        },
-        {
-            "source": "PlayerStatusController",
-            "target": "PlayerResolvedEffects"
-        },
-        {
-            "source": "PlayerStatusInstance",
-            "target": "PlayerStatusEffectType"
-        },
-        {
-            "source": "PlayerProgressionAnchorSO",
-            "target": "PlayerProgression"
-        },
-        {
-            "source": "PlayerStatsAnchorSO",
-            "target": "PlayerStats"
-        },
-        {
-            "source": "CharacterAnimSO",
-            "target": "NameMap"
-        },
-        {
-            "source": "PlayerAnimationController",
-            "target": "PlayerAnimationView"
-        },
-        {
-            "source": "PlayerAnimationController",
-            "target": "CharacterAnimSO"
-        },
-        {
-            "source": "PlayerAnimationController",
-            "target": "AnimState"
-        },
-        {
-            "source": "PlayerAnimationController",
-            "target": "ActionRuntime"
-        },
-        {
-            "source": "PlayerAnimationPresenter",
-            "target": "PlayerAnimationController"
-        },
-        {
-            "source": "PlayerAnimationPresenter",
-            "target": "PlayerStats"
-        },
-        {
-            "source": "PlayerAnimationView",
-            "target": "CharacterAnimSO"
-        },
-        {
-            "source": "PlayerHUDBridge",
-            "target": "PlayerStats"
-        },
-        {
-            "source": "PlayerHUDBridge",
-            "target": "PlayerProgression"
-        },
-        {
-            "source": "PlayerHUDBridge",
-            "target": "PlayerStatusController"
-        },
-        {
-            "source": "PlayerHUDBridge",
-            "target": "PlayerStatusEffectType"
-        },
-        {
-            "source": "PlayerHUDBridge",
-            "target": "PlayerResolvedEffects"
         }
     ]
 }

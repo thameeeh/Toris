@@ -60,3 +60,13 @@ All modifications to `.uxml`, `.uss`, and UI-related `.cs` files must adhere to 
 
 - **The Rule:** Never modify the source `.uxml` or `.uss` files of third-party assets (e.g., external Dialogue Systems).
 - **Execution:** Treat third-party UI files as read-only. To alter their appearance, generate a custom `.uss` file in the project's own UI directory, target the third-party classes, write override rules, and attach the custom stylesheet to the root UI Document.
+
+*3.7 Centering & Symmetrical Anchoring*
+
+- **The Rule:** Critical HUD elements (like Potion Bars or Crosshairs) should be centered independently of surrounding flex-flow siblings.
+- **Execution:** Use `position: absolute; left: 50%; translate: -50% 0;`. This ensures the element is anchored to the dead-center of the screen regardless of the width or presence of left/right HUD containers.
+
+*3.8 Adaptive HUD Zones*
+
+- **The Rule:** Avoid hardcoded percentage heights for HUD layers (e.g., `height: 20%`) to prevent resolution clipping or excessive gaps.
+- **Execution:** Set HUD layers to `height: auto;` and anchor them using `position: absolute; bottom: 0;`. This allows the pixel-height of the HUD elements to dictate the zone size, ensuring consistent spacing across 720p, 1080p, and 4K.

@@ -1,0 +1,45 @@
+.master-root {
+    flex-grow: 1;
+    picking-mode: Ignore;
+}
+
+.layer-windows {
+    position: absolute;
+    picking-mode: Ignore;
+    width: 100%;
+    height: 80%;
+    justify-content: space-between;
+    flex-direction: row;
+    top: 0;
+}
+
+.left-zone {
+    picking-mode: Ignore;
+    height: 100%;
+    width: 30%;
+    min-width: 576px;
+}
+
+.right-zone {
+    picking-mode: Ignore;
+    width: 30%;
+    height: 100%;
+    min-width: 576px;
+}
+
+.layer-hud {
+    picking-mode: Ignore;
+    position: absolute;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+}
+
+.fullscreen-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    picking-mode: Ignore;
+}

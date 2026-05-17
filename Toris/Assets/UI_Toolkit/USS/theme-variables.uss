@@ -1,7 +1,7 @@
 :root {
     /* Global Colors */
     --color-bg-dark: rgba(30, 30, 30, 0.95);
-    --color-bg-panel: rgba(0, 0, 0, 0.3);
+    --color-bg-panel: rgba(0, 0, 0, 0.8);
     --color-border-default: rgb(100, 100, 100);
     --color-border-highlight: rgb(220, 179, 92);
     --color-text-light: rgb(255, 255, 255);

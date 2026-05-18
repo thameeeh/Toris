@@ -48,10 +48,10 @@ Tilemap:
       m_TileIndex: 33
       m_TileSpriteIndex: 33
       m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
+      m_TileColorIndex: 1
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1073741827
   - first: {x: -1, y: -5, z: 0}
     second:
       serializedVersion: 2
@@ -289,7 +289,7 @@ Tilemap:
       m_TileSpriteIndex: 8
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 0
   - first: {x: 2, y: -1, z: 0}
@@ -451,7 +451,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 7d42d4244da6d944d97b5e7855482ff0, type: 2}
   - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 11710ab0df633e6428c04cf436fb594a, type: 2}
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: -5236901933857518814, guid: 93e916f2d73e1d546b25da798b2c940f, type: 3}
@@ -520,7 +520,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: -1426963888, guid: 93e916f2d73e1d546b25da798b2c940f, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 137394919, guid: e4af453ea91bf5b48a026d8030225416, type: 3}
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 3
     m_Data:
@@ -577,11 +577,13 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 34
+  - m_RefCount: 33
     m_Data: {r: 1, g: 1, b: 1, a: 1}
-  m_TileObjectToInstantiateArray:
   - m_RefCount: 1
-    m_Data: {fileID: 7033787166278839313, guid: dab5df5066424b14fab9c446fbad3bd1, type: 3}
+    m_Data: {r: 0.7577199, g: 0.3044942, b: 0.3714109, a: 1}
+  m_TileObjectToInstantiateArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -1, y: -8, z: 0}
@@ -607,6 +609,7 @@ Tilemap:
     e33: 1
 --- !u!483693784 &3024039202433727973
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -652,6 +655,7 @@ TilemapRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.39999998, z: 0}
   m_MaxChunkCount: 16
@@ -659,7 +663,6 @@ TilemapRenderer:
   m_SortOrder: 3
   m_Mode: 1
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1 &4452524361317853978
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,178 +1,30 @@
-using OutlandHaven.UIToolkit;
-using System.Data;
-using System.Linq;
-using UnityEngine;
-
 public class Badger : Enemy
 {
-    [Space]
-    [Header("Stats")]
-    public float AttackDamage = 20f;
-    public float WalkSpeed = 1;
-    public float TunnelingSpeed = 3;
-    public float LineTunnelingSpeed = 6f;
-    [Range(0f, 1f)] public float RunAwayChance = 0.3f;
-    public float RunAwayDistance = 8f;
-    public float BurrowRoamSpeedMultiplier = 0.65f;
-    public float PostAttackIdleDuration = 0.35f;
-    public float DeathBurrowAcceleration = 2f;
-
-    [Tooltip("How long until it attacks again")]
-    public float ForcedIdleDuration = 0f;
-
-    private HitData _hitData;
-    private float _baseAttackDamage;
-    private bool _hasStarted;
-
-    public Vector2 TargetPlayerPosition { get; set; }
-    public Vector2 TunnelLineTarget { get; set; }
-    public Vector2 RunAwayTargetPosition { get; set; }
-    public bool isWondering { get; set; } = false;
-    public bool isTunneling { get; set; } = false;
-    public bool isBurrowed { get; set; } = false;
-    public bool isRetreating { get; set; } = false;
-    public bool ShouldRunAwayOnNextBurrow { get; set; } = false;
-    public void PrintMessage(string msg)
-    {
-        Debug.Log(msg);
-    }
-
-    private Renderer[] _renderers;
-
-    #region Badger-Specific States
-    public BadgerWalkState WalkState { get; set; }
-    public BadgerIdleState IdleState { get; set; }
-    public BadgerBurrowState BurrowState { get; set; }
-    public BadgerTunnelState TunnelState { get; set; }
-    public BadgerUnburrowState UnburrowState { get; set; }
-    public BadgerDeadState DeadState { get; set; }
-    #endregion
-
-    #region Badger-Specific ScriptableObjects
-    [Space]
-    [Space]
-    [Header("Badger-Specific SOs")]
-    [SerializeField] private BadgerIdleSO BadgerIdleBase;
-    [SerializeField] private BadgerWalkSO BadgerWalkBase;
-    [SerializeField] private BadgerBurrowSO BadgerBurrowBase;
-    [SerializeField] private BadgerTunnelSO BadgerTunnelBase;
-    [SerializeField] private BadgerUnburrowSO BadgerUnburrowBase;
-
-    public BadgerIdleSO BadgerIdleBaseInstance { get; set; }
-    public BadgerWalkSO BadgerWalkBaseInstance { get; set; }
-    public BadgerBurrowSO BadgerBurrowBaseInstance { get; set; }
-    public BadgerTunnelSO BadgerTunnelBaseInstance { get; set; }
-    public BadgerUnburrowSO BadgerUnburrowBaseInstance { get; set; }
-    #endregion
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        _renderers = GetComponentsInChildren<Renderer>();
-
-        _baseAttackDamage = AttackDamage;
-
-        BadgerIdleBaseInstance = Instantiate(BadgerIdleBase);
-        BadgerWalkBaseInstance = Instantiate(BadgerWalkBase);
-        BadgerBurrowBaseInstance = Instantiate(BadgerBurrowBase);
-        BadgerTunnelBaseInstance = Instantiate(BadgerTunnelBase);
-        BadgerUnburrowBaseInstance = Instantiate(BadgerUnburrowBase);
-
-        IdleState = new BadgerIdleState(this, StateMachine);
-        WalkState = new BadgerWalkState(this, StateMachine);
-        BurrowState = new BadgerBurrowState(this, StateMachine);
-        TunnelState = new BadgerTunnelState(this, StateMachine);
-        UnburrowState = new BadgerUnburrowState(this, StateMachine);
-
-        DeadState = new BadgerDeadState(this, StateMachine);
-    }
-
+    // Badger is on pause until a later ground-up rework.
+    // This shell stays so existing prefab, asset, and scene references keep compiling.
     protected override void Start()
     {
         base.Start();
-
-        BadgerIdleBaseInstance.Initialize(gameObject, this, PlayerTransform);
-        BadgerWalkBaseInstance.Initialize(gameObject, this, PlayerTransform);
-        BadgerBurrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
-        BadgerTunnelBaseInstance.Initialize(gameObject, this, PlayerTransform);
-        BadgerUnburrowBaseInstance.Initialize(gameObject, this, PlayerTransform);
-
-        ApplyScaling();
-        InitializeRuntimeState();
-        _hasStarted = true;
+        enabled = false;
     }
-    protected override bool CanTakeDamage()
+
+    public void StartTunneling()
     {
-        return !isBurrowed && base.CanTakeDamage();
+        // Badger is on pause until a later ground-up rework.
     }
 
-    protected override void Update()
+    public void ChangeStateToIdle()
     {
-        base.Update();
-
-        if (CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
-        {
-            Die();
-            
-            StateMachine.ChangeState(DeadState);
-        }
-
+        // Badger is on pause until a later ground-up rework.
     }
-    public override void OnSpawned()
+
+    public void BadgerDealDamage()
     {
-        ApplyScaling();
-        base.OnSpawned();
-
-        if (!_hasStarted)
-            return;
-
-        InitializeRuntimeState();
-    }
-    private float GetDifficultyMultiplier()
-    {
-        return 1f + (0.2f * DifficultyTier);
+        // Badger is on pause until a later ground-up rework.
     }
 
-    private void ApplyScaling()
-    {
-        AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
-    }
-    public void InitializeRuntimeState()
-    {
-        CurrentHealth = MaxHealth;
-        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
-
-        StateMachine.Reset();
-        StateMachine.Initialize(IdleState);
-        ResetFlags();
-    }
-    private void ResetFlags()
-    {
-        isWondering = false;
-        isTunneling = false;
-        isBurrowed = false;
-        isRetreating = false;
-        ShouldRunAwayOnNextBurrow = false;
-    }
     public void DestroyBadger()
     {
-        RequestDespawn();
-    }
-    public void DamagePlayer(float damage)
-    {
-        base.DamagePlayer(damage, _hitData);
-    }
-
-    public void ForcedIdleCalclulation(in float deltaTime)
-    {
-        if (ForcedIdleDuration > 0)
-        {
-            ForcedIdleDuration -= deltaTime;
-        }
-    }
-    public bool IsVisibleOnScreen()
-    {
-        return _renderers != null && _renderers.Any(r => r != null && r.isVisible);
+        // Badger is on pause until a later ground-up rework.
     }
 }

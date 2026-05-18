@@ -47,6 +47,26 @@ public class EnemyAnimationEventRelay : MonoBehaviour
         _enemy?.RequestDespawn();
     }
 
+    public void StartTunneling()
+    {
+        // Badger is on pause until a later ground-up rework.
+    }
+
+    public void ChangeStateToIdle()
+    {
+        // Badger is on pause until a later ground-up rework.
+    }
+
+    public void BadgerDealDamage()
+    {
+        // Badger is on pause until a later ground-up rework.
+    }
+
+    public void DestroyBadger()
+    {
+        // Badger is on pause until a later ground-up rework.
+    }
+
     // necessary to change if needed for each enemy
     // follow same logic if (_enemy is X x) { }
     public void Anim_SetMoveWhileAttacking(int enabled)

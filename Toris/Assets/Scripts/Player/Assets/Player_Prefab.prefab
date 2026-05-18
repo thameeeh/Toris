@@ -521,7 +521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6db47fec89064adf9de8f95167938fb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVfx
-  rules: []
+  rules:
+  - {fileID: 11400000, guid: 4b36fa3eea7d44d7935802ecbdc0375e, type: 2}
   legacyModules: []
 --- !u!114 &4896050849110528461
 MonoBehaviour:
@@ -978,7 +979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4277077414216047868}
   - component: {fileID: 3458214074690250577}
-  m_Layer: 14
+  m_Layer: 10
   m_Name: WorldCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

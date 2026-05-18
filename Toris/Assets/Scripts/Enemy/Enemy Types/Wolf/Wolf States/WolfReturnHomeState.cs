@@ -23,7 +23,7 @@ public class WolfReturnHomeState : EnemyState<Wolf>
 
         if (enemy.IsAggroed)
         {
-            enemyStateMachine.ChangeState(enemy.HowlState);
+            enemyStateMachine.ChangeState(enemy.ChaseState);
             return;
         }
 

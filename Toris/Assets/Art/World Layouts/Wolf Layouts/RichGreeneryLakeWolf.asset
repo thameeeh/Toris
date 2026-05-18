@@ -1,0 +1,681 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cbd8db813245a398724f1f5b5a076b, type: 3}
+  m_Name: RichGreeneryLakeWolf
+  m_EditorClassIdentifier: Assembly-CSharp::SiteTileLayoutDefinition
+  cells:
+  - offset: {x: 1, y: -7}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 5a101aabfb0743b469e8c0270a003bfe, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -7}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -7}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -7}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: -6}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: -6}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: -6}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -6}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -6}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: f1ca0c694471746419692574e32f72db, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -6}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: -6}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: -5}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: -5}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: -5}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -5}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -5}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -5}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: -5}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 850646365503f6543b81dab048a9db29, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 6, y: -5}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 7, y: -5}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: -4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: -4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: -4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: -4}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -4}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -4}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -4}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: b35dc3f772d5f62449faf0d028f02672, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: -4}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 6, y: -4}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 7, y: -4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 8, y: -4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -3, y: -3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: -3}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: -3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 11400000, guid: 23e85be6831935040bf92cac00daf0e5, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: -3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 6, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 7, y: -3}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 8, y: -3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -4, y: -2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 4d64329149df8994faec01462ea1c1e8, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -3, y: -2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 4d64329149df8994faec01462ea1c1e8, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: -2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: -2}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: e0f3f905530c75f4cb11a2067c9bce87, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: -2}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: -2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 4d64329149df8994faec01462ea1c1e8, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 850646365503f6543b81dab048a9db29, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -2}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -2}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: -2}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: b1b660d46e18de24da24d926ef1ac135, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 6, y: -2}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 7, y: -2}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 8, y: -2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -4, y: -1}
+    ground: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: c4b2277d2543bec46a08c04f63253d2f, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: -3, y: -1}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 38dbef22008b0ce4d8a675632ffaacb2, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: -1}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: -1}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: -1}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: -1}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: -1}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: -1}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: -1}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: -1}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 6, y: -1}
+    ground: {fileID: 0}
+    water: {fileID: 11400000, guid: 661632061495081418c0f5f2370131bb, type: 2}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 7, y: -1}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 8, y: -1}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -4, y: 0}
+    ground: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -3, y: 0}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 59026419a025dcb4f8e100bd5237381b, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: 0}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: 0}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: 0}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 50c742e8b7bae4b4a8e23b06e1187ebf, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: 0}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 50c742e8b7bae4b4a8e23b06e1187ebf, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: 0}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: 0}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: 0}
+    ground: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 5, y: 0}
+    ground: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 6, y: 0}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 4d64329149df8994faec01462ea1c1e8, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 7, y: 0}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -4, y: 1}
+    ground: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -3, y: 1}
+    ground: {fileID: 11400000, guid: b8be3045fede3464bb044634367fb4d0, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: 1}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 4d64329149df8994faec01462ea1c1e8, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: 1}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: 1}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 50c742e8b7bae4b4a8e23b06e1187ebf, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: 1}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 11400000, guid: 50c742e8b7bae4b4a8e23b06e1187ebf, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: 1}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: 1}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: 1}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -4, y: 2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -3, y: 2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: 2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 11400000, guid: a22bf8da576abb04c9ab5feefa8ca561, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: 2}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: 2}
+    ground: {fileID: 11400000, guid: 2204631a22fa2ce4fb61ffb47b9d4853, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: 2}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: 2}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: 2}
+    ground: {fileID: 11400000, guid: 5ab97881831c2874d8a527181149f83c, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: 2}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -2, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 11400000, guid: a22bf8da576abb04c9ab5feefa8ca561, type: 2}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: a10f494b875d1064c989ddc61c8407f5, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: 4d64329149df8994faec01462ea1c1e8, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 4, y: 3}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: -1, y: 4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 0, y: 4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 1, y: 4}
+    ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 11400000, guid: b5c2c2992715f3741a1e8080db4a15ca, type: 2}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 2, y: 4}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}
+  - offset: {x: 3, y: 4}
+    ground: {fileID: 11400000, guid: 7c8f31df0d3cfdf43a005d2be8dd4a73, type: 2}
+    water: {fileID: 0}
+    decoration: {fileID: 0}
+    obstacle: {fileID: 0}
+    canopy: {fileID: 0}

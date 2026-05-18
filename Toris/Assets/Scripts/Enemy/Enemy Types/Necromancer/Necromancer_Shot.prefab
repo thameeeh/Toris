@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 15201539819315284}
   - component: {fileID: 4209070447263494290}
   - component: {fileID: 5464171239517160616}
-  m_Layer: 8
+  m_Layer: 19
   m_Name: Necromancer_Shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

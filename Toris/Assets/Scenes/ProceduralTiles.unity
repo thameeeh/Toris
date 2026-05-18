@@ -1001,7 +1001,7 @@ GameObject:
   - component: {fileID: 875006847}
   - component: {fileID: 875006850}
   - component: {fileID: 875006849}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1559,7 +1559,7 @@ GameObject:
   - component: {fileID: 1101475292}
   - component: {fileID: 1101475291}
   - component: {fileID: 1101475293}
-  m_Layer: 14
+  m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1997,7 +1997,7 @@ GameObject:
   - component: {fileID: 1583650510}
   - component: {fileID: 1583650508}
   - component: {fileID: 1583650509}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

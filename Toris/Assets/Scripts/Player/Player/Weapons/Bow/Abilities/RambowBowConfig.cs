@@ -62,7 +62,7 @@ public class RambowBowConfig : PlayerAbilitySO
 
         ramboRuntime.Activate();
         ramboRuntime.BeginAbilityUse(context);
-        FireRambowShot(context);
+        FireRambowShot(context, playReleaseAnimation);
         ramboRuntime.ScheduleNextShot(shotsPerSecond);
         ramboRuntime.StartCooldown();
         LogRambow(playerBow, $"Activated. shotsPerSecond={shotsPerSecond:F2} nextShotTime={ramboRuntime.NextShotTime:F3}");
@@ -113,12 +113,12 @@ public class RambowBowConfig : PlayerAbilitySO
             return;
         }
 
-        FireRambowShot(context);
+        FireRambowShot(context, false);
         ramboRuntime.ScheduleNextShot(shotsPerSecond);
         LogRambow(playerBow, $"Shot scheduled. nextShotTime={ramboRuntime.NextShotTime:F3}");
     }
 
-    private void FireRambowShot(PlayerAbilityContext context)
+    private void FireRambowShot(PlayerAbilityContext context, bool requestReleaseAnimation)
     {
         PlayerBowController playerBow = context.bow;
         if (playerBow == null)
@@ -134,9 +134,9 @@ public class RambowBowConfig : PlayerAbilitySO
 
         float resolvedProjectileLifetime = ResolveProjectileLifetime();
         LogRambow(playerBow,
-            $"Firing shot. speed={shotStats.speed:F2} damage={shotStats.damage:F2} spread={shotStats.spreadDeg:F2} lifetime={resolvedProjectileLifetime:F2}");
+            $"Firing shot. speed={shotStats.speed:F2} damage={shotStats.damage:F2} spread={shotStats.spreadDeg:F2} lifetime={resolvedProjectileLifetime:F2} releaseAnimation={requestReleaseAnimation}");
 
-        playerBow.FireArrow(shotStats, playReleaseAnimation, ProjectileDebugSource, resolvedProjectileLifetime);
+        playerBow.FireArrow(shotStats, requestReleaseAnimation, ProjectileDebugSource, resolvedProjectileLifetime);
     }
 
     private float ResolveProjectileLifetime()

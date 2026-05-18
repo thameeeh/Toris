@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3438982455294847890}
   - component: {fileID: -7597821108869264078}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ArrowRainVisual
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9133215293348676710}
   - component: {fileID: 268724862792161781}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

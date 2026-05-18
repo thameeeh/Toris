@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd71177bb9224f4b8040e13eba3b24a, type: 3}
+  m_Name: SitePlacementRuleBuildStepDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::SitePlacementRuleBuildStepDefinition
+  sitePlacementRules:
+  - {fileID: 11400000, guid: b9d3902789965cf4eb2b3d40c2dd1949, type: 2}
+  - {fileID: 11400000, guid: a6797d31b4e8c374c9723f6fac861520, type: 2}
+  - {fileID: 11400000, guid: 9018c76545404224bbc3b6dd7072be54, type: 2}
+  - {fileID: 11400000, guid: 1dcc35a8fc741a343804af6bd6d712d4, type: 2}
+  - {fileID: 11400000, guid: 84a0796e45cb61c40b93a1f6199a3449, type: 2}
+  - {fileID: 11400000, guid: 2bdb12a1ec3f58745bc6c8078b79c85e, type: 2}
+  - {fileID: 11400000, guid: d82e6e1b4abb6f8eed9dd92333ef4ca2, type: 2}
+  - {fileID: 11400000, guid: 5b9917d83c2f248c8aabe32878f938e8, type: 2}
+  - {fileID: 11400000, guid: b028d451f1d9a50c627d5857f3394e70, type: 2}

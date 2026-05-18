@@ -5,12 +5,14 @@ public class PlayerAbilityRuntime
 {
     private PlayerAbilitySO _definition;
     private float _nextReadyTime;
+    private float _cooldownDuration;
     private float _bowDrawBlockedUntilTime;
     private float _movementBlockedUntilTime;
 
     public PlayerAbilitySO Definition => _definition;
     public bool HasAbility => _definition != null;
     public bool IsOnCooldown => Time.time < _nextReadyTime;
+    public float CooldownDuration => _cooldownDuration;
     public float CooldownRemaining => Mathf.Max(0f, _nextReadyTime - Time.time);
 
     public void Initialize(PlayerAbilitySO definition)
@@ -22,6 +24,7 @@ public class PlayerAbilityRuntime
     public void ResetRuntimeState()
     {
         _nextReadyTime = 0f;
+        _cooldownDuration = 0f;
         _bowDrawBlockedUntilTime = 0f;
         _movementBlockedUntilTime = 0f;
     }
@@ -41,7 +44,21 @@ public class PlayerAbilityRuntime
         if (_definition == null)
             return;
 
-        _nextReadyTime = Time.time + _definition.cooldownSeconds;
+        StartCooldown(_definition.cooldownSeconds);
+    }
+
+    public void StartCooldown(PlayerAbilityContext context)
+    {
+        if (_definition == null)
+            return;
+
+        StartCooldown(_definition.GetCooldownSeconds(context));
+    }
+
+    private void StartCooldown(float duration)
+    {
+        _cooldownDuration = Mathf.Max(0f, duration);
+        _nextReadyTime = Time.time + _cooldownDuration;
     }
 
     public void BlockBowDraw()

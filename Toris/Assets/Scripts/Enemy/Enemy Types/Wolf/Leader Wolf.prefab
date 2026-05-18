@@ -336,6 +336,9 @@ MonoBehaviour:
   healthMultiplier: 1.75
   fallbackHomeRadius: 4
   pack: {fileID: -2298867679096013564}
+  minimumChaseCommitmentSeconds: 0.65
+  lostTargetChaseGraceSeconds: 1.25
+  forcedPlayerAggroSeconds: 6
   EnemyHowlBase: {fileID: 11400000, guid: f2741fc3d383f8e4191526b4ae6b6cb0, type: 2}
   EnemyChaseBase: {fileID: 11400000, guid: 7eadb239df08c2d4e84edf429dc8172e, type: 2}
   EnemyIdleBase: {fileID: 11400000, guid: 82b81c892a8365441b1246466bcf4d86, type: 2}
@@ -431,8 +434,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.25
+  m_Offset: {x: 0, y: 0.26}
+  m_Radius: 0.31
 --- !u!114 &-512811958546087626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,7 +538,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.03, y: -0.2}
+  m_Offset: {x: 0.03, y: 0.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}

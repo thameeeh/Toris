@@ -30,6 +30,11 @@ public class DecoyTotemConfig : PlayerAbilitySO
         return new DecoyTotemRuntime();
     }
 
+    public override float GetStaminaCost(PlayerAbilityContext context)
+    {
+        return ResolveStaminaCost(staminaCost, context);
+    }
+
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         PlayerStats playerStats = context.stats;
@@ -45,7 +50,8 @@ public class DecoyTotemConfig : PlayerAbilitySO
         if (!replaceExistingTotem && decoyRuntime.HasActiveTotem)
             return;
 
-        if (staminaCost > 0f && !playerStats.TryConsumeStamina(staminaCost))
+        float resolvedStaminaCost = GetStaminaCost(context);
+        if (resolvedStaminaCost > 0f && !playerStats.TryConsumeStamina(resolvedStaminaCost))
             return;
 
         Vector2 targetPoint = ResolveTargetPoint(playerBow);
@@ -67,7 +73,7 @@ public class DecoyTotemConfig : PlayerAbilitySO
         if (playReleaseAnimation)
             playerBow.RequestAbilityReleaseTowards(targetPoint);
 
-        decoyRuntime.StartCooldown();
+        decoyRuntime.StartCooldown(context);
         PlayerShootDebug.Log(playerBow, "DecoyTotem", $"Placed at {FormatVector(targetPoint)} duration={duration:F2} radius={retargetRadius:F2} hp={maxHealth:F0}.");
     }
 

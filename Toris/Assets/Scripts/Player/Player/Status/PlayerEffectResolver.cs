@@ -23,6 +23,8 @@ public static class PlayerEffectResolver
 
         float moveSpeedMultiplicative = 1f;
         float dashSpeedMultiplicative = 1f;
+        float abilityStaminaCostMultiplicative = 1f;
+        float abilityCooldownMultiplicative = 1f;
         float outgoingDamageMultiplicative = 1f;
         float incomingDamageMultiplicative = 1f;
 
@@ -62,6 +64,14 @@ public static class PlayerEffectResolver
                         ApplyMultiplierOnlyModifier(modifier, ref dashSpeedMultiplicative);
                         break;
 
+                    case PlayerEffectType.AbilityStaminaCostMultiplier:
+                        ApplyMultiplierOnlyModifier(modifier, ref abilityStaminaCostMultiplicative);
+                        break;
+
+                    case PlayerEffectType.AbilityCooldownMultiplier:
+                        ApplyMultiplierOnlyModifier(modifier, ref abilityCooldownMultiplicative);
+                        break;
+
                     case PlayerEffectType.OutgoingDamageMultiplier:
                         ApplyMultiplierOnlyModifier(modifier, ref outgoingDamageMultiplicative);
                         break;
@@ -92,6 +102,8 @@ public static class PlayerEffectResolver
 
         resolvedEffects.moveSpeedMultiplier = Mathf.Max(0f, resolvedEffects.moveSpeedMultiplier * moveSpeedMultiplicative);
         resolvedEffects.dashSpeedMultiplier = Mathf.Max(0f, resolvedEffects.dashSpeedMultiplier * dashSpeedMultiplicative);
+        resolvedEffects.abilityStaminaCostMultiplier = Mathf.Max(0f, resolvedEffects.abilityStaminaCostMultiplier * abilityStaminaCostMultiplicative);
+        resolvedEffects.abilityCooldownMultiplier = Mathf.Max(0f, resolvedEffects.abilityCooldownMultiplier * abilityCooldownMultiplicative);
         resolvedEffects.outgoingDamageMultiplier = Mathf.Max(0f, resolvedEffects.outgoingDamageMultiplier * outgoingDamageMultiplicative);
         resolvedEffects.incomingDamageMultiplier = Mathf.Max(0f, resolvedEffects.incomingDamageMultiplier * incomingDamageMultiplicative);
 
@@ -116,6 +128,9 @@ public static class PlayerEffectResolver
 
             moveSpeedMultiplier = Mathf.Max(0f, baseEffects.moveSpeedMultiplier),
             dashSpeedMultiplier = Mathf.Max(0f, baseEffects.dashSpeedMultiplier),
+
+            abilityStaminaCostMultiplier = Mathf.Max(0f, baseEffects.abilityStaminaCostMultiplier),
+            abilityCooldownMultiplier = Mathf.Max(0f, baseEffects.abilityCooldownMultiplier),
 
             outgoingDamageMultiplier = Mathf.Max(0f, baseEffects.outgoingDamageMultiplier),
             incomingDamageMultiplier = Mathf.Max(0f, baseEffects.incomingDamageMultiplier),

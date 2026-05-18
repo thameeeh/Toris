@@ -41,6 +41,11 @@ public class ArrowRainConfig : PlayerAbilitySO
         return new ArrowRainRuntime();
     }
 
+    public override float GetStaminaCost(PlayerAbilityContext context)
+    {
+        return ResolveStaminaCost(staminaCost, context);
+    }
+
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         PlayerStats playerStats = context.stats;
@@ -56,7 +61,8 @@ public class ArrowRainConfig : PlayerAbilitySO
         if (!arrowRainRuntime.IsReady(context))
             return;
 
-        if (staminaCost > 0f && !playerStats.TryConsumeStamina(staminaCost))
+        float resolvedStaminaCost = GetStaminaCost(context);
+        if (resolvedStaminaCost > 0f && !playerStats.TryConsumeStamina(resolvedStaminaCost))
             return;
 
         Vector2 castOrigin = playerBow.transform.position;
@@ -99,7 +105,7 @@ public class ArrowRainConfig : PlayerAbilitySO
             playerBow.RequestAbilityReleaseTowards(targetPoint);
         }
 
-        arrowRainRuntime.StartCooldown();
+        arrowRainRuntime.StartCooldown(context);
     }
 
     public override void Tick(PlayerAbilityRuntime runtime, PlayerAbilityContext context)

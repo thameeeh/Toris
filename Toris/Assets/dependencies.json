@@ -2,343 +2,347 @@
     "nodes": [
         {
             "id": "CraftingRecipeSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\CraftingRecipeSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\CraftingRecipeSO.cs"
         },
         {
             "id": "CraftingRegistrySO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\CraftingRegistrySO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\CraftingRegistrySO.cs"
         },
         {
             "id": "GameSessionSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\GameSessionSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\GameSessionSO.cs"
         },
         {
             "id": "InventoryContainerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\InventoryContainerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\InventoryContainerSO.cs"
         },
         {
             "id": "InventoryItemSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\InventoryItemSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\InventoryItemSO.cs"
         },
         {
             "id": "SalvageRecipeSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\SalvageRecipeSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\SalvageRecipeSO.cs"
         },
         {
             "id": "InventorySlot",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\InventorySlot.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\InventorySlot.cs"
         },
         {
             "id": "InventorySlotView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\InventorySlotView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\InventorySlotView.cs"
         },
         {
             "id": "WorldContainer",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\WorldContainer.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\Template controlls\\WorldContainer.cs"
         },
         {
             "id": "InventorySaveData",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Testing Saving data to hard drive\\InventorySaveData.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\Testing Saving data to hard drive\\InventorySaveData.cs"
         },
         {
             "id": "MockItemDatabase",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\Testing Saving data to hard drive\\MockItemDatabase.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\Testing Saving data to hard drive\\MockItemDatabase.cs"
         },
         {
             "id": "UIBootstraper",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIBootstraper.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIBootstraper.cs"
         },
         {
             "id": "ConsumableManagerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\ConsumableManagerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\ConsumableManagerSO.cs"
         },
         {
             "id": "CraftingManagerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\CraftingManagerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\CraftingManagerSO.cs"
         },
         {
             "id": "SalvageManagerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\SalvageManagerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\SalvageManagerSO.cs"
         },
         {
             "id": "ShopManagerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\ShopManagerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\ShopManagerSO.cs"
         },
         {
             "id": "UpgradeSalvageManagerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\UpgradeSalvageManagerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\ScriptableObjects\\Managers\\UpgradeSalvageManagerSO.cs"
         },
         {
             "id": "AssetPinger",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\AssetPinger.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\AssetPinger.cs"
         },
         {
             "id": "BackgroundClickHandler",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\BackgroundClickHandler.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\BackgroundClickHandler.cs"
         },
         {
             "id": "GraphVisualizer2D",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\GraphVisualizer2D.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\GraphVisualizer2D.cs"
         },
         {
             "id": "NodeDragger",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\NodeDragger.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\NodeDragger.cs"
         },
         {
             "id": "NodeInteractionHandler",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\NodeInteractionHandler.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Code Dependency Visualizer\\NodeInteractionHandler.cs"
         },
         {
             "id": "HudScreenController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\HudScreenController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\HudScreenController.cs"
         },
         {
             "id": "InventoryScreenController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\InventoryScreenController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\InventoryScreenController.cs"
         },
         {
             "id": "MageScreenController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\MageScreenController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\MageScreenController.cs"
         },
         {
             "id": "SkillMenuController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SkillMenuController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SkillMenuController.cs"
         },
         {
             "id": "SkillsScreenController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SkillsScreenController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SkillsScreenController.cs"
         },
         {
             "id": "SmithScreenController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SmithScreenController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Controllers\\SmithScreenController.cs"
         },
         {
             "id": "ConfirmationPayload",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\ConfirmationPayload.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\ConfirmationPayload.cs"
         },
         {
             "id": "InventoryInteractionContext",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\InventoryInteractionContext.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\InventoryInteractionContext.cs"
         },
         {
             "id": "ScreenTypes",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\ScreenTypes.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\ScreenTypes.cs"
         },
         {
             "id": "UIEventsSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UIEventsSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UIEventsSO.cs"
         },
         {
             "id": "UIInventoryEventsSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UIInventoryEventsSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UIInventoryEventsSO.cs"
         },
         {
             "id": "UISkillEventsSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UISkillEventsSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Events\\UISkillEventsSO.cs"
         },
         {
             "id": "MainMenuController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuController.cs"
         },
         {
             "id": "MainMenuUIManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuUIManager.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuUIManager.cs"
         },
         {
             "id": "MainMenuView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\MainMenuView.cs"
         },
         {
             "id": "SaveSlotData",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\SaveSlotData.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\SaveSlotData.cs"
         },
         {
             "id": "SaveSlotView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\SaveSlotView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\SaveSlotView.cs"
         },
         {
             "id": "SkillManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Managers\\SkillManager.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Managers\\SkillManager.cs"
         },
         {
             "id": "PauseMenuController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Pause Menu\\PauseMenuController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Pause Menu\\PauseMenuController.cs"
         },
         {
             "id": "PauseMenuView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Pause Menu\\PauseMenuView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Pause Menu\\PauseMenuView.cs"
         },
         {
             "id": "GameView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\GameView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\GameView.cs"
         },
         {
             "id": "HUDView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\HUDView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\HUDView.cs"
         },
         {
             "id": "MageView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\MageView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\MageView.cs"
+        },
+        {
+            "id": "PlayerAbilityHUDView",
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerAbilityHUDView.cs"
         },
         {
             "id": "PlayerPotionHUDView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerPotionHUDView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerPotionHUDView.cs"
         },
         {
             "id": "PlayerSkillView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerSkillView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\PlayerSkillView.cs"
         },
         {
             "id": "UIManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\UIManager.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\UIManager.cs"
         },
         {
             "id": "UIView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\UIView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\UIView.cs"
         },
         {
             "id": "ConfirmationModalController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Confirmation\\ConfirmationModalController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Confirmation\\ConfirmationModalController.cs"
         },
         {
             "id": "ConfirmationModalView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Confirmation\\ConfirmationModalView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Confirmation\\ConfirmationModalView.cs"
         },
         {
             "id": "SettingsMenuController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Settings\\SettingsMenuController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Settings\\SettingsMenuController.cs"
         },
         {
             "id": "SettingsMenuView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Settings\\SettingsMenuView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\Main Menu\\Settings\\SettingsMenuView.cs"
         },
         {
             "id": "UIDragManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\DragAndDrop\\UIDragManager.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\DragAndDrop\\UIDragManager.cs"
         },
         {
             "id": "PlayerEquipmentView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerEquipmentView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerEquipmentView.cs"
         },
         {
             "id": "PlayerInventoryView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerInventoryView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerInventoryView.cs"
         },
         {
             "id": "PlayerPotionView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerPotionView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerPotionView.cs"
         },
         {
             "id": "PlayerStatsView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerStatsView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Player_Inventory\\PlayerStatsView.cs"
         },
         {
             "id": "ForgeSubView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\ForgeSubView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\ForgeSubView.cs"
         },
         {
             "id": "SalvageSubView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\SalvageSubView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\SalvageSubView.cs"
         },
         {
             "id": "ShopSubView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\ShopSubView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\ShopSubView.cs"
         },
         {
             "id": "SmithView",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\SmithView.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\UIToolkit\\UI\\UIViews\\Smith\\SmithView.cs"
         },
         {
             "id": "ItemComponent",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\ItemComponent.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\ItemComponent.cs"
         },
         {
             "id": "ItemComponentState",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\ItemComponentState.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\ItemComponentState.cs"
         },
         {
             "id": "ItemInstance",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\ItemInstance.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\ItemInstance.cs"
         },
         {
             "id": "WorldItem",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\WorldItem.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\WorldItem.cs"
         },
         {
             "id": "ConsumableModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\ConsumableModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\ConsumableModule.cs"
         },
         {
             "id": "DefensiveModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\DefensiveModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\DefensiveModule.cs"
         },
         {
             "id": "EquipableModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\EquipableModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\EquipableModule.cs"
         },
         {
             "id": "EvolvingItemModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\EvolvingItemModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\EvolvingItemModule.cs"
         },
         {
             "id": "OffensiveModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\OffensiveModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\OffensiveModule.cs"
         },
         {
             "id": "ProgressionModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\ProgressionModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\ProgressionModule.cs"
         },
         {
             "id": "UpgradeableModule",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\UpgradeableModule.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Items\\Entity Modules\\UpgradeableModule.cs"
         },
         {
             "id": "GameSaveData",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\GameSaveData.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Save System\\GameSaveData.cs"
         },
         {
             "id": "RuntimeSnapshotRegistry",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\RuntimeSnapshotRegistry.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Save System\\RuntimeSnapshotRegistry.cs"
         },
         {
             "id": "SaveDataOrchestrator",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\SaveDataOrchestrator.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Save System\\SaveDataOrchestrator.cs"
         },
         {
             "id": "SaveManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Save System\\SaveManager.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Save System\\SaveManager.cs"
         },
         {
             "id": "InventoryActionController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryActionController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryActionController.cs"
         },
         {
             "id": "InventoryManager",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryManager.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryManager.cs"
         },
         {
             "id": "InventoryTransferManagerSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryTransferManagerSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\InventoryTransferManagerSO.cs"
         },
         {
             "id": "PlayerConsumableController",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerConsumableController.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerConsumableController.cs"
         },
         {
             "id": "PlayerInventorySceneResolver",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerInventorySceneResolver.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Inventory\\PlayerInventorySceneResolver.cs"
         },
         {
             "id": "PlayerProgressionAnchorSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerProgressionAnchorSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerProgressionAnchorSO.cs"
         },
         {
             "id": "PlayerStatsAnchorSO",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerStatsAnchorSO.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\Anchors\\PlayerStatsAnchorSO.cs"
         },
         {
             "id": "PlayerHUDBridge",
-            "path": "D:/GameDev/Unity/Game Project Toris/Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerHUDBridge.cs"
+            "path": "C:/Users/karol/Desktop/Unity/Project Toris/Toris/Assets\\Scripts\\Player\\Player\\View\\PlayerHUDBridge.cs"
         }
     ],
     "edges": [
@@ -649,6 +653,10 @@
         {
             "source": "HudScreenController",
             "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "HudScreenController",
+            "target": "UISkillEventsSO"
         },
         {
             "source": "HudScreenController",
@@ -1004,11 +1012,19 @@
         },
         {
             "source": "HUDView",
+            "target": "PlayerAbilityHUDView"
+        },
+        {
+            "source": "HUDView",
             "target": "UIEventsSO"
         },
         {
             "source": "HUDView",
             "target": "UIInventoryEventsSO"
+        },
+        {
+            "source": "HUDView",
+            "target": "UISkillEventsSO"
         },
         {
             "source": "HUDView",
@@ -1053,6 +1069,14 @@
         {
             "source": "MageView",
             "target": "UIEventsSO"
+        },
+        {
+            "source": "PlayerAbilityHUDView",
+            "target": "UISkillEventsSO"
+        },
+        {
+            "source": "PlayerAbilityHUDView",
+            "target": "AbilitySlotView"
         },
         {
             "source": "PlayerPotionHUDView",

@@ -37,6 +37,16 @@ public abstract class PlayerAbilitySO : ScriptableObject
         return new PlayerAbilityRuntime();
     }
 
+    public virtual float GetCooldownSeconds(PlayerAbilityContext context)
+    {
+        return ResolveCooldownSeconds(cooldownSeconds, context);
+    }
+
+    public virtual float GetStaminaCost(PlayerAbilityContext context)
+    {
+        return 0f;
+    }
+
     public virtual bool IsUnlocked(PlayerAbilityContext context)
     {
         if (string.IsNullOrWhiteSpace(requiredSkillID))
@@ -54,6 +64,24 @@ public abstract class PlayerAbilitySO : ScriptableObject
     public virtual void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context) { }
     public virtual void OnButtonUp(PlayerAbilityRuntime runtime, PlayerAbilityContext context) { }
     public virtual void Tick(PlayerAbilityRuntime runtime, PlayerAbilityContext context) { }
+
+    protected static float ResolveStaminaCost(float baseCost, PlayerAbilityContext context)
+    {
+        float multiplier = context.stats != null
+            ? context.stats.ResolvedEffects.abilityStaminaCostMultiplier
+            : 1f;
+
+        return Mathf.Max(0f, baseCost * multiplier);
+    }
+
+    protected static float ResolveCooldownSeconds(float baseCooldown, PlayerAbilityContext context)
+    {
+        float multiplier = context.stats != null
+            ? context.stats.ResolvedEffects.abilityCooldownMultiplier
+            : 1f;
+
+        return Mathf.Max(0f, baseCooldown * multiplier);
+    }
 
 #if UNITY_EDITOR
     protected virtual void OnValidate()

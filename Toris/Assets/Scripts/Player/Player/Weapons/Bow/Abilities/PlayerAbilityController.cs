@@ -365,6 +365,7 @@ public class PlayerAbilityController : MonoBehaviour
         PlayerAbilitySlotSnapshot[] snapshots = BuildAbilitySlotSnapshots();
         SyncAffordabilityTracking(snapshots);
         AbilitySlotsChanged?.Invoke(snapshots);
+        _uiSkillEvents?.OnAbilitySlotsUpdated?.Invoke(snapshots);
     }
 
     private bool HasAffordabilityChanged()

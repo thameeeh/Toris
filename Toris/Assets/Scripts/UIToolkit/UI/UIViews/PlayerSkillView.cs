@@ -35,7 +35,12 @@ namespace OutlandHaven.Skills
         private GameSessionSO _gameSession;
         private UISkillEventsSO _uiSkillEvents;
 
-        public PlayerSkillView(VisualElement topElement, UIEventsSO uiEvents, SkillData[] allSkills, GameSessionSO gameSession, UISkillEventsSO uiSkillEvents)
+        public PlayerSkillView(
+            VisualElement topElement, 
+            UIEventsSO uiEvents, 
+            SkillData[] allSkills, 
+            GameSessionSO gameSession, 
+            UISkillEventsSO uiSkillEvents)
             : base(topElement, uiEvents)
         {
             _allSkills = allSkills;

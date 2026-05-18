@@ -29,11 +29,16 @@ namespace OutlandHaven.Inventory
         private bool _eventsBound = false;
         private InventoryInteractionContext _currentContext = InventoryInteractionContext.Normal;
 
-        public PlayerInventoryView(VisualElement topElement, VisualTreeAsset slotTemplate, 
-            GameSessionSO session, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, 
-            InventoryManager equipmentInventory = null, InventoryManager potionInventory = null, 
+        public PlayerInventoryView(
+            VisualElement topElement, 
+            VisualTreeAsset slotTemplate, 
+            GameSessionSO session, 
+            UIEventsSO uiEvents, 
+            UIInventoryEventsSO uiInventoryEvents, 
+            InventoryManager equipmentInventory = null, 
+            InventoryManager potionInventory = null, 
             PlayerHUDBridge hudBridge = null)
-    : base(topElement, uiEvents)
+            : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;
             _gameSession = session;

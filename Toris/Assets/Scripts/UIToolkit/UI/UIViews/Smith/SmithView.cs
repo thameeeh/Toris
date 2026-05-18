@@ -33,7 +33,19 @@ namespace OutlandHaven.UIToolkit
         private ForgeSubView _forgeSubView;
         private SalvageSubView _salvageSubView;
 
-        public SmithView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopSlotTemplate, VisualTreeAsset shopTemplate, VisualTreeAsset forgeTemplate, VisualTreeAsset salvageTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, PlayerHUDBridge playerHudBridge, CraftingManagerSO craftingManager, SalvageManagerSO salvageManager)
+        public SmithView(
+            VisualElement topElement, 
+            VisualTreeAsset slotTemplate, 
+            VisualTreeAsset shopSlotTemplate, 
+            VisualTreeAsset shopTemplate, 
+            VisualTreeAsset forgeTemplate, 
+            VisualTreeAsset salvageTemplate, 
+            UIEventsSO uiEvents, 
+            UIInventoryEventsSO uiInventoryEvents, 
+            GameSessionSO gameSession, 
+            PlayerHUDBridge playerHudBridge, 
+            CraftingManagerSO craftingManager, 
+            SalvageManagerSO salvageManager)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;

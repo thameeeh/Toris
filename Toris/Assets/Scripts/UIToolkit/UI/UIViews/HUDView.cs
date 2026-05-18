@@ -33,7 +33,16 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, OutlandHaven.Skills.UISkillEventsSO uiSkillEvents, VisualTreeAsset buttonTemplate, VisualTreeAsset slotTemplate, VisualTreeAsset abilitySlotTemplate) : base(topElement, uiEvents)
+        public HUDView(
+            VisualElement topElement, 
+            PlayerHUDBridge data, 
+            UIEventsSO uiEvents, 
+            UIInventoryEventsSO uiInventoryEvents, 
+            OutlandHaven.Skills.UISkillEventsSO uiSkillEvents, 
+            VisualTreeAsset buttonTemplate, 
+            VisualTreeAsset slotTemplate, 
+            VisualTreeAsset abilitySlotTemplate) 
+            : base(topElement, uiEvents)
         {
             _playerHudBridge = data;
             _buttonTemplate = buttonTemplate;
@@ -186,6 +195,13 @@ namespace OutlandHaven.UIToolkit
                 _playerHudBridge.OnLevelChanged -= UpdateLevelUI;
                 _playerHudBridge.OnGoldChanged -= UpdateGoldUI;
             }
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _potionHUDView?.Dispose();
+            _abilityHUDView?.Dispose();
         }
 
         // --- Event Handlers ---

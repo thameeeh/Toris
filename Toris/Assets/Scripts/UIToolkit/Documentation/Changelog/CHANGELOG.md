@@ -1,5 +1,14 @@
 # UI Toolkit Changelog
 
+### [2026-05-19] Ability Snapshot Integration & UI Refactor
+- **Ability Snapshots:** Integrated `PlayerAbilitySlotSnapshot` as the single source of truth for the Ability HUD, enabling dynamic mana cost and cooldown scaling.
+- **Timer Fix:** Resolved a bug where ability cooldowns ran at half-speed; switched to precise delta time tracking in the UI schedule loop.
+- **Constructor Refactor:** Standardized UI View constructors (HUD, Mage, Skill, Inventory, Smith) to a multi-line, parameter-dense style for improved readability.
+- **Styling Mandates:** Cleaned up `Main_Menu.uxml`, removing all inline styles and centralizing background tinting in `MainMenu.uss` and `theme-variables.uss`.
+- **UI Event Bus:** Added `OnAbilitySlotsUpdated` to `UISkillEventsSO` to synchronize live ability state between backend and UI.
+
+---
+
 ### [2024-05-23] Ability HUD Implementation
 - **Ability Slots:** Created `AbilitySlot.uxml` and `AbilitySlot.uss` for player ability visualization.
 - **Dynamic Cooldowns:** Implemented `PlayerAbilityHUDView` with real-time cooldown overlays using the UI Toolkit schedule API.

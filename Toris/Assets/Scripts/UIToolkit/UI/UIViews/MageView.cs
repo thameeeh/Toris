@@ -21,7 +21,15 @@ namespace OutlandHaven.UIToolkit
         // SubViews
         private ShopSubView _shopSubView;
 
-        public MageView(VisualElement topElement, VisualTreeAsset slotTemplate, VisualTreeAsset shopTemplate, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, GameSessionSO gameSession, ShopManagerSO shopManager, PlayerHUDBridge playerHudBridge)
+        public MageView(
+            VisualElement topElement, 
+            VisualTreeAsset slotTemplate, 
+            VisualTreeAsset shopTemplate, 
+            UIEventsSO uiEvents, 
+            UIInventoryEventsSO uiInventoryEvents, 
+            GameSessionSO gameSession, 
+            ShopManagerSO shopManager, 
+            PlayerHUDBridge playerHudBridge)
             : base(topElement, uiEvents)
         {
             _slotTemplate = slotTemplate;

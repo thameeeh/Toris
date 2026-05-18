@@ -19,6 +19,8 @@ namespace OutlandHaven.UIToolkit
         private List<AbilitySlotView> _slotViews = new List<AbilitySlotView>();
 
         private bool _eventsBound = false;
+        private float _lastUpdateTime;
+        private IVisualElementScheduledItem _updateTask;
 
         public PlayerAbilityHUDView(VisualElement topElement, VisualTreeAsset slotTemplate, UISkillEventsSO uiSkillEvents)
         {
@@ -45,22 +47,33 @@ namespace OutlandHaven.UIToolkit
             if (!_eventsBound && _uiSkillEvents != null)
             {
                 _uiSkillEvents.OnAbilitySlotPressed += HandleAbilitySlotPressed;
-                _uiSkillEvents.OnAbilityCooldownStarted += HandleCooldownStarted;
-                _uiSkillEvents.OnAbilityReady += HandleAbilityReady;
+                _uiSkillEvents.OnAbilitySlotsUpdated += HandleAbilitySlotsUpdated;
                 _eventsBound = true;
             }
 
-            // Start the update loop using schedule
-            _topElement.schedule.Execute(OnUpdate).Every(33); // ~30 FPS is enough for UI
+            if (_updateTask == null)
+            {
+                _lastUpdateTime = Time.time;
+                _updateTask = _topElement.schedule.Execute(OnUpdate).Every(33); // ~30 FPS is enough for UI
+            }
+            else
+            {
+                _lastUpdateTime = Time.time;
+                _updateTask.Resume();
+            }
 
             RefreshAll();
         }
 
         private void OnUpdate()
         {
+            float currentTime = Time.time;
+            float dt = currentTime - _lastUpdateTime;
+            _lastUpdateTime = currentTime;
+
             foreach (var view in _slotViews)
             {
-                view.Tick();
+                view.Tick(dt);
             }
         }
 
@@ -69,10 +82,11 @@ namespace OutlandHaven.UIToolkit
             if (_eventsBound && _uiSkillEvents != null)
             {
                 _uiSkillEvents.OnAbilitySlotPressed -= HandleAbilitySlotPressed;
-                _uiSkillEvents.OnAbilityCooldownStarted -= HandleCooldownStarted;
-                _uiSkillEvents.OnAbilityReady -= HandleAbilityReady;
+                _uiSkillEvents.OnAbilitySlotsUpdated -= HandleAbilitySlotsUpdated;
                 _eventsBound = false;
             }
+
+            _updateTask?.Pause();
         }
 
         private void InitializeSlots()
@@ -128,11 +142,8 @@ namespace OutlandHaven.UIToolkit
         {
             if (_abilityController == null) return;
 
-            for (int i = 0; i < _slotViews.Count; i++)
-            {
-                var runtime = _abilityController.GetRuntime(i);
-                _slotViews[i].Update(runtime);
-            }
+            var snapshots = _abilityController.BuildAbilitySlotSnapshots();
+            HandleAbilitySlotsUpdated(snapshots);
         }
 
         private void HandleAbilitySlotPressed(int slotIndex)
@@ -143,19 +154,14 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
-        private void HandleCooldownStarted(int slotIndex, float duration)
+        private void HandleAbilitySlotsUpdated(PlayerAbilitySlotSnapshot[] snapshots)
         {
-            if (slotIndex >= 0 && slotIndex < _slotViews.Count)
-            {
-                _slotViews[slotIndex].StartCooldown(duration);
-            }
-        }
+            if (snapshots == null) return;
 
-        private void HandleAbilityReady(int slotIndex)
-        {
-            if (slotIndex >= 0 && slotIndex < _slotViews.Count)
+            int count = Mathf.Min(_slotViews.Count, snapshots.Length);
+            for (int i = 0; i < count; i++)
             {
-                _slotViews[slotIndex].SetReady();
+                _slotViews[i].Update(snapshots[i]);
             }
         }
 
@@ -174,7 +180,6 @@ namespace OutlandHaven.UIToolkit
         private Label _hotkeyLabel;
         private Label _manaLabel;
 
-        private PlayerAbilityRuntime _currentRuntime;
         private float _cooldownDuration;
         private float _cooldownRemaining;
 
@@ -192,27 +197,44 @@ namespace OutlandHaven.UIToolkit
             if (_hotkeyLabel != null) _hotkeyLabel.text = hotkey;
         }
 
-        public void Update(PlayerAbilityRuntime runtime)
+        public void Update(PlayerAbilitySlotSnapshot snapshot)
         {
-            _currentRuntime = runtime;
-            if (runtime != null && runtime.Definition != null)
+            if (snapshot.HasAbility)
             {
-                _icon.style.backgroundImage = new StyleBackground(runtime.Definition.icon);
+                _icon.style.backgroundImage = new StyleBackground(snapshot.Icon);
                 _icon.style.display = DisplayStyle.Flex;
 
-                // TODO: Replace test mana cost (15) with runtime.Definition.manaCost or similar
-                // Dependency: Requires manaCost field in PlayerAbilitySO
                 if (_manaLabel != null)
                 {
-                    _manaLabel.text = "15"; 
-                    _manaLabel.style.display = DisplayStyle.Flex;
+                    _manaLabel.text = snapshot.ResourceCost.ToString("F0");
+                    _manaLabel.style.display = snapshot.ResourceCost > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+                    
+                    // Visual feedback for affordability
+                    _manaLabel.style.color = snapshot.CanAfford ? Color.white : Color.red;
+                    _icon.tintColor = snapshot.CanAfford ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f);
                 }
                 
-                if (runtime.IsOnCooldown)
+                // If the snapshot says we are on cooldown, but our local timer isn't running,
+                // sync it up.
+                if (snapshot.IsOnCooldown && _cooldownRemaining <= 0)
                 {
-                    // If we missed the event, we can try to estimate or get it from runtime
-                    // For now, let's assume events are reliable.
+                    _cooldownDuration = snapshot.CooldownDuration;
+                    _cooldownRemaining = snapshot.CooldownRemaining;
+                    _timerLabel.style.display = _cooldownDuration > 1f ? DisplayStyle.Flex : DisplayStyle.None;
+                    _root.RemoveFromClassList("ability-slot--ready");
                 }
+                else if (!snapshot.IsOnCooldown && _cooldownRemaining > 0)
+                {
+                    // Snap to ready if the backend says so
+                    _cooldownRemaining = 0;
+                    _cooldownOverlay.style.height = Length.Percent(0);
+                    _timerLabel.style.display = DisplayStyle.None;
+                    _root.AddToClassList("ability-slot--ready");
+                    _root.schedule.Execute(() => _root.RemoveFromClassList("ability-slot--ready")).StartingIn(500);
+                }
+
+                // Handle Unlock state (dim if locked)
+                _root.style.opacity = snapshot.IsUnlocked ? 1.0f : 0.3f;
             }
             else
             {
@@ -221,6 +243,7 @@ namespace OutlandHaven.UIToolkit
                 _cooldownOverlay.style.height = Length.Percent(0);
                 _timerLabel.style.display = DisplayStyle.None;
                 if (_manaLabel != null) _manaLabel.style.display = DisplayStyle.None;
+                _root.style.opacity = 1.0f;
             }
         }
 
@@ -228,17 +251,7 @@ namespace OutlandHaven.UIToolkit
         {
             _root.AddToClassList("ability-slot--pressed");
             // Remove after a short delay (USS transition handles the rest)
-            // But we need to remove it so it can be triggered again.
-            // Using a simple timer or just wait a frame?
             _root.schedule.Execute(() => _root.RemoveFromClassList("ability-slot--pressed")).StartingIn(100);
-        }
-
-        public void StartCooldown(float duration)
-        {
-            _cooldownDuration = duration;
-            _cooldownRemaining = duration;
-            _timerLabel.style.display = duration > 1f ? DisplayStyle.Flex : DisplayStyle.None;
-            _root.RemoveFromClassList("ability-slot--ready");
         }
 
         public void SetReady()
@@ -252,11 +265,11 @@ namespace OutlandHaven.UIToolkit
             _root.schedule.Execute(() => _root.RemoveFromClassList("ability-slot--ready")).StartingIn(500);
         }
 
-        public void Tick()
+        public void Tick(float dt)
         {
             if (_cooldownRemaining > 0)
             {
-                _cooldownRemaining -= Time.deltaTime;
+                _cooldownRemaining -= dt;
                 float percent = (_cooldownRemaining / _cooldownDuration) * 100f;
                 _cooldownOverlay.style.height = Length.Percent(percent);
 

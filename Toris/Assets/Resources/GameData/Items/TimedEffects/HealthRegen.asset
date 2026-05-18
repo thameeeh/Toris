@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193765d0130fdbf40b9b45fcbe0fca97, type: 3}
   m_Name: HealthRegen
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectDefinitionSO
-  _modifiers: []
+  _modifiers:
+  - effectType: 10
+    modifierMode: 0
+    numericValue: 5
+    boolValue: 0

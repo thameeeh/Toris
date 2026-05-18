@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityID: ArrowRainConfig
   requiredSkillID: 
   abilityName: Ability1
-  icon: {fileID: 0}
+  icon: {fileID: 6303333213797369239, guid: 98d773084ad7b614b9a09ae164029883, type: 3}
   cooldownSeconds: 1
   blocksBowDraw: 1
   bowDrawLockDuration: 0.35

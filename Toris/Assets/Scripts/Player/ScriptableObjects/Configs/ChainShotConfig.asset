@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityID: ChainShotConfig
   requiredSkillID: 
   abilityName: Ability3
-  icon: {fileID: 0}
+  icon: {fileID: -8170373834809261911, guid: fd59dd872fd234e468c58757d8d419af, type: 3}
   cooldownSeconds: 0
   blocksBowDraw: 1
   bowDrawLockDuration: 0.25

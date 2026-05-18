@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityID: RambowConfig
   requiredSkillID: 
   abilityName: Ability2
-  icon: {fileID: 0}
+  icon: {fileID: 2768938045903391037, guid: 98d773084ad7b614b9a09ae164029883, type: 3}
   cooldownSeconds: 0
   blocksBowDraw: 1
   bowDrawLockDuration: 0.25
@@ -26,6 +26,7 @@ MonoBehaviour:
   spreadDegrees: 3
   damagePerShot: 25
   speedPerShot: 12
+  projectileLifetime: 3
   initialStaminaCost: 30
   staminaPerShot: 8
   maxDuration: 10

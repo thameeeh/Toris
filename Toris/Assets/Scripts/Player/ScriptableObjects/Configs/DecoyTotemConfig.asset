@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityID: DecoyTotemConfig
   requiredSkillID: 
   abilityName: Ability4
-  icon: {fileID: 0}
+  icon: {fileID: 2272537440513826092, guid: 0f1732d189bca2946a5bb6f2fe50d27d, type: 3}
   cooldownSeconds: 1
   blocksBowDraw: 1
   bowDrawLockDuration: 0.35

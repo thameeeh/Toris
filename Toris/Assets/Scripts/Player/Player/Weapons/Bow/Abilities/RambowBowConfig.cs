@@ -31,6 +31,17 @@ public class RambowBowConfig : PlayerAbilitySO
     {
         return new RamboBowRuntime();
     }
+
+    public override float GetStaminaCost(PlayerAbilityContext context)
+    {
+        return ResolveStaminaCost(initialStaminaCost, context);
+    }
+
+    public float GetStaminaPerShot(PlayerAbilityContext context)
+    {
+        return ResolveStaminaCost(staminaPerShot, context);
+    }
+
     public override bool IsUnlocked(PlayerAbilityContext context)
     {
         return base.IsUnlocked(context);
@@ -54,9 +65,10 @@ public class RambowBowConfig : PlayerAbilitySO
             return;
         }
 
-        if (initialStaminaCost > 0f && !playerStats.TryConsumeStamina(initialStaminaCost))
+        float resolvedInitialStaminaCost = GetStaminaCost(context);
+        if (resolvedInitialStaminaCost > 0f && !playerStats.TryConsumeStamina(resolvedInitialStaminaCost))
         {
-            LogRambow(playerBow, $"Activation blocked. Missing initial stamina cost={initialStaminaCost:F2}");
+            LogRambow(playerBow, $"Activation blocked. Missing initial stamina cost={resolvedInitialStaminaCost:F2}");
             return;
         }
 
@@ -64,7 +76,7 @@ public class RambowBowConfig : PlayerAbilitySO
         ramboRuntime.BeginAbilityUse(context);
         FireRambowShot(context, playReleaseAnimation);
         ramboRuntime.ScheduleNextShot(shotsPerSecond);
-        ramboRuntime.StartCooldown();
+        ramboRuntime.StartCooldown(context);
         LogRambow(playerBow, $"Activated. shotsPerSecond={shotsPerSecond:F2} nextShotTime={ramboRuntime.NextShotTime:F3}");
     }
 
@@ -106,9 +118,10 @@ public class RambowBowConfig : PlayerAbilitySO
         if (!ramboRuntime.CanFireNow())
             return;
 
-        if (staminaPerShot > 0f && !playerStats.TryConsumeStamina(staminaPerShot))
+        float resolvedStaminaPerShot = GetStaminaPerShot(context);
+        if (resolvedStaminaPerShot > 0f && !playerStats.TryConsumeStamina(resolvedStaminaPerShot))
         {
-            LogRambow(playerBow, $"Deactivated because staminaPerShot={staminaPerShot:F2} could not be paid.");
+            LogRambow(playerBow, $"Deactivated because staminaPerShot={resolvedStaminaPerShot:F2} could not be paid.");
             ramboRuntime.Deactivate();
             return;
         }

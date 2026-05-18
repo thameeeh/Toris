@@ -13,6 +13,10 @@ public class PlayerBaseEffectsSO : ScriptableObject
     [Min(0f)] public float moveSpeedMultiplier = 1f;
     [Min(0f)] public float dashSpeedMultiplier = 1f;
 
+    [Header("Abilities")]
+    [Min(0f)] public float abilityStaminaCostMultiplier = 1f;
+    [Min(0f)] public float abilityCooldownMultiplier = 1f;
+
     [Header("Combat")]
     [Min(0f)] public float outgoingDamageMultiplier = 1f;
     [Min(0f)] public float incomingDamageMultiplier = 1f;

@@ -13,6 +13,11 @@ public class MultiShotConfig : PlayerAbilitySO
     [Header("Animation")]
     public bool playReleaseAnimation = true;
 
+    public override float GetStaminaCost(PlayerAbilityContext context)
+    {
+        return ResolveStaminaCost(staminaCost, context);
+    }
+
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         PlayerStats playerStats = context.stats;
@@ -24,13 +29,14 @@ public class MultiShotConfig : PlayerAbilitySO
         if (!runtime.IsReady(context))
             return;
 
-        if (staminaCost > 0f && !playerStats.TryConsumeStamina(staminaCost))
+        float resolvedStaminaCost = GetStaminaCost(context);
+        if (resolvedStaminaCost > 0f && !playerStats.TryConsumeStamina(resolvedStaminaCost))
             return;
 
         BowSO.ShotStats shotStats = playerBow.BuildFullyDrawnShotStats();
 
         runtime.BeginAbilityUse(context);
         playerBow.FireMultiShotVolley(shotStats, arrowCount, totalSpreadDegrees, playReleaseAnimation);
-        runtime.StartCooldown();
+        runtime.StartCooldown(context);
     }
 }

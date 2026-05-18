@@ -29,6 +29,11 @@ public class ChainShotConfig : PlayerAbilitySO
         return new ChainShotRuntime();
     }
 
+    public override float GetStaminaCost(PlayerAbilityContext context)
+    {
+        return ResolveStaminaCost(staminaCost, context);
+    }
+
     public override void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context)
     {
         PlayerStats playerStats = context.stats;
@@ -44,7 +49,8 @@ public class ChainShotConfig : PlayerAbilitySO
         if (damageMultipliers == null || damageMultipliers.Count == 0)
             return;
 
-        if (staminaCost > 0f && !playerStats.TryConsumeStamina(staminaCost))
+        float resolvedStaminaCost = GetStaminaCost(context);
+        if (resolvedStaminaCost > 0f && !playerStats.TryConsumeStamina(resolvedStaminaCost))
             return;
 
         BowSO.ShotStats baseShotStats = playerBow.BuildFullyDrawnShotStats();
@@ -66,7 +72,7 @@ public class ChainShotConfig : PlayerAbilitySO
                 playImpactEffect = playChainImpactEffect
             },
             playReleaseAnimation);
-        chainShotRuntime.StartCooldown();
+        chainShotRuntime.StartCooldown(context);
     }
 
     public override void Tick(PlayerAbilityRuntime runtime, PlayerAbilityContext context)

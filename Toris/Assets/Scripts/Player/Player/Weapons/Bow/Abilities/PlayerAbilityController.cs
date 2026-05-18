@@ -90,13 +90,17 @@ public class PlayerAbilityController : MonoBehaviour
 
     private PlayerAbilityContext _context;
     private bool[] _wasOnCooldown;
+    private bool[] _wasAffordable;
+
+    public event Action<PlayerAbilitySlotSnapshot[]> AbilitySlotsChanged;
 
     private void Awake()
     {
         EnsureSlotArray();
         MigrateLegacySlotsIfNeeded();
         _gameSession = ResolveGameSession();
-        _wasOnCooldown = new bool[DefaultSlotCount];
+        _wasOnCooldown = new bool[SlotCount];
+        _wasAffordable = new bool[SlotCount];
 
         _context = new PlayerAbilityContext
         {
@@ -115,36 +119,59 @@ public class PlayerAbilityController : MonoBehaviour
     {
         TryRestoreTransferredState();
 
-        if (_input == null)
+        if (_stats != null)
         {
-            Debug.LogWarning("[Ability] PlayerInputReader is not assigned on PlayerAbilityController", this);
-            return;
+            _stats.OnResolvedEffectsChanged += HandleResolvedEffectsChanged;
+            _stats.OnStaminaChanged += HandleStaminaChanged;
         }
 
-        _input.OnAbilitySlotStarted += HandleAbilitySlotStarted;
-        _input.OnAbilitySlotReleased += HandleAbilitySlotReleased;
+        if (_input != null)
+        {
+            _input.OnAbilitySlotStarted += HandleAbilitySlotStarted;
+            _input.OnAbilitySlotReleased += HandleAbilitySlotReleased;
+        }
+#if UNITY_EDITOR
+        else
+        {
+            Debug.LogWarning("[Ability] PlayerInputReader is not assigned on PlayerAbilityController", this);
+        }
+#endif
+
+        PublishAbilitySlotsChanged();
     }
 
     private void OnDisable()
     {
         CaptureTransferredState();
 
-        if (_input == null)
-            return;
+        if (_stats != null)
+        {
+            _stats.OnResolvedEffectsChanged -= HandleResolvedEffectsChanged;
+            _stats.OnStaminaChanged -= HandleStaminaChanged;
+        }
 
-        _input.OnAbilitySlotStarted -= HandleAbilitySlotStarted;
-        _input.OnAbilitySlotReleased -= HandleAbilitySlotReleased;
+        if (_input != null)
+        {
+            _input.OnAbilitySlotStarted -= HandleAbilitySlotStarted;
+            _input.OnAbilitySlotReleased -= HandleAbilitySlotReleased;
+        }
     }
 
     private void Update()
     {
+        EnsureRuntimeTrackingArrays();
+        bool abilitySlotsChanged = false;
+
         for (int i = 0; i < SlotCount; i++)
         {
             PlayerAbilityRuntime runtime = GetRuntime(i);
-            if (runtime == null || !runtime.IsUnlocked(_context))
+            if (runtime == null)
                 continue;
 
-            runtime.Tick(_context);
+            if (runtime.IsUnlocked(_context))
+            {
+                runtime.Tick(_context);
+            }
 
             // Track cooldown state changes for UI events
             bool isOnCooldown = runtime.IsOnCooldown;
@@ -152,14 +179,20 @@ public class PlayerAbilityController : MonoBehaviour
             {
                 if (isOnCooldown)
                 {
-                    _uiSkillEvents?.OnAbilityCooldownStarted?.Invoke(i, runtime.Definition.cooldownSeconds);
+                    _uiSkillEvents?.OnAbilityCooldownStarted?.Invoke(i, runtime.CooldownDuration);
                 }
                 else
                 {
                     _uiSkillEvents?.OnAbilityReady?.Invoke(i);
                 }
                 _wasOnCooldown[i] = isOnCooldown;
+                abilitySlotsChanged = true;
             }
+        }
+
+        if (abilitySlotsChanged)
+        {
+            PublishAbilitySlotsChanged();
         }
     }
 
@@ -204,6 +237,52 @@ public class PlayerAbilityController : MonoBehaviour
         return slot?.AbilityDefinition;
     }
 
+    public PlayerAbilitySlotSnapshot GetSlotSnapshot(int slotIndex)
+    {
+        AbilitySlot slot = GetSlot(slotIndex);
+        PlayerAbilityRuntime runtime = slot?.Runtime;
+        PlayerAbilitySO definition = runtime != null ? runtime.Definition : slot?.AbilityDefinition;
+        if (definition == null)
+            return PlayerAbilitySlotSnapshot.Empty(slotIndex);
+
+        bool isUnlocked = runtime != null
+            ? runtime.IsUnlocked(_context)
+            : definition.IsUnlocked(_context);
+
+        bool isOnCooldown = runtime != null && runtime.IsOnCooldown;
+        float cooldownRemaining = runtime != null ? runtime.CooldownRemaining : 0f;
+        float cooldownDuration = isOnCooldown && runtime != null
+            ? runtime.CooldownDuration
+            : definition.GetCooldownSeconds(_context);
+        float resourceCost = definition.GetStaminaCost(_context);
+        float currentResource = _stats != null ? _stats.currentStamina : 0f;
+        float maxResource = _stats != null ? _stats.maxStamina : 0f;
+        bool canAfford = resourceCost <= 0f || currentResource >= resourceCost;
+
+        return new PlayerAbilitySlotSnapshot(
+            slotIndex,
+            definition,
+            isUnlocked,
+            isOnCooldown,
+            canAfford,
+            cooldownDuration,
+            cooldownRemaining,
+            resourceCost,
+            currentResource,
+            maxResource);
+    }
+
+    public PlayerAbilitySlotSnapshot[] BuildAbilitySlotSnapshots()
+    {
+        PlayerAbilitySlotSnapshot[] snapshots = new PlayerAbilitySlotSnapshot[SlotCount];
+        for (int i = 0; i < snapshots.Length; i++)
+        {
+            snapshots[i] = GetSlotSnapshot(i);
+        }
+
+        return snapshots;
+    }
+
     public bool TryActivateSlot(int slotIndex)
     {
         PlayerAbilityRuntime runtime = GetRuntime(slotIndex);
@@ -211,6 +290,7 @@ public class PlayerAbilityController : MonoBehaviour
             return false;
 
         runtime.OnButtonDown(_context);
+        PublishAbilitySlotsChanged();
         return true;
     }
 
@@ -221,6 +301,7 @@ public class PlayerAbilityController : MonoBehaviour
             return false;
 
         runtime.OnButtonUp(_context);
+        PublishAbilitySlotsChanged();
         return true;
     }
 
@@ -233,6 +314,19 @@ public class PlayerAbilityController : MonoBehaviour
     private void HandleAbilitySlotReleased(int slotIndex)
     {
         TryReleaseSlot(slotIndex);
+    }
+
+    private void HandleResolvedEffectsChanged(PlayerResolvedEffects resolvedEffects)
+    {
+        PublishAbilitySlotsChanged();
+    }
+
+    private void HandleStaminaChanged(float current, float max)
+    {
+        if (HasAffordabilityChanged())
+        {
+            PublishAbilitySlotsChanged();
+        }
     }
 
     private AbilitySlot GetSlot(int slotIndex)
@@ -248,6 +342,57 @@ public class PlayerAbilityController : MonoBehaviour
         for (int i = 0; i < SlotCount; i++)
         {
             _abilitySlots[i]?.Initialize();
+        }
+
+        EnsureRuntimeTrackingArrays();
+    }
+
+    private void EnsureRuntimeTrackingArrays()
+    {
+        if (_wasOnCooldown == null || _wasOnCooldown.Length != SlotCount)
+        {
+            _wasOnCooldown = new bool[SlotCount];
+        }
+
+        if (_wasAffordable == null || _wasAffordable.Length != SlotCount)
+        {
+            _wasAffordable = new bool[SlotCount];
+        }
+    }
+
+    private void PublishAbilitySlotsChanged()
+    {
+        PlayerAbilitySlotSnapshot[] snapshots = BuildAbilitySlotSnapshots();
+        SyncAffordabilityTracking(snapshots);
+        AbilitySlotsChanged?.Invoke(snapshots);
+    }
+
+    private bool HasAffordabilityChanged()
+    {
+        EnsureRuntimeTrackingArrays();
+
+        for (int i = 0; i < SlotCount; i++)
+        {
+            if (GetSlotSnapshot(i).CanAfford != _wasAffordable[i])
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void SyncAffordabilityTracking(PlayerAbilitySlotSnapshot[] snapshots)
+    {
+        EnsureRuntimeTrackingArrays();
+
+        if (snapshots == null)
+            return;
+
+        int count = Mathf.Min(_wasAffordable.Length, snapshots.Length);
+        for (int i = 0; i < count; i++)
+        {
+            _wasAffordable[i] = snapshots[i].CanAfford;
         }
     }
 

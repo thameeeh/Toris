@@ -1011,7 +1011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4676936000085796728, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8774,7 +8774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4919467043761950092, guid: b620d749e82cc6042a06feb8162689b4, type: 3}
       propertyPath: m_ChunkCullingBounds.y
-      value: 0.34000003
+      value: 0.46000004
       objectReference: {fileID: 0}
     - target: {fileID: 5624389184238621137, guid: b620d749e82cc6042a06feb8162689b4, type: 3}
       propertyPath: m_Tiles.Array.size
@@ -101666,7 +101666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8623123595485890129, guid: b620d749e82cc6042a06feb8162689b4, type: 3}
       propertyPath: m_ChunkCullingBounds.y
-      value: 0.35000002
+      value: 0.43
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

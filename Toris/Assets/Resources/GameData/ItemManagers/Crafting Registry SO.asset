@@ -13,6 +13,31 @@ MonoBehaviour:
   m_Name: Crafting Registry SO
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingRegistrySO
   CraftingRecipes:
-  - {fileID: 11400000, guid: 1c16256eb7753e24798f8cbc63cdb9d1, type: 2}
+  - {fileID: 11400000, guid: 843021b07a364c2fb4dba73f5f8b9eb6, type: 2}
+  - {fileID: 11400000, guid: 2772d2e4a43a423ca3b86373e7b5f922, type: 2}
+  - {fileID: 11400000, guid: 892540e454514af7b1783167e6045e21, type: 2}
+  - {fileID: 11400000, guid: b140e65ad3ec42b8920ded5ed7b7a0db, type: 2}
+  - {fileID: 11400000, guid: 62b1154c7d284a67a21343531a667b0d, type: 2}
+  - {fileID: 11400000, guid: 1986aa5d380f42c0a9251f2020927a50, type: 2}
+  - {fileID: 11400000, guid: faae6b68d7a24dd8a6dbef578d2f019f, type: 2}
+  - {fileID: 11400000, guid: b08199c3d90a4f1884d8390fad8e0e54, type: 2}
   SalvageRecipes:
-  - {fileID: 11400000, guid: 03e18ee9c04673e4caeb8e8335553380, type: 2}
+  - {fileID: 11400000, guid: a621d8134d4d4cf0a55f74e507ae6021, type: 2}
+  - {fileID: 11400000, guid: bd7b51c0eb9f48c89d3be28d7e8501df, type: 2}
+  - {fileID: 11400000, guid: e7f19a7e03004b45a818f71f644a970b, type: 2}
+  - {fileID: 11400000, guid: 3e27d9dfc9f24a789d55f68be38f8df0, type: 2}
+  - {fileID: 11400000, guid: d41d5458a09e4f5e8e31dfe399dc1e18, type: 2}
+  - {fileID: 11400000, guid: 6cb239d67d3f4fbc9cad5d09502366a2, type: 2}
+  - {fileID: 11400000, guid: cff0a934e8a24517bf1fe34421e7121f, type: 2}
+  - {fileID: 11400000, guid: 868829a6e38140f38c8e0bfe8f381eaf, type: 2}
+  - {fileID: 11400000, guid: 9c5bc8f5054f4dfc9f69ebae54a1cfe0, type: 2}
+  - {fileID: 11400000, guid: 178230ea4cd44c95af45d78b45842339, type: 2}
+  - {fileID: 11400000, guid: 944f52d8d6384276a7b63d1a98b7f7bc, type: 2}
+  - {fileID: 11400000, guid: fd6dd8d77b7741ac99d30e55cf6a515c, type: 2}
+  - {fileID: 11400000, guid: 6d5c587d7ba849be9fafb585d11cb801, type: 2}
+  - {fileID: 11400000, guid: a3e7132d8b7543948ca06ab35f59a230, type: 2}
+  - {fileID: 11400000, guid: b92a32e6607d4bbbb9f9d2693dcb46f1, type: 2}
+  - {fileID: 11400000, guid: 5923d795edbb41d38fa32c7f76d96d40, type: 2}
+  - {fileID: 11400000, guid: 47bb7983de724f3d8f5dfd3d676f245d, type: 2}
+  - {fileID: 11400000, guid: 282ec9ac1a3045ef801e55e403ee2a5f, type: 2}
+  - {fileID: 11400000, guid: 1f5657a2ca874424908b3dd0b7030e8f, type: 2}

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c353a304de02034c878ad0d6d748425, type: 3}
+  m_Name: Recipe_Minor_Stamina_Potion
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingRecipeSO
+  BaseItemRequirement: {fileID: 11400000, guid: 7ac721e522cb4b44ad9aee5a46ecbfa1, type: 2}
+  MaterialRequirements:
+  - Material: {fileID: 11400000, guid: 0d6b98e5e5124f6e8ef9a8c4e45d7b30, type: 2}
+    Quantity: 1
+  GoldCost: 4
+  OutputItem: {fileID: 11400000, guid: 7fa9462727ad82a4ba82e11ee6c9c4f0, type: 2}

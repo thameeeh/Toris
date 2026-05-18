@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c353a304de02034c878ad0d6d748425, type: 3}
+  m_Name: Recipe_Reinforced_Leather_Vest
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingRecipeSO
+  BaseItemRequirement: {fileID: 11400000, guid: c87e3c9920ba7c741873723ad7998c00, type: 2}
+  MaterialRequirements:
+  - Material: {fileID: 11400000, guid: 3b864a487c9b451ebf87c089dd4c170d, type: 2}
+    Quantity: 3
+  GoldCost: 16
+  OutputItem: {fileID: 11400000, guid: 76e732cf1fc145c8a12401621ef99eed, type: 2}

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
+  m_Name: Bent_Copper_Ring
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
+  ItemName: bent_copper_ring
+  Description: A cheap copper ring bent out of shape.
+  Icon: {fileID: 21300000, guid: d06a333b5cc494474bf5f9718adb06d5, type: 3}
+  MaxStackSize: 10
+  GoldValue: 10
+  Components:
+  - rid: 3501180790566551701
+  references:
+    version: 2
+    RefIds:
+    - rid: 3501180790566551701
+      type: {class: ProgressionComponent, ns: OutlandHaven.UIToolkit, asm: Assembly-CSharp}
+      data:
+        Category: 3

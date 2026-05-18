@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: LootTable_MinionWolf
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLootTableSO
   itemDrops:
-  - item: {fileID: 11400000, guid: 0a965108baf262b40819ecdc6b0be49b, type: 2}
-    dropChance: 0.145
+  - item: {fileID: 11400000, guid: b615f42b0c5e444ab895a5be4c0c2208, type: 2}
+    dropChance: 0.65
+    minQuantity: 1
+    maxQuantity: 2
+  - item: {fileID: 11400000, guid: c964247a61fc4141b3fd7f4b1e4622a8, type: 2}
+    dropChance: 0.3
     minQuantity: 1
     maxQuantity: 1
-  - item: {fileID: 11400000, guid: 30a82d052c6934841897a2be59e7970c, type: 2}
-    dropChance: 0.325
+  - item: {fileID: 11400000, guid: 5e8a33e24ee84f1785968ca80df47235, type: 2}
+    dropChance: 0.12
     minQuantity: 1
     maxQuantity: 1
   minGold: 3

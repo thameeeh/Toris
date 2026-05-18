@@ -101673,6 +101673,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b620d749e82cc6042a06feb8162689b4, type: 3}
+--- !u!114 &1880548295 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
+  m_PrefabInstance: {fileID: 750314501}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
 --- !u!1 &1924643740
 GameObject:
   m_ObjectHideFlags: 0
@@ -102370,9 +102381,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 476312681164151100, guid: dfe6c861ab4181a4e9fe907edc8fcf3f, type: 3}
+      propertyPath: _screenCommands.Array.data[0].ScreenType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 476312681164151100, guid: dfe6c861ab4181a4e9fe907edc8fcf3f, type: 3}
       propertyPath: _screenCommands.Array.data[0].InventoryPayload
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1880548295}
     - target: {fileID: 874577071310736719, guid: dfe6c861ab4181a4e9fe907edc8fcf3f, type: 3}
       propertyPath: m_Name
       value: GuideNPC

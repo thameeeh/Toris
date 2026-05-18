@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291ec33f3c14b584ea9e09b27600d7a1, type: 3}
+  m_Name: Salvage_Armor_Ring
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SalvageRecipeSO
+  TargetItem: {fileID: 11400000, guid: 33611359a5b1d66459ed62d4212287fd, type: 2}
+  GoldYield: 4
+  MaterialYields:
+  - Material: {fileID: 11400000, guid: 728e358987b74b93b744f5d177431df1, type: 2}
+    Quantity: 1

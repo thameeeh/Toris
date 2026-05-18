@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
+  m_Name: Tough_Hide
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
+  ItemName: tough_hide
+  Description: Durable hide suitable for reinforcing light armor.
+  Icon: {fileID: -2520071786502460176, guid: 23096f104cae0bf48a307ae015afc2a9, type: 3}
+  MaxStackSize: 20
+  GoldValue: 5
+  Components:
+  - rid: 3501180790566551701
+  references:
+    version: 2
+    RefIds:
+    - rid: 3501180790566551701
+      type: {class: ProgressionComponent, ns: OutlandHaven.UIToolkit, asm: Assembly-CSharp}
+      data:
+        Category: 0

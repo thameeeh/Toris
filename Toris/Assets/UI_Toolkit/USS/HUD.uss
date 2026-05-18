@@ -155,18 +155,20 @@
     border-radius: 12px;
     border-width: 2px;
     border-color: rgba(255, 255, 255, 0.1);
+    overflow: visible; /* Added to prevent hotkey clipping */
 }
 
 .potion-slot--hud {
     width: 64px;
     height: 64px;
-    margin: 0 5px;
+    margin: 12px 5px 12px 5px; /* Consistent top/bottom margin */
     background-color: rgba(15, 15, 15, 0.8);
     border-width: 2px;
     border-color: var(--color-border-default);
     border-radius: 8px;
     justify-content: flex-end;
     align-items: center;
+    overflow: visible; /* Added */
 }
 
 .hud-potion-hotkey {
@@ -191,18 +193,20 @@
     border-radius: 12px;
     border-width: 2px;
     border-color: rgba(255, 255, 255, 0.1);
+    overflow: visible; /* Added to prevent hotkey clipping */
 }
 
 .skill-slot--hud {
     width: 64px;
     height: 64px;
-    margin: 0 5px;
+    margin: 12px 5px 12px 5px; /* Consistent top/bottom margin */
     background-color: rgba(15, 15, 15, 0.8);
     border-width: 2px;
     border-color: var(--color-border-default);
     border-radius: 8px;
     justify-content: flex-end;
     align-items: center;
+    overflow: visible; /* Added */
 }
 
 .hud-skill-hotkey {

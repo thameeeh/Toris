@@ -1,6 +1,7 @@
 using UnityEngine.UIElements;
 using OutlandHaven.Inventory;
 using UnityEngine;
+using System;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -22,7 +23,9 @@ namespace OutlandHaven.UIToolkit
         // Data Reference
         private PlayerHUDBridge _playerHudBridge;
         private PlayerPotionHUDView _potionHUDView;
+        private PlayerAbilityHUDView _abilityHUDView;
         private VisualTreeAsset _slotTemplate;
+        private VisualTreeAsset _abilitySlotTemplate;
         
         // Progress Bar is 0-100
         private const float PROGRESS_BAR_MAX = 100f;
@@ -30,13 +33,15 @@ namespace OutlandHaven.UIToolkit
         private bool _isSetup = false;
 
         // Constructor receives the Data
-        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, VisualTreeAsset buttonTemplate, VisualTreeAsset slotTemplate) : base(topElement, uiEvents)
+        public HUDView(VisualElement topElement, PlayerHUDBridge data, UIEventsSO uiEvents, UIInventoryEventsSO uiInventoryEvents, OutlandHaven.Skills.UISkillEventsSO uiSkillEvents, VisualTreeAsset buttonTemplate, VisualTreeAsset slotTemplate, VisualTreeAsset abilitySlotTemplate) : base(topElement, uiEvents)
         {
             _playerHudBridge = data;
             _buttonTemplate = buttonTemplate;
             _slotTemplate = slotTemplate;
+            _abilitySlotTemplate = abilitySlotTemplate;
 
             _potionHUDView = new PlayerPotionHUDView(topElement, _slotTemplate, uiInventoryEvents); 
+            _abilityHUDView = new PlayerAbilityHUDView(topElement, _abilitySlotTemplate, uiSkillEvents);
         }
 
         public override void Setup(object payload)
@@ -59,11 +64,19 @@ namespace OutlandHaven.UIToolkit
                 _isSetup = true;
             }
 
-            // The payload for HUD setup can be a tuple or a custom struct if we want to pass multiple things.
-            // For now, let's assume we might receive the Potion Inventory Manager here.
+            // Handling multiple possible payloads
             if (payload is InventoryManager potionInventory)
             {
                 _potionHUDView?.Setup(potionInventory);
+            }
+            else if (payload is PlayerAbilityController abilityController)
+            {
+                _abilityHUDView?.Setup(abilityController);
+            }
+            else if (payload is ValueTuple<InventoryManager, PlayerAbilityController> tuple)
+            {
+                _potionHUDView?.Setup(tuple.Item1);
+                _abilityHUDView?.Setup(tuple.Item2);
             }
         }
 
@@ -145,6 +158,7 @@ namespace OutlandHaven.UIToolkit
         {
             base.Show();
             _potionHUDView?.Show();
+            _abilityHUDView?.Show();
             
             // Subscribe to ALL events
             if (_playerHudBridge != null)
@@ -162,6 +176,7 @@ namespace OutlandHaven.UIToolkit
         {
             base.Hide();
             _potionHUDView?.Hide();
+            _abilityHUDView?.Hide();
 
             // Unsubscribe from ALL events
             if (_playerHudBridge != null)

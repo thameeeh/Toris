@@ -10,17 +10,21 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private VisualTreeAsset _hudMainTemplate; // <--- Drag HUD.uxml here
         [SerializeField] private VisualTreeAsset _buttonTemplate;
         [SerializeField] private VisualTreeAsset _slotTemplate;
+        [SerializeField] private VisualTreeAsset _abilitySlotTemplate;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
+        [SerializeField] private OutlandHaven.Skills.UISkillEventsSO _uiSkillEvents;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UIEventsSO _uiEvents;
 
         private HUDView _view;
         private UIManager _uiManager;
         private InventoryManager _potionInventory;
+        private PlayerAbilityController _abilityController;
 
         void Awake()
         {
             _uiManager = FindFirstObjectByType<UIManager>();
+            _abilityController = FindFirstObjectByType<PlayerAbilityController>();
             if (_gameSession == null) _gameSession = GameSessionSO.LoadDefault();
         }
 
@@ -46,9 +50,11 @@ namespace OutlandHaven.UIToolkit
             }
 
             // 2. Pass the INSTANCE to the View
-            _view = new HUDView(hudInstance, _gameSession.PlayerHUD, _uiEvents, _uiInventoryEvents, _buttonTemplate, _slotTemplate);
+            _view = new HUDView(hudInstance, _gameSession.PlayerHUD, _uiEvents, _uiInventoryEvents, _uiSkillEvents, _buttonTemplate, _slotTemplate, _abilitySlotTemplate);
             _view.Initialize();
-            _view.Setup(_potionInventory);
+            
+            // Setup with both inventories/controllers
+            _view.Setup((_potionInventory, _abilityController));
 
             // 3. Register to the HUD Zone
             _uiManager.RegisterView(_view, ScreenZone.HUD);
@@ -63,8 +69,12 @@ namespace OutlandHaven.UIToolkit
                 Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Button Template", this);
             if (_slotTemplate == null)
                 Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Slot Template", this);
+            if (_abilitySlotTemplate == null)
+                Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing Ability Slot Template", this);
             if (_uiInventoryEvents == null)
                 Debug.LogError($"<b><color=red>[HUD]</color></b> missing <b>UIInventoryEventsSO</b> on GameObject: <b>{name}</b>", this);
+            if (_uiSkillEvents == null)
+                Debug.LogError($"<b><color=red>[HUD]</color></b> missing <b>UISkillEventsSO</b> on GameObject: <b>{name}</b>", this);
             if (_uiEvents == null)
                 Debug.LogWarning($"[UI/Inventory] <color=red>{name}</color> missing UI Events SO", this);
             if (_gameSession == null)

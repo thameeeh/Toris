@@ -31,18 +31,7 @@
                 <ui:Label text="MANA" class="HUD hud-bar-text-overlay"/>
             </ui:ProgressBar>
             <ui:VisualElement name="hud__skill-bar" class="hud-skill-bar">
-                <ui:VisualElement class="skill-slot--hud">
-                    <ui:Label text="Q" class="hud-skill-hotkey"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="skill-slot--hud">
-                    <ui:Label text="E" class="hud-skill-hotkey"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="skill-slot--hud">
-                    <ui:Label text="X" class="hud-skill-hotkey"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="skill-slot--hud">
-                    <ui:Label text="R" class="hud-skill-hotkey"/>
-                </ui:VisualElement>
+                
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

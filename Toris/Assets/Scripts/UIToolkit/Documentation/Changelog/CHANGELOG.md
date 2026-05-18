@@ -1,5 +1,14 @@
 # UI Toolkit Changelog
 
+### [2024-05-23] Ability HUD Implementation
+- **Ability Slots:** Created `AbilitySlot.uxml` and `AbilitySlot.uss` for player ability visualization.
+- **Dynamic Cooldowns:** Implemented `PlayerAbilityHUDView` with real-time cooldown overlays using the UI Toolkit schedule API.
+- **Visual Feedback:** Added scale-based "pressed" effect and "ready" glow for ability slots.
+- **HUD Integration:** Refactored `HUDView` and `HudScreenController` to manage both Potion and Ability HUD components.
+- **Decoupled Architecture:** Communication between player system and UI now flows through `UISkillEventsSO`.
+
+---
+
 ### [2024-05-22] UI Toolkit Structural & Styling Refactor
 - **MasterLayout Refactor:** Extracted all inline styles into `MasterLayout.uss` to comply with project mandates.
 - **Responsive Layout Fix:** Changed `Layer_HUD` from fixed `20%` height to `auto` height, resolving potential clipping on 720p and detached visuals on 4K.

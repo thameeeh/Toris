@@ -407,6 +407,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HudScreenController
       objectReference: {fileID: 0}
+    - target: {fileID: 8046528195049909298, guid: 5223b9f75dbff0142aefe6148b763d7e, type: 3}
+      propertyPath: _uiSkillEvents
+      value: 
+      objectReference: {fileID: 11400000, guid: 0ae4c50464db5c946aa2e579312de26c, type: 2}
+    - target: {fileID: 8046528195049909298, guid: 5223b9f75dbff0142aefe6148b763d7e, type: 3}
+      propertyPath: _abilitySlotTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 0510612962f18cf4580742e20074a22d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -70,12 +70,14 @@ public class InventoryActionController : MonoBehaviour
     private void HandlePotion1Pressed()
     {
         Debug.Log("[InventoryActionController] Potion 1 hotkey pressed.");
+        ResolveRuntimeReferences();
         TryConsumePotionSlot(0);
     }
 
     private void HandlePotion2Pressed()
     {
         Debug.Log("[InventoryActionController] Potion 2 hotkey pressed.");
+        ResolveRuntimeReferences();
         TryConsumePotionSlot(1);
     }
 
@@ -83,7 +85,7 @@ public class InventoryActionController : MonoBehaviour
     {
         if (_potionInventory == null)
         {
-            Debug.LogWarning("[InventoryActionController] _potionInventory is null!");
+            Debug.LogWarning($"[InventoryActionController] <b>_potionInventory</b> is null! Check if the Potion Bar's <b>InventoryContainerSO</b> has <b>AssociatedView</b> set to <b>ScreenType.Potions</b> and that the object is active in the scene.", this);
             return;
         }
 

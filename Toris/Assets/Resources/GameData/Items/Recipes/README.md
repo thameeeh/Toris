@@ -5,7 +5,7 @@ Inspector-friendly planning notes for crafting recipes and forge outputs.
 ## Status
 
 - Current pass: recipe asset drafts authored.
-- Authored recipe count: `8`
+- Authored recipe count: `15`
 - Registry status: registered in `Crafting Registry SO.asset`.
 - Keep recipes simple: one base item, one material type, one output item.
 - Multi-material recipes can come later after the forge UI and manager are intentionally expanded.
@@ -43,6 +43,56 @@ The current forge manager can match either selected slot as the base item and th
 - Output quantity: `1`
 - Notes: Uses the existing instant stamina path.
 
+### Prepare Field Ration
+
+- Recipe asset ID: `Recipe_Field_Ration`
+- Base item: `Tasty_Cupcake`
+- Material: `Wild_Herb` x1
+- Gold cost: `1`
+- Output: `Field_Ration`
+- Output quantity: `1`
+- Notes: Gives the simple food consumable a basic survival recipe.
+
+### Brew Herbal Tonic
+
+- Recipe asset ID: `Recipe_Herbal_Tonic`
+- Base item: `Minor_Healing_Potion`
+- Material: `Wild_Herb` x1
+- Gold cost: `6`
+- Output: `Herbal_Tonic`
+- Output quantity: `1`
+- Notes: Upgrades the basic healing potion into the timed recovery tonic.
+
+### Brew Fleetfoot Tonic
+
+- Recipe asset ID: `Recipe_Fleetfoot_Tonic`
+- Base item: `Minor_Stamina_Potion`
+- Material: `Wild_Herb` x1
+- Gold cost: `8`
+- Output: `Fleetfoot_Tonic`
+- Output quantity: `1`
+- Notes: Converts a stamina potion into a simple movement tonic.
+
+### Brew Major Healing Potion
+
+- Recipe asset ID: `Recipe_Major_Healing_Potion`
+- Base item: `Herbal_Tonic`
+- Material: `Wild_Herb` x2
+- Gold cost: `12`
+- Output: `Major_Healing_Potion`
+- Output quantity: `1`
+- Notes: Late basic healing upgrade using the tonic as a stepping stone.
+
+### Brew Major Stamina Potion
+
+- Recipe asset ID: `Recipe_Major_Stamina_Potion`
+- Base item: `Minor_Stamina_Potion`
+- Material: `Tasty_Cupcake` x2
+- Gold cost: `12`
+- Output: `Major_Stamina_Potion`
+- Output quantity: `1`
+- Notes: Higher-cost stamina consumable upgrade.
+
 ### Craft Hunter Bow
 
 - Recipe asset ID: `Recipe_Hunter_Bow`
@@ -52,6 +102,16 @@ The current forge manager can match either selected slot as the base item and th
 - Output: `Hunter_Bow`
 - Output quantity: `1`
 - Notes: Turns starter bow into basic shop-tier bow.
+
+### Craft Longbow
+
+- Recipe asset ID: `Recipe_Longbow`
+- Base item: `Hunter_Bow`
+- Material: `Wood_Scrap` x5
+- Gold cost: `18`
+- Output: `Longbow`
+- Output quantity: `1`
+- Notes: Parallel bow upgrade using plain materials instead of wolf trophies.
 
 ### Craft Wolfskin Hood
 
@@ -105,12 +165,17 @@ The current forge manager can match either selected slot as the base item and th
 - Output quantity: `1`
 - Notes: Early arms upgrade.
 
+### Craft Armor Ring
+
+- Recipe asset ID: `Recipe_Armor_Ring`
+- Base item: `Bent_Copper_Ring`
+- Material: `Iron_Scrap` x2
+- Gold cost: `12`
+- Output: `Armor_Ring`
+- Output quantity: `1`
+- Notes: Gives one junk trinket a direct upgrade path.
+
 ## Deferred
-
-### Major Potions
-
-- Defer until the basic potion craft loop feels correct.
-- Could use minor potions as base items later.
 
 ### Multi-Material Bow Recipes
 

@@ -180,8 +180,11 @@ namespace OutlandHaven.Inventory
                 case InventoryInteractionContext.Shop:
                     _uiInventoryEvents.OnRequestSell?.Invoke(dataSlot.HeldItem, 1);
                     break;
+                case InventoryInteractionContext.Forge:
+                    _uiInventoryEvents.OnItemClicked?.Invoke(dataSlot);
+                    break;
                 case InventoryInteractionContext.Salvage:
-                    _uiInventoryEvents.OnRequestSalvage?.Invoke(dataSlot, SalvageType.Material); // default salvage type
+                    _uiInventoryEvents.OnItemClicked?.Invoke(dataSlot);
                     break;
                 case InventoryInteractionContext.Normal:
                 default:

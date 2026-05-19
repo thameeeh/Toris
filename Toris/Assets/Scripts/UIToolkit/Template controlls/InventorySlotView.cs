@@ -38,6 +38,11 @@ namespace OutlandHaven.Inventory
             if (_root == null) _root = root;
             else _root.pickingMode = PickingMode.Position;
 
+            if (root.userData is string proxySlotID)
+            {
+                _root.userData = proxySlotID;
+            }
+
             _owningContainer = owningContainer;
 
 
@@ -149,8 +154,10 @@ namespace OutlandHaven.Inventory
 
             if (evt.button == 1)
             {
+#if UNITY_EDITOR
                 string itemName = (_slotData != null && !_slotData.IsEmpty) ? _slotData.HeldItem.BaseItem.ItemName : "Empty";
                 Debug.Log($"[UI/Inventory] <b>Right-Click RELEASE</b> detected on slot: {itemName} (Container: {_owningContainer?.name})");
+#endif
 
                 // Stop dragging state and clear visual ghost if any
                 _isDragging = false;
@@ -192,7 +199,9 @@ namespace OutlandHaven.Inventory
                 }
                 else
                 {
+#if UNITY_EDITOR
                     Debug.Log("[Drag Test] Picked Element was NULL (Dropped outside the UI or hit nothing).");
+#endif
                 }
 
                 // Assuming the drop target might be a nested element (like an icon or label) inside the root

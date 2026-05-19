@@ -12,23 +12,29 @@
 
 /* --- TOP PANEL (The Crafting Station) --- */
 .forge-top-panel {
-    flex-grow: 0.5; /* Takes up roughly half the screen */
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 260px;
     align-items: center; /* Centers the forge station horizontally */
+    justify-content: flex-start;
     border-bottom-width: 2px;
     border-bottom-color: var(--color-border-default);
+    padding-top: 8px;
     padding-bottom: 20px;
     margin-bottom: 10px;
 }
 
 .forge-title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .forge-inputs-wrapper {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    height: 72px;
+    flex-shrink: 0;
+    margin-bottom: 8px;
 }
 
 .forge-plus-label {
@@ -40,13 +46,17 @@
 }
 
 .forge-action-btn {
-    height: 40px;
-    margin-bottom: 20px;
-    width: 200px;
+    height: 32px;
+    min-height: 32px;
+    margin-bottom: 8px;
+    width: 160px;
+    flex-shrink: 0;
 }
 
 /* Base custom slot for forge inputs */
 .forge-slot {
+    width: 72px;
+    height: 72px;
     flex-shrink: 0; /* Rule 4: Prevent squish */
     background-color: var(--color-bg-panel);
     border-width: 2px;
@@ -54,8 +64,17 @@
     border-radius: 4px;
 }
 
+.forge-slot .item-slot {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-width: 0;
+}
+
 /* Highlighted result slot */
 .forge-slot-result {
+    width: 64px;
+    height: 64px;
     flex-shrink: 0; 
     background-color: var(--color-bg-dark);
     border-width: 2px;
@@ -64,21 +83,84 @@
     align-self: center;
 }
 
+.forge-slot-result .item-slot {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-width: 0;
+}
+
 /* --- BOTTOM PANEL (The Recipe List) --- */
 .forge-bottom-panel {
     flex-grow: 1; /* Takes up the remaining space */
     flex-direction: column;
+    padding-top: 10px;
 }
 
 .forge-recipe-header {
     color: var(--color-text-light);
     font-size: var(--font-size-h3);
     -unity-font-style: bold;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .forge-recipe-scroll {
     flex-grow: 1;
+}
+
+.forge-blueprint-row {
+    min-height: 58px;
+    max-height: 58px;
+    margin-bottom: 6px;
+    padding: 6px;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--color-bg-panel);
+    border-width: 1px;
+    border-color: var(--color-border-default);
+    border-radius: 4px;
+    -unity-text-align: middle-left;
+    justify-content: flex-start;
+}
+
+.forge-blueprint-row:hover {
+    border-color: var(--color-border-highlight);
+}
+
+.forge-blueprint-row--selected {
+    border-width: 2px;
+    border-color: var(--color-coin-gold);
+}
+
+.forge-blueprint-row--locked {
+    border-color: var(--color-border-default);
+}
+
+.forge-blueprint-row--available {
+    opacity: 1;
+}
+
+.forge-blueprint-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.forge-blueprint-details {
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.forge-blueprint-title {
+    color: var(--color-text-light);
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.forge-blueprint-requirements {
+    color: var(--color-border-default);
+    font-size: 11px;
 }
 
 /* Scrollbar Overrides for the Recipe List */

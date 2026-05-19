@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: wolf_pelt
   Description: A coarse pelt that can be cut into padding or traded as scrap hide.
-  Icon: {fileID: -2520071786502460176, guid: ab887de52e40fc74c9f5a9a85e97b776, type: 3}
+  Icon: {fileID: 21300000, guid: ab887de52e40fc74c9f5a9a85e97b776, type: 3}
   MaxStackSize: 20
   GoldValue: 5
   Components:

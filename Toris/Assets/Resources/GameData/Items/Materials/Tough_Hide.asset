@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: tough_hide
   Description: Durable hide suitable for reinforcing light armor.
-  Icon: {fileID: -2520071786502460176, guid: 23096f104cae0bf48a307ae015afc2a9, type: 3}
+  Icon: {fileID: 21300000, guid: 23096f104cae0bf48a307ae015afc2a9, type: 3}
   MaxStackSize: 20
   GoldValue: 5
   Components:

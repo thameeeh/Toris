@@ -15,12 +15,19 @@ MonoBehaviour:
   CraftingRecipes:
   - {fileID: 11400000, guid: 843021b07a364c2fb4dba73f5f8b9eb6, type: 2}
   - {fileID: 11400000, guid: 2772d2e4a43a423ca3b86373e7b5f922, type: 2}
+  - {fileID: 11400000, guid: d7e4c9949a7b4c3fae95854f2b9d5a10, type: 2}
+  - {fileID: 11400000, guid: 0af7e443a70e4d3fbbb91f0e54d84a6c, type: 2}
+  - {fileID: 11400000, guid: e0b1161b79264bd2a1e930a301b70581, type: 2}
+  - {fileID: 11400000, guid: 7d6d45ca80684d99b2a38a6ba3ab8c02, type: 2}
+  - {fileID: 11400000, guid: 8b3d641499284955ad6dbdccbb2e0711, type: 2}
   - {fileID: 11400000, guid: 892540e454514af7b1783167e6045e21, type: 2}
+  - {fileID: 11400000, guid: c4f8fedbd70a47b284962c863150c15d, type: 2}
   - {fileID: 11400000, guid: b140e65ad3ec42b8920ded5ed7b7a0db, type: 2}
   - {fileID: 11400000, guid: 62b1154c7d284a67a21343531a667b0d, type: 2}
   - {fileID: 11400000, guid: 1986aa5d380f42c0a9251f2020927a50, type: 2}
   - {fileID: 11400000, guid: faae6b68d7a24dd8a6dbef578d2f019f, type: 2}
   - {fileID: 11400000, guid: b08199c3d90a4f1884d8390fad8e0e54, type: 2}
+  - {fileID: 11400000, guid: f37d75bf72a5483793c2d9135f54e029, type: 2}
   SalvageRecipes:
   - {fileID: 11400000, guid: a621d8134d4d4cf0a55f74e507ae6021, type: 2}
   - {fileID: 11400000, guid: bd7b51c0eb9f48c89d3be28d7e8501df, type: 2}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using OutlandHaven.Inventory;
@@ -13,6 +14,7 @@ namespace OutlandHaven.UIToolkit
         private VisualElement _slot1Container;
         private VisualElement _slot2Container;
         private VisualElement _resultSlotContainer;
+        private VisualElement _recipeListContainer;
 
         private InventorySlotView _slot1View;
         private InventorySlotView _slot2View;
@@ -23,10 +25,19 @@ namespace OutlandHaven.UIToolkit
 
         private InventorySlot _cachedSlot1;
         private InventorySlot _cachedSlot2;
+        private CraftingRecipeSO _selectedRecipe;
 
         private Button _btnForgeItems;
+        private List<VisualElement> _blueprintRows = new List<VisualElement>();
 
         private bool _eventsBound = false;
+
+        private const int BaseRequirementPreviewQuantity = 1;
+        private const int RecipeOutputPreviewQuantity = 1;
+        private const string BlueprintRowClass = "forge-blueprint-row";
+        private const string BlueprintRowSelectedClass = "forge-blueprint-row--selected";
+        private const string BlueprintRowAvailableClass = "forge-blueprint-row--available";
+        private const string BlueprintRowLockedClass = "forge-blueprint-row--locked";
 
         public ForgeSubView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents, CraftingManagerSO craftingManager)
             : base(topElement)
@@ -41,6 +52,7 @@ namespace OutlandHaven.UIToolkit
             _slot1Container = m_TopElement.Q<VisualElement>("forge-slot-1");
             _slot2Container = m_TopElement.Q<VisualElement>("forge-slot-2");
             _resultSlotContainer = m_TopElement.Q<VisualElement>("forge-result-slot");
+            _recipeListContainer = m_TopElement.Q<VisualElement>("recipe-list-container");
             _btnForgeItems = m_TopElement.Q<Button>("btn-forge-items");
 
             if (_slot1Container != null)
@@ -50,15 +62,6 @@ namespace OutlandHaven.UIToolkit
                 instance.userData = "forge-slot-1";
                 _slot1Container.Add(instance);
                 _slot1View = new InventorySlotView(instance, null);
-
-                _slot1View.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
-                _slot1View.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnItemRightClicked?.Invoke(slot);
-                _slot1View.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
-                _slot1View.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
-
-                _slot1View.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
-                _slot1View.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
-                _slot1View.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -77,15 +80,6 @@ namespace OutlandHaven.UIToolkit
                 _slot2Container.Add(instance);
                 _slot2View = new InventorySlotView(instance, null);
 
-                _slot2View.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
-                _slot2View.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnItemRightClicked?.Invoke(slot);
-                _slot2View.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
-                _slot2View.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
-
-                _slot2View.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
-                _slot2View.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
-                _slot2View.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
-
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
                     if (evt.button == 0) // Left click
@@ -101,15 +95,6 @@ namespace OutlandHaven.UIToolkit
                 instance.pickingMode = PickingMode.Ignore;
                 _resultSlotContainer.Add(instance);
                 _resultSlotView = new InventorySlotView(instance, null);
-
-                _resultSlotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
-                _resultSlotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnItemRightClicked?.Invoke(slot);
-                _resultSlotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, sourceSlot.Count);
-                _resultSlotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
-
-                _resultSlotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
-                _resultSlotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);
-                _resultSlotView.OnLocalDragStopped += () => _uiInventoryEvents.OnGlobalDragStopped?.Invoke();
             }
         }
 
@@ -117,16 +102,20 @@ namespace OutlandHaven.UIToolkit
         {
             ClearSlot1();
             ClearSlot2();
+            BuildBlueprintList();
             UpdateResultVisual();
         }
 
         public override void Show()
         {
             base.Show();
+            _uiInventoryEvents?.OnInteractionContextChanged?.Invoke(InventoryInteractionContext.Forge);
+
             if (!_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked += HandleItemClicked;
                 _uiInventoryEvents.OnRequestSelectForProcessing += HandleProxyDrop;
+                _uiInventoryEvents.OnInventoryUpdated += HandleInventoryUpdated;
                 _eventsBound = true;
             }
 
@@ -138,11 +127,14 @@ namespace OutlandHaven.UIToolkit
 
         public override void Hide()
         {
+            _uiInventoryEvents?.OnInteractionContextChanged?.Invoke(InventoryInteractionContext.Normal);
             base.Hide();
+
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
                 _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
+                _uiInventoryEvents.OnInventoryUpdated -= HandleInventoryUpdated;
                 _eventsBound = false;
             }
 
@@ -155,6 +147,7 @@ namespace OutlandHaven.UIToolkit
         private void HandleProxyDrop(InventorySlot sourceSlot, string slotID)
         {
             if (sourceSlot == null || sourceSlot.IsEmpty) return;
+            ClearSelectedBlueprint();
 
             if (slotID == "forge-slot-1")
             {
@@ -181,6 +174,7 @@ namespace OutlandHaven.UIToolkit
         private void HandleItemClicked(InventorySlot slot)
         {
             if (slot == null || slot.IsEmpty) return;
+            ClearSelectedBlueprint();
 
             InventorySlot proxySlot = new InventorySlot();
             proxySlot.SetItem(new ItemInstance(slot.HeldItem.BaseItem), 1);
@@ -203,6 +197,7 @@ namespace OutlandHaven.UIToolkit
 
         private void ClearSlot1()
         {
+            ClearSelectedBlueprint();
             _currentSlot1Data = null;
             _cachedSlot1 = null;
             _slot1View?.Update(null);
@@ -211,6 +206,7 @@ namespace OutlandHaven.UIToolkit
 
         private void ClearSlot2()
         {
+            ClearSelectedBlueprint();
             _currentSlot2Data = null;
             _cachedSlot2 = null;
             _slot2View?.Update(null);
@@ -257,6 +253,14 @@ namespace OutlandHaven.UIToolkit
 
         private void OnBtnForgeClicked(ClickEvent evt)
         {
+            if (_selectedRecipe != null)
+            {
+                _uiInventoryEvents?.OnRequestCraftRecipe?.Invoke(_selectedRecipe);
+                UpdateSelectedRecipePreview();
+                RefreshBlueprintStates();
+                return;
+            }
+
             if (_currentSlot1Data != null && _currentSlot2Data != null && _cachedSlot1 != null && _cachedSlot2 != null)
             {
                 _uiInventoryEvents?.OnRequestForge?.Invoke(_cachedSlot1, _cachedSlot2);
@@ -271,9 +275,225 @@ namespace OutlandHaven.UIToolkit
             {
                 _uiInventoryEvents.OnItemClicked -= HandleItemClicked;
                 _uiInventoryEvents.OnRequestSelectForProcessing -= HandleProxyDrop;
+                _uiInventoryEvents.OnInventoryUpdated -= HandleInventoryUpdated;
                 _eventsBound = false;
             }
             base.Dispose();
+        }
+
+        private void BuildBlueprintList()
+        {
+            if (_recipeListContainer == null) return;
+
+            _recipeListContainer.Clear();
+            _blueprintRows.Clear();
+
+            if (_craftingManager?.Registry?.CraftingRecipes == null)
+            {
+                return;
+            }
+
+            foreach (var recipe in _craftingManager.Registry.CraftingRecipes)
+            {
+                if (recipe == null || recipe.OutputItem == null || recipe.BaseItemRequirement == null)
+                {
+                    continue;
+                }
+
+                Button row = new Button();
+                row.text = string.Empty;
+                row.userData = recipe;
+                row.AddToClassList(BlueprintRowClass);
+                row.clicked += () => SelectBlueprint(recipe);
+
+                Image icon = new Image
+                {
+                    sprite = recipe.OutputItem.Icon,
+                    scaleMode = ScaleMode.ScaleToFit
+                };
+                icon.AddToClassList("forge-blueprint-icon");
+                if (recipe.OutputItem.Icon == null)
+                {
+                    icon.style.display = DisplayStyle.None;
+                }
+
+                VisualElement details = new VisualElement();
+                details.AddToClassList("forge-blueprint-details");
+
+                Label title = new Label(GetItemName(recipe.OutputItem));
+                title.AddToClassList("forge-blueprint-title");
+
+                Label requirements = new Label(BuildRequirementText(recipe));
+                requirements.AddToClassList("forge-blueprint-requirements");
+
+                details.Add(title);
+                details.Add(requirements);
+                row.Add(icon);
+                row.Add(details);
+
+                _recipeListContainer.Add(row);
+                _blueprintRows.Add(row);
+            }
+
+            RefreshBlueprintStates();
+        }
+
+        private void SelectBlueprint(CraftingRecipeSO recipe)
+        {
+            if (recipe == null) return;
+
+            _selectedRecipe = recipe;
+            _cachedSlot1 = null;
+            _cachedSlot2 = null;
+            UpdateSelectedRecipePreview();
+            RefreshBlueprintStates();
+        }
+
+        private void ClearSelectedBlueprint()
+        {
+            if (_selectedRecipe == null) return;
+
+            _selectedRecipe = null;
+            RefreshBlueprintStates();
+        }
+
+        private void UpdateSelectedRecipePreview()
+        {
+            if (_selectedRecipe == null) return;
+
+            _currentSlot1Data = CreatePreviewSlot(_selectedRecipe.BaseItemRequirement, BaseRequirementPreviewQuantity);
+            _slot1View?.Update(_currentSlot1Data);
+
+            if (TryGetFirstMaterialRequirement(_selectedRecipe, out CraftingMaterialRequirement firstMaterial))
+            {
+                _currentSlot2Data = CreatePreviewSlot(firstMaterial.Material, firstMaterial.Quantity);
+                _slot2View?.Update(_currentSlot2Data);
+            }
+            else
+            {
+                _currentSlot2Data = null;
+                _slot2View?.Update(null);
+            }
+
+            InventorySlot resultSlot = CreatePreviewSlot(_selectedRecipe.OutputItem, RecipeOutputPreviewQuantity);
+            _resultSlotView?.Update(resultSlot);
+
+            bool canCraft = _craftingManager != null && _craftingManager.CanCraftRecipe(_selectedRecipe);
+            if (_btnForgeItems != null) _btnForgeItems.SetEnabled(canCraft);
+        }
+
+        private void RefreshBlueprintStates()
+        {
+            foreach (VisualElement row in _blueprintRows)
+            {
+                if (!(row.userData is CraftingRecipeSO recipe)) continue;
+
+                bool canCraft = _craftingManager != null && _craftingManager.CanCraftRecipe(recipe);
+                row.EnableInClassList(BlueprintRowSelectedClass, recipe == _selectedRecipe);
+                row.EnableInClassList(BlueprintRowAvailableClass, canCraft);
+                row.EnableInClassList(BlueprintRowLockedClass, !canCraft);
+            }
+        }
+
+        private void HandleInventoryUpdated()
+        {
+            RefreshBlueprintStates();
+
+            if (_selectedRecipe != null)
+            {
+                UpdateSelectedRecipePreview();
+            }
+            else
+            {
+                UpdateResultVisual();
+            }
+        }
+
+        private static InventorySlot CreatePreviewSlot(InventoryItemSO item, int quantity)
+        {
+            if (item == null || quantity <= 0) return null;
+
+            InventorySlot slot = new InventorySlot();
+            slot.SetItem(new ItemInstance(item), quantity);
+            return slot;
+        }
+
+        private static bool TryGetFirstMaterialRequirement(CraftingRecipeSO recipe, out CraftingMaterialRequirement materialRequirement)
+        {
+            materialRequirement = default(CraftingMaterialRequirement);
+
+            if (recipe?.MaterialRequirements == null) return false;
+
+            foreach (CraftingMaterialRequirement requirement in recipe.MaterialRequirements)
+            {
+                if (requirement.Material != null && requirement.Quantity > 0)
+                {
+                    materialRequirement = requirement;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static string BuildRequirementText(CraftingRecipeSO recipe)
+        {
+            string text = GetItemName(recipe.BaseItemRequirement);
+
+            if (recipe.MaterialRequirements != null)
+            {
+                foreach (CraftingMaterialRequirement requirement in recipe.MaterialRequirements)
+                {
+                    if (requirement.Material == null || requirement.Quantity <= 0) continue;
+
+                    text += " + " + GetItemName(requirement.Material);
+                    if (requirement.Quantity > 1)
+                    {
+                        text += " x" + requirement.Quantity;
+                    }
+                }
+            }
+
+            if (recipe.GoldCost > 0)
+            {
+                text += " | " + recipe.GoldCost + "g";
+            }
+
+            return text;
+        }
+
+        private static string GetItemName(InventoryItemSO item)
+        {
+            if (item == null || string.IsNullOrEmpty(item.ItemName))
+            {
+                return "Unknown Item";
+            }
+
+            return NicifyItemName(item.ItemName);
+        }
+
+        private static string NicifyItemName(string itemName)
+        {
+            char[] characters = itemName.Replace('_', ' ').ToLowerInvariant().ToCharArray();
+            bool capitalizeNext = true;
+
+            for (int i = 0; i < characters.Length; i++)
+            {
+                char current = characters[i];
+                if (char.IsWhiteSpace(current) || current == '-')
+                {
+                    capitalizeNext = true;
+                    continue;
+                }
+
+                if (capitalizeNext)
+                {
+                    characters[i] = char.ToUpperInvariant(current);
+                    capitalizeNext = false;
+                }
+            }
+
+            return new string(characters);
         }
     }
 }

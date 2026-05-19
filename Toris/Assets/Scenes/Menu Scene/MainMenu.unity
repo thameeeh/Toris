@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94ca575458b07aa4b8f465232105805c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManagerBehaviour
   sfxLibrary: {fileID: 11400000, guid: cd26690da2932734bb475850539446af, type: 2}
   musicLibrary: {fileID: 11400000, guid: 827bd703b366e1e4198a9684ae0b6e40, type: 2}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fb7c79422e34d14f920ec0482ca19c6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISfxEventBridge
   uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   eventVolumeMultiplier: 1

@@ -41,6 +41,8 @@ public class Wolf : Enemy
 
     private HitData _hitData;
     private float _baseAttackDamage;
+    private float _baseMaxHealth;
+    private float _spawnBaseMaxHealth;
     private bool _hasStarted;
 
     [Header("Combat Responsiveness")]
@@ -135,6 +137,8 @@ public class Wolf : Enemy
 
         RefreshHomeAnchor();
         _baseAttackDamage = AttackDamage;
+        _baseMaxHealth = Mathf.Max(1f, MaxHealth);
+        _spawnBaseMaxHealth = _baseMaxHealth;
 
         EnemyHowlBaseInstance = Instantiate(EnemyHowlBase);
         EnemyChaseBaseInstance = Instantiate(EnemyChaseBase);
@@ -200,6 +204,12 @@ public class Wolf : Enemy
             StateMachine.ChangeState(DeadState);
     }
 
+    public override void PrepareSpawn(EnemySpawnRequest request)
+    {
+        base.PrepareSpawn(request);
+        _spawnBaseMaxHealth = Mathf.Max(1f, MaxHealth);
+    }
+
     public override void OnSpawned()
     {
         SubscribeDamageHandler();
@@ -221,6 +231,7 @@ public class Wolf : Enemy
         Damaged -= HandleWolfDamaged;
         AggroTargetChanged -= HandleAggroTargetChanged;
         base.OnDespawned();
+        _spawnBaseMaxHealth = _baseMaxHealth;
     }
     private float GetDifficultyMultiplier()
     {
@@ -229,7 +240,7 @@ public class Wolf : Enemy
 
     private void ApplyScaling()
     {
-        MaxHealth = Mathf.RoundToInt(Mathf.Max(1f, MaxHealth) * healthMultiplier);
+        MaxHealth = Mathf.RoundToInt(Mathf.Max(1f, _spawnBaseMaxHealth) * healthMultiplier);
         AttackDamage = _baseAttackDamage * GetDifficultyMultiplier();
     }
 

@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d33654fd4e31a647b413e17c2f65b4f, type: 3}
   m_Name: UI Events SO
   m_EditorClassIdentifier: Assembly-CSharp::UIEventsSO
+  buttonHoverSfxId: ui_menu_hover
+  buttonConfirmSfxId: ui_menu_confirm
+  buttonHoverCooldownSeconds: 0.04

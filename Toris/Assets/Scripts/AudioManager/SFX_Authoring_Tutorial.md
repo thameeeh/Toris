@@ -13,6 +13,12 @@ The player prefab should have:
 
 Existing bow, dash, and footstep module assets can remain in `PlayerSfx.legacyModules`. New authored player sounds should usually go into `PlayerSfx.rules`.
 
+## SFX-Only Code Rule
+
+When adding an SFX hook inside gameplay, UI, or manager code, mark the block with a short comment that says it is for SFX only. The hook must not become the owner of gameplay state, transaction success, inventory mutation, quest progress, or UI visibility.
+
+Good SFX hooks should sit after the authoritative action succeeds. For example, play a shop coin sound after `ShopManagerSO` confirms the buy/sell transaction, not when the button is clicked.
+
 ## Add A New One-Shot SFX
 
 1. Import the audio clip.
@@ -105,6 +111,47 @@ Create stop rule:
 - Fade Out Seconds: `0.08`.
 
 Tune `PlayerSfxEventBridge.movementStartSpeed` on the player prefab if footsteps start too early or too late.
+
+## Add UI Screen Open And Close Sounds
+
+Use `UISfxEventBridge` for screen lifecycle sounds such as inventory zipper open/close.
+
+1. Import and define the clips in `SfxLibrary`.
+2. Add `UISfxEventBridge` to a scene object that lives beside the UI manager or audio manager.
+3. Assign the active `UIEventsSO`.
+4. For inventory, use the built-in fields:
+   - `Inventory Open Sfx Id`: for example `ui_inventory_open`.
+   - `Inventory Close Sfx Id`: for example `ui_inventory_close`.
+5. For other screens, add a screen rule:
+   - `Screen`: for example `Smith`.
+   - `Open Sfx Id`: the SFX ID to play when that screen opens.
+   - `Close Sfx Id`: the SFX ID to play when that screen closes.
+   - `Force 2D`: usually enabled for UI sounds.
+
+The bridge listens to `OnScreenOpen` and `OnScreenClose`, so it plays only after a view actually shows or hides.
+
+## Add UI Button Hover And Confirm Sounds
+
+Default UI Toolkit button hover/click sounds are emitted by `GameView` through `UIEventsSO`.
+
+1. Import and define `ui_menu_hover` and `ui_menu_confirm`.
+2. Add one `UISfxEventBridge` to a scene object that lives beside the UI manager or audio manager.
+3. Assign the active `UIEventsSO`.
+4. On that `UIEventsSO`, set:
+   - `Button Hover Sfx Id`: for example `ui_menu_hover`.
+   - `Button Confirm Sfx Id`: for example `ui_menu_confirm`.
+   - `Button Hover Cooldown Seconds`: a small value such as `0.04`.
+5. On `UISfxEventBridge`, keep `Force 2D` enabled for normal UI sounds.
+
+Any class derived from `GameView` now routes `Button` hover and click events through the same UI event channel. Do not add a per-`UIDocument` button SFX component.
+
+The scene still needs an active `AudioManagerBehaviour`; otherwise `AudioBootstrap.Sfx` does not exist and no UI sound can play.
+
+## Add Shop And Gold Sounds
+
+Shop coin sounds are confirmed by `ShopManagerSO`, not by the clicked button. Set `Coin Transaction Sfx Id` on the shop manager asset to `ui_coin_purchase`; it plays only after a buy or sell transaction succeeds.
+
+Enemy gold reward sounds are configured per `EnemyLootTableSO`. Set `Gold Reward Sfx Id` to `item_coin_pickup`; it plays only when that loot table grants immediate gold.
 
 ## Rule Field Guide
 

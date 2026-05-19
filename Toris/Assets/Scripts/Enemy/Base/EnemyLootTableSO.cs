@@ -6,17 +6,25 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyLootTable", menuName = "Enemy/Loot/Enemy Loot Table")]
 public class EnemyLootTableSO : ScriptableObject
 {
+    private const string DefaultGoldRewardSfxId = "item_coin_pickup";
+
     [SerializeField] private List<EnemyLootItemEntry> itemDrops = new List<EnemyLootItemEntry>();
     [SerializeField, Min(0)] private int minGold;
     [SerializeField, Min(0)] private int maxGold;
     [SerializeField, Min(0)] private int minXp;
     [SerializeField, Min(0)] private int maxXp;
 
+    [Header("SFX")]
+    // SFX-only authoring value. Runtime loot behavior should not depend on this field.
+    [Tooltip("Played when this loot table grants immediate gold. Clear to disable.")]
+    [SerializeField] private string goldRewardSfxId = DefaultGoldRewardSfxId;
+
     public IReadOnlyList<EnemyLootItemEntry> ItemDrops => itemDrops;
     public int MinGold => minGold;
     public int MaxGold => maxGold;
     public int MinXp => minXp;
     public int MaxXp => maxXp;
+    public string GoldRewardSfxId => goldRewardSfxId;
 
 #if UNITY_EDITOR
     private void OnValidate()

@@ -6,11 +6,16 @@ namespace OutlandHaven.UIToolkit
     [CreateAssetMenu(menuName = "UI/Scriptable Objects/ShopManagerSO")]
     public class ShopManagerSO : ScriptableObject
     {
+        private const string DefaultCoinTransactionSfxId = "ui_coin_purchase";
+
         [Header("Dependencies")]
         public GameSessionSO SessionData;
         public PlayerProgressionAnchorSO PlayerAnchor;
         public UIInventoryEventsSO InventoryEvents;
         public UIEventsSO UIEvents; // Dependency for global UI events like screen open
+
+        [Header("SFX")]
+        [SerializeField] private string coinTransactionSfxId = DefaultCoinTransactionSfxId;
 
         [System.NonSerialized]
         public InventoryManager CurrentShopInventory;
@@ -104,6 +109,7 @@ namespace OutlandHaven.UIToolkit
 
                         // Quest bridge: report only after the buy succeeds so quests follow authoritative shop/inventory state.
                         ReportShopQuestFact(global::QuestFactType.BuyItem, item, quantity);
+                        RequestCoinTransactionSfx();
 
 #if UNITY_EDITOR
                         //Debug.Log($"Bought {quantity} {item.BaseItem.ItemName} for {totalCost} gold. Remaining Gold: {PlayerAnchor.Instance.CurrentGold}");
@@ -154,6 +160,7 @@ namespace OutlandHaven.UIToolkit
 
                 // Quest bridge: report only after the sell succeeds so quests follow authoritative shop/inventory state.
                 ReportShopQuestFact(global::QuestFactType.SellItem, item, quantity);
+                RequestCoinTransactionSfx();
 
                 if (addedToShop)
                 {
@@ -186,6 +193,13 @@ namespace OutlandHaven.UIToolkit
             string contextId = CurrentShopInventory != null ? CurrentShopInventory.name : string.Empty;
 
             global::PixelCrushersQuestFactReporter.Report(new global::QuestFact(factType, exactId, typeOrTag, quantity, contextId));
+        }
+
+        private void RequestCoinTransactionSfx()
+        {
+            // SFX-only hook: called after the shop transaction has already succeeded.
+            // This must not affect inventory, gold, quest facts, or shop state.
+            UIEvents?.RequestSfx(coinTransactionSfxId);
         }
     }
 }

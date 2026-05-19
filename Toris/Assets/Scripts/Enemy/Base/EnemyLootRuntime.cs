@@ -43,11 +43,26 @@ public static class EnemyLootRuntime
 
         int goldReward = RollInclusive(lootTable.MinGold, lootTable.MaxGold);
         if (goldReward > 0)
+        {
             playerProgression.AddGold(goldReward);
+            PlayGoldRewardSfx(lootTable.GoldRewardSfxId);
+        }
 
         int xpReward = RollInclusive(lootTable.MinXp, lootTable.MaxXp);
         if (xpReward > 0)
             playerProgression.AddExperience(xpReward);
+    }
+
+    private static void PlayGoldRewardSfx(string sfxId)
+    {
+        // SFX-only hook: called after immediate gold has already been granted.
+        // Loot, XP, and progression state must stay owned by the reward logic above.
+        if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(sfxId))
+            return;
+
+        SfxPlayRequest request = SfxPlayRequest.Default;
+        request.force2D = true;
+        AudioBootstrap.Sfx.Play(sfxId, request);
     }
 
     private static void SpawnItemDrops(EnemyLootTableSO lootTable, Vector3 origin)

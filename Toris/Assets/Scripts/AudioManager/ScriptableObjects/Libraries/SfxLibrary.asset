@@ -23,3 +23,13 @@ MonoBehaviour:
   - categoryName: Enemy
     definitions:
     - {fileID: 11400000, guid: 0aec95896c079e345857bdd436937536, type: 2}
+  - categoryName: UI
+    definitions:
+    - {fileID: 11400000, guid: 85a34ae0ba3180945a827b20ddf5bd57, type: 2}
+    - {fileID: 11400000, guid: 87395d8c9031c8f43a1c796d3b7671bd, type: 2}
+    - {fileID: 11400000, guid: 71149bf0ade7966429ad1052f05ccdc8, type: 2}
+    - {fileID: 11400000, guid: f6a90ea8b388b18479feb8efe1431550, type: 2}
+    - {fileID: 11400000, guid: e6bb935d15333a540b2238a5a29844be, type: 2}
+  - categoryName: Items
+    definitions:
+    - {fileID: 11400000, guid: dbe96644d22a39843b56a58f2c3bb2fe, type: 2}

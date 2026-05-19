@@ -33,3 +33,4 @@ MonoBehaviour:
   maxGold: 4
   minXp: 2
   maxXp: 6
+  goldRewardSfxId: item_coin_pickup

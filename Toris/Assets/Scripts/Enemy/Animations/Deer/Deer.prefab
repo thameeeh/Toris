@@ -64,10 +64,15 @@ MonoBehaviour:
   questEnemyTypeOrTag: 
   isPassivePrey: 1
   threatensPassiveCreatures: 0
+  debugAttackLogs: 1
   walkSpeed: 1
   runSpeed: 3
   minimumFleeDuration: 4.5
   calmDelayAfterThreatLost: 1.75
+  herdPreferredRadius: 3.5
+  herdCohesionWeight: 0.65
+  herdAbandonDistance: 10
+  herdPanicDetachChance: 0.25
   idleStateName: Idle BT
   walkStateName: Walk BT
   runStateName: Run BT
@@ -191,7 +196,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -298,7 +303,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &8432448878743203565
 Animator:
   serializedVersion: 7
@@ -415,7 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4488252492079143801}
   - component: {fileID: 2199256248189420029}
-  m_Layer: 16
+  m_Layer: 14
   m_Name: WorldCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

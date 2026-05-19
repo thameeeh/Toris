@@ -136,7 +136,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 8057200069195693602}
   playerTransform: {fileID: 0}
-  lootTable: {fileID: 0}
+  lootTable: {fileID: 11400000, guid: 2a7c4f19e8d146f49b3a5c607d8e9f10, type: 2}
   autoCreateHealthBar: 1
   healthBar: {fileID: 0}
   autoCreateAlertIndicator: 1

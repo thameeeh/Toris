@@ -13,18 +13,26 @@ MonoBehaviour:
   m_Name: LootTable_Necromancer
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLootTableSO
   itemDrops:
-  - item: {fileID: 11400000, guid: f06eea9927c0b534b9ebe5d7754e0953, type: 2}
-    dropChance: 0.865
+  - item: {fileID: 11400000, guid: 934a0c3332d34ac5bb5b84756f2e4632, type: 2}
+    dropChance: 0.8
+    minQuantity: 1
+    maxQuantity: 2
+  - item: {fileID: 11400000, guid: 50afc8ebcc32448eade10d5de5dc0f8e, type: 2}
+    dropChance: 0.45
     minQuantity: 1
     maxQuantity: 1
-  - item: {fileID: 11400000, guid: 48dde59f99c754c4290921ee295ea3f3, type: 2}
-    dropChance: 0.4
-    minQuantity: 8
-    maxQuantity: 10
-  - item: {fileID: 11400000, guid: f3168b74f45f17c47bf6c623620169bc, type: 2}
-    dropChance: 0.5
-    minQuantity: 9
-    maxQuantity: 10
+  - item: {fileID: 11400000, guid: 728e358987b74b93b744f5d177431df1, type: 2}
+    dropChance: 0.55
+    minQuantity: 1
+    maxQuantity: 3
+  - item: {fileID: 11400000, guid: 1c47f9857814a594c81ea719eeeb67b6, type: 2}
+    dropChance: 0.25
+    minQuantity: 1
+    maxQuantity: 1
+  - item: {fileID: 11400000, guid: 33611359a5b1d66459ed62d4212287fd, type: 2}
+    dropChance: 0.15
+    minQuantity: 1
+    maxQuantity: 1
   minGold: 12
   maxGold: 93
   minXp: 45

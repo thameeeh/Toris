@@ -26,13 +26,6 @@ public class PlayerSkillTracker
             return false;
         }
 
-        // NEW: Enforce the prerequisite check
-        if (!ArePrerequisitesMet(skill))
-        {
-            Debug.LogWarning($"Prerequisites for {skill.skillName} are not met!");
-            return false;
-        }
-
         if (_availableSP >= skill.costSP)
         {
             _availableSP -= skill.costSP;

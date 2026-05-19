@@ -4,96 +4,135 @@
     flex-direction: row;
 }
 
-.skill-tree__scroll-view {
+/* --- LEFT SIDE: SELECTION & TABS --- */
+.skill-selection-panel {
     flex-grow: 1;
-    width: 100%;
+    width: 65%;
+    background-color: rgb(25, 25, 30);
+    padding: 20px;
 }
 
-.skill-tree__container {
-    /* Create a massive 1920x1080 pixel canvas */
-    width: 1920px;  
-    height: 1080px; 
-    
-    /* Center the nodes directly in the middle of this giant canvas */
-    align-items: center; 
-    justify-content: center; 
-}
-
-.skill-tree__tier {
+.tabs-container {
     flex-direction: row;
-    justify-content: center;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    width: 100%;
+    margin-bottom: 20px;
+    border-bottom-width: 2px;
+    border-color: var(--color-border-default);
 }
 
+.tab-button {
+    padding: 12px 24px;
+    background-color: transparent;
+    border-width: 0;
+    color: rgb(150, 150, 150);
+    font-size: 16px;
+    -unity-font-style: bold;
+    border-bottom-width: 3px;
+    border-color: transparent;
+}
+
+.tab-button:hover {
+    color: rgb(200, 200, 200);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-button--active {
+    color: var(--color-border-highlight);
+    border-color: var(--color-border-highlight);
+}
+
+.skill-grid-scrollview {
+    flex-grow: 1;
+}
+
+.skill-grid-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+/* --- SKILL NODE (Grid Version) --- */
 .skill-node {
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
-    border-width: 4px;
-    margin-left: 60px;
-    margin-right: 60px;
+    width: 120px;
+    height: 120px;
+    background-color: rgb(40, 40, 45);
+    border-width: 2px;
+    border-color: rgb(60, 60, 60);
+    margin: 10px;
+    border-radius: 8px;
     align-items: center;
     justify-content: center;
-    transition-duration: 0.2s;
-    transition-property: scale, background-color;
+    transition-duration: 0.15s;
 }
 
 .skill-node:hover {
-    scale: 1.1;
+    scale: 1.05;
+    background-color: rgb(50, 50, 55);
+    border-color: var(--color-border-highlight);
 }
 
 .skill-node__label {
-    position: absolute;
-    bottom: -30px;
     color: rgb(220, 220, 220);
-    font-size: 14px;
-    -unity-font-style: bold;
-    white-space: nowrap;
+    font-size: 12px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    padding: 5px;
+    margin-top: 5px;
 }
 
 .skill-node--unlocked {
-    background-color: rgb(70, 150, 70);
+    background-color: rgba(70, 150, 70, 0.3);
     border-color: rgb(100, 255, 100);
 }
 
 .skill-node--available {
-    background-color: rgb(150, 150, 70);
+    background-color: rgba(150, 150, 70, 0.2);
     border-color: rgb(255, 255, 100);
-    cursor: link;
 }
 
 .skill-node--locked {
-    background-color: rgb(50, 50, 50);
-    border-color: rgb(80, 80, 80);
-    opacity: 0.6;
+    opacity: 0.5;
+    background-color: rgb(20, 20, 20);
 }
 
-    /* --- INFO PANEL STRUCTURE --- */
+/* --- RIGHT SIDE: INFO & VIDEO --- */
 .skill-info-panel {
-    width: 400px;
+    width: 35%;
     height: 100%;
     background-color: var(--color-bg-panel);
     border-left-width: 2px;
     border-color: var(--color-border-default);
     padding: 20px;
-    justify-content: space-between; /* Pushes header to top, footer to bottom */
+}
+
+.video-preview-container {
+    width: 100%;
+    aspect-ratio: 1.77; /* 16:9 */
+    background-color: black;
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-placeholder-label {
+    color: rgb(100, 100, 100);
+    font-size: 18px;
+    -unity-font-style: bold;
 }
 
 .skill-info-panel__content {
     flex-grow: 1;
-    margin-top: 20px;
 }
 
 .skill-info-panel__footer {
-    align-items: stretch;
     border-top-width: 1px;
     border-color: var(--color-border-default);
     padding-top: 20px;
 }
 
-/* --- TYPOGRAPHY BINDINGS --- */
+/* --- TYPOGRAPHY --- */
 .info-text-h2 {
     font-size: var(--font-size-h2);
     color: var(--color-text-light);
@@ -105,7 +144,6 @@
     font-size: var(--font-size-h3);
     color: var(--color-border-highlight);
     margin-bottom: 15px;
-    -unity-text-align: middle-center;
 }
 
 .info-text-body {
@@ -114,33 +152,23 @@
     margin-bottom: 15px;
 }
 
-/* --- BUTTON OVERRIDE --- */
 .skill-unlock-btn {
     height: 50px;
-    font-size: var(--font-size-body);
+    font-size: 16px;
     -unity-font-style: bold;
-    
-    /* Override standard button colors for a 'Purchase' feel */
-    background-color: rgb(45, 75, 45); 
+    background-color: rgb(45, 75, 45);
     border-color: rgb(100, 200, 100);
     border-width: 2px;
     border-radius: 8px;
-    color: rgb(255, 255, 255);
+    color: white;
 }
 
 .skill-unlock-btn:hover {
     background-color: rgb(60, 100, 60);
-    border-color: rgb(130, 255, 130);
-    scale: 1.02; /* Slightly smaller scale than standard buttons to feel more grounded */
 }
 
-/* CRITICAL: The Disabled State
-   This automatically applies when C# calls _unlockButton.SetEnabled(false) 
-*/
 .skill-unlock-btn:disabled {
-    background-color: rgb(35, 35, 35);
+    opacity: 0.5;
+    background-color: rgb(40, 40, 40);
     border-color: rgb(60, 60, 60);
-    color: rgb(120, 120, 120);
-    opacity: 0.7;
-    scale: 1; /* Prevents the button from scaling if they somehow hover while disabled */
 }

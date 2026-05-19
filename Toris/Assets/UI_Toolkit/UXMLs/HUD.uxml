@@ -7,32 +7,30 @@
         <ui:VisualElement name="hud__menu-options" class="hud-menu-container"/>
     </ui:VisualElement>
     <ui:VisualElement name="hud__bottom-section">
-        <ui:VisualElement name="hud__left-container">
-            <ui:Label text="Level" name="hud__level-label" class="HUD"/>
-            <ui:VisualElement class="hud-bar-row">
-                <ui:Label text="XP" class="HUD hud-label-xp"/>
-                <ui:ProgressBar value="0" name="hud__xp-bar"/>
+        <ui:VisualElement name="hud__left-status-container" class="hud-left-status-container">
+            <ui:VisualElement name="hud__bars-container" class="hud-bars-container">
+                <ui:Label text="Level" name="hud__level-label" class="HUD"/>
+                <ui:ProgressBar value="0" name="hud__xp-bar">
+                    <ui:Label text="XP" class="HUD hud-bar-text-overlay" style="height: 19px; bottom: -7px; width: 353px;"/>
+                </ui:ProgressBar>
+                <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100">
+                    <ui:Label text="HP" class="HUD hud-bar-text-overlay" style="height: 18px; width: 353px; bottom: 22px;"/>
+                </ui:ProgressBar>
             </ui:VisualElement>
-            <ui:VisualElement class="hud-bar-row">
-                <ui:Label text="Health" class="HUD"/>
-                <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100"/>
-            </ui:VisualElement>
-        </ui:VisualElement>
-        <ui:VisualElement name="hud__potion-bar" class="hud-potion-bar">
-            <ui:VisualElement name="hud__potion-slot-1" class="potion-slot--hud">
-                <ui:Label text="1" class="hud-potion-hotkey"/>
-            </ui:VisualElement>
-            <ui:VisualElement name="hud__potion-slot-2" class="potion-slot--hud">
-                <ui:Label text="2" class="hud-potion-hotkey"/>
+            <ui:VisualElement name="hud__potion-bar" class="hud-potion-bar-internal">
+                <ui:VisualElement name="hud__potion-slot-1" class="potion-slot--hud">
+                    <ui:Label text="1" class="hud-potion-hotkey"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="hud__potion-slot-2" class="potion-slot--hud">
+                    <ui:Label text="2" class="hud-potion-hotkey"/>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="hud__right-container">
             <ui:ProgressBar value="20" name="hud__mana-bar">
                 <ui:Label text="MANA" class="HUD hud-bar-text-overlay"/>
             </ui:ProgressBar>
-            <ui:VisualElement name="hud__skill-bar" class="hud-skill-bar">
-                
-            </ui:VisualElement>
+            <ui:VisualElement name="hud__skill-bar" class="hud-skill-bar"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

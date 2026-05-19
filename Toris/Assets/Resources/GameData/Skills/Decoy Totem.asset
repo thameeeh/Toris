@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7d69a64f48c96f4ea7d509bf2df9908, type: 3}
-  m_Name: SKILL_DOUBLE_JUMP
+  m_Name: Decoy Totem
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillID: SKILL_DOUBLE_JUMP
-  skillName: Double Jump
-  description: Launch yourself into the air a second time before touching the ground.
+  skillID: Decoy Totem
+  skillName: Decoy Totem
+  description: Propel your character forward quickly to evade attacks or cross small
+    gaps.
   costSP: 1
   prerequisites:
   - {fileID: 11400000, guid: 75d1f122348c85242b3edabd27f7cbce, type: 2}
+  associatedAbility: {fileID: 11400000, guid: e3f118b1a5bb45d6ab0b2c8a132d2a75, type: 2}

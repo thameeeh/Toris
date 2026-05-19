@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7d69a64f48c96f4ea7d509bf2df9908, type: 3}
-  m_Name: SKILL_BASE_JUMP
+  m_Name: Chain Shooting
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillID: SKILL_BASE_JUMP
-  skillName: Base Jump
-  description: Perform a standard jump to reach low platforms.
+  skillID: Chain Shooting
+  skillName: Chain Shooting
+  description: Instantly teleport a short distance forward, bypassing physical obstacles
+    and enemies.
   costSP: 1
-  prerequisites: []
+  prerequisites:
+  - {fileID: 11400000, guid: 22cb9564c524fcc42bbe3491a1d58ada, type: 2}
+  associatedAbility: {fileID: 11400000, guid: 738d00bb63795d04bbdb2414a28a778b, type: 2}

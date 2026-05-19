@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArrowRainConfig
   m_EditorClassIdentifier: Assembly-CSharp::ArrowRainConfig
   abilityID: ArrowRainConfig
-  requiredSkillID: 
+  requiredSkillID: Arrow Rain
   abilityName: Ability1
   icon: {fileID: 6303333213797369239, guid: 98d773084ad7b614b9a09ae164029883, type: 3}
   cooldownSeconds: 1

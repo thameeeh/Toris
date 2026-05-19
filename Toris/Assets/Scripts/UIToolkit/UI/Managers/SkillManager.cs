@@ -29,6 +29,13 @@ namespace OutlandHaven.Skills
             {
                 _skillEvents.OnSkillUnlocked?.Invoke(skill.skillID);
                 _skillEvents.OnSPUpdated?.Invoke(_gameSession.PlayerSkills.AvailableSP);
+
+                // Auto-equip integration: If this skill grants an active ability, tell the player controller
+                if (skill.associatedAbility != null)
+                {
+                    _skillEvents.OnAbilityAutoEquip?.Invoke(skill.associatedAbility);
+                }
+
                 Debug.Log($"Successfully unlocked {skill.skillName}!");
             }
             else

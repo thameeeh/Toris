@@ -130,6 +130,11 @@ public class PlayerAbilityController : MonoBehaviour
             _input.OnAbilitySlotStarted += HandleAbilitySlotStarted;
             _input.OnAbilitySlotReleased += HandleAbilitySlotReleased;
         }
+
+        if (_uiSkillEvents != null)
+        {
+            _uiSkillEvents.OnAbilityAutoEquip += HandleAbilityAutoEquip;
+        }
 #if UNITY_EDITOR
         else
         {
@@ -155,6 +160,36 @@ public class PlayerAbilityController : MonoBehaviour
             _input.OnAbilitySlotStarted -= HandleAbilitySlotStarted;
             _input.OnAbilitySlotReleased -= HandleAbilitySlotReleased;
         }
+
+        if (_uiSkillEvents != null)
+        {
+            _uiSkillEvents.OnAbilityAutoEquip -= HandleAbilityAutoEquip;
+        }
+    }
+
+    private void HandleAbilityAutoEquip(PlayerAbilitySO newAbility)
+    {
+        if (newAbility == null) return;
+
+        // 1. Find the first empty slot
+        for (int i = 0; i < SlotCount; i++)
+        {
+            AbilitySlot slot = GetSlot(i);
+            if (slot != null && !slot.HasDefinition)
+            {
+                // 2. Equip and initialize it
+                slot.SetDefinition(newAbility);
+                slot.Initialize();
+
+                // 3. Broadcast the change so the HUD updates
+                PublishAbilitySlotsChanged();
+                
+                Debug.Log($"[Ability] Auto-equipped {newAbility.abilityName} to slot {i}");
+                return;
+            }
+        }
+
+        Debug.LogWarning("[Ability] No empty slots available for auto-equip!");
     }
 
     private void Update()

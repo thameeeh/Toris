@@ -142,109 +142,106 @@ MonoBehaviour:
   ContainerBlueprint: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
   LiveSlots:
   - HeldItem:
-      InstanceID: apple
-      BaseItem: {fileID: 11400000, guid: f3168b74f45f17c47bf6c623620169bc, type: 2}
+      InstanceID: smith_training_bow
+      BaseItem: {fileID: 11400000, guid: 7ee7e7b1e3e64ad69d4d8bfb3a1bc234, type: 2}
       States: []
-    Count: 4
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: bow
-      BaseItem: {fileID: 11400000, guid: 145befef057fa194dbf383c5625184c5, type: 2}
-      States:
-      - rid: 1000
-      - rid: 1001
     Count: 1
     AllowedFilter: -1
   - HeldItem:
-      InstanceID: 778c1745-61b6-4465-bd83-0ba37d9a9c37
-      BaseItem: {fileID: 11400000, guid: c084c4fee7e1e0f4fa738a67023be54e, type: 2}
+      InstanceID: smith_hunter_bow
+      BaseItem: {fileID: 11400000, guid: 02ece7790f594eac96b04ce7f89ad4ee, type: 2}
+      States: []
+    Count: 1
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_longbow
+      BaseItem: {fileID: 11400000, guid: f4d92cad1f8a42d08c12ad0bb89a2f44, type: 2}
+      States: []
+    Count: 1
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_padded_cap
+      BaseItem: {fileID: 11400000, guid: 0317cb108e5572e4590bed3555126f7f, type: 2}
+      States: []
+    Count: 1
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_leather_vest
+      BaseItem: {fileID: 11400000, guid: c87e3c9920ba7c741873723ad7998c00, type: 2}
+      States: []
+    Count: 1
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_traveler_trousers
+      BaseItem: {fileID: 11400000, guid: c6e4a0bf2c07a32459b66f7f84c0de5d, type: 2}
+      States: []
+    Count: 1
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_cloth_wraps
+      BaseItem: {fileID: 11400000, guid: c60ad745ddb24d5ca0d64d17673c927a, type: 2}
+      States: []
+    Count: 1
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_minor_healing_potion
+      BaseItem: {fileID: 11400000, guid: b606bba94f897aa499ea7179a781b842, type: 2}
       States: []
     Count: 6
     AllowedFilter: -1
   - HeldItem:
-      InstanceID: 3f76910e-5b33-49e9-af68-2e281820f3fb
-      BaseItem: {fileID: 0}
+      InstanceID: smith_minor_stamina_potion
+      BaseItem: {fileID: 11400000, guid: 7fa9462727ad82a4ba82e11ee6c9c4f0, type: 2}
       States: []
-    Count: 0
+    Count: 6
     AllowedFilter: -1
   - HeldItem:
-      InstanceID: Potion
-      BaseItem: {fileID: 11400000, guid: 69b152f9e425b0f46894690d0c063d36, type: 2}
-      States:
-      - rid: -2
-    Count: 7
+      InstanceID: smith_empty_flask
+      BaseItem: {fileID: 11400000, guid: 7ac721e522cb4b44ad9aee5a46ecbfa1, type: 2}
+      States: []
+    Count: 10
     AllowedFilter: -1
   - HeldItem:
-      InstanceID: e6e8f152-e06c-48d2-9e66-89b53508fc28
-      BaseItem: {fileID: 11400000, guid: 30a82d052c6934841897a2be59e7970c, type: 2}
+      InstanceID: smith_wild_herb
+      BaseItem: {fileID: 11400000, guid: 8792eb4d2a6241b5ad17dbe6469a2242, type: 2}
+      States: []
+    Count: 15
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_tasty_cupcake
+      BaseItem: {fileID: 11400000, guid: 0d6b98e5e5124f6e8ef9a8c4e45d7b30, type: 2}
+      States: []
+    Count: 8
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_wood_scrap
+      BaseItem: {fileID: 11400000, guid: 9a8387ebbd6045cda28d0ba75f046c72, type: 2}
+      States: []
+    Count: 25
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_tough_hide
+      BaseItem: {fileID: 11400000, guid: 3b864a487c9b451ebf87c089dd4c170d, type: 2}
+      States: []
+    Count: 10
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_wolf_pelt
+      BaseItem: {fileID: 11400000, guid: b615f42b0c5e444ab895a5be4c0c2208, type: 2}
+      States: []
+    Count: 8
+    AllowedFilter: -1
+  - HeldItem:
+      InstanceID: smith_wolf_fang
+      BaseItem: {fileID: 11400000, guid: c964247a61fc4141b3fd7f4b1e4622a8, type: 2}
       States: []
     Count: 4
     AllowedFilter: -1
   - HeldItem:
-      InstanceID: 63396792-2690-4863-84d7-2e38c43bb79a
-      BaseItem: {fileID: 0}
+      InstanceID: smith_iron_scrap
+      BaseItem: {fileID: 11400000, guid: 728e358987b74b93b744f5d177431df1, type: 2}
       States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: d07ad38a-1b31-4272-919c-483d29ab46ed
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: f0bec1d9-c382-4948-8daf-f2050ac5da30
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 3610a385-5a6a-4560-a412-c7b57ebebe05
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 381846d8-93a4-43eb-80c7-9b4251ec7a32
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 801a06cb-348b-4591-88ac-38e5b1ec8c8e
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 9bc42824-a129-48f5-8271-1ecf9a5f0028
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 937f0801-3496-4141-a8c3-c395e9e98afc
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 5e6c2001-8385-41f2-9dca-c0d82e591865
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 08efa593-2f06-4cad-9614-c76d7d9fb465
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 86c576ae-818c-4a91-929d-571740785790
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
+    Count: 12
     AllowedFilter: -1
   - HeldItem:
       InstanceID: 5ab9b6e4-d879-4cd4-a0a6-512620fc558c
@@ -274,18 +271,7 @@ MonoBehaviour:
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   references:
     version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1000
-      type: {class: EvolvingState, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
-      data:
-        CurrentKills: 0
-        IsAwakened: 0
-    - rid: 1001
-      type: {class: UpgradeableState, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
-      data:
-        CurrentLevel: 1
+    RefIds: []
 --- !u!114 &7445550001234567890
 MonoBehaviour:
   m_ObjectHideFlags: 0

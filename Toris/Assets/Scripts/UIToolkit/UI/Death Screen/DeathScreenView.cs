@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using UnityEngine.UIElements;
 
 namespace OutlandHaven.UIToolkit
@@ -14,7 +13,7 @@ namespace OutlandHaven.UIToolkit
         private Label _experienceLostLabel;
         private Label _goldLostLabel;
         private Label _itemsLostLabel;
-        private Label _lostItemsLabel;
+        private VisualElement _lostItemsList;
         private bool _eventsBound;
 
         public event Action OnRespawnClicked;
@@ -31,7 +30,7 @@ namespace OutlandHaven.UIToolkit
             _experienceLostLabel = Root.Q<Label>("Penalty_XP");
             _goldLostLabel = Root.Q<Label>("Penalty_Gold");
             _itemsLostLabel = Root.Q<Label>("Penalty_Items");
-            _lostItemsLabel = Root.Q<Label>("Penalty_ItemList");
+            _lostItemsList = Root.Q<VisualElement>("Penalty_ItemList");
         }
 
         public override void Setup(object payload = null)
@@ -95,54 +94,65 @@ namespace OutlandHaven.UIToolkit
             // Death screen related: the view only formats the penalty report it receives.
             if (summary == null)
             {
-                SetLabelText(_experienceLostLabel, "XP Lost: calculating...");
-                SetLabelText(_goldLostLabel, "Gold Lost: calculating...");
-                SetLabelText(_itemsLostLabel, "Items Lost: calculating...");
-                SetLabelText(_lostItemsLabel, "Penalty details will appear when available.");
+                SetLabelText(_experienceLostLabel, "calculating...");
+                SetLabelText(_goldLostLabel, "calculating...");
+                SetLabelText(_itemsLostLabel, "calculating...");
+                RebuildLostItemRows(null);
                 return;
             }
 
-            SetLabelText(_experienceLostLabel, $"XP Lost: {summary.ExperienceLost:0.#}");
-            SetLabelText(_goldLostLabel, $"Gold Lost: {summary.GoldLost}");
-            SetLabelText(_itemsLostLabel, $"Items Lost: {summary.TotalItemsLost}");
-            SetLabelText(_lostItemsLabel, BuildLostItemsText(summary));
+            SetLabelText(_experienceLostLabel, $"{summary.ExperienceLost:0.#} XP");
+            SetLabelText(_goldLostLabel, summary.GoldLost.ToString());
+            SetLabelText(_itemsLostLabel, summary.TotalItemsLost.ToString());
+            RebuildLostItemRows(summary);
         }
 
-        private static string BuildLostItemsText(DeathPenaltySummary summary)
+        private void RebuildLostItemRows(DeathPenaltySummary summary)
         {
-            if (summary == null || summary.LostItems == null || summary.LostItems.Count == 0)
-                return "No item loss.";
+            if (_lostItemsList == null)
+                return;
 
-            const int maxVisibleRows = 5;
-            StringBuilder builder = new StringBuilder();
+            // Death screen related: item loss rows are display-only and mirror the
+            // already-calculated penalty summary from gameplay code.
+            _lostItemsList.Clear();
+
+            if (summary == null)
+            {
+                AddLostItemMessage("Penalty details will appear when available.");
+                return;
+            }
+
+            if (summary.LostItems == null || summary.LostItems.Count == 0)
+            {
+                AddLostItemMessage("No item loss.");
+                return;
+            }
+
+            const int maxVisibleRows = 6;
             int visibleRows = Math.Min(maxVisibleRows, summary.LostItems.Count);
 
             for (int i = 0; i < visibleRows; i++)
             {
                 DeathItemLossSummary item = summary.LostItems[i];
-                if (i > 0)
-                {
-                    builder.AppendLine();
-                }
+                VisualElement row = new VisualElement();
+                row.AddToClassList("death-screen__item-row");
 
-                builder.Append(item.DisplayName);
-                builder.Append(" x");
-                builder.Append(item.Count);
-                builder.Append(" (");
-                builder.Append(item.Source == DeathPenaltyInventorySource.Potion ? "Potion" : "Backpack");
-                builder.Append(')');
+                Label name = new Label($"{item.DisplayName} x{item.Count}");
+                name.AddToClassList("death-screen__item-name");
+
+                Label source = new Label(item.Source == DeathPenaltyInventorySource.Potion ? "Potion" : "Backpack");
+                source.AddToClassList("death-screen__item-source");
+
+                row.Add(name);
+                row.Add(source);
+                _lostItemsList.Add(row);
             }
 
             int hiddenRows = summary.LostItems.Count - visibleRows;
             if (hiddenRows > 0)
             {
-                builder.AppendLine();
-                builder.Append("+");
-                builder.Append(hiddenRows);
-                builder.Append(" more");
+                AddLostItemMessage($"+{hiddenRows} more");
             }
-
-            return builder.ToString();
         }
 
         private static void SetLabelText(Label label, string text)
@@ -151,6 +161,13 @@ namespace OutlandHaven.UIToolkit
             {
                 label.text = text;
             }
+        }
+
+        private void AddLostItemMessage(string text)
+        {
+            Label label = new Label(text);
+            label.AddToClassList("death-screen__item-message");
+            _lostItemsList.Add(label);
         }
     }
 }

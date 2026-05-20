@@ -5,13 +5,28 @@
     <!-- Death screen overlay; gameplay behavior is handled by DeathRespawnCoordinator. -->
     <ui:VisualElement name="DeathRoot" class="death-screen">
         <ui:VisualElement name="DeathPanel" class="death-screen__panel">
-            <ui:Label name="DeathTitle" text="You Died." class="death-screen__title"/>
+            <ui:VisualElement name="DeathHeader" class="death-screen__header">
+                <ui:Label name="DeathTitle" text="You Died" class="death-screen__title"/>
+                <ui:Label name="DeathSubtitle" text="The run ends here." class="death-screen__subtitle"/>
+            </ui:VisualElement>
             <ui:VisualElement name="PenaltySummary" class="death-screen__summary">
                 <ui:Label name="PenaltyTitle" text="Respawn Penalty" class="death-screen__summary-title"/>
-                <ui:Label name="Penalty_XP" text="XP Lost: calculating..." class="death-screen__summary-line"/>
-                <ui:Label name="Penalty_Gold" text="Gold Lost: calculating..." class="death-screen__summary-line"/>
-                <ui:Label name="Penalty_Items" text="Items Lost: calculating..." class="death-screen__summary-line"/>
-                <ui:Label name="Penalty_ItemList" text="Penalty details will appear when available." class="death-screen__summary-items"/>
+                <ui:VisualElement name="PenaltyMetricRows" class="death-screen__metric-rows">
+                    <ui:VisualElement class="death-screen__metric-row">
+                        <ui:Label text="Experience" class="death-screen__metric-label"/>
+                        <ui:Label name="Penalty_XP" text="calculating..." class="death-screen__metric-value"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="death-screen__metric-row">
+                        <ui:Label text="Gold" class="death-screen__metric-label"/>
+                        <ui:Label name="Penalty_Gold" text="calculating..." class="death-screen__metric-value"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="death-screen__metric-row">
+                        <ui:Label text="Items" class="death-screen__metric-label"/>
+                        <ui:Label name="Penalty_Items" text="calculating..." class="death-screen__metric-value"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Label name="PenaltyItemsTitle" text="Lost Items" class="death-screen__items-title"/>
+                <ui:VisualElement name="Penalty_ItemList" class="death-screen__item-list"/>
             </ui:VisualElement>
             <ui:VisualElement name="DeathButtonRow" class="death-screen__actions">
                 <ui:Button name="Btn_Respawn" text="Respawn" class="standard-button death-screen__button death-screen__button--primary"/>

@@ -19,71 +19,146 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(4, 0, 0, 0.62);
+    background-color: rgba(4, 0, 0, 0.72);
 }
 
 .death-screen__panel {
-    min-width: 420px;
-    max-width: 720px;
-    width: 54%;
-    min-height: 280px;
+    min-width: 560px;
+    max-width: 900px;
+    width: 64%;
+    min-height: 520px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 48px;
-    border-width: 1px;
-    border-color: rgba(210, 42, 42, 0.8);
-    background-color: rgba(13, 8, 8, 0.82);
+    padding-left: 64px;
+    padding-right: 64px;
+    padding-top: 56px;
+    padding-bottom: 52px;
+    border-width: 2px;
+    border-color: rgba(196, 44, 44, 0.9);
+    border-radius: 6px;
+    background-color: rgba(13, 7, 7, 0.9);
+}
+
+.death-screen__header {
+    align-items: center;
+    margin-bottom: 26px;
 }
 
 .death-screen__title {
-    color: rgb(232, 229, 221);
-    font-size: 64px;
+    color: rgb(238, 233, 221);
+    font-size: 76px;
     -unity-font-style: bold;
-    margin-bottom: 24px;
+    -unity-text-align: middle-center;
+    -unity-text-outline-color: rgba(112, 14, 14, 0.85);
+    -unity-text-outline-width: 1px;
+}
+
+.death-screen__subtitle {
+    color: rgba(222, 173, 151, 0.92);
+    font-size: 18px;
+    -unity-text-align: middle-center;
+    margin-top: 6px;
 }
 
 .death-screen__summary {
     width: 100%;
-    max-width: 520px;
+    max-width: 660px;
     flex-direction: column;
-    padding: 16px;
-    margin-bottom: 28px;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    margin-bottom: 32px;
     border-width: 1px;
-    border-color: rgba(232, 229, 221, 0.18);
-    background-color: rgba(0, 0, 0, 0.22);
+    border-color: rgba(238, 233, 221, 0.2);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .death-screen__summary-title {
-    color: rgb(232, 229, 221);
-    font-size: 18px;
+    color: rgb(238, 213, 171);
+    font-size: 20px;
     -unity-font-style: bold;
+    margin-bottom: 12px;
+}
+
+.death-screen__metric-rows {
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.death-screen__metric-row {
+    min-height: 30px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(238, 233, 221, 0.1);
+}
+
+.death-screen__metric-label {
+    color: rgba(238, 233, 221, 0.74);
+    font-size: 15px;
+}
+
+.death-screen__metric-value {
+    color: rgb(240, 226, 200);
+    font-size: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-right;
+}
+
+.death-screen__items-title {
+    color: rgba(238, 213, 171, 0.94);
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-top: 2px;
     margin-bottom: 8px;
 }
 
-.death-screen__summary-line {
-    color: rgba(232, 229, 221, 0.92);
-    font-size: 15px;
-    margin-bottom: 3px;
+.death-screen__item-list {
+    min-height: 120px;
+    max-height: 168px;
+    flex-direction: column;
 }
 
-.death-screen__summary-items {
-    color: rgba(232, 229, 221, 0.78);
+.death-screen__item-row {
+    min-height: 24px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.death-screen__item-name {
+    color: rgba(238, 233, 221, 0.9);
     font-size: 14px;
-    white-space: normal;
-    margin-top: 8px;
+    flex-grow: 1;
+}
+
+.death-screen__item-source {
+    color: rgba(222, 173, 151, 0.78);
+    font-size: 12px;
+    -unity-text-align: middle-right;
+    min-width: 86px;
+}
+
+.death-screen__item-message {
+    color: rgba(238, 233, 221, 0.72);
+    font-size: 14px;
 }
 
 .death-screen__actions {
     flex-direction: row;
     justify-content: center;
+    align-items: center;
 }
 
 .death-screen__button {
-    min-width: 170px;
-    height: 48px;
-    margin-left: 8px;
-    margin-right: 8px;
+    min-width: 190px;
+    height: 54px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .death-screen__button--primary {

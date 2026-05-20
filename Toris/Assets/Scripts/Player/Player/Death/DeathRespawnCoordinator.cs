@@ -405,7 +405,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
                 continue;
 
             InventoryItemSO item = slot.HeldItem.BaseItem;
-            string displayName = string.IsNullOrWhiteSpace(item.ItemName) ? item.name : item.ItemName;
+            string displayName = string.IsNullOrWhiteSpace(item.ItemName) ? HumanizeItemId(item.name) : item.ItemName;
             candidates.Add(new InventoryLossCandidate(item.name, displayName, slot.Count, source));
             totalItemCount += slot.Count;
         }
@@ -467,7 +467,37 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             return item.ItemName;
         }
 
-        return baseItemId;
+        return HumanizeItemId(baseItemId);
+    }
+
+    private static string HumanizeItemId(string baseItemId)
+    {
+        if (string.IsNullOrWhiteSpace(baseItemId))
+            return "Unknown Item";
+
+        string normalized = baseItemId.Replace('_', ' ').Replace('-', ' ').Trim();
+        if (string.IsNullOrWhiteSpace(normalized))
+            return "Unknown Item";
+
+        char[] characters = normalized.ToCharArray();
+        bool capitalizeNext = true;
+
+        for (int i = 0; i < characters.Length; i++)
+        {
+            if (char.IsWhiteSpace(characters[i]))
+            {
+                capitalizeNext = true;
+                continue;
+            }
+
+            if (capitalizeNext)
+            {
+                characters[i] = char.ToUpperInvariant(characters[i]);
+                capitalizeNext = false;
+            }
+        }
+
+        return new string(characters);
     }
 
     private static void ApplyProgressionPenalty(PlayerProgression progression, DeathPenaltyPlan penaltyPlan)

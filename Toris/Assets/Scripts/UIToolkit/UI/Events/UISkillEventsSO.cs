@@ -18,5 +18,8 @@ namespace OutlandHaven.Skills
 
         [Header("UI -> System Requests")]
         public UnityAction<SkillData> OnRequestUnlock;
+
+        [Header("System -> Runtime Integration")]
+        public UnityAction<PlayerAbilitySO> OnAbilityAutoEquip;
     }
 }

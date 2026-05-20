@@ -1,6 +1,7 @@
 using OutlandHaven.UIToolkit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,14 +24,21 @@ namespace OutlandHaven.Skills
         // Data dependencies
         private SkillData[] _allSkills;
         private SkillData _currentlySelectedSkill;
+        private SkillCategory _currentCategory = SkillCategory.Player;
         private Dictionary<string, Button> _nodeMap = new Dictionary<string, Button>();
 
-        // UI References - Info Panel
+        // UI References - Left Panel
+        private Button _tabBtnPlayer;
+        private Button _tabBtnWeapon;
+        private VisualElement _gridContainer;
+
+        // UI References - Right Panel (Info)
         private Label _infoName;
         private Label _infoDesc;
         private Label _infoCost;
         private Label _infoState;
         private Button _unlockButton;
+        private VisualElement _videoContainer;
 
         private GameSessionSO _gameSession;
         private UISkillEventsSO _uiSkillEvents;
@@ -50,79 +58,110 @@ namespace OutlandHaven.Skills
 
         protected override void SetVisualElements()
         {
-            // Query the Info Panel elements
+            // Left Panel
+            _tabBtnPlayer = m_TopElement.Q<Button>("tab-btn-player");
+            _tabBtnWeapon = m_TopElement.Q<Button>("tab-btn-weapon");
+            _gridContainer = m_TopElement.Q<VisualElement>("skill-grid-container");
+
+            // Right Panel
             _infoName = m_TopElement.Q<Label>("info-skill-name");
             _infoDesc = m_TopElement.Q<Label>("info-skill-desc");
             _infoCost = m_TopElement.Q<Label>("info-skill-cost");
             _infoState = m_TopElement.Q<Label>("info-skill-state");
             _unlockButton = m_TopElement.Q<Button>("btn-unlock-skill");
+            _videoContainer = m_TopElement.Q<VisualElement>("video-preview-container");
         }
 
         protected override void RegisterButtonCallbacks()
         {
-            // --- Tier 1 ---
-            BindNodeToData(m_TopElement.Q<Button>("node_base_jump"), "SKILL_BASE_JUMP");
+            if (_tabBtnPlayer != null) _tabBtnPlayer.clicked += OnPlayerTabClicked;
+            if (_tabBtnWeapon != null) _tabBtnWeapon.clicked += OnWeaponTabClicked;
 
-            // --- Tier 2 ---
-            BindNodeToData(m_TopElement.Q<Button>("node_double_jump"), "SKILL_DOUBLE_JUMP");
-            BindNodeToData(m_TopElement.Q<Button>("node_dash"), "SKILL_DASH");
-
-            // --- Tier 3 ---
-            BindNodeToData(m_TopElement.Q<Button>("node_triple_jump"), "SKILL_TRIPLE_JUMP");
-            BindNodeToData(m_TopElement.Q<Button>("node_glide"), "SKILL_GLIDE");
-            BindNodeToData(m_TopElement.Q<Button>("node_blink_dash"), "SKILL_BLINK_DASH");
-
-            // --- Unlock Button ---
             if (_unlockButton != null)
             {
                 _unlockButton.clicked += OnUnlockClicked;
             }
         }
 
-        private void BindNodeToData(Button node, string targetSkillID)
+        private void OnPlayerTabClicked() => SwitchCategory(SkillCategory.Player);
+        private void OnWeaponTabClicked() => SwitchCategory(SkillCategory.Weapon);
+
+        private void SwitchCategory(SkillCategory category)
         {
-            if (node == null) return;
+            if (_currentCategory == category && _nodeMap.Count > 0) return;
 
-            // Find the matching ScriptableObject from our database
-            SkillData data = Array.Find(_allSkills, s => s.skillID == targetSkillID);
+            _currentCategory = category;
 
-            if (data != null)
+            // Update Tab Styles
+            if (_tabBtnPlayer != null)
             {
-                // When the visual node is clicked, update the info panel
-                node.clicked += () => SelectSkill(data);
-
-                if (!_nodeMap.ContainsKey(targetSkillID))
-                {
-                    _nodeMap.Add(targetSkillID, node);
-                }
+                _tabBtnPlayer.RemoveFromClassList("tab-button--active");
+                if (_currentCategory == SkillCategory.Player) _tabBtnPlayer.AddToClassList("tab-button--active");
             }
-            else
+
+            if (_tabBtnWeapon != null)
             {
-                Debug.LogWarning($"PlayerSkillView: Could not find SkillData for ID {targetSkillID}");
+                _tabBtnWeapon.RemoveFromClassList("tab-button--active");
+                if (_currentCategory == SkillCategory.Weapon) _tabBtnWeapon.AddToClassList("tab-button--active");
+            }
+
+            // Rebuild Grid
+            PopulateGrid();
+        }
+
+        private void PopulateGrid()
+        {
+            if (_gridContainer == null) return;
+
+            _gridContainer.Clear();
+            _nodeMap.Clear();
+
+            // Filter skills for current tab
+            var filteredSkills = _allSkills.Where(s => s != null && s.category == _currentCategory);
+
+            foreach (var skill in filteredSkills)
+            {
+                Button node = new Button();
+                node.AddToClassList("skill-node");
+                
+                Label label = new Label(skill.skillName);
+                label.AddToClassList("skill-node__label");
+                node.Add(label);
+
+                BindNodeToData(node, skill);
+                UpdateNodeVisuals(node, skill);
+                
+                _gridContainer.Add(node);
+            }
+        }
+
+        private void BindNodeToData(Button node, SkillData data)
+        {
+            if (node == null || data == null) return;
+
+            // When the visual node is clicked, update the info panel
+            node.clicked += () => SelectSkill(data);
+
+            if (!_nodeMap.ContainsKey(data.skillID))
+            {
+                _nodeMap.Add(data.skillID, node);
             }
         }
 
         private void UpdateNodeVisuals(Button node, SkillData skill)
         {
-            // Clear all states first to ensure a clean slate
             node.RemoveFromClassList("skill-node--unlocked");
             node.RemoveFromClassList("skill-node--available");
             node.RemoveFromClassList("skill-node--locked");
 
-            // 1. Is it already owned?
             if (_gameSession.PlayerSkills.HasSkill(skill.skillID))
             {
                 node.AddToClassList("skill-node--unlocked");
             }
-            // 2. Are prerequisites met? (Available to purchase)
-            else if (_gameSession.PlayerSkills.ArePrerequisitesMet(skill))
-            {
-                node.AddToClassList("skill-node--available");
-            }
-            // 3. Otherwise, it remains strictly locked
             else
             {
-                node.AddToClassList("skill-node--locked");
+                // Everything not owned is now considered 'Available' (no prerequisites)
+                node.AddToClassList("skill-node--available");
             }
         }
 
@@ -133,9 +172,7 @@ namespace OutlandHaven.Skills
                 string skillID = kvp.Key;
                 Button node = kvp.Value;
 
-                // Find the matching data for this node
-                SkillData data = Array.Find(_allSkills, s => s.skillID == skillID);
-
+                SkillData data = _allSkills.FirstOrDefault(s => s.skillID == skillID);
                 if (data != null)
                 {
                     UpdateNodeVisuals(node, data);
@@ -152,31 +189,30 @@ namespace OutlandHaven.Skills
             _infoCost.text = $"Cost: {skill.costSP} SP";
 
             bool isUnlocked = _gameSession.PlayerSkills.HasSkill(skill.skillID);
-            bool isAvailable = _gameSession.PlayerSkills.ArePrerequisitesMet(skill);
 
             if (isUnlocked)
             {
                 _infoState.text = "Status: Unlocked";
-                _unlockButton.SetEnabled(false); // Already owned
-            }
-            else if (isAvailable)
-            {
-                _infoState.text = "Status: Available";
-                _unlockButton.SetEnabled(true); // Can be purchased
+                _unlockButton.SetEnabled(false);
             }
             else
             {
-                _infoState.text = "Status: Locked";
-                _unlockButton.SetEnabled(false); // Prerequisites missing
+                // Check if they can actually afford it with current SP
+                bool canAfford = _gameSession.PlayerSkills.AvailableSP >= skill.costSP;
+                _infoState.text = canAfford ? "Status: Available" : "Status: Insufficient SP";
+                _unlockButton.SetEnabled(canAfford);
             }
+
+            // Note: Video rendering would be triggered here by assigning a RenderTexture 
+            // to _videoContainer.style.backgroundImage or using a VideoPlayer component.
         }
 
         private void OnUnlockClicked()
         {
             if (_currentlySelectedSkill == null) return;
-
             _uiSkillEvents.OnRequestUnlock?.Invoke(_currentlySelectedSkill);
         }
+
         public override void Show()
         {
             base.Show();
@@ -193,38 +229,33 @@ namespace OutlandHaven.Skills
         {
             base.Setup(payload);
 
-            // Reset the info panel 
+            // Reset selection
             _currentlySelectedSkill = null;
             _infoName.text = "Select a Skill";
-            _infoDesc.text = "Hover or click a skill node to see its details here.";
+            _infoDesc.text = "Click a skill node to see its details here.";
             _infoCost.text = "Cost: -";
             _infoState.text = "Status: -";
 
-            // Evaluate the entire tree based on current save data
-            RefreshAllNodes();
+            // Force initial population for Player tab
+            _currentCategory = SkillCategory.Weapon; // Hack to force SwitchCategory to execute
+            SwitchCategory(SkillCategory.Player);
         }
 
         private void HandleSkillUnlocked(string skillID)
         {
-            // Refresh the info panel if we are currently looking at the unlocked skill
             if (_currentlySelectedSkill != null && _currentlySelectedSkill.skillID == skillID)
             {
                 SelectSkill(_currentlySelectedSkill);
             }
 
-            // Evaluate the entire tree because unlocking this skill 
-            // may have made new nodes 'available'
             RefreshAllNodes();
         }
 
         public void Dispose()
         {
-            if (_unlockButton != null)
-            {
-                _unlockButton.clicked -= OnUnlockClicked;
-            }
-            // Note: UI Toolkit automatically unregisters clicked events when VisualElements are destroyed,
-            // but it's good practice to clean up global event subscriptions here if you add any.
+            if (_tabBtnPlayer != null) _tabBtnPlayer.clicked -= OnPlayerTabClicked;
+            if (_tabBtnWeapon != null) _tabBtnWeapon.clicked -= OnWeaponTabClicked;
+            if (_unlockButton != null) _unlockButton.clicked -= OnUnlockClicked;
         }
     }
 }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7d69a64f48c96f4ea7d509bf2df9908, type: 3}
-  m_Name: SKILL_TRIPLE_JUMP
+  m_Name: Arrow Rain
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillID: SKILL_TRIPLE_JUMP
-  skillName: Triple Jump
-  description: Execute a third consecutive mid-air jump for maximum vertical reach.
+  skillID: Arrow Rain
+  skillName: Arrow Rain
+  description: Perform a standard jump to reach low platforms.
   costSP: 1
-  prerequisites:
-  - {fileID: 11400000, guid: 6852c737c84df6242b12ba3873682127, type: 2}
+  prerequisites: []
+  associatedAbility: {fileID: 11400000, guid: 0b532d9704914eb0b0a72e6d3f3f1b0e, type: 2}

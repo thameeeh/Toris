@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7d69a64f48c96f4ea7d509bf2df9908, type: 3}
-  m_Name: SKILL_BLINK_DASH
+  m_Name: Multishot
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillID: SKILL_BLINK_DASH
-  skillName: Blink Dash
-  description: Instantly teleport a short distance forward, bypassing physical obstacles
-    and enemies.
+  skillID: Multishot
+  skillName: Multishot
+  description: Launch yourself into the air a second time before touching the ground.
   costSP: 1
   prerequisites:
-  - {fileID: 11400000, guid: 22cb9564c524fcc42bbe3491a1d58ada, type: 2}
+  - {fileID: 11400000, guid: 75d1f122348c85242b3edabd27f7cbce, type: 2}
+  associatedAbility: {fileID: 11400000, guid: 3a3eb13f3e2362348b5e9f048a0e1e2e, type: 2}

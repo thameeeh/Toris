@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MultiShotConfig
   m_EditorClassIdentifier: Assembly-CSharp::MultiShotConfig
   abilityID: MultiShotConfig
-  requiredSkillID: 
+  requiredSkill: {fileID: 11400000, guid: 6852c737c84df6242b12ba3873682127, type: 2}
   abilityName: Ability0
   icon: {fileID: 7206574740589214359, guid: fd59dd872fd234e468c58757d8d419af, type: 3}
   cooldownSeconds: 5

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DecoyTotemConfig
   m_EditorClassIdentifier: Assembly-CSharp::DecoyTotemConfig
   abilityID: DecoyTotemConfig
-  requiredSkillID: 
+  requiredSkill: {fileID: 11400000, guid: 22cb9564c524fcc42bbe3491a1d58ada, type: 2}
   abilityName: Ability4
   icon: {fileID: 2272537440513826092, guid: 0f1732d189bca2946a5bb6f2fe50d27d, type: 3}
   cooldownSeconds: 1

@@ -8,10 +8,22 @@
     padding-right: 20px;
 }
 
-#hud__left-container {
-    width: 300px;
-    flex-shrink: 1;
-    flex-grow: 0.1;
+.hud-left-status-container {
+    flex-direction: row;
+    min-width: 550px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.hud-bars-container {
+    flex-grow: 1;
+    margin-right: 15px;
+    justify-content: center;
 }
 
 #hud__right-container {
@@ -61,11 +73,6 @@
     -unity-text-outline-color: rgba(0, 0, 0, 0.8);
 }
 
-.hud-label-xp {
-    min-width: 60px;
-    color: var(--color-xp);
-}
-
 .hud-bar-text-overlay {
     position: absolute;
     width: 100%;
@@ -75,37 +82,28 @@
     letter-spacing: 4px;
     -unity-text-outline-width: 1.5px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.9);
-    bottom: 4px;
+    bottom: 9px;
 }
 
-.hud-bar-row {
-    flex-grow: 1;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-.hud-bar-header {
-    flex-grow: 1;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-self: stretch;
-    margin-bottom: 5px;
+#hud__level-label {
+    font-size: 18px;
+    margin-bottom: 3px;
 }
 
 #hud__xp-bar {
-    flex-grow: 1;
-    height: 15px;
+    width: 100%;
+    height: 18px;
+    margin-bottom: 8px;
 }
 
 #hud__health-bar {
-    flex-grow: 1;
-    height: 35px;
+    width: 100%;
+    height: 45px;
 }
 
 #hud__mana-bar {
     width: 100%;
-    height: 35px;
+    height: 45px;
     margin-bottom: 5px;
 }
 
@@ -143,32 +141,26 @@
     background-color: var(--color-mana);
 }
 
-.hud-potion-bar {
+.hud-potion-bar-internal {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 20px;
-    margin-right: auto;
-    margin-bottom: 5px;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 12px;
-    border-width: 2px;
+    border-left-width: 1px;
     border-color: rgba(255, 255, 255, 0.1);
-    overflow: visible; /* Added to prevent hotkey clipping */
+    padding-left: 10px;
 }
 
 .potion-slot--hud {
     width: 64px;
     height: 64px;
-    margin: 12px 5px 12px 5px; /* Consistent top/bottom margin */
+    margin: 5px;
     background-color: rgba(15, 15, 15, 0.8);
     border-width: 2px;
     border-color: var(--color-border-default);
     border-radius: 8px;
     justify-content: flex-end;
     align-items: center;
-    overflow: visible; /* Added */
+    overflow: visible;
 }
 
 .hud-potion-hotkey {
@@ -193,20 +185,20 @@
     border-radius: 12px;
     border-width: 2px;
     border-color: rgba(255, 255, 255, 0.1);
-    overflow: visible; /* Added to prevent hotkey clipping */
+    overflow: visible;
 }
 
 .skill-slot--hud {
     width: 64px;
     height: 64px;
-    margin: 12px 5px 12px 5px; /* Consistent top/bottom margin */
+    margin: 12px 5px 12px 5px;
     background-color: rgba(15, 15, 15, 0.8);
     border-width: 2px;
     border-color: var(--color-border-default);
     border-radius: 8px;
     justify-content: flex-end;
     align-items: center;
-    overflow: visible; /* Added */
+    overflow: visible;
 }
 
 .hud-skill-hotkey {

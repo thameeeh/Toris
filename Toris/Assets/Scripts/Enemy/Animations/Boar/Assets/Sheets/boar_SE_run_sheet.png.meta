@@ -1,28 +1,19 @@
 fileFormatVersion: 2
-guid: 716c5c758b733ef438a434ea4d961d95
+guid: b361f0dc57410ac49b2715a0337b2206
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1402963043978605561
-    second: boar_SW_idle_sheet_0
+      213: -8821016462441796833
+    second: boar_SE_run_sheet_0
   - first:
-      213: -7314282884633146891
-    second: boar_SW_idle_sheet_1
+      213: -8272923341077868501
+    second: boar_SE_run_sheet_1
   - first:
-      213: 4530842029275735100
-    second: boar_SW_idle_sheet_2
+      213: -3608908432758778225
+    second: boar_SE_run_sheet_2
   - first:
-      213: -7223225171411433309
-    second: boar_SW_idle_sheet_3
-  - first:
-      213: -1311211066749682857
-    second: boar_SW_idle_sheet_4
-  - first:
-      213: 7511703008209711505
-    second: boar_SW_idle_sheet_5
-  - first:
-      213: 176101663868663804
-    second: boar_SW_idle_sheet_6
+      213: 3538468361989633090
+    second: boar_SE_run_sheet_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -114,159 +105,106 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boar_SW_idle_sheet_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 50
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 70c87a27b8ca78ce0800000000000000
-      internalID: -1402963043978605561
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SW_idle_sheet_1
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 50
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f9c8ba18727e7a90800000000000000
-      internalID: -7314282884633146891
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SW_idle_sheet_2
-      rect:
-        serializedVersion: 2
-        x: 82
-        y: 50
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c34e368f1d8c0ee30800000000000000
-      internalID: 4530842029275735100
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SW_idle_sheet_3
+      name: boar_SE_run_sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 25
         width: 41
         height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a88c551af2f1cb90800000000000000
-      internalID: -7223225171411433309
+      spriteID: f1ba84e5344759580800000000000000
+      internalID: -8821016462441796833
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boar_SW_idle_sheet_4
+      name: boar_SE_run_sheet_1
       rect:
         serializedVersion: 2
         x: 41
         y: 25
         width: 41
         height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 75bf2dc5b74adcde0800000000000000
-      internalID: -1311211066749682857
+      spriteID: b2014099d0ca03d80800000000000000
+      internalID: -8272923341077868501
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boar_SW_idle_sheet_5
-      rect:
-        serializedVersion: 2
-        x: 82
-        y: 25
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 191b296561eee3860800000000000000
-      internalID: 7511703008209711505
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SW_idle_sheet_6
+      name: boar_SE_run_sheet_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 41
         height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cf73f3fb783a17200800000000000000
-      internalID: 176101663868663804
+      spriteID: f865086b6e49aedc0800000000000000
+      internalID: -3608908432758778225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boar_SE_run_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 0
+        width: 41
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 244b9554a3a2b1130800000000000000
+      internalID: 3538468361989633090
       vertices: []
       indices: 
       edges: []
@@ -275,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 3dce3f96057c6764cb84b90bfa9eb8f1
+    spriteID: 32481407430653d4c891aa255ace3c09
     internalID: 0
     vertices: []
     indices: 
@@ -287,13 +225,10 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":41.0,"y":25.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      boar_SW_idle_sheet_0: -1402963043978605561
-      boar_SW_idle_sheet_1: -7314282884633146891
-      boar_SW_idle_sheet_2: 4530842029275735100
-      boar_SW_idle_sheet_3: -7223225171411433309
-      boar_SW_idle_sheet_4: -1311211066749682857
-      boar_SW_idle_sheet_5: 7511703008209711505
-      boar_SW_idle_sheet_6: 176101663868663804
+      boar_SE_run_sheet_0: -8821016462441796833
+      boar_SE_run_sheet_1: -8272923341077868501
+      boar_SE_run_sheet_2: -3608908432758778225
+      boar_SE_run_sheet_3: 3538468361989633090
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

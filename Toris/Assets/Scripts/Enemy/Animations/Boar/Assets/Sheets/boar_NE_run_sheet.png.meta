@@ -1,28 +1,19 @@
 fileFormatVersion: 2
-guid: 0dceb5434c5ca7142bcd51ea618526a3
+guid: 73b831ac013ade94ea7cd0f70baaa2bb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3069538280144020976
-    second: boar_SE_idle_sheet_0
+      213: 7774711516606861111
+    second: boar_NE_run_sheet_0
   - first:
-      213: -6121099537422765268
-    second: boar_SE_idle_sheet_1
+      213: 1084149312223203249
+    second: boar_NE_run_sheet_1
   - first:
-      213: 76287873104934787
-    second: boar_SE_idle_sheet_2
+      213: 4515337519193382940
+    second: boar_NE_run_sheet_2
   - first:
-      213: -6253293784249101974
-    second: boar_SE_idle_sheet_3
-  - first:
-      213: -3859252395527320507
-    second: boar_SE_idle_sheet_4
-  - first:
-      213: 4795080775244679212
-    second: boar_SE_idle_sheet_5
-  - first:
-      213: 1394277378991796811
-    second: boar_SE_idle_sheet_6
+      213: 6023811970094285160
+    second: boar_NE_run_sheet_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -114,159 +105,106 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boar_SE_idle_sheet_0
+      name: boar_NE_run_sheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 50
+        y: 30
         width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 01a5d83823fc665d0800000000000000
-      internalID: -3069538280144020976
+      spriteID: 73f8d72aee255eb60800000000000000
+      internalID: 7774711516606861111
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boar_SE_idle_sheet_1
+      name: boar_NE_run_sheet_1
       rect:
         serializedVersion: 2
         x: 41
-        y: 50
+        y: 30
         width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c23bb15d66c7d0ba0800000000000000
-      internalID: -6121099537422765268
+      spriteID: 1bf4c8e2e0cab0f00800000000000000
+      internalID: 1084149312223203249
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boar_SE_idle_sheet_2
-      rect:
-        serializedVersion: 2
-        x: 82
-        y: 50
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 387f6199a670f0100800000000000000
-      internalID: 76287873104934787
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SE_idle_sheet_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 25
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a619ca14f66d739a0800000000000000
-      internalID: -6253293784249101974
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SE_idle_sheet_4
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 25
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 54cc40ab46e217ac0800000000000000
-      internalID: -3859252395527320507
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SE_idle_sheet_5
-      rect:
-        serializedVersion: 2
-        x: 82
-        y: 25
-        width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c2883c54f8c8b8240800000000000000
-      internalID: 4795080775244679212
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boar_SE_idle_sheet_6
+      name: boar_NE_run_sheet_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 41
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e8e3c23edd494584894e453cf8ca2e19
-      internalID: 1394277378991796811
+      spriteID: c10e388ec83b9ae30800000000000000
+      internalID: 4515337519193382940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boar_NE_run_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 0
+        width: 41
+        height: 30
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 861473f3211e89350800000000000000
+      internalID: 6023811970094285160
       vertices: []
       indices: 
       edges: []
@@ -275,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 31415aa5187b9a949b0abb46c0532e06
+    spriteID: 736f7e8e0d5f5714989c0b8d8f1afdc1
     internalID: 0
     vertices: []
     indices: 
@@ -285,15 +223,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":41.0,"y":25.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":41.0,"y":30.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      boar_SE_idle_sheet_0: -3069538280144020976
-      boar_SE_idle_sheet_1: -6121099537422765268
-      boar_SE_idle_sheet_2: 76287873104934787
-      boar_SE_idle_sheet_3: -6253293784249101974
-      boar_SE_idle_sheet_4: -3859252395527320507
-      boar_SE_idle_sheet_5: 4795080775244679212
-      boar_SE_idle_sheet_6: 1394277378991796811
+      boar_NE_run_sheet_0: 7774711516606861111
+      boar_NE_run_sheet_1: 1084149312223203249
+      boar_NE_run_sheet_2: 4515337519193382940
+      boar_NE_run_sheet_3: 6023811970094285160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

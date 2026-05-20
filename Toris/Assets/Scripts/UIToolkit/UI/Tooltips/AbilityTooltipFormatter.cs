@@ -29,7 +29,7 @@ namespace OutlandHaven.UIToolkit
                 data.AddRow("Remaining", $"{FormatNumber(snapshot.CooldownRemaining)}s");
 
             if (snapshot.Definition.requiredSkill != null)
-                data.AddRow("Required Skill", snapshot.Definition.requiredSkill.skillName);
+                data.AddRow("Required Skill", snapshot.Definition.requiredSkill.skillID);
 
             if (snapshot.Definition.blocksBowDraw)
                 data.AddRow("Bow Draw Lock", $"{FormatNumber(snapshot.Definition.bowDrawLockDuration)}s");

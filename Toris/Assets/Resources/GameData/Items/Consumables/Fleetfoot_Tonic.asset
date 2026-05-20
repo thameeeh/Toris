@@ -29,5 +29,6 @@ MonoBehaviour:
         EffectPayload: 1
         amount: 0
         TimedEffectDefinition: {fileID: 11400000, guid: ac892bc6ca05ede49bb1e50a6b78ef21, type: 2}
+        TimedEffectDefinitionResourcePath: GameData/PlayerEffects/MoveSpeed
         TimedEffectDuration: 8
         CooldownDuration: 35

@@ -173,7 +173,8 @@ namespace OutlandHaven.Inventory
                 return false;
             }
 
-            if (consumable.TimedEffectDefinition == null)
+            PlayerEffectDefinitionSO effectDefinition = consumable.ResolveTimedEffectDefinition();
+            if (effectDefinition == null)
             {
                 Debug.LogWarning($"[PlayerConsumableController] Timed consumable '{item?.BaseItem?.ItemName}' is missing a PlayerEffectDefinitionSO.");
                 return false;
@@ -186,7 +187,7 @@ namespace OutlandHaven.Inventory
             }
 
             string sourceKey = BuildTimedConsumableSourceKey(item);
-            _playerEffectSourceController.SetSource(sourceKey, consumable.TimedEffectDefinition);
+            _playerEffectSourceController.SetSource(sourceKey, effectDefinition);
             _timedConsumableExpirations[sourceKey] = Time.time + consumable.TimedEffectDuration;
             return true;
         }

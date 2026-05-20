@@ -31,11 +31,26 @@ namespace OutlandHaven.Inventory
         [Tooltip("Timed player effect definition to apply while the buff is active.")]
         public PlayerEffectDefinitionSO TimedEffectDefinition;
 
+        [Tooltip("Optional Resources path used if the direct timed effect reference is unavailable.")]
+        public string TimedEffectDefinitionResourcePath;
+
         [Tooltip("Duration in seconds for timed player effects.")]
         [Min(0f)] public float TimedEffectDuration = 5f;
 
         [Tooltip("Cooldown in seconds before this item can be used again.")]
         public float CooldownDuration = 1.5f;
+
+        public PlayerEffectDefinitionSO ResolveTimedEffectDefinition()
+        {
+            if (TimedEffectDefinition != null)
+                return TimedEffectDefinition;
+
+            if (string.IsNullOrWhiteSpace(TimedEffectDefinitionResourcePath))
+                return null;
+
+            TimedEffectDefinition = Resources.Load<PlayerEffectDefinitionSO>(TimedEffectDefinitionResourcePath);
+            return TimedEffectDefinition;
+        }
 
         public override string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
         {

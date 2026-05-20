@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RambowConfig
   m_EditorClassIdentifier: Assembly-CSharp::RamboBowConfig
   abilityID: RambowConfig
-  requiredSkillID: Rambow
+  requiredSkill: {fileID: 11400000, guid: 6ce10e9df66392140b044c26f23870c0, type: 2}
   abilityName: Ability2
   icon: {fileID: 2768938045903391037, guid: 98d773084ad7b614b9a09ae164029883, type: 3}
   cooldownSeconds: 0

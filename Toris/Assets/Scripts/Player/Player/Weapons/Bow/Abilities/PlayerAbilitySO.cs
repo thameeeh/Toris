@@ -15,7 +15,7 @@ public abstract class PlayerAbilitySO : ScriptableObject
 {
     [Header("Identity")]
     public string abilityID;
-    public string requiredSkillID;
+    public SkillData requiredSkill;
 
     [Header("UI / Metadata")]
     public string abilityName = "New Ability";
@@ -49,7 +49,7 @@ public abstract class PlayerAbilitySO : ScriptableObject
 
     public virtual bool IsUnlocked(PlayerAbilityContext context)
     {
-        if (string.IsNullOrWhiteSpace(requiredSkillID))
+        if (requiredSkill == null)
             return true;
 
         GameSessionSO gameSession = context.gameSession != null
@@ -58,7 +58,7 @@ public abstract class PlayerAbilitySO : ScriptableObject
 
         return gameSession != null
             && gameSession.PlayerSkills != null
-            && gameSession.PlayerSkills.HasSkill(requiredSkillID);
+            && gameSession.PlayerSkills.HasSkill(requiredSkill.skillID);
     }
 
     public virtual void OnButtonDown(PlayerAbilityRuntime runtime, PlayerAbilityContext context) { }

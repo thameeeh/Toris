@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ChainShotConfig
   m_EditorClassIdentifier: Assembly-CSharp::ChainShotConfig
   abilityID: ChainShotConfig
-  requiredSkillID: Chain Shot
+  requiredSkill: {fileID: 11400000, guid: 02dd2ca1dad48fa4ab357669965f62a0, type: 2}
   abilityName: Ability3
   icon: {fileID: -8170373834809261911, guid: fd59dd872fd234e468c58757d8d419af, type: 3}
   cooldownSeconds: 0

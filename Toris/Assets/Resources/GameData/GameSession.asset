@@ -17,10 +17,10 @@ MonoBehaviour:
   CurrentSaveSlotIndex: 0
   targetSpawnPointID: 
   _playerSkills:
-    _availableSP: 9991
+    _availableSP: 9986
     _unlockedSkillIDs:
     - Arrow Rain
-    - Decoy Totem
     - Multishot
+    - Decoy Totem
     - Chain Shooting
     - Rambow

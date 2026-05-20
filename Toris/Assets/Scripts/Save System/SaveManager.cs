@@ -99,12 +99,21 @@ namespace OutlandHaven.SaveSystem
             if (ActiveSession == null) return;
 
             GameSaveData dataToSave = ActiveSession.ExportToSaveData();
+            SaveGameData(slotIndex, dataToSave);
+        }
+
+        public void SaveGameData(SaveSlotIndex slotIndex, GameSaveData dataToSave)
+        {
+            if (dataToSave == null) return;
+
             string json = JsonConvert.SerializeObject(dataToSave, Settings);
             string path = GetSaveFilePath(slotIndex);
 
             File.WriteAllText(path, json);
 
+#if UNITY_EDITOR
             Debug.Log($"[SaveManager] Game Saved successfully to {path}");
+#endif
         }
 
         public void DeleteSave(SaveSlotIndex slotIndex)

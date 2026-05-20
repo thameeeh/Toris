@@ -97,6 +97,10 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
 
     private void HandleDeathMainMenuRequested()
     {
+        ResolveDependencies();
+        DeathPenaltyPlan penaltyPlan = GetOrCreateCurrentPenaltyPlan();
+        ApplyPenaltyToActiveSaveData(penaltyPlan);
+
         _pendingRespawn = null;
         _currentPenaltyPlan = null;
         Time.timeScale = 1f;
@@ -169,6 +173,32 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         _uiEvents?.OnGameplayInputUnlockRequested?.Invoke(DefaultDeathInputLockId);
         _pendingRespawn = null;
         _currentPenaltyPlan = null;
+    }
+
+    private void ApplyPenaltyToActiveSaveData(DeathPenaltyPlan penaltyPlan)
+    {
+        // Death screen related: Main Menu also consumes death penalties by writing
+        // the penalized checkpoint directly, without exporting ProceduralTiles state.
+        if (_saveManager == null || _gameSession == null || penaltyPlan == null)
+            return;
+
+        GameSaveData checkpointData = LoadActiveCheckpointData();
+        if (checkpointData == null)
+            return;
+
+        ApplyProgressionPenaltyToSaveData(checkpointData, penaltyPlan);
+        ApplySavedInventoryPenaltyPlan(checkpointData.PlayerBackpack, penaltyPlan.BackpackLosses);
+        ApplySavedInventoryPenaltyPlan(checkpointData.PlayerPotion, penaltyPlan.PotionLosses);
+        ApplyRespawnResourceStateToSaveData(checkpointData);
+        checkpointData.SaveTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+
+        _saveManager.SaveGameData(_gameSession.ActiveSaveSlot, checkpointData);
+
+        if (_saveManager.MasterItemDatabase != null)
+        {
+            _saveManager.MasterItemDatabase.Initialize();
+            _gameSession.ImportFromSaveData(checkpointData, _saveManager.MasterItemDatabase);
+        }
     }
 
     private void RestoreCheckpointFromActiveSaveSlot()
@@ -458,6 +488,15 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         }
     }
 
+    private static void ApplyProgressionPenaltyToSaveData(GameSaveData saveData, DeathPenaltyPlan penaltyPlan)
+    {
+        if (saveData == null || penaltyPlan == null || penaltyPlan.Summary == null)
+            return;
+
+        saveData.Experience = Mathf.Max(0f, saveData.Experience - penaltyPlan.Summary.ExperienceLost);
+        saveData.Gold = Mathf.Max(0, saveData.Gold - penaltyPlan.Summary.GoldLost);
+    }
+
     private static void ApplyInventoryPenaltyPlan(InventoryManager inventory, IReadOnlyList<InventoryLossEntry> losses)
     {
         if (inventory == null || inventory.LiveSlots == null || losses == null || losses.Count == 0)
@@ -492,6 +531,55 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         {
             inventory.NotifyInventoryUpdated();
         }
+    }
+
+    private static void ApplySavedInventoryPenaltyPlan(
+        SavedInventoryData inventoryData,
+        IReadOnlyList<InventoryLossEntry> losses)
+    {
+        if (inventoryData == null || inventoryData.Slots == null || losses == null || losses.Count == 0)
+            return;
+
+        for (int lossIndex = 0; lossIndex < losses.Count; lossIndex++)
+        {
+            InventoryLossEntry loss = losses[lossIndex];
+            if (loss == null || loss.Count <= 0 || string.IsNullOrWhiteSpace(loss.BaseItemId))
+                continue;
+
+            int remainingToRemove = loss.Count;
+            for (int slotIndex = 0; slotIndex < inventoryData.Slots.Count && remainingToRemove > 0; slotIndex++)
+            {
+                SavedSlotData slot = inventoryData.Slots[slotIndex];
+                if (slot == null || slot.ItemData == null || slot.Count <= 0)
+                    continue;
+
+                if (!string.Equals(slot.ItemData.BaseItemID, loss.BaseItemId, System.StringComparison.Ordinal))
+                    continue;
+
+                int amountToRemove = Mathf.Min(slot.Count, remainingToRemove);
+                slot.Count -= amountToRemove;
+                remainingToRemove -= amountToRemove;
+
+                if (slot.Count <= 0)
+                {
+                    slot.Count = 0;
+                    slot.ItemData = null;
+                }
+            }
+        }
+    }
+
+    private void ApplyRespawnResourceStateToSaveData(GameSaveData saveData)
+    {
+        if (saveData == null)
+            return;
+
+        PlayerStats stats = ResolvePlayerStats();
+        if (stats == null)
+            return;
+
+        saveData.CurrentHealth = stats.maxHP;
+        saveData.CurrentStamina = stats.maxStamina;
     }
 
     private static void AddOrIncrementLoss(

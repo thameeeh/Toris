@@ -9,7 +9,9 @@ using OutlandHaven.Inventory;
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, InputSystem_Actions.IUIActions
 {
     private readonly HashSet<ScreenType> _openBlockingScreens = new();
-    private readonly HashSet<string> _gameplayInputLocks = new();
+    private readonly HashSet<string> _gameplayInputLocks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    // Shared lock id used by the death screen flow to suppress gameplay and hotkey UI.
+    private const string DeathGameplayLockId = "Death";
 
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private ItemPickEventSO _itemPicker;
@@ -182,7 +184,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnPotion_1(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !IsDeathInputLocked())
         {
             _inputReader.OnPotion1Pressed?.Invoke();
         }
@@ -190,7 +192,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnPotion_2(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !IsDeathInputLocked())
         {
             _inputReader.OnPotion2Pressed?.Invoke();
         }
@@ -240,6 +242,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         if (_lastFrameEscapeProcessed == Time.frameCount) return;
         _lastFrameEscapeProcessed = Time.frameCount;
 
+        if (IsDeathInputLocked())
+            return;
+
         if (HasGameplayInputBlockers())
         {
             // If UI is open, we close it first. This satisfies the "Press ESC once to close" requirement.
@@ -254,7 +259,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && AllowsUiToggleInput())
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
         }
@@ -262,7 +267,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleMage(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && AllowsUiToggleInput())
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Mage, null);
         }
@@ -270,7 +275,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleSkills(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && AllowsUiToggleInput())
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
         }
@@ -278,7 +283,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleSmith(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && AllowsUiToggleInput())
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
         }
@@ -294,7 +299,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnQuickSave(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !IsDeathInputLocked())
         {
             _uiEvents?.OnQuickSaveRequested?.Invoke();
         }
@@ -302,7 +307,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnQuickLoad(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !IsDeathInputLocked())
         {
             _uiEvents?.OnQuickLoadRequested?.Invoke();
         }
@@ -415,6 +420,17 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     private bool HasGameplayInputBlockers()
     {
         return _openBlockingScreens.Count > 0 || _gameplayInputLocks.Count > 0;
+    }
+
+    private bool AllowsUiToggleInput()
+    {
+        return !IsDeathInputLocked();
+    }
+
+    private bool IsDeathInputLocked()
+    {
+        return _openBlockingScreens.Contains(ScreenType.DeathScreen)
+            || _gameplayInputLocks.Contains(DeathGameplayLockId);
     }
 
     private static string NormalizeGameplayInputLockId(string lockId)

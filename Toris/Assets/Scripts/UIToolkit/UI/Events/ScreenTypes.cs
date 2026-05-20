@@ -17,6 +17,7 @@ namespace OutlandHaven.UIToolkit
         PlayerEquipment,
         Skills,
         PauseMenu,
+        DeathScreen,
 
 //----- Main Menu -----------------
         MainMenu,

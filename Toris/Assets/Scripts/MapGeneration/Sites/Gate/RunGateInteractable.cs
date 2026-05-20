@@ -8,6 +8,7 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
     [SerializeField] private string sceneB;
     [FormerlySerializedAs("sceneTransitionServiceOverride")]
     [SerializeField] private MonoBehaviour runGateTransitionServiceOverride;
+    [SerializeField] private RunStartCheckpointService runStartCheckpointService;
 
     private IRunGateTransitionService runGateTransitionService;
 
@@ -19,6 +20,10 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
             Debug.LogWarning("RunGateInteractable: run gate transition service unavailable.", this);
             return;
         }
+
+        // Death respawn uses the MainArea -> ProceduralTiles checkpoint as its reset source.
+        runStartCheckpointService ??= FindFirstObjectByType<RunStartCheckpointService>();
+        runStartCheckpointService?.CaptureCheckpointIfRunStart(sceneA, sceneB);
 
         runGateTransitionService.UseRunGate(sceneA, sceneB);
     }

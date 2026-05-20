@@ -1,0 +1,46 @@
+.death-screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(4, 0, 0, 0.62);
+}
+
+.death-screen__panel {
+    min-width: 420px;
+    max-width: 720px;
+    width: 54%;
+    min-height: 280px;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    border-width: 1px;
+    border-color: rgba(210, 42, 42, 0.8);
+    background-color: rgba(13, 8, 8, 0.82);
+}
+
+.death-screen__title {
+    color: rgb(232, 229, 221);
+    font-size: 64px;
+    -unity-font-style: bold;
+    margin-bottom: 36px;
+}
+
+.death-screen__actions {
+    flex-direction: row;
+    justify-content: center;
+}
+
+.death-screen__button {
+    min-width: 170px;
+    height: 48px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.death-screen__button--primary {
+    border-color: rgb(210, 42, 42);
+}

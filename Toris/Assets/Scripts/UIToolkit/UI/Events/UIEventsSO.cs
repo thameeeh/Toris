@@ -43,6 +43,12 @@ namespace OutlandHaven.UIToolkit
 
         public UnityAction OnQuickLoadRequested;
 
+        // Death screen actions are UI intents only; gameplay consequences live in
+        // DeathRespawnCoordinator.
+        public UnityAction OnDeathRespawnRequested;
+
+        public UnityAction OnDeathMainMenuRequested;
+
         public UnityAction OnSystemInitializationComplete;
 
         public string ButtonHoverSfxId => string.IsNullOrWhiteSpace(buttonHoverSfxId)

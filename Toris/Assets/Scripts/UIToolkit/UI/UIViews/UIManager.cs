@@ -107,6 +107,9 @@ namespace OutlandHaven.UIToolkit
             // Close if it's already open
             if (!view.IsHidden)
             {
+                if (IsNonDismissibleScreen(type))
+                    return;
+
                 CloseWindow(type);
                 return;
             }
@@ -139,6 +142,9 @@ namespace OutlandHaven.UIToolkit
 
         private void CloseWindow(ScreenType type)
         {
+            if (IsNonDismissibleScreen(type))
+                return;
+
             HandleItemTooltipHide();
 
             GameView view = _allViews.Find(v => v.ID == type);
@@ -154,7 +160,7 @@ namespace OutlandHaven.UIToolkit
 
             foreach (var view in _allViews)
             {
-                if (view.ID != ScreenType.HUD) view.Hide();
+                if (view.ID != ScreenType.HUD && !IsNonDismissibleScreen(view.ID)) view.Hide();
             }
         }
 
@@ -273,6 +279,13 @@ namespace OutlandHaven.UIToolkit
         private void HandleGlobalDragStopped()
         {
             _inventoryDragActive = false;
+        }
+
+        private static bool IsNonDismissibleScreen(ScreenType screenType)
+        {
+            // Death screen must survive Escape / CloseAll so the player cannot
+            // soft-dismiss it while dead.
+            return screenType == ScreenType.DeathScreen;
         }
     }
 }

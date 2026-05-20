@@ -1,9 +1,22 @@
+.death-screen-host {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .death-screen {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: rgba(4, 0, 0, 0.62);
@@ -14,6 +27,7 @@
     max-width: 720px;
     width: 54%;
     min-height: 280px;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 48px;
@@ -26,7 +40,38 @@
     color: rgb(232, 229, 221);
     font-size: 64px;
     -unity-font-style: bold;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
+}
+
+.death-screen__summary {
+    width: 100%;
+    max-width: 520px;
+    flex-direction: column;
+    padding: 16px;
+    margin-bottom: 28px;
+    border-width: 1px;
+    border-color: rgba(232, 229, 221, 0.18);
+    background-color: rgba(0, 0, 0, 0.22);
+}
+
+.death-screen__summary-title {
+    color: rgb(232, 229, 221);
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.death-screen__summary-line {
+    color: rgba(232, 229, 221, 0.92);
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+
+.death-screen__summary-items {
+    color: rgba(232, 229, 221, 0.78);
+    font-size: 14px;
+    white-space: normal;
+    margin-top: 8px;
 }
 
 .death-screen__actions {

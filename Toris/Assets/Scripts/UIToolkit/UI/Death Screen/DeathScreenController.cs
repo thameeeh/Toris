@@ -9,6 +9,7 @@ namespace OutlandHaven.UIToolkit
     {
         private const string DefaultDeathInputLockId = "Death";
         private const string DefaultPlayerStatsAnchorResourcePath = "PlayerProgression/PlayerStatsAnchor";
+        private const string DeathScreenHostClass = "death-screen-host";
 
         [Header("Template")]
         [SerializeField] private VisualTreeAsset _deathScreenTemplate;
@@ -24,9 +25,11 @@ namespace OutlandHaven.UIToolkit
         private DeathScreenView _view;
         private UIManager _uiManager;
         private PlayerStats _observedStats;
+        private DeathPenaltySummary _latestPenaltySummary;
         private Coroutine _bindStatsRoutine;
         private Coroutine _openDeathScreenRoutine;
         private bool _deathFlowActive;
+        private bool _deathSummaryEventsBound;
 
         private void Awake()
         {
@@ -34,12 +37,22 @@ namespace OutlandHaven.UIToolkit
             ResolvePlayerStatsAnchor();
         }
 
+        private void OnEnable()
+        {
+            BindDeathSummaryEvents();
+        }
+
         private void Start()
         {
             if (_deathScreenTemplate == null || _uiManager == null || _uiEvents == null)
                 return;
 
+            BindDeathSummaryEvents();
+
             TemplateContainer deathScreenInstance = _deathScreenTemplate.Instantiate();
+            // Death screen related: the instantiated template wrapper must stretch,
+            // otherwise the absolute overlay resolves inside a collapsed host.
+            deathScreenInstance.AddToClassList(DeathScreenHostClass);
 
             _view = new DeathScreenView(deathScreenInstance, _uiEvents);
             _view.Initialize();
@@ -52,6 +65,7 @@ namespace OutlandHaven.UIToolkit
 
         private void OnDisable()
         {
+            UnbindDeathSummaryEvents();
             UnbindObservedStats();
 
             if (_bindStatsRoutine != null)
@@ -135,8 +149,10 @@ namespace OutlandHaven.UIToolkit
 
             // Lock input immediately; the visual death screen appears after the animation delay.
             _deathFlowActive = true;
+            _latestPenaltySummary = null;
             _uiEvents.OnGameplayInputLockRequested?.Invoke(ResolveDeathInputLockId());
             _uiEvents.OnRequestCloseAll?.Invoke();
+            _uiEvents.OnDeathPenaltySummaryRequested?.Invoke();
 
             _openDeathScreenRoutine = StartCoroutine(OpenDeathScreenAfterDelay());
         }
@@ -149,8 +165,20 @@ namespace OutlandHaven.UIToolkit
                 yield return new WaitForSecondsRealtime(delay);
             }
 
-            _uiEvents?.OnRequestOpen?.Invoke(ScreenType.DeathScreen, null);
+            _uiEvents?.OnRequestOpen?.Invoke(ScreenType.DeathScreen, _latestPenaltySummary);
             _openDeathScreenRoutine = null;
+        }
+
+        private void HandleDeathPenaltySummaryUpdated(DeathPenaltySummary summary)
+        {
+            _latestPenaltySummary = summary;
+
+            // Death screen related: refresh the already-open overlay if the gameplay
+            // coordinator reports penalties after the view is visible.
+            if (_view != null && !_view.IsHidden)
+            {
+                _view.Setup(summary);
+            }
         }
 
         private void HandleRespawnClicked()
@@ -176,6 +204,24 @@ namespace OutlandHaven.UIToolkit
             return string.IsNullOrWhiteSpace(_deathInputLockId)
                 ? DefaultDeathInputLockId
                 : _deathInputLockId.Trim();
+        }
+
+        private void BindDeathSummaryEvents()
+        {
+            if (_deathSummaryEventsBound || _uiEvents == null)
+                return;
+
+            _uiEvents.OnDeathPenaltySummaryUpdated += HandleDeathPenaltySummaryUpdated;
+            _deathSummaryEventsBound = true;
+        }
+
+        private void UnbindDeathSummaryEvents()
+        {
+            if (!_deathSummaryEventsBound || _uiEvents == null)
+                return;
+
+            _uiEvents.OnDeathPenaltySummaryUpdated -= HandleDeathPenaltySummaryUpdated;
+            _deathSummaryEventsBound = false;
         }
     }
 }

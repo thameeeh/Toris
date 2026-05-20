@@ -32,6 +32,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
     [SerializeField] private bool _saveAfterRespawnInMainArea = true;
 
     private static PendingDeathRespawn _pendingRespawn;
+    private static DeathPenaltyPlan _currentPenaltyPlan;
     private Coroutine _applyPendingRespawnRoutine;
 
     public static bool HasPendingRespawn => _pendingRespawn != null;
@@ -42,6 +43,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
 
         if (_uiEvents != null)
         {
+            _uiEvents.OnDeathPenaltySummaryRequested += HandleDeathPenaltySummaryRequested;
             _uiEvents.OnDeathRespawnRequested += HandleDeathRespawnRequested;
             _uiEvents.OnDeathMainMenuRequested += HandleDeathMainMenuRequested;
         }
@@ -56,6 +58,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
     {
         if (_uiEvents != null)
         {
+            _uiEvents.OnDeathPenaltySummaryRequested -= HandleDeathPenaltySummaryRequested;
             _uiEvents.OnDeathRespawnRequested -= HandleDeathRespawnRequested;
             _uiEvents.OnDeathMainMenuRequested -= HandleDeathMainMenuRequested;
         }
@@ -67,18 +70,27 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         }
     }
 
+    private void HandleDeathPenaltySummaryRequested()
+    {
+        DeathPenaltyPlan penaltyPlan = GetOrCreateCurrentPenaltyPlan();
+        _uiEvents?.OnDeathPenaltySummaryUpdated?.Invoke(penaltyPlan?.Summary);
+    }
+
     private void HandleDeathRespawnRequested()
     {
         if (_pendingRespawn != null)
             return;
 
         ResolveDependencies();
+        DeathPenaltyPlan penaltyPlan = GetOrCreateCurrentPenaltyPlan();
 
         _pendingRespawn = new PendingDeathRespawn(
             ResolveSceneName(_mainAreaSceneName, DefaultMainAreaSceneName),
             ResolveSceneName(_respawnAnchorId, DefaultRespawnAnchorId),
             _saveAfterRespawnInMainArea,
-            _penaltyConfig);
+            _penaltyConfig,
+            penaltyPlan);
+        _currentPenaltyPlan = null;
 
         LoadScene(_pendingRespawn.MainAreaSceneName);
     }
@@ -86,6 +98,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
     private void HandleDeathMainMenuRequested()
     {
         _pendingRespawn = null;
+        _currentPenaltyPlan = null;
         Time.timeScale = 1f;
         _uiEvents?.OnGameplayInputUnlockRequested?.Invoke(DefaultDeathInputLockId);
         LoadScene(ResolveSceneName(_mainMenuSceneName, DefaultMainMenuSceneName));
@@ -132,20 +145,19 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         DeathPenaltyConfigSO resolvedPenaltyConfig = respawn.PenaltyConfig != null
             ? respawn.PenaltyConfig
             : _penaltyConfig;
+        DeathPenaltyPlan penaltyPlan = respawn.PenaltyPlan ?? CreatePenaltyPlan(resolvedPenaltyConfig);
 
         MovePlayerToRespawnAnchor(stats, respawn.RespawnAnchorId);
         RestorePlayerResources(stats);
         ClearPlayerStatuses(stats);
         EnablePlayerLifeGate(stats);
-        ApplyProgressionPenalty(progression, resolvedPenaltyConfig);
-        ApplyInventoryPenalty(
+        ApplyProgressionPenalty(progression, penaltyPlan);
+        ApplyInventoryPenaltyPlan(
             _gameSession != null ? _gameSession.PlayerInventory : null,
-            GetBackpackLossPercent(resolvedPenaltyConfig),
-            ShouldRemoveAtLeastOneItem(resolvedPenaltyConfig));
-        ApplyInventoryPenalty(
+            penaltyPlan?.BackpackLosses);
+        ApplyInventoryPenaltyPlan(
             _gameSession != null ? _gameSession.PlayerPotionInventory : null,
-            GetPotionLossPercent(resolvedPenaltyConfig),
-            ShouldRemoveAtLeastOneItem(resolvedPenaltyConfig));
+            penaltyPlan?.PotionLosses);
         CaptureRuntimeSnapshots(stats, progression);
 
         if (respawn.SaveAfterRespawnInMainArea)
@@ -156,6 +168,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         Time.timeScale = 1f;
         _uiEvents?.OnGameplayInputUnlockRequested?.Invoke(DefaultDeathInputLockId);
         _pendingRespawn = null;
+        _currentPenaltyPlan = null;
     }
 
     private void RestoreCheckpointFromActiveSaveSlot()
@@ -211,44 +224,174 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         }
     }
 
-    private static void ApplyProgressionPenalty(PlayerProgression progression, DeathPenaltyConfigSO config)
+    private DeathPenaltyPlan GetOrCreateCurrentPenaltyPlan()
     {
-        if (progression == null)
-            return;
+        // Death screen related: cache the preview so the UI and actual respawn use identical losses.
+        if (_currentPenaltyPlan != null)
+            return _currentPenaltyPlan;
 
-        float experienceLoss = progression.CurrentExperience * GetExperienceLossPercent(config);
-        if (experienceLoss > 0f)
-        {
-            progression.RemoveExperience(experienceLoss);
-        }
-
-        int goldLoss = Mathf.CeilToInt(progression.CurrentGold * GetGoldLossPercent(config));
-        if (goldLoss > 0)
-        {
-            progression.TrySpendGold(goldLoss);
-        }
+        ResolveDependencies();
+        _currentPenaltyPlan = CreatePenaltyPlan(_penaltyConfig);
+        return _currentPenaltyPlan;
     }
 
-    private static void ApplyInventoryPenalty(InventoryManager inventory, float lossPercent, bool removeAtLeastOneItem)
+    private DeathPenaltyPlan CreatePenaltyPlan(DeathPenaltyConfigSO config)
     {
-        if (inventory == null || inventory.LiveSlots == null || lossPercent <= 0f)
-            return;
+        ResolveDependencies();
 
-        List<InventorySlot> eligibleSlots = new List<InventorySlot>();
+        GameSaveData checkpointData = LoadActiveCheckpointData();
+        if (checkpointData != null)
+        {
+            return CreatePenaltyPlanFromSaveData(checkpointData, config);
+        }
+
+        return CreatePenaltyPlanFromRuntime(config);
+    }
+
+    private GameSaveData LoadActiveCheckpointData()
+    {
+        if (_saveManager == null || _gameSession == null)
+            return null;
+
+        return _saveManager.LoadGameData(_gameSession.ActiveSaveSlot);
+    }
+
+    private DeathPenaltyPlan CreatePenaltyPlanFromSaveData(GameSaveData checkpointData, DeathPenaltyConfigSO config)
+    {
+        List<InventoryLossEntry> backpackLosses = BuildSavedInventoryLossPlan(
+            checkpointData.PlayerBackpack,
+            GetBackpackLossPercent(config),
+            ShouldRemoveAtLeastOneItem(config),
+            DeathPenaltyInventorySource.Backpack);
+
+        List<InventoryLossEntry> potionLosses = BuildSavedInventoryLossPlan(
+            checkpointData.PlayerPotion,
+            GetPotionLossPercent(config),
+            ShouldRemoveAtLeastOneItem(config),
+            DeathPenaltyInventorySource.Potion);
+
+        return CreatePenaltyPlan(
+            checkpointData.Experience,
+            checkpointData.Gold,
+            backpackLosses,
+            potionLosses,
+            config);
+    }
+
+    private DeathPenaltyPlan CreatePenaltyPlanFromRuntime(DeathPenaltyConfigSO config)
+    {
+        PlayerProgression progression = ResolvePlayerProgression();
+        float currentExperience = progression != null ? progression.CurrentExperience : 0f;
+        int currentGold = progression != null ? progression.CurrentGold : 0;
+
+        List<InventoryLossEntry> backpackLosses = BuildLiveInventoryLossPlan(
+            _gameSession != null ? _gameSession.PlayerInventory : null,
+            GetBackpackLossPercent(config),
+            ShouldRemoveAtLeastOneItem(config),
+            DeathPenaltyInventorySource.Backpack);
+
+        List<InventoryLossEntry> potionLosses = BuildLiveInventoryLossPlan(
+            _gameSession != null ? _gameSession.PlayerPotionInventory : null,
+            GetPotionLossPercent(config),
+            ShouldRemoveAtLeastOneItem(config),
+            DeathPenaltyInventorySource.Potion);
+
+        return CreatePenaltyPlan(
+            currentExperience,
+            currentGold,
+            backpackLosses,
+            potionLosses,
+            config);
+    }
+
+    private static DeathPenaltyPlan CreatePenaltyPlan(
+        float currentExperience,
+        int currentGold,
+        List<InventoryLossEntry> backpackLosses,
+        List<InventoryLossEntry> potionLosses,
+        DeathPenaltyConfigSO config)
+    {
+        float experienceLoss = Mathf.Max(0f, currentExperience * GetExperienceLossPercent(config));
+        int goldLoss = Mathf.CeilToInt(Mathf.Max(0, currentGold) * GetGoldLossPercent(config));
+        int backpackItemLoss = CountLossItems(backpackLosses);
+        int potionItemLoss = CountLossItems(potionLosses);
+
+        List<DeathItemLossSummary> itemSummaries = new List<DeathItemLossSummary>();
+        AddLossSummaries(itemSummaries, backpackLosses);
+        AddLossSummaries(itemSummaries, potionLosses);
+
+        DeathPenaltySummary summary = new DeathPenaltySummary(
+            experienceLoss,
+            goldLoss,
+            backpackItemLoss,
+            potionItemLoss,
+            itemSummaries);
+
+        return new DeathPenaltyPlan(summary, backpackLosses, potionLosses);
+    }
+
+    private List<InventoryLossEntry> BuildSavedInventoryLossPlan(
+        SavedInventoryData inventoryData,
+        float lossPercent,
+        bool removeAtLeastOneItem,
+        DeathPenaltyInventorySource source)
+    {
+        if (inventoryData == null || inventoryData.Slots == null)
+            return new List<InventoryLossEntry>();
+
+        List<InventoryLossCandidate> candidates = new List<InventoryLossCandidate>();
+        int totalItemCount = 0;
+
+        for (int i = 0; i < inventoryData.Slots.Count; i++)
+        {
+            SavedSlotData slot = inventoryData.Slots[i];
+            if (slot == null || slot.ItemData == null || slot.Count <= 0 || string.IsNullOrWhiteSpace(slot.ItemData.BaseItemID))
+                continue;
+
+            string displayName = ResolveItemDisplayName(slot.ItemData.BaseItemID);
+            candidates.Add(new InventoryLossCandidate(slot.ItemData.BaseItemID, displayName, slot.Count, source));
+            totalItemCount += slot.Count;
+        }
+
+        return BuildInventoryLossPlan(candidates, totalItemCount, lossPercent, removeAtLeastOneItem);
+    }
+
+    private static List<InventoryLossEntry> BuildLiveInventoryLossPlan(
+        InventoryManager inventory,
+        float lossPercent,
+        bool removeAtLeastOneItem,
+        DeathPenaltyInventorySource source)
+    {
+        if (inventory == null || inventory.LiveSlots == null)
+            return new List<InventoryLossEntry>();
+
+        List<InventoryLossCandidate> candidates = new List<InventoryLossCandidate>();
         int totalItemCount = 0;
 
         for (int i = 0; i < inventory.LiveSlots.Count; i++)
         {
             InventorySlot slot = inventory.LiveSlots[i];
-            if (slot == null || slot.IsEmpty || slot.Count <= 0)
+            if (slot == null || slot.IsEmpty || slot.Count <= 0 || slot.HeldItem?.BaseItem == null)
                 continue;
 
-            eligibleSlots.Add(slot);
+            InventoryItemSO item = slot.HeldItem.BaseItem;
+            string displayName = string.IsNullOrWhiteSpace(item.ItemName) ? item.name : item.ItemName;
+            candidates.Add(new InventoryLossCandidate(item.name, displayName, slot.Count, source));
             totalItemCount += slot.Count;
         }
 
-        if (totalItemCount <= 0)
-            return;
+        return BuildInventoryLossPlan(candidates, totalItemCount, lossPercent, removeAtLeastOneItem);
+    }
+
+    private static List<InventoryLossEntry> BuildInventoryLossPlan(
+        List<InventoryLossCandidate> candidates,
+        int totalItemCount,
+        float lossPercent,
+        bool removeAtLeastOneItem)
+    {
+        List<InventoryLossEntry> losses = new List<InventoryLossEntry>();
+        if (candidates == null || candidates.Count == 0 || totalItemCount <= 0 || lossPercent <= 0f)
+            return losses;
 
         int itemsToRemove = Mathf.CeilToInt(totalItemCount * Mathf.Clamp01(lossPercent));
         if (removeAtLeastOneItem && itemsToRemove <= 0)
@@ -258,27 +401,153 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
 
         itemsToRemove = Mathf.Clamp(itemsToRemove, 0, totalItemCount);
 
-        while (itemsToRemove > 0 && eligibleSlots.Count > 0)
+        while (itemsToRemove > 0 && candidates.Count > 0)
         {
-            int randomIndex = Random.Range(0, eligibleSlots.Count);
-            InventorySlot slot = eligibleSlots[randomIndex];
+            int randomIndex = Random.Range(0, candidates.Count);
+            InventoryLossCandidate candidate = candidates[randomIndex];
 
-            if (slot == null || slot.IsEmpty || slot.Count <= 0)
+            if (candidate == null || candidate.Count <= 0)
             {
-                eligibleSlots.RemoveAt(randomIndex);
+                candidates.RemoveAt(randomIndex);
                 continue;
             }
 
-            slot.DecreaseCount(1);
+            AddOrIncrementLoss(losses, candidate.BaseItemId, candidate.DisplayName, candidate.Source);
+            candidate.Count--;
             itemsToRemove--;
 
-            if (slot.IsEmpty || slot.Count <= 0)
+            if (candidate.Count <= 0)
             {
-                eligibleSlots.RemoveAt(randomIndex);
+                candidates.RemoveAt(randomIndex);
             }
         }
 
-        inventory.NotifyInventoryUpdated();
+        return losses;
+    }
+
+    private string ResolveItemDisplayName(string baseItemId)
+    {
+        if (string.IsNullOrWhiteSpace(baseItemId))
+            return "Unknown Item";
+
+        ItemDatabaseSO itemDatabase = _saveManager != null ? _saveManager.MasterItemDatabase : null;
+        InventoryItemSO item = itemDatabase != null ? itemDatabase.GetItemByID(baseItemId) : null;
+        if (item != null && !string.IsNullOrWhiteSpace(item.ItemName))
+        {
+            return item.ItemName;
+        }
+
+        return baseItemId;
+    }
+
+    private static void ApplyProgressionPenalty(PlayerProgression progression, DeathPenaltyPlan penaltyPlan)
+    {
+        if (progression == null || penaltyPlan == null || penaltyPlan.Summary == null)
+            return;
+
+        float experienceLoss = penaltyPlan.Summary.ExperienceLost;
+        if (experienceLoss > 0f)
+        {
+            progression.RemoveExperience(experienceLoss);
+        }
+
+        int goldLoss = penaltyPlan.Summary.GoldLost;
+        if (goldLoss > 0)
+        {
+            progression.TrySpendGold(goldLoss);
+        }
+    }
+
+    private static void ApplyInventoryPenaltyPlan(InventoryManager inventory, IReadOnlyList<InventoryLossEntry> losses)
+    {
+        if (inventory == null || inventory.LiveSlots == null || losses == null || losses.Count == 0)
+            return;
+
+        bool changed = false;
+
+        for (int lossIndex = 0; lossIndex < losses.Count; lossIndex++)
+        {
+            InventoryLossEntry loss = losses[lossIndex];
+            if (loss == null || loss.Count <= 0 || string.IsNullOrWhiteSpace(loss.BaseItemId))
+                continue;
+
+            int remainingToRemove = loss.Count;
+            for (int slotIndex = 0; slotIndex < inventory.LiveSlots.Count && remainingToRemove > 0; slotIndex++)
+            {
+                InventorySlot slot = inventory.LiveSlots[slotIndex];
+                if (slot == null || slot.IsEmpty || slot.Count <= 0 || slot.HeldItem?.BaseItem == null)
+                    continue;
+
+                if (!string.Equals(slot.HeldItem.BaseItem.name, loss.BaseItemId, System.StringComparison.Ordinal))
+                    continue;
+
+                int amountToRemove = Mathf.Min(slot.Count, remainingToRemove);
+                slot.DecreaseCount(amountToRemove);
+                remainingToRemove -= amountToRemove;
+                changed = true;
+            }
+        }
+
+        if (changed)
+        {
+            inventory.NotifyInventoryUpdated();
+        }
+    }
+
+    private static void AddOrIncrementLoss(
+        List<InventoryLossEntry> losses,
+        string baseItemId,
+        string displayName,
+        DeathPenaltyInventorySource source)
+    {
+        for (int i = 0; i < losses.Count; i++)
+        {
+            InventoryLossEntry existingLoss = losses[i];
+            if (existingLoss != null
+                && existingLoss.Source == source
+                && string.Equals(existingLoss.BaseItemId, baseItemId, System.StringComparison.Ordinal))
+            {
+                existingLoss.Count++;
+                return;
+            }
+        }
+
+        losses.Add(new InventoryLossEntry(baseItemId, displayName, 1, source));
+    }
+
+    private static int CountLossItems(IReadOnlyList<InventoryLossEntry> losses)
+    {
+        if (losses == null)
+            return 0;
+
+        int count = 0;
+        for (int i = 0; i < losses.Count; i++)
+        {
+            InventoryLossEntry loss = losses[i];
+            if (loss != null && loss.Count > 0)
+            {
+                count += loss.Count;
+            }
+        }
+
+        return count;
+    }
+
+    private static void AddLossSummaries(
+        List<DeathItemLossSummary> summaries,
+        IReadOnlyList<InventoryLossEntry> losses)
+    {
+        if (summaries == null || losses == null)
+            return;
+
+        for (int i = 0; i < losses.Count; i++)
+        {
+            InventoryLossEntry loss = losses[i];
+            if (loss == null || loss.Count <= 0)
+                continue;
+
+            summaries.Add(new DeathItemLossSummary(loss.BaseItemId, loss.DisplayName, loss.Count, loss.Source));
+        }
     }
 
     private void CaptureRuntimeSnapshots(PlayerStats stats, PlayerProgression progression)
@@ -433,17 +702,77 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             string mainAreaSceneName,
             string respawnAnchorId,
             bool saveAfterRespawnInMainArea,
-            DeathPenaltyConfigSO penaltyConfig)
+            DeathPenaltyConfigSO penaltyConfig,
+            DeathPenaltyPlan penaltyPlan)
         {
             MainAreaSceneName = mainAreaSceneName;
             RespawnAnchorId = respawnAnchorId;
             SaveAfterRespawnInMainArea = saveAfterRespawnInMainArea;
             PenaltyConfig = penaltyConfig;
+            PenaltyPlan = penaltyPlan;
         }
 
         public string MainAreaSceneName { get; }
         public string RespawnAnchorId { get; }
         public bool SaveAfterRespawnInMainArea { get; }
         public DeathPenaltyConfigSO PenaltyConfig { get; }
+        public DeathPenaltyPlan PenaltyPlan { get; }
+    }
+
+    private sealed class DeathPenaltyPlan
+    {
+        public DeathPenaltyPlan(
+            DeathPenaltySummary summary,
+            IReadOnlyList<InventoryLossEntry> backpackLosses,
+            IReadOnlyList<InventoryLossEntry> potionLosses)
+        {
+            Summary = summary;
+            BackpackLosses = backpackLosses;
+            PotionLosses = potionLosses;
+        }
+
+        public DeathPenaltySummary Summary { get; }
+        public IReadOnlyList<InventoryLossEntry> BackpackLosses { get; }
+        public IReadOnlyList<InventoryLossEntry> PotionLosses { get; }
+    }
+
+    private sealed class InventoryLossCandidate
+    {
+        public InventoryLossCandidate(
+            string baseItemId,
+            string displayName,
+            int count,
+            DeathPenaltyInventorySource source)
+        {
+            BaseItemId = baseItemId;
+            DisplayName = displayName;
+            Count = count;
+            Source = source;
+        }
+
+        public string BaseItemId { get; }
+        public string DisplayName { get; }
+        public int Count { get; set; }
+        public DeathPenaltyInventorySource Source { get; }
+    }
+
+    private sealed class InventoryLossEntry
+    {
+        public InventoryLossEntry(
+            string baseItemId,
+            string displayName,
+            int count,
+            DeathPenaltyInventorySource source)
+        {
+            BaseItemId = baseItemId;
+            DisplayName = displayName;
+            Count = count;
+            Source = source;
+        }
+
+        public string BaseItemId { get; }
+        public string DisplayName { get; }
+        public int Count { get; set; }
+        public DeathPenaltyInventorySource Source { get; }
     }
 }

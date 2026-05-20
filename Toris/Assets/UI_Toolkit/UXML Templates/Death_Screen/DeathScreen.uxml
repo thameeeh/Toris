@@ -6,6 +6,13 @@
     <ui:VisualElement name="DeathRoot" class="death-screen">
         <ui:VisualElement name="DeathPanel" class="death-screen__panel">
             <ui:Label name="DeathTitle" text="You Died." class="death-screen__title"/>
+            <ui:VisualElement name="PenaltySummary" class="death-screen__summary">
+                <ui:Label name="PenaltyTitle" text="Respawn Penalty" class="death-screen__summary-title"/>
+                <ui:Label name="Penalty_XP" text="XP Lost: calculating..." class="death-screen__summary-line"/>
+                <ui:Label name="Penalty_Gold" text="Gold Lost: calculating..." class="death-screen__summary-line"/>
+                <ui:Label name="Penalty_Items" text="Items Lost: calculating..." class="death-screen__summary-line"/>
+                <ui:Label name="Penalty_ItemList" text="Penalty details will appear when available." class="death-screen__summary-items"/>
+            </ui:VisualElement>
             <ui:VisualElement name="DeathButtonRow" class="death-screen__actions">
                 <ui:Button name="Btn_Respawn" text="Respawn" class="standard-button death-screen__button death-screen__button--primary"/>
                 <ui:Button name="Btn_MainMenu" text="Main Menu" class="standard-button death-screen__button"/>

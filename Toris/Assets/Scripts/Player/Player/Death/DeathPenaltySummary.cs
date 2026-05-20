@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+
+// Death screen related: runtime payload shown by the UI before the respawn penalty is applied.
+[Serializable]
+public sealed class DeathPenaltySummary
+{
+    private readonly List<DeathItemLossSummary> _lostItems;
+
+    public DeathPenaltySummary(
+        float experienceLost,
+        int goldLost,
+        int backpackItemsLost,
+        int potionItemsLost,
+        IEnumerable<DeathItemLossSummary> lostItems)
+    {
+        ExperienceLost = experienceLost < 0f ? 0f : experienceLost;
+        GoldLost = Math.Max(0, goldLost);
+        BackpackItemsLost = Math.Max(0, backpackItemsLost);
+        PotionItemsLost = Math.Max(0, potionItemsLost);
+        _lostItems = lostItems != null
+            ? new List<DeathItemLossSummary>(lostItems)
+            : new List<DeathItemLossSummary>();
+    }
+
+    public float ExperienceLost { get; }
+    public int GoldLost { get; }
+    public int BackpackItemsLost { get; }
+    public int PotionItemsLost { get; }
+    public int TotalItemsLost => BackpackItemsLost + PotionItemsLost;
+    public IReadOnlyList<DeathItemLossSummary> LostItems => _lostItems;
+}
+
+[Serializable]
+public sealed class DeathItemLossSummary
+{
+    public DeathItemLossSummary(string itemId, string displayName, int count, DeathPenaltyInventorySource source)
+    {
+        ItemId = itemId;
+        DisplayName = string.IsNullOrWhiteSpace(displayName) ? itemId ?? "Unknown Item" : displayName;
+        Count = Math.Max(0, count);
+        Source = source;
+    }
+
+    public string ItemId { get; }
+    public string DisplayName { get; }
+    public int Count { get; }
+    public DeathPenaltyInventorySource Source { get; }
+}
+
+public enum DeathPenaltyInventorySource
+{
+    Backpack,
+    Potion
+}

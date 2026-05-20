@@ -45,6 +45,10 @@ namespace OutlandHaven.UIToolkit
 
         // Death screen actions are UI intents only; gameplay consequences live in
         // DeathRespawnCoordinator.
+        public UnityAction OnDeathPenaltySummaryRequested;
+
+        public UnityAction<DeathPenaltySummary> OnDeathPenaltySummaryUpdated;
+
         public UnityAction OnDeathRespawnRequested;
 
         public UnityAction OnDeathMainMenuRequested;

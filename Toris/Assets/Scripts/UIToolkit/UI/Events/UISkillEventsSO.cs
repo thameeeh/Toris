@@ -15,6 +15,9 @@ namespace OutlandHaven.Skills
         public UnityAction<int, float> OnAbilityCooldownStarted; // slotIndex, cooldownDuration
         public UnityAction<int> OnAbilityReady; // slotIndex
         public UnityAction<PlayerAbilitySlotSnapshot[]> OnAbilitySlotsUpdated; // New centralized update event
+        public UnityAction<PlayerAbilitySlotSnapshot, Vector2> OnAbilityTooltipShow;
+        public UnityAction<Vector2> OnAbilityTooltipMove;
+        public UnityAction OnAbilityTooltipHide;
 
         [Header("UI -> System Requests")]
         public UnityAction<SkillData> OnRequestUnlock;

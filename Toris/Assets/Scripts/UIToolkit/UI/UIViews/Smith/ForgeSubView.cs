@@ -61,7 +61,7 @@ namespace OutlandHaven.UIToolkit
                 instance.pickingMode = PickingMode.Ignore;
                 instance.userData = "forge-slot-1";
                 _slot1Container.Add(instance);
-                _slot1View = new InventorySlotView(instance, null);
+                _slot1View = new InventorySlotView(instance, null, _uiInventoryEvents);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -78,7 +78,7 @@ namespace OutlandHaven.UIToolkit
                 instance.pickingMode = PickingMode.Ignore;
                 instance.userData = "forge-slot-2";
                 _slot2Container.Add(instance);
-                _slot2View = new InventorySlotView(instance, null);
+                _slot2View = new InventorySlotView(instance, null, _uiInventoryEvents);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -94,7 +94,7 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 instance.pickingMode = PickingMode.Ignore;
                 _resultSlotContainer.Add(instance);
-                _resultSlotView = new InventorySlotView(instance, null);
+                _resultSlotView = new InventorySlotView(instance, null, _uiInventoryEvents);
             }
         }
 
@@ -285,6 +285,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_recipeListContainer == null) return;
 
+            _uiInventoryEvents?.OnItemTooltipHide?.Invoke();
             _recipeListContainer.Clear();
             _blueprintRows.Clear();
 
@@ -300,19 +301,23 @@ namespace OutlandHaven.UIToolkit
                     continue;
                 }
 
+                CraftingRecipeSO rowRecipe = recipe;
                 Button row = new Button();
                 row.text = string.Empty;
-                row.userData = recipe;
+                row.userData = rowRecipe;
                 row.AddToClassList(BlueprintRowClass);
-                row.clicked += () => SelectBlueprint(recipe);
+                row.clicked += () => SelectBlueprint(rowRecipe);
+                row.RegisterCallback<PointerEnterEvent>(evt => ShowBlueprintTooltip(rowRecipe, evt.position));
+                row.RegisterCallback<PointerMoveEvent>(evt => _uiInventoryEvents?.OnItemTooltipMove?.Invoke(evt.position));
+                row.RegisterCallback<PointerLeaveEvent>(evt => _uiInventoryEvents?.OnItemTooltipHide?.Invoke());
 
                 Image icon = new Image
                 {
-                    sprite = recipe.OutputItem.Icon,
+                    sprite = rowRecipe.OutputItem.Icon,
                     scaleMode = ScaleMode.ScaleToFit
                 };
                 icon.AddToClassList("forge-blueprint-icon");
-                if (recipe.OutputItem.Icon == null)
+                if (rowRecipe.OutputItem.Icon == null)
                 {
                     icon.style.display = DisplayStyle.None;
                 }
@@ -320,10 +325,10 @@ namespace OutlandHaven.UIToolkit
                 VisualElement details = new VisualElement();
                 details.AddToClassList("forge-blueprint-details");
 
-                Label title = new Label(GetItemName(recipe.OutputItem));
+                Label title = new Label(GetItemName(rowRecipe.OutputItem));
                 title.AddToClassList("forge-blueprint-title");
 
-                Label requirements = new Label(BuildRequirementText(recipe));
+                Label requirements = new Label(BuildRequirementText(rowRecipe));
                 requirements.AddToClassList("forge-blueprint-requirements");
 
                 details.Add(title);
@@ -341,6 +346,7 @@ namespace OutlandHaven.UIToolkit
         private void SelectBlueprint(CraftingRecipeSO recipe)
         {
             if (recipe == null) return;
+            _uiInventoryEvents?.OnItemTooltipHide?.Invoke();
 
             _selectedRecipe = recipe;
             _cachedSlot1 = null;
@@ -407,6 +413,15 @@ namespace OutlandHaven.UIToolkit
             {
                 UpdateResultVisual();
             }
+        }
+
+        private void ShowBlueprintTooltip(CraftingRecipeSO recipe, Vector2 pointerPosition)
+        {
+            InventorySlot outputSlot = CreatePreviewSlot(recipe?.OutputItem, RecipeOutputPreviewQuantity);
+            if (outputSlot == null)
+                return;
+
+            _uiInventoryEvents?.OnItemTooltipShow?.Invoke(outputSlot, pointerPosition);
         }
 
         private static InventorySlot CreatePreviewSlot(InventoryItemSO item, int quantity)

@@ -1,5 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/Abilities.uss?fileID=7433441132597879392&amp;guid=abilities_guid_placeholder&amp;type=3#Abilities"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Abilities.uss?fileID=7433441132597879392&amp;guid=e34b3ae0306e9494a85d5c80256225cd&amp;type=3#Abilities"/>
     <ui:VisualElement class="ability-slot">
         <ui:VisualElement class="ability-slot-content">
             <ui:Image name="ability-icon" class="ability-icon"/>

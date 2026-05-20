@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using OutlandHaven.Inventory;
+using OutlandHaven.Skills;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,10 +11,17 @@ namespace OutlandHaven.UIToolkit
     {
         [Header("Configuration")]
         [SerializeField] private UIEventsSO _UIEvents;
+        [SerializeField] private UIInventoryEventsSO _UIInventoryEvents;
+        [SerializeField] private UISkillEventsSO _UISkillEvents;
         [SerializeField] private bool showHudOnStart = true;
+        private const string DefaultInventoryEventsResourcePath = "GameData/SOForEvents/UI Inventory Events SO";
+        private const string DefaultSkillEventsResourcePath = "GameData/SOForEvents/UI Skill Events SO";
 
         private List<GameView> _allViews = new List<GameView>();
         private Dictionary<GameView, ScreenZone> _viewZones = new Dictionary<GameView, ScreenZone>();
+        private ItemTooltipView _itemTooltipView;
+        private bool _tooltipEventsBound;
+        private bool _inventoryDragActive;
 
         private VisualElement _hudZone; 
         private VisualElement _leftZone;
@@ -22,11 +31,14 @@ namespace OutlandHaven.UIToolkit
         private void Awake()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
+            ResolveInventoryEvents();
+            ResolveSkillEvents();
 
             _hudZone = root.Q<VisualElement>("Layer_HUD");
             _leftZone = root.Q<VisualElement>("Left_Zone");
             _rightZone = root.Q<VisualElement>("Right_Zone");
             _fullScreen_Zone = root.Q<VisualElement>("FullScreen_Zone");
+            _itemTooltipView = new ItemTooltipView(root);
 
             if (_hudZone == null || _leftZone == null || _rightZone == null)
             {
@@ -39,6 +51,9 @@ namespace OutlandHaven.UIToolkit
             _UIEvents.OnRequestOpen += OpenWindow;
             _UIEvents.OnRequestClose += CloseWindow;
             _UIEvents.OnRequestCloseAll += CloseAllWindows;
+            ResolveInventoryEvents();
+            ResolveSkillEvents();
+            BindTooltipEvents();
         }
 
         private void OnDisable()
@@ -46,6 +61,7 @@ namespace OutlandHaven.UIToolkit
             _UIEvents.OnRequestOpen -= OpenWindow;
             _UIEvents.OnRequestClose -= CloseWindow;
             _UIEvents.OnRequestCloseAll -= CloseAllWindows;
+            UnbindTooltipEvents();
         }
 
         private void OnValidate()
@@ -83,6 +99,7 @@ namespace OutlandHaven.UIToolkit
 
         private void OpenWindow(ScreenType type, object payload = null)
         {
+            HandleItemTooltipHide();
 
             GameView view = _allViews.Find(v => v.ID == type);
             if (view == null) return;
@@ -122,6 +139,8 @@ namespace OutlandHaven.UIToolkit
 
         private void CloseWindow(ScreenType type)
         {
+            HandleItemTooltipHide();
+
             GameView view = _allViews.Find(v => v.ID == type);
             if (view != null && !view.IsHidden)
             {
@@ -131,6 +150,8 @@ namespace OutlandHaven.UIToolkit
 
         public void CloseAllWindows()
         {
+            HandleItemTooltipHide();
+
             foreach (var view in _allViews)
             {
                 if (view.ID != ScreenType.HUD) view.Hide();
@@ -144,6 +165,114 @@ namespace OutlandHaven.UIToolkit
                 if (view.ID != ScreenType.HUD && !view.IsHidden) return true;
             }
             return false;
+        }
+
+        private void ResolveInventoryEvents()
+        {
+            if (_UIInventoryEvents != null)
+                return;
+
+            _UIInventoryEvents = Resources.Load<UIInventoryEventsSO>(DefaultInventoryEventsResourcePath);
+        }
+
+        private void ResolveSkillEvents()
+        {
+            if (_UISkillEvents != null)
+                return;
+
+            _UISkillEvents = Resources.Load<UISkillEventsSO>(DefaultSkillEventsResourcePath);
+        }
+
+        private void BindTooltipEvents()
+        {
+            if (_tooltipEventsBound || _UIInventoryEvents == null)
+                return;
+
+            _UIInventoryEvents.OnItemTooltipShow += HandleItemTooltipShow;
+            _UIInventoryEvents.OnItemTooltipMove += HandleItemTooltipMove;
+            _UIInventoryEvents.OnItemTooltipHide += HandleItemTooltipHide;
+            _UIInventoryEvents.OnGlobalDragStarted += HandleGlobalDragStarted;
+            _UIInventoryEvents.OnGlobalDragStopped += HandleGlobalDragStopped;
+
+            if (_UISkillEvents != null)
+            {
+                _UISkillEvents.OnAbilityTooltipShow += HandleAbilityTooltipShow;
+                _UISkillEvents.OnAbilityTooltipMove += HandleAbilityTooltipMove;
+                _UISkillEvents.OnAbilityTooltipHide += HandleItemTooltipHide;
+            }
+
+            _tooltipEventsBound = true;
+        }
+
+        private void UnbindTooltipEvents()
+        {
+            if (!_tooltipEventsBound || _UIInventoryEvents == null)
+                return;
+
+            _UIInventoryEvents.OnItemTooltipShow -= HandleItemTooltipShow;
+            _UIInventoryEvents.OnItemTooltipMove -= HandleItemTooltipMove;
+            _UIInventoryEvents.OnItemTooltipHide -= HandleItemTooltipHide;
+            _UIInventoryEvents.OnGlobalDragStarted -= HandleGlobalDragStarted;
+            _UIInventoryEvents.OnGlobalDragStopped -= HandleGlobalDragStopped;
+
+            if (_UISkillEvents != null)
+            {
+                _UISkillEvents.OnAbilityTooltipShow -= HandleAbilityTooltipShow;
+                _UISkillEvents.OnAbilityTooltipMove -= HandleAbilityTooltipMove;
+                _UISkillEvents.OnAbilityTooltipHide -= HandleItemTooltipHide;
+            }
+
+            _tooltipEventsBound = false;
+        }
+
+        private void HandleItemTooltipShow(InventorySlot slot, Vector2 pointerPosition)
+        {
+            if (_inventoryDragActive)
+                return;
+
+            ItemTooltipData data = ItemTooltipFormatter.Build(slot);
+            _itemTooltipView?.Show(data, pointerPosition);
+        }
+
+        private void HandleItemTooltipMove(Vector2 pointerPosition)
+        {
+            if (_inventoryDragActive)
+                return;
+
+            _itemTooltipView?.Move(pointerPosition);
+        }
+
+        private void HandleAbilityTooltipShow(PlayerAbilitySlotSnapshot snapshot, Vector2 pointerPosition)
+        {
+            if (_inventoryDragActive)
+                return;
+
+            ItemTooltipData data = AbilityTooltipFormatter.Build(snapshot);
+            _itemTooltipView?.Show(data, pointerPosition);
+        }
+
+        private void HandleAbilityTooltipMove(Vector2 pointerPosition)
+        {
+            if (_inventoryDragActive)
+                return;
+
+            _itemTooltipView?.Move(pointerPosition);
+        }
+
+        private void HandleItemTooltipHide()
+        {
+            _itemTooltipView?.Hide();
+        }
+
+        private void HandleGlobalDragStarted(Sprite sprite, Vector2 pointerPosition, Vector2 iconSize)
+        {
+            _inventoryDragActive = true;
+            HandleItemTooltipHide();
+        }
+
+        private void HandleGlobalDragStopped()
+        {
+            _inventoryDragActive = false;
         }
     }
 }

@@ -122,7 +122,7 @@ namespace OutlandHaven.UIToolkit
                 slotInstance.pickingMode = PickingMode.Ignore;
                 _shopGrid.Add(slotInstance);
 
-                var slotView = new InventorySlotView(slotInstance, _shopContainer);
+                var slotView = new InventorySlotView(slotInstance, _shopContainer, _uiInventoryEvents);
 
                 slotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
                 slotView.OnLocalRightClicked += HandleShopSlotRightClicked;

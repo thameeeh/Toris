@@ -127,7 +127,7 @@ namespace OutlandHaven.Inventory
             slotInstance.pickingMode = PickingMode.Ignore; // Ensure the wrapper ignores picking
             containerRoot.Add(slotInstance);
 
-            var slotView = new InventorySlotView(slotInstance, _equipmentInventory);
+            var slotView = new InventorySlotView(slotInstance, _equipmentInventory, _uiInventoryEvents);
 
             slotView.OnLocalClicked += (slot) => { 
                 if (slot != null && !slot.IsEmpty) {

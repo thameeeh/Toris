@@ -79,6 +79,8 @@ namespace OutlandHaven.UIToolkit
 
         public void Hide()
         {
+            _uiSkillEvents?.OnAbilityTooltipHide?.Invoke();
+
             if (_eventsBound && _uiSkillEvents != null)
             {
                 _uiSkillEvents.OnAbilitySlotPressed -= HandleAbilitySlotPressed;
@@ -93,6 +95,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_topElement == null || _abilityController == null) return;
 
+            DisposeSlots();
             _slotViews.Clear();
 
             int slotCount = _abilityController.SlotCount;
@@ -132,7 +135,7 @@ namespace OutlandHaven.UIToolkit
                         hotkey = hotkey.Substring(hotkey.LastIndexOf('/') + 1);
                     }
 
-                    var slotView = new AbilitySlotView(slotElement, hotkey.ToUpper());
+                    var slotView = new AbilitySlotView(slotElement, hotkey.ToUpper(), _uiSkillEvents);
                     _slotViews.Add(slotView);
                 }
             }
@@ -168,10 +171,19 @@ namespace OutlandHaven.UIToolkit
         public void Dispose()
         {
             Hide();
+            DisposeSlots();
+        }
+
+        private void DisposeSlots()
+        {
+            foreach (AbilitySlotView slotView in _slotViews)
+            {
+                slotView.Dispose();
+            }
         }
     }
 
-    public class AbilitySlotView
+    public class AbilitySlotView : IDisposable
     {
         private VisualElement _root;
         private Image _icon;
@@ -179,14 +191,17 @@ namespace OutlandHaven.UIToolkit
         private Label _timerLabel;
         private Label _hotkeyLabel;
         private Label _manaLabel;
+        private UISkillEventsSO _uiSkillEvents;
+        private PlayerAbilitySlotSnapshot _snapshot;
 
         private float _cooldownDuration;
         private float _cooldownRemaining;
 
-        public AbilitySlotView(VisualElement root, string hotkey)
+        public AbilitySlotView(VisualElement root, string hotkey, UISkillEventsSO uiSkillEvents)
         {
             // If root is already the ability-slot, use it. Otherwise find it.
             _root = root.ClassListContains("ability-slot") ? root : root.Q<VisualElement>(className: "ability-slot");
+            _uiSkillEvents = uiSkillEvents;
             
             _icon = root.Q<Image>("ability-icon");
             _cooldownOverlay = root.Q<VisualElement>("cooldown-overlay");
@@ -195,10 +210,26 @@ namespace OutlandHaven.UIToolkit
             _manaLabel = root.Q<Label>("mana-cost");
 
             if (_hotkeyLabel != null) _hotkeyLabel.text = hotkey;
+
+            if (_root != null)
+            {
+                _root.pickingMode = PickingMode.Position;
+                _root.RegisterCallback<PointerEnterEvent>(OnPointerEnter);
+                _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+                _root.RegisterCallback<PointerLeaveEvent>(OnPointerLeave);
+            }
+
+            if (_icon != null) _icon.pickingMode = PickingMode.Ignore;
+            if (_cooldownOverlay != null) _cooldownOverlay.pickingMode = PickingMode.Ignore;
+            if (_timerLabel != null) _timerLabel.pickingMode = PickingMode.Ignore;
+            if (_hotkeyLabel != null) _hotkeyLabel.pickingMode = PickingMode.Ignore;
+            if (_manaLabel != null) _manaLabel.pickingMode = PickingMode.Ignore;
         }
 
         public void Update(PlayerAbilitySlotSnapshot snapshot)
         {
+            _snapshot = snapshot;
+
             if (snapshot.HasAbility)
             {
                 _icon.style.backgroundImage = new StyleBackground(snapshot.Icon);
@@ -247,6 +278,27 @@ namespace OutlandHaven.UIToolkit
             }
         }
 
+        private void OnPointerEnter(PointerEnterEvent evt)
+        {
+            if (!_snapshot.HasAbility)
+                return;
+
+            _uiSkillEvents?.OnAbilityTooltipShow?.Invoke(_snapshot, evt.position);
+        }
+
+        private void OnPointerMove(PointerMoveEvent evt)
+        {
+            if (!_snapshot.HasAbility)
+                return;
+
+            _uiSkillEvents?.OnAbilityTooltipMove?.Invoke(evt.position);
+        }
+
+        private void OnPointerLeave(PointerLeaveEvent evt)
+        {
+            _uiSkillEvents?.OnAbilityTooltipHide?.Invoke();
+        }
+
         public void TriggerPressEffect()
         {
             _root.AddToClassList("ability-slot--pressed");
@@ -282,6 +334,17 @@ namespace OutlandHaven.UIToolkit
                     SetReady();
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            if (_root == null)
+                return;
+
+            _uiSkillEvents?.OnAbilityTooltipHide?.Invoke();
+            _root.UnregisterCallback<PointerEnterEvent>(OnPointerEnter);
+            _root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+            _root.UnregisterCallback<PointerLeaveEvent>(OnPointerLeave);
         }
     }
 }

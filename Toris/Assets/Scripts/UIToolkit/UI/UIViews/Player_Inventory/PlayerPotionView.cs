@@ -111,7 +111,7 @@ namespace OutlandHaven.Inventory
             slotInstance.AddToClassList("item-slot--potion");
             containerRoot.Add(slotInstance);
 
-            var slotView = new InventorySlotView(slotInstance, _potionInventory);
+            var slotView = new InventorySlotView(slotInstance, _potionInventory, _uiInventoryEvents);
 
             slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
             slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);

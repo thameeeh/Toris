@@ -40,6 +40,11 @@ namespace OutlandHaven.Inventory
         public System.Action<Vector2> OnGlobalDragUpdated;
         public System.Action OnGlobalDragStopped;
 
+        [Header("Item Tooltip")]
+        public System.Action<InventorySlot, Vector2> OnItemTooltipShow;
+        public System.Action<Vector2> OnItemTooltipMove;
+        public System.Action OnItemTooltipHide;
+
         [Header("Context Management")]
         public UnityAction<InventoryInteractionContext> OnInteractionContextChanged;
     }

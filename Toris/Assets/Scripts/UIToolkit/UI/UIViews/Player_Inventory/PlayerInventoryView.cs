@@ -135,7 +135,7 @@ namespace OutlandHaven.Inventory
 
                 // Initialize the wrapper and update it
                 // We pass in the owning InventoryManager (data) and the UI events
-                var slotView = new InventorySlotView(slotInstance, data);
+                var slotView = new InventorySlotView(slotInstance, data, _uiInventoryEvents);
 
                 slotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
                 slotView.OnLocalRightClicked += HandleMainInventoryRightClick;

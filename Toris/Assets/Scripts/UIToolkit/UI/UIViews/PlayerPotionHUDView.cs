@@ -112,7 +112,7 @@ namespace OutlandHaven.UIToolkit
             slotInstance.AddToClassList("item-slot--potion");
             containerRoot.Add(slotInstance);
 
-            var slotView = new InventorySlotView(slotInstance, _potionInventory);
+            var slotView = new InventorySlotView(slotInstance, _potionInventory, _uiInventoryEvents);
 
             // Important: Right click on HUD also uses the potion
             slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestUse?.Invoke(slot);

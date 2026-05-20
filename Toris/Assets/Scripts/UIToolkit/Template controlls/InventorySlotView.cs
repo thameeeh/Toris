@@ -13,6 +13,7 @@ namespace OutlandHaven.Inventory
 
         private InventorySlot _slotData;
         private InventoryManager _owningContainer;
+        private UIInventoryEventsSO _uiInventoryEvents;
 
         public event Action<InventorySlot> OnLocalClicked;
         public event Action<InventorySlot> OnLocalRightClicked;
@@ -29,7 +30,7 @@ namespace OutlandHaven.Inventory
         private const float DragThreshold = 10f; // Pixels to move before initiating drag
         private int _dragAmount = 0;
 
-        public InventorySlotView(VisualElement root, InventoryManager owningContainer)
+        public InventorySlotView(VisualElement root, InventoryManager owningContainer, UIInventoryEventsSO uiInventoryEvents = null)
         {
             // Set the wrapper root's picking mode to Ignore
             root.pickingMode = PickingMode.Ignore;
@@ -44,6 +45,7 @@ namespace OutlandHaven.Inventory
             }
 
             _owningContainer = owningContainer;
+            _uiInventoryEvents = uiInventoryEvents;
 
 
             _icon = _root.Q<Image>("slot-icon");
@@ -53,6 +55,8 @@ namespace OutlandHaven.Inventory
             if (_icon != null) _icon.pickingMode = PickingMode.Ignore;
             if (_qtyLabel != null) _qtyLabel.pickingMode = PickingMode.Ignore;
 
+            _root.RegisterCallback<PointerEnterEvent>(OnPointerEnter);
+            _root.RegisterCallback<PointerLeaveEvent>(OnPointerLeave);
             _root.RegisterCallback<PointerDownEvent>(OnPointerDown);
             _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
             _root.RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -76,6 +80,7 @@ namespace OutlandHaven.Inventory
 
             if (slotData == null || slotData.IsEmpty)
             {
+                HideTooltip();
                 _icon.sprite = null;
                 _icon.style.display = DisplayStyle.None;
                 _qtyLabel.text = "";
@@ -100,6 +105,19 @@ namespace OutlandHaven.Inventory
             return string.Empty;
         }
 
+        private void OnPointerEnter(PointerEnterEvent evt)
+        {
+            if (_slotData == null || _slotData.IsEmpty)
+                return;
+
+            _uiInventoryEvents?.OnItemTooltipShow?.Invoke(_slotData, evt.position);
+        }
+
+        private void OnPointerLeave(PointerLeaveEvent evt)
+        {
+            HideTooltip();
+        }
+
         private void OnPointerDown(PointerDownEvent evt)
         {
             if (_slotData == null || _slotData.IsEmpty) return;
@@ -109,12 +127,19 @@ namespace OutlandHaven.Inventory
             // Do not initiate visual drag right away (wait for threshold)
             _isDragging = false;
             _dragStartPosition = evt.position;
+            HideTooltip();
 
             _root.CapturePointer(evt.pointerId);
         }
 
         private void OnPointerMove(PointerMoveEvent evt)
         {
+            if (!_isDragging && !_root.HasPointerCapture(evt.pointerId) && _slotData != null && !_slotData.IsEmpty)
+            {
+                _uiInventoryEvents?.OnItemTooltipMove?.Invoke(evt.position);
+                return;
+            }
+
             if (!_root.HasPointerCapture(evt.pointerId)) return;
 
             // evt.button is unreliable during a move. 
@@ -127,6 +152,7 @@ namespace OutlandHaven.Inventory
                 if (distance >= DragThreshold)
                 {
                     _isDragging = true;
+                    HideTooltip();
                     _dragAmount = evt.shiftKey ? Mathf.CeilToInt(_slotData.Count / 2f) : _slotData.Count;
 
                     float width = _icon.resolvedStyle.width;
@@ -254,10 +280,18 @@ namespace OutlandHaven.Inventory
             return null;
         }
 
+        private void HideTooltip()
+        {
+            _uiInventoryEvents?.OnItemTooltipHide?.Invoke();
+        }
+
         public void Dispose()
         {
             if (_root != null)
             {
+                HideTooltip();
+                _root.UnregisterCallback<PointerEnterEvent>(OnPointerEnter);
+                _root.UnregisterCallback<PointerLeaveEvent>(OnPointerLeave);
                 _root.UnregisterCallback<PointerDownEvent>(OnPointerDown);
                 _root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
                 _root.UnregisterCallback<PointerUpEvent>(OnPointerUp);

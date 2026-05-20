@@ -49,7 +49,7 @@ namespace OutlandHaven.UIToolkit
                 instance.pickingMode = PickingMode.Ignore;
                 instance.userData = "salvage-input"; // Set proxy ID
                 _inputSlotContainer.Add(instance);
-                _inputSlotView = new InventorySlotView(instance, null);
+                _inputSlotView = new InventorySlotView(instance, null, _uiInventoryEvents);
 
                 instance.RegisterCallback<MouseUpEvent>(evt =>
                 {
@@ -65,7 +65,7 @@ namespace OutlandHaven.UIToolkit
                 TemplateContainer instance = _slotTemplate.Instantiate();
                 instance.pickingMode = PickingMode.Ignore;
                 _itemYieldContainer.Add(instance);
-                _itemYieldView = new InventorySlotView(instance, null);
+                _itemYieldView = new InventorySlotView(instance, null, _uiInventoryEvents);
             }
         }
 

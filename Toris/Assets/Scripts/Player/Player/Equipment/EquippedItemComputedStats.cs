@@ -4,6 +4,8 @@ public struct EquippedItemComputedStats
     public float DefenceBonus;
     public float MaxHealthBonus;
     public float MaxStaminaBonus;
+    public float MoveSpeedBonusPercent;
+    public float StaminaRegenBonus;
 
     public float BaseDamage;
     public float AttackSpeed;

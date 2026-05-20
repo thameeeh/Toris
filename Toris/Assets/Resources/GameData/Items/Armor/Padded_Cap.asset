@@ -35,4 +35,6 @@ MonoBehaviour:
         StrengthBonus: 0
         DefenceBonus: 2
         MaxHealthBonus: 10
-        MaxStaminaBonus: 0
+        MaxStaminaBonus: 5
+        MoveSpeedBonusPercent: 1
+        StaminaRegenBonus: 1

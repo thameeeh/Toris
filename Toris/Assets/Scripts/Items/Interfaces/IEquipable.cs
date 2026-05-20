@@ -9,5 +9,7 @@ namespace OutlandHaven.Inventory
         float DefenceBonus { get; }
         float MaxHealthBonus { get; }
         float MaxStaminaBonus { get; }
+        float MoveSpeedBonusPercent { get; }
+        float StaminaRegenBonus { get; }
     }
 }

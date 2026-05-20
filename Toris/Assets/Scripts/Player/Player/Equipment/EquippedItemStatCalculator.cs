@@ -24,6 +24,8 @@ public static class EquippedItemStatCalculator
             result.DefenceBonus = equipable.DefenceBonus;
             result.MaxHealthBonus = equipable.MaxHealthBonus;
             result.MaxStaminaBonus = equipable.MaxStaminaBonus;
+            result.MoveSpeedBonusPercent = equipable.MoveSpeedBonusPercent;
+            result.StaminaRegenBonus = equipable.StaminaRegenBonus;
         }
 
         if (offensive != null)

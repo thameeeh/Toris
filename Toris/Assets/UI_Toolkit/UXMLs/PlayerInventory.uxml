@@ -12,6 +12,10 @@
                         <ui:Label name="stat-maxStamina" text="Stamina: 0" class="stat-label"/>
                         <ui:Label name="stat-moveSpeed" text="MS: 1.0" class="stat-label"/>
                         <ui:Label name="stat-outgoingDamage" text="Damage: 1.0" class="stat-label"/>
+                        <ui:Label name="stat-attackSpeed" text="Attack Speed: -" class="stat-label"/>
+                        <ui:Label name="stat-damageReduction" text="Damage Reduction: 0%" class="stat-label"/>
+                        <ui:Label name="stat-magicDefense" text="Magic Defense: 0" class="stat-label"/>
+                        <ui:Label name="stat-staminaRegen" text="Stamina Regen: 0/s" class="stat-label"/>
                     </ui:ScrollView>
                 </ui:VisualElement>
                 <ui:VisualElement name="Equipment__Wrapper" class="player-equipment-wrapper">

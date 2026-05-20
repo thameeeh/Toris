@@ -35,8 +35,10 @@ MonoBehaviour:
         TargetSlot: 1
         StrengthBonus: 0
         DefenceBonus: 10
-        MaxHealthBonus: 60
-        MaxStaminaBonus: 0
+        MaxHealthBonus: 70
+        MaxStaminaBonus: -35
+        MoveSpeedBonusPercent: -8
+        StaminaRegenBonus: -4
     - rid: 3501180790566551703
       type: {class: UpgradeableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:

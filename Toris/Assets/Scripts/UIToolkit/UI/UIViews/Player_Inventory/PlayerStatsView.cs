@@ -13,6 +13,10 @@ namespace OutlandHaven.Inventory
         private Label _statMaxStamina;
         private Label _statMoveSpeed;
         private Label _statOutgoingDamage;
+        private Label _statAttackSpeed;
+        private Label _statDamageReduction;
+        private Label _statMagicDefense;
+        private Label _statStaminaRegen;
 
         private bool _eventsBound = false;
 
@@ -28,6 +32,10 @@ namespace OutlandHaven.Inventory
             _statMaxStamina = _topElement.Q<Label>("stat-maxStamina");
             _statMoveSpeed = _topElement.Q<Label>("stat-moveSpeed");
             _statOutgoingDamage = _topElement.Q<Label>("stat-outgoingDamage");
+            _statAttackSpeed = _topElement.Q<Label>("stat-attackSpeed");
+            _statDamageReduction = _topElement.Q<Label>("stat-damageReduction");
+            _statMagicDefense = _topElement.Q<Label>("stat-magicDefense");
+            _statStaminaRegen = _topElement.Q<Label>("stat-staminaRegen");
         }
 
         public void Initialize()
@@ -81,10 +89,38 @@ namespace OutlandHaven.Inventory
                 _statMaxStamina.text = $"Max Stamina: {effects.maxStamina:F0}";
 
             if (_statMoveSpeed != null)
-                _statMoveSpeed.text = $"Move Speed: {effects.moveSpeedMultiplier:F2}x";
+                _statMoveSpeed.text = $"Movement Speed: {effects.moveSpeedMultiplier:F2}x";
 
             if (_statOutgoingDamage != null)
-                _statOutgoingDamage.text = $"Damage: {effects.outgoingDamageMultiplier:F2}x";
+            {
+                float weaponDamage = _hudBridge != null ? _hudBridge.CurrentWeaponDamage : 0f;
+                _statOutgoingDamage.text = weaponDamage > 0f
+                    ? $"Damage: {weaponDamage:F0} ({effects.outgoingDamageMultiplier:F2}x)"
+                    : $"Damage: {effects.outgoingDamageMultiplier:F2}x";
+            }
+
+            if (_statAttackSpeed != null)
+            {
+                float attackSpeed = _hudBridge != null ? _hudBridge.CurrentWeaponAttackSpeed : 0f;
+                _statAttackSpeed.text = attackSpeed > 0f
+                    ? $"Attack Speed: {attackSpeed:F2}/s"
+                    : "Attack Speed: -";
+            }
+
+            if (_statDamageReduction != null)
+            {
+                float damageReductionPercent = (1f - effects.incomingDamageMultiplier) * 100f;
+                _statDamageReduction.text = $"Damage Reduction: {damageReductionPercent:+0.#;-0.#;0}%";
+            }
+
+            if (_statMagicDefense != null)
+            {
+                float magicDefense = _hudBridge != null ? _hudBridge.CurrentMagicDefense : 0f;
+                _statMagicDefense.text = $"Magic Defense: {magicDefense:F0}";
+            }
+
+            if (_statStaminaRegen != null)
+                _statStaminaRegen.text = $"Stamina Regen: {effects.staminaRegenPerSecond:F1}/s";
         }
 
         public void Dispose()

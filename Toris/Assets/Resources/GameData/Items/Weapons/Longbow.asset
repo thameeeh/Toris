@@ -30,7 +30,9 @@ MonoBehaviour:
         StrengthBonus: 20
         DefenceBonus: 0
         MaxHealthBonus: 0
-        MaxStaminaBonus: 0
+        MaxStaminaBonus: -60
+        MoveSpeedBonusPercent: -8
+        StaminaRegenBonus: -4
     - rid: 3501180790566551702
       type: {class: OffensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:

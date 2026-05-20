@@ -34,5 +34,7 @@ MonoBehaviour:
         TargetSlot: 2
         StrengthBonus: 0
         DefenceBonus: 5
-        MaxHealthBonus: 30
-        MaxStaminaBonus: 35
+        MaxHealthBonus: 35
+        MaxStaminaBonus: 15
+        MoveSpeedBonusPercent: -3
+        StaminaRegenBonus: -1

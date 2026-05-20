@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using OutlandHaven.UIToolkit;
+using OutlandHaven.Inventory;
 
 // PURPOSE:
 // - UI-facing bridge for player runtime data
@@ -13,6 +14,7 @@ public class PlayerHUDBridge : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerProgression _playerProgression;
     [SerializeField] private PlayerStatusController _playerStatusController;
+    [SerializeField] private PlayerEquipmentController _playerEquipment;
 
     private GameSessionSO _globalSession;
 
@@ -32,6 +34,9 @@ public class PlayerHUDBridge : MonoBehaviour
     public float CurrentStamina => _playerStats != null ? _playerStats.currentStamina : 0f;
     public float MaxStamina => _playerStats != null ? _playerStats.maxStamina : 0f;
     public PlayerResolvedEffects ResolvedEffects => _playerStats != null ? _playerStats.ResolvedEffects : PlayerResolvedEffects.CreateDefault();
+    public float CurrentWeaponDamage => CalculateCurrentWeaponDamage();
+    public float CurrentWeaponAttackSpeed => CalculateCurrentWeaponAttackSpeed();
+    public float CurrentMagicDefense => CalculateCurrentMagicDefense();
 
     public int CurrentLevel => _playerProgression != null ? _playerProgression.CurrentLevel : 1;
     public float CurrentExperience => _playerProgression != null ? _playerProgression.CurrentExperience : 0f;
@@ -42,6 +47,11 @@ public class PlayerHUDBridge : MonoBehaviour
 
     private void OnValidate()
     {
+        if (_playerEquipment == null)
+        {
+            TryGetComponent(out _playerEquipment);
+        }
+
         if (_playerStats == null)
         {
             Debug.LogWarning($"[PlayerHUDBridge] Missing PlayerStats on {name}", this);
@@ -60,6 +70,11 @@ public class PlayerHUDBridge : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_playerEquipment == null)
+        {
+            TryGetComponent(out _playerEquipment);
+        }
+
         _globalSession = GameSessionSO.LoadDefault();
         if (_globalSession != null)
         {
@@ -84,6 +99,11 @@ public class PlayerHUDBridge : MonoBehaviour
             _playerStatusController.OnStatusApplied += HandleStatusApplied;
             _playerStatusController.OnStatusRemoved += HandleStatusRemoved;
             _playerStatusController.OnStatusDamageTick += HandleStatusDamageTick;
+        }
+
+        if (_playerEquipment != null)
+        {
+            _playerEquipment.OnEquippedItemChanged += HandleEquippedItemChanged;
         }
     }
 
@@ -112,6 +132,11 @@ public class PlayerHUDBridge : MonoBehaviour
             _playerStatusController.OnStatusApplied -= HandleStatusApplied;
             _playerStatusController.OnStatusRemoved -= HandleStatusRemoved;
             _playerStatusController.OnStatusDamageTick -= HandleStatusDamageTick;
+        }
+
+        if (_playerEquipment != null)
+        {
+            _playerEquipment.OnEquippedItemChanged -= HandleEquippedItemChanged;
         }
     }
 
@@ -151,6 +176,11 @@ public class PlayerHUDBridge : MonoBehaviour
         OnResolvedEffectsChanged?.Invoke(resolvedEffects);
     }
 
+    private void HandleEquippedItemChanged(EquipmentSlot slot, ItemInstance item)
+    {
+        OnResolvedEffectsChanged?.Invoke(ResolvedEffects);
+    }
+
     private void HandleLevelChanged(int level, float experience)
     {
         OnLevelChanged?.Invoke(level, experience);
@@ -174,5 +204,52 @@ public class PlayerHUDBridge : MonoBehaviour
     private void HandleStatusDamageTick(PlayerStatusEffectType statusType, float damage)
     {
         OnStatusDamageTick?.Invoke(statusType, damage);
+    }
+
+    private float CalculateCurrentWeaponDamage()
+    {
+        if (_playerEquipment == null || _playerStats == null)
+            return 0f;
+
+        ItemInstance weapon = _playerEquipment.GetEquippedItem(EquipmentSlot.Weapon);
+        if (weapon == null)
+            return 0f;
+
+        PlayerAttackComputedStats attackStats = PlayerCombatCalculator.CalculateAttack(weapon, _playerStats, 0f);
+        return attackStats.FinalAttackDamage;
+    }
+
+    private float CalculateCurrentWeaponAttackSpeed()
+    {
+        if (_playerEquipment == null)
+            return 0f;
+
+        ItemInstance weapon = _playerEquipment.GetEquippedItem(EquipmentSlot.Weapon);
+        if (weapon == null)
+            return 0f;
+
+        WeaponComputedStats weaponStats = EquippedItemStatCalculator.CalculateWeapon(weapon);
+        return weaponStats.IsValid ? weaponStats.AttackSpeed : 0f;
+    }
+
+    private float CalculateCurrentMagicDefense()
+    {
+        if (_playerEquipment == null)
+            return 0f;
+
+        float total = 0f;
+
+        foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
+        {
+            ItemInstance item = _playerEquipment.GetEquippedItem(slot);
+            if (item == null)
+                continue;
+
+            EquippedItemComputedStats stats = EquippedItemStatCalculator.Calculate(item);
+            if (stats.IsValid)
+                total += stats.MagicalDefense;
+        }
+
+        return total;
     }
 }

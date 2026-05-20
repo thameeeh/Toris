@@ -17,3 +17,7 @@ MonoBehaviour:
     modifierMode: 1
     numericValue: 1.5
     boolValue: 0
+  - effectType: 5
+    modifierMode: 1
+    numericValue: 0.85
+    boolValue: 0

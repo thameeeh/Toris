@@ -84,6 +84,8 @@ namespace OutlandHaven.Inventory
                 AddSignedRow(data, "Defense", equipable.DefenceBonus);
                 AddSignedRow(data, "Max Health", equipable.MaxHealthBonus);
                 AddSignedRow(data, "Max Stamina", equipable.MaxStaminaBonus);
+                AddSignedPercentRow(data, "Move Speed", equipable.MoveSpeedBonusPercent);
+                AddSignedSuffixRow(data, "Stamina Regen", equipable.StaminaRegenBonus, "/s");
             }
 
             OffensiveComponent offensive = item.GetComponent<OffensiveComponent>();
@@ -139,6 +141,24 @@ namespace OutlandHaven.Inventory
 
             string sign = value > 0f ? "+" : "";
             data.AddRow(label, $"{sign}{FormatNumber(value)}");
+        }
+
+        private static void AddSignedPercentRow(ItemTooltipData data, string label, float value)
+        {
+            if (value == 0f)
+                return;
+
+            string sign = value > 0f ? "+" : "";
+            data.AddRow(label, $"{sign}{FormatNumber(value)}%");
+        }
+
+        private static void AddSignedSuffixRow(ItemTooltipData data, string label, float value, string suffix)
+        {
+            if (value == 0f)
+                return;
+
+            string sign = value > 0f ? "+" : "";
+            data.AddRow(label, $"{sign}{FormatNumber(value)}{suffix}");
         }
 
         private static string FormatConsumptionSlot(ConsumptionSlot slot)

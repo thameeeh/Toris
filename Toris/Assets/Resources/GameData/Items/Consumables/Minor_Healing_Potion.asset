@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A small potion that grants instant health
   Icon: {fileID: 21300000, guid: c710d7341360251469cf5a580d2e6e15, type: 3}
   MaxStackSize: 10
-  GoldValue: 50
+  GoldValue: 60
   Components:
   - rid: 3501180790566551700
   references:
@@ -27,7 +27,7 @@ MonoBehaviour:
       data:
         EffectMode: 0
         EffectPayload: 0
-        amount: 15
+        amount: 30
         TimedEffectDefinition: {fileID: 0}
         TimedEffectDuration: 5
         CooldownDuration: 18

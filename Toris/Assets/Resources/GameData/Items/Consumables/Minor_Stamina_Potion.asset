@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A small potion that gives stamina
   Icon: {fileID: 21300000, guid: cbeaa0c1cd069724d8a1e2af062dd3af, type: 3}
   MaxStackSize: 12
-  GoldValue: 35
+  GoldValue: 45
   Components:
   - rid: 3501180790566551700
   references:
@@ -27,7 +27,7 @@ MonoBehaviour:
       data:
         EffectMode: 0
         EffectPayload: 1
-        amount: 15
+        amount: 120
         TimedEffectDefinition: {fileID: 0}
         TimedEffectDuration: 5
         CooldownDuration: 18

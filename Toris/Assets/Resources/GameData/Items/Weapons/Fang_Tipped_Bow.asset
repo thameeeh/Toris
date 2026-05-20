@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A hunting bow fitted with wolf fang tips and rough bindings.
   Icon: {fileID: 21300000, guid: 5968ef972d73ac648b3aac626627f903, type: 3}
   MaxStackSize: 1
-  GoldValue: 60
+  GoldValue: 125
   Components:
   - rid: 3501180790566551701
   - rid: 3501180790566551702
@@ -28,13 +28,15 @@ MonoBehaviour:
       type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
         TargetSlot: 4
-        StrengthBonus: 5
+        StrengthBonus: 12
         DefenceBonus: 0
+        MaxHealthBonus: 0
+        MaxStaminaBonus: 0
     - rid: 3501180790566551702
       type: {class: OffensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
-        BaseDamage: 13
-        AttackSpeed: 1
+        BaseDamage: 25
+        AttackSpeed: 0.9
     - rid: 3501180790566551703
       type: {class: UpgradeableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:

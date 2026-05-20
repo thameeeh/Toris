@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: Stiff hide bracers that protect the forearms
   Icon: {fileID: 21300000, guid: 5f363af04dd4445b88e3dfd4b67fa507, type: 3}
   MaxStackSize: 1
-  GoldValue: 34
+  GoldValue: 65
   Components:
   - rid: 3501180790566551701
   - rid: 3501180790566551702
@@ -26,11 +26,13 @@ MonoBehaviour:
     - rid: 3501180790566551701
       type: {class: DefensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
-        PhysicalDefense: 3
+        PhysicalDefense: 7
         MagicalDefense: 0
     - rid: 3501180790566551702
       type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
         TargetSlot: 3
-        StrengthBonus: 0
-        DefenceBonus: 2
+        StrengthBonus: 4
+        DefenceBonus: 4
+        MaxHealthBonus: 20
+        MaxStaminaBonus: 10

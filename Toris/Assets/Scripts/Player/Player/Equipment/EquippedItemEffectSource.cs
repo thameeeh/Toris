@@ -32,6 +32,22 @@ public sealed class EquippedItemEffectSource : IPlayerEffectSource
                 stats.StrengthBonus * 0.01f));
         }
 
+        if (stats.MaxHealthBonus != 0f)
+        {
+            modifiers.Add(new PlayerEffectModifier(
+                PlayerEffectType.MaxHealth,
+                PlayerEffectModifierMode.Additive,
+                stats.MaxHealthBonus));
+        }
+
+        if (stats.MaxStaminaBonus != 0f)
+        {
+            modifiers.Add(new PlayerEffectModifier(
+                PlayerEffectType.MaxStamina,
+                PlayerEffectModifierMode.Additive,
+                stats.MaxStaminaBonus));
+        }
+
         float defensiveValue = stats.DefenceBonus + stats.PhysicalDefense;
 
         if (defensiveValue != 0f)

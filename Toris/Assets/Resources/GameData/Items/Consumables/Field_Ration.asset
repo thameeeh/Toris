@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A plain ration that restores a little health in a pinch.
   Icon: {fileID: 21300000, guid: b1698ce191a2c704cbbe4d813e07db2f, type: 3}
   MaxStackSize: 10
-  GoldValue: 20
+  GoldValue: 25
   Components:
   - rid: 3501180790566551801
   references:
@@ -27,7 +27,7 @@ MonoBehaviour:
       data:
         EffectMode: 0
         EffectPayload: 0
-        amount: 8
+        amount: 15
         TimedEffectDefinition: {fileID: 0}
         TimedEffectDuration: 0
         CooldownDuration: 12

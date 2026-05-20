@@ -82,6 +82,8 @@ namespace OutlandHaven.Inventory
                 data.AddRow("Slot", HumanizeIdentifier(equipable.TargetSlot.ToString()));
                 AddSignedRow(data, "Strength", equipable.StrengthBonus);
                 AddSignedRow(data, "Defense", equipable.DefenceBonus);
+                AddSignedRow(data, "Max Health", equipable.MaxHealthBonus);
+                AddSignedRow(data, "Max Stamina", equipable.MaxStaminaBonus);
             }
 
             OffensiveComponent offensive = item.GetComponent<OffensiveComponent>();

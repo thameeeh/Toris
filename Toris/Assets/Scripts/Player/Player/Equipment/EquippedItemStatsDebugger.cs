@@ -28,6 +28,8 @@ public class EquippedItemStatsDebugger : MonoBehaviour
             $"Item: {item.BaseItem.ItemName}\n" +
             $"StrengthBonus: {stats.StrengthBonus}\n" +
             $"DefenceBonus: {stats.DefenceBonus}\n" +
+            $"MaxHealthBonus: {stats.MaxHealthBonus}\n" +
+            $"MaxStaminaBonus: {stats.MaxStaminaBonus}\n" +
             $"BaseDamage: {stats.BaseDamage}\n" +
             $"AttackSpeed: {stats.AttackSpeed}\n" +
             $"PhysicalDefense: {stats.PhysicalDefense}\n" +

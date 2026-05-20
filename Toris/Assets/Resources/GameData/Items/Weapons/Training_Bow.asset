@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A worn practice bow with low draw weight. Good enough to survive with.
   Icon: {fileID: 21300000, guid: 5968ef972d73ac648b3aac626627f903, type: 3}
   MaxStackSize: 1
-  GoldValue: 18
+  GoldValue: 20
   Components:
   - rid: 3501180790566551701
   - rid: 3501180790566551702
@@ -27,10 +27,12 @@ MonoBehaviour:
       type: {class: EquipableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
         TargetSlot: 4
-        StrengthBonus: 1
+        StrengthBonus: 0
         DefenceBonus: 0
+        MaxHealthBonus: 0
+        MaxStaminaBonus: 0
     - rid: 3501180790566551702
       type: {class: OffensiveComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
       data:
-        BaseDamage: 6
-        AttackSpeed: 1.1
+        BaseDamage: 5
+        AttackSpeed: 1.2

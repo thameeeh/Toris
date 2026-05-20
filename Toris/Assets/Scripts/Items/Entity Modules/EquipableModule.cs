@@ -19,10 +19,16 @@ namespace OutlandHaven.Inventory
         public EquipmentSlot TargetSlot;
         public float StrengthBonus;
         public float DefenceBonus;
+        [Tooltip("Flat max health added while this item is equipped.")]
+        public float MaxHealthBonus;
+        [Tooltip("Flat max stamina added while this item is equipped.")]
+        public float MaxStaminaBonus;
 
         EquipmentSlot IEquipable.TargetSlot => TargetSlot;
         float IEquipable.StrengthBonus => StrengthBonus;
         float IEquipable.DefenceBonus => DefenceBonus;
+        float IEquipable.MaxHealthBonus => MaxHealthBonus;
+        float IEquipable.MaxStaminaBonus => MaxStaminaBonus;
 
         public override string GetStackingValidationMessage(InventoryItemSO owner, int maxStackSize)
         {

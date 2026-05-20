@@ -113,6 +113,7 @@ Keep movement math and target selection inside behavior SOs, not inside wrappers
 - locks the final charge direction
 - picks a point past the player using `runThroughDistance`
 - moves at `Boar.ChargeSpeed`
+- stops early when `TileNavWorld` reports blocked navigation ahead
 - applies one damage event while in striking distance
 - records the committed charge direction for flee
 
@@ -156,6 +157,7 @@ Boar wandering and fleeing should respect navigation:
 - use `TilePathfinder` to reject unreachable points
 - use `GridPathAgent` for steering
 - avoid direct fallback while `TileNavWorld` exists
+- charge still uses direct movement, but probes `TileNavWorld` ahead and completes early before entering a blocked tile
 
 If `TileNavWorld` is missing, direct movement is allowed so small test scenes can still validate the prefab.
 
@@ -281,6 +283,9 @@ Runtime values on `Boar`:
 - `runThroughDistance = 2.5`
 - `chargeTargetTolerance = 0.25`
 - `chargeCooldown = 2.25`
+- `stopOnBlockedNavigation = true`
+- `blockedNavigationProbeDistance = 0.45`
+- `blockedNavigationSideProbeOffset = 0.25`
 
 `Boar_Flee_AfterCharge`:
 
@@ -301,6 +306,7 @@ Recommended feel adjustments:
 - If the boar starts too far away, lower `AggroCheck` radius.
 - If the charge feels too slow, raise `ChargeSpeed` slightly.
 - If the boar runs too far through the player, lower `runThroughDistance` or `chargeDuration`.
+- If the boar stops too early near tree corners, lower `blockedNavigationSideProbeOffset`.
 - If the post-charge slowdown feels too sudden, raise `decelerationDuration`.
 - If the boar turns too much while escaping, lower `fleeAngleSpread`.
 - If the boar re-triggers too soon, raise `postFleeChargeIgnoreDuration`.

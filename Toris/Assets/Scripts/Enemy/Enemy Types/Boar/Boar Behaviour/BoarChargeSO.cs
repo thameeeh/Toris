@@ -9,6 +9,9 @@ public class BoarChargeSO : AttackSOBase<Boar>
     [SerializeField, Min(0.01f)] private float chargeTargetTolerance = 0.25f;
     [SerializeField, Min(0.0001f)] private float minChargeDirectionSqr = 0.0001f;
     [SerializeField, Min(0f)] private float chargeCooldown = 2.25f;
+    [SerializeField] private bool stopOnBlockedNavigation = true;
+    [SerializeField, Min(0.01f)] private float blockedNavigationProbeDistance = 0.45f;
+    [SerializeField, Min(0f)] private float blockedNavigationSideProbeOffset = 0.25f;
 
     private Vector2 _chargeDirection;
     private Vector2 _chargeTarget;
@@ -96,6 +99,13 @@ public class BoarChargeSO : AttackSOBase<Boar>
             return;
         }
 
+        if (IsChargePathBlocked())
+        {
+            IsComplete = true;
+            enemy.StopBoar();
+            return;
+        }
+
         enemy.MoveBoar(_chargeDirection, enemy.ChargeSpeed);
     }
 
@@ -174,6 +184,37 @@ public class BoarChargeSO : AttackSOBase<Boar>
         return currentPosition + chargeDirection * runThroughDistance;
     }
 
+    private bool IsChargePathBlocked()
+    {
+        if (!stopOnBlockedNavigation)
+            return false;
+
+        TileNavWorld nav = TileNavWorld.Instance;
+        if (nav == null)
+            return false;
+
+        if (_chargeDirection.sqrMagnitude <= minChargeDirectionSqr)
+            return false;
+
+        Vector2 chargeDirection = _chargeDirection.normalized;
+        float probeDistance = Mathf.Max(
+            blockedNavigationProbeDistance,
+            enemy.ChargeSpeed * Time.fixedDeltaTime);
+        Vector2 probePosition = enemy.GetPosition2D() + chargeDirection * probeDistance;
+
+        if (!nav.IsWalkableWorldPos(probePosition))
+            return true;
+
+        if (blockedNavigationSideProbeOffset <= 0f)
+            return false;
+
+        Vector2 sideOffset = new Vector2(-chargeDirection.y, chargeDirection.x)
+            * blockedNavigationSideProbeOffset;
+
+        return !nav.IsWalkableWorldPos(probePosition + sideOffset)
+               || !nav.IsWalkableWorldPos(probePosition - sideOffset);
+    }
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
@@ -183,6 +224,8 @@ public class BoarChargeSO : AttackSOBase<Boar>
         chargeTargetTolerance = Mathf.Max(0.01f, chargeTargetTolerance);
         minChargeDirectionSqr = Mathf.Max(0.0001f, minChargeDirectionSqr);
         chargeCooldown = Mathf.Max(0f, chargeCooldown);
+        blockedNavigationProbeDistance = Mathf.Max(0.01f, blockedNavigationProbeDistance);
+        blockedNavigationSideProbeOffset = Mathf.Max(0f, blockedNavigationSideProbeOffset);
     }
 #endif
 }

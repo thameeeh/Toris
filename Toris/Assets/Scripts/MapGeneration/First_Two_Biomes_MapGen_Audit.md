@@ -68,7 +68,7 @@ Current Forest wildlife:
 | Badger | Not wired in MapGeneration | No `Badger` references found under `MapGeneration/` | Plains and possibly Forest later | Passive/reactive wildlife | Do not add to MapGeneration spawn configs until the separate enemy/content handoff provides a stable prefab/behavior decision. |
 | Boar | Not wired in MapGeneration | No `Boar` references found under `MapGeneration/` | Possible Plains light danger, maybe passive fallback | Experimental light-danger or wildlife role | Keep out of spawn configs until the separate behavior prototype is proven readable. |
 | Regular wolves | Encounter-bound only | `Sites/WolfDen/WolfDenEncounterConfig.asset` references leader/minion wolf prefabs | Forest | Main hostile territorial pressure | There is no standalone Forest wildlife/patrol spawn rule for wolves yet. Keep that as a later handoff point instead of changing enemy AI here. |
-| Wolf dens | Plains and Forest | `Plains/BuildSteps/SitePlacementRuleBuildStepDefinition.asset` includes `Plains/PlacementRules/WolfDenSiteRare.asset` and `Plains/PlacementRules/WolfDenSiteCommon.asset`; `Forest/BuildSteps/SitePlacementRuleBuildStepDefinition.asset` includes `Forest/PlacementRules/WolfDenSiteRare.asset` and `Forest/PlacementRules/WolfDenSiteCommon.asset` | Forest main, Plains rare or absent | Territorial sites and pack identity | Plains common wolf-den budget is 4 to 6; rare budget is 0 to 1. Forest common budget is 8 to 12; rare budget is 0 to 2. |
+| Wolf dens | Plains and Forest | `Plains/BuildSteps/SitePlacementRuleBuildStepDefinition.asset` includes `Plains/PlacementRules/WolfDenSiteRare.asset` and `Plains/PlacementRules/WolfDenSiteCommon.asset`; `Forest/BuildSteps/SitePlacementRuleBuildStepDefinition.asset` includes `Forest/PlacementRules/WolfDenSiteRare.asset` and `Forest/PlacementRules/WolfDenSiteCommon.asset` | Forest main, Plains rare or absent | Territorial sites and pack identity | Plains common wolf-den budget is 2 to 4; rare budget is 0 to 1, for 2 to 5 total. Forest common budget is 8 to 12; rare budget is 1 to 3, for 9 to 15 total. |
 | Necromancer graves | Forest | `Forest/PlacementRules/NecromancerGraveSitePlacementRuleDefinition.asset` | Forest or later, rare | Optional supernatural danger | Current Forest budget is 5 to 15 graves with 40-tile spacing, 0.9 placement radius, and 32-tile origin avoidance. Do not add to Plains. |
 | Blood Mages | Not directly wired in MapGeneration | No `Blood` or `BloodMage` MapGeneration spawn config found | Encounter-owned only | Necromancer-owned summon content | Keep them out of generic wildlife and biome site-placement rules. |
 
@@ -81,7 +81,7 @@ Current Forest wildlife:
    - Reuse `Shared/SiteDefinitions/WolfDenSiteDefinition.asset` and `Sites/WolfDen/WolfDenEncounterConfig.asset` unless separate enemy/content work asks for new runtime data.
 
 2. Reduce Plains wolf-den pressure.
-   - First pass changed the Plains wolf-den budget from 10-to-10 to 4-to-7.
+   - First pass changed the Plains wolf-den budget from 10-to-10 to 4-to-7; current tuning is 2-to-5 total.
    - Revisit after Boar/Badger authoring and seed sampling.
 
 3. Keep deer as the first safe wildlife baseline.

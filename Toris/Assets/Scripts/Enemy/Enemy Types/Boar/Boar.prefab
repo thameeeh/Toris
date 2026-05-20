@@ -259,9 +259,9 @@ MonoBehaviour:
   threatensPassiveCreatures: 0
   debugAttackLogs: 0
   ChargeDamage: 12
-  WanderSpeed: 1.4
-  ChargeSpeed: 6
-  FleeSpeed: 3.5
+  WanderSpeed: 2
+  ChargeSpeed: 4.5
+  FleeSpeed: 3
   ChargeKnockback: 4
   BoarIdleBase: {fileID: 11400000, guid: 0228237bf9944d8fbf9d63c8f1d3f0fe, type: 2}
   BoarWanderBase: {fileID: 11400000, guid: 537c44cee34b491a927eb315b7f3e274, type: 2}

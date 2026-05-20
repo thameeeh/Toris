@@ -18,3 +18,6 @@ MonoBehaviour:
   chargeTargetTolerance: 0.25
   minChargeDirectionSqr: 0.0001
   chargeCooldown: 2.25
+  stopOnBlockedNavigation: 1
+  blockedNavigationProbeDistance: 0.45
+  blockedNavigationSideProbeOffset: 0.25

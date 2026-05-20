@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: fang_tipped_bow
   Description: A hunting bow fitted with wolf fang tips and rough bindings.
-  Icon: {fileID: 21300000, guid: 9fe47cc5276ff7b40be82a66dce5be0f, type: 3}
+  Icon: {fileID: 21300000, guid: 5968ef972d73ac648b3aac626627f903, type: 3}
   MaxStackSize: 1
   GoldValue: 60
   Components:

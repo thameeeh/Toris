@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
   ItemName: hide_leggings
   Description: Leggings strengthened with cut strips of hide
-  Icon: {fileID: 21300000, guid: 957fa27d834b4d24ab09d3420f0490d4, type: 3}
+  Icon: {fileID: 21300000, guid: 194a99046cd428a49afdeb59fea34115, type: 3}
   MaxStackSize: 1
   GoldValue: 36
   Components:

@@ -16,8 +16,8 @@ MonoBehaviour:
   wolfDenStampDefinition: {fileID: 11400000, guid: 1cd26a25d6d46e64baf34359d68cc42b, type: 2}
   wolfDenGroundTile: {fileID: 11400000, guid: c73cdd602c67ccf42be9c4e7199f1822, type: 2}
   wolfDenStampSize: 3
-  minWolfDenCount: 4
-  maxWolfDenCount: 6
+  minWolfDenCount: 2
+  maxWolfDenCount: 4
   wolfDenMinSpacingTiles: 40
   placementRadiusFactor: 0.9
   avoidOriginRadiusTiles: 18

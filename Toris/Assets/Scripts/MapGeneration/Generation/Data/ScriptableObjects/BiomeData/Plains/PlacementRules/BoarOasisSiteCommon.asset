@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1fb56187b327149ef16e48490389c5, type: 3}
+  m_Name: BoarOasisSiteCommon
+  m_EditorClassIdentifier: Assembly-CSharp::BoarOasisSitePlacementRuleDefinition
+  boarOasisSiteDefinition: {fileID: 11400000, guid: 99a225304ab11872b8c893251891ab5a, type: 2}
+  boarOasisStampDefinition: {fileID: 11400000, guid: 5ab1ed870b464bb49b3d5c1c41d9c0a7, type: 2}
+  minSiteCount: 4
+  maxSiteCount: 8
+  minSpacingTiles: 56
+  placementRadiusFactor: 0.85
+  avoidOriginRadiusTiles: 50
+  avoidExistingStamps: 1
+  avoidExistingSites: 1
+  avoidRoadTiles: 1
+  roadSpacingTiles: 0
+  avoidTerrainOverrides: 1
+  avoidNavigationBlockers: 1
+  avoidObstacles: 1

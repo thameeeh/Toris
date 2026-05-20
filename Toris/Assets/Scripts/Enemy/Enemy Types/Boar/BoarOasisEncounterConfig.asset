@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b437c51c985ea6343c0f7abe574da6, type: 3}
+  m_Name: BoarOasisEncounterConfig
+  m_EditorClassIdentifier: Assembly-CSharp::BoarOasisEncounterConfig
+  boarPrefab: {fileID: -7866276830643414300, guid: a7cc6ae7adad2474b98022aab047abad, type: 3}
+  minBoarCount: 1
+  maxBoarCount: 3
+  occupantPolicy:
+    respawnDelay: 24
+    spawnRadius: 4
+    keepOccupantsOnUnloadIfChasingPlayer: 1
+    keepChaseIfWithinPlayerRange: 40
+    homeRadius: 8

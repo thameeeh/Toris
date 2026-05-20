@@ -70,3 +70,8 @@ MonoBehaviour:
     defaultCapacity: 16
     maxSize: 32
     parentOverride: {fileID: 0}
+  - prefab: {fileID: -7866276830643414300, guid: a7cc6ae7adad2474b98022aab047abad, type: 3}
+    prewarmCount: 12
+    defaultCapacity: 16
+    maxSize: 32
+    parentOverride: {fileID: 0}

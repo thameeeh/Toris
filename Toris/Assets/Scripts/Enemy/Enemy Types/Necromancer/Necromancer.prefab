@@ -553,6 +553,8 @@ GameObject:
   - component: {fileID: 4139749955504758593}
   - component: {fileID: 5282169703739860041}
   - component: {fileID: 1935405487196941734}
+  - component: {fileID: 132948584985060435}
+  - component: {fileID: 6595202018657184556}
   m_Layer: 7
   m_Name: Necromancer
   m_TagString: Enemy
@@ -725,6 +727,44 @@ MonoBehaviour:
   indicatorColor: {r: 0.96, g: 0.06, b: 0.1, a: 1}
   indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
   sortingOrder: 100
+--- !u!114 &132948584985060435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028104305884219924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e00a7bc10623934b82a94eafb442afc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySfx
+  enemy: {fileID: 4139749955504758593}
+  modules:
+  - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
+--- !u!114 &6595202018657184556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028104305884219924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a40ee2737834ab5b38a771923f9f6c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  enemy: {fileID: 4139749955504758593}
+  localOffset: {x: 0, y: 1.15, z: 0}
+  width: 0.75
+  height: 0.08
+  borderSize: 0.015
+  hideWhenFull: 1
+  hideWhenDead: 1
+  backgroundColor: {r: 0.12, g: 0.02, b: 0.02, a: 0.85}
+  fillColor: {r: 0.85, g: 0.12, b: 0.08, a: 0.95}
+  sortingOrder: 10000
+  sortingLayerName: 
 --- !u!1 &8803150979140353744
 GameObject:
   m_ObjectHideFlags: 0

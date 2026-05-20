@@ -323,24 +323,6 @@ MonoBehaviour:
   musicLibrary: {fileID: 11400000, guid: 827bd703b366e1e4198a9684ae0b6e40, type: 2}
   initialSfxVoices: 12
   defaultSfxMixerGroup: {fileID: 0}
---- !u!114 &225650377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225650374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fb7c79422e34d14f920ec0482ca19c6, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::UISfxEventBridge
-  uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
-  eventVolumeMultiplier: 1
-  force2D: 1
-  inventoryOpenSfxId: ui_inventory_open
-  inventoryCloseSfxId: ui_inventory_close
-  screenRules: []
 --- !u!4 &225650376
 Transform:
   m_ObjectHideFlags: 0
@@ -356,6 +338,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &225650377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225650374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb7c79422e34d14f920ec0482ca19c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UISfxEventBridge
+  uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  eventVolumeMultiplier: 1
+  force2D: 1
+  inventoryOpenSfxId: ui_inventory_open
+  inventoryCloseSfxId: ui_inventory_close
+  screenRules: []
 --- !u!1001 &289700196
 PrefabInstance:
   m_ObjectHideFlags: 0

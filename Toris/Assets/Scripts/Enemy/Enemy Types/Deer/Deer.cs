@@ -7,6 +7,10 @@ public class Deer : Enemy, IWildlifeGroupMember
     [SerializeField, Min(0f)] private float walkSpeed = 1f;
     [SerializeField, Min(0f)] private float runSpeed = 3f;
 
+    [Header("Scene/Initial Transformation Path (Optional)")]
+    [SerializeField] private Transform initialStartPoint;
+    [SerializeField] private Transform initialFinishPoint;
+
     [Header("Deer Fear")]
     [SerializeField, Min(0f)] private float minimumFleeDuration = 2f;
     [SerializeField, Min(0f)] private float calmDelayAfterThreatLost = 1f;
@@ -40,9 +44,57 @@ public class Deer : Enemy, IWildlifeGroupMember
     private Vector2 lastThreatPosition;
     private WildlifeGroup wildlifeGroup;
     private bool hasDetachedFromHerd;
+    private Vector2 runtimeFinishPosition;
 
     public float WalkSpeed => walkSpeed;
     public float RunSpeed => runSpeed;
+    public Transform InitialStartPoint => initialStartPoint;
+    public Transform InitialFinishPoint => initialFinishPoint;
+    public Vector2 RuntimeFinishPosition => runtimeFinishPosition;
+    public bool InitialPathCompleted { get; private set; } = true;
+
+    public void CompleteInitialPath()
+    {
+        InitialPathCompleted = true;
+    }
+
+    public void SetInitialPath(Transform startPoint, Transform finishPoint)
+    {
+        SetInitialPath(startPoint, finishPoint, 0f);
+    }
+
+    public void SetInitialPath(Transform startPoint, Transform finishPoint, float deviation)
+    {
+        initialStartPoint = startPoint;
+        initialFinishPoint = finishPoint;
+
+        if (initialStartPoint != null && initialFinishPoint != null)
+        {
+            transform.position = initialStartPoint.position;
+            if (rb != null)
+            {
+                rb.position = initialStartPoint.position;
+                rb.linearVelocity = Vector2.zero;
+            }
+
+            Vector2 baseFinish = finishPoint.position;
+            if (deviation > 0f)
+            {
+                Vector2 randomOffset = Random.insideUnitCircle * deviation;
+                runtimeFinishPosition = baseFinish + randomOffset;
+            }
+            else
+            {
+                runtimeFinishPosition = baseFinish;
+            }
+
+            InitialPathCompleted = false;
+        }
+        else
+        {
+            InitialPathCompleted = true;
+        }
+    }
     public bool ShouldKeepFleeing
     {
         get
@@ -194,6 +246,22 @@ public class Deer : Enemy, IWildlifeGroupMember
         ResetFearMemory();
         hasDetachedFromHerd = false;
         currentAnimationStateName = string.Empty;
+
+        if (initialStartPoint != null && initialFinishPoint != null)
+        {
+            transform.position = initialStartPoint.position;
+            if (rb != null)
+            {
+                rb.position = initialStartPoint.position;
+                rb.linearVelocity = Vector2.zero;
+            }
+            runtimeFinishPosition = initialFinishPoint.position;
+            InitialPathCompleted = false;
+        }
+        else
+        {
+            InitialPathCompleted = true;
+        }
 
         StateMachine.Reset();
         StateMachine.Initialize(IdleState);

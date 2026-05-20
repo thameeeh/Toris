@@ -73,6 +73,7 @@ namespace OutlandHaven.UIToolkit
             PlayerPotionInventory = null;
             PlayerHUD = null;
             _snapshotRegistry.Clear();
+            _playerSkills.Reset();
         }
 
         #region Facade: Snapshot Delegation
@@ -113,6 +114,7 @@ namespace OutlandHaven.UIToolkit
                 PlayerInventory,
                 PlayerEquipment,
                 PlayerPotionInventory,
+                _playerSkills,
                 _snapshotRegistry
             );
         }
@@ -128,6 +130,7 @@ namespace OutlandHaven.UIToolkit
                 PlayerInventory,
                 PlayerEquipment,
                 PlayerPotionInventory,
+                _playerSkills,
                 _snapshotRegistry
             );
         }

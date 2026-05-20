@@ -19,6 +19,7 @@ namespace OutlandHaven.SaveSystem
             InventoryManager playerInventory,
             InventoryManager equipmentInventory,
             InventoryManager potionInventory,
+            PlayerSkillTracker skillTracker,
             RuntimeSnapshotRegistry snapshotRegistry)
         {
             GameSaveData saveData = new GameSaveData();
@@ -63,6 +64,16 @@ namespace OutlandHaven.SaveSystem
             saveData.PlayerEquipment = ExtractInventoryData(equipmentInventory);
             saveData.PlayerPotion = ExtractInventoryData(potionInventory);
 
+            // --- 4. EXPORT SKILLS ---
+            if (skillTracker != null)
+            {
+                saveData.SkillProgress = new SavedSkillProgressData
+                {
+                    AvailableSP = skillTracker.AvailableSP,
+                    UnlockedSkillIDs = new List<string>(skillTracker.UnlockedSkillIDs)
+                };
+            }
+
             saveData.PixelCrushersDialogueSaveData = global::PixelCrushersDialogueSaveBridge.CaptureSaveData();
 
             return saveData;
@@ -77,6 +88,7 @@ namespace OutlandHaven.SaveSystem
             InventoryManager playerInventory,
             InventoryManager equipmentInventory,
             InventoryManager potionInventory,
+            PlayerSkillTracker skillTracker,
             RuntimeSnapshotRegistry snapshotRegistry)
         {
             if (saveData == null) return;
@@ -101,6 +113,12 @@ namespace OutlandHaven.SaveSystem
             RestoreOrSnapshot(playerInventory, saveData.PlayerBackpack, itemDatabase, snapshotRegistry.CapturePlayerInventory);
             RestoreOrSnapshot(equipmentInventory, saveData.PlayerEquipment, itemDatabase, snapshotRegistry.CaptureEquipmentInventory);
             RestoreOrSnapshot(potionInventory, saveData.PlayerPotion, itemDatabase, snapshotRegistry.CapturePotionInventory);
+
+            // --- 3. RESTORE SKILL PROGRESSION ---
+            if (skillTracker != null && saveData.SkillProgress != null)
+            {
+                skillTracker.LoadState(saveData.SkillProgress.AvailableSP, saveData.SkillProgress.UnlockedSkillIDs);
+            }
 
             global::PixelCrushersDialogueSaveBridge.RequestApplySaveData(saveData.PixelCrushersDialogueSaveData);
         }

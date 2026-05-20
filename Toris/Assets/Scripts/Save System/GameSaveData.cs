@@ -24,9 +24,19 @@ namespace OutlandHaven.SaveSystem
         public SavedInventoryData PlayerEquipment;
         public SavedInventoryData PlayerPotion;
 
+        // Skills
+        public SavedSkillProgressData SkillProgress;
+
         // Quest bridge: Pixel Crushers serializes quest states, quest entries, and Lua variables into this blob.
         // Future menu save-slot loads may deserialize this before MainArea/Dialogue Manager exists, so GameSessionSO defers applying it through the quest save bridge.
         public string PixelCrushersDialogueSaveData;
+    }
+
+    [System.Serializable]
+    public class SavedSkillProgressData
+    {
+        public int AvailableSP;
+        public List<string> UnlockedSkillIDs = new List<string>();
     }
 
     /// <summary>

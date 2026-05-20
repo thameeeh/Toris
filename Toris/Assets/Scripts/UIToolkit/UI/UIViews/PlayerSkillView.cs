@@ -124,7 +124,7 @@ namespace OutlandHaven.Skills
                 Button node = new Button();
                 node.AddToClassList("skill-node");
                 
-                Label label = new Label(skill.skillName);
+                Label label = new Label(skill.skillID);
                 label.AddToClassList("skill-node__label");
                 node.Add(label);
 
@@ -184,7 +184,7 @@ namespace OutlandHaven.Skills
         {
             _currentlySelectedSkill = skill;
 
-            _infoName.text = skill.skillName;
+            _infoName.text = skill.skillID;
             _infoDesc.text = skill.description;
             _infoCost.text = $"Cost: {skill.costSP} SP";
 

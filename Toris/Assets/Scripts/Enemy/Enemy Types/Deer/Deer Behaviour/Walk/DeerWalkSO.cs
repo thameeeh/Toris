@@ -18,6 +18,13 @@ public class DeerWalkSO : WalkSOBase<Deer>
     private GridPathAgent pathAgent;
     private readonly List<Vector3> candidatePath = new List<Vector3>();
 
+    [Header("Stuck Detection")]
+    [SerializeField, Min(0f)] private float stuckThresholdDuration = 0.5f;
+    [SerializeField, Min(0.001f)] private float stuckMoveThreshold = 0.05f;
+
+    private Vector2 lastPosition;
+    private float stuckTimer;
+
     public override void Initialize(GameObject gameObject, Deer enemy, Transform player)
     {
         base.Initialize(gameObject, enemy, player);
@@ -34,13 +41,33 @@ public class DeerWalkSO : WalkSOBase<Deer>
         base.DoEnterLogic();
 
         Vector2 currentPosition = enemy.GetPosition2D();
-        Vector2 wanderOrigin = enemy.TryGetHerdWalkOrigin(out Vector2 herdOrigin)
-            ? herdOrigin
-            : currentPosition;
 
-        targetPosition = GetWalkablePointNearOrigin(wanderOrigin, wanderRadius);
+        if (!enemy.InitialPathCompleted && enemy.InitialFinishPoint != null)
+        {
+            targetPosition = enemy.RuntimeFinishPosition;
+        }
+        else
+        {
+            Vector2 wanderOrigin = enemy.TryGetHerdWalkOrigin(out Vector2 herdOrigin)
+                ? herdOrigin
+                : currentPosition;
+
+            targetPosition = GetWalkablePointNearOrigin(wanderOrigin, wanderRadius);
+        }
+
         currentMoveDirection = Vector2.zero;
-        enemy.PlayWalkAnimation();
+        if (!enemy.InitialPathCompleted)
+        {
+            enemy.PlayRunAnimation();
+        }
+        else
+        {
+            enemy.PlayWalkAnimation();
+        }
+
+        // Reset stuck detection
+        lastPosition = currentPosition;
+        stuckTimer = 0f;
     }
 
     public override void DoFrameUpdateLogic()
@@ -58,6 +85,10 @@ public class DeerWalkSO : WalkSOBase<Deer>
 
         if ((targetPosition - currentPosition).sqrMagnitude <= toleranceSquared)
         {
+            if (!enemy.InitialPathCompleted)
+            {
+                enemy.CompleteInitialPath();
+            }
             enemy.StateMachine.ChangeState(enemy.IdleState);
             return;
         }
@@ -69,6 +100,43 @@ public class DeerWalkSO : WalkSOBase<Deer>
 
         if (enemy.StateMachine.CurrentEnemyState != enemy.WalkState)
             return;
+
+        Vector2 currentPosition = enemy.GetPosition2D();
+
+        // Stuck detection
+        float distanceMoved = (currentPosition - lastPosition).magnitude;
+        lastPosition = currentPosition;
+
+        if (currentMoveDirection.sqrMagnitude > minMoveDirectionSqr)
+        {
+            if (distanceMoved < stuckMoveThreshold * Time.fixedDeltaTime)
+            {
+                stuckTimer += Time.fixedDeltaTime;
+                if (stuckTimer >= stuckThresholdDuration)
+                {
+                    // Stuck! Turn around:
+                    Vector2 currentDir = targetPosition - currentPosition;
+                    if (currentDir.sqrMagnitude > 0.0001f)
+                    {
+                        targetPosition = currentPosition - currentDir.normalized * wanderRadius;
+                    }
+                    else
+                    {
+                        targetPosition = currentPosition - currentMoveDirection.normalized * wanderRadius;
+                    }
+                    stuckTimer = 0f;
+                    currentMoveDirection = -currentMoveDirection; // immediately reverse lerp direction
+                }
+            }
+            else
+            {
+                stuckTimer = 0f;
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;
+        }
 
         Vector2 desiredDirection = Vector2.zero;
 
@@ -89,7 +157,14 @@ public class DeerWalkSO : WalkSOBase<Deer>
                 desiredDirection.normalized,
                 directionLerpSpeed * Time.fixedDeltaTime);
 
-            enemy.Walk(currentMoveDirection.normalized);
+            if (!enemy.InitialPathCompleted)
+            {
+                enemy.Run(currentMoveDirection.normalized);
+            }
+            else
+            {
+                enemy.Walk(currentMoveDirection.normalized);
+            }
         }
         else
         {
@@ -221,6 +296,8 @@ public class DeerWalkSO : WalkSOBase<Deer>
         minTargetDistanceFromCurrent = Mathf.Max(0f, minTargetDistanceFromCurrent);
         directionLerpSpeed = Mathf.Max(0.1f, directionLerpSpeed);
         minMoveDirectionSqr = Mathf.Max(0.0001f, minMoveDirectionSqr);
+        stuckThresholdDuration = Mathf.Max(0f, stuckThresholdDuration);
+        stuckMoveThreshold = Mathf.Max(0.001f, stuckMoveThreshold);
     }
 #endif
 }

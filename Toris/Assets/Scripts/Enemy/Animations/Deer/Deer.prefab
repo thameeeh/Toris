@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 873641076655474808}
   - component: {fileID: 5929809391116375468}
-  - component: {fileID: 8589326611238850044}
-  - component: {fileID: 3311900337159396351}
   - component: {fileID: 6021160404583765322}
   - component: {fileID: 3005107034901539011}
   - component: {fileID: 8149859906027217146}
@@ -57,9 +55,9 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   lootTable: {fileID: 11400000, guid: 0d2f4c8a6b9e4d47a1b2c3d4e5f60718, type: 2}
   autoCreateHealthBar: 0
-  healthBar: {fileID: 8589326611238850044}
+  healthBar: {fileID: 0}
   autoCreateAlertIndicator: 0
-  alertIndicator: {fileID: 3311900337159396351}
+  alertIndicator: {fileID: 0}
   questEnemyId: 
   questEnemyTypeOrTag: 
   isPassivePrey: 1
@@ -80,47 +78,6 @@ MonoBehaviour:
   EnemyWalkBase: {fileID: 11400000, guid: 14c4dff2f1131134695527e68cb017f2, type: 2}
   EnemyRunAwayBase: {fileID: 11400000, guid: c585c2a34b4ccd94680e664847e6126c, type: 2}
   EnemyDeadBase: {fileID: 11400000, guid: b6dea79f9085ddc49ba709f19e159892, type: 2}
---- !u!114 &8589326611238850044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371996453589810426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a40ee2737834ab5b38a771923f9f6c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
-  enemy: {fileID: 5929809391116375468}
-  localOffset: {x: 0, y: 1.15, z: 0}
-  width: 0.75
-  height: 0.08
-  borderSize: 0.015
-  hideWhenFull: 1
-  hideWhenDead: 1
-  backgroundColor: {r: 0.12, g: 0.02, b: 0.02, a: 0.85}
-  fillColor: {r: 0.85, g: 0.12, b: 0.08, a: 0.95}
-  sortingOrder: 10000
-  sortingLayerName: 
---- !u!114 &3311900337159396351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371996453589810426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1505b050a147d241bdb3f3f2ca60b05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
-  indicatorOffset: {x: 0, y: 1.45, z: 0}
-  displayDuration: 1.25
-  alertSprite: {fileID: 21300000, guid: 87c3c62b424df364f9c2ee6e733a60f9, type: 3}
-  indicatorColor: {r: 0.96, g: 0.06, b: 0.1, a: 1}
-  indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
-  sortingOrder: 100
 --- !u!114 &6021160404583765322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,10 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridPathAgent
   repathInterval: 0.4
-  maxPathRange: 25
+  maxPathRange: 7
   waypointReachThreshold: 0.1
   targetChangeThreshold: 0.5
-  allowDirectFallbackWhenNoPath: 0
+  allowDirectFallbackWhenNoPath: 1
   debugPathing: 0
 --- !u!50 &3005107034901539011
 Rigidbody2D:
@@ -292,7 +249,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3660584849189703444, guid: d93c0b16e094bf84db353cb044d90a68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

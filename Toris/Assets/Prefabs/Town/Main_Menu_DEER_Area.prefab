@@ -1832,7 +1832,7 @@ GameObject:
   - component: {fileID: 7784153455749666482}
   - component: {fileID: 526738214781314356}
   m_Layer: 0
-  m_Name: MainMenu_DEER_Area
+  m_Name: Main_Menu_DEER_Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

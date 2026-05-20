@@ -6,7 +6,7 @@ using System;
 [Serializable] // Makes it visible in the Unity Inspector for debugging!
 public class PlayerSkillTracker
 {
-    [SerializeField] private int _availableSP = 0;
+    [SerializeField] private int _availableSP = 10;
 
     // HashSet is vastly more performant for looking up "Does player have X?" than a List
     [SerializeField] private List<string> _unlockedSkillIDs = new List<string>();
@@ -22,7 +22,7 @@ public class PlayerSkillTracker
     {
         if (HasSkill(skill.skillID))
         {
-            Debug.LogWarning($"Skill {skill.skillName} is already unlocked!");
+            Debug.LogWarning($"Skill {skill.skillID} is already unlocked!");
             return false;
         }
 
@@ -60,5 +60,21 @@ public class PlayerSkillTracker
     public bool HasSkill(string skillID)
     {
         return _unlockedSkillIDs.Contains(skillID);
+    }
+
+    public List<string> UnlockedSkillIDs => _unlockedSkillIDs;
+
+    public void LoadState(int availableSP, List<string> unlockedIDs)
+    {
+        _availableSP = availableSP;
+        _unlockedSkillIDs = unlockedIDs != null 
+            ? new List<string>(unlockedIDs) 
+            : new List<string>();
+    }
+
+    public void Reset()
+    {
+        _availableSP = 10;
+        _unlockedSkillIDs.Clear();
     }
 }

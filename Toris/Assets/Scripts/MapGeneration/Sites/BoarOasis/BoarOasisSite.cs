@@ -244,6 +244,7 @@ public sealed class BoarOasisSite : MonoBehaviour, IPoolable, IWorldSiteContextC
 
         homeAnchor.Center = transform.position;
         homeAnchor.Radius = occupantPolicy.HomeRadius;
+        boar.RefreshHomeAnchor();
     }
 
     private void OnBoarReleased(Boar boar)
@@ -332,6 +333,8 @@ public sealed class BoarOasisSite : MonoBehaviour, IPoolable, IWorldSiteContextC
             homeAnchor.Center = boar.transform.position;
             if (occupantPolicy != null)
                 homeAnchor.Radius = occupantPolicy.HomeRadius;
+
+            boar.RefreshHomeAnchor();
         }
     }
 }

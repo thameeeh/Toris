@@ -16,6 +16,7 @@ public class BoarFleeSO : EnemyBehaviourSO<Boar>
     [SerializeField, Min(0f)] private float decelerationDuration = 0.75f;
     [SerializeField, Min(0.0001f)] private float minMoveDirectionSqr = 0.0001f;
     [SerializeField, Min(0f)] private float postFleeChargeIgnoreDuration = 1.5f;
+    [SerializeField, Min(0f)] private float returnHomeThresholdPadding = 0.75f;
 
     private readonly List<Vector3> _candidatePath = new List<Vector3>();
     private GridPathAgent _pathAgent;
@@ -54,7 +55,12 @@ public class BoarFleeSO : EnemyBehaviourSO<Boar>
         if ((_fleeTarget - enemy.GetPosition2D()).sqrMagnitude <= targetToleranceSqr)
             RetargetFlee();
 
-        if (Time.time >= _fleeUntilTime && !enemy.IsAggroed)
+        if (Time.time < _fleeUntilTime || enemy.IsAggroed)
+            return;
+
+        if (enemy.HasHome && enemy.IsOutsideHome(returnHomeThresholdPadding))
+            enemy.StateMachine.ChangeState(enemy.WanderState);
+        else
             enemy.StateMachine.ChangeState(enemy.IdleState);
     }
 
@@ -211,6 +217,7 @@ public class BoarFleeSO : EnemyBehaviourSO<Boar>
         decelerationDuration = Mathf.Max(0f, decelerationDuration);
         minMoveDirectionSqr = Mathf.Max(0.0001f, minMoveDirectionSqr);
         postFleeChargeIgnoreDuration = Mathf.Max(0f, postFleeChargeIgnoreDuration);
+        returnHomeThresholdPadding = Mathf.Max(0f, returnHomeThresholdPadding);
     }
 #endif
 }

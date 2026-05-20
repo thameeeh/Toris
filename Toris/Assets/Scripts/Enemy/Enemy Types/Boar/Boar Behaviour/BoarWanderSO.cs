@@ -12,6 +12,9 @@ public class BoarWanderSO : EnemyBehaviourSO<Boar>
     [SerializeField, Min(0.1f)] private float directionLerpSpeed = 6f;
     [SerializeField, Min(0.0001f)] private float minMoveDirectionSqr = 0.0001f;
 
+    [Header("Home")]
+    [SerializeField, Range(0.1f, 1f)] private float homeWanderRadiusUsage = 0.7f;
+
     private readonly List<Vector3> _candidatePath = new List<Vector3>();
     private GridPathAgent _pathAgent;
     private Vector2 _targetPosition;
@@ -89,11 +92,12 @@ public class BoarWanderSO : EnemyBehaviourSO<Boar>
     private Vector2 PickWanderTarget()
     {
         Vector2 currentPosition = enemy.GetPosition2D();
+        Vector2 origin = ResolveWanderOrigin(currentPosition, out float radius);
         float minTargetDistanceSqr = minTargetDistanceFromCurrent * minTargetDistanceFromCurrent;
 
         for (int i = 0; i < maxCandidateChecks; i++)
         {
-            Vector2 candidate = currentPosition + Random.insideUnitCircle * wanderRadius;
+            Vector2 candidate = origin + Random.insideUnitCircle * radius;
             if ((candidate - currentPosition).sqrMagnitude < minTargetDistanceSqr)
                 continue;
 
@@ -102,6 +106,17 @@ public class BoarWanderSO : EnemyBehaviourSO<Boar>
         }
 
         return currentPosition;
+    }
+
+    private Vector2 ResolveWanderOrigin(Vector2 currentPosition, out float radius)
+    {
+        radius = wanderRadius;
+        if (!enemy.HasHome)
+            return currentPosition;
+
+        radius = Mathf.Max(0.1f, enemy.HomeRadius * homeWanderRadiusUsage);
+
+        return (Vector2)enemy.HomeCenter;
     }
 
     private bool IsReachable(Vector2 worldPosition)
@@ -130,6 +145,7 @@ public class BoarWanderSO : EnemyBehaviourSO<Boar>
         minTargetDistanceFromCurrent = Mathf.Max(0f, minTargetDistanceFromCurrent);
         directionLerpSpeed = Mathf.Max(0.1f, directionLerpSpeed);
         minMoveDirectionSqr = Mathf.Max(0.0001f, minMoveDirectionSqr);
+        homeWanderRadiusUsage = Mathf.Clamp(homeWanderRadiusUsage, 0.1f, 1f);
     }
 #endif
 }

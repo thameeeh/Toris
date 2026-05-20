@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e406df3001db1e458885ac9563e86a7, type: 3}
+  m_Name: LootTable_Boar
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyLootTableSO
+  itemDrops:
+  - item: {fileID: 11400000, guid: 3b864a487c9b451ebf87c089dd4c170d, type: 2}
+    dropChance: 0.85
+    minQuantity: 1
+    maxQuantity: 3
+  - item: {fileID: 11400000, guid: 8792eb4d2a6241b5ad17dbe6469a2242, type: 2}
+    dropChance: 0.35
+    minQuantity: 1
+    maxQuantity: 2
+  - item: {fileID: 11400000, guid: 6b6c3f05ee9c4d539e8b3df47cf0bcfb, type: 2}
+    dropChance: 0.18
+    minQuantity: 1
+    maxQuantity: 1
+  - item: {fileID: 11400000, guid: e31f7a8a221e479c8f69468a8ac58392, type: 2}
+    dropChance: 0.1
+    minQuantity: 1
+    maxQuantity: 1
+  minGold: 1
+  maxGold: 8
+  minXp: 4
+  maxXp: 10
+  goldRewardSfxId: item_coin_pickup

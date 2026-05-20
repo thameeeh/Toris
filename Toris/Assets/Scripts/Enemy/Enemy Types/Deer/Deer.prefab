@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6021160404583765322}
   - component: {fileID: 3005107034901539011}
   - component: {fileID: 8149859906027217146}
+  - component: {fileID: -1784361540093206787}
   m_Layer: 7
   m_Name: Deer
   m_TagString: Enemy
@@ -212,6 +213,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.67, y: 0.7}
   m_EdgeRadius: 0
+--- !u!114 &-1784361540093206787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371996453589810426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e00a7bc10623934b82a94eafb442afc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySfx
+  enemy: {fileID: 0}
+  modules:
+  - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
 --- !u!1 &1673074315738929446
 GameObject:
   m_ObjectHideFlags: 0

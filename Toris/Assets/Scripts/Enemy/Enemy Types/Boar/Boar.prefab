@@ -207,6 +207,9 @@ GameObject:
   - component: {fileID: 4524734523046629285}
   - component: {fileID: 6941194705821153432}
   - component: {fileID: 4408825560570056154}
+  - component: {fileID: 7386277523014349010}
+  - component: {fileID: -4225594346870086098}
+  - component: {fileID: -7528611810860509336}
   m_Layer: 7
   m_Name: Boar
   m_TagString: Untagged
@@ -248,7 +251,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <rb>k__BackingField: {fileID: 4524734523046629285}
   playerTransform: {fileID: 0}
-  lootTable: {fileID: 0}
+  lootTable: {fileID: 11400000, guid: d87f6a3a7c984ad4b4a87cf97400b6d1, type: 2}
   autoCreateHealthBar: 1
   healthBar: {fileID: 0}
   autoCreateAlertIndicator: 1
@@ -263,6 +266,7 @@ MonoBehaviour:
   ChargeSpeed: 4.5
   FleeSpeed: 3
   ChargeKnockback: 4
+  fallbackHomeRadius: 4
   BoarIdleBase: {fileID: 11400000, guid: 0228237bf9944d8fbf9d63c8f1d3f0fe, type: 2}
   BoarWanderBase: {fileID: 11400000, guid: 537c44cee34b491a927eb315b7f3e274, type: 2}
   BoarChargeBase: {fileID: 11400000, guid: aaf47244f48141a79d2c01db6796c5ac, type: 2}
@@ -349,6 +353,62 @@ MonoBehaviour:
   targetChangeThreshold: 0.5
   allowDirectFallbackWhenNoPath: 0
   debugPathing: 0
+--- !u!114 &7386277523014349010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072214318023193329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1505b050a147d241bdb3f3f2ca60b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAlertIndicator
+  indicatorOffset: {x: 0, y: 1.45, z: 0}
+  displayDuration: 1.25
+  alertSprite: {fileID: 21300000, guid: 7da9dbdd16aeab4419704e9af3aa5d4d, type: 3}
+  indicatorColor: {r: 0.96, g: 0.06, b: 0.1, a: 1}
+  indicatorScale: {x: 0.5, y: 0.5, z: 0.5}
+  sortingOrder: 100
+--- !u!114 &-4225594346870086098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072214318023193329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e00a7bc10623934b82a94eafb442afc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySfx
+  enemy: {fileID: -7866276830643414300}
+  modules:
+  - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
+--- !u!114 &-7528611810860509336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072214318023193329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a40ee2737834ab5b38a771923f9f6c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  enemy: {fileID: -7866276830643414300}
+  localOffset: {x: 0, y: 1.15, z: 0}
+  width: 0.75
+  height: 0.08
+  borderSize: 0.015
+  hideWhenFull: 1
+  hideWhenDead: 1
+  backgroundColor: {r: 0.12, g: 0.02, b: 0.02, a: 0.85}
+  fillColor: {r: 0.85, g: 0.12, b: 0.08, a: 0.95}
+  sortingOrder: 10000
+  sortingLayerName: 
 --- !u!1 &2085941357701463458
 GameObject:
   m_ObjectHideFlags: 0

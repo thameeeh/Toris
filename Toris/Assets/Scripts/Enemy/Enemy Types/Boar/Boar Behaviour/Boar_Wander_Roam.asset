@@ -19,3 +19,4 @@ MonoBehaviour:
   minTargetDistanceFromCurrent: 1
   directionLerpSpeed: 6
   minMoveDirectionSqr: 0.0001
+  homeWanderRadiusUsage: 0.7

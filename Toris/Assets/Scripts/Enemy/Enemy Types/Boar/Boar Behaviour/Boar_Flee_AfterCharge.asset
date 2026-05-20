@@ -24,3 +24,4 @@ MonoBehaviour:
   decelerationDuration: 0.75
   minMoveDirectionSqr: 0.0001
   postFleeChargeIgnoreDuration: 1.5
+  returnHomeThresholdPadding: 0.75

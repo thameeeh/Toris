@@ -16,6 +16,9 @@ public class Boar : Enemy
     public float FleeSpeed = 2.2f;
     public float ChargeKnockback = 4f;
 
+    [Header("Home")]
+    [SerializeField] private float fallbackHomeRadius = 4f;
+
     [Space]
     [Header("Boar-Specific SOs")]
     [SerializeField] private BoarIdleSO BoarIdleBase;
@@ -38,6 +41,7 @@ public class Boar : Enemy
     private float _ignoreStartleUntilTime;
     private bool _hasLastThreatPosition;
     private bool _hasLastChargeDirection;
+    private HomeAnchor _homeAnchor;
 
     public BoarIdleState IdleState { get; private set; }
     public BoarWanderState WanderState { get; private set; }
@@ -57,11 +61,24 @@ public class Boar : Enemy
         && BoarChargeBaseInstance != null
         && BoarChargeBaseInstance.CanStartCharge;
     public bool ShouldIgnoreStartle => Time.time < _ignoreStartleUntilTime;
+    public bool HasHome => _homeAnchor != null;
+    public Vector3 HomeCenter => HasHome ? _homeAnchor.Center : transform.position;
+    public float HomeRadius => HasHome ? _homeAnchor.Radius : Mathf.Max(0.01f, fallbackHomeRadius);
+    public float DistanceToHome => Vector2.Distance(GetPosition2D(), (Vector2)HomeCenter);
+    public bool IsOutsideHome(float extraPadding)
+    {
+        return DistanceToHome > HomeRadius + Mathf.Max(0f, extraPadding);
+    }
+    public void RefreshHomeAnchor()
+    {
+        _homeAnchor = GetComponent<HomeAnchor>();
+    }
 
     protected override void Awake()
     {
         base.Awake();
 
+        RefreshHomeAnchor();
         _baseChargeDamage = ChargeDamage;
         _baseChargeKnockback = ChargeKnockback;
         CacheRenderers();
@@ -145,6 +162,7 @@ public class Boar : Enemy
         StopFallbackDeathRoutine();
         RestoreRendererColors();
         StopBoar();
+        _homeAnchor = null;
         base.OnDespawned();
     }
 

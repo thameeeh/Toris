@@ -68,7 +68,7 @@ This map turns the current rough sound pile into authoring families. Use it as t
 | Wolf death | `enemy_wolf_death` | Wolf death variants | Wolf death | Wired through `EnemySfxModule_WolfDeath` on wolf prefabs | Randomizes variants in one definition. |
 | Deer/boar death | `enemy_deer_boar_death` | `Deer_Exhale` | Deer or boar death | Wired through `EnemySfxModule_DeerBoarDeath` on deer/boar prefabs | Shared temporary death family. |
 | Den death | `world_den_death` | `Den_Death`, optional rock layer | Den destroyed | Wired through `WolfDen.clearedSfxId` | Specific one-shot. |
-| Arrow impact | `combat_arrow_hit` | `SFX_Arrow_Hit`, existing `ArrowImpact` | Arrow impact | Existing enemy impact path, incomplete coverage | Normalize ID usage later. |
+| Arrow impact | `enemy_impacthit` | Existing `ArrowImpact` | Arrow hits enemies, walls, or world objects | Enemy hits use `EnemySfxModule_ImpactHit`; non-enemy/world impacts use `ArrowProjectile.impactSfxId` | Shared impact sound for now. |
 
 ## Progression And Music
 

@@ -9,6 +9,10 @@ public class ArrowProjectile : Projectile
     [Header("Hit Behavior")]
     [SerializeField] private bool despawnOnFirstHit = true; // if true, the projectile despawn on the first hit of something
 
+    [Header("SFX")]
+    [SerializeField] private string impactSfxId = "enemy_impacthit";
+    [SerializeField] private bool impactSfxForce2D = false;
+
     // cached components
     private Rigidbody2D rb;
     private Collider2D myCollider;
@@ -58,6 +62,7 @@ public class ArrowProjectile : Projectile
         if (other == ownerCollider) return;
 
         bool appliedDamage = TryApplyDamage(other);
+        TryPlayImpactSfx(other, GetImpactPoint(other), appliedDamage);
 
         if (despawnOnFirstHit)
             DespawnWithReason($"trigger-hit target={FormatCollider(other)} damaged={appliedDamage}");
@@ -68,6 +73,7 @@ public class ArrowProjectile : Projectile
         if (ownerCollider && collision.collider == ownerCollider) return;
 
         bool appliedDamage = TryApplyDamage(collision.collider);
+        TryPlayImpactSfx(collision.collider, GetImpactPoint(collision), appliedDamage);
 
         if (despawnOnFirstHit)
             DespawnWithReason($"collision-hit target={FormatCollider(collision.collider)} damaged={appliedDamage}");
@@ -242,6 +248,43 @@ public class ArrowProjectile : Projectile
         }
 
         return false;
+    }
+
+    private void TryPlayImpactSfx(Collider2D target, Vector2 hitPoint, bool appliedDamage)
+    {
+        if (!ShouldPlayImpactSfx(target, appliedDamage))
+            return;
+
+        var request = SfxPlayRequest.Default;
+        request.force2D = impactSfxForce2D;
+
+        // SFX-only hook: arrow impact audio plays when the projectile collides.
+        // Enemy damage impacts remain owned by EnemySfx to avoid double-playing enemy hits.
+        AudioBootstrap.Sfx.PlayAt(impactSfxId, hitPoint, request);
+    }
+
+    private bool ShouldPlayImpactSfx(Collider2D target, bool appliedDamage)
+    {
+        if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(impactSfxId))
+            return false;
+
+        if (target == null)
+            return false;
+
+        return !appliedDamage || target.GetComponentInParent<Enemy>() == null;
+    }
+
+    private Vector2 GetImpactPoint(Collider2D target)
+    {
+        return target != null ? target.ClosestPoint(transform.position) : transform.position;
+    }
+
+    private Vector2 GetImpactPoint(Collision2D collision)
+    {
+        if (collision != null && collision.contactCount > 0)
+            return collision.GetContact(0).point;
+
+        return GetImpactPoint(collision != null ? collision.collider : null);
     }
 
     private void DespawnWithReason(string reason)

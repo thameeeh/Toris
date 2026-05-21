@@ -181,6 +181,12 @@ Wolf attack sounds are configured on `Wolf_Attack_QuickBite`.
 
 Wolf den collapse sounds are configured on `WolfDen.Cleared Sfx Id`, for example `world_den_death`.
 
+Arrow impact sounds are configured on the `PlayerArrow` prefab.
+
+1. Set `Impact Sfx Id` to `enemy_impacthit`.
+2. Keep `Impact Sfx Force 2D` disabled for positional wall/world hits.
+3. Enemy damage impacts still play through enemy `EnemySfx.modules`, so the projectile skips enemy double-play.
+
 ## Rule Field Guide
 
 - `Trigger`: the player event that activates the rule.

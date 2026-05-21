@@ -3,10 +3,10 @@
         
         <ui:VisualElement style="flex-direction: row; align-items: center;">
             <ui:VisualElement name="menu-btn-icon" style="width: 24px; height: 24px; margin-right: 8px; background-color: rgba(0,0,0,0);"/> 
-            <ui:Label name="menu-btn-label" text="Inventory" style="color: white; -unity-font-style: bold; font-size: 14px;"/>
+            <ui:Label name="menu-btn-label" text="Inventory" class="hud-menu-button-label" style="color: white; -unity-font-style: bold;"/>
         </ui:VisualElement>
 
-        <ui:Label name="menu-btn-shortcut" text="(I)" style="color: rgb(180, 180, 180); font-size: 12px;"/>
+        <ui:Label name="menu-btn-shortcut" text="(I)" class="hud-menu-button-shortcut" style="color: rgb(180, 180, 180);"/>
         
     </ui:Button>
 </ui:UXML>

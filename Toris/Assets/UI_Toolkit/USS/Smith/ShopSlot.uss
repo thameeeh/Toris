@@ -51,6 +51,7 @@
 }
 
 .shop-item-name {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
@@ -76,6 +77,7 @@
 }
 
 .shop-item-price {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-coin-gold);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
@@ -86,11 +88,12 @@
 
 /* Re-implementing quantity for the shop slot without global conflicts */
 .shop-item-qty {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     position: absolute;
     bottom: 2px;
     left: 4px;
     color: var(--color-text-light);
-    font-size: 14px;
+    font-size: 18px;
     -unity-font-style: bold;
     -unity-text-outline-width: 1.5px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.8);

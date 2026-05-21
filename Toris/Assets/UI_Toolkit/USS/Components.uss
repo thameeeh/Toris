@@ -12,6 +12,7 @@
 /* --- BUTTONS --- 
    Standardized interactable elements. */
 .standard-button {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     background-color: var(--color-bg-panel);
     border-color: var(--color-border-default);
     border-width: 1px;
@@ -49,11 +50,12 @@
 }
 
 .item-quantity {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     position: absolute;
     bottom: 2px;
     left: 4px;
     color: var(--color-text-light);
-    font-size: 14px;
+    font-size: 18px;
     -unity-font-style: bold;
     -unity-text-outline-width: 1.5px;
     -unity-text-outline-color: var(--color-text-outline);
@@ -90,8 +92,9 @@
 }
 
 .panel-tab-label {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-border-default);
-    font-size: 18px;
+    font-size: 24px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     picking-mode: Ignore;
@@ -104,6 +107,7 @@
 /* --- TYPOGRAPHY --- 
    Global text styles. */
 .panel-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-h2);
     margin-bottom: 20px;
@@ -116,6 +120,7 @@
 }
 
 .text-white-bald {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-text-align: middle-center;

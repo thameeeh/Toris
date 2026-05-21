@@ -59,14 +59,14 @@
 
 .item-tooltip__title {
     color: var(--color-text-light);
-    font-size: 18px;
+    font-size: 24px;
     -unity-font-style: bold;
     margin-bottom: 4px;
 }
 
 .item-tooltip__description {
     color: rgb(205, 198, 188);
-    font-size: 13px;
+    font-size: 16px;
     white-space: normal;
     margin-bottom: 8px;
 }
@@ -85,13 +85,13 @@
 
 .item-tooltip__row-label {
     color: rgb(160, 154, 145);
-    font-size: 12px;
+    font-size: 16px;
     flex-grow: 1;
 }
 
 .item-tooltip__row-value {
     color: var(--color-text-light);
-    font-size: 12px;
+    font-size: 16px;
     -unity-font-style: bold;
     -unity-text-align: middle-right;
     flex-grow: 1;

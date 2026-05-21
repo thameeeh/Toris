@@ -17,6 +17,7 @@
 }
 
 .shop-header-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light); /* Fixed Rule 2 Violation */
     font-size: var(--font-size-h2); /* Standardized typography */
     -unity-font-style: bold;
@@ -28,6 +29,7 @@
 }
 
 .shop-gold-text {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: var(--font-size-body); 
     color: var(--color-coin-gold); /* Fixed Rule 2 Violation */
     -unity-font-style: bold;
@@ -87,6 +89,7 @@
 }
 
 .shop-item-name {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
@@ -108,6 +111,7 @@
 }
 
 .shop-item-price {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-coin-gold);
     font-size: var(--font-size-body);
     -unity-font-style: bold;

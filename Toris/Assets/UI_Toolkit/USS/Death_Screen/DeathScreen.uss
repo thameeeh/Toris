@@ -46,6 +46,7 @@
 }
 
 .death-screen__title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: rgb(238, 233, 221);
     font-size: 76px;
     -unity-font-style: bold;
@@ -56,7 +57,7 @@
 
 .death-screen__subtitle {
     color: rgba(222, 173, 151, 0.92);
-    font-size: 18px;
+    font-size: 22px;
     -unity-text-align: middle-center;
     margin-top: 6px;
 }
@@ -77,8 +78,9 @@
 }
 
 .death-screen__summary-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: rgb(238, 213, 171);
-    font-size: 20px;
+    font-size: 24px;
     -unity-font-style: bold;
     margin-bottom: 12px;
 }
@@ -99,19 +101,21 @@
 
 .death-screen__metric-label {
     color: rgba(238, 233, 221, 0.74);
-    font-size: 15px;
+    font-size: 18px;
 }
 
 .death-screen__metric-value {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: rgb(240, 226, 200);
-    font-size: 16px;
+    font-size: 20px;
     -unity-font-style: bold;
     -unity-text-align: middle-right;
 }
 
 .death-screen__items-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: rgba(238, 213, 171, 0.94);
-    font-size: 14px;
+    font-size: 18px;
     -unity-font-style: bold;
     margin-top: 2px;
     margin-bottom: 8px;
@@ -132,20 +136,20 @@
 
 .death-screen__item-name {
     color: rgba(238, 233, 221, 0.9);
-    font-size: 14px;
+    font-size: 18px;
     flex-grow: 1;
 }
 
 .death-screen__item-source {
     color: rgba(222, 173, 151, 0.78);
-    font-size: 12px;
+    font-size: 16px;
     -unity-text-align: middle-right;
     min-width: 86px;
 }
 
 .death-screen__item-message {
     color: rgba(238, 233, 221, 0.72);
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .death-screen__actions {
@@ -155,6 +159,7 @@
 }
 
 .death-screen__button {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     min-width: 190px;
     height: 54px;
     margin-left: 10px;

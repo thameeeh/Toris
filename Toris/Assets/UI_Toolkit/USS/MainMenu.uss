@@ -21,6 +21,7 @@
 }
 
 .main-menu-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: var(--font-size-h1);
     -unity-text-align: middle-center;
     margin-bottom: 60px;
@@ -33,6 +34,7 @@
 }
 
 .main-menu-button {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     height: 60px;
     margin-bottom: 15px;
     font-size: var(--font-size-h3);
@@ -76,12 +78,13 @@
 }
 
 .main-menu-close-button {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     position: absolute;
     top: 20px;
     right: 20px;
     width: 40px;
     height: 40px;
-    font-size: 30px;
+    font-size: 36px;
     background-color: transparent;
     border-width: 0;
     color: var(--color-text-light);

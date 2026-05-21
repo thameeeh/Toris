@@ -38,6 +38,7 @@
 }
 
 .forge-plus-label {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light); /* Replaced 'white' */
     font-size: var(--font-size-h2); /* Replaced '24px' */
     margin-left: 15px;
@@ -98,6 +99,7 @@
 }
 
 .forge-recipe-header {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-h3);
     -unity-font-style: bold;
@@ -153,8 +155,9 @@
 }
 
 .forge-blueprint-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
-    font-size: 16px;
+    font-size: 20px;
     -unity-font-style: bold;
 }
 

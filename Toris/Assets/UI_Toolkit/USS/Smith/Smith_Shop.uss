@@ -55,14 +55,14 @@
 /* --- NEW LIST ITEM LAYOUT (The Row) --- */
 .shop-list-item {
     flex-direction: row; /* Horizontal layout for the row */
-    height: 90px;
+    height: 132px;
     flex-shrink: 0; /* Rule 4: Prevent ScrollView from squishing rows */
     background-color: var(--color-shop-slot-bg);
     border-width: 1px;
     border-color: var(--color-shop-slot-border);
     border-radius: 4px;
-    margin-bottom: 8px;
-    padding: 6px;
+    margin-bottom: 10px;
+    padding: 10px;
     transition-duration: 0.15s;
 }
 
@@ -73,8 +73,8 @@
 
 /* Internal layout for the list item */
 .shop-item-icon-wrapper {
-    width: 76px;
-    height: 76px;
+    width: 104px;
+    height: 104px;
     flex-shrink: 0;
     background-color: var(--color-bg-dark);
     border-width: 1px;
@@ -86,6 +86,9 @@
     flex-grow: 1; /* Pushes the price/buy section to the right */
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .shop-item-name {
@@ -93,12 +96,14 @@
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
-    margin-bottom: 4px;
+    min-height: 38px;
+    margin-bottom: 8px;
 }
 .shop-item-description {
     color: var(--color-border-default);
     font-size: var(--font-size-small);
     white-space: normal; /* Enables multi-line text */
+    min-height: 56px;
 }
 
 .shop-item-commerce {

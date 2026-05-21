@@ -5,6 +5,8 @@ using OutlandHaven.UIToolkit;
 
 public class InventoryActionController : MonoBehaviour
 {
+    private const string DefaultEquipSfxId = "ui_equip_armor";
+
     [Header("Runtime References")]
     private InventoryManager _playerInventory;
     private InventoryManager _equipmentInventory;
@@ -15,6 +17,9 @@ public class InventoryActionController : MonoBehaviour
     [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
     [SerializeField] private PlayerEffectSourceController _playerEffectSourceController;
     [SerializeField] private GameSessionSO _gameSession;
+
+    [Header("SFX")]
+    [SerializeField] private string equipSfxId = DefaultEquipSfxId;
 
     private PlayerConsumableController _consumableController;
 
@@ -210,6 +215,7 @@ public class InventoryActionController : MonoBehaviour
         }
 
         _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+        PlayEquipSfx();
         return true;
     }
 
@@ -247,7 +253,20 @@ public class InventoryActionController : MonoBehaviour
 
         equipmentSlot.Clear();
         _uiInventoryEvents?.OnInventoryUpdated?.Invoke();
+        PlayEquipSfx();
         return true;
+    }
+
+    private void PlayEquipSfx()
+    {
+        // SFX-only hook: called after equip or unequip inventory moves have succeeded.
+        // It must not affect inventory, equipment slots, stats, or UI refresh behavior.
+        if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(equipSfxId))
+            return;
+
+        SfxPlayRequest request = SfxPlayRequest.Default;
+        request.force2D = true;
+        AudioBootstrap.Sfx.Play(equipSfxId, request);
     }
 
     public bool CanEquip(InventorySlot slot)

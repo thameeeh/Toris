@@ -188,6 +188,7 @@ MonoBehaviour:
   enemy: {fileID: 0}
   modules:
   - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
+  - {fileID: 11400000, guid: f6d778d2ae0d4d94b7d10bb848ddc253, type: 2}
 --- !u!114 &-4756421904425567404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +287,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3660584849189703444, guid: d93c0b16e094bf84db353cb044d90a68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

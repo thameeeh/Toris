@@ -353,14 +353,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 #endif
     }
 
-    public void DamageAggroTarget(float amount, HitData hitData, bool requireStrikingDistance = true)
+    public bool DamageAggroTarget(float amount, HitData hitData, bool requireStrikingDistance = true)
     {
         if (requireStrikingDistance && !IsWithinStrikingDistance)
         {
 #if UNITY_EDITOR
             DebugAttackLog($"DamageAggroTarget blocked: striking distance false amount={amount:0.##} target={GetAttackDebugTargetSummary()}");
 #endif
-            return;
+            return false;
         }
 
         IEnemyAggroTarget target = AggroTarget;
@@ -380,7 +380,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 #if UNITY_EDITOR
             DebugAttackLog($"DamageAggroTarget aborted: no valid target amount={amount:0.##}");
 #endif
-            return;
+            return false;
+        }
+
+        if (target is PlayerDamageReceiver damageReceiver && damageReceiver.IsInvulnerable && !hitData.bypassIFrames)
+        {
+#if UNITY_EDITOR
+            DebugAttackLog($"DamageAggroTarget blocked: target has i-frames -> {GetAttackDebugTargetSummary(target)} amount={amount:0.##}");
+#endif
+            return false;
         }
 
         hitData.damage = amount;
@@ -388,6 +396,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         DebugAttackLog($"DamageAggroTarget hit -> {GetAttackDebugTargetSummary(target)} amount={amount:0.##}");
 #endif
         target.ReceiveEnemyHit(amount, hitData);
+        return true;
     }
 
     public bool TryGetAggroTargetPosition(out Vector2 position)

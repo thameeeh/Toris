@@ -23,6 +23,10 @@ MonoBehaviour:
   - categoryName: Enemy
     definitions:
     - {fileID: 11400000, guid: 0aec95896c079e345857bdd436937536, type: 2}
+    - {fileID: 11400000, guid: 71c2a6ef35518fd4f930ba2eff99928c, type: 2}
+    - {fileID: 11400000, guid: 284300930af68d44ba1c0f7257486b6c, type: 2}
+    - {fileID: 11400000, guid: 74681efd7d1879e4ca69d9757ab1eeca, type: 2}
+    - {fileID: 11400000, guid: a857dfa8fe9b1f14e86efa71a3ea5dd9, type: 2}
   - categoryName: UI
     definitions:
     - {fileID: 11400000, guid: 85a34ae0ba3180945a827b20ddf5bd57, type: 2}
@@ -30,6 +34,14 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 71149bf0ade7966429ad1052f05ccdc8, type: 2}
     - {fileID: 11400000, guid: f6a90ea8b388b18479feb8efe1431550, type: 2}
     - {fileID: 11400000, guid: e6bb935d15333a540b2238a5a29844be, type: 2}
+    - {fileID: 11400000, guid: 66a54f08e5d2ba048a76c422ffcf456d, type: 2}
+  - categoryName: Crafting
+    definitions:
+    - {fileID: 11400000, guid: b5bde4baef8df2448a339b0ecca54b83, type: 2}
+    - {fileID: 11400000, guid: 9b7befc2594d096408edffa13e6dad2e, type: 2}
   - categoryName: Items
     definitions:
     - {fileID: 11400000, guid: dbe96644d22a39843b56a58f2c3bb2fe, type: 2}
+  - categoryName: World
+    definitions:
+    - {fileID: 11400000, guid: 3eda5f3823d20174490089543bf7fcaa, type: 2}

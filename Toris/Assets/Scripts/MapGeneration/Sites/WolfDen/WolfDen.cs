@@ -15,6 +15,10 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
     [SerializeField] private GameObject activeVisual;
     [SerializeField] private GameObject collapsedVisual;
 
+    [Header("SFX")]
+    [SerializeField] private string clearedSfxId = "world_den_death";
+    [SerializeField] private bool clearedSfxForce2D = false;
+
     private Collider2D[] cachedColliders;
     private bool cleared;
 
@@ -152,7 +156,21 @@ public sealed class WolfDen : MonoBehaviour, IDamageable, IPoolable, IWorldSiteB
         ApplyVisualState(true, playCollapseAnimation: true);
 
         SetCollidersEnabled(false);
+        PlayClearedSfx();
         Cleared?.Invoke();
+    }
+
+    private void PlayClearedSfx()
+    {
+        if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(clearedSfxId))
+            return;
+
+        var request = SfxPlayRequest.Default;
+        request.force2D = clearedSfxForce2D;
+
+        // SFX-only hook: den collapse audio plays after the den is marked consumed.
+        // It must not affect site state, visuals, colliders, encounter clearing, or pooling.
+        AudioBootstrap.Sfx.PlayAt(clearedSfxId, WorldPosition, request);
     }
 
     private void ApplyVisualState(bool collapsed, bool playCollapseAnimation)

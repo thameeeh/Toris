@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b65f422b55f8b049b0034295a3fa496, type: 3}
+  m_Name: SFX_Enemy_WolfDeath
+  m_EditorClassIdentifier: Assembly-CSharp::SfxDefinition
+  id: enemy_wolf_death
+  clips:
+  - {fileID: 8300000, guid: 93e9b94b269a9b74e92fc02cf0b3235c, type: 3}
+  - {fileID: 8300000, guid: 41bbd9b96c03df74f8a0f0dcd158d4e0, type: 3}
+  - {fileID: 8300000, guid: 4376ece382d36f74681f21f2b66cf7cb, type: 3}
+  - {fileID: 8300000, guid: e0d1c2e255c5ea6448f76810a5e125d9, type: 3}
+  outputMixerGroup: {fileID: 0}
+  volumeMin: 0.4
+  volumeMax: 0.55
+  pitchMin: 0.9
+  pitchMax: 1.1
+  spatialBlend: 1
+  minDistance: 1
+  maxDistance: 12
+  maxSimultaneousInstances: 8
+  stealMode: 1
+  cooldownSeconds: 0.05

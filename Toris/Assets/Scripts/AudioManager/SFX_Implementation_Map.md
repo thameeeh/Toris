@@ -27,17 +27,17 @@ This map turns the current rough sound pile into authoring families. Use it as t
 | Family | Proposed SFX ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
 | Potion drink | `potion_healdrink` | Existing potion clip | `TimedConsumableUsed` or `HealthConsumableUsed` | Existing player SFX rule path | Use `TimedConsumableUsed` for HoT potion drink. |
-| Equip armor | `ui_equip_armor` | `Cloth`, `Cloth 2` | Equipment success | Needs equipment event | Could layer with light metal later. |
-| Unequip armor | `ui_unequip_armor` | `Cloth`, `Cloth 2` | Unequip success | Needs equipment event | Slight pitch variation. |
+| Equip armor | `ui_equip_armor` | Equip/unequip armor edit | Equipment success | Wired through `InventoryActionController.equipSfxId` | Shared with unequip for now. |
+| Unequip armor | `ui_equip_armor` | Equip/unequip armor edit | Unequip success | Wired through `InventoryActionController.equipSfxId` | Shared with equip for now. |
 | Move item | `ui_item_move` | `Cloth` quiet edit | Inventory drag/drop success | Needs inventory transfer event | Keep subtle. |
 
 ## Crafting, Smithing, And Salvage
 
 | Family | Proposed SFX ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
-| Forge hit | `craft_forge_hit` | `Forge_Smack`, `Smith_Forge` | Forge/craft success | Needs crafting event | Randomize both takes. |
+| Forge hit | `craft_forge_hit` | `Forge_Smack`, `Smith_Forge` | Forge/craft success | Wired through `CraftingManagerSO.forgeSuccessSfxId` | Plays after craft output succeeds. |
 | Gear upgrade | `craft_gear_upgrade` | `SFX_Gear_Upgrade`, `SFX_Gear_Upgrade_v2` | Gear upgrade success | Needs upgrade event | Could layer with forge hit. |
-| Salvage | `craft_salvage` | `Hoover`, `Outlet` edits | Salvage success | Needs salvage event | Build as designed composite clip. |
+| Salvage | `craft_salvage` | `Hoover`, `Outlet` edits | Salvage success | Wired through `SalvageManagerSO.salvageSuccessSfxId` | Plays after salvage rewards succeed. |
 
 ## Movement
 
@@ -63,9 +63,11 @@ This map turns the current rough sound pile into authoring families. Use it as t
 
 | Family | Proposed SFX ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
-| Wolf bite | `enemy_wolf_bite` | `Wolf_Bite` | Wolf attack hit frame | Needs wolf attack SFX hook | 3D at wolf/player impact. |
-| Wolf death | `enemy_wolf_death` | `Wolf_death` | Wolf death | Needs enemy death hook | May later layer with whine. |
-| Den death | `world_den_death` | `Den_Death`, optional rock layer | Den destroyed | Needs den death hook | Specific one-shot. |
+| Wolf attack growl | `enemy_wolf_attack_growl` | `Wolf_Growl` | Wolf attack state starts | Wired through `WolfAttackSO.attackGrowlSfxId` | Plays on attack commit, even if the bite misses. |
+| Wolf bite hit | `enemy_wolf_bite_hit` | `Wolf_Bite` | Wolf attack hit frame accepts a target | Wired through `WolfAttackSO.biteHitSfxId` | Plays only when the hit path is accepted. |
+| Wolf death | `enemy_wolf_death` | Wolf death variants | Wolf death | Wired through `EnemySfxModule_WolfDeath` on wolf prefabs | Randomizes variants in one definition. |
+| Deer/boar death | `enemy_deer_boar_death` | `Deer_Exhale` | Deer or boar death | Wired through `EnemySfxModule_DeerBoarDeath` on deer/boar prefabs | Shared temporary death family. |
+| Den death | `world_den_death` | `Den_Death`, optional rock layer | Den destroyed | Wired through `WolfDen.clearedSfxId` | Specific one-shot. |
 | Arrow impact | `combat_arrow_hit` | `SFX_Arrow_Hit`, existing `ArrowImpact` | Arrow impact | Existing enemy impact path, incomplete coverage | Normalize ID usage later. |
 
 ## Progression And Music

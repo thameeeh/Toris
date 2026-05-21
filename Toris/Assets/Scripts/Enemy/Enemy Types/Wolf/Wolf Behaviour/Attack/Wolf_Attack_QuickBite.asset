@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c431b3ca87df8bd4cbbe2050329f0247, type: 3}
   m_Name: Wolf_Attack_QuickBite
   m_EditorClassIdentifier: Assembly-CSharp::WolfAttackSO
+  attackGrowlSfxId: enemy_wolf_attack_growl
+  biteHitSfxId: enemy_wolf_bite_hit
+  force2D: 0
   _timeBetweenBites: 2
   _timeTillExit: 1

@@ -1302,7 +1302,7 @@ GameObject:
   - component: {fileID: 875006871}
   - component: {fileID: 875006872}
   - component: {fileID: 875006873}
-  m_Layer: 14
+  m_Layer: 21
   m_Name: Canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

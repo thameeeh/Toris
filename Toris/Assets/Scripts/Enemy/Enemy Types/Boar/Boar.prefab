@@ -386,6 +386,7 @@ MonoBehaviour:
   enemy: {fileID: -7866276830643414300}
   modules:
   - {fileID: 11400000, guid: b705f1cd7e1bfa9489e5f87f328dd2fe, type: 2}
+  - {fileID: 11400000, guid: f6d778d2ae0d4d94b7d10bb848ddc253, type: 2}
 --- !u!114 &-7528611810860509336
 MonoBehaviour:
   m_ObjectHideFlags: 0

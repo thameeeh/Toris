@@ -40,7 +40,7 @@ namespace OutlandHaven.UIToolkit
             _fullScreen_Zone = root.Q<VisualElement>("FullScreen_Zone");
             _itemTooltipView = new ItemTooltipView(root);
 
-            if (_hudZone == null || _leftZone == null || _rightZone == null)
+            if (_hudZone == null || _leftZone == null || _rightZone == null || _fullScreen_Zone == null)
             {
                 Debug.LogError("UIManager: Could not find Layout Zones in the UIDocument! Check your UXML names.");
             }
@@ -84,6 +84,7 @@ namespace OutlandHaven.UIToolkit
                 case ScreenZone.Left: _leftZone.Add(view.Root); break;
                 case ScreenZone.Right: _rightZone.Add(view.Root); break;
                 case ScreenZone.FullScreen: _fullScreen_Zone.Add(view.Root); break;
+                case ScreenZone.Modal: _fullScreen_Zone.Add(view.Root); break;
             }
 
             if (view.ID == ScreenType.HUD)
@@ -138,6 +139,7 @@ namespace OutlandHaven.UIToolkit
                 }
             }
             view.Show();
+            view.Root.BringToFront();
         }
 
         private void CloseWindow(ScreenType type)

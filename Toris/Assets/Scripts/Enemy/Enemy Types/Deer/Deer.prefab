@@ -415,7 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4488252492079143801}
   - component: {fileID: 2199256248189420029}
-  m_Layer: 14
+  m_Layer: 16
   m_Name: WorldCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

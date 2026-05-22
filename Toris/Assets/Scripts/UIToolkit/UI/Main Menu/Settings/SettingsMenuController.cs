@@ -8,17 +8,32 @@ public class SettingsMenuController : MonoBehaviour
     [SerializeField] private UIEventsSO _uiEvents;
 
     private SettingsMenuView _view;
-    private MainMenuUIManager _uiManager;
+    private MainMenuUIManager _mainMenuUiManager;
+    private UIManager _gameUiManager;
     private InputSystem_Actions _input;
+    private bool _ownsCancelInput;
 
     private void Awake()
     {
-        _uiManager = FindFirstObjectByType<MainMenuUIManager>();
+        _mainMenuUiManager = FindFirstObjectByType<MainMenuUIManager>();
+        if (_mainMenuUiManager == null)
+        {
+            _gameUiManager = FindFirstObjectByType<UIManager>();
+        }
+        else
+        {
+            _ownsCancelInput = true;
+        }
+
         _input = new InputSystem_Actions();
     }
 
     private void OnEnable()
     {
+        if (!_ownsCancelInput)
+            return;
+
+        // The main menu has no gameplay InputManager, so Settings owns Escape there.
         _input?.UI.Enable();
         if (_input != null)
         {
@@ -28,6 +43,9 @@ public class SettingsMenuController : MonoBehaviour
 
     private void OnDisable()
     {
+        if (!_ownsCancelInput)
+            return;
+
         _input?.UI.Disable();
         if (_input != null)
         {
@@ -37,14 +55,15 @@ public class SettingsMenuController : MonoBehaviour
 
     private void OnCancelPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        // Only close if the view is actually showing (UI Manager handles this logic usually, 
-        // but we emit the intent)
+        if (_view == null || _view.IsHidden)
+            return;
+
         OnCloseRequested();
     }
 
     private void Start()
     {
-        if (_settingsTemplate == null || _uiManager == null) return;
+        if (_settingsTemplate == null || (_mainMenuUiManager == null && _gameUiManager == null)) return;
 
         TemplateContainer settingsInstance = _settingsTemplate.Instantiate();
 
@@ -72,8 +91,15 @@ public class SettingsMenuController : MonoBehaviour
         _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
         _view.OnSFXVolumeChanged += HandleSfxVolumeChanged;
 
-        // Register it (it will automatically hide on start)
-        _uiManager.RegisterView(_view);
+        if (_mainMenuUiManager != null)
+        {
+            _mainMenuUiManager.RegisterView(_view);
+        }
+        else
+        {
+            // Settings is shared by main menu and gameplay; gameplay mounts it as a modal overlay.
+            _gameUiManager.RegisterView(_view, ScreenZone.Modal);
+        }
     }
 
     private void OnCloseRequested()

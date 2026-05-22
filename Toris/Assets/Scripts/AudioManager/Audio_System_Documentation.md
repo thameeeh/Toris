@@ -101,6 +101,15 @@ Actor-level MonoBehaviours, such as `PlayerSfx`.
 - Own runtime audio state, such as loop handles.
 - Evaluate assigned SFX rule assets when an event bridge sends a gameplay event.
 
+#### WorldAmbienceController
+
+Persistent ambience owner on the `AudioManager` prefab.
+
+- Plays wind as the broad MainArea/procedural biome bed.
+- Layers forest ambience over wind in the configured forest biome index.
+- Starts water ambience only when the player is near the configured outer water ring.
+- Uses SFX loop handles, fade-in, and fade-out; it observes scene/world state but does not mutate gameplay or generation state.
+
 #### PlayerSfxEventBridge
 
 Player-level event adapter.

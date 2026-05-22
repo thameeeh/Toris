@@ -2075,7 +2075,7 @@ MonoBehaviour:
   decorationMap: {fileID: 875006850}
   obstacleMap: {fileID: 875006862}
   canopyMap: {fileID: 875006872}
-  followTarget: {fileID: 0}
+  followTarget: {fileID: 1515900424}
   gameplayPoolManager: {fileID: 2118321077}
   sceneTransitionService: {fileID: 0}
   streamCamera: {fileID: 506412731}

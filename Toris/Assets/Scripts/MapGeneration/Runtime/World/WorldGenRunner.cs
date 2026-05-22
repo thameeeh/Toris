@@ -62,6 +62,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     #region Public API
     public WorldContext Context => ctx;
+    public Transform FollowTarget => followTarget;
     #endregion
 
     #region Unity Lifecycle
@@ -239,7 +240,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     #region Coordinates / Math
 
-    private Vector2Int WorldToTile(Vector2 world)
+    public Vector2Int WorldToTile(Vector2 world)
     {
         if (grid != null)
         {
@@ -248,6 +249,14 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
         }
 
         return new Vector2Int(Mathf.FloorToInt(world.x), Mathf.FloorToInt(world.y));
+    }
+
+    public bool HasRenderedWaterTile(Vector2Int worldTile)
+    {
+        if (waterMap == null)
+            return false;
+
+        return waterMap.GetTile(new Vector3Int(worldTile.x, worldTile.y, 0)) != null;
     }
 
     #endregion

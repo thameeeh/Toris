@@ -56,9 +56,9 @@ This map turns the current rough sound pile into authoring families. Use it as t
 
 | Family | Proposed ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
-| Forest ambience | `amb_forest` | `AMB_forest` | Forest biome active | Needs ambience owner | Loop with fade. |
-| Water ambience | `amb_water` | `AMB_Water` | Water/beach biome or proximity | Needs ambience owner | Loop with fade. |
-| Wind ambience | `amb_wind` | `AMB_Wind` | Wind layer/weather | Needs ambience owner | Loop with fade. |
+| Forest ambience | `amb_forest` | `AMB_forest` | Forest biome active | Wired through `WorldAmbienceController.forestBiomeSfxId` | 2D loop layered over wind in biome 2. |
+| Water ambience | `amb_water` | `AMB_Water` | Near outer water ring in procedural biomes | Wired through `WorldAmbienceController.waterSfxId` | 2D proximity-gated loop with fade. |
+| Wind ambience | `amb_wind` | `AMB_Wind` | MainArea and procedural biomes | Wired through `WorldAmbienceController.mainAreaSfxId` and `defaultBiomeSfxId` | 2D baseline loop with fade. |
 
 ## Enemies And Combat
 

@@ -71,8 +71,11 @@ MonoBehaviour:
   blackHoldSeconds: 0.25
   loadingContentFadeInSeconds: 0.35
   fadeOutSeconds: 0.35
-  minimumDisplaySeconds: 10
+  minimumDisplaySeconds: 2.5
   postLoadHoldSeconds: 0.15
   loadingFont: {fileID: 0}
   loadingFontSize: 48
   loadingTextColor: {r: 1, g: 1, b: 1, a: 1}
+  loadingLabelAnchorY: 0.15
+  loadingLabelPanelColor: {r: 0, g: 0, b: 0, a: 0.48}
+  loadingLabelAccentColor: {r: 0.93, g: 0.72, b: 0.36, a: 0.95}

@@ -38,6 +38,9 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     [SerializeField] private Font loadingFont;
     [SerializeField, Min(1)] private int loadingFontSize = 48;
     [SerializeField] private Color loadingTextColor = Color.white;
+    [SerializeField, Range(0f, 1f)] private float loadingLabelAnchorY = 0.15f;
+    [SerializeField] private Color loadingLabelPanelColor = new Color(0f, 0f, 0f, 0.48f);
+    [SerializeField] private Color loadingLabelAccentColor = new Color(0.93f, 0.72f, 0.36f, 0.95f);
 
     private bool _isLoading;
     private SceneLoadingOverlay _loadingOverlay;
@@ -134,7 +137,10 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
                 resolvedActivationDotCount,
                 loadingFont,
                 loadingFontSize,
-                loadingTextColor);
+                loadingTextColor,
+                loadingLabelAnchorY,
+                loadingLabelPanelColor,
+                loadingLabelAccentColor);
 
             yield return FadeCover(overlay, 1f, fadeInSeconds);
             overlay.ResetLoadingContent();
@@ -155,10 +161,11 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             yield return HoldOverlay(overlay, blackHoldSeconds);
             yield return FadeLoadingContent(overlay, 1f, loadingContentFadeInSeconds);
             overlay.SetCoverAlpha(0f);
+            overlay.StartLoadingAnimation();
             yield return null;
 
             float loadingVisibleTime = Time.realtimeSinceStartup;
-            activationReadyTime = loadingVisibleTime + resolvedDotInterval * resolvedActivationDotCount;
+            activationReadyTime = loadingVisibleTime + resolvedDotInterval * Mathf.Max(0, resolvedActivationDotCount - 1);
             minimumDisplayEndTime = loadingVisibleTime + Mathf.Max(0f, minimumDisplaySeconds);
         }
         else
@@ -496,6 +503,10 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         private readonly Image dimmerImage;
         private readonly Image coverImage;
         private readonly Image inputBlockerImage;
+        private readonly RectTransform loadingLabelRoot;
+        private readonly CanvasGroup loadingLabelGroup;
+        private readonly Image loadingLabelPanelImage;
+        private readonly Image loadingLabelAccentImage;
         private readonly Text loadingLabel;
 
         private string message = DefaultLoadingMessage;
@@ -545,7 +556,12 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             backgroundAspectFitter.enabled = false;
 
             dimmerImage = CreateFullScreenImage("Dimmer", contentRoot);
-            loadingLabel = CreateLoadingLabel(contentRoot);
+            LoadingLabelVisuals labelVisuals = CreateLoadingLabel(contentRoot);
+            loadingLabelRoot = labelVisuals.Root;
+            loadingLabelGroup = labelVisuals.Group;
+            loadingLabelPanelImage = labelVisuals.PanelImage;
+            loadingLabelAccentImage = labelVisuals.AccentImage;
+            loadingLabel = labelVisuals.Label;
             coverImage = CreateFullScreenImage("TransitionCover", canvasObject.transform);
             coverImage.rectTransform.SetAsFirstSibling();
             inputBlockerImage = CreateFullScreenImage("InputBlocker", canvasObject.transform);
@@ -564,7 +580,10 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             int activationDotCount,
             Font font,
             int fontSize,
-            Color textColor)
+            Color textColor,
+            float labelAnchorY,
+            Color labelPanelColor,
+            Color labelAccentColor)
         {
             message = string.IsNullOrWhiteSpace(loadingMessage)
                 ? DefaultLoadingMessage
@@ -572,9 +591,9 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
             dotIntervalSeconds = Mathf.Max(0.05f, dotInterval);
             maxDotCount = Mathf.Max(1, activationDotCount);
-            currentDotCount = 0;
-            animateDots = true;
-            nextDotTime = Time.realtimeSinceStartup + dotIntervalSeconds;
+            currentDotCount = Mathf.Min(1, maxDotCount);
+            animateDots = false;
+            nextDotTime = Time.realtimeSinceStartup;
 
             backgroundImage.sprite = background;
             backgroundImage.color = background != null ? Color.white : fallbackColor;
@@ -594,12 +613,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
             dimmerImage.color = new Color(0f, 0f, 0f, Mathf.Clamp01(dimAlpha));
             coverImage.color = new Color(fallbackColor.r, fallbackColor.g, fallbackColor.b, 0f);
+            ConfigureLoadingLabel(font, fontSize, textColor, labelAnchorY, labelPanelColor, labelAccentColor);
 
-            loadingLabel.font = font != null ? font : ResolveDefaultFont();
-            loadingLabel.fontSize = Mathf.Max(1, fontSize);
-            loadingLabel.resizeTextMaxSize = Mathf.Max(1, fontSize);
-            loadingLabel.color = textColor;
-            loadingLabel.enabled = true;
             ApplyText();
 
             canvas.enabled = true;
@@ -613,13 +628,24 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
         public void ResetLoadingContent()
         {
-            currentDotCount = 0;
-            animateDots = true;
-            nextDotTime = Time.realtimeSinceStartup + dotIntervalSeconds;
+            currentDotCount = Mathf.Min(1, maxDotCount);
+            animateDots = false;
+            nextDotTime = Time.realtimeSinceStartup;
             loadingLabel.enabled = true;
+            loadingLabelGroup.alpha = 1f;
             ApplyText();
 
             contentGroup.alpha = 0f;
+        }
+
+        public void StartLoadingAnimation()
+        {
+            currentDotCount = Mathf.Min(1, maxDotCount);
+            animateDots = true;
+            nextDotTime = Time.realtimeSinceStartup + dotIntervalSeconds;
+            loadingLabel.enabled = true;
+            loadingLabelGroup.alpha = 1f;
+            ApplyText();
         }
 
         public void Tick()
@@ -641,6 +667,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             currentDotCount = maxDotCount;
             ApplyText();
             loadingLabel.enabled = false;
+            loadingLabelGroup.alpha = 0f;
         }
 
         public void SetAlpha(float alpha)
@@ -667,6 +694,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             SetCoverAlpha(0f);
             animateDots = false;
             loadingLabel.enabled = false;
+            loadingLabelGroup.alpha = 0f;
             inputBlockerImage.raycastTarget = false;
             canvasGroup.blocksRaycasts = false;
             canvasGroup.interactable = false;
@@ -683,7 +711,35 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
         private void ApplyText()
         {
-            loadingLabel.text = $"{message}{new string('.', currentDotCount)}";
+            int visibleDotCount = Mathf.Clamp(currentDotCount, 0, maxDotCount);
+            int hiddenDotCount = Mathf.Max(0, maxDotCount - visibleDotCount);
+
+            string visibleDots = new string('.', visibleDotCount);
+            string hiddenDots = new string('.', hiddenDotCount);
+            loadingLabel.text = $"{message}{visibleDots}<color=#FFFFFF00>{hiddenDots}</color>";
+        }
+
+        private void ConfigureLoadingLabel(
+            Font font,
+            int fontSize,
+            Color textColor,
+            float labelAnchorY,
+            Color labelPanelColor,
+            Color labelAccentColor)
+        {
+            loadingLabelRoot.anchorMin = new Vector2(0.5f, Mathf.Clamp01(labelAnchorY));
+            loadingLabelRoot.anchorMax = new Vector2(0.5f, Mathf.Clamp01(labelAnchorY));
+            loadingLabelRoot.anchoredPosition = Vector2.zero;
+
+            loadingLabelPanelImage.color = labelPanelColor;
+            loadingLabelAccentImage.color = labelAccentColor;
+
+            loadingLabel.font = font != null ? font : ResolveDefaultFont();
+            loadingLabel.fontSize = Mathf.Max(1, fontSize);
+            loadingLabel.resizeTextMaxSize = Mathf.Max(1, fontSize);
+            loadingLabel.color = textColor;
+            loadingLabel.enabled = true;
+            loadingLabelGroup.alpha = 1f;
         }
 
         private static RectTransform CreateFullScreenContainer(string name, Transform parent)
@@ -745,37 +801,91 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             rect.offsetMax = Vector2.zero;
         }
 
-        private static Text CreateLoadingLabel(Transform parent)
+        private static LoadingLabelVisuals CreateLoadingLabel(Transform parent)
         {
+            GameObject rootObject = new GameObject("LoadingLabelRoot");
+            rootObject.transform.SetParent(parent, false);
+
+            RectTransform rootRect = rootObject.AddComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0.5f, 0.15f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.15f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.anchoredPosition = Vector2.zero;
+            rootRect.sizeDelta = new Vector2(560f, 82f);
+
+            Image panelImage = rootObject.AddComponent<Image>();
+            panelImage.color = new Color(0f, 0f, 0f, 0.48f);
+            panelImage.raycastTarget = false;
+
+            CanvasGroup group = rootObject.AddComponent<CanvasGroup>();
+            group.alpha = 0f;
+            group.blocksRaycasts = false;
+            group.interactable = false;
+
+            GameObject accentObject = new GameObject("AccentLine");
+            accentObject.transform.SetParent(rootObject.transform, false);
+
+            Image accentImage = accentObject.AddComponent<Image>();
+            accentImage.color = new Color(0.93f, 0.72f, 0.36f, 0.95f);
+            accentImage.raycastTarget = false;
+
+            RectTransform accentRect = accentImage.rectTransform;
+            accentRect.anchorMin = new Vector2(0.5f, 0f);
+            accentRect.anchorMax = new Vector2(0.5f, 0f);
+            accentRect.pivot = new Vector2(0.5f, 0.5f);
+            accentRect.anchoredPosition = new Vector2(0f, 10f);
+            accentRect.sizeDelta = new Vector2(180f, 3f);
+
             GameObject labelObject = new GameObject("LoadingLabel");
-            labelObject.transform.SetParent(parent, false);
+            labelObject.transform.SetParent(rootObject.transform, false);
 
             Text label = labelObject.AddComponent<Text>();
             label.alignment = TextAnchor.MiddleCenter;
             label.horizontalOverflow = HorizontalWrapMode.Wrap;
             label.verticalOverflow = VerticalWrapMode.Truncate;
             label.resizeTextForBestFit = true;
-            label.resizeTextMinSize = 24;
+            label.resizeTextMinSize = 26;
+            label.fontStyle = FontStyle.Bold;
+            label.supportRichText = true;
             label.raycastTarget = false;
 
             Shadow shadow = labelObject.AddComponent<Shadow>();
             shadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
             shadow.effectDistance = new Vector2(2f, -2f);
 
-            RectTransform rect = label.rectTransform;
-            rect.anchorMin = new Vector2(0.5f, 0.16f);
-            rect.anchorMax = new Vector2(0.5f, 0.16f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(760f, 96f);
-            rect.anchoredPosition = Vector2.zero;
+            Outline outline = labelObject.AddComponent<Outline>();
+            outline.effectColor = new Color(0f, 0f, 0f, 0.65f);
+            outline.effectDistance = new Vector2(1f, -1f);
 
-            return label;
+            RectTransform rect = label.rectTransform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = new Vector2(28f, 8f);
+            rect.offsetMax = new Vector2(-28f, -10f);
+
+            return new LoadingLabelVisuals
+            {
+                Root = rootRect,
+                Group = group,
+                PanelImage = panelImage,
+                AccentImage = accentImage,
+                Label = label
+            };
         }
 
         private static Font ResolveDefaultFont()
         {
             Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             return font != null ? font : Resources.GetBuiltinResource<Font>("Arial.ttf");
+        }
+
+        private struct LoadingLabelVisuals
+        {
+            public RectTransform Root;
+            public CanvasGroup Group;
+            public Image PanelImage;
+            public Image AccentImage;
+            public Text Label;
         }
     }
 }

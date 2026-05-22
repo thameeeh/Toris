@@ -10,11 +10,11 @@ public static class DeathCauseMessageFormatter
 
         string key = NormalizeCause(cause.DisplayName);
 
-        if (key.Contains("wolf"))
-            return "You were crunchy.";
-
         if (key.Contains("boar"))
             return "The tusks were not decorative.";
+
+        if (key.Contains("wolf"))
+            return "You were crunchy.";
 
         if (key.Contains("necromancer"))
             return "You got turned into the next blood mage.";

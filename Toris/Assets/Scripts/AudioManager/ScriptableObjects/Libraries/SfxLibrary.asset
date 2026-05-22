@@ -45,3 +45,6 @@ MonoBehaviour:
   - categoryName: World
     definitions:
     - {fileID: 11400000, guid: 3eda5f3823d20174490089543bf7fcaa, type: 2}
+    - {fileID: 11400000, guid: d5c74fbba961e754ea4d2bdf8355842e, type: 2}
+    - {fileID: 11400000, guid: c79300b2e308e95409920d69f95065cc, type: 2}
+    - {fileID: 11400000, guid: f583a257ca3d9cb4d8b10d7faf5244c4, type: 2}

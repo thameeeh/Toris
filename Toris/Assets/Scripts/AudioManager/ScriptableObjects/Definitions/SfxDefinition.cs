@@ -22,6 +22,7 @@ public sealed class SfxDefinition : ScriptableObject
 
     [Header("Spatial (2D/3D)")]
     [SerializeField, Range(0f, 1f)] private float spatialBlend = 1f; // 0 = 2D, 1 = 3D
+    [SerializeField] private AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
     [SerializeField] private float minDistance = 1f;
     [SerializeField] private float maxDistance = 25f;
 
@@ -39,6 +40,7 @@ public sealed class SfxDefinition : ScriptableObject
     public float PitchMax => pitchMax;
 
     public float SpatialBlend => spatialBlend;
+    public AudioRolloffMode RolloffMode => rolloffMode;
     public float MinDistance => minDistance;
     public float MaxDistance => maxDistance;
 

@@ -46,7 +46,8 @@ public sealed class BiomeLoadingTransitionService : IGateTransitionService
             IsWorldStreamingReadyForReveal,
             streamingReadyTimeoutSeconds,
             postReadyHoldSeconds,
-            LoadingMessage);
+            LoadingMessage,
+            playTeleportArriveOnComplete: true);
     }
 
     private bool IsWorldStreamingReadyForReveal()

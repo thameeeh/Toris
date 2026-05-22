@@ -25,6 +25,10 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     public UnityEvent onTransitionStart;
     public UnityEvent onTransitionEnd;
 
+    [Header("Teleport SFX")]
+    [SerializeField] private string teleportArriveSfxId = "world_teleport_arrive";
+    [SerializeField, Range(0f, 2f)] private float teleportArriveVolumeMultiplier = 1f;
+
     [Header("Loading Screen")]
     [SerializeField] private bool showLoadingScreen = true;
     [SerializeField] private VisualTreeAsset loadingOverlayTemplate;
@@ -54,6 +58,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     private readonly SceneUiInputSuspender _sceneUiInputSuspender = new SceneUiInputSuspender();
     private bool _isLoading;
     private bool _gameplayInputLocked;
+    private bool _playTeleportArriveOnLoadComplete;
     private SceneLoadingOverlay _loadingOverlay;
     private int _nextBackgroundIndex;
     private int _lastBackgroundIndex = -1;
@@ -118,7 +123,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         Func<bool> isReadyForReveal,
         float readyTimeoutSeconds,
         float postReadyHoldSeconds,
-        string loadingMessageOverride = null)
+        string loadingMessageOverride = null,
+        bool playTeleportArriveOnComplete = false)
     {
         if (_isLoading)
             return false;
@@ -129,7 +135,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             isReadyForReveal,
             readyTimeoutSeconds,
             postReadyHoldSeconds,
-            loadingMessageOverride));
+            loadingMessageOverride,
+            playTeleportArriveOnComplete));
         return true;
     }
 
@@ -139,19 +146,28 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
         if (current == sceneA)
         {
-            LoadScene(sceneB);
+            LoadRunGateScene(sceneB);
             return;
         }
 
         if (current == sceneB)
         {
-            LoadScene(sceneA);
+            LoadRunGateScene(sceneA);
             return;
         }
 
         Debug.LogWarning(
             $"[SceneTransitionService] Current scene '{current}' does not match '{sceneA}' or '{sceneB}'.",
             this);
+    }
+
+    private void LoadRunGateScene(string sceneName)
+    {
+        if (_isLoading)
+            return;
+
+        _playTeleportArriveOnLoadComplete = true;
+        LoadScene(sceneName);
     }
 
     private LoadingTransitionSession BeginLoadingTransition(string resolvedLoadingMessage)
@@ -225,12 +241,16 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         minimumDisplayEndTime = loadingVisibleTime + session.Timing.MinimumDisplaySeconds;
     }
 
-    private IEnumerator HideLoadingOverlay(LoadingTransitionSession session, float holdSeconds)
+    private IEnumerator HideLoadingOverlay(LoadingTransitionSession session, float holdSeconds, Action beforeFadeOut = null)
     {
         if (!session.HasOverlay)
+        {
+            beforeFadeOut?.Invoke();
             yield break;
+        }
 
         yield return TickOverlayForDuration(session.Overlay, holdSeconds);
+        beforeFadeOut?.Invoke();
         yield return FadeOverlay(session.Overlay, 0f, session.Timing.FadeOutSeconds);
         session.Overlay.Hide();
         _sceneUiInputSuspender.Resume();
@@ -252,6 +272,9 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
     private IEnumerator LoadRoutine(string sceneName, LoadSceneMode mode, string loadingMessageOverride)
     {
+        bool playTeleportArriveOnComplete = _playTeleportArriveOnLoadComplete;
+        _playTeleportArriveOnLoadComplete = false;
+
         string resolvedLoadingMessage = string.IsNullOrWhiteSpace(loadingMessageOverride)
             ? ResolveSceneLoadingMessage(SceneManager.GetActiveScene().name, sceneName)
             : loadingMessageOverride;
@@ -318,7 +341,10 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
         yield return null;
 
-        yield return HideLoadingOverlay(session, postLoadHoldSeconds);
+        yield return HideLoadingOverlay(
+            session,
+            postLoadHoldSeconds,
+            playTeleportArriveOnComplete ? (Action)PlayTeleportArriveSfx : null);
         EndLoadingTransition();
     }
 
@@ -328,7 +354,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         Func<bool> isReadyForReveal,
         float readyTimeoutSeconds,
         float postReadyHoldSeconds,
-        string loadingMessageOverride)
+        string loadingMessageOverride,
+        bool playTeleportArriveOnComplete)
     {
         LoadingTransitionSession session = BeginLoadingTransition(loadingMessageOverride);
         float resolvedReadyTimeout = Mathf.Max(MinReadyTimeoutSeconds, readyTimeoutSeconds);
@@ -367,7 +394,10 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             }
 
             session.Overlay.CompleteLoading();
-            yield return HideLoadingOverlay(session, postReadyHoldSeconds);
+            yield return HideLoadingOverlay(
+                session,
+                postReadyHoldSeconds,
+                playTeleportArriveOnComplete ? (Action)PlayTeleportArriveSfx : null);
         }
         else
         {
@@ -380,6 +410,11 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
                     break;
 
                 yield return null;
+            }
+
+            if (playTeleportArriveOnComplete)
+            {
+                PlayTeleportArriveSfx();
             }
         }
 
@@ -565,6 +600,18 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
         uiEvents.OnGameplayInputUnlockRequested?.Invoke(gameplayInputLockId);
         _gameplayInputLocked = false;
+    }
+
+    private void PlayTeleportArriveSfx()
+    {
+        if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(teleportArriveSfxId))
+            return;
+
+        // SFX-only hook: arrival feedback starts as the teleport transition begins revealing the loaded world.
+        SfxPlayRequest request = SfxPlayRequest.Default;
+        request.volumeMultiplier = teleportArriveVolumeMultiplier;
+        request.force2D = true;
+        AudioBootstrap.Sfx.Play(teleportArriveSfxId, request);
     }
 
     private LoadingTransitionTiming CreateLoadingTransitionTiming()

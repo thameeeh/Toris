@@ -19,8 +19,9 @@ This map turns the current rough sound pile into authoring families. Use it as t
 | 1 | Inventory close | `ui_inventory_close` | `single_ziper` reversed/edited or `Cloth 2` | `ScreenType.Inventory` closed | Wired through `UISfxEventBridge` default inventory screen SFX | One-shot. |
 | 1 | Coin pickup | `item_coin_pickup` | `Coin` quiet edit | Enemy immediate gold reward | Wired through `EnemyLootTableSO.goldRewardSfxId` | Keep short and quiet. |
 | 1 | Coin purchase | `ui_coin_purchase` | `Coin` louder edit | Shop buy/sell success | Wired through `ShopManagerSO.coinTransactionSfxId` | Good for purchase confirmation. |
-| 1 | Portal enter | `world_portal_enter` | `SFX_Portal_Enter` | Player enters portal trigger | Needs portal trigger hook | 3D at portal position. |
-| 1 | Portal loop | `world_portal_loop` | `SFX_portal_sound` | Portal active while spawned | Needs portal loop owner | Loop, 3D, fade in/out. |
+| 1 | Teleport leave | `world_teleport_leave` | `SFX_Teleport_Leave` | Run or biome gate accepts interaction | Wired through `RunGateInteractable.teleportLeaveSfxId` and `BiomeGateInteractable.teleportLeaveSfxId` | 3D at gate position. |
+| 1 | Teleport arrive | `world_teleport_arrive` | `SFX_Teleport_Arrive` | Run scene load or biome transition starts revealing | Wired through `SceneTransitionService.teleportArriveSfxId` | 2D arrival confirmation at reveal start. |
+| 1 | Teleport loop | `world_teleport_loop` | `SFX_Portal_Sounds` | Run or biome gate active while spawned | Wired through `RunGateInteractable.teleportLoopSfxId` and `BiomeGateInteractable.teleportLoopSfxId` | Loop, 3D, fades in on start and quickly fades out on interaction/disable. |
 
 ## Player And Inventory
 

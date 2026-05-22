@@ -14,6 +14,9 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         public string sfxId;
         public float startUnscaledTime;
         public float baseVolume;
+        public float targetBaseVolume;
+        public float fadeInDuration;
+        public float fadeInRemaining;
         public bool isLooping;
         public float requestedFadeOutSeconds;
         public float fadeOutRemaining;
@@ -69,6 +72,9 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
                 sfxId = null,
                 startUnscaledTime = 0f,
                 baseVolume = 0f,
+                targetBaseVolume = 0f,
+                fadeInDuration = 0f,
+                fadeInRemaining = 0f,
                 isLooping = false,
                 requestedFadeOutSeconds = 0f,
 
@@ -334,6 +340,21 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
                     continue;
                 }
             }
+            else if (voice.fadeInRemaining > 0f)
+            {
+                voice.fadeInRemaining -= unscaledDeltaTime;
+
+                float t = 1f - Mathf.Clamp01(voice.fadeInRemaining / Mathf.Max(0.0001f, voice.fadeInDuration));
+                voice.baseVolume = Mathf.Lerp(0f, voice.targetBaseVolume, t);
+                source.volume = ResolveSfxOutputVolume(voice.baseVolume);
+
+                if (voice.fadeInRemaining <= 0f)
+                {
+                    voice.fadeInRemaining = 0f;
+                    voice.baseVolume = voice.targetBaseVolume;
+                    source.volume = ResolveSfxOutputVolume(voice.baseVolume);
+                }
+            }
             else
             {
                 source.volume = ResolveSfxOutputVolume(voice.baseVolume);
@@ -438,6 +459,9 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         voice.sfxId = null;
         voice.startUnscaledTime = 0f;
         voice.baseVolume = 0f;
+        voice.targetBaseVolume = 0f;
+        voice.fadeInDuration = 0f;
+        voice.fadeInRemaining = 0f;
         voice.isLooping = false;
 
         voice.followTarget = null;
@@ -458,6 +482,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             source.outputAudioMixerGroup = definition.OutputMixerGroup;
 
         source.spatialBlend = request.force2D ? 0f : definition.SpatialBlend;
+        source.rolloffMode = definition.RolloffMode;
         source.minDistance = definition.MinDistance;
         source.maxDistance = definition.MaxDistance;
 
@@ -467,7 +492,10 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         float volume = baseVolume * Mathf.Max(0f, request.volumeMultiplier);
         float pitch = (basePitch * request.pitchMultiplier) + request.pitchOffset;
 
-        voice.baseVolume = Mathf.Clamp(volume, 0f, 2f);
+        voice.targetBaseVolume = Mathf.Clamp(volume, 0f, 2f);
+        voice.fadeInDuration = Mathf.Max(0f, request.fadeInSeconds);
+        voice.fadeInRemaining = voice.fadeInDuration;
+        voice.baseVolume = voice.fadeInDuration > 0f ? 0f : voice.targetBaseVolume;
         source.volume = ResolveSfxOutputVolume(voice.baseVolume);
         source.pitch = Mathf.Clamp(pitch, -3f, 3f);
     }

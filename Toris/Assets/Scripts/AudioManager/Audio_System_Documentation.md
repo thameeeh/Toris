@@ -207,8 +207,8 @@ Loop playback flow:
 1. The gameplay hub determines a looping condition, such as movement.
 2. The hub calls `AudioBootstrap.Sfx.PlayAttachedLoop(...)`.
 3. `SfxManager` forwards the call to `AudioVoicePool.TryPlayAttachedLoop()`.
-4. The voice is configured with `AudioSource.loop = true`, `VoiceRecord.isLooping = true`, and follow target data.
-5. During `Tick()`, the voice position is updated from the follow target.
+4. The voice is configured with `AudioSource.loop = true`, `VoiceRecord.isLooping = true`, optional `SfxPlayRequest.fadeInSeconds`, and follow target data.
+5. During `Tick()`, the voice position is updated from the follow target, and any requested fade-in is applied.
 6. The hub stops the loop through `AudioBootstrap.Sfx.Stop(handle, fadeOutSeconds)`.
 7. `AudioVoicePool.TryStop()` fades the voice out, then releases it back to the pool.
 

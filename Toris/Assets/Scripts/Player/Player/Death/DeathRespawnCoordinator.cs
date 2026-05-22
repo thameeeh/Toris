@@ -378,8 +378,9 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             if (slot == null || slot.ItemData == null || slot.Count <= 0 || string.IsNullOrWhiteSpace(slot.ItemData.BaseItemID))
                 continue;
 
-            string displayName = ResolveItemDisplayName(slot.ItemData.BaseItemID);
-            candidates.Add(new InventoryLossCandidate(slot.ItemData.BaseItemID, displayName, slot.Count, source));
+            InventoryItemSO itemBlueprint = ResolveItemBlueprint(slot.ItemData.BaseItemID);
+            string displayName = ResolveItemDisplayName(slot.ItemData.BaseItemID, itemBlueprint);
+            candidates.Add(new InventoryLossCandidate(slot.ItemData.BaseItemID, displayName, slot.Count, source, itemBlueprint));
             totalItemCount += slot.Count;
         }
 
@@ -406,7 +407,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
 
             InventoryItemSO item = slot.HeldItem.BaseItem;
             string displayName = string.IsNullOrWhiteSpace(item.ItemName) ? HumanizeItemId(item.name) : item.ItemName;
-            candidates.Add(new InventoryLossCandidate(item.name, displayName, slot.Count, source));
+            candidates.Add(new InventoryLossCandidate(item.name, displayName, slot.Count, source, item));
             totalItemCount += slot.Count;
         }
 
@@ -442,7 +443,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
                 continue;
             }
 
-            AddOrIncrementLoss(losses, candidate.BaseItemId, candidate.DisplayName, candidate.Source);
+            AddOrIncrementLoss(losses, candidate.BaseItemId, candidate.DisplayName, candidate.Source, candidate.ItemBlueprint);
             candidate.Count--;
             itemsToRemove--;
 
@@ -455,13 +456,17 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         return losses;
     }
 
-    private string ResolveItemDisplayName(string baseItemId)
+    private InventoryItemSO ResolveItemBlueprint(string baseItemId)
     {
         if (string.IsNullOrWhiteSpace(baseItemId))
-            return "Unknown Item";
+            return null;
 
         ItemDatabaseSO itemDatabase = _saveManager != null ? _saveManager.MasterItemDatabase : null;
-        InventoryItemSO item = itemDatabase != null ? itemDatabase.GetItemByID(baseItemId) : null;
+        return itemDatabase != null ? itemDatabase.GetItemByID(baseItemId) : null;
+    }
+
+    private static string ResolveItemDisplayName(string baseItemId, InventoryItemSO item)
+    {
         if (item != null && !string.IsNullOrWhiteSpace(item.ItemName))
         {
             return item.ItemName;
@@ -616,7 +621,8 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         List<InventoryLossEntry> losses,
         string baseItemId,
         string displayName,
-        DeathPenaltyInventorySource source)
+        DeathPenaltyInventorySource source,
+        InventoryItemSO itemBlueprint)
     {
         for (int i = 0; i < losses.Count; i++)
         {
@@ -630,7 +636,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             }
         }
 
-        losses.Add(new InventoryLossEntry(baseItemId, displayName, 1, source));
+        losses.Add(new InventoryLossEntry(baseItemId, displayName, 1, source, itemBlueprint));
     }
 
     private static int CountLossItems(IReadOnlyList<InventoryLossEntry> losses)
@@ -664,7 +670,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             if (loss == null || loss.Count <= 0)
                 continue;
 
-            summaries.Add(new DeathItemLossSummary(loss.BaseItemId, loss.DisplayName, loss.Count, loss.Source));
+            summaries.Add(new DeathItemLossSummary(loss.BaseItemId, loss.DisplayName, loss.Count, loss.Source, loss.ItemBlueprint));
         }
     }
 
@@ -860,18 +866,21 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             string baseItemId,
             string displayName,
             int count,
-            DeathPenaltyInventorySource source)
+            DeathPenaltyInventorySource source,
+            InventoryItemSO itemBlueprint)
         {
             BaseItemId = baseItemId;
             DisplayName = displayName;
             Count = count;
             Source = source;
+            ItemBlueprint = itemBlueprint;
         }
 
         public string BaseItemId { get; }
         public string DisplayName { get; }
         public int Count { get; set; }
         public DeathPenaltyInventorySource Source { get; }
+        public InventoryItemSO ItemBlueprint { get; }
     }
 
     private sealed class InventoryLossEntry
@@ -880,17 +889,20 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             string baseItemId,
             string displayName,
             int count,
-            DeathPenaltyInventorySource source)
+            DeathPenaltyInventorySource source,
+            InventoryItemSO itemBlueprint)
         {
             BaseItemId = baseItemId;
             DisplayName = displayName;
             Count = count;
             Source = source;
+            ItemBlueprint = itemBlueprint;
         }
 
         public string BaseItemId { get; }
         public string DisplayName { get; }
         public int Count { get; set; }
         public DeathPenaltyInventorySource Source { get; }
+        public InventoryItemSO ItemBlueprint { get; }
     }
 }

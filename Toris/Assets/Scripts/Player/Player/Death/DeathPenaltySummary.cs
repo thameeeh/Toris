@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using OutlandHaven.Inventory;
 
 // Death screen related: runtime payload shown by the UI before the respawn penalty is applied.
 [Serializable]
@@ -34,18 +35,25 @@ public sealed class DeathPenaltySummary
 [Serializable]
 public sealed class DeathItemLossSummary
 {
-    public DeathItemLossSummary(string itemId, string displayName, int count, DeathPenaltyInventorySource source)
+    public DeathItemLossSummary(
+        string itemId,
+        string displayName,
+        int count,
+        DeathPenaltyInventorySource source,
+        InventoryItemSO itemBlueprint = null)
     {
         ItemId = itemId;
         DisplayName = string.IsNullOrWhiteSpace(displayName) ? itemId ?? "Unknown Item" : displayName;
         Count = Math.Max(0, count);
         Source = source;
+        ItemBlueprint = itemBlueprint;
     }
 
     public string ItemId { get; }
     public string DisplayName { get; }
     public int Count { get; }
     public DeathPenaltyInventorySource Source { get; }
+    public InventoryItemSO ItemBlueprint { get; }
 }
 
 public enum DeathPenaltyInventorySource

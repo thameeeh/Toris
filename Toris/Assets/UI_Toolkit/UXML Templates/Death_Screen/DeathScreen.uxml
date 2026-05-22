@@ -26,7 +26,9 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:Label name="PenaltyItemsTitle" text="Lost Items" class="death-screen__items-title"/>
-                <ui:VisualElement name="Penalty_ItemList" class="death-screen__item-list"/>
+                <ui:ScrollView name="Penalty_ItemScroll" class="death-screen__item-scroll">
+                    <ui:VisualElement name="Penalty_ItemList" class="death-screen__item-list"/>
+                </ui:ScrollView>
             </ui:VisualElement>
             <ui:VisualElement name="DeathButtonRow" class="death-screen__actions">
                 <ui:Button name="Btn_Respawn" text="Respawn" class="standard-button death-screen__button death-screen__button--primary"/>

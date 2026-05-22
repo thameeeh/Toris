@@ -24,9 +24,9 @@
 
 .death-screen__panel {
     min-width: 560px;
-    max-width: 900px;
-    width: 64%;
-    min-height: 520px;
+    max-width: 980px;
+    width: 68%;
+    min-height: 590px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -64,7 +64,7 @@
 
 .death-screen__summary {
     width: 100%;
-    max-width: 660px;
+    max-width: 720px;
     flex-direction: column;
     padding-left: 22px;
     padding-right: 22px;
@@ -121,10 +121,63 @@
     margin-bottom: 8px;
 }
 
+.death-screen__item-scroll {
+    min-height: 190px;
+    max-height: 230px;
+    border-width: 1px;
+    border-color: rgba(238, 233, 221, 0.08);
+    background-color: rgba(0, 0, 0, 0.18);
+}
+
 .death-screen__item-list {
-    min-height: 120px;
-    max-height: 168px;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.death-screen__item-card {
+    width: 62px;
+    height: 62px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border-width: 1px;
+    border-color: rgba(238, 233, 221, 0.18);
+    background-color: rgba(12, 10, 9, 0.7);
+}
+
+.death-screen__item-card:hover {
+    border-color: rgba(238, 213, 171, 0.78);
+    background-color: rgba(30, 19, 18, 0.82);
+}
+
+.death-screen__item-card--potion {
+    border-color: rgba(94, 159, 220, 0.52);
+}
+
+.death-screen__item-card--backpack {
+    border-color: rgba(238, 213, 171, 0.28);
+}
+
+.death-screen__item-card-icon {
+    width: 76%;
+    height: 76%;
+    margin: auto;
+}
+
+.death-screen__item-card-count {
+    position: absolute;
+    right: 4px;
+    bottom: 2px;
+    color: rgb(238, 233, 221);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.92);
+    -unity-text-outline-width: 1px;
 }
 
 .death-screen__item-row {

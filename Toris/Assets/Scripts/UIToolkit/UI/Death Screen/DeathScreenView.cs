@@ -16,6 +16,7 @@ namespace OutlandHaven.UIToolkit
         private Label _experienceLostLabel;
         private Label _goldLostLabel;
         private Label _itemsLostLabel;
+        private Label _causeOfDeathLabel;
         private VisualElement _lostItemsList;
         private UIInventoryEventsSO _uiInventoryEvents;
         private readonly List<InventorySlot> _lostItemTooltipSlots = new List<InventorySlot>();
@@ -39,6 +40,7 @@ namespace OutlandHaven.UIToolkit
             _experienceLostLabel = Root.Q<Label>("Penalty_XP");
             _goldLostLabel = Root.Q<Label>("Penalty_Gold");
             _itemsLostLabel = Root.Q<Label>("Penalty_Items");
+            _causeOfDeathLabel = Root.Q<Label>("Penalty_CauseOfDeath");
             _lostItemsList = Root.Q<VisualElement>("Penalty_ItemList");
         }
 
@@ -108,6 +110,7 @@ namespace OutlandHaven.UIToolkit
                 SetLabelText(_experienceLostLabel, "calculating...");
                 SetLabelText(_goldLostLabel, "calculating...");
                 SetLabelText(_itemsLostLabel, "calculating...");
+                SetLabelText(_causeOfDeathLabel, DeathCauseSnapshot.UnknownDisplayName);
                 RebuildLostItemRows(null);
                 return;
             }
@@ -115,6 +118,7 @@ namespace OutlandHaven.UIToolkit
             SetLabelText(_experienceLostLabel, $"{summary.ExperienceLost:0.#} XP");
             SetLabelText(_goldLostLabel, summary.GoldLost.ToString());
             SetLabelText(_itemsLostLabel, summary.TotalItemsLost.ToString());
+            SetLabelText(_causeOfDeathLabel, summary.CauseOfDeath);
             RebuildLostItemRows(summary);
         }
 

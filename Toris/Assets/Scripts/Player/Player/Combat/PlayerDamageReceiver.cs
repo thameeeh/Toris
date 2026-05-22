@@ -76,7 +76,7 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
 
         float finalDamage = CalculateFinalDamage(hit.damage);
 
-        _stats.ApplyDamage(finalDamage);
+        _stats.ApplyDamage(finalDamage, DeathCauseSnapshot.FromHit(hit));
         TryApplyStatus(hit);
 
         if (_stats.IsDead)

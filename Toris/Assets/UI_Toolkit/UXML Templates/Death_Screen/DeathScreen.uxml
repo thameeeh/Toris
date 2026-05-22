@@ -24,6 +24,10 @@
                         <ui:Label text="Items" class="death-screen__metric-label"/>
                         <ui:Label name="Penalty_Items" text="calculating..." class="death-screen__metric-value"/>
                     </ui:VisualElement>
+                    <ui:VisualElement class="death-screen__metric-row">
+                        <ui:Label text="Cause of Death" class="death-screen__metric-label"/>
+                        <ui:Label name="Penalty_CauseOfDeath" text="Unknown" class="death-screen__metric-value"/>
+                    </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:Label name="PenaltyItemsTitle" text="Lost Items" class="death-screen__items-title"/>
                 <ui:ScrollView name="Penalty_ItemScroll" class="death-screen__item-scroll">

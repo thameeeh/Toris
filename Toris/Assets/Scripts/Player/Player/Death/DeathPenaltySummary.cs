@@ -13,12 +13,16 @@ public sealed class DeathPenaltySummary
         int goldLost,
         int backpackItemsLost,
         int potionItemsLost,
+        string causeOfDeath,
         IEnumerable<DeathItemLossSummary> lostItems)
     {
         ExperienceLost = experienceLost < 0f ? 0f : experienceLost;
         GoldLost = Math.Max(0, goldLost);
         BackpackItemsLost = Math.Max(0, backpackItemsLost);
         PotionItemsLost = Math.Max(0, potionItemsLost);
+        CauseOfDeath = string.IsNullOrWhiteSpace(causeOfDeath)
+            ? DeathCauseSnapshot.UnknownDisplayName
+            : causeOfDeath.Trim();
         _lostItems = lostItems != null
             ? new List<DeathItemLossSummary>(lostItems)
             : new List<DeathItemLossSummary>();
@@ -28,6 +32,7 @@ public sealed class DeathPenaltySummary
     public int GoldLost { get; }
     public int BackpackItemsLost { get; }
     public int PotionItemsLost { get; }
+    public string CauseOfDeath { get; }
     public int TotalItemsLost => BackpackItemsLost + PotionItemsLost;
     public IReadOnlyList<DeathItemLossSummary> LostItems => _lostItems;
 }

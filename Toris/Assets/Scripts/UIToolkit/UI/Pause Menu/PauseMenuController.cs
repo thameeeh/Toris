@@ -8,6 +8,7 @@ namespace OutlandHaven.UIToolkit
     public class PauseMenuController : MonoBehaviour
     {
         private const string MainAreaSceneName = "MainArea";
+        private const string MainMenuSceneName = "MainMenu";
 
         [SerializeField] private VisualTreeAsset _pauseTemplate;
         [SerializeField] private UIEventsSO _uiEvents;
@@ -98,7 +99,13 @@ namespace OutlandHaven.UIToolkit
 #endif
 
             Time.timeScale = 1f;
-            SceneManager.LoadScene("MainMenu");
+            if (SceneTransitionService.Instance != null)
+            {
+                SceneTransitionService.Instance.LoadScene(MainMenuSceneName);
+                return;
+            }
+
+            SceneManager.LoadScene(MainMenuSceneName);
         }
 
         private void OnDestroy()

@@ -13,6 +13,7 @@ namespace OutlandHaven.UIToolkit
 
         private Button _respawnButton;
         private Button _mainMenuButton;
+        private Label _subtitleLabel;
         private Label _experienceLostLabel;
         private Label _goldLostLabel;
         private Label _itemsLostLabel;
@@ -37,6 +38,7 @@ namespace OutlandHaven.UIToolkit
         {
             _respawnButton = Root.Q<Button>("Btn_Respawn");
             _mainMenuButton = Root.Q<Button>("Btn_MainMenu");
+            _subtitleLabel = Root.Q<Label>("DeathSubtitle");
             _experienceLostLabel = Root.Q<Label>("Penalty_XP");
             _goldLostLabel = Root.Q<Label>("Penalty_Gold");
             _itemsLostLabel = Root.Q<Label>("Penalty_Items");
@@ -111,6 +113,7 @@ namespace OutlandHaven.UIToolkit
                 SetLabelText(_goldLostLabel, "calculating...");
                 SetLabelText(_itemsLostLabel, "calculating...");
                 SetLabelText(_causeOfDeathLabel, DeathCauseSnapshot.UnknownDisplayName);
+                SetLabelText(_subtitleLabel, DeathCauseMessageFormatter.DefaultSubtitle);
                 RebuildLostItemRows(null);
                 return;
             }
@@ -119,6 +122,7 @@ namespace OutlandHaven.UIToolkit
             SetLabelText(_goldLostLabel, summary.GoldLost.ToString());
             SetLabelText(_itemsLostLabel, summary.TotalItemsLost.ToString());
             SetLabelText(_causeOfDeathLabel, summary.CauseOfDeath);
+            SetLabelText(_subtitleLabel, summary.DeathMessage);
             RebuildLostItemRows(summary);
         }
 

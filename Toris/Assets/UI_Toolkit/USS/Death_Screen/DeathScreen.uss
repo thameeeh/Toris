@@ -57,8 +57,12 @@
 
 .death-screen__subtitle {
     color: rgba(222, 173, 151, 0.92);
-    font-size: 22px;
+    width: 100%;
+    max-width: 720px;
+    min-height: 34px;
+    font-size: 25px;
     -unity-text-align: middle-center;
+    white-space: normal;
     margin-top: 6px;
 }
 

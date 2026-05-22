@@ -14,7 +14,8 @@ public sealed class DeathPenaltySummary
         int backpackItemsLost,
         int potionItemsLost,
         string causeOfDeath,
-        IEnumerable<DeathItemLossSummary> lostItems)
+        IEnumerable<DeathItemLossSummary> lostItems,
+        string deathMessage = null)
     {
         ExperienceLost = experienceLost < 0f ? 0f : experienceLost;
         GoldLost = Math.Max(0, goldLost);
@@ -23,6 +24,9 @@ public sealed class DeathPenaltySummary
         CauseOfDeath = string.IsNullOrWhiteSpace(causeOfDeath)
             ? DeathCauseSnapshot.UnknownDisplayName
             : causeOfDeath.Trim();
+        DeathMessage = string.IsNullOrWhiteSpace(deathMessage)
+            ? DeathCauseMessageFormatter.DefaultSubtitle
+            : deathMessage.Trim();
         _lostItems = lostItems != null
             ? new List<DeathItemLossSummary>(lostItems)
             : new List<DeathItemLossSummary>();
@@ -33,6 +37,7 @@ public sealed class DeathPenaltySummary
     public int BackpackItemsLost { get; }
     public int PotionItemsLost { get; }
     public string CauseOfDeath { get; }
+    public string DeathMessage { get; }
     public int TotalItemsLost => BackpackItemsLost + PotionItemsLost;
     public IReadOnlyList<DeathItemLossSummary> LostItems => _lostItems;
 }

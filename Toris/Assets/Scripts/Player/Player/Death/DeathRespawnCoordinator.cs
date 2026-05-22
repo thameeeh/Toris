@@ -305,7 +305,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             checkpointData.Gold,
             backpackLosses,
             potionLosses,
-            ResolveCauseOfDeathText(),
+            ResolveDeathCause(),
             config);
     }
 
@@ -332,7 +332,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             currentGold,
             backpackLosses,
             potionLosses,
-            ResolveCauseOfDeathText(),
+            ResolveDeathCause(),
             config);
     }
 
@@ -341,7 +341,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         int currentGold,
         List<InventoryLossEntry> backpackLosses,
         List<InventoryLossEntry> potionLosses,
-        string causeOfDeath,
+        DeathCauseSnapshot causeOfDeath,
         DeathPenaltyConfigSO config)
     {
         float experienceLoss = Mathf.Max(0f, currentExperience * GetExperienceLossPercent(config));
@@ -358,18 +358,19 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             goldLoss,
             backpackItemLoss,
             potionItemLoss,
-            causeOfDeath,
-            itemSummaries);
+            causeOfDeath.DisplayName,
+            itemSummaries,
+            DeathCauseMessageFormatter.FormatSubtitle(causeOfDeath));
 
         return new DeathPenaltyPlan(summary, backpackLosses, potionLosses);
     }
 
-    private string ResolveCauseOfDeathText()
+    private DeathCauseSnapshot ResolveDeathCause()
     {
         PlayerStats stats = ResolvePlayerStats();
         return stats != null
-            ? stats.LastDeathCause.DisplayName
-            : DeathCauseSnapshot.UnknownDisplayName;
+            ? stats.LastDeathCause
+            : DeathCauseSnapshot.Unknown();
     }
 
     private List<InventoryLossEntry> BuildSavedInventoryLossPlan(

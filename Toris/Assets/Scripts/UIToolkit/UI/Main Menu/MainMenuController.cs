@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using OutlandHaven.UIToolkit;
 using OutlandHaven.SaveSystem;
@@ -13,6 +15,10 @@ public class MainMenuController : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private UIEventsSO _uiEvents;
     [SerializeField] private SaveManager _saveManager;
+    [SerializeField] private MainMenuSong _mainMenuSong;
+
+    [Header("Music")]
+    [SerializeField, Min(0f)] private float _startGameMusicFadeOutSeconds = 1f;
 
     private MainMenuView _view;
     private MainMenuUIManager _uiManager;
@@ -20,6 +26,7 @@ public class MainMenuController : MonoBehaviour
 
     private bool _slotsGenerated = false;
     private bool _isShowingSlots = false;
+    private bool _isStartingGame = false;
 
     private void Awake()
     {
@@ -30,6 +37,13 @@ public class MainMenuController : MonoBehaviour
         if (_saveManager == null)
         {
             _saveManager = FindFirstObjectByType<SaveManager>();
+        }
+
+        if (_mainMenuSong == null)
+        {
+            _mainMenuSong = MainMenuSong.Instance != null
+                ? MainMenuSong.Instance
+                : FindFirstObjectByType<MainMenuSong>();
         }
     }
 
@@ -174,7 +188,7 @@ public class MainMenuController : MonoBehaviour
 
             // 3. Transition Scene
             string sceneToLoad = string.IsNullOrEmpty(loadedData.CurrentSceneName) ? "MainArea" : loadedData.CurrentSceneName;
-            SceneTransitionService.Instance.LoadScene(sceneToLoad);
+            StartGameSceneLoad(sceneToLoad);
         }
         else
         {
@@ -184,8 +198,42 @@ public class MainMenuController : MonoBehaviour
             _saveManager.ActiveSession.ClearRuntimeSnapshots();
 
             // 2. Load the starting scene
-            SceneTransitionService.Instance.LoadScene("MainArea");
+            StartGameSceneLoad("MainArea");
         }
+    }
+
+    private void StartGameSceneLoad(string sceneName)
+    {
+        if (_isStartingGame)
+            return;
+
+        _isStartingGame = true;
+        StartCoroutine(StartGameSceneLoadRoutine(sceneName));
+    }
+
+    private IEnumerator StartGameSceneLoadRoutine(string sceneName)
+    {
+        float fadeWaitSeconds = 0f;
+
+        if (_mainMenuSong != null)
+        {
+            // Music-only handoff: fade the bespoke menu stem arrangement before the gameplay scene load starts.
+            fadeWaitSeconds = _mainMenuSong.FadeOutAndStop(_startGameMusicFadeOutSeconds);
+        }
+
+        float waitUntil = Time.realtimeSinceStartup + fadeWaitSeconds;
+        while (Time.realtimeSinceStartup < waitUntil)
+        {
+            yield return null;
+        }
+
+        if (SceneTransitionService.Instance != null)
+        {
+            SceneTransitionService.Instance.LoadScene(sceneName);
+            yield break;
+        }
+
+        SceneManager.LoadScene(sceneName);
     }
 
     private void OnPlayRequested()

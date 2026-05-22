@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8295282298498691662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 20536941886790256}
+  - component: {fileID: -2534325460577586616}
+  m_Layer: 0
+  m_Name: MainMenuSong
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &20536941886790256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295282298498691662}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -27.06715, y: -9.1097, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2534325460577586616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8295282298498691662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaba86f942e0fce4582c645ff14699a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuSong
+  clipGuitar: {fileID: 8300000, guid: b8773eedbdea8d94db72b3add3988cfd, type: 3}
+  clipOboe: {fileID: 8300000, guid: 26eb39e632e5db841b225fe58bbb1c8e, type: 3}
+  clipGuitarTwo: {fileID: 8300000, guid: e543b5aabf00273418327f21dca228f3, type: 3}
+  clipPadA: {fileID: 8300000, guid: 645c4f0bc711f2649b31cf25f224daf2, type: 3}
+  clipPadB: {fileID: 8300000, guid: 34d54be354d395841b7e890242c45f4e, type: 3}
+  outputMixerGroup: {fileID: 0}
+  arrangementVolume: 1
+  buildPerLoop: 1
+  fadeTime: 2
+  defaultExitFadeOutSeconds: 1
+  padAPan: -1
+  padBPan: 1

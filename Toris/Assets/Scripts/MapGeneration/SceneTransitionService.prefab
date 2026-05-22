@@ -70,9 +70,12 @@ MonoBehaviour:
   loadingMessage: Loading
   dotIntervalSeconds: 0.35
   activationDotCount: 3
-  fadeInSeconds: 0.35
-  blackHoldSeconds: 0.15
-  loadingContentFadeInSeconds: 0.35
-  fadeOutSeconds: 0.35
-  minimumDisplaySeconds: 2.5
   postLoadHoldSeconds: 0.15
+  minimumDisplaySecondsRange: {x: 0.5, y: 2.5}
+  timingLowerBiasPower: 1.2
+  fadeInSecondsRange: {x: 0.4, y: 0.4}
+  blackHoldSecondsRange: {x: 0.18, y: 0.18}
+  loadingContentFadeInSecondsRange: {x: 0.35, y: 0.35}
+  fadeOutSecondsRange: {x: 0.35, y: 0.35}
+  uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  gameplayInputLockId: SceneTransitionLoading

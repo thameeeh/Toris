@@ -2,15 +2,16 @@
 
 ## Current Scope
 
-The first loading-screen pass only covers full Unity scene transitions:
+The loading-screen overlay covers full Unity scene transitions:
 
 - `MainMenu` to `MainArea`
 - `MainArea` to `MainMenu`
 - `MainArea` to `ProceduralTiles`
 - `ProceduralTiles` to `MainArea`
 - death respawn scene returns that already route through `SceneTransitionService`
+- biome-to-biome gate transitions inside `ProceduralTiles`
 
-Biome-to-biome transitions inside `ProceduralTiles` are intentionally deferred. Those swaps are not Unity scene loads; they run through `WorldTransitionSystem` and need a separate wrapper so world generation remains isolated from presentation concerns.
+Biome-to-biome swaps are not Unity scene loads. They still run through `WorldTransitionSystem`, but `WorldGenRunner` injects a `BiomeLoadingTransitionService` wrapper into gate sites so presentation remains outside the world-state system.
 
 ## Runtime Owner
 
@@ -47,21 +48,25 @@ The current background pool uses `LoadingScreen001` through `LoadingScreen009` f
 
 The loading label sits in a full-width bottom strip with left-aligned text, matching warm accent lines above and below the label, bold text, and stable dot spacing so the label does not shift as dots animate.
 
-The overlay blocks scene UI input while active. It uses an invisible full-screen raycast blocker for uGUI and temporarily suspends UI Toolkit picking so menu buttons behind the loading screen do not receive hover or click events during the transition.
+The overlay blocks scene UI input while active. It uses an invisible full-screen raycast blocker for uGUI and temporarily suspends UI Toolkit picking so menu buttons behind the loading screen do not receive hover or click events during the transition. It also raises a temporary gameplay-input lock through `UIEventsSO`, which lets `InputManager` clear movement and held combat inputs during scene loads and biome swaps.
 
-The minimum display duration is an inspector-tuned value on `SceneTransitionService`. Use longer temporary values while checking the transition visually, then reduce it for normal gameplay feel.
+The minimum display duration is inspector-tuned on `SceneTransitionService` through a weighted range, with the default range biased toward shorter loading screens. Fade timings use the same range model; set a range's min and max to the same value when a timing should stay fixed.
 
-## Deferred Biome Transition Plan
+## Biome Gate Behavior
 
-Biome transitions should not be folded directly into `SceneTransitionService` because they do not use Unity scene loading. A later pass should add a small coroutine-capable bridge around `WorldTransitionSystem.UseGate(...)`:
+Biome transitions reuse the same overlay sequencing without pretending to be scene loads:
 
-1. Show the same loading overlay.
-2. Play the same three-dot timing.
-3. Execute the biome swap on the third-dot beat.
-4. Let streaming rebuild the active chunks.
-5. Hide the overlay once the transition has settled.
+1. A gate site calls its injected `IGateTransitionService`.
+2. `BiomeLoadingTransitionService` checks that the world transition system can currently use the gate.
+3. `SceneTransitionService` shows the same loading overlay used for scene transitions.
+4. Once the outgoing biome is fully covered, the wrapper calls `WorldTransitionSystem.UseGate(...)`.
+5. `WorldTransitionSystem` clears the old biome runtime state, binds the next biome, resets chunk state, rebuilds feature lifecycle state, and moves the streaming anchor.
+6. The overlay stays up while `WorldStreamingRuntime` processes the new view.
+7. The reveal waits until the visible chunk set is settled or until the configured biome streaming timeout is reached.
 
-That keeps `WorldTransitionSystem` focused on biome state and lets presentation stay in a UI/transition layer.
+`WorldTransitionSystem` remains responsible for biome state. `BiomeLoadingTransitionService` is only the bridge between gate interaction, loading presentation, and streaming readiness.
+
+If `ProceduralTiles` is launched directly without a `SceneTransitionService` instance in the scene or carried over from the main menu, `WorldGenRunner` falls back to direct world transitions. In that setup, biome gates still work but they do not show the loading overlay.
 
 ## Later Polish
 

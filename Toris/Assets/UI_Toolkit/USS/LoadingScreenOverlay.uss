@@ -59,8 +59,8 @@
 
 .loading-screen__accent {
     position: absolute;
-    left: 2%;
-    width: 180px;
+    left: 1%;
+    width: 99%;
     height: 3px;
     background-color: rgba(237, 184, 92, 0.95);
 }
@@ -76,9 +76,9 @@
 .loading-screen__label {
     position: absolute;
     left: 2%;
+    right: 2%;
     top: 7px;
     bottom: 9px;
-    width: 360px;
     -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     -unity-font-style: bold;
     -unity-text-align: middle-left;

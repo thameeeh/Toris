@@ -75,6 +75,16 @@ public sealed class WorldStreamingRuntime
         hasLastProcessedFrameResult = false;
     }
 
+    public bool IsCurrentViewSettled()
+    {
+        return hasLastProcessedFrameResult
+               && chunkStreamingSystem != null
+               && chunkStreamingSystem.AnchorInitialized
+               && chunkStreamingSystem.LoadedChunkCount > 0
+               && chunkStreamingSystem.GenerationQueueCount == 0
+               && chunkStreamingSystem.QueuedChunkCount == 0;
+    }
+
     public StreamingDiagnosticsSnapshot CreateDiagnosticsSnapshot()
     {
         bool hasStreamingBounds = hasLastProcessedFrameResult && lastProcessedFrameResult.ProcessedFrame;

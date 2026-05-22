@@ -37,6 +37,8 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     [Header("Gate")]
     [SerializeField] private float gateCooldownSeconds = 1f;
+    [SerializeField, Min(0.1f)] private float biomeTransitionStreamingTimeoutSeconds = 8f;
+    [SerializeField, Min(0f)] private float biomeTransitionPostReadyHoldSeconds = 0.15f;
 
     [Header("Pool")]
     [SerializeField] private WorldPoiPoolManager poiPool;
@@ -52,6 +54,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
     private ChunkStreamingCoordinator chunkStreamingCoordinator;
     private WorldStreamingRuntime worldStreamingRuntime;
     private WorldTransitionSystem worldTransitionSystem;
+    private BiomeLoadingTransitionService biomeLoadingTransitionService;
     private WorldNavigationLifecycle worldNavigationLifecycle;
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
 
@@ -141,12 +144,24 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             chunkStreamingSystem,
             gateCooldownSeconds);
 
+        IGateTransitionService gateTransitionService = worldTransitionSystem;
+        if (sceneTransitionService != null)
+        {
+            // Presentation bridge: biome gates get loading UI without coupling world state to UI Toolkit.
+            biomeLoadingTransitionService = new BiomeLoadingTransitionService(
+                worldTransitionSystem,
+                sceneTransitionService,
+                biomeTransitionStreamingTimeoutSeconds,
+                biomeTransitionPostReadyHoldSeconds);
+            gateTransitionService = biomeLoadingTransitionService;
+        }
+
         WorldSiteActivationPipeline worldSiteActivationPipeline = new WorldSiteActivationPipeline(
             worldSceneServices,
             worldEncounterServices,
             chunkStateStore,
             poiPool,
-            worldTransitionSystem,
+            gateTransitionService,
             sceneTransitionService);
 
         WorldFeatureLifecycle chunkFeatureLifecycle = new WorldFeatureLifecycle(
@@ -197,6 +212,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
         worldTransitionSystem.AttachLifecycleSystem(worldFeatureLifecycleSystem);
         worldTransitionSystem.AttachStreamingRuntime(worldStreamingRuntime);
+        biomeLoadingTransitionService?.AttachStreamingRuntime(worldStreamingRuntime);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
         worldTransitionSystem.StartInitialBiome(0, spawnTile);

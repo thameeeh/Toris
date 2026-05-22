@@ -13,6 +13,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
     private const string DefaultMainAreaSceneName = "MainArea";
     private const string DefaultMainMenuSceneName = "MainMenu";
     private const string DefaultRespawnAnchorId = "MainArea_DeathRespawn";
+    private const string RespawningLoadingMessage = "Respawning";
     private const float DefaultExperienceLossPercent = 0.1f;
     private const float DefaultGoldLossPercent = 0.1f;
     private const float DefaultBackpackItemLossPercent = 0.1f;
@@ -92,7 +93,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             penaltyPlan);
         _currentPenaltyPlan = null;
 
-        LoadScene(_pendingRespawn.MainAreaSceneName);
+        LoadScene(_pendingRespawn.MainAreaSceneName, RespawningLoadingMessage);
     }
 
     private void HandleDeathMainMenuRequested()
@@ -785,11 +786,11 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         return component != null && component.gameObject.scene.IsValid();
     }
 
-    private static void LoadScene(string sceneName)
+    private static void LoadScene(string sceneName, string loadingMessageOverride = null)
     {
         if (SceneTransitionService.Instance != null)
         {
-            SceneTransitionService.Instance.LoadScene(sceneName);
+            SceneTransitionService.Instance.LoadScene(sceneName, loadingMessageOverride);
             return;
         }
 

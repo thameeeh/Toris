@@ -175,6 +175,7 @@ namespace OutlandHaven.UIToolkit
                 _playerHudBridge.OnHealthChanged += UpdateHealthUI;
                 _playerHudBridge.OnStaminaChanged += UpdateManaUI;
                 _playerHudBridge.OnLevelChanged += UpdateLevelUI;
+                _playerHudBridge.OnExperienceChanged += UpdateExperienceUI;
                 _playerHudBridge.OnGoldChanged += UpdateGoldUI;
 
                 _playerHudBridge.PushInitialState(); // Trigger initial level/XP update
@@ -193,6 +194,7 @@ namespace OutlandHaven.UIToolkit
                 _playerHudBridge.OnHealthChanged -= UpdateHealthUI;
                 _playerHudBridge.OnStaminaChanged -= UpdateManaUI;
                 _playerHudBridge.OnLevelChanged -= UpdateLevelUI;
+                _playerHudBridge.OnExperienceChanged -= UpdateExperienceUI;
                 _playerHudBridge.OnGoldChanged -= UpdateGoldUI;
             }
         }
@@ -224,6 +226,16 @@ namespace OutlandHaven.UIToolkit
             if (_levelLabel != null)
                 _levelLabel.text = $"Level {level}";
 
+            UpdateExperienceBar();
+        }
+
+        private void UpdateExperienceUI(float experience, int level)
+        {
+            UpdateExperienceBar();
+        }
+
+        private void UpdateExperienceBar()
+        {
             if (_xpBar != null)
             {
                 if (_playerHudBridge != null)

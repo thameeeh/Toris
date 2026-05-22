@@ -21,6 +21,7 @@ public class PlayerHUDBridge : MonoBehaviour
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnStaminaChanged;
     public event Action<int, float> OnLevelChanged;
+    public event Action<float, int> OnExperienceChanged;
     public event Action<int, int> OnGoldChanged;
 
     public event Action<PlayerStatusEffectType> OnStatusApplied;
@@ -91,6 +92,7 @@ public class PlayerHUDBridge : MonoBehaviour
         if (_playerProgression != null)
         {
             _playerProgression.OnLevelChanged += HandleLevelChanged;
+            _playerProgression.OnExperienceChanged += HandleExperienceChanged;
             _playerProgression.OnGoldChanged += HandleGoldChanged;
         }
 
@@ -124,6 +126,7 @@ public class PlayerHUDBridge : MonoBehaviour
         if (_playerProgression != null)
         {
             _playerProgression.OnLevelChanged -= HandleLevelChanged;
+            _playerProgression.OnExperienceChanged -= HandleExperienceChanged;
             _playerProgression.OnGoldChanged -= HandleGoldChanged;
         }
 
@@ -157,6 +160,7 @@ public class PlayerHUDBridge : MonoBehaviour
         if (_playerProgression != null)
         {
             OnLevelChanged?.Invoke(_playerProgression.CurrentLevel, _playerProgression.CurrentExperience);
+            OnExperienceChanged?.Invoke(_playerProgression.CurrentExperience, _playerProgression.CurrentLevel);
             OnGoldChanged?.Invoke(_playerProgression.CurrentGold, 0);
         }
     }
@@ -184,6 +188,11 @@ public class PlayerHUDBridge : MonoBehaviour
     private void HandleLevelChanged(int level, float experience)
     {
         OnLevelChanged?.Invoke(level, experience);
+    }
+
+    private void HandleExperienceChanged(float experience, int level)
+    {
+        OnExperienceChanged?.Invoke(experience, level);
     }
 
     private void HandleGoldChanged(int currentGold, int delta)

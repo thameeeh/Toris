@@ -111,10 +111,10 @@
 }
 
 .forge-blueprint-row {
-    min-height: 58px;
-    max-height: 58px;
-    margin-bottom: 6px;
-    padding: 6px;
+    min-height: 96px;
+    max-height: 96px;
+    margin-bottom: 8px;
+    padding: 8px;
     flex-direction: row;
     align-items: center;
     background-color: var(--color-bg-panel);
@@ -143,27 +143,33 @@
 }
 
 .forge-blueprint-icon {
-    width: 42px;
-    height: 42px;
+    width: 72px;
+    height: 72px;
     flex-shrink: 0;
-    margin-right: 8px;
+    margin-right: 14px;
 }
 
 .forge-blueprint-details {
     flex-grow: 1;
     flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .forge-blueprint-title {
     -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
-    font-size: 20px;
+    font-size: var(--font-size-body);
     -unity-font-style: bold;
+    min-height: 30px;
+    margin-bottom: 2px;
 }
 
 .forge-blueprint-requirements {
     color: var(--color-border-default);
-    font-size: 11px;
+    font-size: var(--font-size-small);
+    min-height: 52px;
+    white-space: normal;
 }
 
 /* Scrollbar Overrides for the Recipe List */

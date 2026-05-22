@@ -1,4 +1,5 @@
 using OutlandHaven.Inventory;
+using System.Globalization;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -143,10 +144,23 @@ namespace OutlandHaven.UIToolkit
 
                 // We no longer need the if/else check here because the guard clause 
                 // guarantees that any code reaching this point has valid item data.
-                if (itemNameLabel != null) itemNameLabel.text = slotData.HeldItem.BaseItem.ItemName;
+                if (itemNameLabel != null) itemNameLabel.text = FormatItemName(slotData.HeldItem.BaseItem);
                 if (itemDescLabel != null) itemDescLabel.text = slotData.HeldItem.BaseItem.Description;
                 if (itemPriceLabel != null) itemPriceLabel.text = slotData.HeldItem.BaseItem.GoldValue.ToString() + "g";
             }
+        }
+
+        private static string FormatItemName(InventoryItemSO item)
+        {
+            if (item == null)
+                return "Unknown Item";
+
+            string source = string.IsNullOrWhiteSpace(item.ItemName) ? item.name : item.ItemName;
+            if (string.IsNullOrWhiteSpace(source))
+                return "Unknown Item";
+
+            string spaced = source.Replace('_', ' ').Replace('-', ' ').Trim().ToLowerInvariant();
+            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(spaced);
         }
 
 

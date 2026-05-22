@@ -55,14 +55,14 @@
 /* --- NEW LIST ITEM LAYOUT (The Row) --- */
 .shop-list-item {
     flex-direction: row; /* Horizontal layout for the row */
-    height: 132px;
+    height: 124px;
     flex-shrink: 0; /* Rule 4: Prevent ScrollView from squishing rows */
     background-color: var(--color-shop-slot-bg);
     border-width: 1px;
     border-color: var(--color-shop-slot-border);
     border-radius: 4px;
-    margin-bottom: 10px;
-    padding: 10px;
+    margin-bottom: 9px;
+    padding: 8px;
     transition-duration: 0.15s;
 }
 
@@ -73,8 +73,8 @@
 
 /* Internal layout for the list item */
 .shop-item-icon-wrapper {
-    width: 104px;
-    height: 104px;
+    width: 96px;
+    height: 96px;
     flex-shrink: 0;
     background-color: var(--color-bg-dark);
     border-width: 1px;
@@ -87,8 +87,8 @@
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .shop-item-name {
@@ -96,14 +96,14 @@
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
-    min-height: 38px;
-    margin-bottom: 8px;
+    min-height: 30px;
+    margin-bottom: 2px;
 }
 .shop-item-description {
     color: var(--color-border-default);
     font-size: var(--font-size-small);
     white-space: normal; /* Enables multi-line text */
-    min-height: 56px;
+    min-height: 72px;
 }
 
 .shop-item-commerce {

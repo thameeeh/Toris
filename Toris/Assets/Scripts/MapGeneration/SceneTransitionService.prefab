@@ -61,11 +61,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: de252457de300bb4e91d7d7d3ebe746f, type: 3}
   - {fileID: 21300000, guid: 92145cd35be98684b936d094ae02c22d, type: 3}
   - {fileID: 21300000, guid: 929103b2e7faeda4f8e100e8178870a3, type: 3}
+  randomizeLoadingBackgrounds: 1
   fallbackBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   backgroundDimAlpha: 0.35
   loadingMessage: Loading
   dotIntervalSeconds: 0.35
   activationDotCount: 3
+  fadeInSeconds: 0.35
+  blackHoldSeconds: 0.25
+  loadingContentFadeInSeconds: 0.35
+  fadeOutSeconds: 0.35
+  minimumDisplaySeconds: 10
   postLoadHoldSeconds: 0.15
   loadingFont: {fileID: 0}
   loadingFontSize: 48

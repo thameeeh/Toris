@@ -149,8 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7153a6dc0871447a757ebbaee25866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuScreenController
-  gameSession: {fileID: 0}
-  VillageSceneName: MainArea
+  _mainMenuTemplate: {fileID: 0}
+  _saveSlotTemplate: {fileID: 0}
+  _uiEvents: {fileID: 0}
+  _saveManager: {fileID: 0}
 --- !u!114 &1208865091
 MonoBehaviour:
   m_ObjectHideFlags: 0

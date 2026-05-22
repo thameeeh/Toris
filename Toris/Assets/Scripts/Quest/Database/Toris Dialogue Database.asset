@@ -48,11 +48,15 @@ MonoBehaviour:
     - title: Description
       value: 
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: IsPlayer
       value: True
       type: 2
       typeString: CustomFieldType_Boolean
+    - title: Display Name
+      value: Cade
+      type: 0
+      typeString: 
     portrait: {fileID: 0}
     spritePortrait: {fileID: 0}
     alternatePortraits: []
@@ -405,158 +409,17 @@ MonoBehaviour:
   - id: 1
     fields:
     - title: Name
-      value: LeaderWolfKills
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: 
+      value: 10 Gold
       type: 0
       typeString: 
-  - id: 2
-    fields:
-    - title: Name
-      value: Kill_3_Leader_Wolves_RewardsGranted
-      type: 0
-      typeString: CustomFieldType_Text
     - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
     - title: Description
-      value: Guards the Toris reward adapter against duplicate payout.
+      value: gives 10 gold
       type: 0
-      typeString: CustomFieldType_Text
-  - id: 3
-    fields:
-    - title: Name
-      value: TalkedToSmith
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: 
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 4
-    fields:
-    - title: Name
-      value: Opening_PlayerIntroChoice
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: Unknown
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Stores the first Guide dialogue option selected by the player.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 5
-    fields:
-    - title: Name
-      value: SafeHavenSideWorkUnlocked
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Marks that the opening Guide and Smith introduction has unlocked optional
-        Safe Haven work.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 6
-    fields:
-    - title: Name
-      value: Guide_Cull_Wolves_Kill_LeaderWolf_Required_3
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Tracks optional Guide wolf culling progress.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 7
-    fields:
-    - title: Name
-      value: Guide_Cull_Wolves_RewardsGranted
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Guards the optional Guide wolf culling reward against duplicate payout.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 8
-    fields:
-    - title: Name
-      value: SmithCheckForgeTalked
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Tracks the prototype Smith job check-in objective.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 9
-    fields:
-    - title: Name
-      value: Smith_Check_Forge_RewardsGranted
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Guards the prototype Smith job reward against duplicate payout.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 10
-    fields:
-    - title: Name
-      value: GuideBuyOreCount
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Tracks the prototype Guide buy-item objective.
-      type: 0
-      typeString: CustomFieldType_Text
-  - id: 11
-    fields:
-    - title: Name
-      value: Guide_Buy_Ore_RewardsGranted
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Initial Value
-      value: 0
-      type: 0
-      typeString: CustomFieldType_Text
-    - title: Description
-      value: Guards the prototype Guide buy-item reward against duplicate payout.
-      type: 0
-      typeString: CustomFieldType_Text
+      typeString: 
   conversations:
   - id: 1
     fields:
@@ -1160,15 +1023,15 @@ MonoBehaviour:
         destinationDialogueID: 10
         isConnector: 0
         priority: 2
-      conditionsString: 
-      userScript: 
+      conditionsString: TorisHasItem("Hunter_Bow", 1)
+      userScript: TorisGiveItem("Minor_Healing_Potion", 1)
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 380
+        x: 161.0989
+        y: 381.0989
         width: 160
         height: 30
     - id: 10
@@ -1223,12 +1086,12 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 430
+        y: 431.0989
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.94000006
+    canvasScrollPosition: {x: 0, y: 5.981531}
+    canvasZoom: 0.9100001
   - id: 2
     fields:
     - title: Title

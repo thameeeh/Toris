@@ -10,7 +10,7 @@ public enum SkillCategory
 public class SkillData : ScriptableObject
 {
     [Header("Core Identity")]
-    public string skillID; // Crucial for saving/loading (e.g., "SKILL_DOUBLE_JUMP") and display
+    public string skillID; // Crucial for saving/loading and display
     public SkillCategory category = SkillCategory.Player;
 
     [Header("Display Info")]

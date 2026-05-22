@@ -187,6 +187,16 @@ Arrow impact sounds are configured on the `PlayerArrow` prefab.
 2. Keep `Impact Sfx Force 2D` disabled for positional wall/world hits.
 3. Enemy damage impacts still play through enemy `EnemySfx.modules`, so the projectile skips enemy double-play.
 
+## Audio Volume Settings
+
+The Settings menu sliders write to `AudioVolumeSettings`.
+
+- Master Volume uses `AudioListener.volume`, so it scales all Unity audio.
+- Music Volume scales music playback.
+- SFX Volume scales all SFX voices, including active loops.
+
+Slider values are saved with `PlayerPrefs` when the settings modal closes and again when the audio manager quits.
+
 ## Rule Field Guide
 
 - `Trigger`: the player event that activates the rule.

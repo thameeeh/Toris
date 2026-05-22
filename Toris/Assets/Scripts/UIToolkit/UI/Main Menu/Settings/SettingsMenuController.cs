@@ -1,8 +1,5 @@
 using OutlandHaven.UIToolkit;
-using System.Data;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Device;
 using UnityEngine.UIElements;
 
 public class SettingsMenuController : MonoBehaviour
@@ -66,10 +63,14 @@ public class SettingsMenuController : MonoBehaviour
         // Listen for the close button click
         _view.OnCloseClicked += OnCloseRequested;
 
-        // Listen for slider changes
-        _view.OnMasterVolumeChanged += (val) => Debug.Log($"[Settings] Master Volume changed to {val:F2}");
-        _view.OnMusicVolumeChanged += (val) => Debug.Log($"[Settings] Music Volume changed to {val:F2}");
-        _view.OnSFXVolumeChanged += (val) => Debug.Log($"[Settings] SFX Volume changed to {val:F2}");
+        _view.SetVolumeValues(
+            AudioVolumeSettings.MasterVolume,
+            AudioVolumeSettings.MusicVolume,
+            AudioVolumeSettings.SfxVolume);
+
+        _view.OnMasterVolumeChanged += HandleMasterVolumeChanged;
+        _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
+        _view.OnSFXVolumeChanged += HandleSfxVolumeChanged;
 
         // Register it (it will automatically hide on start)
         _uiManager.RegisterView(_view);
@@ -78,7 +79,26 @@ public class SettingsMenuController : MonoBehaviour
     private void OnCloseRequested()
     {
         // Tell the UIManager to close this specific screen
+        AudioVolumeSettings.Save();
         _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
+    }
+
+    private void HandleMasterVolumeChanged(float value)
+    {
+        // Audio settings only: sliders change saved mix values, not UI state or gameplay.
+        AudioVolumeSettings.SetMasterVolume(value);
+    }
+
+    private void HandleMusicVolumeChanged(float value)
+    {
+        // Audio settings only: sliders change saved mix values, not UI state or gameplay.
+        AudioVolumeSettings.SetMusicVolume(value);
+    }
+
+    private void HandleSfxVolumeChanged(float value)
+    {
+        // Audio settings only: sliders change saved mix values, not UI state or gameplay.
+        AudioVolumeSettings.SetSfxVolume(value);
     }
 
     private void OnDestroy()
@@ -86,6 +106,9 @@ public class SettingsMenuController : MonoBehaviour
         if (_view != null)
         {
             _view.OnCloseClicked -= OnCloseRequested;
+            _view.OnMasterVolumeChanged -= HandleMasterVolumeChanged;
+            _view.OnMusicVolumeChanged -= HandleMusicVolumeChanged;
+            _view.OnSFXVolumeChanged -= HandleSfxVolumeChanged;
             _view.Dispose();
         }
     }

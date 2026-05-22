@@ -13,6 +13,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         public Vector3 followOffset;
         public string sfxId;
         public float startUnscaledTime;
+        public float baseVolume;
         public bool isLooping;
         public float requestedFadeOutSeconds;
         public float fadeOutRemaining;
@@ -67,6 +68,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
                 followOffset = Vector3.zero,
                 sfxId = null,
                 startUnscaledTime = 0f,
+                baseVolume = 0f,
                 isLooping = false,
                 requestedFadeOutSeconds = 0f,
 
@@ -101,7 +103,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             return false;
         }
 
-        ConfigureSourceFromDefinition(voice.source, definition, request);
+        ConfigureSourceFromDefinition(voice, definition, request);
         voice.source.transform.position = request.explicitWorldPosition ?? worldPosition;
         voice.source.clip = clip;
         voice.source.loop = false;
@@ -149,7 +151,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             return false;
         }
 
-        ConfigureSourceFromDefinition(voice.source, definition, request);
+        ConfigureSourceFromDefinition(voice, definition, request);
 
         voice.followTarget = followTarget;
         voice.followOffset = localOffset;
@@ -198,7 +200,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             return false;
         }
 
-        ConfigureSourceFromDefinition(voice.source, definition, request);
+        ConfigureSourceFromDefinition(voice, definition, request);
         voice.source.transform.position = request.explicitWorldPosition ?? worldPosition;
 
         voice.source.clip = clip;
@@ -247,7 +249,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             return false;
         }
 
-        ConfigureSourceFromDefinition(voice.source, definition, request);
+        ConfigureSourceFromDefinition(voice, definition, request);
 
         voice.followTarget = followTarget;
         voice.followOffset = localOffset;
@@ -292,7 +294,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
 
             voice.requestedFadeOutSeconds = fadeOutSeconds;
             voice.fadeOutRemaining = fadeOutSeconds;
-            voice.fadeOutStartVolume = voice.source.volume;
+            voice.fadeOutStartVolume = voice.baseVolume;
             voice.fadeOutTargetVolume = 0f;
 
             return true;
@@ -323,13 +325,18 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
                 voice.fadeOutRemaining -= unscaledDeltaTime;
 
                 float t = 1f - Mathf.Clamp01(voice.fadeOutRemaining / Mathf.Max(0.0001f, voice.requestedFadeOutSeconds));
-                source.volume = Mathf.Lerp(voice.fadeOutStartVolume, voice.fadeOutTargetVolume, t);
+                voice.baseVolume = Mathf.Lerp(voice.fadeOutStartVolume, voice.fadeOutTargetVolume, t);
+                source.volume = ResolveSfxOutputVolume(voice.baseVolume);
 
                 if (voice.fadeOutRemaining <= 0f)
                 {
                     ReleaseVoice(voice);
                     continue;
                 }
+            }
+            else
+            {
+                source.volume = ResolveSfxOutputVolume(voice.baseVolume);
             }
 
             // Auto release finished one-shots
@@ -430,6 +437,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         voice.handleId = 0;
         voice.sfxId = null;
         voice.startUnscaledTime = 0f;
+        voice.baseVolume = 0f;
         voice.isLooping = false;
 
         voice.followTarget = null;
@@ -442,8 +450,10 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
 
         freeVoices.Enqueue(voice);
     }
-    private void ConfigureSourceFromDefinition(AudioSource source, SfxDefinition definition, SfxPlayRequest request)
+    private void ConfigureSourceFromDefinition(VoiceRecord voice, SfxDefinition definition, SfxPlayRequest request)
     {
+        AudioSource source = voice.source;
+
         if (definition.OutputMixerGroup != null)
             source.outputAudioMixerGroup = definition.OutputMixerGroup;
 
@@ -457,8 +467,14 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         float volume = baseVolume * Mathf.Max(0f, request.volumeMultiplier);
         float pitch = (basePitch * request.pitchMultiplier) + request.pitchOffset;
 
-        source.volume = Mathf.Clamp(volume, 0f, 2f);
+        voice.baseVolume = Mathf.Clamp(volume, 0f, 2f);
+        source.volume = ResolveSfxOutputVolume(voice.baseVolume);
         source.pitch = Mathf.Clamp(pitch, -3f, 3f);
+    }
+
+    private static float ResolveSfxOutputVolume(float baseVolume)
+    {
+        return Mathf.Clamp(baseVolume * AudioVolumeSettings.EffectiveSfxVolume, 0f, 2f);
     }
 
     private void IncrementActiveCount(string sfxId)

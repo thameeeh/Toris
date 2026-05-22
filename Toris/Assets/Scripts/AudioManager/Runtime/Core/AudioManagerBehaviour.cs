@@ -26,6 +26,8 @@ public sealed class AudioManagerBehaviour : MonoBehaviour
         activeInstance = this;
         DontDestroyOnLoad(gameObject);
 
+        AudioVolumeSettings.Load();
+
         AudioBootstrap.Initialize(
             owner: gameObject,
             sfxLibrary: sfxLibrary,
@@ -46,5 +48,10 @@ public sealed class AudioManagerBehaviour : MonoBehaviour
         {
             ticks[i].Tick(unscaledDeltaTime);
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        AudioVolumeSettings.Save();
     }
 }

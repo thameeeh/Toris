@@ -34,3 +34,5 @@ MonoBehaviour:
   minXp: 2
   maxXp: 6
   goldRewardSfxId: item_coin_pickup
+  dropGlowPrefab: {fileID: 1561985148853079896, guid: c333680bd76e9d142919326cd81d1369, type: 3}
+  dropShadowPrefab: {fileID: 719343916627612111, guid: cb0da83b83c0c5b40a546894f7af7ca8, type: 3}

@@ -1,0 +1,99 @@
+.loading-screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.loading-screen__content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.loading-screen__background-backing {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgb(0, 0, 0);
+}
+
+.loading-screen__background {
+    position: absolute;
+    left: -4%;
+    right: -4%;
+    top: -4%;
+    bottom: -4%;
+    -unity-background-scale-mode: scale-and-crop;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.loading-screen__dimmer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.loading-screen__label-root {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 92px;
+    height: 72px;
+    background-color: rgba(0, 0, 0, 0.48);
+}
+
+.loading-screen__accent {
+    position: absolute;
+    left: 2%;
+    width: 180px;
+    height: 3px;
+    background-color: rgba(237, 184, 92, 0.95);
+}
+
+.loading-screen__accent--top {
+    top: 14px;
+}
+
+.loading-screen__accent--bottom {
+    bottom: 10px
+}
+
+.loading-screen__label {
+    position: absolute;
+    left: 2%;
+    top: 7px;
+    bottom: 9px;
+    width: 360px;
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.75);
+    -unity-text-outline-width: 1px;
+    color: rgb(255, 255, 255);
+    font-size: 48px;
+    white-space: normal;
+}
+
+.loading-screen__cover {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+}

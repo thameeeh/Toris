@@ -1,30 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using PickingMode = UnityEngine.UIElements.PickingMode;
-using UIDocument = UnityEngine.UIElements.UIDocument;
-using VisualElement = UnityEngine.UIElements.VisualElement;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionService
 {
     public static SceneTransitionService Instance { get; private set; }
 
     private const string DefaultLoadingMessage = "Loading";
-    private const int LoadingOverlaySortingOrder = short.MaxValue;
-
     [Header("Optional hooks (UI fade, SFX, etc.)")]
     public UnityEvent onTransitionStart;
     public UnityEvent onTransitionEnd;
 
     [Header("Loading Screen")]
     [SerializeField] private bool showLoadingScreen = true;
+    [SerializeField] private VisualTreeAsset loadingOverlayTemplate;
+    [SerializeField] private PanelSettings loadingOverlayPanelSettings;
     [SerializeField] private Sprite[] loadingBackgrounds;
     [SerializeField] private bool randomizeLoadingBackgrounds = true;
     [SerializeField] private Color fallbackBackgroundColor = Color.black;
+    [SerializeField, Range(1f, 1.08f)] private float loadingBackgroundOverscan = 1.02f;
     [SerializeField, Range(0f, 1f)] private float backgroundDimAlpha = 0.35f;
     [SerializeField] private string loadingMessage = DefaultLoadingMessage;
     [SerializeField, Min(0.05f)] private float dotIntervalSeconds = 0.35f;
@@ -35,19 +31,14 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     [SerializeField, Min(0f)] private float fadeOutSeconds = 0.35f;
     [SerializeField, Min(0f)] private float minimumDisplaySeconds = 10f;
     [SerializeField, Min(0f)] private float postLoadHoldSeconds = 0.15f;
-    [SerializeField] private Font loadingFont;
-    [SerializeField, Min(1)] private int loadingFontSize = 48;
-    [SerializeField] private Color loadingTextColor = Color.white;
-    [SerializeField, Range(0f, 1f)] private float loadingLabelAnchorY = 0.15f;
-    [SerializeField] private Color loadingLabelPanelColor = new Color(0f, 0f, 0f, 0.48f);
-    [SerializeField] private Color loadingLabelAccentColor = new Color(0.93f, 0.72f, 0.36f, 0.95f);
 
+    private readonly SceneUiInputSuspender _sceneUiInputSuspender = new SceneUiInputSuspender();
     private bool _isLoading;
     private SceneLoadingOverlay _loadingOverlay;
-    private readonly List<EventSystem> _suspendedEventSystems = new List<EventSystem>();
-    private readonly Dictionary<VisualElement, PickingMode> _suspendedPickingModes = new Dictionary<VisualElement, PickingMode>();
     private int _nextBackgroundIndex;
     private int _lastBackgroundIndex = -1;
+
+    public bool IsLoading => _isLoading;
 
     private void Awake()
     {
@@ -71,13 +62,11 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         if (Instance != this)
             return;
 
-        ResumeSceneUiInput();
+        _sceneUiInputSuspender.Resume();
         _loadingOverlay?.Dispose();
         _loadingOverlay = null;
         Instance = null;
     }
-
-    public bool IsLoading => _isLoading;
 
     public void LoadScene(string sceneName)
     {
@@ -86,7 +75,9 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
     public void LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
     {
-        if (_isLoading) return;
+        if (_isLoading)
+            return;
+
         StartCoroutine(LoadRoutine(sceneName, mode));
     }
 
@@ -126,21 +117,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
 
         if (overlay != null)
         {
-            SuspendSceneUiInput();
-
-            overlay.Show(
-                GetNextLoadingBackground(),
-                fallbackBackgroundColor,
-                backgroundDimAlpha,
-                loadingMessage,
-                resolvedDotInterval,
-                resolvedActivationDotCount,
-                loadingFont,
-                loadingFontSize,
-                loadingTextColor,
-                loadingLabelAnchorY,
-                loadingLabelPanelColor,
-                loadingLabelAccentColor);
+            _sceneUiInputSuspender.Suspend();
+            overlay.Show(CreateLoadingOverlaySettings(resolvedDotInterval, resolvedActivationDotCount));
 
             yield return FadeCover(overlay, 1f, fadeInSeconds);
             overlay.ResetLoadingContent();
@@ -150,7 +128,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             {
                 Debug.LogError($"[SceneTransitionService] Failed to load scene '{sceneName}'.");
                 overlay.Hide();
-                ResumeSceneUiInput();
+                _sceneUiInputSuspender.Resume();
                 onTransitionEnd?.Invoke();
                 _isLoading = false;
                 yield break;
@@ -174,7 +152,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             if (op == null)
             {
                 Debug.LogError($"[SceneTransitionService] Failed to load scene '{sceneName}'.");
-                ResumeSceneUiInput();
+                _sceneUiInputSuspender.Resume();
                 onTransitionEnd?.Invoke();
                 _isLoading = false;
                 yield break;
@@ -189,7 +167,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
                    || Time.realtimeSinceStartup < activationReadyTime
                    || Time.realtimeSinceStartup < minimumDisplayEndTime)
             {
-                SuspendSceneUiInput();
+                _sceneUiInputSuspender.Suspend();
                 overlay.Tick();
                 yield return null;
             }
@@ -202,7 +180,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         {
             if (overlay != null)
             {
-                SuspendSceneUiInput();
+                _sceneUiInputSuspender.Suspend();
             }
 
             overlay?.Tick();
@@ -216,7 +194,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             float hideAt = Time.realtimeSinceStartup + postLoadHoldSeconds;
             while (Time.realtimeSinceStartup < hideAt)
             {
-                SuspendSceneUiInput();
+                _sceneUiInputSuspender.Suspend();
                 overlay.Tick();
                 yield return null;
             }
@@ -226,7 +204,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         {
             yield return FadeOverlay(overlay, 0f, fadeOutSeconds);
             overlay.Hide();
-            ResumeSceneUiInput();
+            _sceneUiInputSuspender.Resume();
         }
 
         onTransitionEnd?.Invoke();
@@ -238,8 +216,25 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         if (_loadingOverlay != null)
             return _loadingOverlay;
 
-        _loadingOverlay = new SceneLoadingOverlay(LoadingOverlaySortingOrder);
+        _loadingOverlay = new SceneLoadingOverlay(loadingOverlayTemplate, loadingOverlayPanelSettings);
+        _sceneUiInputSuspender.SetExcludedDocument(_loadingOverlay.Document);
         return _loadingOverlay;
+    }
+
+    private SceneLoadingOverlaySettings CreateLoadingOverlaySettings(
+        float resolvedDotInterval,
+        int resolvedActivationDotCount)
+    {
+        return new SceneLoadingOverlaySettings
+        {
+            Background = GetNextLoadingBackground(),
+            FallbackColor = fallbackBackgroundColor,
+            BackgroundOverscan = loadingBackgroundOverscan,
+            DimAlpha = backgroundDimAlpha,
+            LoadingMessage = loadingMessage,
+            DotIntervalSeconds = resolvedDotInterval,
+            ActivationDotCount = resolvedActivationDotCount
+        };
     }
 
     private Sprite GetNextLoadingBackground()
@@ -312,95 +307,6 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         return count;
     }
 
-    private void SuspendSceneUiInput()
-    {
-        SuspendActiveEventSystems();
-        SuspendUiToolkitPicking();
-    }
-
-    private void ResumeSceneUiInput()
-    {
-        ResumeUiToolkitPicking();
-        ResumeEventSystems();
-    }
-
-    private void SuspendActiveEventSystems()
-    {
-        EventSystem[] eventSystems = FindObjectsOfType<EventSystem>();
-        for (int i = 0; i < eventSystems.Length; i++)
-        {
-            EventSystem eventSystem = eventSystems[i];
-            if (eventSystem == null || !eventSystem.enabled)
-                continue;
-
-            if (!_suspendedEventSystems.Contains(eventSystem))
-            {
-                _suspendedEventSystems.Add(eventSystem);
-            }
-
-            eventSystem.enabled = false;
-        }
-    }
-
-    private void ResumeEventSystems()
-    {
-        for (int i = 0; i < _suspendedEventSystems.Count; i++)
-        {
-            EventSystem eventSystem = _suspendedEventSystems[i];
-            if (eventSystem != null)
-            {
-                eventSystem.enabled = true;
-            }
-        }
-
-        _suspendedEventSystems.Clear();
-    }
-
-    private void SuspendUiToolkitPicking()
-    {
-        UIDocument[] documents = FindObjectsOfType<UIDocument>();
-        for (int i = 0; i < documents.Length; i++)
-        {
-            UIDocument document = documents[i];
-            if (document == null || document.rootVisualElement == null)
-                continue;
-
-            SuspendPickingRecursive(document.rootVisualElement);
-        }
-    }
-
-    private void SuspendPickingRecursive(VisualElement element)
-    {
-        if (element == null)
-            return;
-
-        if (!_suspendedPickingModes.ContainsKey(element))
-        {
-            _suspendedPickingModes.Add(element, element.pickingMode);
-        }
-
-        element.pickingMode = PickingMode.Ignore;
-
-        int childCount = element.childCount;
-        for (int i = 0; i < childCount; i++)
-        {
-            SuspendPickingRecursive(element.ElementAt(i));
-        }
-    }
-
-    private void ResumeUiToolkitPicking()
-    {
-        foreach (KeyValuePair<VisualElement, PickingMode> entry in _suspendedPickingModes)
-        {
-            if (entry.Key != null)
-            {
-                entry.Key.pickingMode = entry.Value;
-            }
-        }
-
-        _suspendedPickingModes.Clear();
-    }
-
     private IEnumerator FadeOverlay(SceneLoadingOverlay overlay, float targetAlpha, float durationSeconds)
     {
         if (overlay == null)
@@ -418,7 +324,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            SuspendSceneUiInput();
+            _sceneUiInputSuspender.Suspend();
             overlay.Tick();
             elapsed += Time.unscaledDeltaTime;
             overlay.SetAlpha(Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration));
@@ -445,7 +351,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            SuspendSceneUiInput();
+            _sceneUiInputSuspender.Suspend();
             elapsed += Time.unscaledDeltaTime;
             overlay.SetCoverAlpha(Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration));
             yield return null;
@@ -462,7 +368,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         float holdUntil = Time.realtimeSinceStartup + Mathf.Max(0f, durationSeconds);
         while (Time.realtimeSinceStartup < holdUntil)
         {
-            SuspendSceneUiInput();
+            _sceneUiInputSuspender.Suspend();
             yield return null;
         }
     }
@@ -484,408 +390,12 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            SuspendSceneUiInput();
+            _sceneUiInputSuspender.Suspend();
             elapsed += Time.unscaledDeltaTime;
             overlay.SetContentAlpha(Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration));
             yield return null;
         }
 
         overlay.SetContentAlpha(targetAlpha);
-    }
-
-    private sealed class SceneLoadingOverlay
-    {
-        private readonly Canvas canvas;
-        private readonly CanvasGroup canvasGroup;
-        private readonly CanvasGroup contentGroup;
-        private readonly Image backgroundImage;
-        private readonly AspectRatioFitter backgroundAspectFitter;
-        private readonly Image dimmerImage;
-        private readonly Image coverImage;
-        private readonly Image inputBlockerImage;
-        private readonly RectTransform loadingLabelRoot;
-        private readonly CanvasGroup loadingLabelGroup;
-        private readonly Image loadingLabelPanelImage;
-        private readonly Image loadingLabelAccentImage;
-        private readonly Text loadingLabel;
-
-        private string message = DefaultLoadingMessage;
-        private float dotIntervalSeconds = 0.35f;
-        private int maxDotCount = 3;
-        private int currentDotCount;
-        private float nextDotTime;
-        private bool animateDots;
-
-        public float Alpha => canvasGroup.alpha;
-        public float ContentAlpha => contentGroup.alpha;
-        public float CoverAlpha => coverImage.color.a;
-
-        public SceneLoadingOverlay(int sortingOrder)
-        {
-            GameObject canvasObject = new GameObject("SceneTransition_LoadingScreen");
-            Object.DontDestroyOnLoad(canvasObject);
-
-            canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = sortingOrder;
-
-            CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.matchWidthOrHeight = 0.5f;
-
-            canvasObject.AddComponent<GraphicRaycaster>();
-
-            canvasGroup = canvasObject.AddComponent<CanvasGroup>();
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
-
-            RectTransform contentRoot = CreateFullScreenContainer("LoadingContent", canvasObject.transform);
-            contentGroup = contentRoot.gameObject.AddComponent<CanvasGroup>();
-            contentGroup.alpha = 0f;
-            contentGroup.blocksRaycasts = false;
-            contentGroup.interactable = false;
-
-            RectTransform backgroundViewport = CreateFullScreenContainer("BackgroundViewport", contentRoot);
-            backgroundViewport.gameObject.AddComponent<RectMask2D>();
-
-            backgroundImage = CreateCenteredImage("Background", backgroundViewport);
-            backgroundAspectFitter = backgroundImage.gameObject.AddComponent<AspectRatioFitter>();
-            backgroundAspectFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-            backgroundAspectFitter.enabled = false;
-
-            dimmerImage = CreateFullScreenImage("Dimmer", contentRoot);
-            LoadingLabelVisuals labelVisuals = CreateLoadingLabel(contentRoot);
-            loadingLabelRoot = labelVisuals.Root;
-            loadingLabelGroup = labelVisuals.Group;
-            loadingLabelPanelImage = labelVisuals.PanelImage;
-            loadingLabelAccentImage = labelVisuals.AccentImage;
-            loadingLabel = labelVisuals.Label;
-            coverImage = CreateFullScreenImage("TransitionCover", canvasObject.transform);
-            coverImage.rectTransform.SetAsFirstSibling();
-            inputBlockerImage = CreateFullScreenImage("InputBlocker", canvasObject.transform);
-            inputBlockerImage.color = Color.clear;
-            inputBlockerImage.raycastTarget = true;
-
-            canvas.enabled = false;
-        }
-
-        public void Show(
-            Sprite background,
-            Color fallbackColor,
-            float dimAlpha,
-            string loadingMessage,
-            float dotInterval,
-            int activationDotCount,
-            Font font,
-            int fontSize,
-            Color textColor,
-            float labelAnchorY,
-            Color labelPanelColor,
-            Color labelAccentColor)
-        {
-            message = string.IsNullOrWhiteSpace(loadingMessage)
-                ? DefaultLoadingMessage
-                : loadingMessage.Trim();
-
-            dotIntervalSeconds = Mathf.Max(0.05f, dotInterval);
-            maxDotCount = Mathf.Max(1, activationDotCount);
-            currentDotCount = Mathf.Min(1, maxDotCount);
-            animateDots = false;
-            nextDotTime = Time.realtimeSinceStartup;
-
-            backgroundImage.sprite = background;
-            backgroundImage.color = background != null ? Color.white : fallbackColor;
-            backgroundImage.preserveAspect = false;
-
-            if (background != null && background.rect.height > 0f)
-            {
-                CenterInParent(backgroundImage.rectTransform);
-                backgroundAspectFitter.aspectRatio = background.rect.width / background.rect.height;
-                backgroundAspectFitter.enabled = true;
-            }
-            else
-            {
-                backgroundAspectFitter.enabled = false;
-                StretchToParent(backgroundImage.rectTransform);
-            }
-
-            dimmerImage.color = new Color(0f, 0f, 0f, Mathf.Clamp01(dimAlpha));
-            coverImage.color = new Color(fallbackColor.r, fallbackColor.g, fallbackColor.b, 0f);
-            ConfigureLoadingLabel(font, fontSize, textColor, labelAnchorY, labelPanelColor, labelAccentColor);
-
-            ApplyText();
-
-            canvas.enabled = true;
-            canvasGroup.alpha = 1f;
-            contentGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.interactable = true;
-            inputBlockerImage.raycastTarget = true;
-            Canvas.ForceUpdateCanvases();
-        }
-
-        public void ResetLoadingContent()
-        {
-            currentDotCount = Mathf.Min(1, maxDotCount);
-            animateDots = false;
-            nextDotTime = Time.realtimeSinceStartup;
-            loadingLabel.enabled = true;
-            loadingLabelGroup.alpha = 1f;
-            ApplyText();
-
-            contentGroup.alpha = 0f;
-        }
-
-        public void StartLoadingAnimation()
-        {
-            currentDotCount = Mathf.Min(1, maxDotCount);
-            animateDots = true;
-            nextDotTime = Time.realtimeSinceStartup + dotIntervalSeconds;
-            loadingLabel.enabled = true;
-            loadingLabelGroup.alpha = 1f;
-            ApplyText();
-        }
-
-        public void Tick()
-        {
-            if (!canvas.enabled || !animateDots)
-                return;
-
-            while (Time.realtimeSinceStartup >= nextDotTime)
-            {
-                currentDotCount = currentDotCount >= maxDotCount ? 1 : currentDotCount + 1;
-                nextDotTime += dotIntervalSeconds;
-                ApplyText();
-            }
-        }
-
-        public void CompleteLoading()
-        {
-            animateDots = false;
-            currentDotCount = maxDotCount;
-            ApplyText();
-            loadingLabel.enabled = false;
-            loadingLabelGroup.alpha = 0f;
-        }
-
-        public void SetAlpha(float alpha)
-        {
-            canvasGroup.alpha = Mathf.Clamp01(alpha);
-        }
-
-        public void SetContentAlpha(float alpha)
-        {
-            contentGroup.alpha = Mathf.Clamp01(alpha);
-        }
-
-        public void SetCoverAlpha(float alpha)
-        {
-            Color color = coverImage.color;
-            color.a = Mathf.Clamp01(alpha);
-            coverImage.color = color;
-        }
-
-        public void Hide()
-        {
-            canvasGroup.alpha = 0f;
-            contentGroup.alpha = 0f;
-            SetCoverAlpha(0f);
-            animateDots = false;
-            loadingLabel.enabled = false;
-            loadingLabelGroup.alpha = 0f;
-            inputBlockerImage.raycastTarget = false;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
-            canvas.enabled = false;
-        }
-
-        public void Dispose()
-        {
-            if (canvas != null)
-            {
-                Object.Destroy(canvas.gameObject);
-            }
-        }
-
-        private void ApplyText()
-        {
-            int visibleDotCount = Mathf.Clamp(currentDotCount, 0, maxDotCount);
-            int hiddenDotCount = Mathf.Max(0, maxDotCount - visibleDotCount);
-
-            string visibleDots = new string('.', visibleDotCount);
-            string hiddenDots = new string('.', hiddenDotCount);
-            loadingLabel.text = $"{message}{visibleDots}<color=#FFFFFF00>{hiddenDots}</color>";
-        }
-
-        private void ConfigureLoadingLabel(
-            Font font,
-            int fontSize,
-            Color textColor,
-            float labelAnchorY,
-            Color labelPanelColor,
-            Color labelAccentColor)
-        {
-            loadingLabelRoot.anchorMin = new Vector2(0.5f, Mathf.Clamp01(labelAnchorY));
-            loadingLabelRoot.anchorMax = new Vector2(0.5f, Mathf.Clamp01(labelAnchorY));
-            loadingLabelRoot.anchoredPosition = Vector2.zero;
-
-            loadingLabelPanelImage.color = labelPanelColor;
-            loadingLabelAccentImage.color = labelAccentColor;
-
-            loadingLabel.font = font != null ? font : ResolveDefaultFont();
-            loadingLabel.fontSize = Mathf.Max(1, fontSize);
-            loadingLabel.resizeTextMaxSize = Mathf.Max(1, fontSize);
-            loadingLabel.color = textColor;
-            loadingLabel.enabled = true;
-            loadingLabelGroup.alpha = 1f;
-        }
-
-        private static RectTransform CreateFullScreenContainer(string name, Transform parent)
-        {
-            GameObject containerObject = new GameObject(name);
-            containerObject.transform.SetParent(parent, false);
-
-            RectTransform rect = containerObject.AddComponent<RectTransform>();
-            StretchToParent(rect);
-
-            return rect;
-        }
-
-        private static Image CreateFullScreenImage(string name, Transform parent)
-        {
-            GameObject imageObject = new GameObject(name);
-            imageObject.transform.SetParent(parent, false);
-
-            Image image = imageObject.AddComponent<Image>();
-            image.raycastTarget = false;
-
-            StretchToParent(image.rectTransform);
-
-            return image;
-        }
-
-        private static Image CreateCenteredImage(string name, Transform parent)
-        {
-            GameObject imageObject = new GameObject(name);
-            imageObject.transform.SetParent(parent, false);
-
-            Image image = imageObject.AddComponent<Image>();
-            image.raycastTarget = false;
-
-            RectTransform rect = image.rectTransform;
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = Vector2.zero;
-            rect.sizeDelta = Vector2.zero;
-
-            return image;
-        }
-
-        private static void CenterInParent(RectTransform rect)
-        {
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = Vector2.zero;
-            rect.sizeDelta = Vector2.zero;
-        }
-
-        private static void StretchToParent(RectTransform rect)
-        {
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-        }
-
-        private static LoadingLabelVisuals CreateLoadingLabel(Transform parent)
-        {
-            GameObject rootObject = new GameObject("LoadingLabelRoot");
-            rootObject.transform.SetParent(parent, false);
-
-            RectTransform rootRect = rootObject.AddComponent<RectTransform>();
-            rootRect.anchorMin = new Vector2(0.5f, 0.15f);
-            rootRect.anchorMax = new Vector2(0.5f, 0.15f);
-            rootRect.pivot = new Vector2(0.5f, 0.5f);
-            rootRect.anchoredPosition = Vector2.zero;
-            rootRect.sizeDelta = new Vector2(560f, 82f);
-
-            Image panelImage = rootObject.AddComponent<Image>();
-            panelImage.color = new Color(0f, 0f, 0f, 0.48f);
-            panelImage.raycastTarget = false;
-
-            CanvasGroup group = rootObject.AddComponent<CanvasGroup>();
-            group.alpha = 0f;
-            group.blocksRaycasts = false;
-            group.interactable = false;
-
-            GameObject accentObject = new GameObject("AccentLine");
-            accentObject.transform.SetParent(rootObject.transform, false);
-
-            Image accentImage = accentObject.AddComponent<Image>();
-            accentImage.color = new Color(0.93f, 0.72f, 0.36f, 0.95f);
-            accentImage.raycastTarget = false;
-
-            RectTransform accentRect = accentImage.rectTransform;
-            accentRect.anchorMin = new Vector2(0.5f, 0f);
-            accentRect.anchorMax = new Vector2(0.5f, 0f);
-            accentRect.pivot = new Vector2(0.5f, 0.5f);
-            accentRect.anchoredPosition = new Vector2(0f, 10f);
-            accentRect.sizeDelta = new Vector2(180f, 3f);
-
-            GameObject labelObject = new GameObject("LoadingLabel");
-            labelObject.transform.SetParent(rootObject.transform, false);
-
-            Text label = labelObject.AddComponent<Text>();
-            label.alignment = TextAnchor.MiddleCenter;
-            label.horizontalOverflow = HorizontalWrapMode.Wrap;
-            label.verticalOverflow = VerticalWrapMode.Truncate;
-            label.resizeTextForBestFit = true;
-            label.resizeTextMinSize = 26;
-            label.fontStyle = FontStyle.Bold;
-            label.supportRichText = true;
-            label.raycastTarget = false;
-
-            Shadow shadow = labelObject.AddComponent<Shadow>();
-            shadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
-            shadow.effectDistance = new Vector2(2f, -2f);
-
-            Outline outline = labelObject.AddComponent<Outline>();
-            outline.effectColor = new Color(0f, 0f, 0f, 0.65f);
-            outline.effectDistance = new Vector2(1f, -1f);
-
-            RectTransform rect = label.rectTransform;
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = new Vector2(28f, 8f);
-            rect.offsetMax = new Vector2(-28f, -10f);
-
-            return new LoadingLabelVisuals
-            {
-                Root = rootRect,
-                Group = group,
-                PanelImage = panelImage,
-                AccentImage = accentImage,
-                Label = label
-            };
-        }
-
-        private static Font ResolveDefaultFont()
-        {
-            Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            return font != null ? font : Resources.GetBuiltinResource<Font>("Arial.ttf");
-        }
-
-        private struct LoadingLabelVisuals
-        {
-            public RectTransform Root;
-            public CanvasGroup Group;
-            public Image PanelImage;
-            public Image AccentImage;
-            public Text Label;
-        }
     }
 }

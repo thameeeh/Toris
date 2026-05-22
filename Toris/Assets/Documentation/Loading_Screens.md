@@ -16,6 +16,13 @@ Biome-to-biome transitions inside `ProceduralTiles` are intentionally deferred. 
 
 `SceneTransitionService` owns the first pass because it is already the centralized scene-transition service and persists across scene loads. The loading overlay is a transition concern, not a normal gameplay window, so it stays outside the scene-local `UIManager` registration flow.
 
+The implementation is split by responsibility:
+
+- `SceneTransitionService` coordinates async scene loading, activation timing, transition hooks, and fade sequencing.
+- `SceneLoadingOverlay` owns a small persistent UI Toolkit `UIDocument` host and drives the cloned loading overlay template.
+- `LoadingScreenOverlay.uxml` and `LoadingScreenOverlay.uss` own the loading-screen layout and styling.
+- `SceneUiInputSuspender` owns temporary input blocking for uGUI `EventSystem` instances and UI Toolkit picking.
+
 Scene-local UI remains rebuilt normally after each load. The loading screen only blocks input and covers the scene while the async scene operation is in progress.
 
 ## First-Pass Behavior
@@ -36,9 +43,9 @@ When a scene load starts:
 
 If no background images are assigned, the overlay falls back to a solid color.
 
-The current background pool uses `LoadingScreen001` through `LoadingScreen009` from `Assets/Art/PixelArtRPGMegaPack/Textures/Extra/`. Backgrounds preserve their aspect ratio and cover the full screen; images with a mismatched aspect ratio are cropped at the edges instead of stretched.
+The current background pool uses `LoadingScreen001` through `LoadingScreen009` from `Assets/Art/PixelArtRPGMegaPack/Textures/Extra/`. Backgrounds preserve their aspect ratio and cover the full screen; images with a mismatched aspect ratio are cropped at the edges instead of stretched. The UI Toolkit background element supports a small centered overscan so bad outermost sprite pixels do not sit on the screen edge. A solid fallback-color backing sits behind the art, so semi-transparent loading images cannot reveal the outgoing or incoming scene.
 
-The loading label is a bottom-centered runtime overlay with a subtle translucent backing panel, a small warm accent line, bold text, and stable dot spacing so the label does not shift as dots animate.
+The loading label sits in a full-width bottom strip with left-aligned text, matching warm accent lines above and below the label, bold text, and stable dot spacing so the label does not shift as dots animate.
 
 The overlay blocks scene UI input while active. It uses an invisible full-screen raycast blocker for uGUI and temporarily suspends UI Toolkit picking so menu buttons behind the loading screen do not receive hover or click events during the transition.
 

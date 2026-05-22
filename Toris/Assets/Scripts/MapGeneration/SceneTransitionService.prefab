@@ -51,6 +51,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   showLoadingScreen: 1
+  loadingOverlayTemplate: {fileID: 9197481963319205126, guid: c8cf21ae6ff046ad8ab537a0e3d52e3f, type: 3}
+  loadingOverlayPanelSettings: {fileID: 11400000, guid: a47cd5725ab74dd68a4109b03ea8fe3b, type: 2}
   loadingBackgrounds:
   - {fileID: 21300000, guid: dca5413cebdb16d488923d2c182fa24b, type: 3}
   - {fileID: 21300000, guid: f0ff92609a6bbb24a9a979a940f7d2bf, type: 3}
@@ -63,19 +65,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 929103b2e7faeda4f8e100e8178870a3, type: 3}
   randomizeLoadingBackgrounds: 1
   fallbackBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  loadingBackgroundOverscan: 1.08
   backgroundDimAlpha: 0.35
   loadingMessage: Loading
   dotIntervalSeconds: 0.35
   activationDotCount: 3
   fadeInSeconds: 0.35
-  blackHoldSeconds: 0.25
+  blackHoldSeconds: 0.15
   loadingContentFadeInSeconds: 0.35
   fadeOutSeconds: 0.35
   minimumDisplaySeconds: 2.5
   postLoadHoldSeconds: 0.15
-  loadingFont: {fileID: 0}
-  loadingFontSize: 48
-  loadingTextColor: {r: 1, g: 1, b: 1, a: 1}
-  loadingLabelAnchorY: 0.15
-  loadingLabelPanelColor: {r: 0, g: 0, b: 0, a: 0.48}
-  loadingLabelAccentColor: {r: 0.93, g: 0.72, b: 0.36, a: 0.95}

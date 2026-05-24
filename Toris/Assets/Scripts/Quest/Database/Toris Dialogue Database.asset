@@ -433,6 +433,20 @@ MonoBehaviour:
       value: 
       type: 0
       typeString: 
+  - id: 3
+    fields:
+    - title: Name
+      value: isPortalUnlocked
+      type: 0
+      typeString: 
+    - title: Initial Value
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
   conversations:
   - id: 1
     fields:
@@ -4849,7 +4863,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: CurrentQuestState("Kill3Wolves") == "unassigned"
-      userScript: 
+      userScript: TorisGiveItem("Simple_Key", 1);
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -4917,7 +4931,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 360.45422
-        y: 121.94174
+        y: 120.8779
         width: 160
         height: 30
     - id: 4

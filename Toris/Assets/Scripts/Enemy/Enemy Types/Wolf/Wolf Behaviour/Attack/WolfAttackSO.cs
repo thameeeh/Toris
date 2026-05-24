@@ -123,6 +123,7 @@ public class WolfAttackSO : AttackSOBase<Wolf>
         isComplete = false;
         _hasAppliedHit = false;
         _hasHandledFinish = false;
+        enemy.IsMovingWhileBiting = false;
     }
 
     private void PlayAttackGrowlSfx()

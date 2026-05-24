@@ -190,4 +190,14 @@ public class WolfReturnHomeSO : EnemyBehaviourSO<Wolf>
 
         return enemy.transform.position;
     }
+
+    public override void ResetValues()
+    {
+        base.ResetValues();
+
+        _currentDirection = Vector2.zero;
+        _returnTarget = enemy != null ? enemy.transform.position : Vector3.zero;
+        _repickTimer = 0f;
+        HasArrived = false;
+    }
 }

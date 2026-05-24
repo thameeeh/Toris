@@ -274,10 +274,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleMage(InputAction.CallbackContext context)
     {
-        if (context.performed && AllowsUiToggleInput())
-        {
-            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Mage, null);
-        }
+        // Intentionally no-op: vendor screens require an NPC inventory payload from interaction.
+        // Opening here with null context can show an empty or stale shop.
     }
 
     public void OnToggleSkills(InputAction.CallbackContext context)
@@ -290,10 +288,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleSmith(InputAction.CallbackContext context)
     {
-        if (context.performed && AllowsUiToggleInput())
-        {
-            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Smith, null);
-        }
+        // Intentionally no-op: vendor screens require an NPC inventory payload from interaction.
+        // Opening here with null context can show an empty or stale shop.
     }
 
     public void OnToggleQuestJournal(InputAction.CallbackContext context)

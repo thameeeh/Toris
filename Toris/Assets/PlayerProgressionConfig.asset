@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerProgressionConfig
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProgressionConfigSO
   startingLevel: 1
-  startingExperience: 2434
-  startingGold: 4205
+  startingExperience: 0
+  startingGold: 0
   experiencePerLevel: 100

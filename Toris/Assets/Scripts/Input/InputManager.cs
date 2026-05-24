@@ -12,6 +12,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     private readonly HashSet<string> _gameplayInputLocks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     // Shared lock id used by the death screen flow to suppress gameplay and hotkey UI.
     private const string DeathGameplayLockId = "Death";
+    // Shared lock id used by the tutorial runtime; input only honors the lock, it does not drive tutorial flow.
+    private const string TutorialGameplayLockId = "Tutorial";
 
     [SerializeField] private PlayerInputReaderSO _inputReader;
     [SerializeField] private ItemPickEventSO _itemPicker;
@@ -184,7 +186,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnPotion_1(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked())
+        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
         {
             _inputReader.OnPotion1Pressed?.Invoke();
         }
@@ -192,7 +194,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnPotion_2(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked())
+        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
         {
             _inputReader.OnPotion2Pressed?.Invoke();
         }
@@ -243,6 +245,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         _lastFrameEscapeProcessed = Time.frameCount;
 
         if (IsDeathInputLocked())
+            return;
+
+        if (IsTutorialInputLocked())
             return;
 
         // Settings can sit on top of Pause, so Escape closes that modal before broad UI teardown.
@@ -302,7 +307,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnQuickSave(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked())
+        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
         {
             _uiEvents?.OnQuickSaveRequested?.Invoke();
         }
@@ -310,7 +315,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnQuickLoad(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked())
+        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
         {
             _uiEvents?.OnQuickLoadRequested?.Invoke();
         }
@@ -427,13 +432,18 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     private bool AllowsUiToggleInput()
     {
-        return !IsDeathInputLocked();
+        return !IsDeathInputLocked() && !IsTutorialInputLocked();
     }
 
     private bool IsDeathInputLocked()
     {
         return _openBlockingScreens.Contains(ScreenType.DeathScreen)
             || _gameplayInputLocks.Contains(DeathGameplayLockId);
+    }
+
+    private bool IsTutorialInputLocked()
+    {
+        return _gameplayInputLocks.Contains(TutorialGameplayLockId);
     }
 
     private static string NormalizeGameplayInputLockId(string lockId)

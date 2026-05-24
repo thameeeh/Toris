@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using OutlandHaven.Inventory;
 using OutlandHaven.Skills;
+using OutlandHaven.Tutorial;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +19,8 @@ namespace OutlandHaven.UIToolkit
         private List<GameView> _allViews = new List<GameView>();
         private Dictionary<GameView, ScreenZone> _viewZones = new Dictionary<GameView, ScreenZone>();
         private ItemTooltipView _itemTooltipView;
+        // UIManager only provides the shared UI root/event bus; tutorial behavior stays in Scripts/Tutorial.
+        private TutorialRuntimeController _tutorialRuntime;
         private bool _tooltipEventsBound;
         private bool _inventoryDragActive;
 
@@ -37,6 +40,7 @@ namespace OutlandHaven.UIToolkit
             _rightZone = root.Q<VisualElement>("Right_Zone");
             _fullScreen_Zone = root.Q<VisualElement>("FullScreen_Zone");
             _itemTooltipView = new ItemTooltipView(root);
+            _tutorialRuntime = new TutorialRuntimeController(root, _UIEvents, GameSessionSO.LoadDefault(), TutorialCatalogSO.LoadDefault());
 
             if (_hudZone == null || _leftZone == null || _rightZone == null || _fullScreen_Zone == null)
             {
@@ -52,6 +56,7 @@ namespace OutlandHaven.UIToolkit
             ResolveInventoryEvents();
             ResolveSkillEvents();
             BindTooltipEvents();
+            _tutorialRuntime?.Bind();
         }
 
         private void OnDisable()
@@ -60,6 +65,7 @@ namespace OutlandHaven.UIToolkit
             _UIEvents.OnRequestClose -= CloseWindow;
             _UIEvents.OnRequestCloseAll -= CloseAllWindows;
             UnbindTooltipEvents();
+            _tutorialRuntime?.Unbind();
         }
 
         private void OnValidate()

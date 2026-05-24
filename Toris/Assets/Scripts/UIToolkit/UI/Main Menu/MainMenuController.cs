@@ -177,6 +177,7 @@ public class MainMenuController : MonoBehaviour
 
         // Store the active slot in the session
         _saveManager.ActiveSession.ActiveSaveSlot = enumIndex;
+        _saveManager.ActiveSession.AllowAutoSaveForSlot(enumIndex);
 
         // 1. Load the data
         GameSaveData loadedData = _saveManager.LoadGameData(enumIndex);
@@ -193,13 +194,33 @@ public class MainMenuController : MonoBehaviour
         else
         {
             Debug.Log($"[MainMenuController] Slot {slotIndex} is empty. Initializing New Game sequence...");
-
-            // 1. Reset the session to default state
-            _saveManager.ActiveSession.ClearRuntimeSnapshots();
-
-            // 2. Load the starting scene
-            StartGameSceneLoad("MainArea");
+            PromptTutorialChoiceForNewGame(slotIndex, enumIndex);
         }
+    }
+
+    private void PromptTutorialChoiceForNewGame(int slotIndex, SaveSlotIndex enumIndex)
+    {
+        ConfirmationPayload payload = new ConfirmationPayload(
+            "TUTORIAL",
+            $"Would you like tutorial guidance for Slot {slotIndex}?",
+            () => BeginNewGame(enumIndex, tutorialsEnabled: true),
+            () => BeginNewGame(enumIndex, tutorialsEnabled: false),
+            "Yes",
+            "No"
+        );
+
+        _uiEvents.OnRequestOpen?.Invoke(ScreenType.ConfirmationModal, payload);
+    }
+
+    private void BeginNewGame(SaveSlotIndex enumIndex, bool tutorialsEnabled)
+    {
+        if (_saveManager == null || _saveManager.ActiveSession == null)
+            return;
+
+        _saveManager.ActiveSession.ActiveSaveSlot = enumIndex;
+        _saveManager.ActiveSession.AllowAutoSaveForSlot(enumIndex);
+        _saveManager.ActiveSession.PrepareNewGame(tutorialsEnabled);
+        StartGameSceneLoad("MainArea");
     }
 
     private void StartGameSceneLoad(string sceneName)

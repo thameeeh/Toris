@@ -39,6 +39,8 @@ namespace OutlandHaven.UIToolkit
             {
                 if (_titleLabel != null) _titleLabel.text = data.Title;
                 if (_messageLabel != null) _messageLabel.text = data.Message;
+                if (_confirmButton != null) _confirmButton.text = data.ConfirmText;
+                if (_cancelButton != null) _cancelButton.text = data.CancelText;
             }
         }
 

@@ -27,6 +27,10 @@ namespace OutlandHaven.SaveSystem
         // Skills
         public SavedSkillProgressData SkillProgress;
 
+        // Tutorial
+        // Data-only save payload. Runtime tutorial behavior belongs to Assets/Scripts/Tutorial.
+        public SavedTutorialProgressData TutorialProgress;
+
         // Quest bridge: Pixel Crushers serializes quest states, quest entries, and Lua variables into this blob.
         // Future menu save-slot loads may deserialize this before MainArea/Dialogue Manager exists, so GameSessionSO defers applying it through the quest save bridge.
         public string PixelCrushersDialogueSaveData;
@@ -37,6 +41,13 @@ namespace OutlandHaven.SaveSystem
     {
         public int AvailableSP;
         public List<string> UnlockedSkillIDs = new List<string>();
+    }
+
+    [System.Serializable]
+    public class SavedTutorialProgressData
+    {
+        public bool TutorialsEnabled = true;
+        public List<string> CompletedStepIds = new List<string>();
     }
 
     /// <summary>

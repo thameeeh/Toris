@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public static class PixelCrushersDialogueSaveBridge
 {
     private static bool _sceneHookInstalled;
+    private static bool _hasPendingReset;
     private static bool _hasPendingSaveData;
     private static string _pendingSaveData;
 
@@ -23,19 +24,34 @@ public static class PixelCrushersDialogueSaveBridge
     public static void RequestApplySaveData(string saveData)
     {
         if (string.IsNullOrWhiteSpace(saveData))
+        {
+            RequestResetForNewGame();
             return;
+        }
 
         EnsureSceneHook();
 
+        _hasPendingReset = false;
         _pendingSaveData = saveData;
         _hasPendingSaveData = true;
         TryApplyPendingSaveData();
+    }
+
+    public static void RequestResetForNewGame()
+    {
+        EnsureSceneHook();
+
+        _hasPendingSaveData = false;
+        _pendingSaveData = string.Empty;
+        _hasPendingReset = true;
+        TryResetPendingState();
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetRuntimeState()
     {
         _sceneHookInstalled = false;
+        _hasPendingReset = false;
         _hasPendingSaveData = false;
         _pendingSaveData = string.Empty;
     }
@@ -53,7 +69,26 @@ public static class PixelCrushersDialogueSaveBridge
 
     private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        TryResetPendingState();
         TryApplyPendingSaveData();
+    }
+
+    private static bool TryResetPendingState()
+    {
+        if (!_hasPendingReset || !DialogueManager.hasInstance)
+            return false;
+
+        DialogueManager.StopAllConversations();
+        PersistentDataManager.Reset();
+        DialogueManager.SendUpdateTracker();
+
+        _hasPendingReset = false;
+
+#if UNITY_EDITOR
+        Debug.Log("[PixelCrushersDialogueSaveBridge] Reset Pixel Crushers dialogue/quest state for a new game.");
+#endif
+
+        return true;
     }
 
     private static bool TryApplyPendingSaveData()

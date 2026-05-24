@@ -1,0 +1,50 @@
+.tutorial-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: none;
+}
+
+.tutorial-overlay__shade {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.72);
+}
+
+.tutorial-overlay__highlight {
+    position: absolute;
+    border-width: 3px;
+    border-color: rgb(255, 213, 92);
+    border-radius: 4px;
+    background-color: rgba(255, 213, 92, 0.08);
+}
+
+.tutorial-overlay__tooltip {
+    position: absolute;
+    width: 320px;
+    padding: 14px;
+    border-width: 2px;
+    border-color: rgb(255, 213, 92);
+    border-radius: 6px;
+    background-color: rgba(20, 16, 14, 0.96);
+}
+
+.tutorial-overlay__title {
+    color: rgb(255, 242, 210);
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.tutorial-overlay__body {
+    color: rgb(231, 222, 205);
+    white-space: normal;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.tutorial-overlay__button {
+    align-self: flex-end;
+    min-width: 94px;
+}

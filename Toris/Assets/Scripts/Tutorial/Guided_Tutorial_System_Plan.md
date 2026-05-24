@@ -342,12 +342,22 @@ First version should probably block input and require a "Got it" click. It is si
 
 ## Open Implementation Questions
 
-These should be answered before coding:
+Answered decisions for the first implementation:
 
-1. Should tutorial progress be per save slot immediately, or is global `PlayerPrefs` acceptable for the first prototype?
-2. Should tutorials pause gameplay / lock player movement while open?
-3. Should the overlay block all UI interaction until dismissed, or allow clicking the highlighted element?
-4. Should steps be single independent popups, or should some form ordered multi-step sequences?
-5. Which first three tutorial steps should be implemented to prove the system?
-6. Should the tutorial text be authored as ScriptableObjects right away, or hardcoded only for the prototype?
+1. Tutorial progress is saved per save slot.
+2. New save slots ask: "Would you like tutorial guidance?" with Yes/No.
+3. Active tutorial steps pause gameplay and lock gameplay hotkeys.
+4. Highlighted regions should remain clickable where possible; the first Smith sequence uses the Next button so it can move through tabs cleanly.
+5. Ordered multi-step sequences are required.
+6. The first real sequence is Smith Forge, Market, and Salvage.
+7. Tutorial text is authored through a `TutorialCatalogSO` asset instead of hardcoded in the runtime.
 
+## First Slice Implementation
+
+- Runtime scripts live in `Assets/Scripts/Tutorial/`.
+- Overlay styling lives in `Assets/UI_Toolkit/USS/Tutorial/TutorialOverlay.uss`.
+- The first tutorial catalog lives in `Assets/Resources/GameData/Tutorial/DefaultTutorialCatalog.asset`.
+- Save data stores `TutorialsEnabled` and completed step IDs.
+- `GameSessionSO` owns the runtime tutorial state for the active save slot.
+- `UIManager` creates and binds the tutorial runtime from the shared UI root.
+- `SmithView` registers stable tutorial anchors for the Forge, Market, and Salvage tabs.

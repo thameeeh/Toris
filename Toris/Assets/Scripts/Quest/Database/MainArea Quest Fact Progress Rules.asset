@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rules:
   - FactType: 1
-    ExactId: LeaderWolf
-    TypeOrTag: 
+    ExactId: 
+    TypeOrTag: Wolf
     ContextId: 
-    QuestName: Kill_3_Leader_Wolves
+    QuestName: Kill3Wolves
     RequireQuestActive: 1
-    ProgressVariableName: LeaderWolfKills
+    ProgressVariableName: wolvesKilled
     RequiredAmount: 3
     EntryNumber: 1
     EntryCompleteState: 4
@@ -37,7 +37,7 @@ MonoBehaviour:
     QuestCompleteState: 64
   - FactType: 6
     ExactId: SmithNPC
-    TypeOrTag:
+    TypeOrTag: 
     ContextId: MainArea
     QuestName: Smith_Check_Forge
     RequireQuestActive: 1
@@ -48,8 +48,8 @@ MonoBehaviour:
     QuestCompleteState: 64
   - FactType: 9
     ExactId: Ore_Prog
-    TypeOrTag:
-    ContextId:
+    TypeOrTag: 
+    ContextId: 
     QuestName: Guide_Buy_Ore
     RequireQuestActive: 1
     ProgressVariableName: GuideBuyOreCount

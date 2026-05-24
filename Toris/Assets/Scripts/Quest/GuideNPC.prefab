@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 153906591188603896}
   - component: {fileID: 7337916850770722796}
   - component: {fileID: 6285173142799082713}
-  - component: {fileID: 7310965067122716731}
   - component: {fileID: 476312681164151100}
   m_Layer: 0
   m_Name: GuideNPC
@@ -97,12 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36959acb4ab32f45b2e271247a71e29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersConversationInteractable
-  _defaultConversation: Guide_Intro
+  _defaultConversation: QQQQ-1
   _questConversationRoutes:
   - QuestName: Guide_Buy_Ore
-    ConversationWhenUnassigned:
+    ConversationWhenUnassigned: 
     ConversationWhenActive: Guide_Hub
-    ConversationWhenReturnToNpc:
+    ConversationWhenReturnToNpc: 
     ConversationWhenSuccess: Guide_Hub
   - QuestName: Guide_Cull_Wolves
     ConversationWhenUnassigned: 
@@ -141,6 +140,7 @@ MonoBehaviour:
   _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   _debugRewardFlow: 1
+  _grantMissedAutomaticRewardsOnEnable: 1
 --- !u!114 &6285173142799082713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,28 +151,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b27dfd0d5884cefa7a9bb2b15b0c401, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestAbandonAdapter
   _abandonSets:
   - {fileID: 11400000, guid: c29b5ca598914460951f6f70bca26c3c, type: 2}
   _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
   _debugAbandonFlow: 1
---- !u!114 &7310965067122716731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 874577071310736719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f0da69f11e67be46bf6eb73d1dec789, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestProgressMapper
-  _ruleSets:
-  - {fileID: 11400000, guid: d7d7b84013e74fbf839c3aad946375c5, type: 2}
-  _installPersistentRuntime: 1
-  _debugMapping: 1
 --- !u!114 &476312681164151100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +172,7 @@ MonoBehaviour:
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _screenCommands:
   - CommandId: SmithShop
-    ScreenType: 5
+    ScreenType: 3
     PassInventoryPayload: 1
     InventoryPayload: {fileID: 0}
   _questJournalWindow: {fileID: 0}
@@ -281,7 +265,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -5803062959967218436, guid: 25033ae8f1fc2b14bb18e8243ae349d2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

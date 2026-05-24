@@ -47,6 +47,7 @@ namespace OutlandHaven.UIToolkit
         [Header("Global Anchors")]
         public PlayerProgressionAnchorSO ProgressionAnchor;
         public PlayerStatsAnchorSO StatsAnchor;
+        public GameplayStatisticsSO GameplayStatistics;
 
         [Header("Save State")]
         [SerializeField] private int CurrentSaveSlotIndex;
@@ -115,7 +116,8 @@ namespace OutlandHaven.UIToolkit
                 PlayerEquipment,
                 PlayerPotionInventory,
                 _playerSkills,
-                _snapshotRegistry
+                _snapshotRegistry,
+                GameplayStatistics
             );
         }
 
@@ -131,7 +133,8 @@ namespace OutlandHaven.UIToolkit
                 PlayerEquipment,
                 PlayerPotionInventory,
                 _playerSkills,
-                _snapshotRegistry
+                _snapshotRegistry,
+                GameplayStatistics
             );
         }
         #endregion

@@ -20,7 +20,8 @@ namespace OutlandHaven.SaveSystem
             InventoryManager equipmentInventory,
             InventoryManager potionInventory,
             PlayerSkillTracker skillTracker,
-            RuntimeSnapshotRegistry snapshotRegistry)
+            RuntimeSnapshotRegistry snapshotRegistry,
+            GameplayStatisticsSO gameplayStatistics = null)
         {
             GameSaveData saveData = new GameSaveData();
             saveData.SaveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
@@ -76,6 +77,12 @@ namespace OutlandHaven.SaveSystem
 
             saveData.PixelCrushersDialogueSaveData = global::PixelCrushersDialogueSaveBridge.CaptureSaveData();
 
+            // --- 6. EXPORT GAMEPLAY STATISTICS ---
+            if (gameplayStatistics != null)
+            {
+                saveData.GameplayStatistics = gameplayStatistics.CaptureToSaveData();
+            }
+
             return saveData;
         }
 
@@ -89,7 +96,8 @@ namespace OutlandHaven.SaveSystem
             InventoryManager equipmentInventory,
             InventoryManager potionInventory,
             PlayerSkillTracker skillTracker,
-            RuntimeSnapshotRegistry snapshotRegistry)
+            RuntimeSnapshotRegistry snapshotRegistry,
+            GameplayStatisticsSO gameplayStatistics = null)
         {
             if (saveData == null) return;
 
@@ -121,6 +129,12 @@ namespace OutlandHaven.SaveSystem
             }
 
             global::PixelCrushersDialogueSaveBridge.RequestApplySaveData(saveData.PixelCrushersDialogueSaveData);
+
+            // --- 4. RESTORE GAMEPLAY STATISTICS ---
+            if (gameplayStatistics != null)
+            {
+                gameplayStatistics.RestoreFromSaveData(saveData.GameplayStatistics);
+            }
         }
 
         private static void RestoreOrSnapshot(

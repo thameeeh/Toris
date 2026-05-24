@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 4331170822996696030}
   - component: {fileID: 3738398143566829227}
   - component: {fileID: 1623794721465249846}
+  - component: {fileID: 5124735374230096793}
   m_Layer: 0
   m_Name: Dialogue Manager
   m_TagString: Untagged
@@ -382,3 +383,26 @@ MonoBehaviour:
   _lockGameplayInputDuringDialogue: 1
   _dialogueGameplayInputLockId: PixelCrushersDialogue
   _debugCommands: 1
+--- !u!114 &5124735374230096793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0da69f11e67be46bf6eb73d1dec789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestProgressMapper
+  _ruleSets:
+  - {fileID: 11400000, guid: d7d7b84013e74fbf839c3aad946375c5, type: 2}
+  _conventionProgress:
+    Enabled: 1
+    RequireQuestActive: 1
+    DefaultRequiredAmount: 1
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64
+  _installPersistentRuntime: 1
+  _debugMapping: 1

@@ -299,8 +299,8 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   autoCreateAlertIndicator: 1
   alertIndicator: {fileID: 0}
-  questEnemyId: 
-  questEnemyTypeOrTag: 
+  questEnemyId: MinionWolf
+  questEnemyTypeOrTag: Wolf
   isPassivePrey: 0
   threatensPassiveCreatures: 1
   debugAttackLogs: 0

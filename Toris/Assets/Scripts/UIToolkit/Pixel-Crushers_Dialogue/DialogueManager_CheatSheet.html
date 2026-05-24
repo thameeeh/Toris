@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogue Manager Components reference</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0d0f12;
+            --bg-surface: #13171d;
+            --bg-sidebar: #090b0d;
+            --bg-code: #161b22;
+
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: #dcb35c;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #22d3ee;
+
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+
+            --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', "Consolas", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        aside {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            padding: 36px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .logo-container { margin-bottom: 36px; }
+
+        .logo-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--border-highlight);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 4px; }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: block;
+            padding: 9px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        nav a.active {
+            color: var(--border-highlight);
+            background-color: rgba(220, 179, 92, 0.08);
+            border-left: 3px solid var(--border-highlight);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            font-weight: 600;
+        }
+
+        .nav-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 14px 10px;
+        }
+
+        .nav-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 6px 14px 4px;
+        }
+
+        /* ── Main ── */
+        main {
+            margin-left: 300px;
+            flex-grow: 1;
+            padding: 70px 60px 120px;
+            max-width: 1050px;
+        }
+
+        header {
+            margin-bottom: 60px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, var(--border-highlight), transparent);
+        }
+
+        .header-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--border-highlight);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+        }
+
+        .header-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 780px;
+            font-weight: 300;
+        }
+
+        section {
+            margin-bottom: 72px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 22px;
+            background-color: var(--border-highlight);
+            border-radius: 2px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        strong { color: var(--text-primary); }
+
+        code {
+            font-family: var(--font-mono);
+            background-color: rgba(255,255,255,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.84rem;
+            color: #f0883e;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* ── Principle Banner ── */
+        .principle-banner {
+            background: linear-gradient(135deg, rgba(220,179,92,0.06) 0%, rgba(59,130,246,0.04) 100%);
+            border: 1px solid rgba(220,179,92,0.2);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 30px 0 40px;
+        }
+
+        .principle-banner p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 0;
+            line-height: 1.7;
+        }
+
+        .principle-banner em {
+            color: var(--border-highlight);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* ── Script Card ── */
+        .script-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            transition: border-color 0.25s;
+        }
+
+        .script-card:hover {
+            border-color: rgba(220,179,92,0.35);
+        }
+
+        .script-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .script-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+
+        .script-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-core {
+            background-color: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .badge-bridge {
+            background-color: rgba(167, 139, 250, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(167, 139, 250, 0.25);
+        }
+
+        .script-meta {
+            background-color: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 0.88rem;
+        }
+
+        .meta-row {
+            display: flex;
+            margin-bottom: 4px;
+        }
+        .meta-row:last-child { margin-bottom: 0; }
+
+        .meta-label {
+            width: 140px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        .script-body {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .script-rationale {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--border-highlight);
+            padding-left: 14px;
+            margin-top: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside>
+    <div class="logo-container">
+        <div class="logo-title">Cheat Sheet</div>
+        <div class="logo-subtitle">DIALOGUE MANAGER COMPONENTS</div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#sec-overview" class="nav-item active">Overview</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Core Systems</div>
+            <li><a href="#core-controller" class="nav-item">Dialogue System Controller</a></li>
+            <li><a href="#core-input" class="nav-item">Input Device Manager</a></li>
+            <li><a href="#core-localization" class="nav-item">UI Localization Manager</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Integration Bridges</div>
+            <li><a href="#bridge-inventory" class="nav-item">Inventory Bridge</a></li>
+            <li><a href="#bridge-reward" class="nav-item">Quest Reward Adapter</a></li>
+            <li><a href="#bridge-command" class="nav-item">Command Bridge</a></li>
+            <li><a href="#bridge-progress" class="nav-item">Quest Progress Mapper</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Documentation Hub</div>
+            <li><a href="pixel_crushers_beginner_guide_html.html" style="border: none;">← Beginner Guide</a></li>
+            <li><a href="Dialogue_and_Quest_Inventory_Bridge_html.html" style="border: none;">← Lua API Bridge</a></li>
+            <li><a href="architecture_deep_dive.html" style="border: none;">← Architecture Deep Dive</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- ── Main Content ── -->
+<main>
+
+    <header id="sec-overview">
+        <span class="header-tag">Global Singleton Hub</span>
+        <h1>Dialogue Manager Component Guide</h1>
+        <p class="header-desc">
+            A quick-reference architectural layout of every script attached to your persistent <code>Dialogue Manager</code> GameObject.
+        </p>
+    </header>
+
+    <div class="principle-banner">
+        <p>
+            <em>The Golden Rule of Persistent Managers:</em><br>
+            The <code>Dialogue Manager</code> has <code>DontDestroyOnLoad</code> enabled. All integration scripts, adapters, and custom bridges must sit together on this GameObject so they boot up exactly once, persist across scene changes, and always remain linked to the core dialogue database.
+        </p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- CORE COMPONENTS -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-core">
+        <h2>Core Engine Components</h2>
+        <p>These components are the built-in system managers that power the Pixel Crushers Dialogue System and control standard UI layout, inputs, and multilingual translations.</p>
+
+        <!-- Dialogue System Controller -->
+        <div class="script-card" id="core-controller">
+            <div class="script-card-header">
+                <span class="script-name">DialogueSystemController</span>
+                <span class="script-badge badge-core">Core Engine</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">PixelCrushers.DialogueSystem</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Dialogue &amp; Database State Machine</span>
+                </div>
+            </div>
+            <p class="script-body">
+                The main orchestrator of dialogue. It coordinates dialogue database variables, actively runs NPC conversations, handles player decisions, tracks quest states, and communicates with the Dialogue UI components.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> It is the database singleton. Destroying it or letting it reload on scene change would wipe out all active quest progress and dialogue variables mid-game.
+            </div>
+        </div>
+
+        <!-- Input Device Manager -->
+        <div class="script-card" id="core-input">
+            <div class="script-card-header">
+                <span class="script-name">InputDeviceManager</span>
+                <span class="script-badge badge-core">Core Engine</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">PixelCrushers</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Control Input Detector</span>
+                </div>
+            </div>
+            <p class="script-body">
+                Monitors active inputs in real-time. Detects whether the player is currently typing on a Keyboard, clicking with a Mouse, or holding a Gamepad, and automatically switches navigation modes and action glyphs.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> Input routing needs to remain consistent across standard gameplay, inventory menus, and active conversations without having to re-detect inputs inside new scenes.
+            </div>
+        </div>
+
+        <!-- UI Localization Manager -->
+        <div class="script-card" id="core-localization">
+            <div class="script-card-header">
+                <span class="script-name">UILocalizationManager</span>
+                <span class="script-badge badge-core">Core Engine</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">PixelCrushers</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Translation Hub</span>
+                </div>
+            </div>
+            <p class="script-body">
+                Caches global language tables and active translations. Switches active dialogue subtitles and text menus to the user's preferred language on load.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> Language options are profile-wide settings. Having it on the persistent controller ensures that newly loaded scene elements are generated directly in the correct language.
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- CUSTOM BRIDGES -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-bridges">
+        <h2>Custom Integration Bridges</h2>
+        <p>These custom C# scripts act as thin connection adapters between the Pixel Crushers Dialogue Engine and Toris' core gameplay scripts (inventories, stats, player metrics, and persistent saves).</p>
+
+        <!-- Pixel Crushers Inventory Bridge -->
+        <div class="script-card" id="bridge-inventory">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersInventoryBridge.cs</span>
+                <span class="script-badge badge-bridge">Toris Bridge</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">OutlandHaven.Inventory</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Inventory Custom Lua API</span>
+                </div>
+            </div>
+            <p class="script-body">
+                Registers custom Lua actions (such as <code>TorisGiveItem</code>, <code>TorisHasItem</code>) to the Lua environment. When NPCs execute scripts or check conditions, it translates those queries directly to your C# Inventory managers.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> Keeps inventory-dialogue API registration alive. Since conversations can start in any scene and reference items at any point, the bridge must always be running.
+            </div>
+        </div>
+
+        <!-- Pixel Crushers Quest Reward Adapter -->
+        <div class="script-card" id="bridge-reward">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersQuestRewardAdapter.cs</span>
+                <span class="script-badge badge-bridge">Toris Bridge</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">OutlandHaven.Quest</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Quest Success Rewards Dispatcher</span>
+                </div>
+            </div>
+            <p class="script-body">
+                Monitors Pixel Crushers quest state changes. When a quest enters a <code>Success</code> state, it queries the Quest's associated Reward ScriptableObjects to automatically deposit items, gold, or experience points into the player's active progression.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> Quest completion and physical reward resolution can occur during active dialogs or straight from the Quest Journal UI anywhere in the game.
+            </div>
+        </div>
+
+        <!-- Pixel Crushers Dialogue Command Bridge -->
+        <div class="script-card" id="bridge-command">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersDialogueCommandBridge.cs</span>
+                <span class="script-badge badge-bridge">Toris Bridge</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">OutlandHaven.Quest</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Gameplay Commands router</span>
+                </div>
+            </div>
+            <p class="script-body">
+                Acts as a central router for mid-dialogue C# operations. Handles general gameplay commands (such as opening a shopkeeper's UI window, healing the player, or triggering customized cinematics) straight from Dialogue Node Lua triggers.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> Commands like opening shop screens or healing require persistent, reliable references that stay mapped globally regardless of the current active level scene.
+            </div>
+        </div>
+
+        <!-- Pixel Crushers Quest Progress Mapper -->
+        <div class="script-card" id="bridge-progress">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersQuestProgressMapper.cs</span>
+                <span class="script-badge badge-bridge">Toris Bridge</span>
+            </div>
+            <div class="script-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Source</span>
+                    <span class="meta-value">OutlandHaven.Quest</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Responsibility</span>
+                    <span class="meta-value">Quest Fact Interceptor</span>
+                </div>
+            </div>
+            <p class="script-body">
+                Intercepts reported gameplay <code>QuestFact</code> broadcasts (e.g., a wolf dies) and updates specific Pixel Crushers quest variables in the active database.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it lives here:</strong> If this script were placed on individual NPCs, dialogue managers, or duplicated across scenes, you would run into double-counting event progress bugs. Placing it once globally on the persistent singleton ensures it registers all events reliably.
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // Highlight active nav item on scroll
+    const sections = document.querySelectorAll('section, header');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= (sectionTop - 120)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === `#${current}`) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

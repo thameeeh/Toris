@@ -109,7 +109,7 @@ MonoBehaviour:
   - id: 1
     fields:
     - title: Name
-      value: Kill_3_Leader_Wolves
+      value: Kill3Wolves
       type: 0
       typeString: CustomFieldType_Text
     - title: Pictures
@@ -117,8 +117,7 @@ MonoBehaviour:
       type: 3
       typeString: CustomFieldType_Files
     - title: Description
-      value: The Guide asks the player to thin out the leader wolves threatening
-        the road beyond the hub.
+      value: Defeat 3 Wolves in the surrounding area.
       type: 0
       typeString: CustomFieldType_Text
     - title: Success Description
@@ -138,7 +137,7 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     - title: Display Name
-      value: Clear the Road
+      value: Kill 3 Wolves
       type: 0
       typeString: CustomFieldType_Text
     - title: Trackable
@@ -158,7 +157,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_QuestState
     - title: Entry 1
-      value: '[var=Wolf.NumKilled]/3 Leader Wolves killed'
+      value: 'Wolves Defeated: [var=wolvesKilled]/3'
       type: 0
       typeString: CustomFieldType_Text
   - id: 2
@@ -423,27 +422,13 @@ MonoBehaviour:
   - id: 2
     fields:
     - title: Name
-      value: Wolf.NumKilled
+      value: wolvesKilled
       type: 0
       typeString: 
     - title: Initial Value
       value: 0
       type: 1
       typeString: CustomFieldType_Number
-    - title: Description
-      value: 
-      type: 0
-      typeString: 
-  - id: 3
-    fields:
-    - title: Name
-      value: New Variable 3
-      type: 0
-      typeString: 
-    - title: Initial Value
-      value: 
-      type: 6
-      typeString: CustomFieldType_Item
     - title: Description
       value: 
       type: 0
@@ -4863,7 +4848,7 @@ MonoBehaviour:
         destinationDialogueID: 4
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("Kill_3_Leader_Wolves") == "unassigned"
+      conditionsString: CurrentQuestState("Kill3Wolves") == "unassigned"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -4915,13 +4900,7 @@ MonoBehaviour:
       - originConversationID: 16
         originDialogueID: 3
         destinationConversationID: 16
-        destinationDialogueID: 5
-        isConnector: 0
-        priority: 2
-      - originConversationID: 16
-        originDialogueID: 3
-        destinationConversationID: 16
-        destinationDialogueID: 7
+        destinationDialogueID: 9
         isConnector: 0
         priority: 2
       conditionsString: 
@@ -4931,7 +4910,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 359.39038
+        x: 360.45422
         y: 121.94174
         width: 160
         height: 30
@@ -4984,111 +4963,6 @@ MonoBehaviour:
         y: 126.79613
         width: 160
         height: 30
-    - id: 5
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: Collect Shrooms
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 16
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks: []
-      conditionsString: 
-      userScript: 'TorisGiveItem("Chipped_Bone_Charm",10);
-
-        TorisGiveGold(50);
-
-        TorisGiveItem("",
-        0);
-
-        SetQuestState("Kill_3_Leader_Wolves", "success")'
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 492.36908
-        y: 186.83536
-        width: 160
-        height: 30
-    - id: 7
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: Collect Some Flowers
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 16
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks: []
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 264.7095
-        y: 183.64389
-        width: 160
-        height: 30
     - id: 8
       fields:
       - title: Title
@@ -5127,7 +5001,7 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: CurrentQuestState("Kill_3_Leader_Wolves") == "success"
+      conditionsString: CurrentQuestState("Kill3Wolves") == "success"
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -5136,6 +5010,58 @@ MonoBehaviour:
         serializedVersion: 2
         x: 417.09546
         y: 57.23404
+        width: 160
+        height: 30
+    - id: 9
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: 'Glad to hear that '
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 'SetQuestState("Kill3Wolves", "active");
+
+        SetQuestEntryState("Kill3Wolves",
+        1, "active")'
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 361.51807
+        y: 198.53748
         width: 160
         height: 30
     entryGroups: []

@@ -22,6 +22,7 @@ Controllers manage the initialization and context of their respective UI modules
 ### 2.2 The Smithy Module (`SmithScreenController`)
 *   **Complex Orchestration:** Manages a composite UI containing multiple sub-views (`ShopSubView`, `ForgeSubView`, `SalvageSubView`). It injects highly specialized managers (`ShopManagerSO`, `CraftingManagerSO`, `SalvageManagerSO`) into the `SmithView`.
 *   **Contextual Setup:** Subscribes to `UIEvents.OnRequestOpen`. When a request to open the Smith screen occurs, the Controller intercepts the payload (e.g., a specific vendor's `InventoryManager`) and injects it into the `ShopManagerSO` before the View renders, ensuring the UI always displays the correct contextual data.
+*   **Companion Screens:** Vendor controllers own vendor-specific companion UI such as keeping the player inventory visible. `UIManager` should remain generic and only handle registration, zones, setup, visibility, and close policy.
 
 ## 3. View Hierarchy: `UIView` and `GameView`
 

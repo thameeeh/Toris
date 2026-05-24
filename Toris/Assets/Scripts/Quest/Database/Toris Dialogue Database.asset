@@ -4835,7 +4835,12 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Hello, have time to help?
+        value: 'Hello,
+
+          Here is your Key for unlocking the Teleport
+
+          Do
+          you have time to help me?'
         type: 0
         typeString: 
       - title: Sequence
@@ -5055,7 +5060,9 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 'Glad to hear that '
+        value: 'Glad to hear that.
+
+          Here is your mission.'
         type: 0
         typeString: 
       - title: Sequence

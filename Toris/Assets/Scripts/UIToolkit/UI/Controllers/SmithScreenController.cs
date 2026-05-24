@@ -64,10 +64,13 @@ namespace OutlandHaven.UIToolkit
         {
             if (screenType != ScreenType.Smith) return;
 
-            // 1. The Guard Clause: Reject invalid or missing data immediately
-            if (payload == null || !(payload is InventoryManager shopInventory))
+            // 1. Resolve payload dynamically if it's null or invalid
+            InventoryManager shopInventory = payload as InventoryManager;
+            shopInventory = PlayerInventorySceneResolver.ResolveShopInventory(ScreenType.Smith, shopInventory);
+
+            if (shopInventory == null)
             {
-                Debug.LogWarning("Smith UI attempted to open without a valid InventoryManager payload. Aborting.");
+                Debug.LogWarning("Smith UI attempted to open without a valid InventoryManager payload or fallback. Aborting.");
                 return;
             }
 
@@ -75,6 +78,11 @@ namespace OutlandHaven.UIToolkit
             if (_shopManagerSO != null)
             {
                 _shopManagerSO.CurrentShopInventory = shopInventory;
+            }
+
+            if (_view != null)
+            {
+                _view.Setup(shopInventory);
             }
         }
 

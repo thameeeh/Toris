@@ -70,7 +70,10 @@ namespace OutlandHaven.UIToolkit
         {
             if (screenType == ScreenType.Smith || screenType == ScreenType.Mage) // Add any other vendor types here as they are created
             {
-                if (payload is InventoryManager dynamicShopContainer)
+                InventoryManager dynamicShopContainer = payload as InventoryManager;
+                dynamicShopContainer = PlayerInventorySceneResolver.ResolveShopInventory(screenType, dynamicShopContainer);
+
+                if (dynamicShopContainer != null)
                 {
                     CurrentShopInventory = dynamicShopContainer;
 #if UNITY_EDITOR

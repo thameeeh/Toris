@@ -1103,7 +1103,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 5.981531}
+    canvasScrollPosition: {x: 0, y: 48.838676}
     canvasZoom: 0.9100001
   - id: 2
     fields:
@@ -4903,6 +4903,12 @@ MonoBehaviour:
         destinationDialogueID: 9
         isConnector: 0
         priority: 2
+      - originConversationID: 16
+        originDialogueID: 3
+        destinationConversationID: 16
+        destinationDialogueID: 10
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -5054,7 +5060,7 @@ MonoBehaviour:
       userScript: 'SetQuestState("Kill3Wolves", "active");
 
         SetQuestEntryState("Kill3Wolves",
-        1, "active")'
+        1, "active");'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -5062,6 +5068,57 @@ MonoBehaviour:
         serializedVersion: 2
         x: 361.51807
         y: 198.53748
+        width: 160
+        height: 30
+    - id: 10
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: TorisHasItem("Buckle", 5)
+      userScript: 'TorisGiveItem("Dull_Arrowhead", 1);
+
+        TorisGiveGold(50);'
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 559.3904
+        y: 186.83536
         width: 160
         height: 30
     entryGroups: []

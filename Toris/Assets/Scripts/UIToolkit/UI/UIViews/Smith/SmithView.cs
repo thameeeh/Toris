@@ -78,7 +78,10 @@ namespace OutlandHaven.UIToolkit
         public override void Setup(object payload) 
         {
             // Payload could be a specific NPC's inventory
-            if (payload is InventoryManager dynamicShopContainer)
+            InventoryManager dynamicShopContainer = payload as InventoryManager;
+            dynamicShopContainer = PlayerInventorySceneResolver.ResolveShopInventory(ScreenType.Smith, dynamicShopContainer);
+
+            if (dynamicShopContainer != null)
             {
                 _shopContainer = dynamicShopContainer;
             }

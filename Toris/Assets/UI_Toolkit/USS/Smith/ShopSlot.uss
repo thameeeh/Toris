@@ -6,14 +6,14 @@
 /* The Root Row Container */
 .shop-list-item {
     flex-direction: row;
-    height: 90px;
+    height: 124px;
     flex-shrink: 0; /* Rule 4: Prevents the ScrollView from squishing rows */
     background-color: var(--color-shop-slot-bg);
     border-width: 1px;
     border-color: var(--color-shop-slot-border);
     border-radius: 4px;
-    margin-bottom: 8px;
-    padding: 6px;
+    margin-bottom: 9px;
+    padding: 8px;
     transition-duration: 0.15s;
 }
 
@@ -24,8 +24,8 @@
 
 /* Icon Container */
 .shop-item-icon-wrapper {
-    width: 76px;
-    height: 76px;
+    width: 96px;
+    height: 96px;
     flex-shrink: 0;
     background-color: var(--color-bg-dark);
     border-width: 1px;
@@ -48,13 +48,17 @@
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .shop-item-name {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
-    margin-bottom: 4px;
+    min-height: 30px;
+    margin-bottom: 2px;
     padding: 0;
 }
 
@@ -62,6 +66,7 @@
     color: var(--color-border-default);
     font-size: var(--font-size-small);
     white-space: normal; /* Allows text to wrap */
+    min-height: 72px;
     padding: 0;
 }
 
@@ -76,6 +81,7 @@
 }
 
 .shop-item-price {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-coin-gold);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
@@ -86,11 +92,12 @@
 
 /* Re-implementing quantity for the shop slot without global conflicts */
 .shop-item-qty {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     position: absolute;
     bottom: 2px;
     left: 4px;
     color: var(--color-text-light);
-    font-size: 14px;
+    font-size: 18px;
     -unity-font-style: bold;
     -unity-text-outline-width: 1.5px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.8);

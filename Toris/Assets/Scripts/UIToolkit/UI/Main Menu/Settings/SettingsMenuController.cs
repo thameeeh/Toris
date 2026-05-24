@@ -1,8 +1,5 @@
 using OutlandHaven.UIToolkit;
-using System.Data;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Device;
 using UnityEngine.UIElements;
 
 public class SettingsMenuController : MonoBehaviour
@@ -11,17 +8,32 @@ public class SettingsMenuController : MonoBehaviour
     [SerializeField] private UIEventsSO _uiEvents;
 
     private SettingsMenuView _view;
-    private MainMenuUIManager _uiManager;
+    private MainMenuUIManager _mainMenuUiManager;
+    private UIManager _gameUiManager;
     private InputSystem_Actions _input;
+    private bool _ownsCancelInput;
 
     private void Awake()
     {
-        _uiManager = FindFirstObjectByType<MainMenuUIManager>();
+        _mainMenuUiManager = FindFirstObjectByType<MainMenuUIManager>();
+        if (_mainMenuUiManager == null)
+        {
+            _gameUiManager = FindFirstObjectByType<UIManager>();
+        }
+        else
+        {
+            _ownsCancelInput = true;
+        }
+
         _input = new InputSystem_Actions();
     }
 
     private void OnEnable()
     {
+        if (!_ownsCancelInput)
+            return;
+
+        // The main menu has no gameplay InputManager, so Settings owns Escape there.
         _input?.UI.Enable();
         if (_input != null)
         {
@@ -31,6 +43,9 @@ public class SettingsMenuController : MonoBehaviour
 
     private void OnDisable()
     {
+        if (!_ownsCancelInput)
+            return;
+
         _input?.UI.Disable();
         if (_input != null)
         {
@@ -40,14 +55,15 @@ public class SettingsMenuController : MonoBehaviour
 
     private void OnCancelPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        // Only close if the view is actually showing (UI Manager handles this logic usually, 
-        // but we emit the intent)
+        if (_view == null || _view.IsHidden)
+            return;
+
         OnCloseRequested();
     }
 
     private void Start()
     {
-        if (_settingsTemplate == null || _uiManager == null) return;
+        if (_settingsTemplate == null || (_mainMenuUiManager == null && _gameUiManager == null)) return;
 
         TemplateContainer settingsInstance = _settingsTemplate.Instantiate();
 
@@ -66,19 +82,49 @@ public class SettingsMenuController : MonoBehaviour
         // Listen for the close button click
         _view.OnCloseClicked += OnCloseRequested;
 
-        // Listen for slider changes
-        _view.OnMasterVolumeChanged += (val) => Debug.Log($"[Settings] Master Volume changed to {val:F2}");
-        _view.OnMusicVolumeChanged += (val) => Debug.Log($"[Settings] Music Volume changed to {val:F2}");
-        _view.OnSFXVolumeChanged += (val) => Debug.Log($"[Settings] SFX Volume changed to {val:F2}");
+        _view.SetVolumeValues(
+            AudioVolumeSettings.MasterVolume,
+            AudioVolumeSettings.MusicVolume,
+            AudioVolumeSettings.SfxVolume);
 
-        // Register it (it will automatically hide on start)
-        _uiManager.RegisterView(_view);
+        _view.OnMasterVolumeChanged += HandleMasterVolumeChanged;
+        _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
+        _view.OnSFXVolumeChanged += HandleSfxVolumeChanged;
+
+        if (_mainMenuUiManager != null)
+        {
+            _mainMenuUiManager.RegisterView(_view);
+        }
+        else
+        {
+            // Settings is shared by main menu and gameplay; gameplay mounts it as a modal overlay.
+            _gameUiManager.RegisterView(_view, ScreenZone.Modal);
+        }
     }
 
     private void OnCloseRequested()
     {
         // Tell the UIManager to close this specific screen
+        AudioVolumeSettings.Save();
         _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
+    }
+
+    private void HandleMasterVolumeChanged(float value)
+    {
+        // Audio settings only: sliders change saved mix values, not UI state or gameplay.
+        AudioVolumeSettings.SetMasterVolume(value);
+    }
+
+    private void HandleMusicVolumeChanged(float value)
+    {
+        // Audio settings only: sliders change saved mix values, not UI state or gameplay.
+        AudioVolumeSettings.SetMusicVolume(value);
+    }
+
+    private void HandleSfxVolumeChanged(float value)
+    {
+        // Audio settings only: sliders change saved mix values, not UI state or gameplay.
+        AudioVolumeSettings.SetSfxVolume(value);
     }
 
     private void OnDestroy()
@@ -86,6 +132,9 @@ public class SettingsMenuController : MonoBehaviour
         if (_view != null)
         {
             _view.OnCloseClicked -= OnCloseRequested;
+            _view.OnMasterVolumeChanged -= HandleMasterVolumeChanged;
+            _view.OnMusicVolumeChanged -= HandleMusicVolumeChanged;
+            _view.OnSFXVolumeChanged -= HandleSfxVolumeChanged;
             _view.Dispose();
         }
     }

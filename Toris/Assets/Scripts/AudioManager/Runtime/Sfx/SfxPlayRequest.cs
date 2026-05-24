@@ -6,6 +6,7 @@ public struct SfxPlayRequest
     public float volumeMultiplier;   // default 1
     public float pitchOffset;        // default 0 (added after random pitch)
     public float pitchMultiplier;    // default 1
+    public float fadeInSeconds;      // default 0
 
     // Optional runtime routing adjustments.
     public bool force2D;             // if true, spatialBlend becomes 0
@@ -18,6 +19,7 @@ public struct SfxPlayRequest
         volumeMultiplier = 1f,
         pitchOffset = 0f,
         pitchMultiplier = 1f,
+        fadeInSeconds = 0f,
         force2D = false,
         explicitWorldPosition = null
     };

@@ -395,11 +395,11 @@ public class Wolf : Enemy
         base.DamagePlayer(damage, _hitData);
     }
 
-    public void DamageCurrentTarget(float damage)
+    public bool DamageCurrentTarget(float damage)
     {
 #if UNITY_EDITOR
         DebugAttackLog($"Wolf bite DamageCurrentTarget damage={damage:0.##} {GetAttackDebugTargetSummary()}");
 #endif
-        DamageAggroTarget(damage, _hitData);
+        return DamageAggroTarget(damage, _hitData);
     }
 }

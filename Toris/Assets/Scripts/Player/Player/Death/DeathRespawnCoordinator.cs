@@ -13,6 +13,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
     private const string DefaultMainAreaSceneName = "MainArea";
     private const string DefaultMainMenuSceneName = "MainMenu";
     private const string DefaultRespawnAnchorId = "MainArea_DeathRespawn";
+    private const string RespawningLoadingMessage = "Respawning";
     private const float DefaultExperienceLossPercent = 0.1f;
     private const float DefaultGoldLossPercent = 0.1f;
     private const float DefaultBackpackItemLossPercent = 0.1f;
@@ -92,7 +93,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             penaltyPlan);
         _currentPenaltyPlan = null;
 
-        LoadScene(_pendingRespawn.MainAreaSceneName);
+        LoadScene(_pendingRespawn.MainAreaSceneName, RespawningLoadingMessage);
     }
 
     private void HandleDeathMainMenuRequested()
@@ -305,6 +306,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             checkpointData.Gold,
             backpackLosses,
             potionLosses,
+            ResolveDeathCause(),
             config);
     }
 
@@ -331,6 +333,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             currentGold,
             backpackLosses,
             potionLosses,
+            ResolveDeathCause(),
             config);
     }
 
@@ -339,6 +342,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         int currentGold,
         List<InventoryLossEntry> backpackLosses,
         List<InventoryLossEntry> potionLosses,
+        DeathCauseSnapshot causeOfDeath,
         DeathPenaltyConfigSO config)
     {
         float experienceLoss = Mathf.Max(0f, currentExperience * GetExperienceLossPercent(config));
@@ -355,9 +359,19 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             goldLoss,
             backpackItemLoss,
             potionItemLoss,
-            itemSummaries);
+            causeOfDeath.DisplayName,
+            itemSummaries,
+            DeathCauseMessageFormatter.FormatSubtitle(causeOfDeath));
 
         return new DeathPenaltyPlan(summary, backpackLosses, potionLosses);
+    }
+
+    private DeathCauseSnapshot ResolveDeathCause()
+    {
+        PlayerStats stats = ResolvePlayerStats();
+        return stats != null
+            ? stats.LastDeathCause
+            : DeathCauseSnapshot.Unknown();
     }
 
     private List<InventoryLossEntry> BuildSavedInventoryLossPlan(
@@ -378,8 +392,9 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             if (slot == null || slot.ItemData == null || slot.Count <= 0 || string.IsNullOrWhiteSpace(slot.ItemData.BaseItemID))
                 continue;
 
-            string displayName = ResolveItemDisplayName(slot.ItemData.BaseItemID);
-            candidates.Add(new InventoryLossCandidate(slot.ItemData.BaseItemID, displayName, slot.Count, source));
+            InventoryItemSO itemBlueprint = ResolveItemBlueprint(slot.ItemData.BaseItemID);
+            string displayName = ResolveItemDisplayName(slot.ItemData.BaseItemID, itemBlueprint);
+            candidates.Add(new InventoryLossCandidate(slot.ItemData.BaseItemID, displayName, slot.Count, source, itemBlueprint));
             totalItemCount += slot.Count;
         }
 
@@ -406,7 +421,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
 
             InventoryItemSO item = slot.HeldItem.BaseItem;
             string displayName = string.IsNullOrWhiteSpace(item.ItemName) ? HumanizeItemId(item.name) : item.ItemName;
-            candidates.Add(new InventoryLossCandidate(item.name, displayName, slot.Count, source));
+            candidates.Add(new InventoryLossCandidate(item.name, displayName, slot.Count, source, item));
             totalItemCount += slot.Count;
         }
 
@@ -442,7 +457,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
                 continue;
             }
 
-            AddOrIncrementLoss(losses, candidate.BaseItemId, candidate.DisplayName, candidate.Source);
+            AddOrIncrementLoss(losses, candidate.BaseItemId, candidate.DisplayName, candidate.Source, candidate.ItemBlueprint);
             candidate.Count--;
             itemsToRemove--;
 
@@ -455,13 +470,17 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         return losses;
     }
 
-    private string ResolveItemDisplayName(string baseItemId)
+    private InventoryItemSO ResolveItemBlueprint(string baseItemId)
     {
         if (string.IsNullOrWhiteSpace(baseItemId))
-            return "Unknown Item";
+            return null;
 
         ItemDatabaseSO itemDatabase = _saveManager != null ? _saveManager.MasterItemDatabase : null;
-        InventoryItemSO item = itemDatabase != null ? itemDatabase.GetItemByID(baseItemId) : null;
+        return itemDatabase != null ? itemDatabase.GetItemByID(baseItemId) : null;
+    }
+
+    private static string ResolveItemDisplayName(string baseItemId, InventoryItemSO item)
+    {
         if (item != null && !string.IsNullOrWhiteSpace(item.ItemName))
         {
             return item.ItemName;
@@ -616,7 +635,8 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         List<InventoryLossEntry> losses,
         string baseItemId,
         string displayName,
-        DeathPenaltyInventorySource source)
+        DeathPenaltyInventorySource source,
+        InventoryItemSO itemBlueprint)
     {
         for (int i = 0; i < losses.Count; i++)
         {
@@ -630,7 +650,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             }
         }
 
-        losses.Add(new InventoryLossEntry(baseItemId, displayName, 1, source));
+        losses.Add(new InventoryLossEntry(baseItemId, displayName, 1, source, itemBlueprint));
     }
 
     private static int CountLossItems(IReadOnlyList<InventoryLossEntry> losses)
@@ -664,7 +684,7 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             if (loss == null || loss.Count <= 0)
                 continue;
 
-            summaries.Add(new DeathItemLossSummary(loss.BaseItemId, loss.DisplayName, loss.Count, loss.Source));
+            summaries.Add(new DeathItemLossSummary(loss.BaseItemId, loss.DisplayName, loss.Count, loss.Source, loss.ItemBlueprint));
         }
     }
 
@@ -766,11 +786,11 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
         return component != null && component.gameObject.scene.IsValid();
     }
 
-    private static void LoadScene(string sceneName)
+    private static void LoadScene(string sceneName, string loadingMessageOverride = null)
     {
         if (SceneTransitionService.Instance != null)
         {
-            SceneTransitionService.Instance.LoadScene(sceneName);
+            SceneTransitionService.Instance.LoadScene(sceneName, loadingMessageOverride);
             return;
         }
 
@@ -860,18 +880,21 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             string baseItemId,
             string displayName,
             int count,
-            DeathPenaltyInventorySource source)
+            DeathPenaltyInventorySource source,
+            InventoryItemSO itemBlueprint)
         {
             BaseItemId = baseItemId;
             DisplayName = displayName;
             Count = count;
             Source = source;
+            ItemBlueprint = itemBlueprint;
         }
 
         public string BaseItemId { get; }
         public string DisplayName { get; }
         public int Count { get; set; }
         public DeathPenaltyInventorySource Source { get; }
+        public InventoryItemSO ItemBlueprint { get; }
     }
 
     private sealed class InventoryLossEntry
@@ -880,17 +903,20 @@ public sealed class DeathRespawnCoordinator : MonoBehaviour
             string baseItemId,
             string displayName,
             int count,
-            DeathPenaltyInventorySource source)
+            DeathPenaltyInventorySource source,
+            InventoryItemSO itemBlueprint)
         {
             BaseItemId = baseItemId;
             DisplayName = displayName;
             Count = count;
             Source = source;
+            ItemBlueprint = itemBlueprint;
         }
 
         public string BaseItemId { get; }
         public string DisplayName { get; }
         public int Count { get; set; }
         public DeathPenaltyInventorySource Source { get; }
+        public InventoryItemSO ItemBlueprint { get; }
     }
 }

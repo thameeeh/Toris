@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/LoadingScreenOverlay.uss?fileID=7433441132597879392&amp;guid=f3bdf9a88b934df997694a1ed7c3628a&amp;type=3#LoadingScreenOverlay"/>
+    <ui:VisualElement name="LoadingScreenRoot" class="loading-screen" picking-mode="Ignore">
+        <ui:VisualElement name="LoadingContent" class="loading-screen__content">
+            <ui:VisualElement name="LoadingBackgroundBacking" class="loading-screen__background-backing"/>
+            <ui:VisualElement name="LoadingBackground" class="loading-screen__background"/>
+            <ui:VisualElement name="LoadingDimmer" class="loading-screen__dimmer"/>
+            <ui:VisualElement name="LoadingLabelRoot" class="loading-screen__label-root">
+                <ui:VisualElement name="LoadingLabelTopAccent" class="loading-screen__accent loading-screen__accent--top"/>
+                <ui:Label name="LoadingLabel" text="Loading." class="loading-screen__label"/>
+                <ui:VisualElement name="LoadingLabelBottomAccent" class="loading-screen__accent loading-screen__accent--bottom"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="TransitionCover" class="loading-screen__cover"/>
+    </ui:VisualElement>
+</ui:UXML>

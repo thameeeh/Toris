@@ -1,4 +1,5 @@
 using System.Collections;
+using OutlandHaven.Inventory;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +10,7 @@ namespace OutlandHaven.UIToolkit
     {
         private const string DefaultDeathInputLockId = "Death";
         private const string DefaultPlayerStatsAnchorResourcePath = "PlayerProgression/PlayerStatsAnchor";
+        private const string DefaultInventoryEventsResourcePath = "GameData/SOForEvents/UI Inventory Events SO";
         private const string DeathScreenHostClass = "death-screen-host";
 
         [Header("Template")]
@@ -16,6 +18,7 @@ namespace OutlandHaven.UIToolkit
 
         [Header("Dependencies")]
         [SerializeField] private UIEventsSO _uiEvents;
+        [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
 
         [Header("Timing")]
@@ -35,6 +38,7 @@ namespace OutlandHaven.UIToolkit
         {
             _uiManager = FindFirstObjectByType<UIManager>();
             ResolvePlayerStatsAnchor();
+            ResolveInventoryEvents();
         }
 
         private void OnEnable()
@@ -47,6 +51,7 @@ namespace OutlandHaven.UIToolkit
             if (_deathScreenTemplate == null || _uiManager == null || _uiEvents == null)
                 return;
 
+            ResolveInventoryEvents();
             BindDeathSummaryEvents();
 
             TemplateContainer deathScreenInstance = _deathScreenTemplate.Instantiate();
@@ -54,7 +59,7 @@ namespace OutlandHaven.UIToolkit
             // otherwise the absolute overlay resolves inside a collapsed host.
             deathScreenInstance.AddToClassList(DeathScreenHostClass);
 
-            _view = new DeathScreenView(deathScreenInstance, _uiEvents);
+            _view = new DeathScreenView(deathScreenInstance, _uiEvents, _uiInventoryEvents);
             _view.Initialize();
             _view.OnRespawnClicked += HandleRespawnClicked;
             _view.OnMainMenuClicked += HandleMainMenuClicked;
@@ -197,6 +202,14 @@ namespace OutlandHaven.UIToolkit
                 return;
 
             _playerStatsAnchor = Resources.Load<PlayerStatsAnchorSO>(DefaultPlayerStatsAnchorResourcePath);
+        }
+
+        private void ResolveInventoryEvents()
+        {
+            if (_uiInventoryEvents != null)
+                return;
+
+            _uiInventoryEvents = Resources.Load<UIInventoryEventsSO>(DefaultInventoryEventsResourcePath);
         }
 
         private string ResolveDeathInputLockId()

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3265807698110115203}
   - component: {fileID: 2825436738623031720}
   - component: {fileID: 5389781673131331535}
+  - component: {fileID: 6169281528240633311}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -67,3 +68,40 @@ MonoBehaviour:
   inventoryOpenSfxId: ui_inventory_open
   inventoryCloseSfxId: ui_inventory_close
   screenRules: []
+--- !u!114 &6169281528240633311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5801247765560457818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af15f6e112e548e4a45fa9f586f0d5e7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::WorldAmbienceController
+  ambienceEnabled: 1
+  mainAreaSceneName: MainArea
+  proceduralSceneName: ProceduralTiles
+  mainAreaSfxId: amb_wind
+  defaultBiomeSfxId: amb_wind
+  windVolumeMultiplier: 1
+  windFadeInSeconds: 1
+  windFadeOutSeconds: 1
+  forestBiomeIndex: 1
+  forestBiomeSfxId: amb_forest
+  forestVolumeMultiplier: 1
+  forestFadeInSeconds: 1
+  forestFadeOutSeconds: 1
+  waterSfxId: amb_water
+  waterInAllBiomes: 1
+  waterBiomeIndex: 1
+  waterProbeRadiusTiles: 15
+  waterOuterRingMinDistance01: 0.6
+  includeRenderedWaterTiles: 1
+  waterProbeIntervalSeconds: 0.25
+  waterVolumeMultiplier: 1
+  waterFadeInSeconds: 0.7
+  waterFadeOutSeconds: 0.7
+  debugLogs: 0
+  transitionFadeOutSeconds: 0.1

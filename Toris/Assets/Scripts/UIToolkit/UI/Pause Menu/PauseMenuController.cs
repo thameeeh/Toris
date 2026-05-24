@@ -7,6 +7,9 @@ namespace OutlandHaven.UIToolkit
 {
     public class PauseMenuController : MonoBehaviour
     {
+        private const string MainAreaSceneName = "MainArea";
+        private const string MainMenuSceneName = "MainMenu";
+
         [SerializeField] private VisualTreeAsset _pauseTemplate;
         [SerializeField] private UIEventsSO _uiEvents;
 
@@ -82,12 +85,27 @@ namespace OutlandHaven.UIToolkit
 
         private void QuitToMainMenu()
         {
-            // Auto-save before leaving
-            Debug.Log("[PauseMenu] Auto-saving progress before quitting to Main Menu...");
-            _uiEvents?.OnQuickSaveRequested?.Invoke();
+            if (SceneManager.GetActiveScene().name == MainAreaSceneName)
+            {
+                // Save/procedural transfer related: only hub quits are save points.
+                Debug.Log("[PauseMenu] Auto-saving MainArea progress before quitting to Main Menu...");
+                _uiEvents?.OnQuickSaveRequested?.Invoke();
+            }
+#if UNITY_EDITOR
+            else
+            {
+                Debug.Log("[PauseMenu] Skipped Main Menu auto-save outside MainArea.");
+            }
+#endif
 
             Time.timeScale = 1f;
-            SceneManager.LoadScene("MainMenu");
+            if (SceneTransitionService.Instance != null)
+            {
+                SceneTransitionService.Instance.LoadScene(MainMenuSceneName);
+                return;
+            }
+
+            SceneManager.LoadScene(MainMenuSceneName);
         }
 
         private void OnDestroy()

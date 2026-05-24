@@ -43,6 +43,15 @@ namespace OutlandHaven.Inventory
             ApplyVisuals();
         }
 
+        public void SetVisualRenderer(SpriteRenderer visualRenderer)
+        {
+            if (visualRenderer == null)
+                return;
+
+            _renderer = visualRenderer;
+            ApplyVisuals();
+        }
+
 #if UNITY_EDITOR
         private void OnValidate()
         {

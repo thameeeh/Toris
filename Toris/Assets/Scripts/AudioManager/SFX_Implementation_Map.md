@@ -19,25 +19,26 @@ This map turns the current rough sound pile into authoring families. Use it as t
 | 1 | Inventory close | `ui_inventory_close` | `single_ziper` reversed/edited or `Cloth 2` | `ScreenType.Inventory` closed | Wired through `UISfxEventBridge` default inventory screen SFX | One-shot. |
 | 1 | Coin pickup | `item_coin_pickup` | `Coin` quiet edit | Enemy immediate gold reward | Wired through `EnemyLootTableSO.goldRewardSfxId` | Keep short and quiet. |
 | 1 | Coin purchase | `ui_coin_purchase` | `Coin` louder edit | Shop buy/sell success | Wired through `ShopManagerSO.coinTransactionSfxId` | Good for purchase confirmation. |
-| 1 | Portal enter | `world_portal_enter` | `SFX_Portal_Enter` | Player enters portal trigger | Needs portal trigger hook | 3D at portal position. |
-| 1 | Portal loop | `world_portal_loop` | `SFX_portal_sound` | Portal active while spawned | Needs portal loop owner | Loop, 3D, fade in/out. |
+| 1 | Teleport leave | `world_teleport_leave` | `SFX_Teleport_Leave` | Run or biome gate accepts interaction | Wired through `RunGateInteractable.teleportLeaveSfxId` and `BiomeGateInteractable.teleportLeaveSfxId` | 3D at gate position. |
+| 1 | Teleport arrive | `world_teleport_arrive` | `SFX_Teleport_Arrive` | Run scene load or biome transition starts revealing | Wired through `SceneTransitionService.teleportArriveSfxId` | 2D arrival confirmation at reveal start. |
+| 1 | Teleport loop | `world_teleport_loop` | `SFX_Portal_Sounds` | Run or biome gate active while spawned | Wired through `RunGateInteractable.teleportLoopSfxId` and `BiomeGateInteractable.teleportLoopSfxId` | Loop, 3D, fades in on start and quickly fades out on interaction/disable. |
 
 ## Player And Inventory
 
 | Family | Proposed SFX ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
 | Potion drink | `potion_healdrink` | Existing potion clip | `TimedConsumableUsed` or `HealthConsumableUsed` | Existing player SFX rule path | Use `TimedConsumableUsed` for HoT potion drink. |
-| Equip armor | `ui_equip_armor` | `Cloth`, `Cloth 2` | Equipment success | Needs equipment event | Could layer with light metal later. |
-| Unequip armor | `ui_unequip_armor` | `Cloth`, `Cloth 2` | Unequip success | Needs equipment event | Slight pitch variation. |
+| Equip armor | `ui_equip_armor` | Equip/unequip armor edit | Equipment success | Wired through `InventoryActionController.equipSfxId` | Shared with unequip for now. |
+| Unequip armor | `ui_equip_armor` | Equip/unequip armor edit | Unequip success | Wired through `InventoryActionController.equipSfxId` | Shared with equip for now. |
 | Move item | `ui_item_move` | `Cloth` quiet edit | Inventory drag/drop success | Needs inventory transfer event | Keep subtle. |
 
 ## Crafting, Smithing, And Salvage
 
 | Family | Proposed SFX ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
-| Forge hit | `craft_forge_hit` | `Forge_Smack`, `Smith_Forge` | Forge/craft success | Needs crafting event | Randomize both takes. |
+| Forge hit | `craft_forge_hit` | `Forge_Smack`, `Smith_Forge` | Forge/craft success | Wired through `CraftingManagerSO.forgeSuccessSfxId` | Plays after craft output succeeds. |
 | Gear upgrade | `craft_gear_upgrade` | `SFX_Gear_Upgrade`, `SFX_Gear_Upgrade_v2` | Gear upgrade success | Needs upgrade event | Could layer with forge hit. |
-| Salvage | `craft_salvage` | `Hoover`, `Outlet` edits | Salvage success | Needs salvage event | Build as designed composite clip. |
+| Salvage | `craft_salvage` | `Hoover`, `Outlet` edits | Salvage success | Wired through `SalvageManagerSO.salvageSuccessSfxId` | Plays after salvage rewards succeed. |
 
 ## Movement
 
@@ -55,18 +56,20 @@ This map turns the current rough sound pile into authoring families. Use it as t
 
 | Family | Proposed ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
-| Forest ambience | `amb_forest` | `AMB_forest` | Forest biome active | Needs ambience owner | Loop with fade. |
-| Water ambience | `amb_water` | `AMB_Water` | Water/beach biome or proximity | Needs ambience owner | Loop with fade. |
-| Wind ambience | `amb_wind` | `AMB_Wind` | Wind layer/weather | Needs ambience owner | Loop with fade. |
+| Forest ambience | `amb_forest` | `AMB_forest` | Forest biome active | Wired through `WorldAmbienceController.forestBiomeSfxId` | 2D loop layered over wind in biome 2. |
+| Water ambience | `amb_water` | `AMB_Water` | Near outer water ring in procedural biomes | Wired through `WorldAmbienceController.waterSfxId` | 2D proximity-gated loop with fade. |
+| Wind ambience | `amb_wind` | `AMB_Wind` | MainArea and procedural biomes | Wired through `WorldAmbienceController.mainAreaSfxId` and `defaultBiomeSfxId` | 2D baseline loop with fade. |
 
 ## Enemies And Combat
 
 | Family | Proposed SFX ID | Source Clips | Trigger | Hook Status | Notes |
 |---|---|---|---|---|---|
-| Wolf bite | `enemy_wolf_bite` | `Wolf_Bite` | Wolf attack hit frame | Needs wolf attack SFX hook | 3D at wolf/player impact. |
-| Wolf death | `enemy_wolf_death` | `Wolf_death` | Wolf death | Needs enemy death hook | May later layer with whine. |
-| Den death | `world_den_death` | `Den_Death`, optional rock layer | Den destroyed | Needs den death hook | Specific one-shot. |
-| Arrow impact | `combat_arrow_hit` | `SFX_Arrow_Hit`, existing `ArrowImpact` | Arrow impact | Existing enemy impact path, incomplete coverage | Normalize ID usage later. |
+| Wolf attack growl | `enemy_wolf_attack_growl` | `Wolf_Growl` | Wolf attack state starts | Wired through `WolfAttackSO.attackGrowlSfxId` | Plays on attack commit, even if the bite misses. |
+| Wolf bite hit | `enemy_wolf_bite_hit` | `Wolf_Bite` | Wolf attack hit frame accepts a target | Wired through `WolfAttackSO.biteHitSfxId` | Plays only when the hit path is accepted. |
+| Wolf death | `enemy_wolf_death` | Wolf death variants | Wolf death | Wired through `EnemySfxModule_WolfDeath` on wolf prefabs | Randomizes variants in one definition. |
+| Deer/boar death | `enemy_deer_boar_death` | `Deer_Exhale` | Deer or boar death | Wired through `EnemySfxModule_DeerBoarDeath` on deer/boar prefabs | Shared temporary death family. |
+| Den death | `world_den_death` | `Den_Death`, optional rock layer | Den destroyed | Wired through `WolfDen.clearedSfxId` | Specific one-shot. |
+| Arrow impact | `enemy_impacthit` | Existing `ArrowImpact` | Arrow hits enemies, walls, or world objects | Enemy hits use `EnemySfxModule_ImpactHit`; non-enemy/world impacts use `ArrowProjectile.impactSfxId` | Shared impact sound for now. |
 
 ## Progression And Music
 

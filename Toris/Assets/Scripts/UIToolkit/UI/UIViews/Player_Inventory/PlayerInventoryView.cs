@@ -10,6 +10,8 @@ namespace OutlandHaven.Inventory
     public class PlayerInventoryView : GameView, IDisposable
     {
         public override ScreenType ID => ScreenType.Inventory;
+        private const string StatsDrawerOpenClass = "player-inventory-container--stats-open";
+        private const string StatsToggleOpenClass = "inventory-stats-toggle--open";
 
         private VisualTreeAsset _slotTemplate;
         private GameSessionSO _gameSession;
@@ -17,7 +19,9 @@ namespace OutlandHaven.Inventory
         private Dictionary<InventorySlot, InventorySlotView> _slotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
 
         // UI Containers
+        private VisualElement _playerInventoryContainer;
         private VisualElement _playerGrid;
+        private Button _statsToggleButton;
         private PlayerEquipmentView _equipmentView;
         private PlayerStatsView _statsView;
         private PlayerPotionView _playerPotionView;
@@ -28,6 +32,7 @@ namespace OutlandHaven.Inventory
         private UIInventoryEventsSO _uiInventoryEvents;
         private bool _eventsBound = false;
         private InventoryInteractionContext _currentContext = InventoryInteractionContext.Normal;
+        public event Action OnStatsDrawerToggleRequested;
 
         public PlayerInventoryView(
             VisualElement topElement, 
@@ -95,7 +100,28 @@ namespace OutlandHaven.Inventory
         protected override void SetVisualElements()
         {
             // Find the grids where slots live
+            _playerInventoryContainer = m_TopElement.Q<VisualElement>("container__player");
             _playerGrid = m_TopElement.Q<VisualElement>("grid-player");
+            _statsToggleButton = m_TopElement.Q<Button>("Btn_ToggleStats");
+        }
+
+        protected override void RegisterButtonCallbacks()
+        {
+            if (_statsToggleButton != null)
+            {
+                _statsToggleButton.clicked += HandleStatsToggleClicked;
+            }
+        }
+
+        public void SetStatsDrawerOpen(bool isOpen)
+        {
+            _playerInventoryContainer?.EnableInClassList(StatsDrawerOpenClass, isOpen);
+            _statsToggleButton?.EnableInClassList(StatsToggleOpenClass, isOpen);
+        }
+
+        private void HandleStatsToggleClicked()
+        {
+            OnStatsDrawerToggleRequested?.Invoke();
         }
 
         void OnInventoryUpdated() 
@@ -205,10 +231,16 @@ namespace OutlandHaven.Inventory
 
         public override void Dispose()
         {
+            if (_statsToggleButton != null)
+            {
+                _statsToggleButton.clicked -= HandleStatsToggleClicked;
+            }
+
             if (_eventsBound && _uiInventoryEvents != null)
             {
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
                 _uiInventoryEvents.OnInteractionContextChanged -= HandleContextChanged;
+                _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
                 _eventsBound = false;
             }
             _equipmentView?.Dispose();

@@ -437,6 +437,8 @@ MonoBehaviour:
   - {fileID: 7577956846138625648}
   - {fileID: 6347703112388059557}
   - {fileID: 5599079654927792221}
+  - {fileID: 3458214074690250577}
+  - {fileID: 2251407648693231426}
   _disableColliders:
   - {fileID: 5599079654927792221}
   _rb: {fileID: 4313767850351379256}
@@ -814,6 +816,7 @@ MonoBehaviour:
   _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
   _playerEffectSourceController: {fileID: 4459608157227879889}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  equipSfxId: ui_equip_armor
 --- !u!114 &9194752483613569355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -844,6 +847,7 @@ MonoBehaviour:
   _playerStats: {fileID: 8137892244548921797}
   _playerProgression: {fileID: 5512597181503885225}
   _playerStatusController: {fileID: 957290264796575780}
+  _playerEquipment: {fileID: 1016723389627658535}
 --- !u!1 &7811714513991254877
 GameObject:
   m_ObjectHideFlags: 0

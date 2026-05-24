@@ -22,7 +22,7 @@ MonoBehaviour:
   pitchMax: 1
   spatialBlend: 1
   minDistance: 1
-  maxDistance: 25
+  maxDistance: 16
   maxSimultaneousInstances: 4
   stealMode: 1
   cooldownSeconds: 0

@@ -20,11 +20,12 @@
 }
 
 .tab-button {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     padding: 12px 24px;
     background-color: transparent;
     border-width: 0;
     color: rgb(150, 150, 150);
-    font-size: 16px;
+    font-size: 20px;
     -unity-font-style: bold;
     border-bottom-width: 3px;
     border-color: transparent;
@@ -72,8 +73,9 @@
 }
 
 .skill-node__label {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: rgb(220, 220, 220);
-    font-size: 12px;
+    font-size: 16px;
     -unity-text-align: middle-center;
     white-space: normal;
     padding: 5px;
@@ -117,8 +119,9 @@
 }
 
 .video-placeholder-label {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: rgb(100, 100, 100);
-    font-size: 18px;
+    font-size: 24px;
     -unity-font-style: bold;
 }
 
@@ -134,6 +137,7 @@
 
 /* --- TYPOGRAPHY --- */
 .info-text-h2 {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: var(--font-size-h2);
     color: var(--color-text-light);
     -unity-font-style: bold;
@@ -141,6 +145,7 @@
 }
 
 .info-text-h3 {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: var(--font-size-h3);
     color: var(--color-border-highlight);
     margin-bottom: 15px;
@@ -153,8 +158,9 @@
 }
 
 .skill-unlock-btn {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     height: 50px;
-    font-size: 16px;
+    font-size: 20px;
     -unity-font-style: bold;
     background-color: rgb(45, 75, 45);
     border-color: rgb(100, 200, 100);

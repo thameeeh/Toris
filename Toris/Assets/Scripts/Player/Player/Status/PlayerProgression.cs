@@ -84,6 +84,7 @@ public class PlayerProgression : MonoBehaviour
 
         _runtimeProgression.AddExperience(validatedAmount);
         RecalculateLevelFromExperience();
+        CaptureCurrentState();
 
         OnExperienceChanged?.Invoke(_runtimeProgression.CurrentExperience, _runtimeProgression.CurrentLevel);
 
@@ -111,6 +112,7 @@ public class PlayerProgression : MonoBehaviour
         int previousLevel = _runtimeProgression.CurrentLevel;
         _runtimeProgression.SetExperience(_runtimeProgression.CurrentExperience - validatedAmount);
         RecalculateLevelFromExperience();
+        CaptureCurrentState();
 
         OnExperienceChanged?.Invoke(_runtimeProgression.CurrentExperience, _runtimeProgression.CurrentLevel);
 
@@ -130,6 +132,7 @@ public class PlayerProgression : MonoBehaviour
             return;
 
         _runtimeProgression.AddGold(validatedAmount);
+        CaptureCurrentState();
         OnGoldChanged?.Invoke(_runtimeProgression.CurrentGold, validatedAmount);
     }
 
@@ -145,6 +148,7 @@ public class PlayerProgression : MonoBehaviour
         bool spent = _runtimeProgression.TrySpendGold(validatedAmount);
         if (spent)
         {
+            CaptureCurrentState();
             OnGoldChanged?.Invoke(_runtimeProgression.CurrentGold, -validatedAmount);
         }
 
@@ -158,6 +162,7 @@ public class PlayerProgression : MonoBehaviour
 
         int previousGold = _runtimeProgression.CurrentGold;
         _runtimeProgression.SetGold(value);
+        CaptureCurrentState();
 
         int delta = _runtimeProgression.CurrentGold - previousGold;
         OnGoldChanged?.Invoke(_runtimeProgression.CurrentGold, delta);
@@ -169,6 +174,7 @@ public class PlayerProgression : MonoBehaviour
             return;
 
         _runtimeProgression.Initialize(level, experience, gold);
+        CaptureCurrentState();
         BroadcastAll();
     }
 
@@ -238,6 +244,13 @@ public class PlayerProgression : MonoBehaviour
 
     private void CaptureTransferredState()
     {
+        CaptureCurrentState();
+    }
+
+    private void CaptureCurrentState()
+    {
+        // Save/procedural transfer related: keep the session snapshot current so
+        // saves during scene transitions do not fall back to stale XP/gold.
         ResolveGameSession();
 
         if (_gameSession == null || _runtimeProgression == null)

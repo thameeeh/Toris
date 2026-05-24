@@ -126,7 +126,7 @@ public class PlayerStatusController : MonoBehaviour
             {
                 if (damageToApply > 0f)
                 {
-                    _playerStats.ApplyDamage(damageToApply);
+                    _playerStats.ApplyDamage(damageToApply, DeathCauseSnapshot.FromStatus(statusType));
                     OnStatusDamageTick?.Invoke(statusType, damageToApply);
                 }
             }

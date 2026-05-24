@@ -46,10 +46,10 @@
 
 .item-tooltip {
     position: absolute;
-    width: 320px;
-    max-width: 320px;
-    min-width: 240px;
-    padding: 10px;
+    width: 460px;
+    max-width: 460px;
+    min-width: 360px;
+    padding: 18px;
     background-color: rgba(12, 10, 9, 0.96);
     border-color: var(--color-border-highlight);
     border-width: 1px;
@@ -59,39 +59,40 @@
 
 .item-tooltip__title {
     color: var(--color-text-light);
-    font-size: 18px;
+    font-size: var(--font-size-body);
     -unity-font-style: bold;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
 }
 
 .item-tooltip__description {
     color: rgb(205, 198, 188);
-    font-size: 13px;
+    font-size: var(--font-size-small);
     white-space: normal;
-    margin-bottom: 8px;
+    margin-bottom: 14px;
 }
 
 .item-tooltip__rows {
     border-top-width: 1px;
     border-top-color: rgba(220, 179, 92, 0.35);
-    padding-top: 6px;
+    padding-top: 12px;
 }
 
 .item-tooltip__row {
     flex-direction: row;
     justify-content: space-between;
-    min-height: 20px;
+    min-height: 34px;
+    margin-bottom: 4px;
 }
 
 .item-tooltip__row-label {
     color: rgb(160, 154, 145);
-    font-size: 12px;
+    font-size: var(--font-size-small);
     flex-grow: 1;
 }
 
 .item-tooltip__row-value {
     color: var(--color-text-light);
-    font-size: 12px;
+    font-size: var(--font-size-small);
     -unity-font-style: bold;
     -unity-text-align: middle-right;
     flex-grow: 1;

@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8217575662753305249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7874703846126121385}
+  - component: {fileID: 3755708354591355809}
+  m_Layer: 0
+  m_Name: SceneTransitionService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7874703846126121385
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8217575662753305249}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.83575, y: -0.49474, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3755708354591355809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8217575662753305249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65dfedd95ff40bb4f979aba95e4fdde5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneTransitionService
+  onTransitionStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onTransitionEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  showLoadingScreen: 1
+  loadingOverlayTemplate: {fileID: 9197481963319205126, guid: c8cf21ae6ff046ad8ab537a0e3d52e3f, type: 3}
+  loadingOverlayPanelSettings: {fileID: 11400000, guid: a47cd5725ab74dd68a4109b03ea8fe3b, type: 2}
+  loadingBackgrounds:
+  - {fileID: 21300000, guid: dca5413cebdb16d488923d2c182fa24b, type: 3}
+  - {fileID: 21300000, guid: f0ff92609a6bbb24a9a979a940f7d2bf, type: 3}
+  - {fileID: 21300000, guid: aa857e4926af07f4d858faf5d94ef162, type: 3}
+  - {fileID: 21300000, guid: f3a74eb12ebd0b948bfae0f7f8f0a93c, type: 3}
+  - {fileID: 21300000, guid: 3e57765ba84fc93449ec2ccbc90e9d1f, type: 3}
+  - {fileID: 21300000, guid: 73a2677ac25551b439866ad90428742d, type: 3}
+  - {fileID: 21300000, guid: de252457de300bb4e91d7d7d3ebe746f, type: 3}
+  - {fileID: 21300000, guid: 92145cd35be98684b936d094ae02c22d, type: 3}
+  - {fileID: 21300000, guid: 929103b2e7faeda4f8e100e8178870a3, type: 3}
+  randomizeLoadingBackgrounds: 1
+  fallbackBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  loadingBackgroundOverscan: 1.08
+  backgroundDimAlpha: 0.35
+  loadingMessage: Loading
+  dotIntervalSeconds: 0.35
+  activationDotCount: 3
+  postLoadHoldSeconds: 0.15
+  minimumDisplaySecondsRange: {x: 0.5, y: 2.5}
+  timingLowerBiasPower: 1.2
+  fadeInSecondsRange: {x: 0.4, y: 0.4}
+  blackHoldSecondsRange: {x: 0.18, y: 0.18}
+  loadingContentFadeInSecondsRange: {x: 0.35, y: 0.35}
+  fadeOutSecondsRange: {x: 0.35, y: 0.35}
+  uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  gameplayInputLockId: SceneTransitionLoading

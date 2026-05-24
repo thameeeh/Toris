@@ -19,12 +19,20 @@ public class EnemyLootTableSO : ScriptableObject
     [Tooltip("Played when this loot table grants immediate gold. Clear to disable.")]
     [SerializeField] private string goldRewardSfxId = DefaultGoldRewardSfxId;
 
+    [Header("Drop Presentation")]
+    [Tooltip("Optional glow prefab instantiated behind spawned world item icons.")]
+    [SerializeField] private GameObject dropGlowPrefab;
+    [Tooltip("Optional shadow prefab instantiated under spawned world item icons.")]
+    [SerializeField] private GameObject dropShadowPrefab;
+
     public IReadOnlyList<EnemyLootItemEntry> ItemDrops => itemDrops;
     public int MinGold => minGold;
     public int MaxGold => maxGold;
     public int MinXp => minXp;
     public int MaxXp => maxXp;
     public string GoldRewardSfxId => goldRewardSfxId;
+    public GameObject DropGlowPrefab => dropGlowPrefab;
+    public GameObject DropShadowPrefab => dropShadowPrefab;
 
 #if UNITY_EDITOR
     private void OnValidate()

@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IGateTransitionService
 {
-    void UseGate(Vector2Int gateTile);
+    bool UseGate(Vector2Int gateTile);
 }

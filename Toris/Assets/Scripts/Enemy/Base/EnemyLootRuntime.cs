@@ -3,10 +3,12 @@ using UnityEngine;
 
 public static class EnemyLootRuntime
 {
-    private const float DropScatterRadius = 0.65f;
+    private const float DropScatterMinRadius = 0.55f;
+    private const float DropScatterMaxRadius = 1.15f;
     private const float DropHeightOffset = 0.2f;
     private const float DropTriggerRadius = 0.3f;
     private const float DropSpriteScale = 0.8f;
+    private const int DropItemSortingOrder = 0;
     private const int FallbackItemLayer = 17;
 
     public static void ResolveDeathLoot(Enemy enemy, PlayerProgression playerProgression)
@@ -84,31 +86,82 @@ public static class EnemyLootRuntime
             if (quantity <= 0)
                 continue;
 
-            SpawnWorldItemDrop(itemDrop.Item, quantity, GetDropPosition(origin));
+            Vector3 startPosition = GetDropStartPosition(origin);
+            Vector3 landingPosition = GetDropLandingPosition(origin);
+            SpawnWorldItemDrop(
+                itemDrop.Item,
+                quantity,
+                startPosition,
+                landingPosition,
+                lootTable.DropGlowPrefab,
+                lootTable.DropShadowPrefab);
         }
     }
 
-    private static void SpawnWorldItemDrop(InventoryItemSO item, int quantity, Vector3 position)
+    private static void SpawnWorldItemDrop(
+        InventoryItemSO item,
+        int quantity,
+        Vector3 startPosition,
+        Vector3 landingPosition,
+        GameObject glowPrefab,
+        GameObject shadowPrefab)
     {
         GameObject dropObject = new GameObject($"WorldItem_{item.ItemName}");
-        dropObject.transform.position = position;
+        dropObject.transform.position = landingPosition;
         dropObject.layer = GetItemLayer();
 
-        SpriteRenderer spriteRenderer = dropObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = item.Icon;
-        dropObject.transform.localScale = Vector3.one * DropSpriteScale;
+        SpriteRenderer rootRenderer = dropObject.AddComponent<SpriteRenderer>();
+        rootRenderer.enabled = false;
 
         CircleCollider2D collider = dropObject.AddComponent<CircleCollider2D>();
         collider.isTrigger = true;
         collider.radius = DropTriggerRadius;
 
         WorldItem worldItem = dropObject.AddComponent<WorldItem>();
+        SpriteRenderer itemRenderer = CreateItemVisual(dropObject.transform, item);
+        worldItem.SetVisualRenderer(itemRenderer);
         worldItem.Initialize(item, quantity);
+
+        WorldItemDropPresentation presentation = dropObject.AddComponent<WorldItemDropPresentation>();
+        presentation.Initialize(
+            itemRenderer.transform,
+            collider,
+            startPosition,
+            landingPosition,
+            glowPrefab,
+            shadowPrefab,
+            DropItemSortingOrder);
     }
 
-    private static Vector3 GetDropPosition(Vector3 origin)
+    private static SpriteRenderer CreateItemVisual(Transform parent, InventoryItemSO item)
     {
-        Vector2 scatter = Random.insideUnitCircle * DropScatterRadius;
+        GameObject visualObject = new GameObject("Visual");
+        visualObject.transform.SetParent(parent, false);
+        visualObject.transform.localScale = Vector3.one * DropSpriteScale;
+
+        SpriteRenderer itemRenderer = visualObject.AddComponent<SpriteRenderer>();
+        itemRenderer.sprite = item.Icon;
+        itemRenderer.sortingOrder = DropItemSortingOrder;
+        itemRenderer.spriteSortPoint = SpriteSortPoint.Pivot;
+        return itemRenderer;
+    }
+
+    private static Vector3 GetDropStartPosition(Vector3 origin)
+    {
+        return new Vector3(
+            origin.x,
+            origin.y + DropHeightOffset,
+            0f);
+    }
+
+    private static Vector3 GetDropLandingPosition(Vector3 origin)
+    {
+        Vector2 direction = Random.insideUnitCircle.normalized;
+        if (direction.sqrMagnitude <= 0.001f)
+            direction = Vector2.right;
+
+        float scatterDistance = Random.Range(DropScatterMinRadius, DropScatterMaxRadius);
+        Vector2 scatter = direction * scatterDistance;
         return new Vector3(
             origin.x + scatter.x,
             origin.y + scatter.y + DropHeightOffset,

@@ -153,6 +153,50 @@ Shop coin sounds are confirmed by `ShopManagerSO`, not by the clicked button. Se
 
 Enemy gold reward sounds are configured per `EnemyLootTableSO`. Set `Gold Reward Sfx Id` to `item_coin_pickup`; it plays only when that loot table grants immediate gold.
 
+## Add Crafting And Equipment Sounds
+
+Crafting and equipment sounds should play after the transaction succeeds.
+
+1. Add the `SfxDefinition` to `SfxLibrary`.
+2. Set the matching manager field:
+   - `CraftingManagerSO.Forge Success Sfx Id`: for example `craft_forge_hit`.
+   - `SalvageManagerSO.Salvage Success Sfx Id`: for example `craft_salvage`.
+   - `InventoryActionController.Equip Sfx Id`: for example `ui_equip_armor`.
+3. Keep the SFX-only hook after the inventory, gold, or equipment mutation has completed.
+
+## Add Enemy And World Combat Sounds
+
+Enemy death sounds use `EnemySfx` modules on the enemy prefab.
+
+1. Add the `SfxDefinition` to `SfxLibrary`.
+2. Create or reuse an `EnemySfxModule_Death` asset.
+3. Set its `Death Sfx Id`.
+4. Add that module asset to the enemy prefab's `EnemySfx.modules` list.
+
+Wolf attack sounds are configured on `Wolf_Attack_QuickBite`.
+
+1. Set `Attack Growl Sfx Id` to `enemy_wolf_attack_growl`.
+2. Set `Bite Hit Sfx Id` to `enemy_wolf_bite_hit`.
+3. Keep the growl for attack commitment and the bite for accepted hit timing.
+
+Wolf den collapse sounds are configured on `WolfDen.Cleared Sfx Id`, for example `world_den_death`.
+
+Arrow impact sounds are configured on the `PlayerArrow` prefab.
+
+1. Set `Impact Sfx Id` to `enemy_impacthit`.
+2. Keep `Impact Sfx Force 2D` disabled for positional wall/world hits.
+3. Enemy damage impacts still play through enemy `EnemySfx.modules`, so the projectile skips enemy double-play.
+
+## Audio Volume Settings
+
+The Settings menu sliders write to `AudioVolumeSettings`.
+
+- Master Volume uses `AudioListener.volume`, so it scales all Unity audio.
+- Music Volume scales music playback.
+- SFX Volume scales all SFX voices, including active loops.
+
+Slider values are saved with `PlayerPrefs` when the settings modal closes and again when the audio manager quits.
+
 ## Rule Field Guide
 
 - `Trigger`: the player event that activates the rule.

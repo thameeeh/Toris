@@ -27,7 +27,7 @@
 }
 
 .slot-date {
-    font-size: 14px;
+    font-size: 16px;
     opacity: 0.7;
 }
 
@@ -43,11 +43,12 @@
 }
 
 .stat-label {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .stat-value {
-    font-size: 20px;
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 24px;
     color: var(--color-border-highlight);
     -unity-font-style: bold;
 }
@@ -59,13 +60,14 @@
 }
 
 .save-slot__delete-btn {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     height: 35px;
     padding: 0 15px;
     background-color: rgba(255, 255, 255, 0.05);
     border-width: 1px;
     border-color: var(--color-border-default);
     color: var(--color-text-light);
-    font-size: 14px;
+    font-size: 18px;
     border-radius: 4px;
     transition-duration: 0.15s;
 }

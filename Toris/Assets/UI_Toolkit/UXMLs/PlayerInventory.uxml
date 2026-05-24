@@ -20,6 +20,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="Equipment__Wrapper" class="player-equipment-wrapper">
                     <ui:VisualElement name="Equipment__Header" class="player-equipment-header">
+                        <ui:Button name="Btn_ToggleStats" text="Stats" class="standard-button inventory-stats-toggle"/>
                         <ui:Label text="Equipment" class="panel-title"/>
                     </ui:VisualElement>
                     <ui:VisualElement name="PlayerEquipment__Panel" class="player-equipment-panel">

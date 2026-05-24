@@ -9,6 +9,7 @@
     flex-grow: 1;
     width: 100%;
     height: 100%;
+    overflow: visible;
 }
 
 .inventory-window {
@@ -29,20 +30,49 @@
     flex-shrink: 0;
     align-items: stretch;
     justify-content: space-between;
+    overflow: visible;
 }
 
 .player-top-section {
     flex-grow: 1;
     flex-direction: row;
+    position: relative;
+    overflow: visible;
 }
 
 .player-stats-panel {
-    flex-grow: 3;
-    flex-basis: 0;
+    position: absolute;
+    left: -352px;
+    top: 0;
+    bottom: 0;
+    width: 384px;
+    opacity: 0;
+    picking-mode: Ignore;
     background-color: var(--color-bg-panel);
-    border-right-width: 2px;
-    border-right-color: var(--color-border-default);
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     padding: 15px;
+    transition-property: left, opacity;
+    transition-duration: 0.14s;
+}
+
+.player-inventory-container--stats-open .player-stats-panel {
+    left: -384px;
+    opacity: 1;
+    picking-mode: Position;
+}
+
+.player-stats-panel .panel-title {
+    font-size: var(--font-size-h3);
+}
+
+.player-stats-panel .stat-label {
+    font-size: var(--font-size-small);
+    white-space: normal;
 }
 
 .stats-scroll-view {
@@ -50,18 +80,37 @@
 }
 
 .player-equipment-wrapper {
-    flex-grow: 7;
+    flex-grow: 1;
     flex-basis: 0;
     display: flex;
 }
 
 .player-equipment-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Brought over from the Components.uss purge */
 .player-equipment-header .panel-title {
     margin-bottom: 0;
+    -unity-text-align: middle-right;
+}
+
+.inventory-stats-toggle {
+    min-width: 110px;
+    height: 54px;
+    font-size: var(--font-size-body);
+    margin-left: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.inventory-stats-toggle--open {
+    border-color: var(--color-border-highlight);
+    background-color: var(--color-bg-panel-hover);
 }
 
 .player-equipment-panel {

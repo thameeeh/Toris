@@ -8,9 +8,9 @@ namespace OutlandHaven.UIToolkit
     {
         private const float CursorOffset = 18f;
         private const float ScreenPadding = 12f;
-        private const float FallbackWidth = 320f;
-        private const float FallbackBaseHeight = 116f;
-        private const float FallbackRowHeight = 23f;
+        private const float FallbackWidth = 460f;
+        private const float FallbackBaseHeight = 168f;
+        private const float FallbackRowHeight = 38f;
 
         private readonly VisualElement _host;
         private readonly VisualElement _root;

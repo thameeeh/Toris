@@ -57,21 +57,30 @@ public sealed class WorldTransitionSystem : IGateTransitionService
 
     public void StartInitialBiome(int startingBiomeIndex, Vector2Int originTile)
     {
-        StartBiome(startingBiomeIndex, originTile);
+        TryStartBiome(startingBiomeIndex, originTile);
     }
 
-    public void UseGate(Vector2Int gateTile)
+    public bool CanUseGate()
     {
         if (Time.time - lastGateTime <= gateCooldownSeconds)
-            return;
+            return false;
+
+        return TryResolveNextBiomeIndex(out _);
+    }
+
+    public bool UseGate(Vector2Int gateTile)
+    {
+        if (Time.time - lastGateTime <= gateCooldownSeconds)
+            return false;
+
+        if (!TryResolveNextBiomeIndex(out int nextBiomeIndex))
+            return false;
+
+        if (!TryStartBiome(nextBiomeIndex, gateTile))
+            return false;
 
         lastGateTime = Time.time;
-
-        int nextBiomeIndex = biomeIndex + 1;
-        if (biomeDatabase != null && biomeDatabase.Count > 0)
-            nextBiomeIndex %= biomeDatabase.Count;
-
-        StartBiome(nextBiomeIndex, gateTile);
+        return true;
     }
 
     public void ResetTransitionArtifacts()
@@ -87,13 +96,13 @@ public sealed class WorldTransitionSystem : IGateTransitionService
             sceneTransitionLoading);
     }
 
-    private void StartBiome(int nextBiomeIndex, Vector2Int originTile)
-    {       
+    private bool TryStartBiome(int nextBiomeIndex, Vector2Int originTile)
+    {
         BiomeDefinition biomeDefinition = biomeDatabase != null ? biomeDatabase.Get(nextBiomeIndex) : null;
         if (biomeDefinition == null)
         {
             Debug.LogError($"Missing biome definition for index {nextBiomeIndex}");
-            return;
+            return false;
         }
 
         ClearCurrentBiomeRuntime();
@@ -117,6 +126,18 @@ public sealed class WorldTransitionSystem : IGateTransitionService
 
         Vector2Int spawnChunk = TileToChunk(originTile, worldProfile.chunkSize);
         chunkStreamingSystem?.SetStreamingAnchor(spawnChunk);
+        return true;
+    }
+
+    private bool TryResolveNextBiomeIndex(out int nextBiomeIndex)
+    {
+        nextBiomeIndex = biomeIndex + 1;
+
+        if (biomeDatabase == null || biomeDatabase.Count <= 0)
+            return false;
+
+        nextBiomeIndex %= biomeDatabase.Count;
+        return biomeDatabase.Get(nextBiomeIndex) != null;
     }
 
     private void ClearCurrentBiomeRuntime()

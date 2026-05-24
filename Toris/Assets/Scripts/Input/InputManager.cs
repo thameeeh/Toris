@@ -245,6 +245,13 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         if (IsDeathInputLocked())
             return;
 
+        // Settings can sit on top of Pause, so Escape closes that modal before broad UI teardown.
+        if (_openBlockingScreens.Contains(ScreenType.SettingsModal))
+        {
+            _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
+            return;
+        }
+
         if (HasGameplayInputBlockers())
         {
             // If UI is open, we close it first. This satisfies the "Press ESC once to close" requirement.

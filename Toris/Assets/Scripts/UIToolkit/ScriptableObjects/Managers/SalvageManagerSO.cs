@@ -12,11 +12,16 @@ namespace OutlandHaven.UIToolkit
     [CreateAssetMenu(menuName = "UI/Scriptable Objects/SalvageManagerSO")]
     public class SalvageManagerSO : ScriptableObject
     {
+        private const string DefaultSalvageSuccessSfxId = "craft_salvage";
+
         [Header("Dependencies")]
         public GameSessionSO SessionData;
         public PlayerProgressionAnchorSO PlayerAnchor;
         public UIInventoryEventsSO InventoryEvents;
         public CraftingRegistrySO Registry;
+
+        [Header("SFX")]
+        [SerializeField] private string salvageSuccessSfxId = DefaultSalvageSuccessSfxId;
 
         public void Initialize()
         {
@@ -121,6 +126,19 @@ namespace OutlandHaven.UIToolkit
             }
 
             InventoryEvents?.OnInventoryUpdated?.Invoke();
+            PlaySalvageSuccessSfx();
+        }
+
+        private void PlaySalvageSuccessSfx()
+        {
+            // SFX-only hook: called after salvage removes the source item and grants rewards.
+            // It must not affect salvage recipes, inventory mutation, gold, or UI refresh behavior.
+            if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(salvageSuccessSfxId))
+                return;
+
+            SfxPlayRequest request = SfxPlayRequest.Default;
+            request.force2D = true;
+            AudioBootstrap.Sfx.Play(salvageSuccessSfxId, request);
         }
     }
 }

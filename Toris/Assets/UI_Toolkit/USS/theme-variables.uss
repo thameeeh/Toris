@@ -1,4 +1,6 @@
 :root {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/VT323-Regular.ttf?fileID=12800000&guid=ebe3050e2f27e764ba8791f10bc0ba57&type=3#VT323-Regular");
+
     /* Global Colors */
     --color-bg-dark: rgba(30, 30, 30, 0.95);
     --color-bg-panel: rgba(0, 0, 0, 0.8);
@@ -14,11 +16,11 @@
     --color-xp: #D9D923;
 
     /* Typography Defaults */
-    --font-size-h1: 60px;
-    --font-size-h2: 40px;
-    --font-size-h3: 30px;
-    --font-size-body: 18px;
-    --font-size-small: 12px;
+    --font-size-h1: 96px;
+    --font-size-h2: 72px;
+    --font-size-h3: 48px;
+    --font-size-body: 32px;
+    --font-size-small: 24px;
     --color-text-outline: rgba(0, 0, 0, 0.8);
 
     /* Commerce Specific Colors | Smith Shop*/

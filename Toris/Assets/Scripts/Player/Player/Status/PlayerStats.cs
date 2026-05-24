@@ -63,9 +63,13 @@ public class PlayerStats : MonoBehaviour
     public event Action<PlayerResolvedEffects> OnResolvedEffectsChanged;
 
     private bool _isDead;
+    private DeathCauseSnapshot _lastDamageCause;
     public bool IsDead => _isDead;
     public PlayerRuntimeStats RuntimeStats => _runtimeStats;
     public PlayerResolvedEffects ResolvedEffects => _resolvedEffects;
+    public DeathCauseSnapshot LastDeathCause => _lastDamageCause.HasKnownCause
+        ? _lastDamageCause
+        : DeathCauseSnapshot.Unknown();
 
     public float maxHP => _resolvedEffects.maxHealth;
     public float currentHP => _runtimeStats != null ? _runtimeStats.CurrentHealth : _resolvedEffects.maxHealth;
@@ -136,6 +140,11 @@ public class PlayerStats : MonoBehaviour
 
     public void ApplyDamage(float amount)
     {
+        ApplyDamage(amount, DeathCauseSnapshot.Unknown());
+    }
+
+    public void ApplyDamage(float amount, DeathCauseSnapshot cause)
+    {
         if (_runtimeStats == null || _isDead)
             return;
 
@@ -144,12 +153,15 @@ public class PlayerStats : MonoBehaviour
 
         if (!Mathf.Approximately(previousHealth, _runtimeStats.CurrentHealth))
         {
+            // Death screen related: remember the last real damage source for the death overlay.
+            _lastDamageCause = cause.HasKnownCause ? cause : DeathCauseSnapshot.Unknown();
             BroadcastHealth(PlayerResourceChangeReason.Damage, previousHealth);
         }
 
         if (_runtimeStats.IsDead())
         {
             _isDead = true;
+            EnsureLastDamageCause();
             OnPlayerDied?.Invoke();
         }
     }
@@ -210,6 +222,7 @@ public class PlayerStats : MonoBehaviour
         if (!_isDead && _runtimeStats.IsDead())
         {
             _isDead = true;
+            EnsureLastDamageCause();
             OnPlayerDied?.Invoke();
         }
     }
@@ -234,7 +247,23 @@ public class PlayerStats : MonoBehaviour
         _runtimeStats.SetCurrentHealth(currentHealthValue, _resolvedEffects.maxHealth);
         _runtimeStats.SetCurrentStamina(currentStaminaValue, _resolvedEffects.maxStamina);
         _isDead = _runtimeStats.IsDead();
+        if (!_isDead)
+        {
+            _lastDamageCause = default;
+        }
+        else
+        {
+            EnsureLastDamageCause();
+        }
         BroadcastAll(PlayerResourceChangeReason.RuntimeStateSync, previousHealth, previousStamina);
+    }
+
+    private void EnsureLastDamageCause()
+    {
+        if (!_lastDamageCause.HasKnownCause)
+        {
+            _lastDamageCause = DeathCauseSnapshot.Unknown();
+        }
     }
 
     private void HandleResolvedEffectsChanged(PlayerResolvedEffects resolvedEffects)

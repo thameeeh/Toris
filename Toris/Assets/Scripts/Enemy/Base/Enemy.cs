@@ -339,6 +339,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
         if (IsWithinStrikingDistance)
         {
+            hitData.source = ResolveDirectAttackSource(hitData.source);
             hitData.damage = amount;
 #if UNITY_EDITOR
             DebugAttackLog($"Legacy DamagePlayer hit -> {GetAttackDebugTargetSummary(playerAggroTarget)} amount={amount:0.##}");
@@ -353,14 +354,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 #endif
     }
 
-    public void DamageAggroTarget(float amount, HitData hitData, bool requireStrikingDistance = true)
+    public bool DamageAggroTarget(float amount, HitData hitData, bool requireStrikingDistance = true)
     {
         if (requireStrikingDistance && !IsWithinStrikingDistance)
         {
 #if UNITY_EDITOR
             DebugAttackLog($"DamageAggroTarget blocked: striking distance false amount={amount:0.##} target={GetAttackDebugTargetSummary()}");
 #endif
-            return;
+            return false;
         }
 
         IEnemyAggroTarget target = AggroTarget;
@@ -380,14 +381,38 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 #if UNITY_EDITOR
             DebugAttackLog($"DamageAggroTarget aborted: no valid target amount={amount:0.##}");
 #endif
-            return;
+            return false;
         }
 
+        if (target is PlayerDamageReceiver damageReceiver && damageReceiver.IsInvulnerable && !hitData.bypassIFrames)
+        {
+#if UNITY_EDITOR
+            DebugAttackLog($"DamageAggroTarget blocked: target has i-frames -> {GetAttackDebugTargetSummary(target)} amount={amount:0.##}");
+#endif
+            return false;
+        }
+
+        hitData.source = ResolveDirectAttackSource(hitData.source);
         hitData.damage = amount;
 #if UNITY_EDITOR
         DebugAttackLog($"DamageAggroTarget hit -> {GetAttackDebugTargetSummary(target)} amount={amount:0.##}");
 #endif
         target.ReceiveEnemyHit(amount, hitData);
+        return true;
+    }
+
+    private GameObject ResolveDirectAttackSource(GameObject configuredSource)
+    {
+        if (configuredSource != null)
+        {
+            Enemy sourceEnemy = configuredSource.GetComponentInParent<Enemy>();
+            if (ReferenceEquals(sourceEnemy, this))
+                return configuredSource;
+        }
+
+        // Death screen related: direct enemy attacks should report the attacking
+        // enemy as the source, even if a reused hit payload carried stale data.
+        return gameObject;
     }
 
     public bool TryGetAggroTargetPosition(out Vector2 position)

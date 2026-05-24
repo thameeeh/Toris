@@ -7,11 +7,16 @@ namespace OutlandHaven.UIToolkit
     [CreateAssetMenu(menuName = "UI/Scriptable Objects/CraftingManagerSO")]
     public class CraftingManagerSO : ScriptableObject
     {
+        private const string DefaultForgeSuccessSfxId = "craft_forge_hit";
+
         [Header("Dependencies")]
         public GameSessionSO SessionData;
         public PlayerProgressionAnchorSO PlayerAnchor;
         public UIInventoryEventsSO InventoryEvents;
         public CraftingRegistrySO Registry;
+
+        [Header("SFX")]
+        [SerializeField] private string forgeSuccessSfxId = DefaultForgeSuccessSfxId;
 
         private const int BaseItemRequirementQuantity = 1;
         private const int RecipeOutputQuantity = 1;
@@ -161,10 +166,23 @@ namespace OutlandHaven.UIToolkit
 
             PlayerAnchor.Instance.TrySpendGold(recipe.GoldCost);
             InventoryEvents?.OnInventoryUpdated?.Invoke();
+            PlayForgeSuccessSfx();
 #if UNITY_EDITOR
             Debug.Log($"Forged {recipe.OutputItem.ItemName} successfully.");
 #endif
             return true;
+        }
+
+        private void PlayForgeSuccessSfx()
+        {
+            // SFX-only hook: called after crafting output, costs, and inventory updates succeed.
+            // It must not affect recipes, item counts, gold, or UI refresh behavior.
+            if (AudioBootstrap.Sfx == null || string.IsNullOrWhiteSpace(forgeSuccessSfxId))
+                return;
+
+            SfxPlayRequest request = SfxPlayRequest.Default;
+            request.force2D = true;
+            AudioBootstrap.Sfx.Play(forgeSuccessSfxId, request);
         }
 
         public CraftingRecipeSO GetMatchingRecipe(InventoryItemSO itemA, InventoryItemSO itemB)

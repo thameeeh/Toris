@@ -16,6 +16,7 @@ namespace OutlandHaven.Inventory
         [Header("Player Data")]
         private PlayerInventoryView _view;
         private UIManager _uiManager;
+        private bool _statsDrawerOpen;
 
         void Awake()
         {
@@ -44,10 +45,29 @@ namespace OutlandHaven.Inventory
                 _gameSession, _uiEvents, _uiInventoryEvents,
                 _gameSession.PlayerEquipment, _gameSession.PlayerPotionInventory, _gameSession.PlayerHUD);
             _view.Initialize();
+            _view.SetStatsDrawerOpen(_statsDrawerOpen);
+            _view.OnStatsDrawerToggleRequested += HandleStatsDrawerToggleRequested;
 
             // Register to the RIGHT zone
             _uiManager.RegisterView(_view, ScreenZone.Right);
-        }        private void OnValidate()
+        }
+
+        private void HandleStatsDrawerToggleRequested()
+        {
+            _statsDrawerOpen = !_statsDrawerOpen;
+            _view?.SetStatsDrawerOpen(_statsDrawerOpen);
+        }
+
+        private void OnDestroy()
+        {
+            if (_view != null)
+            {
+                _view.OnStatsDrawerToggleRequested -= HandleStatsDrawerToggleRequested;
+                _view.Dispose();
+            }
+        }
+
+        private void OnValidate()
         {
             if (_uiEvents == null)
             {

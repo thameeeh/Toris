@@ -21,7 +21,8 @@
 }
 
 .pause-title {
-    font-size: 48px;
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 56px;
     color: white;
     margin-bottom: 30px;
     -unity-font-style: bold;
@@ -32,9 +33,10 @@
 }
 
 .pause-btn {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     height: 50px;
     margin-bottom: 15px;
-    font-size: 24px;
+    font-size: 32px;
     -unity-font-style: bold;
 }
 

@@ -17,6 +17,7 @@
 }
 
 .shop-header-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light); /* Fixed Rule 2 Violation */
     font-size: var(--font-size-h2); /* Standardized typography */
     -unity-font-style: bold;
@@ -28,6 +29,7 @@
 }
 
 .shop-gold-text {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: var(--font-size-body); 
     color: var(--color-coin-gold); /* Fixed Rule 2 Violation */
     -unity-font-style: bold;
@@ -53,14 +55,14 @@
 /* --- NEW LIST ITEM LAYOUT (The Row) --- */
 .shop-list-item {
     flex-direction: row; /* Horizontal layout for the row */
-    height: 90px;
+    height: 124px;
     flex-shrink: 0; /* Rule 4: Prevent ScrollView from squishing rows */
     background-color: var(--color-shop-slot-bg);
     border-width: 1px;
     border-color: var(--color-shop-slot-border);
     border-radius: 4px;
-    margin-bottom: 8px;
-    padding: 6px;
+    margin-bottom: 9px;
+    padding: 8px;
     transition-duration: 0.15s;
 }
 
@@ -71,8 +73,8 @@
 
 /* Internal layout for the list item */
 .shop-item-icon-wrapper {
-    width: 76px;
-    height: 76px;
+    width: 96px;
+    height: 96px;
     flex-shrink: 0;
     background-color: var(--color-bg-dark);
     border-width: 1px;
@@ -84,18 +86,24 @@
     flex-grow: 1; /* Pushes the price/buy section to the right */
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .shop-item-name {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     -unity-font-style: bold;
-    margin-bottom: 4px;
+    min-height: 30px;
+    margin-bottom: 2px;
 }
 .shop-item-description {
     color: var(--color-border-default);
     font-size: var(--font-size-small);
     white-space: normal; /* Enables multi-line text */
+    min-height: 72px;
 }
 
 .shop-item-commerce {
@@ -108,6 +116,7 @@
 }
 
 .shop-item-price {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     color: var(--color-coin-gold);
     font-size: var(--font-size-body);
     -unity-font-style: bold;

@@ -37,6 +37,8 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     [Header("Gate")]
     [SerializeField] private float gateCooldownSeconds = 1f;
+    [SerializeField, Min(0.1f)] private float biomeTransitionStreamingTimeoutSeconds = 8f;
+    [SerializeField, Min(0f)] private float biomeTransitionPostReadyHoldSeconds = 0.15f;
 
     [Header("Pool")]
     [SerializeField] private WorldPoiPoolManager poiPool;
@@ -52,6 +54,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
     private ChunkStreamingCoordinator chunkStreamingCoordinator;
     private WorldStreamingRuntime worldStreamingRuntime;
     private WorldTransitionSystem worldTransitionSystem;
+    private BiomeLoadingTransitionService biomeLoadingTransitionService;
     private WorldNavigationLifecycle worldNavigationLifecycle;
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
 
@@ -59,6 +62,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     #region Public API
     public WorldContext Context => ctx;
+    public Transform FollowTarget => followTarget;
     #endregion
 
     #region Unity Lifecycle
@@ -141,12 +145,24 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             chunkStreamingSystem,
             gateCooldownSeconds);
 
+        IGateTransitionService gateTransitionService = worldTransitionSystem;
+        if (sceneTransitionService != null)
+        {
+            // Presentation bridge: biome gates get loading UI without coupling world state to UI Toolkit.
+            biomeLoadingTransitionService = new BiomeLoadingTransitionService(
+                worldTransitionSystem,
+                sceneTransitionService,
+                biomeTransitionStreamingTimeoutSeconds,
+                biomeTransitionPostReadyHoldSeconds);
+            gateTransitionService = biomeLoadingTransitionService;
+        }
+
         WorldSiteActivationPipeline worldSiteActivationPipeline = new WorldSiteActivationPipeline(
             worldSceneServices,
             worldEncounterServices,
             chunkStateStore,
             poiPool,
-            worldTransitionSystem,
+            gateTransitionService,
             sceneTransitionService);
 
         WorldFeatureLifecycle chunkFeatureLifecycle = new WorldFeatureLifecycle(
@@ -197,6 +213,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
         worldTransitionSystem.AttachLifecycleSystem(worldFeatureLifecycleSystem);
         worldTransitionSystem.AttachStreamingRuntime(worldStreamingRuntime);
+        biomeLoadingTransitionService?.AttachStreamingRuntime(worldStreamingRuntime);
 
         Vector2Int spawnTile = WorldToTile(profile.spawnPosTiles);
         worldTransitionSystem.StartInitialBiome(0, spawnTile);
@@ -223,7 +240,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
 
     #region Coordinates / Math
 
-    private Vector2Int WorldToTile(Vector2 world)
+    public Vector2Int WorldToTile(Vector2 world)
     {
         if (grid != null)
         {
@@ -232,6 +249,14 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
         }
 
         return new Vector2Int(Mathf.FloorToInt(world.x), Mathf.FloorToInt(world.y));
+    }
+
+    public bool HasRenderedWaterTile(Vector2Int worldTile)
+    {
+        if (waterMap == null)
+            return false;
+
+        return waterMap.GetTile(new Vector3Int(worldTile.x, worldTile.y, 0)) != null;
     }
 
     #endregion

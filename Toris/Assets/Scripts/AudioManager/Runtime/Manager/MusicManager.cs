@@ -17,6 +17,8 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
     private AudioSource activeSource;
     private AudioSource inactiveSource;
 
+    private float activeBaseVolume;
+    private float inactiveBaseVolume;
     private float fadeTimeRemaining;
     private float fadeDuration;
     private float activeStartVolume;
@@ -40,6 +42,8 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
 
         activeSource.volume = 0f;
         inactiveSource.volume = 0f;
+        activeBaseVolume = 0f;
+        inactiveBaseVolume = 0f;
     }
     public void Play(string id, float? fadeInSeconds = null, float? fadeOutSeconds = null)
     {
@@ -57,14 +61,15 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
         fadeDuration = Mathf.Max(0.0001f, Mathf.Max(fadeInDuration, fadeOutDuration));
         fadeTimeRemaining = fadeDuration;
 
-        activeStartVolume = activeSource.volume;
+        activeStartVolume = activeBaseVolume;
         inactiveTargetVolume = Mathf.Clamp(definition.Volume, 0f, 2f);
 
         // Configure inactive source
         inactiveSource.Stop();
         inactiveSource.clip = definition.Clip;
         inactiveSource.loop = true;
-        inactiveSource.volume = 0f;
+        inactiveBaseVolume = 0f;
+        inactiveSource.volume = ResolveMusicOutputVolume(inactiveBaseVolume);
 
         if (definition.OutputMixerGroup != null)
             inactiveSource.outputAudioMixerGroup = definition.OutputMixerGroup;
@@ -83,18 +88,21 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
         fadeDuration = Mathf.Max(0.0001f, fadeOutDuration);
         fadeTimeRemaining = fadeDuration;
 
-        activeStartVolume = activeSource.volume;
+        activeStartVolume = activeBaseVolume;
         inactiveTargetVolume = 0f;
 
         // Ensure inactive is not participating
         inactiveSource.Stop();
         inactiveSource.clip = null;
-        inactiveSource.volume = 0f;
+        inactiveBaseVolume = 0f;
+        inactiveSource.volume = ResolveMusicOutputVolume(inactiveBaseVolume);
 
         isStopping = true;
     }
     public void Tick(float unscaledDeltaTime)
     {
+        UpdateSourceVolumesFromSettings();
+
         if (fadeTimeRemaining <= 0f) return;
 
         if (unscaledDeltaTime < 0f) unscaledDeltaTime = 0f;
@@ -108,12 +116,14 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
         float tIn = fadeInDuration <= 0f ? 1f : Mathf.Clamp01(tGlobal * (fadeDuration / Mathf.Max(0.0001f, fadeInDuration)));
 
         // Always fade active down (stop or crossfade)
-        activeSource.volume = Mathf.Lerp(activeStartVolume, 0f, tOut);
+        activeBaseVolume = Mathf.Lerp(activeStartVolume, 0f, tOut);
+        activeSource.volume = ResolveMusicOutputVolume(activeBaseVolume);
 
         if (!isStopping)
         {
             // Crossfade: fade inactive up
-            inactiveSource.volume = Mathf.Lerp(0f, inactiveTargetVolume, tIn);
+            inactiveBaseVolume = Mathf.Lerp(0f, inactiveTargetVolume, tIn);
+            inactiveSource.volume = ResolveMusicOutputVolume(inactiveBaseVolume);
         }
 
         if (fadeTimeRemaining > 0f)
@@ -121,7 +131,8 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
 
         // Finish
         activeSource.Stop();
-        activeSource.volume = 0f;
+        activeBaseVolume = 0f;
+        activeSource.volume = ResolveMusicOutputVolume(activeBaseVolume);
 
         if (isStopping)
         {
@@ -134,9 +145,23 @@ public sealed class MusicManager : IMusicManager, IAudioRuntimeTick
         activeSource = inactiveSource;
         inactiveSource = temp;
 
+        activeBaseVolume = inactiveBaseVolume;
+        inactiveBaseVolume = 0f;
+
         inactiveSource.Stop();
         inactiveSource.clip = null;
-        inactiveSource.volume = 0f;
+        inactiveSource.volume = ResolveMusicOutputVolume(inactiveBaseVolume);
+    }
+
+    private void UpdateSourceVolumesFromSettings()
+    {
+        activeSource.volume = ResolveMusicOutputVolume(activeBaseVolume);
+        inactiveSource.volume = ResolveMusicOutputVolume(inactiveBaseVolume);
+    }
+
+    private static float ResolveMusicOutputVolume(float baseVolume)
+    {
+        return Mathf.Clamp(baseVolume * AudioVolumeSettings.EffectiveMusicVolume, 0f, 2f);
     }
 
 }

@@ -95,8 +95,16 @@ Use it to keep track of:
 - once content stabilizes, do one broader range / timing / reward tuning pass across encounters
 - continue checking whether enemy rewards, aggression, and pacing feel consistent between encounters
 
+## World Item Drops
+
+### Planned Polish
+
+- improve enemy item drops with outward burst motion, landing, bobbing, glow, and the shared shadow prefab
+- implementation note: `World_Item_Drop_Presentation_Plan.md`
+
 ## Good Bigger Tasks After This
 
 - necromancer encounter completion / post-fight polish
 - world dressing pass for generic biome spaces
 - real ability loadout / slot assignment system
+- world item drop presentation polish

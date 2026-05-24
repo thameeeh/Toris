@@ -114,6 +114,8 @@ GameObject:
   - component: {fileID: 11471062}
   - component: {fileID: 11424616}
   - component: {fileID: 4331170822996696030}
+  - component: {fileID: 3738398143566829227}
+  - component: {fileID: 1623794721465249846}
   m_Layer: 0
   m_Name: Dialogue Manager
   m_TagString: Untagged
@@ -295,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dddab24af7a02a54c9631fd5c532d7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputDevice: 0
+  inputDevice: 1
   joystickKeyCodesToCheck: 4a0100004b0100004c01000051010000
   joystickButtonsToCheck: []
   joystickAxesToCheck: []
@@ -339,4 +341,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersInventoryBridge
   _itemDatabase: {fileID: 11400000, guid: 42bb86d2eb800304a8a42b3b360a928e, type: 2}
-  _debugBridge: 1
+  _debugBridge: 0
+--- !u!114 &3738398143566829227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099639002cdf0ae46a1b0c76205ee037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestRewardAdapter
+  _rewardSets:
+  - {fileID: 11400000, guid: 4f13cf5ff6914d73a5c33adf1721e70c, type: 2}
+  _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _debugRewardFlow: 1
+  _grantMissedAutomaticRewardsOnEnable: 1
+--- !u!114 &1623794721465249846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1023b72eea342229c27b671d27ac50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersDialogueCommandBridge
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _screenCommands: []
+  _questJournalWindow: {fileID: 0}
+  _questJournalPrefab: {fileID: 0}
+  _questJournalCanvas: {fileID: 0}
+  _createRuntimeQuestJournalCanvas: 1
+  _runtimeQuestJournalSortingOrder: 200
+  _lockGameplayInputDuringDialogue: 1
+  _dialogueGameplayInputLockId: PixelCrushersDialogue
+  _debugCommands: 1

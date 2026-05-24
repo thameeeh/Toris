@@ -277,10 +277,14 @@ public class PixelCrushersInventoryBridge : MonoBehaviour
         if (_itemDatabase == null)
         {
             LogWarning("ItemDatabase is not assigned on the bridge! Attempting to find standard database asset.");
-            _itemDatabase = Resources.Load<ItemDatabaseSO>("Data/ItemDatabase");
+            _itemDatabase = Resources.Load<ItemDatabaseSO>("GameData/Item Database SO");
             if (_itemDatabase == null)
             {
-                LogWarning("Could not find standard ItemDatabase asset at Resources/Data/ItemDatabase.");
+                _itemDatabase = Resources.Load<ItemDatabaseSO>("Data/ItemDatabase");
+            }
+            if (_itemDatabase == null)
+            {
+                LogWarning("Could not find standard ItemDatabase asset at Resources/GameData/Item Database SO.");
                 return null;
             }
         }

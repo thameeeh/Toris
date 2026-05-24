@@ -410,7 +410,7 @@ public class QuestFactProgressRule
 
     [Header("Pixel Crushers Progress")]
     [Tooltip("Pixel Crushers quest name to progress when this rule matches.")]
-    public string QuestName = string.Empty;
+    [QuestPopup] public string QuestName = string.Empty;
     [Tooltip("If enabled, this rule only progresses while the Pixel Crushers quest is active.")]
     public bool RequireQuestActive = true;
     [Tooltip("Pixel Crushers Lua variable used as the progress counter. Leave blank to use QuestName_FactType_TargetId.")]

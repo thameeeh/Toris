@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OutlandHaven.Inventory;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 
 /// <summary>
@@ -36,7 +37,7 @@ public class PixelCrushersQuestRewardDefinition
 {
     [Header("Pixel Crushers Quest")]
     [Tooltip("Pixel Crushers quest name that unlocks this reward when it reaches success.")]
-    public string QuestName = string.Empty;
+    [QuestPopup] public string QuestName = string.Empty;
     [Tooltip("Pixel Crushers Lua variable used to remember that this reward was already paid. Leave blank to use QuestName_RewardsGranted.")]
     public string RewardGrantedVariableName = string.Empty;
     [Tooltip("How this reward is claimed after the quest reaches success.")]

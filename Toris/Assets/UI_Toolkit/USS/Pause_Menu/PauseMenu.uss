@@ -81,6 +81,20 @@
     bottom: 0;
 }
 
+.items-subpanel {
+    background-color: var(--color-bg-dark);
+    padding: 40px;
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    border-radius: 8px;
+    width: 320px;
+    display: none; /* Controlled dynamically by view toggles */
+    position: absolute;
+    left: 760px; /* Offset exactly outside the 420px left + 320px width + 20px gap of the stats subpanel */
+    top: 0;
+    bottom: 0;
+}
+
 .stats-title {
     -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: 40px;
@@ -111,4 +125,48 @@
     font-size: 28px;
     color: #dcb35c; /* Beautiful gold highlight to match the brand styling */
     -unity-font-style: bold;
+}
+
+.stats-section-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 32px;
+    color: #ffffff;
+    -unity-font-style: bold;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.stats-items-scrollview {
+    flex-grow: 1;
+    margin-top: 5px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.stats-toggle-btn {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 20px;
+    color: #cccccc;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 8px;
+    height: auto;
+    -unity-font-style: normal;
+}
+
+.stats-toggle-btn:hover {
+    color: #ffffff;
+    background-color: rgba(220, 179, 92, 0.2);
+    border-color: #dcb35c;
+    scale: 1.05;
 }

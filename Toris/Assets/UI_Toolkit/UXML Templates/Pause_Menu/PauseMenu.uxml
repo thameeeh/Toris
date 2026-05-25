@@ -25,6 +25,17 @@
                     <ui:Label text="Wolves Defeated:" class="stats-label"/>
                     <ui:Label name="Lbl_WolfKills" text="0" class="stats-value"/>
                 </ui:VisualElement>
+                 <ui:VisualElement class="stats-row">
+                    <ui:Label text="Total Pickups:" class="stats-label"/>
+                    <ui:VisualElement style="flex-direction: row; align-items: center;">
+                        <ui:Label name="Lbl_TotalPickUps" text="0" class="stats-value"/>
+                        <ui:Button name="Btn_ToggleItemsList" text="➔" class="stats-toggle-btn"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="ItemsSubPanel" class="items-subpanel">
+                <ui:Label text="ITEMS COLLECTED" class="stats-title"/>
+                <ui:ScrollView name="Scr_ItemsList" class="stats-items-scrollview"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

@@ -17,6 +17,7 @@ namespace OutlandHaven.UIToolkit
         private UIManager _uiManager;
         private bool _isPaused = false;
         private bool _isStatsPanelOpen = false;
+        private bool _isItemsPanelOpen = false;
 
         private void Awake()
         {
@@ -53,6 +54,7 @@ namespace OutlandHaven.UIToolkit
             _view.OnAdventureLogClicked += ToggleAdventureLog;
             _view.OnSettingsClicked += OpenSettings;
             _view.OnMainMenuClicked += QuitToMainMenu;
+            _view.OnToggleItemsClicked += ToggleItemsPanel;
 
             _uiManager.RegisterView(_view, ScreenZone.FullScreen);
         }
@@ -64,9 +66,11 @@ namespace OutlandHaven.UIToolkit
                 _isPaused = true;
                 Time.timeScale = 0f;
                 _isStatsPanelOpen = false;
+                _isItemsPanelOpen = false;
                 if (_view != null)
                 {
                     _view.SetStatsPanelActive(false);
+                    _view.SetItemsPanelActive(false);
                 }
             }
         }
@@ -78,9 +82,11 @@ namespace OutlandHaven.UIToolkit
                 _isPaused = false;
                 Time.timeScale = 1f;
                 _isStatsPanelOpen = false;
+                _isItemsPanelOpen = false;
                 if (_view != null)
                 {
                     _view.SetStatsPanelActive(false);
+                    _view.SetItemsPanelActive(false);
                 }
             }
         }
@@ -100,10 +106,23 @@ namespace OutlandHaven.UIToolkit
             _isStatsPanelOpen = !_isStatsPanelOpen;
             _view.SetStatsPanelActive(_isStatsPanelOpen);
 
+            if (!_isStatsPanelOpen)
+            {
+                _isItemsPanelOpen = false;
+                _view.SetItemsPanelActive(false);
+            }
+
             if (_isStatsPanelOpen)
             {
                 UpdateStatsDisplay();
             }
+        }
+
+        private void ToggleItemsPanel()
+        {
+            if (!_isStatsPanelOpen) return;
+            _isItemsPanelOpen = !_isItemsPanelOpen;
+            _view.SetItemsPanelActive(_isItemsPanelOpen);
         }
 
         private void UpdateStatsDisplay()
@@ -112,12 +131,32 @@ namespace OutlandHaven.UIToolkit
             int totalKills = 0;
             int wolfKills = 0;
             float playtimeSeconds = 0f;
+            int totalPickUps = 0;
+            System.Collections.Generic.Dictionary<string, int> resolvedItemNamesAndCounts = new System.Collections.Generic.Dictionary<string, int>();
 
             if (session != null && session.GameplayStatistics != null)
             {
                 totalKills = session.GameplayStatistics.TotalKills;
                 wolfKills = session.GameplayStatistics.WolfKills;
                 playtimeSeconds = session.GameplayStatistics.PlayTime;
+                totalPickUps = session.GameplayStatistics.TotalPickUps;
+
+                // Resolve item names from MasterItemDatabase inside SaveManager in scene
+                OutlandHaven.SaveSystem.SaveManager saveManager = FindFirstObjectByType<OutlandHaven.SaveSystem.SaveManager>();
+                OutlandHaven.Inventory.ItemDatabaseSO database = saveManager != null ? saveManager.MasterItemDatabase : null;
+                if (database != null && session.GameplayStatistics.ItemPickUps != null)
+                {
+                    database.Initialize();
+                    foreach (var kvp in session.GameplayStatistics.ItemPickUps)
+                    {
+                        OutlandHaven.Inventory.InventoryItemSO blueprint = database.GetItemByID(kvp.Key);
+                        string displayName = blueprint != null ? blueprint.ItemName : kvp.Key;
+                        if (!string.IsNullOrEmpty(displayName))
+                        {
+                            resolvedItemNamesAndCounts[displayName] = kvp.Value;
+                        }
+                    }
+                }
             }
 
             int totalSeconds = Mathf.RoundToInt(playtimeSeconds);
@@ -126,7 +165,7 @@ namespace OutlandHaven.UIToolkit
             int seconds = totalSeconds % 60;
             string playtimeString = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
 
-            _view.PopulateStats(totalKills, wolfKills, playtimeString);
+            _view.PopulateStats(totalKills, wolfKills, playtimeString, totalPickUps, resolvedItemNamesAndCounts);
         }
 
         private void QuitToMainMenu()
@@ -163,6 +202,7 @@ namespace OutlandHaven.UIToolkit
                 _view.OnAdventureLogClicked -= ToggleAdventureLog;
                 _view.OnSettingsClicked -= OpenSettings;
                 _view.OnMainMenuClicked -= QuitToMainMenu;
+                _view.OnToggleItemsClicked -= ToggleItemsPanel;
                 _view.Dispose();
             }
         }

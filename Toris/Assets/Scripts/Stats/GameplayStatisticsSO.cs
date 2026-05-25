@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
 using OutlandHaven.SaveSystem;
+using OutlandHaven.Inventory;
 
 /// <summary>
 /// Persistent gameplay statistics tracker.
@@ -22,9 +24,17 @@ public class GameplayStatisticsSO : ScriptableObject
     [Tooltip("Total number of wolves killed specifically.")]
     public int WolfKills;
 
+    [Header("Lifetime Pick Up Stats")]
+    [Tooltip("Total number of items picked up across all types.")]
+    public int TotalPickUps;
+
     [Header("Lifetime Time Stats")]
     [Tooltip("Total playtime accumulated in seconds across all sessions.")]
     public float PlayTime;
+
+    [Header("Lifetime Generic Item Pick Up Stats")]
+    [Tooltip("Pickup counts for each unique item ID. Keys match the InventoryItemSO asset name.")]
+    public Dictionary<string, int> ItemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
 
     private void OnEnable()
     {
@@ -55,7 +65,71 @@ public class GameplayStatisticsSO : ScriptableObject
                     WolfKills += fact.Amount;
                 }
                 break;
+
+            case QuestFactType.PickUp:
+                TotalPickUps += fact.Amount;
+
+                // Generically track all item pickups by item ID (fact.ExactId)
+                if (!string.IsNullOrEmpty(fact.ExactId))
+                {
+                    if (ItemPickUps == null)
+                    {
+                        ItemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
+                    }
+
+                    if (ItemPickUps.ContainsKey(fact.ExactId))
+                    {
+                        ItemPickUps[fact.ExactId] += fact.Amount;
+                    }
+                    else
+                    {
+                        ItemPickUps[fact.ExactId] = fact.Amount;
+                    }
+                }
+                break;
         }
+    }
+
+    /// <summary>
+    /// Gets the pickup count for a specific item ID.
+    /// </summary>
+    public int GetPickUpCount(string itemAssetId)
+    {
+        if (ItemPickUps != null && !string.IsNullOrEmpty(itemAssetId) && ItemPickUps.TryGetValue(itemAssetId, out int count))
+        {
+            return count;
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// Gets the pickup count for a specific InventoryItemSO blueprint.
+    /// </summary>
+    public int GetPickUpCount(InventoryItemSO item)
+    {
+        if (item == null) return 0;
+        return GetPickUpCount(item.name);
+    }
+
+    /// <summary>
+    /// Resolves item details from the Master Item Database and returns a breakdown of all item pickups.
+    /// </summary>
+    public Dictionary<InventoryItemSO, int> GetResolvedItemPickUps(ItemDatabaseSO itemDatabase)
+    {
+        var resolved = new Dictionary<InventoryItemSO, int>();
+        if (itemDatabase == null || ItemPickUps == null)
+            return resolved;
+
+        itemDatabase.Initialize();
+        foreach (var kvp in ItemPickUps)
+        {
+            InventoryItemSO blueprint = itemDatabase.GetItemByID(kvp.Key);
+            if (blueprint != null)
+            {
+                resolved[blueprint] = kvp.Value;
+            }
+        }
+        return resolved;
     }
 
     /// <summary>
@@ -67,7 +141,9 @@ public class GameplayStatisticsSO : ScriptableObject
         {
             TotalKills = TotalKills,
             WolfKills = WolfKills,
-            PlayTime = PlayTime
+            PlayTime = PlayTime,
+            TotalPickUps = TotalPickUps,
+            ItemPickUps = ItemPickUps != null ? new Dictionary<string, int>(ItemPickUps, System.StringComparer.Ordinal) : new Dictionary<string, int>(System.StringComparer.Ordinal)
         };
     }
 
@@ -85,6 +161,8 @@ public class GameplayStatisticsSO : ScriptableObject
         TotalKills = data.TotalKills;
         WolfKills = data.WolfKills;
         PlayTime = data.PlayTime;
+        TotalPickUps = data.TotalPickUps;
+        ItemPickUps = data.ItemPickUps != null ? new Dictionary<string, int>(data.ItemPickUps, System.StringComparer.Ordinal) : new Dictionary<string, int>(System.StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -95,6 +173,15 @@ public class GameplayStatisticsSO : ScriptableObject
         TotalKills = 0;
         WolfKills = 0;
         PlayTime = 0f;
+        TotalPickUps = 0;
+        if (ItemPickUps != null)
+        {
+            ItemPickUps.Clear();
+        }
+        else
+        {
+            ItemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        }
     }
 
     /// <summary>

@@ -6,5 +6,7 @@ namespace OutlandHaven.SaveSystem
         public int TotalKills;
         public int WolfKills;
         public float PlayTime;
+        public int TotalPickUps;
+        public System.Collections.Generic.Dictionary<string, int> ItemPickUps = new System.Collections.Generic.Dictionary<string, int>();
     }
 }

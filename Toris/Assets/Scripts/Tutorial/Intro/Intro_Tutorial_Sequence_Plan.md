@@ -38,13 +38,15 @@ Completed:
 - Tutorial capability locks now let the Prologue block unrelated inputs without taking over the whole input manager.
 - The Prologue minion wolf variant can start dormant and wake only when `PrologueWolfEncounterTrigger` is entered.
 - The wolf encounter trigger starts the optional `Hold LMB to shoot` prompt and keeps unrelated inputs gated during the fight.
+- `PlayerBowController` now exposes underdraw and overdraw signals for tutorial/UI listeners.
+- The Prologue flow shows one-shot reactive bow tips for the first early release and first overdraw, pausing until the player continues with `Space` or `Enter`.
 
 Still open:
 
 - Assign final background images, music, and SFX for the story cards.
 - Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
-- Add dry release, ready shot, shot fired, and overdraw tutorial signals.
-- Author optional pickup, inventory, equipment, stats, and potion tutorial steps on top of those signals.
+- Add optional ready-shot/release guidance on top of the existing bow ready and shot fired signals, if the fight still needs it after playtesting.
+- Author optional pickup, inventory, equipment, stats, and potion tutorial steps.
 
 ## Fresh Save Flow
 
@@ -54,7 +56,7 @@ Still open:
 | 2 | Story Intro Screen | Fade in image/text with music and light SFX. Use 1-2 background images and short text pages. Plays on every new save. | No mechanical tips yet. |
 | 3 | Spawn In Intro Area | Player appears at the start of a controlled path. Everything except the intended route is blocked by level design. | Movement tip appears. |
 | 4 | First Walk | Player moves along the path and learns basic movement in a safe space. | Movement tip completes when movement is detected. |
-| 5 | First Threat Reveal | A weak story enemy blocks the path. Test with Necromancer; likely ship with a Viking intro enemy. | Shooting intro starts. |
+| 5 | First Threat Reveal | A weak prologue minion wolf blocks the path. | Shooting intro starts. |
 | 6 | Bow Draw Lesson | Player learns to hold LMB to draw. | Tip waits for bow draw start. |
 | 7 | Failed Shot Lesson | Player learns that releasing too early fails, but only after they do it once. | Tip appears after first dry release. |
 | 8 | Ready Shot Lesson | Player learns to hold until ready, then release. | Tip waits for `ShootReady`, then `ShotFired`. |
@@ -126,7 +128,7 @@ The first enemy should communicate that the world is dangerous, but it should no
 | Intro Viking | Fits the character asset you have and can become the real authored first enemy. | Needs setup/tuning if it is not already an enemy prefab. |
 | Custom Intro Cultist / Exile | Easy to tune and story-control. | Requires new enemy setup. |
 
-Recommended implementation path: **test with Necromancer**, then replace with the **Intro Viking** once its enemy setup is ready.
+Current implementation path: use the **prologue minion wolf** as the first playable threat. The candidates above remain useful if the opening later needs a more story-specific enemy.
 
 The enemy can have:
 
@@ -172,8 +174,8 @@ Recommended capabilities:
 | Spawn | Player appears after the opening cards. | Fade in a small world-space prompt above the player: `WASD Move`. Fade it out once movement input is detected. | Movement enabled; combat, inventory, potion hotkeys, and unrelated menus gated. |
 | Explore Path | Player can move around and settle into controls. | No heavy overlay. Let the player walk naturally toward the authored wolf area. | Movement remains enabled. |
 | Wolf Reveal | Wolf becomes visible or the player enters the encounter area. | Show `Hold LMB to shoot`. | Bow attack enabled; inventory and unrelated menus still gated. |
-| First Underdraw | Player releases too early for the first time. | Pause briefly and show tip: underdrawing fails the shot because the bow was not ready. Then resume. | Combat remains enabled. |
-| First Overdraw | Player holds too long for the first time. | Pause briefly and show tip: overdraw makes the shot unstable and may reduce accuracy. Then resume. | Combat remains enabled. |
+| First Underdraw | Player releases too early for the first time. | Pause and show tip: underdrawing fails the shot because the bow was not ready. Resume after `Space` or `Enter`. | Combat is held while the tip is open. |
+| First Overdraw | Player holds too long for the first time. | Cancel the held draw, pause, and explain that overdraw makes the shot unstable. Resume after `Space` or `Enter`. | Combat is held while the tip is open. |
 | Wolf Death | Wolf dies and drops fixed tutorial loot. | Teach pickup with `E Pick Up`. | Pickup enabled. |
 | Inventory Open | Player picks up the loot. | Prompt the inventory button and show the `I` shortcut. Open or guide the player into the inventory screen. | Inventory enabled; unrelated menus still gated if possible. |
 | Equip Training Bow | Wolf drop includes a predetermined `Training Bow` or similar barebones bow. | Guide the player to equip it. | Equipment changes enabled for the tutorial item. |
@@ -261,7 +263,7 @@ The Guide then starts or continues the existing introduction conversation. This 
 - Optional anchor prompts for HUD bars, later.
 - Per-step button text such as `Continue`, `Try it`, `Got it`.
 - Prologue-completed save flag so future loads can skip directly to `MainArea`.
-- Optional one-shot reactive tips for first dry release and first overdraw.
+- Optional one-shot reactive tips for first dry release and first overdraw. Implemented for the Prologue wolf encounter with player-controlled dismissal.
 
 ### Needed Gameplay Signals
 
@@ -270,9 +272,10 @@ Use existing events where possible:
 - Movement detected from `PlayerInputReaderSO.Move`.
 - Bow draw from `PlayerBowController.DrawStarted`.
 - Bow ready from `PlayerBowController.ShootReady`.
-- Dry release from `PlayerBowController.DryReleased`.
+- Early release from `PlayerBowController.UnderdrawReleased`.
+- Generic dry release / animation cancel from `PlayerBowController.DryReleased`.
 - Shot fired from `PlayerBowController.ShotFired`.
-- Overdraw / over-hold from bow draw duration crossing `BowSO.overHoldStartsAt`.
+- Overdraw / over-hold from `PlayerBowController.OverdrawStarted`.
 - Enemy killed from the enemy/death event path, if one exists.
 - Item picked up from item pickup event path, if needed.
 - Safe Haven entered from a transition/trigger event.
@@ -302,7 +305,7 @@ These should be bridged into tutorial/prologue events without adding tutorial-sp
 - Story intro screens play for every new save.
 - Story cards are player-paced with a continue/forward input.
 - Separate prologue scene is recommended, then transition to `MainArea`.
-- Test with Necromancer; likely ship with a Viking intro enemy.
+- The current first gameplay enemy is the prologue minion wolf variant.
 - Do not force a failed shot. Teach it after the player fails naturally.
 - Teach overdraw only after the player overdraws naturally.
 - Player walks to the Guide and interacts for now.
@@ -312,5 +315,5 @@ These should be bridged into tutorial/prologue events without adding tutorial-sp
 1. Should the first enemy drop a physical item, or only grant XP/gold?
 2. What exact XP/gold reward should the first kill grant?
 3. Should story cards be skippable after first viewing on a save slot?
-4. What is the final name/flavor of the Viking intro enemy?
+4. Should the prologue wolf stay as the final first enemy, or be replaced by a more story-specific enemy later?
 5. What background images and music/SFX should the story cards use?

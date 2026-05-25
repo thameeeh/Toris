@@ -24,6 +24,13 @@
                     <ui:Slider name="Slider_SFXVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
                 </ui:VisualElement>
 
+                <ui:Label text="Gameplay" class="settings-section-header settings-section-spacing"/>
+
+                <ui:VisualElement class="settings-slider-row">
+                    <ui:Label text="Loot Vacuum" class="stat-label"/>
+                    <ui:Toggle name="Toggle_LootMagnet" value="true"/>
+                </ui:VisualElement>
+
                 <ui:Label text="[ WIP ] Display Resolution" class="stat-label settings-section-spacing"/>
                 <ui:Label text="[ WIP ] Keybindings" class="stat-label"/>
             </ui:VisualElement>

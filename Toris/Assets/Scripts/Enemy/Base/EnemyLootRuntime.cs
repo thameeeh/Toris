@@ -131,6 +131,8 @@ public static class EnemyLootRuntime
             glowPrefab,
             shadowPrefab,
             DropItemSortingOrder);
+
+        dropObject.AddComponent<WorldItemMagnet>();
     }
 
     private static SpriteRenderer CreateItemVisual(Transform parent, InventoryItemSO item)

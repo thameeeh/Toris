@@ -87,9 +87,12 @@ public class SettingsMenuController : MonoBehaviour
             AudioVolumeSettings.MusicVolume,
             AudioVolumeSettings.SfxVolume);
 
+        _view.SetLootMagnetValue(LootMagnetSettings.LootMagnetEnabled);
+
         _view.OnMasterVolumeChanged += HandleMasterVolumeChanged;
         _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
         _view.OnSFXVolumeChanged += HandleSfxVolumeChanged;
+        _view.OnLootMagnetToggled += HandleLootMagnetToggled;
 
         if (_mainMenuUiManager != null)
         {
@@ -106,6 +109,7 @@ public class SettingsMenuController : MonoBehaviour
     {
         // Tell the UIManager to close this specific screen
         AudioVolumeSettings.Save();
+        LootMagnetSettings.Save();
         _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
     }
 
@@ -127,6 +131,11 @@ public class SettingsMenuController : MonoBehaviour
         AudioVolumeSettings.SetSfxVolume(value);
     }
 
+    private void HandleLootMagnetToggled(bool value)
+    {
+        LootMagnetSettings.SetLootMagnetEnabled(value);
+    }
+
     private void OnDestroy()
     {
         if (_view != null)
@@ -135,6 +144,7 @@ public class SettingsMenuController : MonoBehaviour
             _view.OnMasterVolumeChanged -= HandleMasterVolumeChanged;
             _view.OnMusicVolumeChanged -= HandleMusicVolumeChanged;
             _view.OnSFXVolumeChanged -= HandleSfxVolumeChanged;
+            _view.OnLootMagnetToggled -= HandleLootMagnetToggled;
             _view.Dispose();
         }
     }

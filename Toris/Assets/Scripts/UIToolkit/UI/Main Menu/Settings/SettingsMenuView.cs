@@ -10,11 +10,13 @@ public class SettingsMenuView : GameView
     private Slider _masterVolumeSlider;
     private Slider _musicVolumeSlider;
     private Slider _sfxVolumeSlider;
+    private Toggle _lootMagnetToggle;
 
     public event Action OnCloseClicked;
     public event Action<float> OnMasterVolumeChanged;
     public event Action<float> OnMusicVolumeChanged;
     public event Action<float> OnSFXVolumeChanged;
+    public event Action<bool> OnLootMagnetToggled;
 
     public SettingsMenuView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement, uiEvents) { }
 
@@ -41,6 +43,12 @@ public class SettingsMenuView : GameView
         {
             _sfxVolumeSlider.RegisterValueChangedCallback(HandleSfxVolumeChanged);
         }
+
+        _lootMagnetToggle = Root.Q<Toggle>("Toggle_LootMagnet");
+        if (_lootMagnetToggle != null)
+        {
+            _lootMagnetToggle.RegisterValueChangedCallback(HandleLootMagnetToggled);
+        }
     }
 
     public void SetVolumeValues(float masterVolume, float musicVolume, float sfxVolume)
@@ -50,10 +58,16 @@ public class SettingsMenuView : GameView
         _sfxVolumeSlider?.SetValueWithoutNotify(sfxVolume);
     }
 
+    public void SetLootMagnetValue(bool enabled)
+    {
+        _lootMagnetToggle?.SetValueWithoutNotify(enabled);
+    }
+
     private void HandleCloseClicked() => OnCloseClicked?.Invoke();
     private void HandleMasterVolumeChanged(ChangeEvent<float> evt) => OnMasterVolumeChanged?.Invoke(evt.newValue);
     private void HandleMusicVolumeChanged(ChangeEvent<float> evt) => OnMusicVolumeChanged?.Invoke(evt.newValue);
     private void HandleSfxVolumeChanged(ChangeEvent<float> evt) => OnSFXVolumeChanged?.Invoke(evt.newValue);
+    private void HandleLootMagnetToggled(ChangeEvent<bool> evt) => OnLootMagnetToggled?.Invoke(evt.newValue);
 
     public override void Dispose()
     {
@@ -61,6 +75,7 @@ public class SettingsMenuView : GameView
         if (_masterVolumeSlider != null) _masterVolumeSlider.UnregisterValueChangedCallback(HandleMasterVolumeChanged);
         if (_musicVolumeSlider != null) _musicVolumeSlider.UnregisterValueChangedCallback(HandleMusicVolumeChanged);
         if (_sfxVolumeSlider != null) _sfxVolumeSlider.UnregisterValueChangedCallback(HandleSfxVolumeChanged);
+        if (_lootMagnetToggle != null) _lootMagnetToggle.UnregisterValueChangedCallback(HandleLootMagnetToggled);
         base.Dispose();
     }
 }

@@ -77,7 +77,17 @@ namespace OutlandHaven.SaveSystem
         {
             if (ActiveSession == null) return;
 
+            if (ActiveSession.IsAutoSaveBlockedForActiveSlot())
+            {
+#if UNITY_EDITOR
+                Debug.Log($"[SaveManager] Skipped Quick Save for deleted active slot {ActiveSession.ActiveSaveSlot}.");
+#endif
+                return;
+            }
+
+#if UNITY_EDITOR
             Debug.Log($"[SaveManager] Quick Saving to Slot {ActiveSession.ActiveSaveSlot}...");
+#endif
             SaveGame(ActiveSession.ActiveSaveSlot);
         }
 
@@ -86,7 +96,9 @@ namespace OutlandHaven.SaveSystem
         {
             if (ActiveSession == null || MasterItemDatabase == null) return;
 
+#if UNITY_EDITOR
             Debug.Log($"[SaveManager] Quick Loading from Slot {ActiveSession.ActiveSaveSlot}...");
+#endif
 
             // 1. Read the JSON data
             GameSaveData loadedData = LoadGameData(ActiveSession.ActiveSaveSlot);
@@ -99,7 +111,9 @@ namespace OutlandHaven.SaveSystem
                 // 3. Push the data into the live session
                 ActiveSession.ImportFromSaveData(loadedData, MasterItemDatabase);
 
+#if UNITY_EDITOR
                 Debug.Log($"[SaveManager] Slot {ActiveSession.ActiveSaveSlot} loaded successfully!");
+#endif
             }
         }
 
@@ -121,10 +135,6 @@ namespace OutlandHaven.SaveSystem
             string path = GetSaveFilePath(slotIndex);
 
             File.WriteAllText(path, json);
-
-#if UNITY_EDITOR
-            Debug.Log($"[SaveManager] Game Saved successfully to {path}");
-#endif
         }
 
         public void DeleteSave(SaveSlotIndex slotIndex)
@@ -134,8 +144,12 @@ namespace OutlandHaven.SaveSystem
             if (File.Exists(path))
             {
                 File.Delete(path);
+#if UNITY_EDITOR
                 Debug.Log($"[SaveManager] Deleted save file at: {path}");
+#endif
             }
+
+            ActiveSession?.BlockAutoSaveForDeletedSlot(slotIndex);
 
             // Also clean up the quicksave fallback if it exists and we're clearing slot 1
             if (slotIndex == SaveSlotIndex.Slot1)
@@ -144,7 +158,9 @@ namespace OutlandHaven.SaveSystem
                 if (File.Exists(quickSavePath))
                 {
                     File.Delete(quickSavePath);
+#if UNITY_EDITOR
                     Debug.Log($"[SaveManager] Deleted legacy quicksave fallback at: {quickSavePath}");
+#endif
                 }
             }
         }
@@ -155,7 +171,9 @@ namespace OutlandHaven.SaveSystem
 
             if (!File.Exists(path))
             {
+#if UNITY_EDITOR
                 Debug.LogWarning("[SaveManager] No save file found at " + path);
+#endif
                 return null;
             }
 
@@ -189,7 +207,9 @@ namespace OutlandHaven.SaveSystem
             }
             catch (System.Exception ex)
             {
+#if UNITY_EDITOR
                 Debug.LogWarning($"[SaveManager] Failed to peek save metadata at {path}: {ex.Message}");
+#endif
                 return null;
             }
         }

@@ -192,6 +192,7 @@ public class Wolf : Enemy
         if (CurrentHealth > 0f)
             return;
 
+        ResetRuntimeStateForDeathOrReuse();
         base.Die();
 
         if (StateMachine.CurrentEnemyState == null)
@@ -249,15 +250,41 @@ public class Wolf : Enemy
         CurrentHealth = MaxHealth;
         _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
 
+        ResetRuntimeStateForDeathOrReuse();
+
+        StateMachine.Reset();
+        StateMachine.Initialize(IdleState);
+    }
+
+    private void ResetRuntimeStateForDeathOrReuse()
+    {
         _chaseCommitmentUntilTime = 0f;
         _forcedPlayerAggroUntilTime = 0f;
         _hasLastKnownAggroTargetPosition = false;
+        IsMovingWhileBiting = false;
+        SetChasingPlayer(false);
+        ClearInvestigationTarget();
 
         AlwaysAggroed = false;
         SetAggroStatus(false);
 
-        StateMachine.Reset();
-        StateMachine.Initialize(IdleState);
+        EnemyHowlBaseInstance?.ResetValues();
+        EnemyChaseBaseInstance?.ResetValues();
+        EnemyIdleBaseInstance?.ResetValues();
+        EnemyAttackBaseInstance?.ResetValues();
+        EnemyDeadBaseInstance?.ResetValues();
+        EnemyReturnHomeBaseInstance?.ResetValues();
+
+        ResetLeaderPackRuntimeState();
+    }
+
+    private void ResetLeaderPackRuntimeState()
+    {
+        if (!CanHowl || pack == null)
+            return;
+
+        if (pack.EnsureLeader(this))
+            pack.ResetLeaderHowlCooldown(this);
     }
 
     public void BeginChaseCommitment()

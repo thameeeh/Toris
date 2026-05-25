@@ -1,6 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/MasterLayout.uss?fileID=7433441132597879392&amp;guid=9efe459a24680564aa44896c761c1154&amp;type=3#MasterLayout"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Tutorial/TutorialOverlay.uss?fileID=7433441132597879392&amp;guid=6ddc8c6a71a44ce48d7788d861a21518&amp;type=3#TutorialOverlay"/>
     <ui:VisualElement name="Master-Root" class="master-root">
         <ui:VisualElement name="Layer_Windows" class="layer-windows">
             <ui:VisualElement name="Left_Zone" class="left-zone"/>

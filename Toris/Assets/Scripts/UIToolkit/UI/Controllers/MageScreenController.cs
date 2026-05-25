@@ -31,6 +31,7 @@ namespace OutlandHaven.UIToolkit
             if (_uiEvents != null)
             {
                 _uiEvents.OnRequestOpen += HandleRequestOpen;
+                _uiEvents.OnScreenOpen += HandleScreenOpen;
             }
 
             if (_mageMainTemplate == null)
@@ -50,6 +51,7 @@ namespace OutlandHaven.UIToolkit
             if (_uiEvents != null)
             {
                 _uiEvents.OnRequestOpen -= HandleRequestOpen;
+                _uiEvents.OnScreenOpen -= HandleScreenOpen;
             }
         }
 
@@ -77,6 +79,22 @@ namespace OutlandHaven.UIToolkit
             {
                 _view.Setup(shopInventory);
             }
+        }
+
+        private void HandleScreenOpen(ScreenType screenType)
+        {
+            if (screenType != ScreenType.Mage)
+                return;
+
+            EnsureInventoryVisible();
+        }
+
+        private void EnsureInventoryVisible()
+        {
+            if (_uiManager == null || _uiEvents == null || _uiManager.IsWindowOpen(ScreenType.Inventory))
+                return;
+
+            _uiEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
         }
 
         private void Start()

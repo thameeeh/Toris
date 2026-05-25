@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using OutlandHaven.Inventory;
 using OutlandHaven.Skills;
-using UnityEngine.InputSystem;
+using OutlandHaven.Tutorial;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,13 +13,14 @@ namespace OutlandHaven.UIToolkit
         [SerializeField] private UIEventsSO _UIEvents;
         [SerializeField] private UIInventoryEventsSO _UIInventoryEvents;
         [SerializeField] private UISkillEventsSO _UISkillEvents;
-        [SerializeField] private bool showHudOnStart = true;
         private const string DefaultInventoryEventsResourcePath = "GameData/SOForEvents/UI Inventory Events SO";
         private const string DefaultSkillEventsResourcePath = "GameData/SOForEvents/UI Skill Events SO";
 
         private List<GameView> _allViews = new List<GameView>();
         private Dictionary<GameView, ScreenZone> _viewZones = new Dictionary<GameView, ScreenZone>();
         private ItemTooltipView _itemTooltipView;
+        // UIManager only provides the shared UI root/event bus; tutorial behavior stays in Scripts/Tutorial.
+        private TutorialRuntimeController _tutorialRuntime;
         private bool _tooltipEventsBound;
         private bool _inventoryDragActive;
 
@@ -39,6 +40,7 @@ namespace OutlandHaven.UIToolkit
             _rightZone = root.Q<VisualElement>("Right_Zone");
             _fullScreen_Zone = root.Q<VisualElement>("FullScreen_Zone");
             _itemTooltipView = new ItemTooltipView(root);
+            _tutorialRuntime = new TutorialRuntimeController(root, _UIEvents, GameSessionSO.LoadDefault(), TutorialCatalogSO.LoadDefault());
 
             if (_hudZone == null || _leftZone == null || _rightZone == null || _fullScreen_Zone == null)
             {
@@ -54,6 +56,7 @@ namespace OutlandHaven.UIToolkit
             ResolveInventoryEvents();
             ResolveSkillEvents();
             BindTooltipEvents();
+            _tutorialRuntime?.Bind();
         }
 
         private void OnDisable()
@@ -62,6 +65,7 @@ namespace OutlandHaven.UIToolkit
             _UIEvents.OnRequestClose -= CloseWindow;
             _UIEvents.OnRequestCloseAll -= CloseAllWindows;
             UnbindTooltipEvents();
+            _tutorialRuntime?.Unbind();
         }
 
         private void OnValidate()
@@ -128,16 +132,6 @@ namespace OutlandHaven.UIToolkit
             }
 
             view.Setup(payload);
-
-            if(view.ID == ScreenType.Smith || view.ID == ScreenType.Mage) // opens inventory together with smith or mage
-            {
-                GameView inventory = _allViews.Find(v => v.ID == ScreenType.Inventory);
-                if (inventory != null)
-                {
-                    inventory.Setup(null);
-                    inventory.Show();
-                }
-            }
             view.Show();
             view.Root.BringToFront();
         }
@@ -173,6 +167,12 @@ namespace OutlandHaven.UIToolkit
                 if (view.ID != ScreenType.HUD && !view.IsHidden) return true;
             }
             return false;
+        }
+
+        public bool IsWindowOpen(ScreenType type)
+        {
+            GameView view = _allViews.Find(v => v.ID == type);
+            return view != null && !view.IsHidden;
         }
 
         private void ResolveInventoryEvents()

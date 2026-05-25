@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using OutlandHaven.SaveSystem;
 using UnityEngine;
 using OutlandHaven.Inventory;
@@ -50,17 +51,23 @@ namespace OutlandHaven.UIToolkit
         public GameplayStatisticsSO GameplayStatistics;
 
         [Header("Save State")]
-        [SerializeField] private int CurrentSaveSlotIndex;
+        [System.NonSerialized] private SaveSlotIndex _activeSaveSlot = SaveSlotIndex.Slot1;
+        [System.NonSerialized] private SaveSlotIndex? _autoSaveBlockedSlot;
         public SaveSlotIndex ActiveSaveSlot
         {
-            get => (SaveSlotIndex)CurrentSaveSlotIndex;
-            set => CurrentSaveSlotIndex = (int)value;
+            get => _activeSaveSlot;
+            set => _activeSaveSlot = value;
         }
         [SerializeField] private string targetSpawnPointID;
 
         [Header("Skill System")]
         [SerializeField] private PlayerSkillTracker _playerSkills = new PlayerSkillTracker();
         public PlayerSkillTracker PlayerSkills => _playerSkills;
+
+        [Header("Tutorial")]
+        [SerializeField] private bool _tutorialsEnabled = true;
+        private readonly HashSet<string> _completedTutorialStepIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        public bool TutorialsEnabled => _tutorialsEnabled;
 
         // Specialized internal services
         private RuntimeSnapshotRegistry _snapshotRegistry = new RuntimeSnapshotRegistry();
@@ -73,8 +80,89 @@ namespace OutlandHaven.UIToolkit
             PlayerEquipment = null;
             PlayerPotionInventory = null;
             PlayerHUD = null;
+            targetSpawnPointID = string.Empty;
             _snapshotRegistry.Clear();
             _playerSkills.Reset();
+            StartNewTutorialState(tutorialsEnabled: true);
+        }
+
+        public void PrepareNewGame(bool tutorialsEnabled)
+        {
+            ClearRuntimeSnapshots();
+            StartNewTutorialState(tutorialsEnabled);
+            global::PixelCrushersDialogueSaveBridge.RequestResetForNewGame();
+        }
+
+        public void StartNewTutorialState(bool tutorialsEnabled)
+        {
+            _tutorialsEnabled = tutorialsEnabled;
+            _completedTutorialStepIds.Clear();
+        }
+
+        public bool IsAutoSaveBlockedForActiveSlot()
+        {
+            return _autoSaveBlockedSlot.HasValue && _autoSaveBlockedSlot.Value == ActiveSaveSlot;
+        }
+
+        public void BlockAutoSaveForDeletedSlot(SaveSlotIndex slotIndex)
+        {
+            if (slotIndex == ActiveSaveSlot)
+                _autoSaveBlockedSlot = slotIndex;
+        }
+
+        public void AllowAutoSaveForSlot(SaveSlotIndex slotIndex)
+        {
+            if (_autoSaveBlockedSlot.HasValue && _autoSaveBlockedSlot.Value == slotIndex)
+                _autoSaveBlockedSlot = null;
+        }
+
+        public bool IsTutorialStepCompleted(string stepId)
+        {
+            return !string.IsNullOrWhiteSpace(stepId)
+                && _completedTutorialStepIds.Contains(stepId);
+        }
+
+        public void MarkTutorialStepCompleted(string stepId)
+        {
+            if (!string.IsNullOrWhiteSpace(stepId))
+            {
+                _completedTutorialStepIds.Add(stepId.Trim());
+            }
+        }
+
+        public SavedTutorialProgressData ExportTutorialProgress()
+        {
+            // Persistence bridge only: keep tutorial flow/trigger logic in Scripts/Tutorial.
+            return new SavedTutorialProgressData
+            {
+                TutorialsEnabled = _tutorialsEnabled,
+                CompletedStepIds = new List<string>(_completedTutorialStepIds)
+            };
+        }
+
+        private void ImportTutorialProgress(SavedTutorialProgressData data)
+        {
+            _completedTutorialStepIds.Clear();
+
+            if (data == null)
+            {
+                _tutorialsEnabled = true;
+                return;
+            }
+
+            _tutorialsEnabled = data.TutorialsEnabled;
+
+            if (data.CompletedStepIds == null)
+                return;
+
+            for (int i = 0; i < data.CompletedStepIds.Count; i++)
+            {
+                string stepId = data.CompletedStepIds[i];
+                if (!string.IsNullOrWhiteSpace(stepId))
+                {
+                    _completedTutorialStepIds.Add(stepId.Trim());
+                }
+            }
         }
 
         #region Facade: Snapshot Delegation
@@ -108,7 +196,7 @@ namespace OutlandHaven.UIToolkit
         #region Facade: Persistence Delegation
         public GameSaveData ExportToSaveData()
         {
-            return SaveDataOrchestrator.Export(
+            GameSaveData saveData = SaveDataOrchestrator.Export(
                 targetSpawnPointID,
                 ProgressionAnchor,
                 StatsAnchor,
@@ -119,10 +207,16 @@ namespace OutlandHaven.UIToolkit
                 _snapshotRegistry,
                 GameplayStatistics
             );
+
+            saveData.TutorialProgress = ExportTutorialProgress();
+            return saveData;
         }
 
         public void ImportFromSaveData(GameSaveData saveData, ItemDatabaseSO itemDatabase)
         {
+            if (saveData == null)
+                return;
+
             SaveDataOrchestrator.Import(
                 saveData,
                 itemDatabase,
@@ -136,6 +230,8 @@ namespace OutlandHaven.UIToolkit
                 _snapshotRegistry,
                 GameplayStatistics
             );
+
+            ImportTutorialProgress(saveData.TutorialProgress);
         }
         #endregion
     }

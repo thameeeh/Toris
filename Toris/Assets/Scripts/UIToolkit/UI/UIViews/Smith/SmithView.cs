@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using OutlandHaven.Inventory;
+using OutlandHaven.Tutorial;
 
 namespace OutlandHaven.UIToolkit
 {
@@ -27,6 +28,9 @@ namespace OutlandHaven.UIToolkit
         private VisualElement _salvageTab;
 
         private const string ActiveTabClass = "panel-tab--active";
+        private const string ForgeTabTutorialAnchorId = "smith.forge_tab";
+        private const string MarketTabTutorialAnchorId = "smith.market_tab";
+        private const string SalvageTabTutorialAnchorId = "smith.salvage_tab";
 
         // SubViews
         private ShopSubView _shopSubView;
@@ -68,6 +72,10 @@ namespace OutlandHaven.UIToolkit
             _marketTab = m_TopElement.Q<VisualElement>("Smith_Market--Tab");
             _forgeTab = m_TopElement.Q<VisualElement>("Smith_Forge--Tab");
             _salvageTab = m_TopElement.Q<VisualElement>("Smith_Salvage--Tab");
+
+            TutorialAnchorRegistry.Register(ForgeTabTutorialAnchorId, _forgeTab);
+            TutorialAnchorRegistry.Register(MarketTabTutorialAnchorId, _marketTab);
+            TutorialAnchorRegistry.Register(SalvageTabTutorialAnchorId, _salvageTab);
 
             // Setup Tab Button Callbacks
             if (_marketTab != null) _marketTab.RegisterCallback<ClickEvent>(evt => ShowMarketTab());
@@ -189,6 +197,10 @@ namespace OutlandHaven.UIToolkit
 
         public override void Dispose()
         {
+            TutorialAnchorRegistry.Unregister(ForgeTabTutorialAnchorId, _forgeTab);
+            TutorialAnchorRegistry.Unregister(MarketTabTutorialAnchorId, _marketTab);
+            TutorialAnchorRegistry.Unregister(SalvageTabTutorialAnchorId, _salvageTab);
+
             base.Dispose();
             _shopSubView?.Dispose();
             _forgeSubView?.Dispose();

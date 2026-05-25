@@ -79,7 +79,8 @@ namespace OutlandHaven.UIToolkit
             }
 
             // Verify if player wants material but the recipe has no material yield
-            if (salvageType == SalvageType.Material && recipe.MaterialYields.Count == 0)
+            if (salvageType == SalvageType.Material
+                && (recipe.MaterialYields == null || recipe.MaterialYields.Count == 0))
             {
 #if UNITY_EDITOR
                 Debug.LogWarning("Salvage failed: Recipe yields no material.");
@@ -87,14 +88,26 @@ namespace OutlandHaven.UIToolkit
                 return;
             }
 
-            bool removed = SessionData.PlayerInventory.RemoveItem(new ItemInstance(itemType), 1);
-            if (!removed)
+            if (!IsPlayerInventorySlot(slot))
             {
 #if UNITY_EDITOR
-                Debug.LogWarning("Salvage failed: Could not remove item from inventory.");
+                Debug.LogWarning("Salvage failed: selected slot does not belong to the player inventory.");
 #endif
                 return;
             }
+
+            // Keep salvage transactional: material rewards must fit after the selected
+            // item is consumed, otherwise the source item is left untouched.
+            if (salvageType == SalvageType.Material
+                && !InventoryCapacityPreview.CanAddRewardsAfterConsumingSlot(SessionData.PlayerInventory, slot, recipe.MaterialYields))
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning("Salvage failed: not enough inventory space for material rewards.");
+#endif
+                return;
+            }
+
+            slot.DecreaseCount(1);
 
             if (salvageType == SalvageType.Gold)
             {
@@ -139,6 +152,16 @@ namespace OutlandHaven.UIToolkit
             SfxPlayRequest request = SfxPlayRequest.Default;
             request.force2D = true;
             AudioBootstrap.Sfx.Play(salvageSuccessSfxId, request);
+        }
+
+        private bool IsPlayerInventorySlot(InventorySlot slot)
+        {
+            // UI sends a slot as an intent; this manager verifies it belongs to the
+            // authoritative player inventory before mutating any item data.
+            if (slot == null || SessionData?.PlayerInventory?.LiveSlots == null)
+                return false;
+
+            return SessionData.PlayerInventory.LiveSlots.Contains(slot);
         }
     }
 }

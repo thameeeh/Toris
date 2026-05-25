@@ -15,7 +15,6 @@ MonoBehaviour:
   ProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
   StatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
   GameplayStatistics: {fileID: 11400000, guid: ef87d7c11a388f04388e74cdb8557bf7, type: 2}
-  CurrentSaveSlotIndex: 1
   targetSpawnPointID: 
   _playerSkills:
     _availableSP: 10

@@ -13,6 +13,12 @@ public class WolfDeadSO : DeadSOBase<Wolf>
     {
         base.DoEnterLogic();
 
+        // Death owns the animator handoff so queued attack/howl transitions cannot outlive the wolf.
+        enemy.MoveEnemy(Vector2.zero);
+        enemy.animator.SetBool("IsMoving", false);
+        enemy.animator.ResetTrigger("Attack");
+        enemy.animator.ResetTrigger("Howl");
+        enemy.animator.ResetTrigger("Dead");
         enemy.animator.SetTrigger("Dead");
     }
 

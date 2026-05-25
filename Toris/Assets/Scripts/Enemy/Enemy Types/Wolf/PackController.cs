@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PackController : MonoBehaviour
 {
+    private const float ReadyHowlTimestamp = -999f;
+
     [Header("Pack Settings")]
     public Wolf leaderWolf;
     public Wolf minionWolfPrefab;
@@ -13,7 +15,7 @@ public class PackController : MonoBehaviour
 
     [Header("Runtime")]
     public List<Wolf> activeMinions = new List<Wolf>();
-    private float _lastHowlTimestamp = -999f;
+    private float _lastHowlTimestamp = ReadyHowlTimestamp;
 
     public System.Action<Wolf> MinionSpawned;
 
@@ -57,6 +59,15 @@ public class PackController : MonoBehaviour
 
         _lastHowlTimestamp = Time.time;
         return true;
+    }
+
+    public void ResetLeaderHowlCooldown(Wolf requester = null)
+    {
+        if (ResolveLeader(requester) == null)
+            return;
+
+        _lastHowlTimestamp = ReadyHowlTimestamp;
+        activeMinions.RemoveAll(m => !IsWolfAliveAndActive(m));
     }
 
     public void HandleLeaderHowl(Wolf howlingWolf = null)

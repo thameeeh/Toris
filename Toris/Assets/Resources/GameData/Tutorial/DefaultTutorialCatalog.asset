@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3d4e4f1c204a4da7c410a883f5f40b, type: 3}
+  m_Name: DefaultTutorialCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Tutorial.TutorialCatalogSO
+  steps:
+  - stepId: smith.forge_tab.intro
+    trigger: 1
+    requiredScreen: 3
+    anchorId: smith.forge_tab
+    title: Forge
+    body: Use the Forge tab to combine recipe ingredients into crafted equipment and consumables.
+    placement: 4
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 0
+    sequenceId: smith.first_open
+    sequenceIndex: 0
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: smith.market_tab.intro
+    trigger: 1
+    requiredScreen: 3
+    anchorId: smith.market_tab
+    title: Market
+    body: Use the Market tab to buy from the smith or sell items you do not need.
+    placement: 4
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 0
+    sequenceId: smith.first_open
+    sequenceIndex: 1
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: smith.salvage_tab.intro
+    trigger: 1
+    requiredScreen: 3
+    anchorId: smith.salvage_tab
+    title: Salvage
+    body: Use the Salvage tab to break items down into materials for future crafting.
+    placement: 4
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 0
+    sequenceId: smith.first_open
+    sequenceIndex: 2
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []

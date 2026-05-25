@@ -16,7 +16,7 @@ This is the real opening of the game, not a placeholder tutorial pass. The tutor
 - New saves always play the story intro, even when tutorial tips are disabled.
 - Story intro pages should be player-paced with a `Continue` / press-to-forward control.
 - The prologue should most likely be a separate scene that transitions into `MainArea` / Safe Haven when complete.
-- The first real enemy is likely a Viking character, but the Necromancer can stand in while the flow is being built and tested.
+- The current first gameplay enemy is a prologue minion wolf variant. A story-specific enemy can replace it later if the intro needs a stronger narrative hook.
 - Failed-shot teaching should happen after the player naturally releases too early for the first time.
 - Overdraw / over-hold teaching should happen after the player naturally holds too long for the first time.
 - For now, the player walks up to the Guide and interacts manually after reaching Safe Haven.
@@ -33,13 +33,18 @@ Completed:
 - Opening story cards now play at Prologue start through `PrologueStorySequenceController`.
 - Arrival story cards can play from `PrologueExitTrigger` before the Safe Haven scene load.
 - Story cards lock gameplay input until the player advances through them.
+- `PrologueTutorialFlowController` starts the first optional gameplay tutorial beat after the opening story cards.
+- The first beat shows a `WASD Move` prompt above the player and completes when movement input is detected.
+- Tutorial capability locks now let the Prologue block unrelated inputs without taking over the whole input manager.
+- The Prologue minion wolf variant can start dormant and wake only when `PrologueWolfEncounterTrigger` is entered.
+- The wolf encounter trigger starts the optional `Hold LMB to shoot` prompt and keeps unrelated inputs gated during the fight.
 
 Still open:
 
 - Assign final background images, music, and SFX for the story cards.
 - Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
-- Add movement, bow draw, dry release, ready shot, shot fired, and overdraw tutorial signals.
-- Author optional gameplay tutorial steps on top of those signals.
+- Add dry release, ready shot, shot fired, and overdraw tutorial signals.
+- Author optional pickup, inventory, equipment, stats, and potion tutorial steps on top of those signals.
 
 ## Fresh Save Flow
 
@@ -135,6 +140,59 @@ The enemy can have:
 ## Shooting Tutorial Behavior
 
 The bow lesson must account for the actual mechanic: holding matters, releasing too early fails, and a ready shot fires.
+
+## Playable Prologue Tutorial Flow
+
+The playable tutorial should gate capabilities gently instead of locking the entire game. The player should always feel like they are playing, but only the systems needed for the current beat should be available. This prevents early menu spam, potion hotkeys, combat inputs, or unrelated panels from pulling the player away before those systems are introduced.
+
+### Capability Gating Rule
+
+- Enable only the next needed capability.
+- Restore normal capability access as each lesson completes.
+- Avoid one broad global lock for the whole prologue.
+- Keep the gating centralized in a prologue/tutorial flow controller, not scattered through inventory, combat, pickup, or UI scripts.
+
+Recommended capabilities:
+
+| Capability | Starts As | Unlock Beat |
+| --- | --- | --- |
+| Movement | Enabled after opening story cards | Spawn / movement prompt |
+| Bow attack | Disabled | Wolf reveal / shooting lesson |
+| Pickup | Disabled unless needed by world defaults | Wolf death / loot lesson |
+| Inventory open | Disabled | Pickup or inventory lesson |
+| Equipment changes | Disabled or unguided until inventory lesson | Training bow lesson |
+| Stats panel | Hidden/unguided until equipment lesson | After equipping tutorial bow |
+| Potion slots / potion hotkeys | Disabled or unguided until potion lesson | Potion slot lesson |
+| Unrelated menus | Disabled during prologue lessons | After inventory lesson completes or on Safe Haven entry |
+
+### Beat-By-Beat Flow
+
+| Beat | Player Experience | Tutorial Behavior | Capability State |
+| --- | --- | --- | --- |
+| Spawn | Player appears after the opening cards. | Fade in a small world-space prompt above the player: `WASD Move`. Fade it out once movement input is detected. | Movement enabled; combat, inventory, potion hotkeys, and unrelated menus gated. |
+| Explore Path | Player can move around and settle into controls. | No heavy overlay. Let the player walk naturally toward the authored wolf area. | Movement remains enabled. |
+| Wolf Reveal | Wolf becomes visible or the player enters the encounter area. | Show `Hold LMB to shoot`. | Bow attack enabled; inventory and unrelated menus still gated. |
+| First Underdraw | Player releases too early for the first time. | Pause briefly and show tip: underdrawing fails the shot because the bow was not ready. Then resume. | Combat remains enabled. |
+| First Overdraw | Player holds too long for the first time. | Pause briefly and show tip: overdraw makes the shot unstable and may reduce accuracy. Then resume. | Combat remains enabled. |
+| Wolf Death | Wolf dies and drops fixed tutorial loot. | Teach pickup with `E Pick Up`. | Pickup enabled. |
+| Inventory Open | Player picks up the loot. | Prompt the inventory button and show the `I` shortcut. Open or guide the player into the inventory screen. | Inventory enabled; unrelated menus still gated if possible. |
+| Equip Training Bow | Wolf drop includes a predetermined `Training Bow` or similar barebones bow. | Guide the player to equip it. | Equipment changes enabled for the tutorial item. |
+| Stats Button | After equipping, point to the inventory stats button. | Explain that gear changes visible stats and builds can improve over time. | Stats panel introduced. |
+| Potion Slots | Wolf also drops a simple potion. | Explain potion slots and equipping/using potions. | Potion slots and potion hotkeys introduced. |
+| Path Unblocked | Inventory lesson completes. | Remove or disable the authored invisible blocker behind the wolf. | Restore normal prologue capabilities. |
+| Safe Haven Approach | Player continues along the path. | No more mechanical teaching unless something unexpected needs a small reminder. | Normal prologue play. |
+| Arrival Cards | Player reaches the exit trigger. | Arrival story cards play, then transition into Safe Haven. | Story overlay owns input until the transition starts. |
+
+### Tutorial Loot
+
+The wolf should use predetermined tutorial loot instead of normal random loot. Suggested starting drops:
+
+| Drop | Purpose |
+| --- | --- |
+| Training Bow | Teaches pickup, inventory, equipment, and visible stat changes. |
+| Minor Healing Potion or Minor Stamina Potion | Teaches potion slots and consumable preparation. |
+
+The tutorial loot should be low value and clearly introductory. Its job is to teach interaction flow, not to become a long-term reward.
 
 ### Tutorial-On Flow
 

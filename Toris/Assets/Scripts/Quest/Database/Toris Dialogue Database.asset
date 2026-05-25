@@ -4874,8 +4874,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 175.699
-        y: 72.91263
+        x: 176.76285
+        y: 76.104126
         width: 160
         height: 30
     - id: 3
@@ -4920,12 +4920,6 @@ MonoBehaviour:
         originDialogueID: 3
         destinationConversationID: 16
         destinationDialogueID: 9
-        isConnector: 0
-        priority: 2
-      - originConversationID: 16
-        originDialogueID: 3
-        destinationConversationID: 16
-        destinationDialogueID: 10
         isConnector: 0
         priority: 2
       conditionsString: 
@@ -5033,8 +5027,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 417.09546
-        y: 57.23404
+        x: 535.18054
+        y: 49.787262
         width: 160
         height: 30
     - id: 9
@@ -5081,7 +5075,9 @@ MonoBehaviour:
       userScript: 'SetQuestState("Kill3Wolves", "active");
 
         SetQuestEntryState("Kill3Wolves",
-        1, "active");'
+        1, "active");
+
+        SetQuestState("Smith_Check_Forge", "active");'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -5089,57 +5085,6 @@ MonoBehaviour:
         serializedVersion: 2
         x: 361.51807
         y: 198.53748
-        width: 160
-        height: 30
-    - id: 10
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 16
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks: []
-      conditionsString: TorisHasItem("Buckle", 5)
-      userScript: 'TorisGiveItem("Dull_Arrowhead", 1);
-
-        TorisGiveGold(50);'
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 559.3904
-        y: 186.83536
         width: 160
         height: 30
     entryGroups: []

@@ -5,5 +5,6 @@ namespace OutlandHaven.SaveSystem
     {
         public int TotalKills;
         public int WolfKills;
+        public float PlayTime;
     }
 }

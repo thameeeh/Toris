@@ -18,6 +18,7 @@
     border-radius: 8px;
     align-items: center;
     width: 400px;
+    position: relative; /* Anchor point for absolute children */
 }
 
 .pause-title {
@@ -47,6 +48,12 @@
     scale: 1.02;
 }
 
+.pause-btn--adventure-log:hover {
+    background-color: rgba(220, 179, 92, 0.15);
+    border-color: rgba(220, 179, 92, 0.3);
+    scale: 1.02;
+}
+
 .pause-btn--settings:hover {
     background-color: rgba(243, 156, 18, 0.15);
     border-color: rgba(241, 196, 15, 0.3);
@@ -57,4 +64,51 @@
     background-color: rgba(41, 128, 185, 0.15);
     border-color: rgba(52, 152, 219, 0.3);
     scale: 1.02;
+}
+
+/* --- Statistics Panel Styles --- */
+.stats-subpanel {
+    background-color: var(--color-bg-dark);
+    padding: 40px;
+    border-width: 2px;
+    border-color: var(--color-border-default);
+    border-radius: 8px;
+    width: 320px;
+    display: none; /* Controlled dynamically by view toggles */
+    position: absolute;
+    left: 420px; /* Offset exactly outside the 400px width of the parent container */
+    top: 0;
+    bottom: 0;
+}
+
+.stats-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 40px;
+    color: #ffffff; /* Crisp white */
+    margin-bottom: 25px;
+    -unity-font-style: bold;
+    text-align: center;
+}
+
+.stats-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-width: 1px;
+    border-color: rgba(255, 255, 255, 0.05);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.stats-label {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 28px;
+    color: #cccccc; /* High contrast light grey */
+}
+
+.stats-value {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    font-size: 28px;
+    color: #dcb35c; /* Beautiful gold highlight to match the brand styling */
+    -unity-font-style: bold;
 }

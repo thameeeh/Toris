@@ -16,6 +16,7 @@ namespace OutlandHaven.UIToolkit
         private PauseMenuView _view;
         private UIManager _uiManager;
         private bool _isPaused = false;
+        private bool _isStatsPanelOpen = false;
 
         private void Awake()
         {
@@ -49,6 +50,7 @@ namespace OutlandHaven.UIToolkit
             _view.Initialize();
 
             _view.OnResumeClicked += Resume;
+            _view.OnAdventureLogClicked += ToggleAdventureLog;
             _view.OnSettingsClicked += OpenSettings;
             _view.OnMainMenuClicked += QuitToMainMenu;
 
@@ -61,6 +63,11 @@ namespace OutlandHaven.UIToolkit
             {
                 _isPaused = true;
                 Time.timeScale = 0f;
+                _isStatsPanelOpen = false;
+                if (_view != null)
+                {
+                    _view.SetStatsPanelActive(false);
+                }
             }
         }
 
@@ -70,6 +77,11 @@ namespace OutlandHaven.UIToolkit
             {
                 _isPaused = false;
                 Time.timeScale = 1f;
+                _isStatsPanelOpen = false;
+                if (_view != null)
+                {
+                    _view.SetStatsPanelActive(false);
+                }
             }
         }
 
@@ -81,6 +93,40 @@ namespace OutlandHaven.UIToolkit
         private void OpenSettings()
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.SettingsModal, null);
+        }
+
+        private void ToggleAdventureLog()
+        {
+            _isStatsPanelOpen = !_isStatsPanelOpen;
+            _view.SetStatsPanelActive(_isStatsPanelOpen);
+
+            if (_isStatsPanelOpen)
+            {
+                UpdateStatsDisplay();
+            }
+        }
+
+        private void UpdateStatsDisplay()
+        {
+            var session = GameSessionSO.LoadDefault();
+            int totalKills = 0;
+            int wolfKills = 0;
+            float playtimeSeconds = 0f;
+
+            if (session != null && session.GameplayStatistics != null)
+            {
+                totalKills = session.GameplayStatistics.TotalKills;
+                wolfKills = session.GameplayStatistics.WolfKills;
+                playtimeSeconds = session.GameplayStatistics.PlayTime;
+            }
+
+            int totalSeconds = Mathf.RoundToInt(playtimeSeconds);
+            int hours = totalSeconds / 3600;
+            int minutes = (totalSeconds % 3600) / 60;
+            int seconds = totalSeconds % 60;
+            string playtimeString = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+
+            _view.PopulateStats(totalKills, wolfKills, playtimeString);
         }
 
         private void QuitToMainMenu()
@@ -114,6 +160,7 @@ namespace OutlandHaven.UIToolkit
             if (_view != null)
             {
                 _view.OnResumeClicked -= Resume;
+                _view.OnAdventureLogClicked -= ToggleAdventureLog;
                 _view.OnSettingsClicked -= OpenSettings;
                 _view.OnMainMenuClicked -= QuitToMainMenu;
                 _view.Dispose();

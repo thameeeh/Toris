@@ -22,6 +22,10 @@ public class GameplayStatisticsSO : ScriptableObject
     [Tooltip("Total number of wolves killed specifically.")]
     public int WolfKills;
 
+    [Header("Lifetime Time Stats")]
+    [Tooltip("Total playtime accumulated in seconds across all sessions.")]
+    public float PlayTime;
+
     private void OnEnable()
     {
         PixelCrushersQuestFactReporter.FactReported += OnFactReported;
@@ -62,7 +66,8 @@ public class GameplayStatisticsSO : ScriptableObject
         return new SavedGameplayStatisticsData
         {
             TotalKills = TotalKills,
-            WolfKills = WolfKills
+            WolfKills = WolfKills,
+            PlayTime = PlayTime
         };
     }
 
@@ -79,6 +84,7 @@ public class GameplayStatisticsSO : ScriptableObject
 
         TotalKills = data.TotalKills;
         WolfKills = data.WolfKills;
+        PlayTime = data.PlayTime;
     }
 
     /// <summary>
@@ -88,6 +94,7 @@ public class GameplayStatisticsSO : ScriptableObject
     {
         TotalKills = 0;
         WolfKills = 0;
+        PlayTime = 0f;
     }
 
     /// <summary>

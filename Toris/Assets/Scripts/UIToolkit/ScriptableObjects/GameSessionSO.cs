@@ -48,6 +48,7 @@ namespace OutlandHaven.UIToolkit
         [Header("Global Anchors")]
         public PlayerProgressionAnchorSO ProgressionAnchor;
         public PlayerStatsAnchorSO StatsAnchor;
+        public GameplayStatisticsSO GameplayStatistics;
 
         [Header("Save State")]
         [System.NonSerialized] private SaveSlotIndex _activeSaveSlot = SaveSlotIndex.Slot1;
@@ -203,7 +204,8 @@ namespace OutlandHaven.UIToolkit
                 PlayerEquipment,
                 PlayerPotionInventory,
                 _playerSkills,
-                _snapshotRegistry
+                _snapshotRegistry,
+                GameplayStatistics
             );
 
             saveData.TutorialProgress = ExportTutorialProgress();
@@ -225,7 +227,8 @@ namespace OutlandHaven.UIToolkit
                 PlayerEquipment,
                 PlayerPotionInventory,
                 _playerSkills,
-                _snapshotRegistry
+                _snapshotRegistry,
+                GameplayStatistics
             );
 
             ImportTutorialProgress(saveData.TutorialProgress);

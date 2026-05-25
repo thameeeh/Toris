@@ -7,8 +7,24 @@
             <ui:Label text="PAUSED" class="pause-title"/>
             <ui:VisualElement class="pause-button-group">
                 <ui:Button name="Btn_Resume" text="Resume" class="standard-button pause-btn pause-btn--resume"/>
+                <ui:Button name="Btn_AdventureLog" text="Adventure Log" class="standard-button pause-btn pause-btn--adventure-log"/>
                 <ui:Button name="Btn_Settings" text="Settings" class="standard-button pause-btn pause-btn--settings"/>
                 <ui:Button name="Btn_MainMenu" text="Main Menu" class="standard-button pause-btn pause-btn--main-menu"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="StatsSubPanel" class="stats-subpanel">
+                <ui:Label text="ADVENTURE LOG" class="stats-title"/>
+                <ui:VisualElement class="stats-row">
+                    <ui:Label text="Play Time:" class="stats-label"/>
+                    <ui:Label name="Lbl_PlayTime" text="00:00:00" class="stats-value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stats-row">
+                    <ui:Label text="Total Defeated:" class="stats-label"/>
+                    <ui:Label name="Lbl_TotalKills" text="0" class="stats-value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stats-row">
+                    <ui:Label text="Wolves Defeated:" class="stats-label"/>
+                    <ui:Label name="Lbl_WolfKills" text="0" class="stats-value"/>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

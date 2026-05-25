@@ -50,6 +50,17 @@ namespace OutlandHaven.SaveSystem
             }
         }
 
+        private void Update()
+        {
+            if (ActiveSession != null && ActiveSession.GameplayStatistics != null)
+            {
+                if (Time.timeScale > 0f)
+                {
+                    ActiveSession.GameplayStatistics.PlayTime += Time.deltaTime;
+                }
+            }
+        }
+
         private void OnDisable()
         {
             if (_uiEvents != null)

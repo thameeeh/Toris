@@ -205,6 +205,97 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e8de996cd78f2448396fcf8f08385b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GateProximity
+--- !u!1 &3448785684648917244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5571453641531527564}
+  - component: {fileID: 4142851511113147956}
+  m_Layer: 14
+  m_Name: Stone_Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5571453641531527564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448785684648917244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3710912610797503525}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &4142851511113147956
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448785684648917244}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 1922429911, guid: 94cfe50d79cb1984e8e2ca6260a63456, type: 3}
+  m_Color: {r: 0.6698113, g: 0.6111513, b: 0.55291027, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
 --- !u!1 &7397065028336915349
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +328,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2957066882983164877}
+  - {fileID: 5571453641531527564}
   - {fileID: 1714048445971611391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -256,6 +348,19 @@ MonoBehaviour:
   sceneB: ProceduralTiles
   runGateTransitionServiceOverride: {fileID: 0}
   runStartCheckpointService: {fileID: 2879436223655114753}
+  _useLockSystem: 1
+  _portalUnlockedLuaVariable: isPortalUnlocked
+  _requiredKeyItemName: Simple_Key
+  _activePortalVisuals: {fileID: 377169546643692498}
+  _stoneVisuals: {fileID: 3448785684648917244}
+  _gateCollision: {fileID: 2528885273765939362}
+  _unlockSfxId: world_portal_unlock
+  teleportLeaveSfxId: world_teleport_leave
+  teleportLoopSfxId: world_teleport_loop
+  sfxLocalOffset: {x: 0, y: 0, z: 0}
+  sfxVolumeMultiplier: 1
+  loopFadeInSeconds: 0.08
+  loopFadeOutSeconds: 0.05
 --- !u!114 &2879436223655114753
 MonoBehaviour:
   m_ObjectHideFlags: 0

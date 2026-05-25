@@ -48,7 +48,7 @@ public class PixelCrushersQuestAbandonDefinition
 
     [Header("Pixel Crushers Quest")]
     [Tooltip("Pixel Crushers quest name that can be abandoned.")]
-    public string QuestName = string.Empty;
+    [QuestPopup] public string QuestName = string.Empty;
     [Tooltip("When disabled, this quest is protected even if it appears in this abandon set.")]
     public bool CanAbandon = true;
 

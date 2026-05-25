@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toris Inventory & Dialogue Integration Guide</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0d0f12;
+            --bg-surface: #13171d;
+            --bg-sidebar: #090b0d;
+            --bg-code: #161b22;
+            
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: #dcb35c;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            
+            --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', "Consolas", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        aside {
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
+        .logo-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--border-highlight);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        nav {
+            flex-grow: 1;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav li {
+            margin-bottom: 8px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: block;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        nav a.active {
+            color: var(--border-highlight);
+            background-color: rgba(220, 179, 92, 0.08);
+            border-left: 3px solid var(--border-highlight);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            font-weight: 600;
+        }
+
+        /* Main Content Container */
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 80px 60px;
+            max-width: 1100px;
+        }
+
+        header {
+            margin-bottom: 60px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background-color: var(--border-highlight);
+        }
+
+        .header-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--border-highlight);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .header-desc {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            font-weight: 300;
+        }
+
+        /* Section layout */
+        section {
+            margin-bottom: 80px;
+            scroll-margin-top: 100px; /* Perfect offset for smooth scroll clicks */
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background-color: var(--border-highlight);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 32px 0 16px 0;
+            color: var(--text-primary);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        ul {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 0.98rem;
+        }
+
+        /* Architecture Component Flowchart */
+        .diagram-container {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .diagram-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .flow-node {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .flow-node:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+        }
+
+        .flow-node.facade {
+            grid-column: 1 / 4;
+            margin: 0 auto 20px auto;
+            width: 250px;
+            border-color: var(--border-highlight);
+            background-image: linear-gradient(180deg, var(--bg-code) 0%, rgba(220, 179, 92, 0.05) 100%);
+        }
+
+        .flow-node-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .flow-node-subtitle {
+            font-size: 0.75rem;
+            color: var(--border-highlight);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .flow-node-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Flex Columns/Grid for Components Section */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(220, 179, 92, 0.5);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background-color: rgba(220, 179, 92, 0.12);
+            color: var(--border-highlight);
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-meta {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .card-body {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* Code Block Styling */
+        pre {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            margin: 16px 0 24px 0;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #c9d1d9;
+        }
+
+        /* Syntax Color highlights */
+        .c-type { color: #ff7b72; }      /* types: var, bool, etc */
+        .c-func { color: #d2a6ff; }      /* function names */
+        .c-str { color: #a5d6ff; }       /* string literals */
+        .c-num { color: #79c0ff; }       /* numbers */
+        .c-comment { color: #8b949e; }   /* comments */
+
+        /* Inline Code */
+        p code, li code {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #f0883e;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* Table Styling */
+        .table-container {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            margin: 30px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 16px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+            color: var(--text-primary);
+        }
+
+        .sig-cell {
+            font-family: var(--font-mono);
+            font-weight: 500;
+            color: var(--border-highlight);
+        }
+
+        .type-cell {
+            font-weight: 600;
+        }
+
+        .type-check { color: var(--accent-green); }
+        .type-action { color: var(--accent-orange); }
+
+        .usage-cell {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+            padding: 4px 8px;
+            display: inline-block;
+        }
+
+        /* Alert Callouts */
+        .callout {
+            border-left: 4px solid var(--accent-blue);
+            background-color: rgba(59, 130, 246, 0.05);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+            display: flex;
+            gap: 16px;
+        }
+
+        .callout.tip {
+            border-left-color: var(--border-highlight);
+            background-color: rgba(220, 179, 92, 0.04);
+        }
+
+        .callout-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .callout-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .callout.tip .callout-content h4 {
+            color: var(--border-highlight);
+        }
+
+        .callout-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+
+        /* Smooth scroll anchor offset helper */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .nav-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 16px 10px;
+        }
+
+        .nav-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 6px 14px 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating / Persistent Sidebar -->
+    <aside>
+        <div class="logo-container">
+            <div class="logo-title">Toris Engine</div>
+            <div class="logo-subtitle">DIALOGUE &amp; SYSTEM BRIDGE</div>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#sec-overview" class="nav-item active">Overview</a></li>
+                <li><a href="#sec-architecture" class="nav-item">1. Architecture</a></li>
+                <li><a href="#sec-bridge" class="nav-item">2. Lua Bridge Reference</a></li>
+                <li><a href="#sec-setup" class="nav-item">3. Setup Guide</a></li>
+                <li><a href="#sec-practices" class="nav-item">4. Best Practices</a></li>
+
+                <div class="nav-divider"></div>
+                <div class="nav-label">Documentation Hub</div>
+                <li><a href="pixel_crushers_beginner_guide_html.html" style="border: none;">← Beginner Guide</a></li>
+                <li><a href="architecture_deep_dive.html" style="border: none;">← Architecture Deep Dive</a></li>
+                <li><a href="quest_dialogue_setup_tutorial.html" style="border: none;">← Setup Workflow Tutorial</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main>
+        
+        <!-- Header -->
+        <header id="sec-overview">
+            <span class="header-tag">Developer Portal</span>
+            <h1>Integrating Inventory &amp; Dialogue</h1>
+            <p class="header-desc">
+                Learn the core architecture of the Toris Inventory system and how to integrate items, currencies, and quest progress with the Pixel Crushers Dialogue System.
+            </p>
+        </header>
+
+        <!-- Section 1: Architecture -->
+        <section id="sec-architecture">
+            <h2>1. Architecture &amp; Key Components</h2>
+            <p>
+                The inventory and item system is built around <strong>Transactional Safety</strong> and a <strong>Decoupled Architecture</strong>. Decoupling ensures that dialogue scripts don't have hard references to physical player controllers, which preserves stability.
+            </p>
+
+            <!-- Visual Flowchart -->
+            <div class="diagram-container">
+                <div class="diagram-title">System Data-Flow Pipeline</div>
+                <div class="flow-grid">
+                    <!-- Facade -->
+                    <div class="flow-node facade">
+                        <div class="flow-node-title">GameSessionSO</div>
+                        <div class="flow-node-subtitle">GLOBAL ENTRY HUB</div>
+                        <div class="flow-node-desc">Facilitates runtime access to backpack &amp; wallet</div>
+                    </div>
+                    <!-- Branch Left -->
+                    <div class="flow-node">
+                        <div class="flow-node-title">InventoryManager</div>
+                        <div class="flow-node-subtitle">TRANSACTION CONTROLLER</div>
+                        <div class="flow-node-desc">Manages LiveSlots &amp; safe item mutation</div>
+                    </div>
+                    <!-- Center -->
+                    <div class="flow-node">
+                        <div class="flow-node-title">ItemDatabaseSO</div>
+                        <div class="flow-node-subtitle">ID REGISTRY</div>
+                        <div class="flow-node-desc">Resolves string IDs into template assets</div>
+                    </div>
+                    <!-- Branch Right -->
+                    <div class="flow-node">
+                        <div class="flow-node-title">PlayerProgression</div>
+                        <div class="flow-node-subtitle">WALLET &amp; XP</div>
+                        <div class="flow-node-desc">Stores experience and gold quantities</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card grid detailing components -->
+            <div class="card-grid">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">GameSessionSO</span>
+                        <span class="card-badge">Facade</span>
+                    </div>
+                    <span class="card-meta">OutlandHaven.UIToolkit</span>
+                    <p class="card-body">
+                        Acts as the central facade mapping active controllers. When components initialize, they bind themselves here (e.g., <code>PlayerInventory</code>).
+                    </p>
+                    <pre><code><span class="c-type">var</span> session = GameSessionSO.<span class="c-func">LoadDefault</span>();
+<span class="c-type">var</span> backpack = session.PlayerInventory;</code></pre>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">InventoryManager</span>
+                        <span class="card-badge">Controller</span>
+                    </div>
+                    <span class="card-meta">OutlandHaven.Inventory</span>
+                    <p class="card-body">
+                        Directs the slots. Exposes transactional check methods like <code>CanAddItem</code> and <code>RemoveItem</code> to ensure slot additions succeed fully or fail gracefully.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">ItemDatabaseSO</span>
+                        <span class="card-badge">Registry</span>
+                    </div>
+                    <span class="card-meta">OutlandHaven.Inventory</span>
+                    <p class="card-body">
+                        Matches string IDs coming from dialogue configurations to actual static <code>InventoryItemSO</code> templates with O(1) efficiency.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">ItemInstance</span>
+                        <span class="card-badge">Stack</span>
+                    </div>
+                    <span class="card-meta">OutlandHaven.Inventory</span>
+                    <p class="card-body">
+                        An active instance of an item in a slot. Carries volatile stack values (durability, counts, state updates) and is deep-cloned upon transaction entry.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Lua Reference -->
+        <section id="sec-bridge">
+            <h2>2. Dialogue &amp; Quest System Bridge</h2>
+            <p>
+                The custom C# component <code>PixelCrushersInventoryBridge</code> binds our inventory and wallet APIs directly into the Pixel Crushers Dialogue System's Lua virtual machine. You can use these methods directly in node <strong>Conditions</strong> or <strong>User Scripts</strong>.
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Lua Signature</th>
+                            <th style="width: 15%">Operation Type</th>
+                            <th style="width: 32%">Description</th>
+                            <th style="width: 23%">Example Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="sig-cell">TorisHasItem(itemID, quantity)</td>
+                            <td class="type-cell type-check">Boolean Check</td>
+                            <td>Returns <code>true</code> if player's backpack holds the required quantity.</td>
+                            <td><span class="usage-cell">TorisHasItem("Wood", 5)</span></td>
+                        </tr>
+                        <tr>
+                            <td class="sig-cell">TorisGetItemCount(itemID)</td>
+                            <td class="type-cell type-check">Number Check</td>
+                            <td>Returns the total count of the item inside the backpack.</td>
+                            <td><span class="usage-cell">TorisGetItemCount("Iron") &gt; 2</span></td>
+                        </tr>
+                        <tr>
+                            <td class="sig-cell">TorisGiveItem(itemID, quantity)</td>
+                            <td class="type-cell type-action">Boolean Action</td>
+                            <td>Gives items to the player. Returns <code>true</code> if successful.</td>
+                            <td><span class="usage-cell">TorisGiveItem("Potion", 1)</span></td>
+                        </tr>
+                        <tr>
+                            <td class="sig-cell">TorisTakeItem(itemID, quantity)</td>
+                            <td class="type-cell type-action">Boolean Action</td>
+                            <td>Removes items from backpack. Returns <code>true</code> if successful.</td>
+                            <td><span class="usage-cell">TorisTakeItem("IronOre", 3)</span></td>
+                        </tr>
+                        <tr>
+                            <td class="sig-cell">TorisGetGold()</td>
+                            <td class="type-cell type-check">Number Check</td>
+                            <td>Returns the player's wallet balance.</td>
+                            <td><span class="usage-cell">TorisGetGold() &gt;= 100</span></td>
+                        </tr>
+                        <tr>
+                            <td class="sig-cell">TorisGiveGold(amount)</td>
+                            <td class="type-cell type-action">Boolean Action</td>
+                            <td>Adds gold to the player's wallet.</td>
+                            <td><span class="usage-cell">TorisGiveGold(150)</span></td>
+                        </tr>
+                        <tr>
+                            <td class="sig-cell">TorisTakeGold(amount)</td>
+                            <td class="type-cell type-action">Boolean Action</td>
+                            <td>Deducts gold. Returns <code>false</code> if the player is too broke.</td>
+                            <td><span class="usage-cell">TorisTakeGold(50)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 3: Setup Guide -->
+        <section id="sec-setup">
+            <h2>3. Setup &amp; Integration Guide</h2>
+            <p>
+                Integrating your inventory with quests involves two straightforward steps.
+            </p>
+
+            <h3>Step 1: Add the Bridge Component</h3>
+            <ul>
+                <li>In your active scene, select the persistent <strong>Dialogue Manager</strong> GameObject.</li>
+                <li>Add the <code>PixelCrushersInventoryBridge</code> component.</li>
+                <li>Drag the master <strong>ItemDatabaseSO</strong> asset from your project pane into the <code>Item Database</code> field.</li>
+            </ul>
+
+            <div class="callout tip">
+                <div class="callout-icon">💡</div>
+                <div class="callout-content">
+                    <h4>Pro-Tip</h4>
+                    <p>If you leave the database field empty in the Inspector, the script will automatically fallback to load an asset named "Data/ItemDatabase" inside a standard Resources folder.</p>
+                </div>
+            </div>
+
+            <h3>Step 2: Apply in Conversations</h3>
+            
+            <h4>Scenario A: Blocking dialogue based on items (Conditions)</h4>
+            <p>If an NPC should only show a choice if the player has 5 pieces of wood:</p>
+            <pre><code><span class="c-comment">-- Place this inside the Conditions field of the dialogue line</span>
+<span class="c-func">TorisHasItem</span>(<span class="c-str">"Wood"</span>, <span class="c-num">5</span>)</code></pre>
+
+            <h4>Scenario B: Exchanging items mid-conversation (Scripts)</h4>
+            <p>To take the 5 wood and give the player 100 gold and a health potion upon selection:</p>
+            <pre><code><span class="c-comment">-- Place this inside the User Script field of the dialogue line</span>
+<span class="c-func">TorisTakeItem</span>(<span class="c-str">"Wood"</span>, <span class="c-num">5</span>);
+<span class="c-func">TorisGiveGold</span>(<span class="c-num">100</span>);
+<span class="c-func">TorisGiveItem</span>(<span class="c-str">"HealingPotion"</span>, <span class="c-num">1</span>);</code></pre>
+        </section>
+
+        <!-- Section 4: Best Practices -->
+        <section id="sec-practices">
+            <h2>4. Technical Integration Best Practices</h2>
+            
+            <h3>Database Maintenance</h3>
+            <p>
+                Whenever you introduce a new <code>InventoryItemSO</code> asset to the project, open your master <code>ItemDatabaseSO</code> and click the <strong>Auto-Populate Database</strong> button in the inspector. This rebuilds the internal dictionary and ensures the dialogue system recognizes the new item's string ID.
+            </p>
+
+            <h3>Updating Quest Log HUD via Facts</h3>
+            <p>
+                If you need the dialogue system to update the active quest log text with collection counts, invoke the companion script reporter <code>TorisReportFact</code> in the dialogue scripts:
+            </p>
+            <pre><code><span class="c-comment">-- Updates the quest collector HUD with the transaction progress</span>
+<span class="c-func">TorisReportFact</span>(<span class="c-str">"Collect"</span>, <span class="c-str">"Wood"</span>, <span class="c-str">"QuestItem"</span>, <span class="c-num">5</span>, <span class="c-str">"WoodcutterQuest"</span>)</code></pre>
+        </section>
+
+    </main>
+
+    <!-- Interactive ScrollSpy Navigation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section, header');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 120)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === `#${current}`) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

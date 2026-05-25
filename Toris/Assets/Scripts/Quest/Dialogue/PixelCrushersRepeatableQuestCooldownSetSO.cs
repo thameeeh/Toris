@@ -46,7 +46,7 @@ public class PixelCrushersRepeatableQuestCooldownDefinition
 {
     [Header("Pixel Crushers Quest")]
     [Tooltip("Pixel Crushers quest name that should become repeatable after completion.")]
-    public string QuestName = string.Empty;
+    [QuestPopup] public string QuestName = string.Empty;
 
     [Header("Cooldown")]
     [Tooltip("Real-world seconds to wait after rewards are fully claimed before setting the quest back to Grantable.")]

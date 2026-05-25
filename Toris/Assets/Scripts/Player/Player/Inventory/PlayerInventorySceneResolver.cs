@@ -1,6 +1,7 @@
 using System;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
+using PixelCrushers.DialogueSystem;
 
 namespace OutlandHaven.Inventory
 {
@@ -8,6 +9,41 @@ namespace OutlandHaven.Inventory
     {
         private const string GameSessionResourcePath = "GameData/GameSession";
         private const string PlayerStatsAnchorResourcePath = "PlayerProgression/PlayerStatsAnchor";
+
+        public static InventoryManager ResolveShopInventory(ScreenType shopType, InventoryManager current)
+        {
+            // Priority 1: Current valid
+            if (current != null && current.ContainerBlueprint != null && current.ContainerBlueprint.AssociatedView == shopType)
+                return current;
+
+            // Priority 2: Use the active conversant from the Dialogue System if available
+            if (DialogueManager.hasInstance && DialogueManager.currentConversant != null)
+            {
+                InventoryManager dialogueInventory = DialogueManager.currentConversant.GetComponent<InventoryManager>();
+                if (dialogueInventory == null)
+                {
+                    dialogueInventory = DialogueManager.currentConversant.GetComponentInChildren<InventoryManager>();
+                }
+
+                if (dialogueInventory != null && dialogueInventory.ContainerBlueprint != null && dialogueInventory.ContainerBlueprint.AssociatedView == shopType)
+                {
+                    return dialogueInventory;
+                }
+            }
+
+            // Priority 3: Search whole scene for any InventoryManager matching the shop type
+            InventoryManager[] inventoryManagers = UnityEngine.Object.FindObjectsByType<InventoryManager>(FindObjectsSortMode.None);
+            for (int i = 0; i < inventoryManagers.Length; i++)
+            {
+                InventoryManager candidate = inventoryManagers[i];
+                if (candidate != null && candidate.ContainerBlueprint != null && candidate.ContainerBlueprint.AssociatedView == shopType)
+                {
+                    return candidate;
+                }
+            }
+
+            return null;
+        }
 
         public static InventoryManager ResolvePlayerInventory(Component context, InventoryManager current)
         {

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toris ↔ Pixel Crushers Architecture Deep Dive</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0d0f12;
+            --bg-surface: #13171d;
+            --bg-sidebar: #090b0d;
+            --bg-code: #161b22;
+
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: #dcb35c;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #22d3ee;
+            --accent-pink: #f472b6;
+
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+
+            --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', "Consolas", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        aside {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            padding: 36px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .logo-container { margin-bottom: 36px; }
+
+        .logo-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--border-highlight);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 4px; }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: block;
+            padding: 9px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        nav a.active {
+            color: var(--border-highlight);
+            background-color: rgba(220, 179, 92, 0.08);
+            border-left: 3px solid var(--border-highlight);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            font-weight: 600;
+        }
+
+        .nav-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 14px 10px;
+        }
+
+        .nav-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 6px 14px 4px;
+        }
+
+        /* ── Main ── */
+        main {
+            margin-left: 300px;
+            flex-grow: 1;
+            padding: 70px 60px 120px;
+            max-width: 1050px;
+        }
+
+        header {
+            margin-bottom: 60px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, var(--border-highlight), transparent);
+        }
+
+        .header-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--border-highlight);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+        }
+
+        .header-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 780px;
+            font-weight: 300;
+        }
+
+        section {
+            margin-bottom: 72px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 22px;
+            background-color: var(--border-highlight);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 32px 0 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding-bottom: 6px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        ul, ol {
+            margin-left: 22px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        strong { color: var(--text-primary); }
+
+        p code, li code {
+            background-color: rgba(255,255,255,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            color: #f0883e;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        pre {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px 22px;
+            overflow-x: auto;
+            margin: 14px 0 24px;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            color: #c9d1d9;
+        }
+
+        .c-type { color: #ff7b72; }
+        .c-func { color: #d2a6ff; }
+        .c-str { color: #a5d6ff; }
+        .c-num { color: #79c0ff; }
+        .c-comment { color: #8b949e; }
+        .c-event { color: #7ee787; }
+        .c-kw { color: #ff7b72; }
+        .c-arrow { color: #f0883e; font-weight: 700; }
+
+        /* ── Principle Banner ── */
+        .principle-banner {
+            background: linear-gradient(135deg, rgba(220,179,92,0.06) 0%, rgba(59,130,246,0.04) 100%);
+            border: 1px solid rgba(220,179,92,0.2);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 30px 0 40px;
+            text-align: center;
+        }
+
+        .principle-banner p {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+
+        .principle-banner em {
+            color: var(--border-highlight);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* ── Script Card ── */
+        .script-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            transition: border-color 0.25s;
+        }
+
+        .script-card:hover {
+            border-color: rgba(220,179,92,0.35);
+        }
+
+        .script-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .script-name {
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .script-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-none   { background: rgba(107,114,128,0.15); color: var(--text-muted); }
+        .badge-lua    { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
+        .badge-events { background: rgba(16,185,129,0.12); color: var(--accent-green); }
+        .badge-poll   { background: rgba(245,158,11,0.12); color: var(--accent-orange); }
+        .badge-api    { background: rgba(59,130,246,0.12); color: var(--accent-blue); }
+        .badge-static { background: rgba(34,211,238,0.12); color: var(--accent-cyan); }
+
+        .script-connection {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.015);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .script-connection-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            flex-shrink: 0;
+            min-width: 130px;
+            padding-top: 1px;
+        }
+
+        .script-connection-value {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .script-body {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 14px;
+        }
+
+        .script-rationale {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+            margin-top: 14px;
+        }
+
+        .script-rationale strong {
+            color: var(--border-highlight);
+            font-weight: 600;
+        }
+
+        /* ── Layer Label ── */
+        .layer-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .layer-1 { background: rgba(107,114,128,0.12); color: var(--text-muted); }
+        .layer-2 { background: rgba(59,130,246,0.1); color: var(--accent-blue); }
+        .layer-3 { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+        .layer-4 { background: rgba(16,185,129,0.1); color: var(--accent-green); }
+        .layer-5 { background: rgba(245,158,11,0.1); color: var(--accent-orange); }
+        .layer-6 { background: rgba(244,114,182,0.1); color: var(--accent-pink); }
+
+        /* ── Data Flow Snapshot ── */
+        .flow-snapshot {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 20px 0 28px;
+        }
+
+        .flow-snapshot-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .flow-arrow {
+            color: var(--border-highlight);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            padding-top: 1px;
+        }
+
+        .flow-text {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .flow-text code {
+            font-size: 0.82rem;
+            color: var(--accent-purple);
+        }
+
+        /* ── Full Pipeline Diagram ── */
+        .pipeline-container {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+
+        .pipeline-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .pipeline-col-header {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 16px;
+        }
+
+        .pcol-game   { color: var(--accent-green); background: rgba(16,185,129,0.04); }
+        .pcol-bridge { color: var(--border-highlight); background: rgba(220,179,92,0.04); }
+        .pcol-pixel  { color: var(--accent-blue); background: rgba(59,130,246,0.04); }
+
+        .pipeline-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border-color);
+            min-height: 56px;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .pipeline-row:last-child { border-bottom: none; }
+
+        .pipeline-row:hover {
+            background-color: rgba(255,255,255,0.015);
+        }
+
+        .pipeline-cell {
+            padding: 14px 18px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .pipeline-cell code {
+            font-size: 0.8rem;
+        }
+
+        .pipeline-cell .arrow-right {
+            color: var(--border-highlight);
+            font-weight: 700;
+        }
+
+        .pipeline-cell .arrow-left {
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        .pipeline-cell-empty {
+            padding: 14px 18px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside>
+    <div class="logo-container">
+        <div class="logo-title">Architecture</div>
+        <div class="logo-subtitle">PIXEL CRUSHERS DEEP DIVE</div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#sec-overview" class="nav-item active">Overview</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Script Layers</div>
+
+            <li><a href="#sec-layer1" class="nav-item">Layer 1 · Input &amp; Proximity</a></li>
+            <li><a href="#sec-layer2" class="nav-item">Layer 2 · Conversation Launch</a></li>
+            <li><a href="#sec-layer3" class="nav-item">Layer 3 · Lua Bridges</a></li>
+            <li><a href="#sec-layer4" class="nav-item">Layer 4 · Quest Progress</a></li>
+            <li><a href="#sec-layer5" class="nav-item">Layer 5 · Rewards</a></li>
+            <li><a href="#sec-layer6" class="nav-item">Layer 6 · Save / Load</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Reference</div>
+
+            <li><a href="#sec-pipeline" class="nav-item">Full Pipeline Diagram</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Documentation Hub</div>
+            <li><a href="pixel_crushers_beginner_guide_html.html" style="border: none;">← Beginner Guide</a></li>
+            <li><a href="Dialogue_and_Quest_Inventory_Bridge_html.html" style="border: none;">← Lua API Bridge</a></li>
+            <li><a href="quest_dialogue_setup_tutorial.html" style="border: none;">← Setup Workflow Tutorial</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- ── Main Content ── -->
+<main>
+
+    <header id="sec-overview">
+        <span class="header-tag">Technical Reference</span>
+        <h1>Toris ↔ Pixel Crushers Architecture</h1>
+        <p class="header-desc">
+            A complete breakdown of every custom script involved in the dialogue and quest integration, explaining exactly how each one connects to the Pixel Crushers Dialogue System, what data it passes, and why it exists.
+        </p>
+    </header>
+
+    <div class="principle-banner">
+        <p><em>Pixel Crushers owns dialogue and quest data.</em><br>
+        <em>Toris owns everything else</em> — inventory, progression, input, UI, and saving.<br>
+        The custom scripts are the thin bridge cables between these two worlds.</p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- LAYER 1 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-layer1">
+        <h2>Layer 1 · Player Input &amp; Proximity</h2>
+        <div class="layer-label layer-1">⬤ No Pixel Crushers Contact</div>
+        <p>These scripts handle physics and player input. They have <strong>zero knowledge</strong> of the Dialogue System. Their only job is to register "who is nearby" and relay the interact button press.</p>
+
+        <!-- PlayerInteractor -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PlayerInteractor.cs</span>
+                <span class="script-badge badge-none">No PC Connection</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">None. This script has zero knowledge of dialogues or Pixel Crushers.</span>
+            </div>
+            <p class="script-body">
+                Listens for the <code>E</code> key press via <code>PlayerInputReaderSO</code>. It holds a single <code>_current</code> slot of type <code>IInteractable</code>. When the player presses interact, it calls <code>_current.Interact(gameObject)</code>, passing the player's GameObject as the argument.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> It's a generic interaction dispatcher. It doesn't care if the interactable is an NPC, a chest, a door, or a lever. It just calls <code>.Interact()</code> on whatever is currently registered.
+            </div>
+        </div>
+
+        <!-- DialogueNpcProximity -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">DialogueNpcProximity.cs</span>
+                <span class="script-badge badge-none">No PC Connection</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">None. Pure physics trigger script.</span>
+            </div>
+            <p class="script-body">
+                Sits on a child GameObject with a <code>Collider2D</code> (trigger). When the player enters range, it calls <code>playerInteractor.SetCurrent(_interactable)</code>. When the player leaves, it calls <code>ClearCurrent</code>. The <code>_interactable</code> it registers is the parent's <code>IInteractable</code> component — which is the <code>PixelCrushersConversationInteractable</code>.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> It decouples the "am I close enough?" physics check from the "what happens when I interact?" logic. The NPC root stays clean and focused on dialogue selection.
+            </div>
+        </div>
+
+        <div class="flow-snapshot">
+            <div class="flow-snapshot-title">Data Flow at This Layer</div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text">Player walks near NPC</span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text"><code>DialogueNpcProximity.OnTriggerEnter2D</code> fires</span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text"><code>PlayerInteractor._current</code> = NPC's <code>PixelCrushersConversationInteractable</code></span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text">Player presses <strong>E</strong></span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text"><code>PlayerInteractor</code> calls <code>_current.Interact(playerGameObject)</code></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- LAYER 2 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-layer2">
+        <h2>Layer 2 · Conversation Selection &amp; Launch</h2>
+        <div class="layer-label layer-2">⬤ First Contact with Pixel Crushers</div>
+        <p>This is where Toris code <strong>first touches</strong> the Pixel Crushers API. The conversation interactable queries quest states and then hands a conversation title string to the global Dialogue Manager.</p>
+
+        <!-- ConversationInteractable -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersConversationInteractable.cs</span>
+                <span class="script-badge badge-api">Calls QuestLog API</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">Calls <code>PixelCrushersQuestBridge.GetQuestStateString()</code> to query quest states, then <code>PixelCrushersQuestBridge.StartConversation()</code> which internally calls <code>DialogueManager.StartConversation()</code>.</span>
+            </div>
+            <p class="script-body">
+                When <code>.Interact()</code> is called, it runs through its <code>_questConversationRoutes</code> array from top to bottom, querying each quest's current state. The first route that matches a non-empty conversation title wins. If no route matches, it falls back to <code>_defaultConversation</code>.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> It lets you configure an NPC's dialogue behavior entirely from the Inspector. You never write C# code to say "if quest X is active, play conversation Y." You just fill in the text fields.
+            </div>
+        </div>
+
+        <!-- QuestBridge -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersQuestBridge.cs</span>
+                <span class="script-badge badge-static">Static Gateway</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">The <strong>single C# gateway</strong> into Pixel Crushers' <code>QuestLog</code>, <code>DialogueLua</code>, and <code>DialogueManager</code> APIs.</span>
+            </div>
+            <p class="script-body">
+                A <code>static</code> helper class. It wraps every Pixel Crushers API call (<code>QuestLog.GetQuestState</code>, <code>QuestLog.SetQuestState</code>, <code>DialogueLua.GetVariable</code>, <code>DialogueManager.StartConversation</code>, <code>DialogueManager.SendUpdateTracker</code>) behind clean methods with null-safety checks.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> Without it, every gameplay script would need <code>using PixelCrushers.DialogueSystem</code> and direct calls scattered everywhere. This centralizes the dependency into one file. If Pixel Crushers changes their API in a future update, you only fix this one file.
+            </div>
+        </div>
+
+        <div class="flow-snapshot">
+            <div class="flow-snapshot-title">Data Flow at This Layer</div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text"><code>PlayerInteractor</code> calls <code>.Interact(player)</code></span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text"><code>ConversationInteractable</code> loops quest routes, asks QuestBridge "what state is quest X?"</span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text">QuestBridge asks Pixel Crushers' <code>QuestLog.CurrentQuestState()</code></span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text">Picks the matching conversation title string (e.g. <code>"Smith_TurnIn"</code>)</span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text">QuestBridge calls <code>DialogueManager.StartConversation(title, player, npc)</code></span>
+            </div>
+            <div class="flow-step">
+                <span class="flow-arrow">→</span>
+                <span class="flow-text">Pixel Crushers' dialogue UI appears on screen</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- LAYER 3 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-layer3">
+        <h2>Layer 3 · In-Conversation Lua Bridges</h2>
+        <div class="layer-label layer-3">⬤ Lua Function Registration</div>
+        <p>While a conversation is playing, dialogue nodes can execute Lua code. These scripts inject custom C# methods into the Lua virtual machine so dialogue can check items, grant gold, open UI screens, and lock player input.</p>
+
+        <!-- InventoryBridge -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersInventoryBridge.cs</span>
+                <span class="script-badge badge-lua">Lua Registration</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">Registers 7 custom C# methods into Pixel Crushers' <strong>Lua virtual machine</strong> via <code>Lua.RegisterFunction()</code>.</span>
+            </div>
+            <p class="script-body">
+                On <code>OnEnable</code>, it injects <code>TorisHasItem</code>, <code>TorisGetItemCount</code>, <code>TorisGiveItem</code>, <code>TorisTakeItem</code>, <code>TorisGetGold</code>, <code>TorisGiveGold</code>, and <code>TorisTakeGold</code> into the Lua environment. When a dialogue node's <strong>Conditions</strong> or <strong>Script</strong> field evaluates Lua code, Pixel Crushers' Lua VM calls these C# methods. The methods then interact with the Toris <code>InventoryManager</code> and <code>PlayerProgression</code> systems.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> Pixel Crushers' Lua engine can only call functions that are explicitly registered. Without this bridge, dialogue nodes would have no way to check or modify the player's items or gold.
+            </div>
+        </div>
+
+        <!-- CommandBridge -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersDialogueCommandBridge.cs</span>
+                <span class="script-badge badge-lua">Lua + Events</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">Registers Lua functions (<code>TorisOpenScreen</code>, <code>TorisCloseScreen</code>, <code>TorisReportFact</code>, <code>TorisOpenQuestJournal</code>). Also subscribes to <code>DialogueManager.instance.conversationStarted</code> / <code>conversationEnded</code> events.</span>
+            </div>
+            <p class="script-body">
+                Does two things: <strong>(1) Lua Commands</strong> — lets dialogue scripts open/close Toris UI screens (shop, journal) or report quest progress facts directly from conversation nodes. <strong>(2) Input Locking</strong> — when a conversation starts, it fires <code>OnGameplayInputLockRequested</code> to freeze player movement/combat. When the conversation ends, it fires <code>OnGameplayInputUnlockRequested</code> to release control back.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> Without it, the player could walk around and swing their sword while an NPC is mid-sentence. It also provides the glue for dialogue-driven UI flows (e.g., NPC says "let me show you my wares" → <code>TorisOpenScreen("SmithShop")</code> opens the shop).
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- LAYER 4 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-layer4">
+        <h2>Layer 4 · Quest Progress from Gameplay</h2>
+        <div class="layer-label layer-4">⬤ Pub/Sub Event Bus → Dialogue Variables</div>
+        <p>When gameplay events happen in the world (killing monsters, collecting items, entering areas), they need to be reported to the quest system. This layer uses a publish/subscribe pattern to keep gameplay code completely decoupled from quest logic.</p>
+
+        <!-- QuestFact + Reporter -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">QuestFact.cs + PixelCrushersQuestFactReporter.cs</span>
+                <span class="script-badge badge-none">No PC Connection</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">None directly. These are the <strong>"sender"</strong> side of a pub/sub pattern.</span>
+            </div>
+            <p class="script-body">
+                <code>QuestFact</code> is a plain data struct describing "what happened" — a type (<code>Kill</code>, <code>Collect</code>, <code>Explore</code>, etc.), a target ID, and an amount. <code>PixelCrushersQuestFactReporter</code> is a static event bus with a single <code>FactReported</code> event. Gameplay scripts call <code>Report(fact)</code> and forget about it.
+            </p>
+            <div class="script-rationale">
+                <strong>Why they exist:</strong> Your combat system shouldn't know about quests. It just says "a Slime died." The quest system separately decides if that matters.
+            </div>
+        </div>
+
+        <!-- ProgressMapper -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersQuestProgressMapper.cs</span>
+                <span class="script-badge badge-events">Event Listener → PC Variables</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">Subscribes to <code>PixelCrushersQuestFactReporter.FactReported</code>. Translates incoming facts into <code>DialogueLua.SetVariable()</code> calls and <code>QuestLog.SetQuestState()</code> calls inside Pixel Crushers.</span>
+            </div>
+            <p class="script-body">
+                When a fact arrives (e.g., "Kill / Slime / 1"), it checks its configured rule sets to find matching quest variable names, increments those variables inside the Dialogue System's Lua database, and optionally auto-advances quest states when thresholds are met. It persists across scene loads via <code>DontDestroyOnLoad</code>.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> It's the translator between "things that happened in the game world" and "quest tracker numbers inside Pixel Crushers."
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- LAYER 5 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-layer5">
+        <h2>Layer 5 · Rewards &amp; Completion</h2>
+        <div class="layer-label layer-5">⬤ Polls Quest State Every Frame</div>
+        <p>When a quest finally transitions to <code>Success</code>, this adapter detects the change and physically grants the rewards into the Toris inventory and wallet systems.</p>
+
+        <!-- RewardAdapter -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersQuestRewardAdapter.cs</span>
+                <span class="script-badge badge-poll">Polls QuestLog</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">Polls <code>PixelCrushersQuestBridge.GetQuestStateString()</code> every frame for watched quests. Reacts when a quest transitions to <code>"success"</code>.</span>
+            </div>
+            <p class="script-body">
+                Each frame, it checks if any watched quest just changed to <code>Success</code>. When it detects that transition, it reads a <code>PixelCrushersQuestRewardSetSO</code> ScriptableObject asset and grants gold, XP, and items to the player via <code>PlayerProgression.AddGold()</code> and <code>InventoryManager.AddItem()</code>.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> Pixel Crushers has no concept of your inventory or gold systems. It only knows quest states. This adapter watches those states and performs the physical reward grants on the Toris side.
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- LAYER 6 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-layer6">
+        <h2>Layer 6 · Save / Load Persistence</h2>
+        <div class="layer-label layer-6">⬤ Serializes PC State into Toris Saves</div>
+        <p>Toris owns the save files on disk. Pixel Crushers owns the quest data in memory. This bridge makes sure both stay synchronized across save/load cycles.</p>
+
+        <!-- SaveBridge -->
+        <div class="script-card">
+            <div class="script-card-header">
+                <span class="script-name">PixelCrushersDialogueSaveBridge.cs</span>
+                <span class="script-badge badge-api">PersistentDataManager API</span>
+            </div>
+            <div class="script-connection">
+                <span class="script-connection-label">PC Connection</span>
+                <span class="script-connection-value">Calls <code>PersistentDataManager.GetSaveData()</code> to serialize all dialogue/quest state, and <code>PersistentDataManager.ApplySaveData()</code> to restore it.</span>
+            </div>
+            <p class="script-body">
+                When Toris saves, it calls <code>CaptureSaveData()</code> which asks Pixel Crushers to dump all its internal state (quest states, Lua variables, conversation progress) into a single string. That string gets embedded in the Toris save file. On load, <code>RequestApplySaveData()</code> feeds that string back, but defers application until a scene is loaded and <code>DialogueManager</code> exists.
+            </p>
+            <div class="script-rationale">
+                <strong>Why it exists:</strong> Neither system depends on the other's file format. Toris writes JSON to disk; Pixel Crushers serializes its own opaque blob. This bridge just shuttles the blob in and out.
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- FULL PIPELINE -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-pipeline">
+        <h2>Full Pipeline Diagram</h2>
+        <p>Every row below represents a distinct operation. The center column is the boundary crossing — your custom scripts translating between the two worlds.</p>
+
+        <div class="pipeline-container">
+            <div class="pipeline-header">
+                <div class="pipeline-col-header pcol-game">Game World (Toris)</div>
+                <div class="pipeline-col-header pcol-bridge">Custom Bridge Layer</div>
+                <div class="pipeline-col-header pcol-pixel">Pixel Crushers</div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Player walks near NPC</div>
+                <div class="pipeline-cell"><code>DialogueNpcProximity</code> <span class="arrow-right">→</span> sets interactable</div>
+                <div class="pipeline-cell-empty">—</div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Player presses <strong>E</strong></div>
+                <div class="pipeline-cell"><code>PlayerInteractor</code> <span class="arrow-right">→</span> calls <code>.Interact()</code></div>
+                <div class="pipeline-cell-empty">—</div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell-empty">—</div>
+                <div class="pipeline-cell"><code>ConversationInteractable</code> resolves quest route</div>
+                <div class="pipeline-cell"><span class="arrow-left">←</span> queries <code>QuestLog</code></div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell-empty">—</div>
+                <div class="pipeline-cell"><code>QuestBridge.StartConversation()</code> <span class="arrow-right">→</span></div>
+                <div class="pipeline-cell"><code>DialogueManager</code> shows UI &amp; runs Lua</div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Inventory / gold checked</div>
+                <div class="pipeline-cell"><span class="arrow-left">←</span> <code>InventoryBridge</code> Lua functions</div>
+                <div class="pipeline-cell">Lua evaluates <code>TorisHasItem()</code></div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Player input frozen</div>
+                <div class="pipeline-cell"><span class="arrow-left">←</span> <code>CommandBridge</code> locks input</div>
+                <div class="pipeline-cell"><code>conversationStarted</code> event fires</div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Enemy dies in combat</div>
+                <div class="pipeline-cell"><code>QuestFactReporter.Report()</code> <span class="arrow-right">→</span> event</div>
+                <div class="pipeline-cell-empty">—</div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell-empty">—</div>
+                <div class="pipeline-cell"><code>QuestProgressMapper</code> <span class="arrow-right">→</span> increments variable</div>
+                <div class="pipeline-cell"><code>DialogueLua.SetVariable()</code></div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Gold, XP, items granted</div>
+                <div class="pipeline-cell"><span class="arrow-left">←</span> <code>QuestRewardAdapter</code> grants reward</div>
+                <div class="pipeline-cell">Quest state → <code>"success"</code></div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Toris writes <code>.json</code> to disk</div>
+                <div class="pipeline-cell"><code>DialogueSaveBridge</code> captures blob <span class="arrow-right">→</span></div>
+                <div class="pipeline-cell"><code>PersistentDataManager.GetSaveData()</code></div>
+            </div>
+
+            <div class="pipeline-row">
+                <div class="pipeline-cell">Toris loads <code>.json</code> from disk</div>
+                <div class="pipeline-cell"><code>DialogueSaveBridge</code> applies blob <span class="arrow-right">→</span></div>
+                <div class="pipeline-cell"><code>PersistentDataManager.ApplySaveData()</code></div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ── ScrollSpy ── -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('section, header');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const top = section.offsetTop;
+                if (pageYOffset >= (top - 120)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

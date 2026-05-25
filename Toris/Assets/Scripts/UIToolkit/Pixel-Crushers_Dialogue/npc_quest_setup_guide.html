@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working NPC Quest &amp; Item Setup Checklist</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0d0f12;
+            --bg-surface: #13171d;
+            --bg-sidebar: #090b0d;
+            --bg-code: #161b22;
+
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: #dcb35c;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+
+            --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', "Consolas", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        aside {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            padding: 36px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .logo-container { margin-bottom: 36px; }
+
+        .logo-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--border-highlight);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 4px; }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: block;
+            padding: 9px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        nav a.active {
+            color: var(--border-highlight);
+            background-color: rgba(220, 179, 92, 0.08);
+            border-left: 3px solid var(--border-highlight);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            font-weight: 600;
+        }
+
+        .nav-divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 14px 10px;
+        }
+
+        .nav-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 6px 14px 4px;
+        }
+
+        /* ── Main ── */
+        main {
+            margin-left: 300px;
+            flex-grow: 1;
+            padding: 70px 60px 120px;
+            max-width: 1050px;
+        }
+
+        header {
+            margin-bottom: 60px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, var(--border-highlight), transparent);
+        }
+
+        .header-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--border-highlight);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+        }
+
+        .header-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 780px;
+            font-weight: 300;
+        }
+
+        section {
+            margin-bottom: 72px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 22px;
+            background-color: var(--border-highlight);
+            border-radius: 2px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            font-size: 0.98rem;
+            line-height: 1.7;
+        }
+
+        strong { color: var(--text-primary); }
+
+        code {
+            font-family: var(--font-mono);
+            background-color: rgba(255,255,255,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.84rem;
+            color: #f0883e;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* ── Table Styling ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0 32px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.92rem;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.76rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        /* ── Principle Banner ── */
+        .principle-banner {
+            background: linear-gradient(135deg, rgba(220,179,92,0.06) 0%, rgba(59,130,246,0.04) 100%);
+            border: 1px solid rgba(220,179,92,0.2);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 30px 0 40px;
+        }
+
+        .principle-banner p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 0;
+            line-height: 1.7;
+        }
+
+        .principle-banner em {
+            color: var(--border-highlight);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* ── Card ── */
+        .step-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .step-card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .step-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .step-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0; top: 0;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .lua-box {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            color: #c9d1d9;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside>
+    <div class="logo-container">
+        <div class="logo-title">NPC Setup</div>
+        <div class="logo-subtitle">QUESTS &amp; ITEMS CHEAT SHEET</div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#sec-overview" class="nav-item active">Overview</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Setup Workflow</div>
+            <li><a href="#sec-phase1" class="nav-item">Phase 1 · Database Data</a></li>
+            <li><a href="#sec-phase2" class="nav-item">Phase 2 · Scene Objects</a></li>
+            <li><a href="#sec-phase3" class="nav-item">Phase 3 · Dialogue Nodes</a></li>
+
+            <div class="nav-divider"></div>
+            <div class="nav-label">Documentation Hub</div>
+            <li><a href="Dialogue_and_Quest_Inventory_Bridge_html.html" style="border: none;">← Lua API Bridge</a></li>
+            <li><a href="architecture_deep_dive.html" style="border: none;">← Architecture Deep Dive</a></li>
+            <li><a href="DialogueManager_CheatSheet.html" style="border: none;">← Manager Components</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- ── Main Content ── -->
+<main>
+
+    <header id="sec-overview">
+        <span class="header-tag">Developer Blueprint</span>
+        <h1>Working NPC Quest &amp; Item Setup Checklist</h1>
+        <p class="header-desc">
+            A comprehensive checklist detailing all database variables, scene components, and dialogue flow scripts needed to set up an NPC that gives quests and rewards items.
+        </p>
+    </header>
+
+    <div class="principle-banner">
+        <p>
+            <em>To create a fully working Quest NPC setup:</em> You must configure three completely separate layers. First, the data assets in the <strong>Dialogue/Item Databases</strong>; second, the physical <strong>GameObject Colliders &amp; Interactables</strong> in your active scene; and third, the **Lua condition and script logic** inside your conversation node flowchart.
+        </p>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- PHASE 1 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-phase1">
+        <h2>Phase 1 · The Data Prep (Databases &amp; Assets)</h2>
+        <p>Before placing an NPC in the scene, ensure the necessary quest logs, tracker variables, and item blueprints exist within your project databases.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset / Location</th>
+                    <th>What to Create &amp; Fill</th>
+                    <th>Why It is Needed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Dialogue Database</strong><br><em>(Variables Tab)</em></td>
+                    <td>Create a progress tracking variable (e.g. <code>wolvesKilled</code>) set as an integer with an initial value of <code>0</code>.</td>
+                    <td>Lets the Dialogue System track counter progress globally.</td>
+                </tr>
+                <tr>
+                    <td><strong>Dialogue Database</strong><br><em>(Quests Tab)</em></td>
+                    <td>Create the Quest (e.g. <code>Kill3Wolves</code>), set its state to <code>unassigned</code>, and add a Quest Entry <code>1</code> with display text: <code>Wolves: [var.wolvesKilled]/3</code>.</td>
+                    <td>Defines the quest UI, description text, and dynamic variable formatting.</td>
+                </tr>
+                <tr>
+                    <td><strong>Item Database SO</strong><br><em>(Unity Asset Folder)</em></td>
+                    <td>Create and add your custom Item SOs (e.g., <code>chipped_bone_charm</code>, <code>iron_ore</code>) to your main <code>ItemDatabaseSO</code> registry.</td>
+                    <td>Ensures the custom C# inventory system recognizes and resolves the items you check or give.</td>
+                </tr>
+                <tr>
+                    <td><strong>Quest Fact Rule Set SO</strong><br><em>(Unity Asset Folder)</em></td>
+                    <td>Add a rule mapping the <code>Kill</code> fact (Type/Tag: <code>Wolf</code>) to target quest <code>Kill3Wolves</code> and variable <code>wolvesKilled</code>.</td>
+                    <td>Tells the progress mapper how to link physical gameplay actions to database variable increments.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- PHASE 2 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-phase2">
+        <h2>Phase 2 · The Physical NPC Setup (Unity Scene)</h2>
+        <p>Ensure the NPC GameObject in the Unity Hierarchy is interactable and can launch the conversation state.</p>
+
+        <div class="step-card">
+            <h3>NPC GameObject Component Requirements</h3>
+            <ul class="step-list">
+                <li><strong>Collider2D (Set to <code>Is Trigger</code>):</strong> Required so the player's proximity sensor can detect the NPC when standing close by.</li>
+                <li><strong>Dialogue NPC Proximity (Script) or Tag:</strong> Ensures that the player interactor recognizes this physical object as a valid dialogue trigger.</li>
+                <li>
+                    <strong>PixelCrushersConversationInteractable (Script):</strong>
+                    <ul>
+                        <li>Set <strong>Default Conversation</strong> to your starting conversation name (e.g. <code>Guide_Intro</code>).</li>
+                        <li>Assign the NPC's GameObject to the <strong>Actor / Conversant</strong> fields so conversational cameras and triggers align correctly.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- PHASE 3 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <section id="sec-phase3">
+        <h2>Phase 3 · The Conversation Flow (Dialogue Nodes)</h2>
+        <p>Within your Dialogue Editor conversation tree, configure the conditions and scripts to transition between quest states and distribute rewards.</p>
+
+        <div class="step-card">
+            <h3>1. Offering and Activating the Quest</h3>
+            <p>On your offer dialogue node, ensure the conditions specify the quest is currently unassigned, and set both the quest and its entry to active upon acceptance.</p>
+            
+            <p><strong>Offer Node Conditions:</strong></p>
+            <div class="lua-box">Quest["Kill3Wolves"].State == "unassigned"</div>
+
+            <p><strong>Offer Node Script:</strong></p>
+            <div class="lua-box">
+                SetQuestState("Kill3Wolves", "active");<br>
+                SetQuestEntryState("Kill3Wolves", 1, "active");
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>2. Active Quest Status (In Progress)</h3>
+            <p>Configure a reminder branch displayed while the player is pursuing the objectives.</p>
+            
+            <p><strong>Reminder Node Conditions:</strong></p>
+            <div class="lua-box">Quest["Kill3Wolves"].State == "active"</div>
+
+            <p><strong>Reminder Dialogue Text:</strong></p>
+            <div class="lua-box">"You have defeated [var.wolvesKilled] / 3 wolves so far."</div>
+        </div>
+
+        <div class="step-card">
+            <h3>3. Handing In the Quest &amp; Granting Rewards</h3>
+            <p>Once the counter reaches 3, the progress mapper automatically marks the quest state as <code>done</code> (ReturnToNPC). Wire your completion node to check this and grant items.</p>
+            
+            <p><strong>Complete Node Conditions:</strong></p>
+            <div class="lua-box">Quest["Kill3Wolves"].State == "done"</div>
+
+            <p><strong>Complete Node Script:</strong></p>
+            <div class="lua-box">
+                TorisGiveItem("chipped_bone_charm", 1);<br>
+                SetQuestState("Kill3Wolves", "success");
+            </div>
+            
+            <p style="margin-top: 14px; font-size: 0.88rem; color: var(--accent-purple);">
+                <strong>Important:</strong> Double check that the item name string inside <code>TorisGiveItem("item_name")</code> matches the asset name in your <code>ItemDatabaseSO</code> exactly!
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // Highlight active nav item on scroll
+    const sections = document.querySelectorAll('section, header');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= (sectionTop - 120)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === `#${current}`) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

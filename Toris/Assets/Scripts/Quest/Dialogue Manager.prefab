@@ -29,9 +29,9 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 425660}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -50,14 +50,16 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &11426068
 MonoBehaviour:
@@ -98,6 +100,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1 &125852
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,6 +113,10 @@ GameObject:
   - component: {fileID: 11426072}
   - component: {fileID: 11471062}
   - component: {fileID: 11424616}
+  - component: {fileID: 4331170822996696030}
+  - component: {fileID: 3738398143566829227}
+  - component: {fileID: 1623794721465249846}
+  - component: {fileID: 5124735374230096793}
   m_Layer: 0
   m_Name: Dialogue Manager
   m_TagString: Untagged
@@ -124,13 +131,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125852}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 22425850}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11426072
 MonoBehaviour:
@@ -144,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8b685e62a9aeb4a9472b30ec2d86d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDatabase: {fileID: 0}
+  initialDatabase: {fileID: 11400000, guid: 3659fc536afac5149b50151f93e1b419, type: 2}
   displaySettings:
     conversationOverrideSettings:
       useOverrides: 0
@@ -172,7 +180,7 @@ MonoBehaviour:
       cancelConversation:
         key: 27
         buttonName: 
-    dialogueUI: {fileID: 101180, guid: 5ba51781a19f8a843abeb2d304d0d26e, type: 3}
+    dialogueUI: {fileID: 147116, guid: dbd244fe4057574468e277ab6f38ea01, type: 3}
     defaultCanvas: {fileID: 22325660}
     localizationSettings:
       language: 
@@ -186,20 +194,23 @@ MonoBehaviour:
       skipPCSubtitleAfterResponseMenu: 1
       subtitleCharsPerSecond: 30
       minSubtitleSeconds: 2
-      continueButton: 0
-      requireContinueOnLastLine: 0
+      continueButton: 1
+      requireContinueOnLastLine: 1
       richTextEmphases: 1
+      convertPipesToLineBreaks: 1
       informSequenceStartAndEnd: 0
     cameraSettings:
       sequencerCamera: {fileID: 0}
       alternateCameraObject: {fileID: 0}
       cameraAngles: {fileID: 0}
+      cameraEasing: 0
       keepCameraPositionAtConversationEnd: 0
       showSubtitleOnEmptyContinue: 0
       defaultSequence: Delay({{end}})
       defaultPlayerSequence: 
       defaultResponseMenuSequence: 
       entrytagFormat: 0
+      treatAllCommandsAsRequired: 0
       reportMissingAudioFiles: 0
       disableInternalSequencerCommands: 0
     inputSettings:
@@ -245,6 +256,7 @@ MonoBehaviour:
   stopEvaluationAtFirstValid: 0
   reevaluateLinksAfterSubtitle: 0
   useLinearGroupMode: 0
+  updateActiveConversationTextWhenLanguageChanges: 1
   includeSimStatus: 0
   instantiateDatabase: 1
   preloadResources: 1
@@ -255,6 +267,7 @@ MonoBehaviour:
   onStartTriggerWaitForSaveDataApplied: 0
   dialogueTimeMode: 0
   debugLevel: 2
+  invokeOnQuestStateChangeForEntries: 1
 --- !u!114 &11471062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dddab24af7a02a54c9631fd5c532d7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputDevice: 0
+  inputDevice: 1
   joystickKeyCodesToCheck: 4a0100004b0100004c01000051010000
   joystickButtonsToCheck: []
   joystickAxesToCheck: []
@@ -316,3 +329,80 @@ MonoBehaviour:
   onUseTouch:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4331170822996696030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f1127f24598344a991b76f5c788c78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersInventoryBridge
+  _itemDatabase: {fileID: 11400000, guid: 42bb86d2eb800304a8a42b3b360a928e, type: 2}
+  _debugBridge: 0
+--- !u!114 &3738398143566829227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099639002cdf0ae46a1b0c76205ee037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestRewardAdapter
+  _rewardSets:
+  - {fileID: 11400000, guid: 4f13cf5ff6914d73a5c33adf1721e70c, type: 2}
+  _playerProgressionAnchor: {fileID: 11400000, guid: 9405e4d8c428ad34cbc64f726f68a606, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _debugRewardFlow: 1
+  _grantMissedAutomaticRewardsOnEnable: 1
+--- !u!114 &1623794721465249846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1023b72eea342229c27b671d27ac50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersDialogueCommandBridge
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _screenCommands: []
+  _questJournalWindow: {fileID: 0}
+  _questJournalPrefab: {fileID: 0}
+  _questJournalCanvas: {fileID: 0}
+  _createRuntimeQuestJournalCanvas: 1
+  _runtimeQuestJournalSortingOrder: 200
+  _lockGameplayInputDuringDialogue: 1
+  _dialogueGameplayInputLockId: PixelCrushersDialogue
+  _debugCommands: 1
+--- !u!114 &5124735374230096793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0da69f11e67be46bf6eb73d1dec789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersQuestProgressMapper
+  _ruleSets:
+  - {fileID: 11400000, guid: d7d7b84013e74fbf839c3aad946375c5, type: 2}
+  _conventionProgress:
+    Enabled: 1
+    RequireQuestActive: 1
+    DefaultRequiredAmount: 1
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64
+  _installPersistentRuntime: 1
+  _debugMapping: 1

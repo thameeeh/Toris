@@ -10,6 +10,15 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
     [SerializeField] private MonoBehaviour runGateTransitionServiceOverride;
     [SerializeField] private RunStartCheckpointService runStartCheckpointService;
 
+    [Header("Quest & Lock Settings")]
+    [SerializeField] private bool _useLockSystem = true;
+    [SerializeField] private string _portalUnlockedLuaVariable = "isPortalUnlocked";
+    [SerializeField] private string _requiredKeyItemName = "PortalKey";
+    [SerializeField] private GameObject _activePortalVisuals;
+    [SerializeField] private GameObject _stoneVisuals;
+    [SerializeField] private GameObject _gateCollision;
+    [SerializeField] private string _unlockSfxId = "world_portal_unlock";
+
     [Header("SFX")]
     [SerializeField] private string teleportLeaveSfxId = "world_teleport_leave";
     [SerializeField] private string teleportLoopSfxId = "world_teleport_loop";
@@ -23,12 +32,12 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
 
     private void OnEnable()
     {
-        TryStartTeleportLoop();
+        RefreshPortalState();
     }
 
     private void Start()
     {
-        TryStartTeleportLoop();
+        RefreshPortalState();
     }
 
     private void OnDisable()
@@ -36,12 +45,103 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
         StopTeleportLoop();
     }
 
+    public bool IsUnlocked()
+    {
+        if (!_useLockSystem) return true;
+        if (!PixelCrushers.DialogueSystem.DialogueManager.hasInstance) return false;
+        return PixelCrushers.DialogueSystem.DialogueLua.GetVariable(_portalUnlockedLuaVariable).asBool;
+    }
+
+    public void RefreshPortalState()
+    {
+        bool unlocked = IsUnlocked();
+
+        if (_activePortalVisuals != null) _activePortalVisuals.SetActive(unlocked);
+        if (_stoneVisuals != null) _stoneVisuals.SetActive(!unlocked);
+        
+        if (_gateCollision != null)
+        {
+            // If the gate collision GameObject contains the proximity trigger,
+            // we must keep it active so the player can interact to unlock it!
+            if (_gateCollision.GetComponent<GateProximity>() != null || _gateCollision.GetComponentInChildren<GateProximity>() != null)
+            {
+                _gateCollision.SetActive(true);
+            }
+            else
+            {
+                // If it is a physical blocker obstacle, disable it when unlocked, enable when locked
+                _gateCollision.SetActive(!unlocked);
+            }
+        }
+
+        if (unlocked)
+        {
+            TryStartTeleportLoop();
+        }
+        else
+        {
+            StopTeleportLoop();
+        }
+    }
+
+    private bool TryUnlockWithKey()
+    {
+        OutlandHaven.UIToolkit.GameSessionSO session = OutlandHaven.UIToolkit.GameSessionSO.LoadDefault();
+        if (session == null || session.PlayerInventory == null) return false;
+
+        foreach (var slot in session.PlayerInventory.LiveSlots)
+        {
+            if (!slot.IsEmpty && slot.HeldItem.BaseItem != null && 
+                (slot.HeldItem.BaseItem.name == _requiredKeyItemName || slot.HeldItem.BaseItem.ItemName == _requiredKeyItemName))
+            {
+                bool removed = session.PlayerInventory.RemoveItem(slot.HeldItem, 1);
+                if (removed)
+                {
+                    if (PixelCrushers.DialogueSystem.DialogueManager.hasInstance)
+                    {
+                        PixelCrushers.DialogueSystem.DialogueLua.SetVariable(_portalUnlockedLuaVariable, true);
+                    }
+                    
+                    if (!string.IsNullOrWhiteSpace(_unlockSfxId) && AudioBootstrap.Sfx != null)
+                    {
+                        AudioBootstrap.Sfx.PlayAt(_unlockSfxId, transform.position, SfxPlayRequest.Default);
+                    }
+                    
+                    RefreshPortalState();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void Interact(GameObject interactor)
     {
+        if (_useLockSystem && !IsUnlocked())
+        {
+            if (TryUnlockWithKey())
+            {
+                Debug.Log($"[RunGateInteractable] Portal unlocked using '{_requiredKeyItemName}' key!");
+            }
+            else
+            {
+                Debug.LogWarning($"[RunGateInteractable] Portal is locked. You need the '{_requiredKeyItemName}' key in your inventory to unlock it.");
+            }
+            return;
+        }
+
         runGateTransitionService ??= ResolveRunGateTransitionService();
         if (runGateTransitionService == null)
         {
-            Debug.LogWarning("RunGateInteractable: run gate transition service unavailable.", this);
+            Debug.LogError("[RunGateInteractable] Cannot teleport! SceneTransitionService is missing in the scene. Make sure you started from the bootstrap/MainMenu scene, or that a SceneTransitionService exists in the active scene.", this);
+            return;
+        }
+
+        // Verify scene setup to prevent silent failures inside SceneTransitionService
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (currentScene != sceneA && currentScene != sceneB)
+        {
+            Debug.LogError($"[RunGateInteractable] Scene Mismatch! The current active scene is '{currentScene}', but the gate is configured with sceneA='{sceneA}' and sceneB='{sceneB}'. The transition service will reject this. Make sure one of them matches the current scene name exactly!", this);
             return;
         }
 

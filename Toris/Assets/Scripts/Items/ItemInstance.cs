@@ -101,10 +101,13 @@ namespace OutlandHaven.Inventory
 
         public ItemInstance Clone()
         {
-            ItemInstance clonedItem = new ItemInstance(this.BaseItem);
-            clonedItem.InstanceID = System.Guid.NewGuid().ToString();
+            ItemInstance clonedItem = new ItemInstance
+            {
+                InstanceID = Guid.NewGuid().ToString(),
+                BaseItem = this.BaseItem,
+                States = new List<ItemComponentState>()
+            };
 
-            clonedItem.States = new System.Collections.Generic.List<ItemComponentState>();
             foreach (var state in this.States)
             {
                 clonedItem.States.Add(state.Clone());

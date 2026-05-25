@@ -13,7 +13,7 @@ public class PixelCrushersConversationInteractable : MonoBehaviour, IInteractabl
 {
     [Header("Conversation Selection")]
     [Tooltip("Conversation title to start when no quest route resolves. This must exactly match a Pixel Crushers conversation title.")]
-    [SerializeField] private string _defaultConversation = "Guide_Intro";
+    [ConversationPopup] [SerializeField] private string _defaultConversation = "Guide_Intro";
     [Tooltip("Quest-state routes checked from top to bottom. Put newer or higher-priority story beats before older completed beats.")]
     [SerializeField] private PixelCrushersConversationRoute[] _questConversationRoutes = Array.Empty<PixelCrushersConversationRoute>();
 
@@ -117,15 +117,15 @@ public class PixelCrushersConversationInteractable : MonoBehaviour, IInteractabl
 public class PixelCrushersConversationRoute
 {
     [Tooltip("Pixel Crushers quest name this route watches. Must exactly match the quest name in the dialogue database.")]
-    public string QuestName = string.Empty;
+    [QuestPopup] public string QuestName = string.Empty;
     [Tooltip("Conversation title used when the quest is unassigned or grantable. Leave blank if this route should not handle that state.")]
-    public string ConversationWhenUnassigned = string.Empty;
+    [ConversationPopup] public string ConversationWhenUnassigned = string.Empty;
     [Tooltip("Conversation title used while the quest is active. Usually reminder or in-progress dialogue.")]
-    public string ConversationWhenActive = string.Empty;
+    [ConversationPopup] public string ConversationWhenActive = string.Empty;
     [Tooltip("Conversation title used when the quest is ready to turn in.")]
-    public string ConversationWhenReturnToNpc = string.Empty;
+    [ConversationPopup] public string ConversationWhenReturnToNpc = string.Empty;
     [Tooltip("Conversation title used after the quest succeeds or is done.")]
-    public string ConversationWhenSuccess = string.Empty;
+    [ConversationPopup] public string ConversationWhenSuccess = string.Empty;
 
     public bool TryResolve(out string conversation, out string stateLabel)
     {

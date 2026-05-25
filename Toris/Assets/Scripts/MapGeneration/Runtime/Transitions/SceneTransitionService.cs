@@ -13,8 +13,11 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     private const string DefaultLoadingMessage = "Loading";
     private const string MainMenuSceneName = "MainMenu";
     private const string MainAreaSceneName = "MainArea";
+    private const string PrologueSceneName = "Prologue";
     private const string ProceduralTilesSceneName = "ProceduralTiles";
+    private const string BeginningMessage = "Beginning";
     private const string EnteringWorldMessage = "Entering the World";
+    private const string EnteringSafeHavenMessage = "Entering Safe Haven";
     private const string EnteringOutlandsMessage = "Entering the Outlands";
     private const string ComingBackMessage = "Coming Back";
     private const string LeavingMessage = "Leaving";
@@ -452,6 +455,18 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     {
         if (SceneNameEquals(targetSceneName, MainMenuSceneName))
             return LeavingMessage;
+
+        if (SceneNameEquals(currentSceneName, MainMenuSceneName)
+            && SceneNameEquals(targetSceneName, PrologueSceneName))
+        {
+            return BeginningMessage;
+        }
+
+        if (SceneNameEquals(currentSceneName, PrologueSceneName)
+            && SceneNameEquals(targetSceneName, MainAreaSceneName))
+        {
+            return EnteringSafeHavenMessage;
+        }
 
         if (SceneNameEquals(currentSceneName, MainMenuSceneName)
             && SceneNameEquals(targetSceneName, MainAreaSceneName))

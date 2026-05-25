@@ -22,6 +22,25 @@ This is the real opening of the game, not a placeholder tutorial pass. The tutor
 - For now, the player walks up to the Guide and interacts manually after reaching Safe Haven.
 - Later, Safe Haven arrival may use a short authored walk-up animation into the Guide conversation.
 
+## Current Implementation Status
+
+Completed:
+
+- New saves route to the `Prologue` scene.
+- `Prologue` transitions into `MainArea` through `PrologueExitTrigger`.
+- Hand-authored Prologue tilemaps initialize `TileNavWorld` through `PrologueNavigationBootstrap`.
+- The first Prologue enemy can respect water and obstacle boundaries through the normal navigation path.
+- Opening story cards now play at Prologue start through `PrologueStorySequenceController`.
+- Arrival story cards can play from `PrologueExitTrigger` before the Safe Haven scene load.
+- Story cards lock gameplay input until the player advances through them.
+
+Still open:
+
+- Assign final background images, music, and SFX for the story cards.
+- Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
+- Add movement, bow draw, dry release, ready shot, shot fired, and overdraw tutorial signals.
+- Author optional gameplay tutorial steps on top of those signals.
+
 ## Fresh Save Flow
 
 | Order | Beat | What Happens | Tutorial If Enabled |
@@ -37,7 +56,7 @@ This is the real opening of the game, not a placeholder tutorial pass. The tutor
 | 9 | Overdraw Lesson | Player learns that holding too long worsens aim, but only after they do it once. | Tip appears after first overdraw / over-hold signal. |
 | 10 | First Kill | Enemy dies. Player receives small XP/gold and possibly one simple drop. | Short reward/loot tip if needed. |
 | 11 | Path To Haven | Player continues forward through a calm final stretch. | No tip unless pickup/loot needs explaining. |
-| 12 | Safe Haven Arrival | Player crosses into the Safe Haven area. | Optional location title/card, no heavy mechanics. |
+| 12 | Safe Haven Arrival | Player reaches the end trigger, sees final arrival story cards, then transitions into Safe Haven. | Optional location title/card, no heavy mechanics. |
 | 13 | Guide Handoff | Player walks up to the Guide and interacts. Existing `Guide_Intro` conversation continues from here. | Tutorial overlay should stay out of dialogue unless explicitly authored. |
 
 ## Story Presentation

@@ -1,3 +1,4 @@
+using OutlandHaven.Tutorial;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +11,14 @@ public sealed class PrologueExitTrigger : MonoBehaviour
     [SerializeField] private string targetSceneName = DefaultTargetSceneName;
     [SerializeField] private string loadingMessage = DefaultLoadingMessage;
     [SerializeField] private string playerTag = "Player";
+    [SerializeField] private PrologueStorySequenceController arrivalStorySequence;
 
     private bool _transitionRequested;
+
+    private void OnDisable()
+    {
+        UnbindArrivalStorySequence();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -19,7 +26,29 @@ public sealed class PrologueExitTrigger : MonoBehaviour
             return;
 
         _transitionRequested = true;
+
+        if (arrivalStorySequence != null)
+        {
+            arrivalStorySequence.SequenceCompleted += HandleArrivalStoryCompleted;
+            if (arrivalStorySequence.TryBegin())
+                return;
+
+            UnbindArrivalStorySequence();
+        }
+
         LoadTargetScene();
+    }
+
+    private void HandleArrivalStoryCompleted()
+    {
+        UnbindArrivalStorySequence();
+        LoadTargetScene();
+    }
+
+    private void UnbindArrivalStorySequence()
+    {
+        if (arrivalStorySequence != null)
+            arrivalStorySequence.SequenceCompleted -= HandleArrivalStoryCompleted;
     }
 
     private void LoadTargetScene()

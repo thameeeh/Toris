@@ -22,8 +22,8 @@
 
 .tutorial-overlay__tooltip {
     position: absolute;
-    width: 320px;
-    padding: 14px;
+    width: 380px;
+    padding: 18px;
     border-width: 2px;
     border-color: rgb(255, 213, 92);
     border-radius: 6px;
@@ -32,19 +32,21 @@
 
 .tutorial-overlay__title {
     color: rgb(255, 242, 210);
-    font-size: 18px;
+    font-size: 24px;
     -unity-font-style: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .tutorial-overlay__body {
     color: rgb(231, 222, 205);
     white-space: normal;
-    font-size: 14px;
-    margin-bottom: 12px;
+    font-size: 19px;
+    margin-bottom: 16px;
 }
 
 .tutorial-overlay__button {
     align-self: flex-end;
-    min-width: 94px;
+    min-width: 116px;
+    height: 38px;
+    font-size: 18px;
 }

@@ -1,12 +1,10 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Button name="menu-btn-root" style="flex-direction: row; justify-content: space-between; align-items: center; width: 160px; height: 40px; margin-bottom: 5px; background-color: rgb(60, 60, 60); border-width: 1px; border-color: rgb(100, 100, 100); border-radius: 5px; padding-left: 10px; padding-right: 10px;">
-        
-        <ui:VisualElement style="flex-direction: row; align-items: center;">
-            <ui:VisualElement name="menu-btn-icon" style="width: 24px; height: 24px; margin-right: 8px; background-color: rgba(0,0,0,0);"/> 
-            <ui:Label name="menu-btn-label" text="Inventory" class="hud-menu-button-label" style="color: white; -unity-font-style: bold;"/>
+    <ui:Button name="menu-btn-root" class="hud-menu-entry">
+        <ui:VisualElement class="hud-menu-entry__content">
+            <ui:VisualElement name="menu-btn-icon" class="hud-menu-entry__icon"/>
+            <ui:Label name="menu-btn-label" text="Inventory" class="hud-menu-button-label"/>
         </ui:VisualElement>
 
-        <ui:Label name="menu-btn-shortcut" text="(I)" class="hud-menu-button-shortcut" style="color: rgb(180, 180, 180);"/>
-        
+        <ui:Label name="menu-btn-shortcut" text="(I)" class="hud-menu-button-shortcut"/>
     </ui:Button>
 </ui:UXML>

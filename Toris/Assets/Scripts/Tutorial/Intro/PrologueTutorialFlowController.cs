@@ -1,3 +1,4 @@
+using OutlandHaven.Inventory;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,21 +10,38 @@ namespace OutlandHaven.Tutorial
     public sealed class PrologueTutorialFlowController : MonoBehaviour
     {
         private const string DefaultUiEventsResourcePath = "GameData/SOForEvents/UI Events SO";
+        private const string DefaultUiInventoryEventsResourcePath = "GameData/SOForEvents/UI Inventory Events SO";
         private const string DefaultInputReaderResourcePath = "GameData/SOForEvents/InputReaderSO";
         private const string MovementCapabilityLockId = "PrologueTutorial.MovementPrompt";
         private const string PreWolfCapabilityLockId = "PrologueTutorial.PreWolf";
         private const string WolfEncounterCapabilityLockId = "PrologueTutorial.WolfEncounter";
         private const string ReactiveTipCapabilityLockId = "PrologueTutorial.ReactiveTip";
+        private const string PickupLessonCapabilityLockId = "PrologueTutorial.PickupLesson";
+        private const string HudLessonCapabilityLockId = "PrologueTutorial.HudLesson";
         private const string MovementStepId = "prologue.movement";
         private const string ShootingStepId = "prologue.shooting";
         private const string UnderdrawStepId = "prologue.bow.dry_release";
         private const string OverdrawStepId = "prologue.bow.overdraw";
+        private const string RewardsStepId = "prologue.rewards";
+        private const string PickupStepId = "prologue.pickup";
+        private const string HudMenuStepId = "prologue.hud.menu";
+        private const string InventoryOpenStepId = "prologue.inventory.open";
         private const string DefaultPromptAnchorName = "TutorialPromptAnchor";
         private const float MovementInputThresholdSqr = 0.01f;
         private const float MinimumPromptVisibleSeconds = 0.2f;
         private const float PromptFallbackWidth = 180f;
         private const float PromptFallbackHeight = 46f;
         private const int FadeStepMilliseconds = 16;
+        private const int MaxHudAnchorResolveAttempts = 8;
+        private const int HudAnchorResolveRetryMilliseconds = 50;
+
+        private enum PostWolfHudLesson
+        {
+            None = 0,
+            Rewards = 1,
+            MenuToggle = 2,
+            Inventory = 3
+        }
 
         [Header("Flow")]
         [SerializeField] private PrologueStorySequenceController openingStorySequence;
@@ -32,7 +50,9 @@ namespace OutlandHaven.Tutorial
         [Header("References")]
         [SerializeField] private UIDocument uiDocument;
         [SerializeField] private UIEventsSO uiEvents;
+        [SerializeField] private UIInventoryEventsSO uiInventoryEvents;
         [SerializeField] private GameSessionSO gameSession;
+        [SerializeField] private TutorialCatalogSO tutorialCatalog;
         [SerializeField] private PlayerInputReaderSO inputReader;
         [SerializeField] private Transform playerTarget;
         [SerializeField] private Transform promptAnchor;
@@ -94,27 +114,61 @@ namespace OutlandHaven.Tutorial
             GameplayInputCapability.QuickSaveLoad
         };
 
+        [Header("Post-Wolf Loot Lesson")]
+        [SerializeField] private InventoryItemSO tutorialBowItem;
+        [SerializeField] private InventoryItemSO tutorialPotionItem;
+        [SerializeField] private string pickupPromptText = "E Pick Up";
+        [SerializeField] private GameplayInputCapability[] lockedCapabilitiesDuringPickupLesson =
+        {
+            GameplayInputCapability.Inventory,
+            GameplayInputCapability.Skills,
+            GameplayInputCapability.QuestJournal,
+            GameplayInputCapability.PotionHotkeys,
+            GameplayInputCapability.QuickSaveLoad
+        };
+        [SerializeField] private GameplayInputCapability[] lockedCapabilitiesDuringHudLesson =
+        {
+            GameplayInputCapability.Movement,
+            GameplayInputCapability.Combat,
+            GameplayInputCapability.Interaction,
+            GameplayInputCapability.Inventory,
+            GameplayInputCapability.Skills,
+            GameplayInputCapability.QuestJournal,
+            GameplayInputCapability.PotionHotkeys,
+            GameplayInputCapability.QuickSaveLoad
+        };
+
         private VisualElement _promptRoot;
         private Label _promptLabel;
         private VisualElement _promptContinueRoot;
         private Label _promptContinueLabel;
+        private TutorialOverlayView _hudLessonOverlay;
+        private VisualElement _hudLessonClickAnchor;
         private bool _movementPromptActive;
         private bool _shootingPromptActive;
         private bool _reactiveTipActive;
+        private bool _pickupPromptActive;
         private bool _movementPromptCompleted;
         private bool _movementCapabilitiesLocked;
         private bool _preWolfCapabilitiesLocked;
         private bool _wolfEncounterCapabilitiesLocked;
         private bool _reactiveTipCapabilitiesLocked;
+        private bool _pickupLessonCapabilitiesLocked;
+        private bool _hudLessonCapabilitiesLocked;
         private bool _bowTutorialEventsBound;
+        private bool _postWolfLessonEventsBound;
         private bool _underdrawTipShownThisSession;
         private bool _overdrawTipShownThisSession;
         private bool _reactiveTipPausedGameplay;
+        private bool _hudLessonPausedGameplay;
         private bool _promptAnchorSearchCompleted;
         private float _movementPromptVisibleSince;
         private float _timeScaleBeforeReactiveTip = 1f;
+        private float _timeScaleBeforeHudLesson = 1f;
         private int _fadeVersion;
         private int _reactiveTipVersion;
+        private int _hudLessonVersion;
+        private PostWolfHudLesson _activeHudLesson;
         private Enemy _encounterEnemy;
 
         private void Awake()
@@ -149,20 +203,27 @@ namespace OutlandHaven.Tutorial
             _movementPromptActive = false;
             _shootingPromptActive = false;
             _reactiveTipActive = false;
+            _pickupPromptActive = false;
             UnbindShootingPromptInput();
             UnbindBowTutorialEvents();
             UnbindEncounterEnemy();
+            UnbindPostWolfLessonEvents();
             ReleaseMovementPromptCapabilities();
             ReleasePreWolfEncounterCapabilities();
             ReleaseWolfEncounterCapabilities();
             ReleaseReactiveTipCapabilities();
+            ReleasePickupLessonCapabilities();
             ReleaseReactiveTipPause();
+            HideHudLesson();
             HidePromptInstantly();
         }
 
         private void Update()
         {
-            if (!_movementPromptActive && !_shootingPromptActive && !_reactiveTipActive)
+            if (!_movementPromptActive
+                && !_shootingPromptActive
+                && !_reactiveTipActive
+                && !_pickupPromptActive)
                 return;
 
             UpdatePromptPosition();
@@ -301,6 +362,9 @@ namespace OutlandHaven.Tutorial
             ReleaseReactiveTipCapabilities();
             ReleaseReactiveTipPause();
             HidePromptInstantly();
+
+            if (AreTutorialTipsEnabled())
+                BeginPostWolfRewardsLesson();
         }
 
         private void HandleUnderdrawReleased()
@@ -359,6 +423,26 @@ namespace OutlandHaven.Tutorial
         private void ReleaseReactiveTipCapabilities()
         {
             ReleaseCapabilities(lockedCapabilitiesDuringReactiveTip, ReactiveTipCapabilityLockId, ref _reactiveTipCapabilitiesLocked);
+        }
+
+        private void LockPickupLessonCapabilities()
+        {
+            LockCapabilities(lockedCapabilitiesDuringPickupLesson, PickupLessonCapabilityLockId, ref _pickupLessonCapabilitiesLocked);
+        }
+
+        private void ReleasePickupLessonCapabilities()
+        {
+            ReleaseCapabilities(lockedCapabilitiesDuringPickupLesson, PickupLessonCapabilityLockId, ref _pickupLessonCapabilitiesLocked);
+        }
+
+        private void LockHudLessonCapabilities()
+        {
+            LockCapabilities(lockedCapabilitiesDuringHudLesson, HudLessonCapabilityLockId, ref _hudLessonCapabilitiesLocked);
+        }
+
+        private void ReleaseHudLessonCapabilities()
+        {
+            ReleaseCapabilities(lockedCapabilitiesDuringHudLesson, HudLessonCapabilityLockId, ref _hudLessonCapabilitiesLocked);
         }
 
         private void LockCapabilities(GameplayInputCapability[] capabilities, string lockId, ref bool lockState)
@@ -442,6 +526,294 @@ namespace OutlandHaven.Tutorial
             _encounterEnemy = null;
         }
 
+        private void BeginPostWolfRewardsLesson()
+        {
+            if (IsTutorialStepCompleted(InventoryOpenStepId))
+                return;
+
+            BindPostWolfLessonEvents();
+
+            if (IsTutorialStepCompleted(RewardsStepId))
+            {
+                BeginPostWolfPickupLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(RewardsStepId, PostWolfHudLesson.Rewards))
+                BeginPostWolfPickupLesson();
+        }
+
+        private void BeginPostWolfPickupLesson()
+        {
+            if (IsTutorialStepCompleted(InventoryOpenStepId))
+                return;
+
+            BindPostWolfLessonEvents();
+
+            if (IsTutorialStepCompleted(PickupStepId) || HasTutorialLootInBackpack())
+            {
+                CompletePickupLesson();
+                return;
+            }
+
+            LockPickupLessonCapabilities();
+            ShowPickupPrompt();
+        }
+
+        private void ShowPickupPrompt()
+        {
+            _pickupPromptActive = true;
+            ShowInstructionPrompt(pickupPromptText, "E Pick Up");
+        }
+
+        private void HandlePostWolfInventoryUpdated()
+        {
+            if (_pickupPromptActive && HasTutorialLootInBackpack())
+                CompletePickupLesson();
+        }
+
+        private void CompletePickupLesson()
+        {
+            _pickupPromptActive = false;
+            ReleasePickupLessonCapabilities();
+            gameSession?.MarkTutorialStepCompleted(PickupStepId);
+            HidePromptInstantly();
+
+            if (IsTutorialStepCompleted(InventoryOpenStepId))
+            {
+                UnbindPostWolfLessonEvents();
+                return;
+            }
+
+            if (!BeginHudLesson(HudMenuStepId, PostWolfHudLesson.MenuToggle))
+                UnbindPostWolfLessonEvents();
+        }
+
+        private void HandlePostWolfScreenOpened(ScreenType screenType)
+        {
+            if (_activeHudLesson != PostWolfHudLesson.Inventory || screenType != ScreenType.Inventory)
+                return;
+
+            gameSession?.MarkTutorialStepCompleted(InventoryOpenStepId);
+            HideHudLesson();
+            UnbindPostWolfLessonEvents();
+        }
+
+        private bool BeginHudLesson(string stepId, PostWolfHudLesson lesson)
+        {
+            if (tutorialCatalog == null
+                || !tutorialCatalog.TryGetStep(stepId, out TutorialStepDefinition step)
+                || !EnsureHudLessonOverlay())
+            {
+                return false;
+            }
+
+            _hudLessonVersion++;
+            _activeHudLesson = lesson;
+            UnbindHudLessonClickAnchor();
+
+            if (step.BlocksInput)
+                LockHudLessonCapabilities();
+            else
+                ReleaseHudLessonCapabilities();
+
+            if (step.PauseGameplay)
+                PauseGameplayForHudLesson();
+            else
+                ReleaseHudLessonPause();
+
+            TryShowHudLesson(step, _hudLessonVersion, 0);
+            return true;
+        }
+
+        private void TryShowHudLesson(TutorialStepDefinition step, int version, int attempt)
+        {
+            if (version != _hudLessonVersion || _activeHudLesson == PostWolfHudLesson.None)
+                return;
+
+            if (TutorialAnchorRegistry.TryGetVisibleBounds(step.AnchorId, out Rect anchorBounds))
+            {
+                if (_activeHudLesson == PostWolfHudLesson.MenuToggle
+                    && step.AllowHighlightedClick
+                    && step.DismissMode == TutorialDismissMode.ClickHighlighted)
+                    BindHudLessonClickAnchor(step.AnchorId);
+
+                _hudLessonOverlay.Show(step, anchorBounds, hasNextStep: false);
+                return;
+            }
+
+            VisualElement host = ResolveHost();
+            if (attempt < MaxHudAnchorResolveAttempts && host != null)
+            {
+                host.schedule.Execute(() => TryShowHudLesson(step, version, attempt + 1))
+                    .ExecuteLater(HudAnchorResolveRetryMilliseconds);
+                return;
+            }
+
+#if UNITY_EDITOR
+            Debug.LogWarning($"[PrologueTutorialFlowController] Could not resolve HUD tutorial anchor '{step.AnchorId}'.", this);
+#endif
+            bool wasRewardsLesson = _activeHudLesson == PostWolfHudLesson.Rewards;
+            HideHudLesson();
+
+            if (wasRewardsLesson)
+                BeginPostWolfPickupLesson();
+            else
+                UnbindPostWolfLessonEvents();
+        }
+
+        private bool EnsureHudLessonOverlay()
+        {
+            if (_hudLessonOverlay != null)
+                return true;
+
+            VisualElement host = ResolveHost();
+            if (host == null)
+                return false;
+
+            _hudLessonOverlay = new TutorialOverlayView(host);
+            _hudLessonOverlay.DismissRequested += HandleHudLessonDismissRequested;
+            return true;
+        }
+
+        private void HandleHudLessonDismissRequested()
+        {
+            if (_activeHudLesson != PostWolfHudLesson.Rewards)
+                return;
+
+            gameSession?.MarkTutorialStepCompleted(RewardsStepId);
+            HideHudLesson();
+            BeginPostWolfPickupLesson();
+        }
+
+        private void BindHudLessonClickAnchor(string anchorId)
+        {
+            UnbindHudLessonClickAnchor();
+
+            if (!TutorialAnchorRegistry.TryGetElement(anchorId, out _hudLessonClickAnchor))
+                return;
+
+            _hudLessonClickAnchor.RegisterCallback<ClickEvent>(HandleHudLessonAnchorClicked);
+        }
+
+        private void UnbindHudLessonClickAnchor()
+        {
+            if (_hudLessonClickAnchor == null)
+                return;
+
+            _hudLessonClickAnchor.UnregisterCallback<ClickEvent>(HandleHudLessonAnchorClicked);
+            _hudLessonClickAnchor = null;
+        }
+
+        private void HandleHudLessonAnchorClicked(ClickEvent evt)
+        {
+            if (_activeHudLesson != PostWolfHudLesson.MenuToggle)
+                return;
+
+            gameSession?.MarkTutorialStepCompleted(HudMenuStepId);
+            _hudLessonOverlay?.Hide();
+            UnbindHudLessonClickAnchor();
+
+            if (!BeginHudLesson(InventoryOpenStepId, PostWolfHudLesson.Inventory))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private void HideHudLesson()
+        {
+            _hudLessonVersion++;
+            _activeHudLesson = PostWolfHudLesson.None;
+            UnbindHudLessonClickAnchor();
+            _hudLessonOverlay?.Hide();
+            ReleaseHudLessonCapabilities();
+            ReleaseHudLessonPause();
+        }
+
+        private void PauseGameplayForHudLesson()
+        {
+            if (_hudLessonPausedGameplay || Time.timeScale <= 0f)
+                return;
+
+            _timeScaleBeforeHudLesson = Time.timeScale;
+            Time.timeScale = 0f;
+            _hudLessonPausedGameplay = true;
+        }
+
+        private void ReleaseHudLessonPause()
+        {
+            if (!_hudLessonPausedGameplay)
+                return;
+
+            Time.timeScale = _timeScaleBeforeHudLesson;
+            _hudLessonPausedGameplay = false;
+        }
+
+        private void BindPostWolfLessonEvents()
+        {
+            if (_postWolfLessonEventsBound)
+                return;
+
+            if (uiInventoryEvents != null)
+                uiInventoryEvents.OnInventoryUpdated += HandlePostWolfInventoryUpdated;
+
+            if (uiEvents != null)
+                uiEvents.OnScreenOpen += HandlePostWolfScreenOpened;
+
+            _postWolfLessonEventsBound = true;
+        }
+
+        private void UnbindPostWolfLessonEvents()
+        {
+            if (!_postWolfLessonEventsBound)
+                return;
+
+            if (uiInventoryEvents != null)
+                uiInventoryEvents.OnInventoryUpdated -= HandlePostWolfInventoryUpdated;
+
+            if (uiEvents != null)
+                uiEvents.OnScreenOpen -= HandlePostWolfScreenOpened;
+
+            _postWolfLessonEventsBound = false;
+        }
+
+        private bool HasTutorialLootInBackpack()
+        {
+            InventoryManager playerInventory = gameSession != null ? gameSession.PlayerInventory : null;
+            if (playerInventory == null)
+                return false;
+
+            if (tutorialBowItem == null && tutorialPotionItem == null)
+                return true;
+
+            return ContainsItem(playerInventory, tutorialBowItem)
+                && ContainsItem(playerInventory, tutorialPotionItem);
+        }
+
+        private static bool ContainsItem(InventoryManager inventory, InventoryItemSO requiredItem)
+        {
+            if (requiredItem == null)
+                return true;
+
+            if (inventory == null || inventory.LiveSlots == null)
+                return false;
+
+            for (int i = 0; i < inventory.LiveSlots.Count; i++)
+            {
+                InventorySlot slot = inventory.LiveSlots[i];
+                if (slot != null
+                    && !slot.IsEmpty
+                    && slot.HeldItem?.BaseItem == requiredItem
+                    && slot.Count > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private bool AreTutorialTipsEnabled()
         {
             return gameSession == null || gameSession.TutorialsEnabled;
@@ -506,6 +878,20 @@ namespace OutlandHaven.Tutorial
             }
 
             PauseGameplayForReactiveTip();
+            FadePromptTo(1f, promptFadeSeconds, null);
+            return true;
+        }
+
+        private bool ShowInstructionPrompt(string configuredText, string fallbackText)
+        {
+            if (!EnsurePromptView())
+                return false;
+
+            _promptLabel.text = string.IsNullOrWhiteSpace(configuredText) ? fallbackText : configuredText.Trim();
+            SetReactiveTipContinueVisible(false);
+            _promptRoot.style.display = DisplayStyle.Flex;
+            _promptRoot.BringToFront();
+            UpdatePromptPosition();
             FadePromptTo(1f, promptFadeSeconds, null);
             return true;
         }
@@ -703,8 +1089,14 @@ namespace OutlandHaven.Tutorial
             if (uiEvents == null)
                 uiEvents = Resources.Load<UIEventsSO>(DefaultUiEventsResourcePath);
 
+            if (uiInventoryEvents == null)
+                uiInventoryEvents = Resources.Load<UIInventoryEventsSO>(DefaultUiInventoryEventsResourcePath);
+
             if (gameSession == null)
                 gameSession = GameSessionSO.LoadDefault();
+
+            if (tutorialCatalog == null)
+                tutorialCatalog = TutorialCatalogSO.LoadDefault();
 
             if (inputReader == null)
                 inputReader = Resources.Load<PlayerInputReaderSO>(DefaultInputReaderResourcePath);

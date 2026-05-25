@@ -61,3 +61,51 @@ MonoBehaviour:
     priority: 0
     oneShot: 1
     prerequisiteStepIds: []
+  - stepId: prologue.rewards
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.progression
+    title: Rewards
+    body: Defeating enemies grants XP and gold. Gain enough XP to increase your level.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 0
+    dismissMode: 0
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 0
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.hud.menu
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.menu_toggle
+    title: Menu
+    body: Open your menu to see the actions available to you.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 1
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.open
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.inventory_button
+    title: Inventory
+    body: Choose Inventory to inspect and equip what you found.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 2
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []

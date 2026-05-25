@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3677243702603812344}
   - component: {fileID: 8330091602293321282}
   - component: {fileID: 3588297918356347918}
-  - component: {fileID: 4918759915854752207}
   m_Layer: 0
   m_Name: Walls
   m_TagString: Untagged
@@ -557,15 +556,3 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
---- !u!114 &4918759915854752207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8518583055666640390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9381dda21a4414087b58807289d4c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::allErase

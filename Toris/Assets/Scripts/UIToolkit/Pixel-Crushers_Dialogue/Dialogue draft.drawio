@@ -1,0 +1,86 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="VNv5p0zemqWY-_6Bftfj">
+    <mxGraphModel dx="1967" dy="1704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="html=1;fillColor=#13171d;strokeColor=#dcb35c;strokeWidth=2;fontColor=#dcb35c;fontSize=16;fontStyle=1;rounded=1;arcSize=20;align=center;" value="&lt;b&gt;Toris Story &amp;amp; Quest Progression&lt;/b&gt;&lt;br&gt;&lt;font size=&#39;10&#39; color=&#39;#9ca3af&#39;&gt;Pixel Crushers 5-Quest Narrative Flow&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="880" x="-15" y="-80" as="geometry" />
+        </mxCell>
+        <mxCell id="guide-header" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=2.5;fontColor=#f3f4f6;fontSize=13;fontStyle=1;rounded=1;arcSize=10;align=center;" value="THE GUIDE (Explorer Track)" vertex="1">
+          <mxGeometry height="40" width="340" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="guide-m1" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=11;rounded=1;arcSize=10;align=left;spacingLeft=10;spacingRight=10;whiteSpace=wrap;" value="&lt;b&gt;Quest 1: The Portal Key&lt;/b&gt;&lt;br&gt;• &lt;i&gt;Giver:&lt;/i&gt; Guide&lt;br&gt;• &lt;i&gt;Objective:&lt;/i&gt; Ask Guide for key to open portal&lt;br&gt;• &lt;i&gt;Action:&lt;/i&gt; gives item &lt;code&gt;PortalKey&lt;/code&gt;" vertex="1">
+          <mxGeometry height="75" width="260" x="80" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="guide-m2" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=11;rounded=1;arcSize=10;align=left;spacingLeft=10;spacingRight=10;whiteSpace=wrap;" value="&lt;b&gt;Quest 2: Hunt the Wolves&lt;/b&gt;&lt;br&gt;• &lt;i&gt;Objective:&lt;/i&gt; Open portal &amp;amp; kill 3 Wolves&lt;br&gt;• &lt;i&gt;Condition:&lt;/i&gt; Quest 1 is Success&lt;br&gt;• &lt;i&gt;Drops:&lt;/i&gt; Player gathers 3x &lt;code&gt;wolf_scrap&lt;/code&gt;" vertex="1">
+          <mxGeometry height="85" width="260" x="80" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="guide-m3" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=11;rounded=1;arcSize=10;align=left;spacingLeft=10;spacingRight=10;whiteSpace=wrap;" value="&lt;b&gt;Quest 4: Underworld Flora &amp;amp; Sugar&lt;/b&gt;&lt;br&gt;• &lt;i&gt;Objective:&lt;/i&gt; Pick flowers in the underworld&lt;br&gt;• &lt;i&gt;Action:&lt;/i&gt; Return &amp;amp; scrap them into sugar&lt;br&gt;• &lt;i&gt;Script:&lt;/i&gt; &lt;code&gt;TorisTakeItem(&quot;underworld_flower&quot;, 3)&lt;/code&gt;&lt;br&gt;          &lt;code&gt;TorisGiveItem(&quot;refined_sugar&quot;, 1)&lt;/code&gt;" vertex="1">
+          <mxGeometry height="95" width="260" x="80" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="guide-complete" parent="1" style="html=1;fillColor=#064e3b;strokeColor=#10b981;strokeWidth=1.5;fontColor=#10b981;fontSize=11;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Guide Exploration Questline Done&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="260" x="80" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="smith-header" parent="1" style="html=1;fillColor=#2e1065;strokeColor=#a78bfa;strokeWidth=2.5;fontColor=#f3f4f6;fontSize=13;fontStyle=1;rounded=1;arcSize=10;align=center;" value="THE SMITH (Merchant / Crafting Track)" vertex="1">
+          <mxGeometry height="40" width="340" x="470" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="smith-m1" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=11;rounded=1;arcSize=10;align=left;spacingLeft=10;spacingRight=10;whiteSpace=wrap;" value="&lt;b&gt;Smith Introduction (Welcome)&lt;/b&gt;&lt;br&gt;• Triggered when entering forge area&lt;br&gt;• Introduces Smith and unlocks his tasks" vertex="1">
+          <mxGeometry height="75" width="260" x="510" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="smith-m2" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=11;rounded=1;arcSize=10;align=left;spacingLeft=10;spacingRight=10;whiteSpace=wrap;" value="&lt;b&gt;Quest 3: Scrap Recycling&lt;/b&gt;&lt;br&gt;• &lt;i&gt;Objective:&lt;/i&gt; Sell wolf scraps to Smith&lt;br&gt;• &lt;i&gt;Script:&lt;/i&gt; &lt;code&gt;TorisTakeItem(&quot;wolf_scrap&quot;, 3)&lt;/code&gt;&lt;br&gt;• &lt;i&gt;Reward:&lt;/i&gt; &lt;code&gt;TorisGiveGold(50)&lt;/code&gt;" vertex="1">
+          <mxGeometry height="85" width="260" x="510" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="smith-m3" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=11;rounded=1;arcSize=10;align=left;spacingLeft=10;spacingRight=10;whiteSpace=wrap;" value="&lt;b&gt;Quest 5: Cookie Crafting&lt;/b&gt;&lt;br&gt;• &lt;i&gt;Step 1:&lt;/i&gt; Buy Flour from Smith Shop (&lt;code&gt;TorisTakeGold(10)&lt;/code&gt; for &lt;code&gt;flour&lt;/code&gt;)&lt;br&gt;• &lt;i&gt;Step 2:&lt;/i&gt; Combine &lt;code&gt;refined_sugar&lt;/code&gt; + &lt;code&gt;flour&lt;/code&gt; in Smith&#39;s baking panel&lt;br&gt;• &lt;i&gt;Action:&lt;/i&gt; Craft &lt;code&gt;portal_cookie&lt;/code&gt;" vertex="1">
+          <mxGeometry height="100" width="260" x="510" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="smith-complete" parent="1" style="html=1;fillColor=#064e3b;strokeColor=#10b981;strokeWidth=1.5;fontColor=#10b981;fontSize=11;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Smith Shop Questline Completed&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="260" x="510" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-guide-m1-to-m2" edge="1" parent="1" source="guide-m1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;" target="guide-m2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-guide-m2-to-m3" edge="1" parent="1" source="guide-m2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;" target="guide-m3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-guide-m3-to-comp" edge="1" parent="1" source="guide-m3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;" target="guide-complete">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-smith-m1-to-m2" edge="1" parent="1" source="smith-m1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#a78bfa;strokeWidth=1.5;fillColor=none;" target="smith-m2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-smith-m2-to-m3" edge="1" parent="1" source="smith-m2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#a78bfa;strokeWidth=1.5;fillColor=none;" target="smith-m3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-smith-m3-to-comp" edge="1" parent="1" source="smith-m3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#a78bfa;strokeWidth=1.5;fillColor=none;" target="smith-complete">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-unlock-cross" edge="1" parent="1" source="guide-m2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#f59e0b;strokeWidth=2.5;fillColor=none;dashed=1;" target="smith-m1" value="Unlocks Smith Intro">
+          <mxGeometry relative="1" x="-0.2162" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="480" y="200" />
+              <mxPoint x="480" y="118" />
+            </Array>
+            <mxPoint x="340" y="222" as="sourcePoint" />
+            <mxPoint x="510" y="117" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-item-flow-scraps" edge="1" parent="1" source="guide-m2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#10b981;strokeWidth=2;fillColor=none;dashed=1;dashPattern=1 3;" target="smith-m2" value="Provides scraps item">
+          <mxGeometry relative="1" x="0.3043" y="-15" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <mxPoint x="340" y="222" as="sourcePoint" />
+            <mxPoint x="510" y="222" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-item-flow-sugar" edge="1" parent="1" source="guide-m3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#10b981;strokeWidth=2;fillColor=none;dashed=1;dashPattern=1 3;" target="smith-m3" value="Provides refined sugar">
+          <mxGeometry relative="1" x="-0.1765" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <mxPoint x="340" y="335" as="sourcePoint" />
+            <mxPoint x="510" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

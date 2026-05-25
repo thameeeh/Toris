@@ -1,0 +1,120 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="VNv5p0zemqWY-_6Bftfj">
+    <mxGraphModel dx="1653" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title Block -->
+        <mxCell id="title" parent="1" style="html=1;fillColor=#13171d;strokeColor=#dcb35c;strokeWidth=2;fontColor=#dcb35c;fontSize=16;fontStyle=1;rounded=1;arcSize=20;align=center;" value="&lt;b&gt;Toris Quest Dependency Chain&lt;/b&gt;&lt;br&gt;&lt;font size='10' color='#9ca3af'&gt;Pixel Crushers Narrative Flow Blueprint&lt;/font&gt;" vertex="1">
+          <mxGeometry x="250" y="40" width="350" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== QUEST 1: PORTAL & HUNT ==================== -->
+        <!-- Q1 Header -->
+        <mxCell id="q1-header" parent="1" style="html=1;fillColor=#451a03;strokeColor=#f59e0b;strokeWidth=2;fontColor=#f59e0b;fontSize=13;fontStyle=1;rounded=1;arcSize=10;align=center;" value="Quest 1: The Portal &amp;amp; The Hunt" vertex="1">
+          <mxGeometry x="40" y="120" width="220" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Q1 Start -->
+        <mxCell id="q1-start" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Talk to Guide&lt;/b&gt;&lt;br&gt;NPC gives Portal Key&lt;br&gt;Tasks player with 3 Wolves" vertex="1">
+          <mxGeometry x="40" y="190" width="220" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Q1 Actions -->
+        <mxCell id="q1-actions" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Gameplay Objectives&lt;/b&gt;&lt;br&gt;1. Use Portal Key to open portal&lt;br&gt;2. Kill 3 Wolves (drops Wolf Scraps)" vertex="1">
+          <mxGeometry x="40" y="280" width="220" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Q1 Complete -->
+        <mxCell id="q1-complete" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Report to Guide&lt;/b&gt;&lt;br&gt;Quest 1 set to Success&lt;br&gt;&lt;font color='#f59e0b'&gt;&lt;i&gt;Unlocks Quest 2&lt;/i&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry x="40" y="390" width="220" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== QUEST 2: MEET THE SMITH ==================== -->
+        <!-- Q2 Header -->
+        <mxCell id="q2-header" parent="1" style="html=1;fillColor=#064e3b;strokeColor=#10b981;strokeWidth=2;fontColor=#10b981;fontSize=13;fontStyle=1;rounded=1;arcSize=10;align=center;" value="Quest 2: Meet the Blacksmith" vertex="1">
+          <mxGeometry x="310" y="120" width="220" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Q2 Start -->
+        <mxCell id="q2-start" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Find Local Smith&lt;/b&gt;&lt;br&gt;Triggered by Guide's recommendation" vertex="1">
+          <mxGeometry x="310" y="190" width="220" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Q2 Actions -->
+        <mxCell id="q2-actions" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Introduction Dialogue&lt;/b&gt;&lt;br&gt;Smith introduces himself&lt;br&gt;and welcomes player to forge" vertex="1">
+          <mxGeometry x="310" y="280" width="220" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Q2 Complete -->
+        <mxCell id="q2-complete" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;End Conversation&lt;/b&gt;&lt;br&gt;Quest 2 set to Success&lt;br&gt;&lt;font color='#10b981'&gt;&lt;i&gt;Unlocks Quest 3&lt;/i&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry x="310" y="390" width="220" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== QUEST 3: WOLF SALVAGE ==================== -->
+        <!-- Q3 Header -->
+        <mxCell id="q3-header" parent="1" style="html=1;fillColor=#2e1065;strokeColor=#a78bfa;strokeWidth=2;fontColor=#a78bfa;fontSize=13;fontStyle=1;rounded=1;arcSize=10;align=center;" value="Quest 3: Sell Wolf Scraps" vertex="1">
+          <mxGeometry x="580" y="120" width="220" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Q3 Start -->
+        <mxCell id="q3-start" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Talk to Smith&lt;/b&gt;&lt;br&gt;NPC notices wolf scraps in backpack" vertex="1">
+          <mxGeometry x="580" y="190" width="220" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Q3 Actions -->
+        <mxCell id="q3-actions" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Trade Wolf Scraps&lt;/b&gt;&lt;br&gt;Bridge calls:&lt;br&gt;TorisTakeItem(&amp;quot;wolf_scrap&amp;quot;, 3)&lt;br&gt;TorisGiveGold(50)" vertex="1">
+          <mxGeometry x="580" y="280" width="220" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Q3 Complete -->
+        <mxCell id="q3-complete" parent="1" style="html=1;fillColor=#1e293b;strokeColor=#3b82f6;strokeWidth=1.5;fontColor=#f3f4f6;fontSize=12;rounded=1;arcSize=10;align=center;whiteSpace=wrap;" value="&lt;b&gt;Transaction Completed&lt;/b&gt;&lt;br&gt;Quest 3 set to Success&lt;br&gt;&lt;font color='#a78bfa'&gt;&lt;i&gt;Chain Completed!&lt;/i&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry x="580" y="390" width="220" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== EDGES & FLOW ==================== -->
+        <!-- Q1 Steps -->
+        <mxCell id="edge-q1-1" edge="1" parent="1" source="q1-start" target="q1-actions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-q1-2" edge="1" parent="1" source="q1-actions" target="q1-complete" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Q1 Success -> Q2 Header (Unlock Dependency Arrow) -->
+        <mxCell id="edge-dep-1" edge="1" parent="1" source="q1-complete" target="q2-header" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#f59e0b;strokeWidth=2.5;fillColor=none;dashed=1;" value="Unlocks" as="geometry">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="240" as="sourcePoint" />
+            <mxPoint x="310" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Q2 Steps -->
+        <mxCell id="edge-q2-1" edge="1" parent="1" source="q2-start" target="q2-actions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-q2-2" edge="1" parent="1" source="q2-actions" target="q2-complete" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Q2 Success -> Q3 Header (Unlock Dependency Arrow) -->
+        <mxCell id="edge-dep-2" edge="1" parent="1" source="q2-complete" target="q3-header" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#10b981;strokeWidth=2.5;fillColor=none;dashed=1;" value="Unlocks" as="geometry">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="240" as="sourcePoint" />
+            <mxPoint x="580" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Q3 Steps -->
+        <mxCell id="edge-q3-1" edge="1" parent="1" source="q3-start" target="q3-actions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-q3-2" edge="1" parent="1" source="q3-actions" target="q3-complete" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3b82f6;strokeWidth=1.5;fillColor=none;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

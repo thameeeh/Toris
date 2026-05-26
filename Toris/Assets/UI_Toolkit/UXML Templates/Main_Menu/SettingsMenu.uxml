@@ -27,6 +27,11 @@
                 <ui:Label text="Display" class="settings-section-header settings-section-spacing"/>
 
                 <ui:VisualElement class="settings-slider-row">
+                    <ui:Label text="Monitor" class="stat-label"/>
+                    <ui:DropdownField name="Dropdown_Display" class="settings-dropdown"/>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Resolution" class="stat-label"/>
                     <ui:DropdownField name="Dropdown_Resolution" class="settings-dropdown"/>
                 </ui:VisualElement>

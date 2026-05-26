@@ -67,6 +67,7 @@ Suggested stored values:
 - Resolution width.
 - Resolution height.
 - Fullscreen mode.
+- Display index for multi-monitor setups.
 
 Suggested defaults:
 
@@ -75,21 +76,32 @@ Suggested defaults:
 
 ### Resolution Selection
 
-Use `Screen.resolutions` to build available options at runtime.
-
 Recommended behavior:
 
 - Use a curated popular-resolution list instead of exposing every mode reported by the monitor.
 - Supported windowed resolutions are `1280 x 720`, `1366 x 768`, `1600 x 900`, `1920 x 1080`, and `2560 x 1440`.
-- Hide curated resolutions that exceed the current display's native resolution.
+- Hide curated resolutions that exceed the selected display's native resolution.
 - Sort the list consistently.
 - Display options as plain labels such as `1920 x 1080`.
 - Keep selected values pending until the player presses `Apply`.
 - After `Apply`, temporarily apply the selected resolution and ask the player to confirm.
 - If the player confirms, save the new values.
-- If the player rejects or the confirmation times out, restore the previous resolution and window mode.
+- If the player rejects or the confirmation times out, restore the previous monitor, resolution, and window mode.
 
 For a pixel-art game, avoid quality-style settings such as texture quality, shadows, lighting, anti-aliasing, and post-processing unless a specific art or performance issue appears later.
+
+### Monitor Selection
+
+Use Unity's display layout API to detect available desktop displays. The Settings menu should expose a `Monitor` dropdown before resolution and window mode.
+
+Recommended behavior:
+
+- Display each monitor as its name and native size when Unity provides that data.
+- Store the selected Unity display index in `PlayerPrefs`.
+- Filter the curated resolution list against the selected monitor's native resolution.
+- When applying changes, move the main window to the selected display first, wait for Unity's async move operation to finish, then apply the selected resolution and window mode.
+- Keep monitor changes inside the same apply, keep, and revert flow as resolution/window mode changes.
+- If Unity cannot report display layout data, fall back to a single current-display option.
 
 ### Window Mode Selection
 
@@ -117,14 +129,15 @@ Display changes should use an explicit apply flow instead of applying permanentl
 
 Recommended flow:
 
-1. Player selects a resolution or window mode.
+1. Player selects a monitor, resolution, or window mode.
 2. `Apply` becomes enabled when pending display values differ from the saved/effective values.
 3. Player presses `Apply`.
 4. Controller snapshots the previous display settings.
-5. Controller applies the pending settings temporarily.
-6. A confirmation prompt appears, asking the player to keep the changes.
-7. If confirmed, save the new display settings.
-8. If rejected or timed out, revert to the snapshot and restore the dropdown values.
+5. Controller moves the window to the selected monitor when needed.
+6. Controller applies the pending resolution and window mode temporarily.
+7. A confirmation prompt appears, asking the player to keep the changes.
+8. If confirmed, save the new display settings.
+9. If rejected or timed out, revert to the snapshot and restore the dropdown values.
 
 The project already has a confirmation modal pattern in the main menu. Reuse that pattern if it is available in both main menu and gameplay settings contexts; otherwise, add a small settings-specific confirmation view that still follows MVP rules.
 
@@ -134,6 +147,7 @@ Add a new `Display` section above or below `Gameplay`.
 
 Suggested controls:
 
+- `DropdownField` named `Dropdown_Display`.
 - `DropdownField` named `Dropdown_Resolution`.
 - `DropdownField` named `Dropdown_WindowMode`.
 - `Button` named `Btn_ApplyDisplay`.
@@ -210,7 +224,7 @@ Recommended near-term extra:
 The current Settings menu can remain a single page for the first display settings pass if it still fits comfortably. Once key rebinding or more gameplay options are added, split the menu into tabs:
 
 - `Audio`: Master, Music, and SFX volume.
-- `Display`: Resolution, window mode, and display apply/revert controls.
+- `Display`: Monitor, resolution, window mode, and display apply/revert controls.
 - `Gameplay`: Loot Vacuum and future gameplay comfort toggles.
 - `Controls`: Keyboard and mouse rebinding first, gamepad later.
 
@@ -226,7 +240,7 @@ The tab implementation should follow existing UI Toolkit MVP rules:
 2. Add Display controls to `SettingsMenu.uxml`.
 3. Add USS layout for dropdown rows and scrollable content if needed.
 4. Extend `SettingsMenuView` with display control queries, setters, events, and cleanup.
-5. Extend `SettingsMenuController` to populate resolution/window mode options and track pending display values.
+5. Extend `SettingsMenuController` to populate monitor/resolution/window mode options and track pending display values.
 6. Add display `Apply` handling with confirm/revert behavior.
 7. Save display settings only after confirmation.
 8. Update documentation with the final behavior.
@@ -242,7 +256,7 @@ Static checks:
 - Confirm new UI callbacks are unsubscribed.
 - Confirm PlayerPrefs keys are constants.
 - Confirm no new gameplay logic is placed in the view.
-- Confirm display changes can revert to the previous resolution and window mode.
+- Confirm display changes can revert to the previous monitor, resolution, and window mode.
 - Confirm no key rebinding implementation changes only one of `.inputactions` or generated C#.
 
 Unity manual checks:
@@ -252,6 +266,8 @@ Unity manual checks:
 - Select a new resolution and confirm it.
 - Select a new resolution and reject or time out the confirmation, then verify it reverts.
 - Switch between fullscreen and windowed modes.
+- On a multi-monitor setup, switch the monitor selection and confirm the window moves to the selected display.
+- On a multi-monitor setup, switch the monitor selection and reject or time out the confirmation, then verify it returns to the previous display.
 - Close and reopen Settings to confirm displayed values persist.
 - Restart the game and confirm saved display settings load.
 - Confirm Escape closes Settings correctly.

@@ -11,6 +11,7 @@ public class SettingsMenuView : GameView
     private Slider _masterVolumeSlider;
     private Slider _musicVolumeSlider;
     private Slider _sfxVolumeSlider;
+    private DropdownField _displayDropdown;
     private DropdownField _resolutionDropdown;
     private DropdownField _windowModeDropdown;
     private Button _applyDisplayButton;
@@ -24,6 +25,7 @@ public class SettingsMenuView : GameView
     public event Action<float> OnMasterVolumeChanged;
     public event Action<float> OnMusicVolumeChanged;
     public event Action<float> OnSFXVolumeChanged;
+    public event Action<int> OnDisplaySelected;
     public event Action<int> OnResolutionSelected;
     public event Action<int> OnWindowModeSelected;
     public event Action OnApplyDisplayClicked;
@@ -55,6 +57,12 @@ public class SettingsMenuView : GameView
         if (_sfxVolumeSlider != null)
         {
             _sfxVolumeSlider.RegisterValueChangedCallback(HandleSfxVolumeChanged);
+        }
+
+        _displayDropdown = Root.Q<DropdownField>("Dropdown_Display");
+        if (_displayDropdown != null)
+        {
+            _displayDropdown.RegisterValueChangedCallback(HandleDisplayChanged);
         }
 
         _resolutionDropdown = Root.Q<DropdownField>("Dropdown_Resolution");
@@ -105,6 +113,11 @@ public class SettingsMenuView : GameView
         _sfxVolumeSlider?.SetValueWithoutNotify(sfxVolume);
     }
 
+    public void SetDisplayOptions(IList<string> options, int selectedIndex)
+    {
+        SetDropdownOptions(_displayDropdown, options, selectedIndex);
+    }
+
     public void SetResolutionOptions(IList<string> options, int selectedIndex)
     {
         SetDropdownOptions(_resolutionDropdown, options, selectedIndex);
@@ -122,8 +135,14 @@ public class SettingsMenuView : GameView
 
     public void SetDisplayControlsEnabled(bool enabled)
     {
+        _displayDropdown?.SetEnabled(enabled);
         _resolutionDropdown?.SetEnabled(enabled);
         _windowModeDropdown?.SetEnabled(enabled);
+    }
+
+    public void SetDisplayControlEnabled(bool enabled)
+    {
+        _displayDropdown?.SetEnabled(enabled);
     }
 
     public void SetResolutionControlEnabled(bool enabled)
@@ -171,6 +190,7 @@ public class SettingsMenuView : GameView
     private void HandleMasterVolumeChanged(ChangeEvent<float> evt) => OnMasterVolumeChanged?.Invoke(evt.newValue);
     private void HandleMusicVolumeChanged(ChangeEvent<float> evt) => OnMusicVolumeChanged?.Invoke(evt.newValue);
     private void HandleSfxVolumeChanged(ChangeEvent<float> evt) => OnSFXVolumeChanged?.Invoke(evt.newValue);
+    private void HandleDisplayChanged(ChangeEvent<string> evt) => OnDisplaySelected?.Invoke(_displayDropdown.index);
     private void HandleResolutionChanged(ChangeEvent<string> evt) => OnResolutionSelected?.Invoke(_resolutionDropdown.index);
     private void HandleWindowModeChanged(ChangeEvent<string> evt) => OnWindowModeSelected?.Invoke(_windowModeDropdown.index);
     private void HandleApplyDisplayClicked() => OnApplyDisplayClicked?.Invoke();
@@ -184,6 +204,7 @@ public class SettingsMenuView : GameView
         if (_masterVolumeSlider != null) _masterVolumeSlider.UnregisterValueChangedCallback(HandleMasterVolumeChanged);
         if (_musicVolumeSlider != null) _musicVolumeSlider.UnregisterValueChangedCallback(HandleMusicVolumeChanged);
         if (_sfxVolumeSlider != null) _sfxVolumeSlider.UnregisterValueChangedCallback(HandleSfxVolumeChanged);
+        if (_displayDropdown != null) _displayDropdown.UnregisterValueChangedCallback(HandleDisplayChanged);
         if (_resolutionDropdown != null) _resolutionDropdown.UnregisterValueChangedCallback(HandleResolutionChanged);
         if (_windowModeDropdown != null) _windowModeDropdown.UnregisterValueChangedCallback(HandleWindowModeChanged);
         if (_applyDisplayButton != null) _applyDisplayButton.clicked -= HandleApplyDisplayClicked;

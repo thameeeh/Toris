@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class SettingsMenuController : MonoBehaviour
     private MainMenuUIManager _mainMenuUiManager;
     private UIManager _gameUiManager;
     private InputSystem_Actions _input;
+    private Coroutine _displayApplyRoutine;
+    private readonly List<GameDisplayOption> _availableDisplays = new List<GameDisplayOption>();
     private readonly List<GameDisplayResolution> _availableResolutions = new List<GameDisplayResolution>();
     private readonly List<FullScreenMode> _availableWindowModes = new List<FullScreenMode>
     {
@@ -28,6 +31,7 @@ public class SettingsMenuController : MonoBehaviour
     private float _displayConfirmationDeadline;
     private bool _ownsCancelInput;
     private bool _awaitingDisplayConfirmation;
+    private bool _displayApplyInProgress;
 
     private void Awake()
     {
@@ -109,6 +113,7 @@ public class SettingsMenuController : MonoBehaviour
         _view.OnMasterVolumeChanged += HandleMasterVolumeChanged;
         _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
         _view.OnSFXVolumeChanged += HandleSfxVolumeChanged;
+        _view.OnDisplaySelected += HandleDisplaySelected;
         _view.OnResolutionSelected += HandleResolutionSelected;
         _view.OnWindowModeSelected += HandleWindowModeSelected;
         _view.OnApplyDisplayClicked += HandleApplyDisplayClicked;
@@ -181,40 +186,60 @@ public class SettingsMenuController : MonoBehaviour
     {
         GameDisplaySettings.Load();
 
-        _availableResolutions.Clear();
-        _availableResolutions.AddRange(GameDisplaySettings.GetAvailableResolutions());
+        _availableDisplays.Clear();
+        _availableDisplays.AddRange(GameDisplaySettings.GetAvailableDisplays());
 
         _savedDisplaySettings = GameDisplaySettings.SavedSettings;
         _pendingDisplaySettings = _savedDisplaySettings;
+        RefreshAvailableResolutions();
         RefreshDisplayControls();
         _view.HideDisplayConfirmation();
         RefreshDisplayControlInteractivity();
         _view.SetDisplayApplyEnabled(false);
     }
 
+    private void HandleDisplaySelected(int selectedIndex)
+    {
+        if (_awaitingDisplayConfirmation || _displayApplyInProgress || selectedIndex < 0 || selectedIndex >= _availableDisplays.Count)
+            return;
+
+        GameDisplayOption displayOption = _availableDisplays[selectedIndex];
+        _pendingDisplaySettings = GameDisplaySettings.Normalize(new GameDisplaySettingsSnapshot(
+            _pendingDisplaySettings.Width,
+            _pendingDisplaySettings.Height,
+            _pendingDisplaySettings.WindowMode,
+            displayOption.Index));
+
+        RefreshAvailableResolutions();
+        RefreshDisplayControls();
+        RefreshDisplayApplyState();
+    }
+
     private void HandleResolutionSelected(int selectedIndex)
     {
-        if (_awaitingDisplayConfirmation || selectedIndex < 0 || selectedIndex >= _availableResolutions.Count)
+        if (_awaitingDisplayConfirmation || _displayApplyInProgress || selectedIndex < 0 || selectedIndex >= _availableResolutions.Count)
             return;
 
         GameDisplayResolution resolution = _availableResolutions[selectedIndex];
         _pendingDisplaySettings = new GameDisplaySettingsSnapshot(
             resolution.Width,
             resolution.Height,
-            _pendingDisplaySettings.WindowMode);
+            _pendingDisplaySettings.WindowMode,
+            _pendingDisplaySettings.DisplayIndex);
 
         RefreshDisplayApplyState();
     }
 
     private void HandleWindowModeSelected(int selectedIndex)
     {
-        if (_awaitingDisplayConfirmation || selectedIndex < 0 || selectedIndex >= _availableWindowModes.Count)
+        if (_awaitingDisplayConfirmation || _displayApplyInProgress || selectedIndex < 0 || selectedIndex >= _availableWindowModes.Count)
             return;
 
         _pendingDisplaySettings = new GameDisplaySettingsSnapshot(
             _pendingDisplaySettings.Width,
             _pendingDisplaySettings.Height,
-            _availableWindowModes[selectedIndex]);
+            _availableWindowModes[selectedIndex],
+            _pendingDisplaySettings.DisplayIndex);
 
         RefreshDisplayControls();
         RefreshDisplayControlInteractivity();
@@ -223,16 +248,32 @@ public class SettingsMenuController : MonoBehaviour
 
     private void HandleApplyDisplayClicked()
     {
-        if (_awaitingDisplayConfirmation || _pendingDisplaySettings.Equals(_savedDisplaySettings))
+        if (_awaitingDisplayConfirmation || _displayApplyInProgress || _pendingDisplaySettings.Equals(_savedDisplaySettings))
             return;
 
-        _previousDisplaySettings = GameDisplaySettings.CurrentSettings;
-        GameDisplaySettings.Apply(_pendingDisplaySettings);
+        _displayApplyRoutine = StartCoroutine(ApplyDisplayChangesRoutine());
+    }
 
+    private IEnumerator ApplyDisplayChangesRoutine()
+    {
+        _displayApplyInProgress = true;
+        _previousDisplaySettings = GameDisplaySettings.CurrentSettings;
+        RefreshDisplayControlInteractivity();
+        _view.SetDisplayApplyEnabled(false);
+
+        AsyncOperation moveOperation = GameDisplaySettings.MoveMainWindowToDisplay(_pendingDisplaySettings);
+        while (moveOperation != null && !moveOperation.isDone)
+        {
+            yield return null;
+        }
+
+        GameDisplaySettings.ApplyResolutionAndMode(_pendingDisplaySettings);
+
+        _displayApplyInProgress = false;
+        _displayApplyRoutine = null;
         _awaitingDisplayConfirmation = true;
         _displayConfirmationDeadline = Time.unscaledTime + DisplayConfirmationTimeoutSeconds;
         RefreshDisplayControlInteractivity();
-        _view.SetDisplayApplyEnabled(false);
         _view.ShowDisplayConfirmation(CreateDisplayConfirmationMessage(DisplayConfirmationTimeoutSeconds));
     }
 
@@ -241,8 +282,10 @@ public class SettingsMenuController : MonoBehaviour
         if (!_awaitingDisplayConfirmation)
             return;
 
-        _savedDisplaySettings = _pendingDisplaySettings;
-        GameDisplaySettings.Save(_savedDisplaySettings);
+        GameDisplaySettings.Save(_pendingDisplaySettings);
+        _savedDisplaySettings = GameDisplaySettings.SavedSettings;
+        _pendingDisplaySettings = _savedDisplaySettings;
+        RefreshAvailableResolutions();
         EndDisplayConfirmation();
         RefreshDisplayControls();
         RefreshDisplayApplyState();
@@ -276,8 +319,16 @@ public class SettingsMenuController : MonoBehaviour
 
     private void RevertPendingDisplayChanges()
     {
+        if (_displayApplyRoutine != null)
+        {
+            StopCoroutine(_displayApplyRoutine);
+            _displayApplyRoutine = null;
+            _displayApplyInProgress = false;
+        }
+
         GameDisplaySettings.Apply(_previousDisplaySettings);
         _pendingDisplaySettings = _savedDisplaySettings;
+        RefreshAvailableResolutions();
         EndDisplayConfirmation();
         RefreshDisplayControls();
         RefreshDisplayApplyState();
@@ -287,6 +338,7 @@ public class SettingsMenuController : MonoBehaviour
     {
         _pendingDisplaySettings = _savedDisplaySettings;
         _view.HideDisplayConfirmation();
+        RefreshAvailableResolutions();
         RefreshDisplayControls();
         RefreshDisplayControlInteractivity();
         RefreshDisplayApplyState();
@@ -301,6 +353,7 @@ public class SettingsMenuController : MonoBehaviour
 
     private void RefreshDisplayControls()
     {
+        _view.SetDisplayOptions(BuildDisplayLabels(), FindDisplayIndex(_pendingDisplaySettings.DisplayIndex));
         _view.SetResolutionOptions(BuildResolutionLabels(), FindResolutionIndex(_pendingDisplaySettings.Resolution));
         _view.SetWindowModeOptions(BuildWindowModeLabels(), FindWindowModeIndex(_pendingDisplaySettings.WindowMode));
         RefreshDisplayControlInteractivity();
@@ -308,14 +361,34 @@ public class SettingsMenuController : MonoBehaviour
 
     private void RefreshDisplayApplyState()
     {
-        _view.SetDisplayApplyEnabled(!_awaitingDisplayConfirmation && !_pendingDisplaySettings.Equals(_savedDisplaySettings));
+        _view.SetDisplayApplyEnabled(!_awaitingDisplayConfirmation
+            && !_displayApplyInProgress
+            && !_pendingDisplaySettings.Equals(_savedDisplaySettings));
     }
 
     private void RefreshDisplayControlInteractivity()
     {
-        bool controlsEnabled = !_awaitingDisplayConfirmation;
+        bool controlsEnabled = !_awaitingDisplayConfirmation && !_displayApplyInProgress;
+        _view.SetDisplayControlEnabled(controlsEnabled);
         _view.SetWindowModeControlEnabled(controlsEnabled);
         _view.SetResolutionControlEnabled(controlsEnabled && _pendingDisplaySettings.WindowMode == FullScreenMode.Windowed);
+    }
+
+    private void RefreshAvailableResolutions()
+    {
+        _availableResolutions.Clear();
+        _availableResolutions.AddRange(GameDisplaySettings.GetAvailableResolutions(_pendingDisplaySettings.DisplayIndex));
+    }
+
+    private List<string> BuildDisplayLabels()
+    {
+        List<string> labels = new List<string>(_availableDisplays.Count);
+        for (int i = 0; i < _availableDisplays.Count; i++)
+        {
+            labels.Add(_availableDisplays[i].ToString());
+        }
+
+        return labels;
     }
 
     private List<string> BuildResolutionLabels()
@@ -345,6 +418,19 @@ public class SettingsMenuController : MonoBehaviour
         for (int i = 0; i < _availableResolutions.Count; i++)
         {
             if (_availableResolutions[i].Equals(resolution))
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private int FindDisplayIndex(int displayIndex)
+    {
+        for (int i = 0; i < _availableDisplays.Count; i++)
+        {
+            if (_availableDisplays[i].Index == displayIndex)
             {
                 return i;
             }
@@ -383,6 +469,19 @@ public class SettingsMenuController : MonoBehaviour
 
     private void OnDestroy()
     {
+        bool wasDisplayApplyInProgress = _displayApplyInProgress;
+        if (_displayApplyRoutine != null)
+        {
+            StopCoroutine(_displayApplyRoutine);
+            _displayApplyRoutine = null;
+            _displayApplyInProgress = false;
+        }
+
+        if (wasDisplayApplyInProgress)
+        {
+            GameDisplaySettings.Apply(_previousDisplaySettings);
+        }
+
         if (_awaitingDisplayConfirmation)
         {
             RevertPendingDisplayChanges();
@@ -396,6 +495,7 @@ public class SettingsMenuController : MonoBehaviour
             _view.OnMasterVolumeChanged -= HandleMasterVolumeChanged;
             _view.OnMusicVolumeChanged -= HandleMusicVolumeChanged;
             _view.OnSFXVolumeChanged -= HandleSfxVolumeChanged;
+            _view.OnDisplaySelected -= HandleDisplaySelected;
             _view.OnResolutionSelected -= HandleResolutionSelected;
             _view.OnWindowModeSelected -= HandleWindowModeSelected;
             _view.OnApplyDisplayClicked -= HandleApplyDisplayClicked;

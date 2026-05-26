@@ -37,25 +37,75 @@ public struct GameDisplayResolution : IEquatable<GameDisplayResolution>
     }
 }
 
+public struct GameDisplayOption : IEquatable<GameDisplayOption>
+{
+    public GameDisplayOption(int index, string name, int width, int height)
+    {
+        Index = Mathf.Max(0, index);
+        Name = string.IsNullOrWhiteSpace(name) ? $"Display {Index + 1}" : name.Trim();
+        Width = Mathf.Max(1, width);
+        Height = Mathf.Max(1, height);
+    }
+
+    public int Index { get; }
+    public string Name { get; }
+    public int Width { get; }
+    public int Height { get; }
+    public GameDisplayResolution Resolution => new GameDisplayResolution(Width, Height);
+
+    public bool Equals(GameDisplayOption other)
+    {
+        return Index == other.Index
+            && Width == other.Width
+            && Height == other.Height
+            && string.Equals(Name, other.Name, StringComparison.Ordinal);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is GameDisplayOption other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hashCode = Index;
+            hashCode = (hashCode * 397) ^ Width;
+            hashCode = (hashCode * 397) ^ Height;
+            hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+            return hashCode;
+        }
+    }
+
+    public override string ToString()
+    {
+        return $"Display {Index + 1} - {Width} x {Height}";
+    }
+}
+
 public struct GameDisplaySettingsSnapshot : IEquatable<GameDisplaySettingsSnapshot>
 {
-    public GameDisplaySettingsSnapshot(int width, int height, FullScreenMode windowMode)
+    public GameDisplaySettingsSnapshot(int width, int height, FullScreenMode windowMode, int displayIndex = 0)
     {
         Width = Mathf.Max(1, width);
         Height = Mathf.Max(1, height);
         WindowMode = GameDisplaySettings.ResolveSupportedWindowMode(windowMode);
+        DisplayIndex = Mathf.Max(0, displayIndex);
     }
 
     public int Width { get; }
     public int Height { get; }
     public FullScreenMode WindowMode { get; }
+    public int DisplayIndex { get; }
     public GameDisplayResolution Resolution => new GameDisplayResolution(Width, Height);
 
     public bool Equals(GameDisplaySettingsSnapshot other)
     {
         return Width == other.Width
             && Height == other.Height
-            && WindowMode == other.WindowMode;
+            && WindowMode == other.WindowMode
+            && DisplayIndex == other.DisplayIndex;
     }
 
     public override bool Equals(object obj)
@@ -70,6 +120,7 @@ public struct GameDisplaySettingsSnapshot : IEquatable<GameDisplaySettingsSnapsh
             int hashCode = Width;
             hashCode = (hashCode * 397) ^ Height;
             hashCode = (hashCode * 397) ^ (int)WindowMode;
+            hashCode = (hashCode * 397) ^ DisplayIndex;
             return hashCode;
         }
     }
@@ -80,6 +131,7 @@ public static class GameDisplaySettings
     private const string ResolutionWidthKey = "display.resolution.width";
     private const string ResolutionHeightKey = "display.resolution.height";
     private const string WindowModeKey = "display.window_mode";
+    private const string DisplayIndexKey = "display.index";
     private const int MinimumResolutionDimension = 1;
 
     private static readonly GameDisplayResolution[] PreferredResolutions =
@@ -110,7 +162,8 @@ public static class GameDisplaySettings
             return new GameDisplaySettingsSnapshot(
                 Mathf.Max(MinimumResolutionDimension, Screen.width),
                 Mathf.Max(MinimumResolutionDimension, Screen.height),
-                Screen.fullScreenMode);
+                Screen.fullScreenMode,
+                ResolveCurrentDisplayIndex());
         }
     }
 
@@ -125,15 +178,18 @@ public static class GameDisplaySettings
         int defaultWidth = ResolveDefaultWidth();
         int defaultHeight = ResolveDefaultHeight();
         FullScreenMode defaultMode = ResolveSupportedWindowMode(Screen.fullScreenMode);
+        int defaultDisplayIndex = ResolveCurrentDisplayIndex();
         bool hasSavedSettings = PlayerPrefs.HasKey(ResolutionWidthKey)
             || PlayerPrefs.HasKey(ResolutionHeightKey)
-            || PlayerPrefs.HasKey(WindowModeKey);
+            || PlayerPrefs.HasKey(WindowModeKey)
+            || PlayerPrefs.HasKey(DisplayIndexKey);
 
         int width = PlayerPrefs.GetInt(ResolutionWidthKey, defaultWidth);
         int height = PlayerPrefs.GetInt(ResolutionHeightKey, defaultHeight);
         FullScreenMode windowMode = ResolveWindowMode(PlayerPrefs.GetInt(WindowModeKey, (int)defaultMode));
+        int displayIndex = PlayerPrefs.GetInt(DisplayIndexKey, defaultDisplayIndex);
 
-        savedSettings = Sanitize(new GameDisplaySettingsSnapshot(width, height, windowMode));
+        savedSettings = Sanitize(new GameDisplaySettingsSnapshot(width, height, windowMode, displayIndex));
         loaded = true;
 
         if (hasSavedSettings)
@@ -150,15 +206,41 @@ public static class GameDisplaySettings
         PlayerPrefs.SetInt(ResolutionWidthKey, savedSettings.Width);
         PlayerPrefs.SetInt(ResolutionHeightKey, savedSettings.Height);
         PlayerPrefs.SetInt(WindowModeKey, (int)savedSettings.WindowMode);
+        PlayerPrefs.SetInt(DisplayIndexKey, savedSettings.DisplayIndex);
         PlayerPrefs.Save();
     }
 
     public static void Apply(GameDisplaySettingsSnapshot settings)
     {
         GameDisplaySettingsSnapshot sanitizedSettings = Sanitize(settings);
-        GameDisplayResolution resolution = sanitizedSettings.WindowMode == FullScreenMode.Windowed
-            ? sanitizedSettings.Resolution
-            : ResolveNativeDisplayResolution();
+        MoveMainWindowToDisplay(sanitizedSettings);
+        ApplyResolutionAndMode(sanitizedSettings);
+    }
+
+    public static AsyncOperation MoveMainWindowToDisplay(GameDisplaySettingsSnapshot settings)
+    {
+        List<DisplayInfo> displays = GetDisplayLayoutSafe();
+        if (displays.Count == 0)
+        {
+            return null;
+        }
+
+        int displayIndex = ClampDisplayIndex(settings.DisplayIndex, displays.Count);
+        DisplayInfo display = displays[displayIndex];
+        try
+        {
+            return Screen.MoveMainWindowTo(display, Vector2Int.zero);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public static void ApplyResolutionAndMode(GameDisplaySettingsSnapshot settings)
+    {
+        GameDisplaySettingsSnapshot sanitizedSettings = Sanitize(settings);
+        GameDisplayResolution resolution = ResolveOutputResolution(sanitizedSettings);
 
         Screen.SetResolution(
             resolution.Width,
@@ -166,26 +248,27 @@ public static class GameDisplaySettings
             sanitizedSettings.WindowMode);
     }
 
-    public static List<GameDisplayResolution> GetAvailableResolutions()
+    public static GameDisplaySettingsSnapshot Normalize(GameDisplaySettingsSnapshot settings)
+    {
+        return Sanitize(settings);
+    }
+
+    public static List<GameDisplayOption> GetAvailableDisplays()
+    {
+        List<GameDisplayOption> displayOptions = BuildDisplayOptions();
+        if (displayOptions.Count == 0)
+        {
+            GameDisplayResolution fallbackResolution = ResolveCurrentDisplayResolution();
+            displayOptions.Add(new GameDisplayOption(0, "Current Display", fallbackResolution.Width, fallbackResolution.Height));
+        }
+
+        return displayOptions;
+    }
+
+    public static List<GameDisplayResolution> GetAvailableResolutions(int displayIndex)
     {
         EnsureLoaded();
-
-        List<GameDisplayResolution> resolutions = new List<GameDisplayResolution>();
-        GameDisplayResolution nativeResolution = ResolveNativeDisplayResolution();
-        for (int i = 0; i < PreferredResolutions.Length; i++)
-        {
-            GameDisplayResolution resolution = PreferredResolutions[i];
-            if (FitsNativeDisplay(resolution, nativeResolution))
-            {
-                resolutions.Add(resolution);
-            }
-        }
-
-        if (resolutions.Count == 0)
-        {
-            resolutions.Add(nativeResolution);
-        }
-
+        List<GameDisplayResolution> resolutions = GetAvailableResolutionsWithoutLoad(displayIndex);
         resolutions.Sort(CompareResolutionDescending);
         return resolutions;
     }
@@ -207,11 +290,13 @@ public static class GameDisplaySettings
 
     private static GameDisplaySettingsSnapshot Sanitize(GameDisplaySettingsSnapshot settings)
     {
-        GameDisplayResolution resolution = ResolvePreferredResolution(settings.Resolution);
+        int displayIndex = ResolveValidDisplayIndex(settings.DisplayIndex);
+        GameDisplayResolution resolution = ResolvePreferredResolution(settings.Resolution, displayIndex);
         return new GameDisplaySettingsSnapshot(
             resolution.Width,
             resolution.Height,
-            ResolveSupportedWindowMode(settings.WindowMode));
+            ResolveSupportedWindowMode(settings.WindowMode),
+            displayIndex);
     }
 
     private static FullScreenMode ResolveWindowMode(int savedValue)
@@ -243,12 +328,12 @@ public static class GameDisplaySettings
         return Mathf.Max(MinimumResolutionDimension, Screen.currentResolution.height);
     }
 
-    private static GameDisplayResolution ResolvePreferredResolution(GameDisplayResolution requestedResolution)
+    private static GameDisplayResolution ResolvePreferredResolution(GameDisplayResolution requestedResolution, int displayIndex)
     {
-        List<GameDisplayResolution> availableResolutions = GetAvailableResolutionsWithoutLoad();
+        List<GameDisplayResolution> availableResolutions = GetAvailableResolutionsWithoutLoad(displayIndex);
         if (availableResolutions.Count == 0)
         {
-            return ResolveNativeDisplayResolution();
+            return ResolveDisplayResolution(displayIndex);
         }
 
         GameDisplayResolution bestResolution = availableResolutions[0];
@@ -271,10 +356,10 @@ public static class GameDisplaySettings
         return bestResolution;
     }
 
-    private static List<GameDisplayResolution> GetAvailableResolutionsWithoutLoad()
+    private static List<GameDisplayResolution> GetAvailableResolutionsWithoutLoad(int displayIndex)
     {
         List<GameDisplayResolution> resolutions = new List<GameDisplayResolution>();
-        GameDisplayResolution nativeResolution = ResolveNativeDisplayResolution();
+        GameDisplayResolution nativeResolution = ResolveDisplayResolution(displayIndex);
         for (int i = 0; i < PreferredResolutions.Length; i++)
         {
             GameDisplayResolution resolution = PreferredResolutions[i];
@@ -292,7 +377,25 @@ public static class GameDisplaySettings
         return resolutions;
     }
 
-    private static GameDisplayResolution ResolveNativeDisplayResolution()
+    private static GameDisplayResolution ResolveOutputResolution(GameDisplaySettingsSnapshot settings)
+    {
+        return settings.WindowMode == FullScreenMode.Windowed
+            ? settings.Resolution
+            : ResolveDisplayResolution(settings.DisplayIndex);
+    }
+
+    private static GameDisplayResolution ResolveDisplayResolution(int displayIndex)
+    {
+        List<GameDisplayOption> displayOptions = BuildDisplayOptions();
+        if (displayOptions.Count == 0)
+        {
+            return ResolveCurrentDisplayResolution();
+        }
+
+        return ResolveDisplayOption(displayIndex, displayOptions).Resolution;
+    }
+
+    private static GameDisplayResolution ResolveCurrentDisplayResolution()
     {
         int width = Screen.currentResolution.width > 0
             ? Screen.currentResolution.width
@@ -303,6 +406,101 @@ public static class GameDisplaySettings
             : ResolveDefaultHeight();
 
         return new GameDisplayResolution(width, height);
+    }
+
+    private static int ResolveValidDisplayIndex(int displayIndex)
+    {
+        List<GameDisplayOption> displayOptions = BuildDisplayOptions();
+        return displayOptions.Count == 0
+            ? 0
+            : ResolveDisplayOption(displayIndex, displayOptions).Index;
+    }
+
+    private static GameDisplayOption ResolveDisplayOption(int displayIndex, List<GameDisplayOption> displayOptions)
+    {
+        for (int i = 0; i < displayOptions.Count; i++)
+        {
+            if (displayOptions[i].Index == displayIndex)
+            {
+                return displayOptions[i];
+            }
+        }
+
+        return displayOptions[ClampDisplayIndex(displayIndex, displayOptions.Count)];
+    }
+
+    private static int ResolveCurrentDisplayIndex()
+    {
+        List<DisplayInfo> displays = GetDisplayLayoutSafe();
+        if (displays.Count == 0)
+        {
+            return 0;
+        }
+
+        try
+        {
+            DisplayInfo currentDisplay = Screen.mainWindowDisplayInfo;
+            for (int i = 0; i < displays.Count; i++)
+            {
+                DisplayInfo display = displays[i];
+                if (display.width == currentDisplay.width
+                    && display.height == currentDisplay.height
+                    && string.Equals(display.name, currentDisplay.name, StringComparison.Ordinal))
+                {
+                    return i;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+
+        return 0;
+    }
+
+    private static List<GameDisplayOption> BuildDisplayOptions()
+    {
+        List<DisplayInfo> displays = GetDisplayLayoutSafe();
+        List<GameDisplayOption> displayOptions = new List<GameDisplayOption>(displays.Count);
+
+        for (int i = 0; i < displays.Count; i++)
+        {
+            DisplayInfo display = displays[i];
+            if (display.width < MinimumResolutionDimension || display.height < MinimumResolutionDimension)
+            {
+                continue;
+            }
+
+            displayOptions.Add(new GameDisplayOption(i, display.name, display.width, display.height));
+        }
+
+        return displayOptions;
+    }
+
+    private static List<DisplayInfo> GetDisplayLayoutSafe()
+    {
+        List<DisplayInfo> displays = new List<DisplayInfo>();
+        try
+        {
+            Screen.GetDisplayLayout(displays);
+        }
+        catch (Exception)
+        {
+            displays.Clear();
+        }
+
+        return displays;
+    }
+
+    private static int ClampDisplayIndex(int displayIndex, int displayCount)
+    {
+        if (displayCount <= 0)
+        {
+            return 0;
+        }
+
+        return Mathf.Clamp(displayIndex, 0, displayCount - 1);
     }
 
     private static bool FitsNativeDisplay(GameDisplayResolution resolution, GameDisplayResolution nativeResolution)

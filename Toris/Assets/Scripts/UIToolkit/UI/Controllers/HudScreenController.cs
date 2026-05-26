@@ -50,7 +50,7 @@ namespace OutlandHaven.UIToolkit
             }
 
             // 2. Pass the INSTANCE to the View
-            _view = new HUDView(hudInstance, _gameSession.PlayerHUD, _uiEvents, _uiInventoryEvents, _uiSkillEvents, _buttonTemplate, _slotTemplate, _abilitySlotTemplate);
+            _view = new HUDView(hudInstance, _gameSession.PlayerHUD, _gameSession.PlayerSkills, _uiEvents, _uiInventoryEvents, _uiSkillEvents, _buttonTemplate, _slotTemplate, _abilitySlotTemplate);
             _view.Initialize();
             
             // Setup with both inventories/controllers

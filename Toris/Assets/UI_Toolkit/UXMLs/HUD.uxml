@@ -8,6 +8,11 @@
     </ui:VisualElement>
     <ui:VisualElement name="hud__bottom-section">
         <ui:VisualElement name="hud__left-status-container" class="hud-left-status-container">
+            <ui:VisualElement name="hud__sp-notification" class="hud-sp-notification-container">
+                <ui:VisualElement name="hud__sp-icon" class="hud-sp-icon">
+                    <ui:Label text="0" name="hud__sp-count" class="hud-sp-count"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
             <ui:VisualElement name="hud__bars-container" class="hud-bars-container">
                 <ui:Label text="Level" name="hud__level-label" class="HUD"/>
                 <ui:ProgressBar value="0" name="hud__xp-bar">

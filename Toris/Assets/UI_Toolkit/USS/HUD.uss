@@ -229,3 +229,44 @@
     border-width: 1px;
     border-color: var(--color-border-highlight);
 }
+
+/* --- Skill Points Notification Badge --- */
+.hud-sp-notification-container {
+    position: absolute;
+    top: -55px; /* Floats beautifully above the left container */
+    left: 120px; /* Moved to the right to clear the menu pop up */
+    flex-direction: row;
+    align-items: center;
+    background-color: transparent;
+    border-width: 0;
+    padding: 6px 12px;
+    cursor: link;
+    display: none; /* Managed dynamically by HUDView.cs */
+    transition: scale 0.15s ease-out-back;
+}
+
+.hud-sp-notification-container:hover {
+    scale: 1.1;
+}
+
+.hud-sp-icon {
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: url("project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Star.png?fileID=21300000&guid=9f49955ea7e0adf45bdaabad005e7418&type=3#Star");
+}
+
+.hud-sp-count {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    color: #ffffff;
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.95);
+    letter-spacing: 0;
+    margin: 0;
+    padding: 0;
+    -unity-text-align: middle-center;
+}

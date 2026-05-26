@@ -22,10 +22,15 @@ namespace OutlandHaven.UIToolkit
 
         // Data Reference
         private PlayerHUDBridge _playerHudBridge;
+        private PlayerSkillTracker _skillTracker;
         private PlayerPotionHUDView _potionHUDView;
         private PlayerAbilityHUDView _abilityHUDView;
         private VisualTreeAsset _slotTemplate;
         private VisualTreeAsset _abilitySlotTemplate;
+
+        // Visual Elements
+        private VisualElement _spNotification;
+        private Label _spCountLabel;
         
         // Progress Bar is 0-100
         private const float PROGRESS_BAR_MAX = 100f;
@@ -36,6 +41,7 @@ namespace OutlandHaven.UIToolkit
         public HUDView(
             VisualElement topElement, 
             PlayerHUDBridge data, 
+            PlayerSkillTracker skillTracker,
             UIEventsSO uiEvents, 
             UIInventoryEventsSO uiInventoryEvents, 
             OutlandHaven.Skills.UISkillEventsSO uiSkillEvents, 
@@ -45,6 +51,7 @@ namespace OutlandHaven.UIToolkit
             : base(topElement, uiEvents)
         {
             _playerHudBridge = data;
+            _skillTracker = skillTracker;
             _buttonTemplate = buttonTemplate;
             _slotTemplate = slotTemplate;
             _abilitySlotTemplate = abilitySlotTemplate;
@@ -99,6 +106,10 @@ namespace OutlandHaven.UIToolkit
             _levelLabel = m_TopElement.Q<Label>("hud__level-label");
             _goldLabel = m_TopElement.Q<Label>("hud__gold-label");
 
+            // SP Notification Element
+            _spNotification = m_TopElement.Q<VisualElement>("hud__sp-notification");
+            _spCountLabel = m_TopElement.Q<Label>("hud__sp-count");
+
             // Menu Tab Elements
             _mainToggleBtn = m_TopElement.Q<Button>("hud__menu-tab");
             _optionsContainer = m_TopElement.Q<VisualElement>("hud__menu-options");
@@ -121,6 +132,10 @@ namespace OutlandHaven.UIToolkit
         protected override void RegisterButtonCallbacks()
         {
             _mainToggleBtn.RegisterCallback<ClickEvent>(ToggleMenu);
+            _spNotification?.RegisterCallback<ClickEvent>(evt => 
+            {
+                UIEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
+            });
         }
 
         private void CreateMenuButton(string name, string shortcut, ScreenType targetScreen)
@@ -180,6 +195,12 @@ namespace OutlandHaven.UIToolkit
 
                 _playerHudBridge.PushInitialState(); // Trigger initial level/XP update
             }
+
+            if (_skillTracker != null)
+            {
+                _skillTracker.OnAvailableSPChanged += UpdateSPNotification;
+                UpdateSPNotification(_skillTracker.AvailableSP);
+            }
         }
 
         public override void Hide()
@@ -197,6 +218,11 @@ namespace OutlandHaven.UIToolkit
                 _playerHudBridge.OnExperienceChanged -= UpdateExperienceUI;
                 _playerHudBridge.OnGoldChanged -= UpdateGoldUI;
             }
+
+            if (_skillTracker != null)
+            {
+                _skillTracker.OnAvailableSPChanged -= UpdateSPNotification;
+            }
         }
 
         public override void Dispose()
@@ -207,6 +233,22 @@ namespace OutlandHaven.UIToolkit
         }
 
         // --- Event Handlers ---
+
+        private void UpdateSPNotification(int availableSP)
+        {
+            if (_spNotification == null) return;
+            
+            if (availableSP > 0)
+            {
+                _spNotification.style.display = DisplayStyle.Flex;
+                if (_spCountLabel != null)
+                    _spCountLabel.text = availableSP.ToString();
+            }
+            else
+            {
+                _spNotification.style.display = DisplayStyle.None;
+            }
+        }
 
         private void UpdateHealthUI(float current, float max)
         {

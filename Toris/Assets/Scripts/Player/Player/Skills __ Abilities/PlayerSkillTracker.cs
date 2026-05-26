@@ -11,11 +11,14 @@ public class PlayerSkillTracker
     // HashSet is vastly more performant for looking up "Does player have X?" than a List
     [SerializeField] private List<string> _unlockedSkillIDs = new List<string>();
 
+    public event Action<int> OnAvailableSPChanged;
+
     public int AvailableSP => _availableSP;
 
     public void AddSP(int amount)
     {
         _availableSP += amount;
+        OnAvailableSPChanged?.Invoke(_availableSP);
     }
 
     public bool TryUnlockSkill(SkillData skill)
@@ -30,6 +33,7 @@ public class PlayerSkillTracker
         {
             _availableSP -= skill.costSP;
             _unlockedSkillIDs.Add(skill.skillID);
+            OnAvailableSPChanged?.Invoke(_availableSP);
             return true;
         }
 
@@ -70,11 +74,13 @@ public class PlayerSkillTracker
         _unlockedSkillIDs = unlockedIDs != null 
             ? new List<string>(unlockedIDs) 
             : new List<string>();
+        OnAvailableSPChanged?.Invoke(_availableSP);
     }
 
     public void Reset()
     {
         _availableSP = 10;
         _unlockedSkillIDs.Clear();
+        OnAvailableSPChanged?.Invoke(_availableSP);
     }
 }

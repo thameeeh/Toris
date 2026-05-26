@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.IO;
@@ -7,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-public class CodeDependencyParser : EditorWindow
+public static class CodeDependencyParser
 {
     [MenuItem("Tools/Analyze Dependencies")]
     public static void Analyze()
@@ -129,3 +130,4 @@ public class CodeDependencyParser : EditorWindow
         return types;
     }
 }
+#endif

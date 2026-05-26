@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class SettingsMenuController : MonoBehaviour
 {
+    private const int DisplayConfirmationTimeoutSeconds = 10;
+    private const string DisplayConfirmationMessageFormat = "Keep these display settings?\nReverting in {0} seconds.";
+
     [SerializeField] private VisualTreeAsset _settingsTemplate;
     [SerializeField] private UIEventsSO _uiEvents;
 
@@ -11,7 +15,19 @@ public class SettingsMenuController : MonoBehaviour
     private MainMenuUIManager _mainMenuUiManager;
     private UIManager _gameUiManager;
     private InputSystem_Actions _input;
+    private readonly List<GameDisplayResolution> _availableResolutions = new List<GameDisplayResolution>();
+    private readonly List<FullScreenMode> _availableWindowModes = new List<FullScreenMode>
+    {
+        FullScreenMode.FullScreenWindow,
+        FullScreenMode.Windowed
+    };
+
+    private GameDisplaySettingsSnapshot _savedDisplaySettings;
+    private GameDisplaySettingsSnapshot _pendingDisplaySettings;
+    private GameDisplaySettingsSnapshot _previousDisplaySettings;
+    private float _displayConfirmationDeadline;
     private bool _ownsCancelInput;
+    private bool _awaitingDisplayConfirmation;
 
     private void Awake()
     {
@@ -88,10 +104,16 @@ public class SettingsMenuController : MonoBehaviour
             AudioVolumeSettings.SfxVolume);
 
         _view.SetLootMagnetValue(LootMagnetSettings.LootMagnetEnabled);
+        InitializeDisplaySettings();
 
         _view.OnMasterVolumeChanged += HandleMasterVolumeChanged;
         _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
         _view.OnSFXVolumeChanged += HandleSfxVolumeChanged;
+        _view.OnResolutionSelected += HandleResolutionSelected;
+        _view.OnWindowModeSelected += HandleWindowModeSelected;
+        _view.OnApplyDisplayClicked += HandleApplyDisplayClicked;
+        _view.OnKeepDisplayClicked += HandleKeepDisplayClicked;
+        _view.OnRevertDisplayClicked += HandleRevertDisplayClicked;
         _view.OnLootMagnetToggled += HandleLootMagnetToggled;
 
         if (_mainMenuUiManager != null)
@@ -103,13 +125,32 @@ public class SettingsMenuController : MonoBehaviour
             // Settings is shared by main menu and gameplay; gameplay mounts it as a modal overlay.
             _gameUiManager.RegisterView(_view, ScreenZone.Modal);
         }
+
+        if (_uiEvents != null)
+        {
+            _uiEvents.OnScreenClose += HandleScreenClosed;
+        }
+    }
+
+    private void Update()
+    {
+        if (!_awaitingDisplayConfirmation)
+            return;
+
+        float remainingSeconds = _displayConfirmationDeadline - Time.unscaledTime;
+        if (remainingSeconds <= 0f)
+        {
+            RevertPendingDisplayChanges();
+            return;
+        }
+
+        _view.SetDisplayConfirmationMessage(CreateDisplayConfirmationMessage(remainingSeconds));
     }
 
     private void OnCloseRequested()
     {
-        // Tell the UIManager to close this specific screen
-        AudioVolumeSettings.Save();
-        LootMagnetSettings.Save();
+        // Tell the UIManager to close this specific screen. Persistence is finalized
+        // when the view actually closes so Escape and close-button behavior match.
         _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
     }
 
@@ -136,14 +177,230 @@ public class SettingsMenuController : MonoBehaviour
         LootMagnetSettings.SetLootMagnetEnabled(value);
     }
 
+    private void InitializeDisplaySettings()
+    {
+        GameDisplaySettings.Load();
+
+        _availableResolutions.Clear();
+        _availableResolutions.AddRange(GameDisplaySettings.GetAvailableResolutions());
+
+        _savedDisplaySettings = GameDisplaySettings.SavedSettings;
+        _pendingDisplaySettings = _savedDisplaySettings;
+        RefreshDisplayControls();
+        _view.HideDisplayConfirmation();
+        RefreshDisplayControlInteractivity();
+        _view.SetDisplayApplyEnabled(false);
+    }
+
+    private void HandleResolutionSelected(int selectedIndex)
+    {
+        if (_awaitingDisplayConfirmation || selectedIndex < 0 || selectedIndex >= _availableResolutions.Count)
+            return;
+
+        GameDisplayResolution resolution = _availableResolutions[selectedIndex];
+        _pendingDisplaySettings = new GameDisplaySettingsSnapshot(
+            resolution.Width,
+            resolution.Height,
+            _pendingDisplaySettings.WindowMode);
+
+        RefreshDisplayApplyState();
+    }
+
+    private void HandleWindowModeSelected(int selectedIndex)
+    {
+        if (_awaitingDisplayConfirmation || selectedIndex < 0 || selectedIndex >= _availableWindowModes.Count)
+            return;
+
+        _pendingDisplaySettings = new GameDisplaySettingsSnapshot(
+            _pendingDisplaySettings.Width,
+            _pendingDisplaySettings.Height,
+            _availableWindowModes[selectedIndex]);
+
+        RefreshDisplayControls();
+        RefreshDisplayControlInteractivity();
+        RefreshDisplayApplyState();
+    }
+
+    private void HandleApplyDisplayClicked()
+    {
+        if (_awaitingDisplayConfirmation || _pendingDisplaySettings.Equals(_savedDisplaySettings))
+            return;
+
+        _previousDisplaySettings = GameDisplaySettings.CurrentSettings;
+        GameDisplaySettings.Apply(_pendingDisplaySettings);
+
+        _awaitingDisplayConfirmation = true;
+        _displayConfirmationDeadline = Time.unscaledTime + DisplayConfirmationTimeoutSeconds;
+        RefreshDisplayControlInteractivity();
+        _view.SetDisplayApplyEnabled(false);
+        _view.ShowDisplayConfirmation(CreateDisplayConfirmationMessage(DisplayConfirmationTimeoutSeconds));
+    }
+
+    private void HandleKeepDisplayClicked()
+    {
+        if (!_awaitingDisplayConfirmation)
+            return;
+
+        _savedDisplaySettings = _pendingDisplaySettings;
+        GameDisplaySettings.Save(_savedDisplaySettings);
+        EndDisplayConfirmation();
+        RefreshDisplayControls();
+        RefreshDisplayApplyState();
+    }
+
+    private void HandleRevertDisplayClicked()
+    {
+        if (_awaitingDisplayConfirmation)
+        {
+            RevertPendingDisplayChanges();
+        }
+    }
+
+    private void HandleScreenClosed(ScreenType screenType)
+    {
+        if (screenType != ScreenType.SettingsModal)
+            return;
+
+        if (_awaitingDisplayConfirmation)
+        {
+            RevertPendingDisplayChanges();
+        }
+        else
+        {
+            ResetPendingDisplaySelection();
+        }
+
+        AudioVolumeSettings.Save();
+        LootMagnetSettings.Save();
+    }
+
+    private void RevertPendingDisplayChanges()
+    {
+        GameDisplaySettings.Apply(_previousDisplaySettings);
+        _pendingDisplaySettings = _savedDisplaySettings;
+        EndDisplayConfirmation();
+        RefreshDisplayControls();
+        RefreshDisplayApplyState();
+    }
+
+    private void ResetPendingDisplaySelection()
+    {
+        _pendingDisplaySettings = _savedDisplaySettings;
+        _view.HideDisplayConfirmation();
+        RefreshDisplayControls();
+        RefreshDisplayControlInteractivity();
+        RefreshDisplayApplyState();
+    }
+
+    private void EndDisplayConfirmation()
+    {
+        _awaitingDisplayConfirmation = false;
+        _view.HideDisplayConfirmation();
+        RefreshDisplayControlInteractivity();
+    }
+
+    private void RefreshDisplayControls()
+    {
+        _view.SetResolutionOptions(BuildResolutionLabels(), FindResolutionIndex(_pendingDisplaySettings.Resolution));
+        _view.SetWindowModeOptions(BuildWindowModeLabels(), FindWindowModeIndex(_pendingDisplaySettings.WindowMode));
+        RefreshDisplayControlInteractivity();
+    }
+
+    private void RefreshDisplayApplyState()
+    {
+        _view.SetDisplayApplyEnabled(!_awaitingDisplayConfirmation && !_pendingDisplaySettings.Equals(_savedDisplaySettings));
+    }
+
+    private void RefreshDisplayControlInteractivity()
+    {
+        bool controlsEnabled = !_awaitingDisplayConfirmation;
+        _view.SetWindowModeControlEnabled(controlsEnabled);
+        _view.SetResolutionControlEnabled(controlsEnabled && _pendingDisplaySettings.WindowMode == FullScreenMode.Windowed);
+    }
+
+    private List<string> BuildResolutionLabels()
+    {
+        List<string> labels = new List<string>(_availableResolutions.Count);
+        for (int i = 0; i < _availableResolutions.Count; i++)
+        {
+            labels.Add(_availableResolutions[i].ToString());
+        }
+
+        return labels;
+    }
+
+    private List<string> BuildWindowModeLabels()
+    {
+        List<string> labels = new List<string>(_availableWindowModes.Count);
+        for (int i = 0; i < _availableWindowModes.Count; i++)
+        {
+            labels.Add(GetWindowModeLabel(_availableWindowModes[i]));
+        }
+
+        return labels;
+    }
+
+    private int FindResolutionIndex(GameDisplayResolution resolution)
+    {
+        for (int i = 0; i < _availableResolutions.Count; i++)
+        {
+            if (_availableResolutions[i].Equals(resolution))
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private int FindWindowModeIndex(FullScreenMode windowMode)
+    {
+        FullScreenMode supportedWindowMode = GameDisplaySettings.ResolveSupportedWindowMode(windowMode);
+        for (int i = 0; i < _availableWindowModes.Count; i++)
+        {
+            if (_availableWindowModes[i] == supportedWindowMode)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private static string GetWindowModeLabel(FullScreenMode windowMode)
+    {
+        return GameDisplaySettings.ResolveSupportedWindowMode(windowMode) == FullScreenMode.Windowed
+            ? "Windowed"
+            : "Fullscreen";
+    }
+
+    private static string CreateDisplayConfirmationMessage(float remainingSeconds)
+    {
+        return string.Format(
+            DisplayConfirmationMessageFormat,
+            Mathf.CeilToInt(Mathf.Max(0f, remainingSeconds)));
+    }
+
     private void OnDestroy()
     {
+        if (_awaitingDisplayConfirmation)
+        {
+            RevertPendingDisplayChanges();
+        }
+
+        if (_uiEvents != null) _uiEvents.OnScreenClose -= HandleScreenClosed;
+
         if (_view != null)
         {
             _view.OnCloseClicked -= OnCloseRequested;
             _view.OnMasterVolumeChanged -= HandleMasterVolumeChanged;
             _view.OnMusicVolumeChanged -= HandleMusicVolumeChanged;
             _view.OnSFXVolumeChanged -= HandleSfxVolumeChanged;
+            _view.OnResolutionSelected -= HandleResolutionSelected;
+            _view.OnWindowModeSelected -= HandleWindowModeSelected;
+            _view.OnApplyDisplayClicked -= HandleApplyDisplayClicked;
+            _view.OnKeepDisplayClicked -= HandleKeepDisplayClicked;
+            _view.OnRevertDisplayClicked -= HandleRevertDisplayClicked;
             _view.OnLootMagnetToggled -= HandleLootMagnetToggled;
             _view.Dispose();
         }

@@ -6,7 +6,7 @@
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.76);"/>
         <ui:VisualElement name="VisualElement" class="settings-panel">
             <ui:Label text="SETTINGS" class="panel-title settings-title"/>
-            <ui:VisualElement class="settings-content">
+            <ui:ScrollView class="settings-content">
                 <ui:Label text="Audio" class="settings-section-header"/>
                 
                 <ui:VisualElement class="settings-slider-row">
@@ -24,17 +24,40 @@
                     <ui:Slider name="Slider_SFXVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
                 </ui:VisualElement>
 
+                <ui:Label text="Display" class="settings-section-header settings-section-spacing"/>
+
+                <ui:VisualElement class="settings-slider-row">
+                    <ui:Label text="Resolution" class="stat-label"/>
+                    <ui:DropdownField name="Dropdown_Resolution" class="settings-dropdown"/>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="settings-slider-row">
+                    <ui:Label text="Window Mode" class="stat-label"/>
+                    <ui:DropdownField name="Dropdown_WindowMode" class="settings-dropdown"/>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="settings-action-row">
+                    <ui:Button name="Btn_ApplyDisplay" text="Apply Display" class="standard-button settings-apply-button"/>
+                </ui:VisualElement>
+
                 <ui:Label text="Gameplay" class="settings-section-header settings-section-spacing"/>
 
                 <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Loot Vacuum" class="stat-label"/>
                     <ui:Toggle name="Toggle_LootMagnet" value="true"/>
                 </ui:VisualElement>
-
-                <ui:Label text="[ WIP ] Display Resolution" class="stat-label settings-section-spacing"/>
-                <ui:Label text="[ WIP ] Keybindings" class="stat-label"/>
-            </ui:VisualElement>
+            </ui:ScrollView>
             <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>
+            <ui:VisualElement name="DisplayConfirmationOverlay" class="settings-confirmation-overlay">
+                <ui:VisualElement class="settings-confirmation-panel">
+                    <ui:Label text="DISPLAY CHANGES" class="settings-confirmation-title"/>
+                    <ui:Label name="Label_DisplayConfirmationMessage" text="Keep these display settings?" class="settings-confirmation-message"/>
+                    <ui:VisualElement class="settings-confirmation-buttons">
+                        <ui:Button name="Btn_RevertDisplay" text="Revert" class="standard-button settings-confirmation-button"/>
+                        <ui:Button name="Btn_KeepDisplay" text="Keep" class="standard-button settings-confirmation-button"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

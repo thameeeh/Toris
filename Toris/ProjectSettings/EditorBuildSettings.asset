@@ -9,14 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu Scenes/_GameInitiator.unity
     guid: 9addb92a7172a4942b350f53e261e435
   - enabled: 1
-    path: Assets/Scenes/MainArea.unity
-    guid: 876f372170924524caea4f07114b4b41
+    path: Assets/Scenes/Menu Scene/MainMenu.unity
+    guid: 265eccf9950f7634fa4ac504657dcb08
   - enabled: 1
     path: Assets/Scenes/Prologue.unity
     guid: a4237d3fd7e77cf4bb0c4bf8e00b8bef
   - enabled: 1
-    path: Assets/Scenes/Menu Scene/MainMenu.unity
-    guid: 265eccf9950f7634fa4ac504657dcb08
+    path: Assets/Scenes/MainArea.unity
+    guid: 876f372170924524caea4f07114b4b41
   - enabled: 1
     path: Assets/Scenes/ProceduralTiles.unity
     guid: 7dd0601ab3f044343b8a89c14cf1f1e9

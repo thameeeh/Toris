@@ -24,7 +24,17 @@
 }
 
 .settings-title {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+}
+
+.settings-tabs {
+    flex-direction: row;
+    margin-bottom: 24px;
+}
+
+.settings-tab {
+    width: 180px;
+    flex-grow: 0;
 }
 
 .settings-content {

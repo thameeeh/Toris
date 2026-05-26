@@ -6,8 +6,13 @@ using OutlandHaven.UIToolkit;
 public class SettingsMenuView : GameView
 {
     public override ScreenType ID => ScreenType.SettingsModal;
+    private const string ActiveTabClass = "panel-tab--active";
 
     private Button _closeButton;
+    private VisualElement _mainTab;
+    private VisualElement _controlsTab;
+    private VisualElement _mainContent;
+    private VisualElement _controlsContent;
     private Slider _masterVolumeSlider;
     private Slider _musicVolumeSlider;
     private Slider _sfxVolumeSlider;
@@ -40,6 +45,21 @@ public class SettingsMenuView : GameView
         base.Initialize();
         _closeButton = Root.Q<Button>("Btn_Close");
         if (_closeButton != null) _closeButton.clicked += HandleCloseClicked;
+
+        _mainTab = Root.Q<VisualElement>("Settings_MainTab");
+        if (_mainTab != null)
+        {
+            _mainTab.RegisterCallback<ClickEvent>(HandleMainTabClicked);
+        }
+
+        _controlsTab = Root.Q<VisualElement>("Settings_ControlsTab");
+        if (_controlsTab != null)
+        {
+            _controlsTab.RegisterCallback<ClickEvent>(HandleControlsTabClicked);
+        }
+
+        _mainContent = Root.Q<VisualElement>("Settings_MainContent");
+        _controlsContent = Root.Q<VisualElement>("Settings_ControlsContent");
 
         _masterVolumeSlider = Root.Q<Slider>("Slider_MasterVolume");
         if (_masterVolumeSlider != null)
@@ -104,6 +124,8 @@ public class SettingsMenuView : GameView
         {
             _lootMagnetToggle.RegisterValueChangedCallback(HandleLootMagnetToggled);
         }
+
+        ShowMainTab();
     }
 
     public void SetVolumeValues(float masterVolume, float musicVolume, float sfxVolume)
@@ -186,7 +208,25 @@ public class SettingsMenuView : GameView
         _lootMagnetToggle?.SetValueWithoutNotify(enabled);
     }
 
+    public override void Show()
+    {
+        ShowMainTab();
+        base.Show();
+    }
+
+    public void ShowMainTab()
+    {
+        ShowTab(_mainTab, _mainContent);
+    }
+
+    public void ShowControlsTab()
+    {
+        ShowTab(_controlsTab, _controlsContent);
+    }
+
     private void HandleCloseClicked() => OnCloseClicked?.Invoke();
+    private void HandleMainTabClicked(ClickEvent evt) => ShowMainTab();
+    private void HandleControlsTabClicked(ClickEvent evt) => ShowControlsTab();
     private void HandleMasterVolumeChanged(ChangeEvent<float> evt) => OnMasterVolumeChanged?.Invoke(evt.newValue);
     private void HandleMusicVolumeChanged(ChangeEvent<float> evt) => OnMusicVolumeChanged?.Invoke(evt.newValue);
     private void HandleSfxVolumeChanged(ChangeEvent<float> evt) => OnSFXVolumeChanged?.Invoke(evt.newValue);
@@ -201,6 +241,8 @@ public class SettingsMenuView : GameView
     public override void Dispose()
     {
         if (_closeButton != null) _closeButton.clicked -= HandleCloseClicked;
+        if (_mainTab != null) _mainTab.UnregisterCallback<ClickEvent>(HandleMainTabClicked);
+        if (_controlsTab != null) _controlsTab.UnregisterCallback<ClickEvent>(HandleControlsTabClicked);
         if (_masterVolumeSlider != null) _masterVolumeSlider.UnregisterValueChangedCallback(HandleMasterVolumeChanged);
         if (_musicVolumeSlider != null) _musicVolumeSlider.UnregisterValueChangedCallback(HandleMusicVolumeChanged);
         if (_sfxVolumeSlider != null) _sfxVolumeSlider.UnregisterValueChangedCallback(HandleSfxVolumeChanged);
@@ -212,6 +254,23 @@ public class SettingsMenuView : GameView
         if (_revertDisplayButton != null) _revertDisplayButton.clicked -= HandleRevertDisplayClicked;
         if (_lootMagnetToggle != null) _lootMagnetToggle.UnregisterValueChangedCallback(HandleLootMagnetToggled);
         base.Dispose();
+    }
+
+    private void ShowTab(VisualElement activeTab, VisualElement activeContent)
+    {
+        _mainTab?.RemoveFromClassList(ActiveTabClass);
+        _controlsTab?.RemoveFromClassList(ActiveTabClass);
+        activeTab?.AddToClassList(ActiveTabClass);
+
+        if (_mainContent != null)
+        {
+            _mainContent.style.display = activeContent == _mainContent ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        if (_controlsContent != null)
+        {
+            _controlsContent.style.display = activeContent == _controlsContent ? DisplayStyle.Flex : DisplayStyle.None;
+        }
     }
 
     private static void SetDropdownOptions(DropdownField dropdown, IList<string> options, int selectedIndex)

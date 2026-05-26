@@ -6,7 +6,15 @@
         <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.76);"/>
         <ui:VisualElement name="VisualElement" class="settings-panel">
             <ui:Label text="SETTINGS" class="panel-title settings-title"/>
-            <ui:ScrollView class="settings-content">
+            <ui:VisualElement class="settings-tabs">
+                <ui:VisualElement name="Settings_MainTab" class="panel-tab settings-tab">
+                    <ui:Label text="Main" class="panel-tab-label"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="Settings_ControlsTab" class="panel-tab settings-tab">
+                    <ui:Label text="Controls" class="panel-tab-label"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:ScrollView name="Settings_MainContent" class="settings-content">
                 <ui:Label text="Audio" class="settings-section-header"/>
                 
                 <ui:VisualElement class="settings-slider-row">
@@ -51,6 +59,9 @@
                     <ui:Label text="Loot Vacuum" class="stat-label"/>
                     <ui:Toggle name="Toggle_LootMagnet" value="true"/>
                 </ui:VisualElement>
+            </ui:ScrollView>
+            <ui:ScrollView name="Settings_ControlsContent" class="settings-content">
+                <ui:Label text="Keyboard &amp; Mouse" class="settings-section-header"/>
             </ui:ScrollView>
             <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>
             <ui:VisualElement name="DisplayConfirmationOverlay" class="settings-confirmation-overlay">

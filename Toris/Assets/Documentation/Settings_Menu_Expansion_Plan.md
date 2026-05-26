@@ -143,16 +143,20 @@ The project already has a confirmation modal pattern in the main menu. Reuse tha
 
 ### UI Changes
 
-Add a new `Display` section above or below `Gameplay`.
+Keep the existing Audio, Display, and Gameplay controls grouped under a `Main` tab.
 
 Suggested controls:
 
+- `VisualElement` named `Settings_MainTab`.
+- `VisualElement` named `Settings_ControlsTab`.
+- `ScrollView` named `Settings_MainContent`.
+- `ScrollView` named `Settings_ControlsContent`.
 - `DropdownField` named `Dropdown_Display`.
 - `DropdownField` named `Dropdown_Resolution`.
 - `DropdownField` named `Dropdown_WindowMode`.
 - `Button` named `Btn_ApplyDisplay`.
 
-Keep the current right-side panel structure for the first display pass. Once the Settings menu grows beyond a comfortable single page, split it into tabs such as `Audio`, `Display`, `Gameplay`, and `Controls`.
+Keep the current right-side panel structure. Use two top-level tabs only: `Main` for current settings, and `Controls` for keyboard and mouse rebinding work.
 
 ## Phase 2: Key Rebinding
 
@@ -221,11 +225,9 @@ Recommended near-term extra:
 
 ## Tabbed Settings Direction
 
-The current Settings menu can remain a single page for the first display settings pass if it still fits comfortably. Once key rebinding or more gameplay options are added, split the menu into tabs:
+The Settings menu should use two top-level tabs:
 
-- `Audio`: Master, Music, and SFX volume.
-- `Display`: Monitor, resolution, window mode, and display apply/revert controls.
-- `Gameplay`: Loot Vacuum and future gameplay comfort toggles.
+- `Main`: Audio, Display, Gameplay, and other general comfort settings.
 - `Controls`: Keyboard and mouse rebinding first, gamepad later.
 
 The tab implementation should follow existing UI Toolkit MVP rules:
@@ -233,6 +235,7 @@ The tab implementation should follow existing UI Toolkit MVP rules:
 - Main settings view owns tab visual switching only.
 - Controller owns setting application and persistence.
 - Tab layout and visibility styling live in UXML/USS.
+- The menu should open on `Main` by default.
 
 ## Suggested Implementation Order
 
@@ -256,6 +259,7 @@ Static checks:
 - Confirm new UI callbacks are unsubscribed.
 - Confirm PlayerPrefs keys are constants.
 - Confirm no new gameplay logic is placed in the view.
+- Confirm tab switching only changes visible UI content and active tab styling.
 - Confirm display changes can revert to the previous monitor, resolution, and window mode.
 - Confirm no key rebinding implementation changes only one of `.inputactions` or generated C#.
 
@@ -263,6 +267,7 @@ Unity manual checks:
 
 - Open Settings from Main Menu.
 - Open Settings from Pause Menu.
+- Switch between `Main` and `Controls`, then confirm returning to `Main` preserves the current control values.
 - Select a new resolution and confirm it.
 - Select a new resolution and reject or time out the confirmation, then verify it reverts.
 - Switch between fullscreen and windowed modes.

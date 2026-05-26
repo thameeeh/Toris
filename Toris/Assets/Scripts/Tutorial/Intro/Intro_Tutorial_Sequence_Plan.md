@@ -46,11 +46,11 @@ Completed:
 - The Prologue backpack and potion slots start empty so its first item interaction comes from the authored wolf drops.
 - Inside Inventory, the optional lesson spotlights the dropped `Training Bow`, waits for it to be equipped, opens Stats, asks the player to drag the potion into a potion slot, then highlights the HUD hotkeys.
 - Completing the final post-wolf HUD hotkey beat disables the authored `prologueBlocker` scene object so the player can continue toward Safe Haven.
+- Completing the Prologue exit handoff marks `PrologueCompleted` in the active save so future loads can skip directly to `MainArea`.
 
 Still open:
 
 - Assign final background images, music, and SFX for the story cards.
-- Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
 - Add optional ready-shot/release guidance on top of the existing bow ready and shot fired signals, if the fight still needs it after playtesting.
 
 ## Fresh Save Flow

@@ -9,6 +9,7 @@ namespace OutlandHaven.SaveSystem
         public string SaveTime;
         public string CurrentSceneName;
         public string SpawnPointID; // Tells the scene where to place the player
+        public bool PrologueCompleted;
 
         // Progression
         public int Level;

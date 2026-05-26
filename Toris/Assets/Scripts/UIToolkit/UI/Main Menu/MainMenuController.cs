@@ -194,10 +194,7 @@ public class MainMenuController : MonoBehaviour
             _saveManager.ActiveSession.ImportFromSaveData(loadedData, _saveManager.MasterItemDatabase);
 
             // 3. Transition Scene
-            string sceneToLoad = string.IsNullOrEmpty(loadedData.CurrentSceneName)
-                ? MainAreaSceneName
-                : loadedData.CurrentSceneName;
-            StartGameSceneLoad(sceneToLoad);
+            StartGameSceneLoad(ResolveLoadedGameSceneName(loadedData));
         }
         else
         {
@@ -236,6 +233,25 @@ public class MainMenuController : MonoBehaviour
         return string.IsNullOrWhiteSpace(_newGameSceneName)
             ? PrologueSceneName
             : _newGameSceneName.Trim();
+    }
+
+    private static string ResolveLoadedGameSceneName(GameSaveData loadedData)
+    {
+        if (loadedData == null)
+            return MainAreaSceneName;
+
+        if (string.IsNullOrWhiteSpace(loadedData.CurrentSceneName))
+            return MainAreaSceneName;
+
+        // Prologue completion is a progression gate, not a scene-export concern.
+        // Handoff saves still record Prologue as active, so only those redirect.
+        if (loadedData.PrologueCompleted
+            && string.Equals(loadedData.CurrentSceneName.Trim(), PrologueSceneName, System.StringComparison.OrdinalIgnoreCase))
+        {
+            return MainAreaSceneName;
+        }
+
+        return loadedData.CurrentSceneName.Trim();
     }
 
     private void StartGameSceneLoad(string sceneName)

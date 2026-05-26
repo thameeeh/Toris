@@ -1,4 +1,6 @@
 using OutlandHaven.Tutorial;
+using OutlandHaven.SaveSystem;
+using OutlandHaven.UIToolkit;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +14,9 @@ public sealed class PrologueExitTrigger : MonoBehaviour
     [SerializeField] private string loadingMessage = DefaultLoadingMessage;
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private PrologueStorySequenceController arrivalStorySequence;
+    [SerializeField] private GameSessionSO gameSession;
+    [SerializeField] private SaveManager saveManager;
+    [SerializeField] private bool saveOnPrologueCompleted = true;
 
     private bool _transitionRequested;
 
@@ -53,6 +58,8 @@ public sealed class PrologueExitTrigger : MonoBehaviour
 
     private void LoadTargetScene()
     {
+        MarkPrologueCompleted();
+
         string resolvedSceneName = string.IsNullOrWhiteSpace(targetSceneName)
             ? DefaultTargetSceneName
             : targetSceneName.Trim();
@@ -68,6 +75,44 @@ public sealed class PrologueExitTrigger : MonoBehaviour
         }
 
         SceneManager.LoadScene(resolvedSceneName);
+    }
+
+    private void MarkPrologueCompleted()
+    {
+        SaveManager resolvedSaveManager = ResolveSaveManager();
+        GameSessionSO resolvedSession = resolvedSaveManager != null && resolvedSaveManager.ActiveSession != null
+            ? resolvedSaveManager.ActiveSession
+            : ResolveGameSession();
+
+        if (resolvedSession == null)
+            return;
+
+        // Save-system boundary: the exit trigger only records that the authored
+        // prologue gate is complete; scene selection still belongs to Main Menu.
+        resolvedSession.MarkPrologueCompleted();
+
+        if (saveOnPrologueCompleted
+            && resolvedSaveManager != null
+            && resolvedSaveManager.ActiveSession != null)
+        {
+            resolvedSaveManager.SaveGame(resolvedSaveManager.ActiveSession.ActiveSaveSlot);
+        }
+    }
+
+    private GameSessionSO ResolveGameSession()
+    {
+        if (gameSession == null)
+            gameSession = GameSessionSO.LoadDefault();
+
+        return gameSession;
+    }
+
+    private SaveManager ResolveSaveManager()
+    {
+        if (saveManager == null)
+            saveManager = FindFirstObjectByType<SaveManager>();
+
+        return saveManager;
     }
 
     private bool IsPlayerCollider(Collider2D other)

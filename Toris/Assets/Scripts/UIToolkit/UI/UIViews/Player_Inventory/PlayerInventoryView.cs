@@ -14,6 +14,9 @@ namespace OutlandHaven.Inventory
         private const string StatsDrawerOpenClass = "player-inventory-container--stats-open";
         private const string StatsToggleOpenClass = "inventory-stats-toggle--open";
         private const string TutorialItemAnchorPrefix = "inventory.item.";
+        private const string StatsToggleTutorialAnchorId = "inventory.stats_toggle";
+        private const string StatsPanelTutorialAnchorId = "inventory.stats_panel";
+        private const string PotionAssignmentAreaTutorialAnchorId = "inventory.potion_assignment_area";
 
         private VisualTreeAsset _slotTemplate;
         private GameSessionSO _gameSession;
@@ -25,6 +28,7 @@ namespace OutlandHaven.Inventory
         // UI Containers
         private VisualElement _playerInventoryContainer;
         private VisualElement _playerGrid;
+        private VisualElement _statsPanel;
         private Button _statsToggleButton;
         private PlayerEquipmentView _equipmentView;
         private PlayerStatsView _statsView;
@@ -106,6 +110,7 @@ namespace OutlandHaven.Inventory
             // Find the grids where slots live
             _playerInventoryContainer = m_TopElement.Q<VisualElement>("container__player");
             _playerGrid = m_TopElement.Q<VisualElement>("grid-player");
+            _statsPanel = m_TopElement.Q<VisualElement>("Stats__Panel");
             _statsToggleButton = m_TopElement.Q<Button>("Btn_ToggleStats");
         }
 
@@ -115,6 +120,8 @@ namespace OutlandHaven.Inventory
             {
                 _statsToggleButton.clicked += HandleStatsToggleClicked;
             }
+
+            RegisterTutorialAnchors();
         }
 
         public void SetStatsDrawerOpen(bool isOpen)
@@ -235,6 +242,22 @@ namespace OutlandHaven.Inventory
             _tutorialItemAnchors.Clear();
         }
 
+        private void RegisterTutorialAnchors()
+        {
+            // Cross-system boundary: Inventory exposes stable bounds only.
+            // Tutorial sequencing and completion stay in Scripts/Tutorial.
+            TutorialAnchorRegistry.Register(StatsToggleTutorialAnchorId, _statsToggleButton);
+            TutorialAnchorRegistry.Register(StatsPanelTutorialAnchorId, _statsPanel);
+            TutorialAnchorRegistry.Register(PotionAssignmentAreaTutorialAnchorId, _playerInventoryContainer);
+        }
+
+        private void UnregisterTutorialAnchors()
+        {
+            TutorialAnchorRegistry.Unregister(StatsToggleTutorialAnchorId, _statsToggleButton);
+            TutorialAnchorRegistry.Unregister(StatsPanelTutorialAnchorId, _statsPanel);
+            TutorialAnchorRegistry.Unregister(PotionAssignmentAreaTutorialAnchorId, _playerInventoryContainer);
+        }
+
         private void HandleContextChanged(InventoryInteractionContext newContext)
         {
             _currentContext = newContext;
@@ -288,6 +311,7 @@ namespace OutlandHaven.Inventory
             _statsView?.Dispose();
 
             _playerPotionView?.Dispose();
+            UnregisterTutorialAnchors();
             UnregisterTutorialItemAnchors();
 
             base.Dispose();

@@ -3,17 +3,21 @@ using UnityEngine.UIElements;
 using System;
 using System.Collections.Generic;
 using OutlandHaven.Inventory;
+using OutlandHaven.Tutorial;
 
 namespace OutlandHaven.UIToolkit
 {
     public class PlayerPotionHUDView : IDisposable
     {
+        private const string HudPotionSlotsTutorialAnchorId = "hud.potion_slots";
+
         private VisualElement _topElement;
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
 
         private Dictionary<InventorySlot, InventorySlotView> _slotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
 
+        private VisualElement _potionBarContainer;
         private VisualElement _slot1Container;
         private VisualElement _slot2Container;
 
@@ -31,8 +35,13 @@ namespace OutlandHaven.UIToolkit
 
         private void SetVisualElements()
         {
+            _potionBarContainer = _topElement.Q<VisualElement>("hud__potion-bar");
             _slot1Container = _topElement.Q<VisualElement>("hud__potion-slot-1");
             _slot2Container = _topElement.Q<VisualElement>("hud__potion-slot-2");
+
+            // Cross-system boundary: HUD exposes the hotkey slot bounds only.
+            // The tutorial flow owns when and why this anchor is highlighted.
+            TutorialAnchorRegistry.Register(HudPotionSlotsTutorialAnchorId, _potionBarContainer);
         }
 
         public void Setup(InventoryManager potionInventory)
@@ -132,6 +141,7 @@ namespace OutlandHaven.UIToolkit
 
         public void Dispose()
         {
+            TutorialAnchorRegistry.Unregister(HudPotionSlotsTutorialAnchorId, _potionBarContainer);
             Hide();
         }
     }

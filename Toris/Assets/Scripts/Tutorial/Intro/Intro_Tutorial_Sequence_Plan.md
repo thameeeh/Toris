@@ -44,14 +44,13 @@ Completed:
 - The Prologue wolf now uses a fixed lesson loot table: one `Training Bow`, one `Minor Healing Potion`, 5 gold, and 8 XP.
 - After the wolf dies, optional tips spotlight the XP/level reward, teach `E Pick Up`, then guide the player through the visible HUD menu into Inventory.
 - The Prologue backpack and potion slots start empty so its first item interaction comes from the authored wolf drops.
-- Inside Inventory, the optional lesson spotlights the dropped `Training Bow` and completes only after the player equips it.
+- Inside Inventory, the optional lesson spotlights the dropped `Training Bow`, waits for it to be equipped, opens Stats, asks the player to drag the potion into a potion slot, then highlights the HUD hotkeys.
 
 Still open:
 
 - Assign final background images, music, and SFX for the story cards.
 - Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
 - Add optional ready-shot/release guidance on top of the existing bow ready and shot fired signals, if the fight still needs it after playtesting.
-- Author the stats and potion-slot tutorial steps after the new Training Bow equip handoff is playtested.
 - Wire the post-inventory completion beat to the authored path blocker once that lesson is complete.
 
 ## Fresh Save Flow
@@ -67,8 +66,8 @@ Still open:
 | 7 | Failed Shot Lesson | Player learns that releasing too early fails, but only after they do it once. | Tip appears after first dry release. |
 | 8 | Ready Shot Lesson | Player learns to hold until ready, then release. | Tip waits for `ShootReady`, then `ShotFired`. |
 | 9 | Overdraw Lesson | Player learns that holding too long worsens aim, but only after they do it once. | Tip appears after first overdraw / over-hold signal. |
-| 10 | First Kill | Enemy dies. Player receives fixed introductory XP/gold, a Training Bow, and a Minor Healing Potion. | Spotlight XP/level, show `E Pick Up`, guide clicks through the HUD menu into Inventory, then guides equipping the Training Bow. |
-| 11 | Path To Haven | Player completes the inventory lesson, then continues through a calm final stretch. | Stats and potion-slot tips are the next authored slice. |
+| 10 | First Kill | Enemy dies. Player receives fixed introductory XP/gold, a Training Bow, and a Minor Healing Potion. | Spotlight XP/level, show `E Pick Up`, guide clicks through the HUD menu into Inventory, guides equipping the Training Bow, opens Stats, prepares the potion, then points out the HUD hotkeys. |
+| 11 | Path To Haven | Player completes the inventory lesson, then continues through a calm final stretch. | The path blocker handoff is the next authored slice. |
 | 12 | Safe Haven Arrival | Player reaches the end trigger, sees final arrival story cards, then transitions into Safe Haven. | Optional location title/card, no heavy mechanics. |
 | 13 | Guide Handoff | Player walks up to the Guide and interacts. Existing `Guide_Intro` conversation continues from here. | Tutorial overlay should stay out of dialogue unless explicitly authored. |
 
@@ -186,8 +185,8 @@ Recommended capabilities:
 | Loot Pickup | The rewards remain on the ground after the callout. | Show `E Pick Up` above the player until both lesson items are collected. | Pickup enabled; menus still gated. |
 | Inventory Open | Player has picked up the loot. | Darken the screen and spotlight the HUD menu toggle; after it is clicked, spotlight the visible Inventory button. If the HUD action panel is already open, skip directly to its visible Inventory button; if Inventory is already open, continue directly to the bow. Do not rely on teaching its shortcut first. | Gameplay paused; only the highlighted UI route advances the lesson. |
 | Equip Training Bow | Wolf drop includes a predetermined `Training Bow`. | Spotlight that inventory item and wait until the player right-clicks it into the weapon slot. | Equipment changes enabled for the tutorial item. Implemented. |
-| Stats Button | After equipping, point to the inventory stats button. | Explain that gear changes visible stats and builds can improve over time. | Stats panel introduced. |
-| Potion Slots | Wolf also drops a simple potion. | Explain potion slots and equipping/using potions. | Potion slots and potion hotkeys introduced. |
+| Stats Button | After equipping, point to the inventory stats button. | Explain that gear changes visible stats and builds can improve over time. | Implemented. |
+| Potion Slots | Wolf also drops a simple potion. | Explain potion slots, ask the player to drag the potion into one, then spotlight the HUD `1` / `2` hotkeys. | Implemented. |
 | Path Unblocked | Inventory lesson completes. | Remove or disable the authored invisible blocker behind the wolf. | Restore normal prologue capabilities. |
 | Safe Haven Approach | Player continues along the path. | No more mechanical teaching unless something unexpected needs a small reminder. | Normal prologue play. |
 | Arrival Cards | Player reaches the exit trigger. | Arrival story cards play, then transition into Safe Haven. | Story overlay owns input until the transition starts. |
@@ -234,7 +233,7 @@ Recommended reward:
 - Small gold amount.
 - Guaranteed `Training Bow` and `Minor Healing Potion` lesson drops.
 
-The first authored reward-to-equipment handoff is implemented: reward spotlight, grounded pickup, HUD menu toggle, Inventory selection, then equipping the Training Bow. The later stats and potion-slot teaching remains to be authored.
+The first authored reward-to-inventory handoff is implemented: reward spotlight, grounded pickup, HUD menu toggle, Inventory selection, equipping the Training Bow, opening Stats, preparing the potion slot, and introducing HUD potion hotkeys.
 
 ## Safe Haven Arrival
 
@@ -311,6 +310,11 @@ These should be bridged into tutorial/prologue events without adding tutorial-sp
 | `prologue.bow.overdraw` | Holding too long worsens aim |
 | `prologue.reward` | XP/gold/drop explanation |
 | `prologue.inventory.equip_training_bow` | Equip the first weapon inside Inventory |
+| `prologue.inventory.stats_toggle` | Open Stats after equipping the first weapon |
+| `prologue.inventory.stats_panel` | Explain the visible build stats |
+| `prologue.inventory.potion_slots` | Explain prepared potion slots |
+| `prologue.inventory.assign_potion` | Drag the first potion into a potion slot |
+| `prologue.hud.potion_hotkeys` | Explain the HUD `1` / `2` potion hotkeys |
 | `prologue.safe_haven_arrival` | Arrival title or short note |
 | `smith.forge_tab.intro` | Existing Smith contextual tip |
 

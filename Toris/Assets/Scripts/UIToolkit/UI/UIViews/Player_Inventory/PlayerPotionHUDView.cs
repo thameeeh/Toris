@@ -69,16 +69,22 @@ namespace OutlandHaven.Inventory
 
         private void HandleSpecificSlotsUpdated(InventorySlot sourceSlot, InventorySlot targetSlot)
         {
+#if UNITY_EDITOR
             Debug.Log($"[HUD Potion Sync] Received Slot Update: Source={sourceSlot}, Target={targetSlot}");
+#endif
             if (sourceSlot != null && _potionSlotDictionary.TryGetValue(sourceSlot, out var sourceView))
             {
+#if UNITY_EDITOR
                 Debug.Log($"[HUD Potion Sync] Found source view for slot, updating.");
+#endif
                 sourceView.Update(sourceSlot);
             }
 
             if (targetSlot != null && _potionSlotDictionary.TryGetValue(targetSlot, out var targetView))
             {
+#if UNITY_EDITOR
                 Debug.Log($"[HUD Potion Sync] Found target view for slot, updating.");
+#endif
                 targetView.Update(targetSlot);
             }
         }

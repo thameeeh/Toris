@@ -23,6 +23,11 @@ namespace OutlandHaven.Tutorial
         private const string HudMenuStepId = "prologue.hud.menu";
         private const string InventoryOpenStepId = "prologue.inventory.open";
         private const string EquipTrainingBowStepId = "prologue.inventory.equip_training_bow";
+        private const string StatsToggleStepId = "prologue.inventory.stats_toggle";
+        private const string StatsPanelStepId = "prologue.inventory.stats_panel";
+        private const string PotionSlotsStepId = "prologue.inventory.potion_slots";
+        private const string PotionAssignStepId = "prologue.inventory.assign_potion";
+        private const string HudPotionHotkeysStepId = "prologue.hud.potion_hotkeys";
         private const string HudInventoryButtonAnchorId = "hud.inventory_button";
         private const string InventoryTrainingBowAnchorId = "inventory.item.training_bow";
         private const string DefaultPromptAnchorName = "TutorialPromptAnchor";
@@ -33,6 +38,7 @@ namespace OutlandHaven.Tutorial
         private const int FadeStepMilliseconds = 16;
         private const int MaxHudAnchorResolveAttempts = 8;
         private const int HudAnchorResolveRetryMilliseconds = 50;
+        private const int StatsDrawerRevealDelayMilliseconds = 170;
 
         private enum PostWolfHudLesson
         {
@@ -40,7 +46,12 @@ namespace OutlandHaven.Tutorial
             Rewards = 1,
             MenuToggle = 2,
             Inventory = 3,
-            EquipTrainingBow = 4
+            EquipTrainingBow = 4,
+            StatsToggle = 5,
+            StatsPanel = 6,
+            PotionSlots = 7,
+            AssignPotion = 8,
+            HudPotionHotkeys = 9
         }
 
         [Header("Flow")]
@@ -423,7 +434,7 @@ namespace OutlandHaven.Tutorial
 
         private void BeginPostWolfRewardsLesson()
         {
-            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
+            if (IsPostWolfInventoryLessonCompleted())
                 return;
 
             BindPostWolfLessonEvents();
@@ -440,7 +451,7 @@ namespace OutlandHaven.Tutorial
 
         private void BeginPostWolfPickupLesson()
         {
-            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
+            if (IsPostWolfInventoryLessonCompleted())
                 return;
 
             BindPostWolfLessonEvents();
@@ -470,7 +481,16 @@ namespace OutlandHaven.Tutorial
             }
 
             if (_activeHudLesson == PostWolfHudLesson.EquipTrainingBow && IsTutorialBowEquipped())
+            {
                 CompleteTrainingBowLesson();
+                return;
+            }
+
+            if (_activeHudLesson == PostWolfHudLesson.AssignPotion
+                && (IsTutorialPotionAssigned() || IsTutorialPotionUnavailableForAssignment()))
+            {
+                CompletePotionAssignmentLesson();
+            }
         }
 
         private void CompletePickupLesson()
@@ -480,7 +500,7 @@ namespace OutlandHaven.Tutorial
             gameSession?.MarkTutorialStepCompleted(PickupStepId);
             HidePromptInstantly();
 
-            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
+            if (IsPostWolfInventoryLessonCompleted())
             {
                 UnbindPostWolfLessonEvents();
                 return;
@@ -546,6 +566,12 @@ namespace OutlandHaven.Tutorial
                 return;
             }
 
+            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
+            {
+                BeginPostWolfStatsToggleLesson();
+                return;
+            }
+
             if (!BeginHudLesson(EquipTrainingBowStepId, PostWolfHudLesson.EquipTrainingBow))
             {
                 HideHudLesson();
@@ -566,7 +592,136 @@ namespace OutlandHaven.Tutorial
 
             gameSession?.MarkTutorialStepCompleted(EquipTrainingBowStepId);
             HideHudLesson();
+            BeginPostWolfStatsToggleLesson();
+        }
+
+        private void BeginPostWolfStatsToggleLesson()
+        {
+            if (IsPostWolfInventoryLessonCompleted())
+            {
+                CompletePostWolfInventoryLesson();
+                return;
+            }
+
+            if (IsTutorialStepCompleted(StatsToggleStepId))
+            {
+                BeginPostWolfStatsPanelLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(StatsToggleStepId, PostWolfHudLesson.StatsToggle))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private void SchedulePostWolfStatsPanelLesson()
+        {
+            VisualElement host = ResolveHost();
+            if (host == null)
+            {
+                BeginPostWolfStatsPanelLesson();
+                return;
+            }
+
+            host.schedule.Execute(() => BeginPostWolfStatsPanelLesson())
+                .ExecuteLater(StatsDrawerRevealDelayMilliseconds);
+        }
+
+        private void BeginPostWolfStatsPanelLesson()
+        {
+            if (IsTutorialStepCompleted(StatsPanelStepId))
+            {
+                BeginPostWolfPotionSlotsLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(StatsPanelStepId, PostWolfHudLesson.StatsPanel))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private void BeginPostWolfPotionSlotsLesson()
+        {
+            if (IsTutorialStepCompleted(PotionSlotsStepId))
+            {
+                BeginPostWolfPotionAssignmentLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(PotionSlotsStepId, PostWolfHudLesson.PotionSlots))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private void BeginPostWolfPotionAssignmentLesson()
+        {
+            if (IsTutorialPotionAssigned()
+                || IsTutorialPotionUnavailableForAssignment()
+                || IsTutorialStepCompleted(PotionAssignStepId))
+            {
+                CompletePotionAssignmentLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(PotionAssignStepId, PostWolfHudLesson.AssignPotion))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private void CompletePotionAssignmentLesson()
+        {
+            gameSession?.MarkTutorialStepCompleted(PotionAssignStepId);
+            HideHudLesson();
+            BeginPostWolfHudPotionHotkeysLesson();
+        }
+
+        private void BeginPostWolfHudPotionHotkeysLesson()
+        {
+            if (IsTutorialStepCompleted(HudPotionHotkeysStepId))
+            {
+                CompletePostWolfInventoryLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(HudPotionHotkeysStepId, PostWolfHudLesson.HudPotionHotkeys))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private void CompletePostWolfInventoryLesson()
+        {
+            HideHudLesson();
             UnbindPostWolfLessonEvents();
+        }
+
+        private bool IsPostWolfInventoryLessonCompleted()
+        {
+            return IsTutorialStepCompleted(HudPotionHotkeysStepId);
+        }
+
+        private bool IsTutorialPotionAssigned()
+        {
+            // Cross-system boundary: the tutorial observes the authoritative potion
+            // inventory after InventoryTransferManagerSO handles the drag/drop.
+            return tutorialPotionItem != null
+                && ContainsItem(gameSession != null ? gameSession.PlayerPotionInventory : null, tutorialPotionItem);
+        }
+
+        private bool IsTutorialPotionUnavailableForAssignment()
+        {
+            return tutorialPotionItem != null
+                && !ContainsItem(gameSession != null ? gameSession.PlayerInventory : null, tutorialPotionItem)
+                && !ContainsItem(gameSession != null ? gameSession.PlayerPotionInventory : null, tutorialPotionItem);
         }
 
         private bool BeginHudLesson(string stepId, PostWolfHudLesson lesson)
@@ -603,10 +758,13 @@ namespace OutlandHaven.Tutorial
 
             if (TutorialAnchorRegistry.TryGetVisibleBounds(step.AnchorId, out Rect anchorBounds))
             {
-                if (_activeHudLesson == PostWolfHudLesson.MenuToggle
+                if ((_activeHudLesson == PostWolfHudLesson.MenuToggle
+                    || _activeHudLesson == PostWolfHudLesson.StatsToggle)
                     && step.AllowHighlightedClick
                     && step.DismissMode == TutorialDismissMode.ClickHighlighted)
+                {
                     BindHudLessonClickAnchor(step.AnchorId);
+                }
 
                 _hudLessonOverlay.Show(step, anchorBounds, hasNextStep: false);
                 return;
@@ -648,12 +806,28 @@ namespace OutlandHaven.Tutorial
 
         private void HandleHudLessonDismissRequested()
         {
-            if (_activeHudLesson != PostWolfHudLesson.Rewards)
-                return;
-
-            gameSession?.MarkTutorialStepCompleted(RewardsStepId);
-            HideHudLesson();
-            BeginPostWolfPickupLesson();
+            switch (_activeHudLesson)
+            {
+                case PostWolfHudLesson.Rewards:
+                    gameSession?.MarkTutorialStepCompleted(RewardsStepId);
+                    HideHudLesson();
+                    BeginPostWolfPickupLesson();
+                    break;
+                case PostWolfHudLesson.StatsPanel:
+                    gameSession?.MarkTutorialStepCompleted(StatsPanelStepId);
+                    HideHudLesson();
+                    BeginPostWolfPotionSlotsLesson();
+                    break;
+                case PostWolfHudLesson.PotionSlots:
+                    gameSession?.MarkTutorialStepCompleted(PotionSlotsStepId);
+                    HideHudLesson();
+                    BeginPostWolfPotionAssignmentLesson();
+                    break;
+                case PostWolfHudLesson.HudPotionHotkeys:
+                    gameSession?.MarkTutorialStepCompleted(HudPotionHotkeysStepId);
+                    CompletePostWolfInventoryLesson();
+                    break;
+            }
         }
 
         private void BindHudLessonClickAnchor(string anchorId)
@@ -677,14 +851,21 @@ namespace OutlandHaven.Tutorial
 
         private void HandleHudLessonAnchorClicked(ClickEvent evt)
         {
-            if (_activeHudLesson != PostWolfHudLesson.MenuToggle)
-                return;
-
-            gameSession?.MarkTutorialStepCompleted(HudMenuStepId);
-            _hudLessonOverlay?.Hide();
-            UnbindHudLessonClickAnchor();
-
-            BeginPostWolfInventoryOpenLesson();
+            switch (_activeHudLesson)
+            {
+                case PostWolfHudLesson.MenuToggle:
+                    gameSession?.MarkTutorialStepCompleted(HudMenuStepId);
+                    _hudLessonOverlay?.Hide();
+                    UnbindHudLessonClickAnchor();
+                    BeginPostWolfInventoryOpenLesson();
+                    break;
+                case PostWolfHudLesson.StatsToggle:
+                    gameSession?.MarkTutorialStepCompleted(StatsToggleStepId);
+                    _hudLessonOverlay?.Hide();
+                    UnbindHudLessonClickAnchor();
+                    SchedulePostWolfStatsPanelLesson();
+                    break;
+            }
         }
 
         private void HideHudLesson()

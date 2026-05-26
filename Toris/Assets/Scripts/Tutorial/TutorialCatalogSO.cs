@@ -80,5 +80,24 @@ namespace OutlandHaven.Tutorial
         public IReadOnlyList<TutorialStepDefinition> Steps => steps;
 
         public static TutorialCatalogSO LoadDefault() => Resources.Load<TutorialCatalogSO>(DefaultResourcePath);
+
+        public bool TryGetStep(string stepId, out TutorialStepDefinition step)
+        {
+            step = null;
+            if (string.IsNullOrWhiteSpace(stepId) || steps == null)
+                return false;
+
+            for (int i = 0; i < steps.Count; i++)
+            {
+                TutorialStepDefinition candidate = steps[i];
+                if (candidate != null && string.Equals(candidate.StepId, stepId, StringComparison.Ordinal))
+                {
+                    step = candidate;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

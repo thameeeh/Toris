@@ -1,5 +1,6 @@
 using UnityEngine.UIElements;
 using OutlandHaven.Inventory;
+using OutlandHaven.Tutorial;
 using UnityEngine;
 using System;
 
@@ -7,6 +8,10 @@ namespace OutlandHaven.UIToolkit
 {
     public class HUDView : GameView
     {
+        private const string ProgressionTutorialAnchorId = "hud.progression";
+        private const string MenuToggleTutorialAnchorId = "hud.menu_toggle";
+        private const string InventoryMenuTutorialAnchorId = "hud.inventory_button";
+
         public override ScreenType ID => ScreenType.HUD;
 
         // Visual Elements
@@ -15,7 +20,9 @@ namespace OutlandHaven.UIToolkit
         private ProgressBar _xpBar;
         private Label _levelLabel;
         private Label _goldLabel;
+        private VisualElement _progressionContainer;
         private Button _mainToggleBtn;
+        private Button _inventoryMenuButton;
         private VisualElement _optionsContainer;
 
         private VisualTreeAsset _buttonTemplate;
@@ -68,7 +75,9 @@ namespace OutlandHaven.UIToolkit
                 }
                 else 
                 {
+#if UNITY_EDITOR
                     Debug.LogError("HUDView: PlayerHUDBridge data reference is null! HUD will not display player info.");
+#endif
                 }
                 _isSetup = true;
             }
@@ -98,6 +107,7 @@ namespace OutlandHaven.UIToolkit
             _xpBar = m_TopElement.Q<ProgressBar>("hud__xp-bar");
             _levelLabel = m_TopElement.Q<Label>("hud__level-label");
             _goldLabel = m_TopElement.Q<Label>("hud__gold-label");
+            _progressionContainer = m_TopElement.Q<VisualElement>("hud__progression-container");
 
             // Menu Tab Elements
             _mainToggleBtn = m_TopElement.Q<Button>("hud__menu-tab");
@@ -112,7 +122,8 @@ namespace OutlandHaven.UIToolkit
         {
             if (_optionsContainer == null) return;
 
-            CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
+            _inventoryMenuButton = CreateMenuButton("Inventory", "(I)", ScreenType.Inventory);
+            TutorialAnchorRegistry.Register(InventoryMenuTutorialAnchorId, _inventoryMenuButton);
             CreateMenuButton("Skills", "(U)", ScreenType.Skills);
             CreateMenuButton("Pause", "(ESC)", ScreenType.PauseMenu);
             // Add other buttons here
@@ -121,14 +132,18 @@ namespace OutlandHaven.UIToolkit
         protected override void RegisterButtonCallbacks()
         {
             _mainToggleBtn.RegisterCallback<ClickEvent>(ToggleMenu);
+            TutorialAnchorRegistry.Register(ProgressionTutorialAnchorId, _progressionContainer);
+            TutorialAnchorRegistry.Register(MenuToggleTutorialAnchorId, _mainToggleBtn);
         }
 
-        private void CreateMenuButton(string name, string shortcut, ScreenType targetScreen)
+        private Button CreateMenuButton(string name, string shortcut, ScreenType targetScreen)
         {
             if (_buttonTemplate == null)
             {
+#if UNITY_EDITOR
                 Debug.LogError("Template not loaded! Check Resources path.");
-                return;
+#endif
+                return null;
             }
 
             // 1. Instantiate the template
@@ -154,6 +169,7 @@ namespace OutlandHaven.UIToolkit
 
             // 4. Add to the container
             _optionsContainer.Add(instance);
+            return btnRoot;
         }
 
         private void ToggleMenu(ClickEvent evt)
@@ -201,6 +217,9 @@ namespace OutlandHaven.UIToolkit
 
         public override void Dispose()
         {
+            TutorialAnchorRegistry.Unregister(ProgressionTutorialAnchorId, _progressionContainer);
+            TutorialAnchorRegistry.Unregister(MenuToggleTutorialAnchorId, _mainToggleBtn);
+            TutorialAnchorRegistry.Unregister(InventoryMenuTutorialAnchorId, _inventoryMenuButton);
             base.Dispose();
             _potionHUDView?.Dispose();
             _abilityHUDView?.Dispose();

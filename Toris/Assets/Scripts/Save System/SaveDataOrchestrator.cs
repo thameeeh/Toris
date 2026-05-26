@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using OutlandHaven.Inventory;
 
 namespace OutlandHaven.SaveSystem
@@ -25,6 +26,7 @@ namespace OutlandHaven.SaveSystem
         {
             GameSaveData saveData = new GameSaveData();
             saveData.SaveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            saveData.CurrentSceneName = SceneManager.GetActiveScene().name;
             saveData.SpawnPointID = spawnPointID;
 
             // --- 1. EXPORT PROGRESSION ---

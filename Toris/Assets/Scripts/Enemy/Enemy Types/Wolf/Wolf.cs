@@ -19,6 +19,9 @@ public class Wolf : Enemy
     [Range(0.5f, 3f)] public float healthMultiplier = 1f;
     public bool CanHowl => role == WolfRole.Leader;
 
+    [Header("Encounter Control")]
+    [SerializeField] private bool startDormant;
+
     // wolf knowledge of home
     private HomeAnchor _homeAnchor;
     [SerializeField] private float fallbackHomeRadius = 4f;
@@ -55,6 +58,7 @@ public class Wolf : Enemy
     private Vector2 _lastKnownAggroTargetPosition;
     private bool _hasLastKnownAggroTargetPosition;
 
+    public bool IsDormant { get; private set; }
     public bool IsMovingWhileBiting { get; set; } = false;
     public bool IsChasingPlayer { get; private set; }
     public void SetChasingPlayer(bool chasingP) => IsChasingPlayer = chasingP;
@@ -171,12 +175,26 @@ public class Wolf : Enemy
 
         ApplyScaling();
         InitializeRuntimeState();
+        if (startDormant)
+            EnterDormantState();
 
         _hasStarted = true;
     }
 
     protected override void Update()
     {
+        if (CurrentHealth <= 0 && StateMachine.CurrentEnemyState != DeadState)
+        {
+            Die();
+            return;
+        }
+
+        if (IsDormant)
+        {
+            KeepDormant();
+            return;
+        }
+
         RefreshForcedPlayerAggro();
         RefreshAggroTargetMemory();
         base.Update();
@@ -225,6 +243,8 @@ public class Wolf : Enemy
             return;
 
         InitializeRuntimeState();
+        if (startDormant)
+            EnterDormantState();
     }
 
     public override void OnDespawned()
@@ -258,6 +278,7 @@ public class Wolf : Enemy
 
     private void ResetRuntimeStateForDeathOrReuse()
     {
+        IsDormant = false;
         _chaseCommitmentUntilTime = 0f;
         _forcedPlayerAggroUntilTime = 0f;
         _hasLastKnownAggroTargetPosition = false;
@@ -309,6 +330,7 @@ public class Wolf : Enemy
         if (CurrentHealth <= 0f)
             return;
 
+        IsDormant = false;
         ClearInvestigationTarget();
         AlwaysAggroed = true;
         _forcedPlayerAggroUntilTime = Time.time + Mathf.Max(0f, forcedPlayerAggroSeconds);
@@ -334,6 +356,63 @@ public class Wolf : Enemy
             return;
 
         StateMachine.ChangeState(responseState);
+    }
+
+    public void EnterDormantState()
+    {
+        if (IdleState == null)
+            return;
+
+        IsDormant = true;
+        AlwaysAggroed = false;
+        ClearAllAggroTargets();
+        SetAggroStatus(false);
+        ClearInvestigationTarget();
+        IsMovingWhileBiting = false;
+        SetChasingPlayer(false);
+        MoveEnemy(Vector2.zero);
+
+        if (animator != null)
+            animator.SetBool("IsMoving", false);
+
+        if (StateMachine.CurrentEnemyState == null)
+            StateMachine.Initialize(IdleState);
+        else if (StateMachine.CurrentEnemyState != IdleState)
+            StateMachine.ChangeState(IdleState);
+    }
+
+    public void WakeForEncounter(IEnemyAggroTarget initialTarget, bool forceAggro)
+    {
+        if (CurrentHealth <= 0f || IdleState == null)
+            return;
+
+        IsDormant = false;
+        MoveEnemy(Vector2.zero);
+
+        if (StateMachine.CurrentEnemyState == null)
+            StateMachine.Initialize(IdleState);
+
+        if (!forceAggro)
+        {
+            SetAggroStatus(false);
+            return;
+        }
+
+        if (IsAggroTargetValid(initialTarget))
+        {
+            SetOverrideAggroTarget(initialTarget);
+            BeginChaseCommitment();
+            if (StateMachine.CurrentEnemyState != DeadState
+                && StateMachine.CurrentEnemyState != AttackState
+                && StateMachine.CurrentEnemyState != ChaseState)
+            {
+                StateMachine.ChangeState(ChaseState);
+            }
+
+            return;
+        }
+
+        ForcePlayerAggro();
     }
 
     private bool ShouldHowlBeforeChase()
@@ -374,6 +453,20 @@ public class Wolf : Enemy
 
         _lastKnownAggroTargetPosition = position;
         _hasLastKnownAggroTargetPosition = true;
+    }
+
+    private void KeepDormant()
+    {
+        AlwaysAggroed = false;
+        if (IsAggroed || HasActiveCombatTarget)
+        {
+            ClearAllAggroTargets();
+            SetAggroStatus(false);
+        }
+
+        MoveEnemy(Vector2.zero);
+        if (animator != null)
+            animator.SetBool("IsMoving", false);
     }
 
     private void SubscribeDamageHandler()

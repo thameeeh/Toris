@@ -10,6 +10,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 {
     private readonly HashSet<ScreenType> _openBlockingScreens = new();
     private readonly HashSet<string> _gameplayInputLocks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    // Per-capability locks let guided flows suppress only unrelated inputs, such as inventory
+    // during the first movement prompt. The values are owner ids so locks can overlap safely.
+    private readonly Dictionary<GameplayInputCapability, HashSet<string>> _gameplayCapabilityLocks =
+        new Dictionary<GameplayInputCapability, HashSet<string>>();
     // Shared lock id used by the death screen flow to suppress gameplay and hotkey UI.
     private const string DeathGameplayLockId = "Death";
     // Shared lock id used by the tutorial runtime; input only honors the lock, it does not drive tutorial flow.
@@ -41,6 +45,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             _uiEvents.OnScreenClose += HandleScreenClosed;
             _uiEvents.OnGameplayInputLockRequested += HandleGameplayInputLockRequested;
             _uiEvents.OnGameplayInputUnlockRequested += HandleGameplayInputUnlockRequested;
+            _uiEvents.OnGameplayCapabilityLockRequested += HandleGameplayCapabilityLockRequested;
+            _uiEvents.OnGameplayCapabilityUnlockRequested += HandleGameplayCapabilityUnlockRequested;
         }
 
         SceneManager.sceneLoaded += HandleSceneLoaded;
@@ -55,11 +61,14 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             _uiEvents.OnScreenClose -= HandleScreenClosed;
             _uiEvents.OnGameplayInputLockRequested -= HandleGameplayInputLockRequested;
             _uiEvents.OnGameplayInputUnlockRequested -= HandleGameplayInputUnlockRequested;
+            _uiEvents.OnGameplayCapabilityLockRequested -= HandleGameplayCapabilityLockRequested;
+            _uiEvents.OnGameplayCapabilityUnlockRequested -= HandleGameplayCapabilityUnlockRequested;
         }
 
         SceneManager.sceneLoaded -= HandleSceneLoaded;
         _openBlockingScreens.Clear();
         _gameplayInputLocks.Clear();
+        _gameplayCapabilityLocks.Clear();
 
         _inputActions.Player.SetCallbacks(null);
         _inputActions.UI.SetCallbacks(null);
@@ -186,7 +195,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnPotion_1(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
+        if (context.performed
+            && !IsDeathInputLocked()
+            && !IsTutorialInputLocked()
+            && !IsCapabilityLocked(GameplayInputCapability.PotionHotkeys))
         {
             _inputReader.OnPotion1Pressed?.Invoke();
         }
@@ -194,7 +206,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnPotion_2(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
+        if (context.performed
+            && !IsDeathInputLocked()
+            && !IsTutorialInputLocked()
+            && !IsCapabilityLocked(GameplayInputCapability.PotionHotkeys))
         {
             _inputReader.OnPotion2Pressed?.Invoke();
         }
@@ -271,7 +286,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        if (context.performed && AllowsUiToggleInput())
+        if (context.performed
+            && AllowsUiToggleInput()
+            && !IsCapabilityLocked(GameplayInputCapability.Inventory))
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Inventory, null);
         }
@@ -285,7 +302,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleSkills(InputAction.CallbackContext context)
     {
-        if (context.performed && AllowsUiToggleInput())
+        if (context.performed
+            && AllowsUiToggleInput()
+            && !IsCapabilityLocked(GameplayInputCapability.Skills))
         {
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.Skills, null);
         }
@@ -299,7 +318,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnToggleQuestJournal(InputAction.CallbackContext context)
     {
-        if (context.performed && !HasGameplayInputBlockers())
+        if (context.performed
+            && !HasGameplayInputBlockers()
+            && !IsCapabilityLocked(GameplayInputCapability.QuestJournal))
         {
             _uiEvents.OnQuestJournalOpenRequested?.Invoke("Active");
         }
@@ -307,7 +328,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnQuickSave(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
+        if (context.performed
+            && !IsDeathInputLocked()
+            && !IsTutorialInputLocked()
+            && !IsCapabilityLocked(GameplayInputCapability.QuickSaveLoad))
         {
             _uiEvents?.OnQuickSaveRequested?.Invoke();
         }
@@ -315,7 +339,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     public void OnQuickLoad(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsDeathInputLocked() && !IsTutorialInputLocked())
+        if (context.performed
+            && !IsDeathInputLocked()
+            && !IsTutorialInputLocked()
+            && !IsCapabilityLocked(GameplayInputCapability.QuickSaveLoad))
         {
             _uiEvents?.OnQuickLoadRequested?.Invoke();
         }
@@ -325,6 +352,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     {
         _openBlockingScreens.Clear();
         _gameplayInputLocks.Clear();
+        _gameplayCapabilityLocks.Clear();
         RefreshGameplayInputState();
     }
 
@@ -366,6 +394,40 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         RefreshGameplayInputState();
     }
 
+    private void HandleGameplayCapabilityLockRequested(GameplayInputCapability capability, string lockId)
+    {
+        // InputManager only enforces these requests; tutorial/combat/UI systems decide when a
+        // capability should be gated so this class does not become a tutorial state machine.
+        string normalizedLockId = NormalizeGameplayInputLockId(lockId);
+        if (string.IsNullOrEmpty(normalizedLockId))
+            return;
+
+        if (!_gameplayCapabilityLocks.TryGetValue(capability, out HashSet<string> locks))
+        {
+            locks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            _gameplayCapabilityLocks[capability] = locks;
+        }
+
+        locks.Add(normalizedLockId);
+        RefreshGameplayInputState();
+    }
+
+    private void HandleGameplayCapabilityUnlockRequested(GameplayInputCapability capability, string lockId)
+    {
+        string normalizedLockId = NormalizeGameplayInputLockId(lockId);
+        if (string.IsNullOrEmpty(normalizedLockId))
+            return;
+
+        if (!_gameplayCapabilityLocks.TryGetValue(capability, out HashSet<string> locks))
+            return;
+
+        locks.Remove(normalizedLockId);
+        if (locks.Count == 0)
+            _gameplayCapabilityLocks.Remove(capability);
+
+        RefreshGameplayInputState();
+    }
+
     private void RefreshGameplayInputState()
     {
         if (_inputReader == null)
@@ -402,22 +464,27 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     private bool AllowsMovementInput()
     {
-        return !HasGameplayInputBlockers();
+        return !HasGameplayInputBlockers()
+               && !IsCapabilityLocked(GameplayInputCapability.Movement);
     }
 
     private bool AllowsInteractionInput()
     {
-        return !HasGameplayInputBlockers();
+        return !HasGameplayInputBlockers()
+               && !IsCapabilityLocked(GameplayInputCapability.Interaction);
     }
 
     private bool AllowsDashInput()
     {
-        return !IsUiBlockingGameplay();
+        return !IsUiBlockingGameplay()
+               && !IsCapabilityLocked(GameplayInputCapability.Movement);
     }
 
     private bool AllowsCombatInput()
     {
-        return !IsUiBlockingGameplay() && !IsCombatDisabledInCurrentScene();
+        return !IsUiBlockingGameplay()
+               && !IsCapabilityLocked(GameplayInputCapability.Combat)
+               && !IsCombatDisabledInCurrentScene();
     }
 
     private bool IsUiBlockingGameplay()
@@ -428,6 +495,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     private bool HasGameplayInputBlockers()
     {
         return _openBlockingScreens.Count > 0 || _gameplayInputLocks.Count > 0;
+    }
+
+    private bool IsCapabilityLocked(GameplayInputCapability capability)
+    {
+        return _gameplayCapabilityLocks.TryGetValue(capability, out HashSet<string> locks)
+               && locks.Count > 0;
     }
 
     private bool AllowsUiToggleInput()

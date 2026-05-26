@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 using System.Collections.Generic;
+using OutlandHaven.Tutorial;
 using OutlandHaven.UIToolkit;
 
 namespace OutlandHaven.Inventory
 {
     public class PlayerPotionView : IDisposable
     {
+        private const string PotionSlotsTutorialAnchorId = "inventory.potion_slots";
+
         private VisualElement _topElement;
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
@@ -16,6 +19,7 @@ namespace OutlandHaven.Inventory
 
         private VisualElement _slotPotion1Container;
         private VisualElement _slotPotion2Container;
+        private VisualElement _potionSlotsContainer;
 
         private InventoryManager _potionInventory;
         private bool _eventsBound = false;
@@ -31,12 +35,15 @@ namespace OutlandHaven.Inventory
 
         private void SetVisualElements()
         {
+            _potionSlotsContainer = _topElement.Q<VisualElement>("Consumables__Player--Inventory");
             _slotPotion1Container = _topElement.Q<VisualElement>("slot-potion-1");
             _slotPotion2Container = _topElement.Q<VisualElement>("slot-potion-2");
         }
 
         public void Initialize()
         {
+            // Cross-system boundary: the view provides a highlight target, not tutorial rules.
+            TutorialAnchorRegistry.Register(PotionSlotsTutorialAnchorId, _potionSlotsContainer);
         }
 
         public void Setup(InventoryManager potionInventory)
@@ -132,6 +139,8 @@ namespace OutlandHaven.Inventory
                 _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
                 _eventsBound = false;
             }
+
+            TutorialAnchorRegistry.Unregister(PotionSlotsTutorialAnchorId, _potionSlotsContainer);
         }
     }
 }

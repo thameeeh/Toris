@@ -13,8 +13,11 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     private const string DefaultLoadingMessage = "Loading";
     private const string MainMenuSceneName = "MainMenu";
     private const string MainAreaSceneName = "MainArea";
+    private const string PrologueSceneName = "Prologue";
     private const string ProceduralTilesSceneName = "ProceduralTiles";
+    private const string BeginningMessage = "Beginning";
     private const string EnteringWorldMessage = "Entering the World";
+    private const string EnteringSafeHavenMessage = "Entering Safe Haven";
     private const string EnteringOutlandsMessage = "Entering the Outlands";
     private const string ComingBackMessage = "Coming Back";
     private const string LeavingMessage = "Leaving";
@@ -170,7 +173,9 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         LoadScene(sceneName);
     }
 
-    private LoadingTransitionSession BeginLoadingTransition(string resolvedLoadingMessage)
+    private LoadingTransitionSession BeginLoadingTransition(
+        string resolvedLoadingMessage,
+        bool useLoadingBackgrounds = true)
     {
         _isLoading = true;
         onTransitionStart?.Invoke();
@@ -182,7 +187,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             CreateLoadingTransitionTiming(),
             Mathf.Max(1, activationDotCount),
             Mathf.Max(MinDotIntervalSeconds, dotIntervalSeconds),
-            ResolveLoadingMessage(resolvedLoadingMessage));
+            ResolveLoadingMessage(resolvedLoadingMessage),
+            useLoadingBackgrounds);
     }
 
     private void EndLoadingTransition()
@@ -212,7 +218,8 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         session.Overlay.Show(CreateLoadingOverlaySettings(
             session.DotIntervalSeconds,
             session.ActivationDotCount,
-            session.LoadingMessage));
+            session.LoadingMessage,
+            session.UseLoadingBackgrounds));
 
         yield return FadeCover(session.Overlay, 1f, session.Timing.FadeInSeconds);
         session.Overlay.ResetLoadingContent();
@@ -275,12 +282,15 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         bool playTeleportArriveOnComplete = _playTeleportArriveOnLoadComplete;
         _playTeleportArriveOnLoadComplete = false;
 
+        string currentSceneName = SceneManager.GetActiveScene().name;
         string resolvedLoadingMessage = string.IsNullOrWhiteSpace(loadingMessageOverride)
-            ? ResolveSceneLoadingMessage(SceneManager.GetActiveScene().name, sceneName)
+            ? ResolveSceneLoadingMessage(currentSceneName, sceneName)
             : loadingMessageOverride;
+        bool useLoadingBackgrounds = ShouldUseLoadingBackgrounds(currentSceneName, sceneName);
 
         LoadingTransitionSession session = BeginLoadingTransition(
-            resolvedLoadingMessage);
+            resolvedLoadingMessage,
+            useLoadingBackgrounds);
         float activationReadyTime = Time.realtimeSinceStartup;
         float minimumDisplayEndTime = Time.realtimeSinceStartup;
         AsyncOperation op;
@@ -434,11 +444,12 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     private SceneLoadingOverlaySettings CreateLoadingOverlaySettings(
         float resolvedDotInterval,
         int resolvedActivationDotCount,
-        string resolvedLoadingMessage)
+        string resolvedLoadingMessage,
+        bool useLoadingBackgrounds)
     {
         return new SceneLoadingOverlaySettings
         {
-            Background = GetNextLoadingBackground(),
+            Background = useLoadingBackgrounds ? GetNextLoadingBackground() : null,
             FallbackColor = fallbackBackgroundColor,
             BackgroundOverscan = loadingBackgroundOverscan,
             DimAlpha = backgroundDimAlpha,
@@ -452,6 +463,18 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
     {
         if (SceneNameEquals(targetSceneName, MainMenuSceneName))
             return LeavingMessage;
+
+        if (SceneNameEquals(currentSceneName, MainMenuSceneName)
+            && SceneNameEquals(targetSceneName, PrologueSceneName))
+        {
+            return BeginningMessage;
+        }
+
+        if (SceneNameEquals(currentSceneName, PrologueSceneName)
+            && SceneNameEquals(targetSceneName, MainAreaSceneName))
+        {
+            return EnteringSafeHavenMessage;
+        }
 
         if (SceneNameEquals(currentSceneName, MainMenuSceneName)
             && SceneNameEquals(targetSceneName, MainAreaSceneName))
@@ -472,6 +495,12 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         }
 
         return loadingMessage;
+    }
+
+    private static bool ShouldUseLoadingBackgrounds(string currentSceneName, string targetSceneName)
+    {
+        return !SceneNameEquals(currentSceneName, MainMenuSceneName)
+               || !SceneNameEquals(targetSceneName, PrologueSceneName);
     }
 
     private string ResolveLoadingMessage(string messageOverride)
@@ -667,6 +696,7 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
         public readonly int ActivationDotCount;
         public readonly float DotIntervalSeconds;
         public readonly string LoadingMessage;
+        public readonly bool UseLoadingBackgrounds;
 
         public bool HasOverlay => Overlay != null;
 
@@ -675,13 +705,15 @@ public sealed class SceneTransitionService : MonoBehaviour, IRunGateTransitionSe
             LoadingTransitionTiming timing,
             int activationDotCount,
             float dotIntervalSeconds,
-            string loadingMessage)
+            string loadingMessage,
+            bool useLoadingBackgrounds)
         {
             Overlay = overlay;
             Timing = timing;
             ActivationDotCount = activationDotCount;
             DotIntervalSeconds = dotIntervalSeconds;
             LoadingMessage = loadingMessage;
+            UseLoadingBackgrounds = useLoadingBackgrounds;
         }
     }
 

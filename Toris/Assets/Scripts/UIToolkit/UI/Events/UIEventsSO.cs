@@ -4,6 +4,19 @@ using UnityEngine.Events;
 
 namespace OutlandHaven.UIToolkit
 {
+    // Named gameplay input channels that temporary flows can disable without blocking all input.
+    // Keep the flow decisions outside InputManager; this event bus only describes the capability.
+    public enum GameplayInputCapability
+    {
+        Movement = 0,
+        Combat = 1,
+        Interaction = 2,
+        Inventory = 3,
+        Skills = 4,
+        QuestJournal = 5,
+        PotionHotkeys = 6,
+        QuickSaveLoad = 7
+    }
 
     [CreateAssetMenu(menuName = "UI/Scriptable Objects/Events/UIEventsSO")]
     public class UIEventsSO : ScriptableObject
@@ -33,9 +46,16 @@ namespace OutlandHaven.UIToolkit
         // systems; this is for UI interactions such as buttons and screen lifecycle.
         public UnityAction<string> OnSfxRequested;
 
+        // Broad lock for modal gameplay blockers such as story cards or death flow.
         public UnityAction<string> OnGameplayInputLockRequested;
 
         public UnityAction<string> OnGameplayInputUnlockRequested;
+
+        // Fine-grained locks for guided flows. Each request carries an owner id so overlapping
+        // systems can lock the same capability and release only their own request.
+        public UnityAction<GameplayInputCapability, string> OnGameplayCapabilityLockRequested;
+
+        public UnityAction<GameplayInputCapability, string> OnGameplayCapabilityUnlockRequested;
 
         public UnityAction<string> OnQuestJournalOpenRequested;
 

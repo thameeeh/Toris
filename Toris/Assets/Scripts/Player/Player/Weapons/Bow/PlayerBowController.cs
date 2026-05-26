@@ -21,6 +21,8 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private PlayerFacing _playerFacing;
     [SerializeField] private PlayerEquipmentController _equipment;
     [SerializeField] private PlayerAbilityController _abilityController;
+    [Tooltip("Publishes neutral bow outcomes for cross-scene presentation listeners.")]
+    [SerializeField] private PlayerBowEventsSO _bowEvents;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
@@ -41,6 +43,7 @@ public class PlayerBowController : MonoBehaviour
 
         drawing = false;
         _shootReadyRaised = false;
+        _overdrawStartedRaised = false;
         _motor?.SetMovementLocked(false);
         LogShoot($"CancelCurrentDraw. reason={reason}");
         DryReleased?.Invoke();
@@ -70,6 +73,9 @@ public class PlayerBowController : MonoBehaviour
     public event System.Action ShootReady;
     public event System.Action ShotReleased;
     public event System.Action DryReleased;
+    // Tutorial/UI consumers listen to semantic shot events instead of polling draw timing.
+    public event System.Action UnderdrawReleased;
+    public event System.Action OverdrawStarted;
     public event System.Action ShotFired;
     public event System.Action<Vector2> AbilityReleaseRequested;
     public event System.Action<Vector2> BowImpactRequested;
@@ -89,6 +95,7 @@ public class PlayerBowController : MonoBehaviour
     private float lastShotTime = -999f;
     private bool drawing;
     private bool _shootReadyRaised;
+    private bool _overdrawStartedRaised;
     private Camera _mainCamera;
 
     private void LogShoot(string message)
@@ -134,6 +141,7 @@ public class PlayerBowController : MonoBehaviour
         _motor?.SetMovementLocked(false);
         drawing = false;
         _shootReadyRaised = false;
+        _overdrawStartedRaised = false;
     }
 
     private void OnValidate()
@@ -144,10 +152,12 @@ public class PlayerBowController : MonoBehaviour
         ResolveDirectionalMuzzles();
         SyncShootDebugToggle();
 
+#if UNITY_EDITOR
         if (_input == null)
         {
             Debug.LogError($"<b><color=red>[PlayerBowController]</color></b> is missing PlayerInputReaderSO on GameObject: <b>{name}<b>", this);
         }
+#endif
     }
 
     private void Update()
@@ -161,14 +171,23 @@ public class PlayerBowController : MonoBehaviour
             _playerFacing?.SetFacing(aimDirection);
         }
 
-        if (_bow != null && !_shootReadyRaised)
+        if (_bow != null)
         {
             float heldTime = Mathf.Max(0f, Time.time - drawStartTime);
-            if (heldTime >= _bow.nockTime)
+            if (!_shootReadyRaised && heldTime >= _bow.nockTime)
             {
                 _shootReadyRaised = true;
                 LogShoot($"Shoot ready. heldTime={heldTime:F3} nockTime={_bow.nockTime:F3} aim={FormatVector(aimDirection)}");
                 ShootReady?.Invoke();
+            }
+
+            float overdrawThreshold = Mathf.Max(_bow.nockTime, _bow.overHoldStartsAt);
+            if (!_overdrawStartedRaised && heldTime >= overdrawThreshold)
+            {
+                _overdrawStartedRaised = true;
+                LogShoot($"Overdraw started. heldTime={heldTime:F3} overHoldStartsAt={_bow.overHoldStartsAt:F3}");
+                OverdrawStarted?.Invoke();
+                _bowEvents?.RaiseOverdrawStarted(this);
             }
         }
     }
@@ -207,6 +226,7 @@ public class PlayerBowController : MonoBehaviour
 
         drawing = true;
         _shootReadyRaised = false;
+        _overdrawStartedRaised = false;
         drawStartTime = Time.time;
         _motor?.SetMovementLocked(true);
         LogShoot($"BeginDraw accepted. aim={FormatVector(aimDirection)} nockTime={_bow.nockTime:F3} cooldown={_bow.cooldownAfterShot:F3}");
@@ -224,6 +244,7 @@ public class PlayerBowController : MonoBehaviour
 
         drawing = false;
         _shootReadyRaised = false;
+        _overdrawStartedRaised = false;
         _motor?.SetMovementLocked(false);
 
         if (_bow == null)
@@ -237,11 +258,14 @@ public class PlayerBowController : MonoBehaviour
         if (heldTime < _bow.nockTime)
         {
             LogShoot($"Dry release before ready. heldTime={heldTime:F3} nockTime={_bow.nockTime:F3}");
+            UnderdrawReleased?.Invoke();
+            _bowEvents?.RaiseUnderdrawReleased(this);
             DryReleased?.Invoke();
             return;
         }
 
-        BowSO.ShotStats shot = _bow.BuildShotStats(heldTime, 0f);
+        float overHoldExtraSeconds = Mathf.Max(0f, heldTime - _bow.overHoldStartsAt);
+        BowSO.ShotStats shot = _bow.BuildShotStats(heldTime, overHoldExtraSeconds);
 
         Vector2 aimDirection = GetAimDirection();
         if (aimDirection.sqrMagnitude < 0.0001f)

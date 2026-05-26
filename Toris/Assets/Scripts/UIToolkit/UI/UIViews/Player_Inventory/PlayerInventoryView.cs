@@ -1,4 +1,5 @@
 using OutlandHaven.UIToolkit;
+using OutlandHaven.Tutorial;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,14 @@ namespace OutlandHaven.Inventory
         public override ScreenType ID => ScreenType.Inventory;
         private const string StatsDrawerOpenClass = "player-inventory-container--stats-open";
         private const string StatsToggleOpenClass = "inventory-stats-toggle--open";
+        private const string TutorialItemAnchorPrefix = "inventory.item.";
 
         private VisualTreeAsset _slotTemplate;
         private GameSessionSO _gameSession;
 
         private Dictionary<InventorySlot, InventorySlotView> _slotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
+        private Dictionary<InventorySlot, VisualElement> _slotVisualDictionary = new Dictionary<InventorySlot, VisualElement>();
+        private Dictionary<string, VisualElement> _tutorialItemAnchors = new Dictionary<string, VisualElement>();
 
         // UI Containers
         private VisualElement _playerInventoryContainer;
@@ -145,9 +149,11 @@ namespace OutlandHaven.Inventory
         private void RefreshGrid(VisualElement gridRoot, InventoryManager data)
         {
             if (gridRoot == null) return;
+            UnregisterTutorialItemAnchors();
             gridRoot.Clear();
 
             _slotDictionary.Clear();
+            _slotVisualDictionary.Clear();
 
             if (data == null || data.LiveSlots == null) return;
 
@@ -176,7 +182,12 @@ namespace OutlandHaven.Inventory
                 
                 //view is being saved into the dictionary using the data slot as the key
                 _slotDictionary.Add(slotData, slotView);
+                _slotVisualDictionary.Add(
+                    slotData,
+                    slotInstance.Q<VisualElement>(className: "item-slot") ?? slotInstance);
             }
+
+            RefreshTutorialItemAnchors();
         }
 
         private void HandleSpecificSlotsUpdated(InventorySlot sourceSlot, InventorySlot targetSlot)
@@ -192,6 +203,36 @@ namespace OutlandHaven.Inventory
             {
                 targetView.Update(targetSlot);
             }
+
+            RefreshTutorialItemAnchors();
+        }
+
+        private void RefreshTutorialItemAnchors()
+        {
+            UnregisterTutorialItemAnchors();
+
+            foreach (KeyValuePair<InventorySlot, VisualElement> slotVisual in _slotVisualDictionary)
+            {
+                InventorySlot slot = slotVisual.Key;
+                InventoryItemSO item = slot?.HeldItem?.BaseItem;
+                if (slot == null || slot.IsEmpty || item == null || string.IsNullOrWhiteSpace(item.ItemName))
+                    continue;
+
+                string anchorId = TutorialItemAnchorPrefix + item.ItemName.Trim().ToLowerInvariant();
+                if (_tutorialItemAnchors.ContainsKey(anchorId))
+                    continue;
+
+                TutorialAnchorRegistry.Register(anchorId, slotVisual.Value);
+                _tutorialItemAnchors.Add(anchorId, slotVisual.Value);
+            }
+        }
+
+        private void UnregisterTutorialItemAnchors()
+        {
+            foreach (KeyValuePair<string, VisualElement> tutorialAnchor in _tutorialItemAnchors)
+                TutorialAnchorRegistry.Unregister(tutorialAnchor.Key, tutorialAnchor.Value);
+
+            _tutorialItemAnchors.Clear();
         }
 
         private void HandleContextChanged(InventoryInteractionContext newContext)
@@ -247,6 +288,7 @@ namespace OutlandHaven.Inventory
             _statsView?.Dispose();
 
             _playerPotionView?.Dispose();
+            UnregisterTutorialItemAnchors();
 
             base.Dispose();
         }

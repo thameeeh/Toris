@@ -109,3 +109,19 @@ MonoBehaviour:
     priority: 0
     oneShot: 1
     prerequisiteStepIds: []
+  - stepId: prologue.inventory.equip_training_bow
+    trigger: 100
+    requiredScreen: 0
+    anchorId: inventory.item.training_bow
+    title: Equip Your Bow
+    body: This Training Bow is your first weapon. Right-click it to equip it.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 3
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []

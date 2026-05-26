@@ -19,6 +19,7 @@ This is the real opening of the game, not a placeholder tutorial pass. The tutor
 - The current first gameplay enemy is a prologue minion wolf variant. A story-specific enemy can replace it later if the intro needs a stronger narrative hook.
 - Failed-shot teaching should happen after the player naturally releases too early for the first time.
 - Overdraw / over-hold teaching should happen after the player naturally holds too long for the first time.
+- Those reactive bow tips remain armed across later gameplay until each has been shown once for that save.
 - For now, the player walks up to the Guide and interacts manually after reaching Safe Haven.
 - Later, Safe Haven arrival may use a short authored walk-up animation into the Guide conversation.
 
@@ -38,17 +39,19 @@ Completed:
 - Tutorial capability locks now let the Prologue block unrelated inputs without taking over the whole input manager.
 - The Prologue minion wolf variant can start dormant and wake only when `PrologueWolfEncounterTrigger` is entered.
 - The wolf encounter trigger starts the optional `Hold LMB to shoot` prompt and keeps unrelated inputs gated during the fight.
-- `PlayerBowController` now exposes underdraw and overdraw signals for tutorial/UI listeners.
-- The Prologue flow shows one-shot reactive bow tips for the first early release and first overdraw, pausing until the player continues with `Space` or `Enter`.
+- `PlayerBowController` now publishes neutral underdraw and overdraw signals through `PlayerBowEventsSO`.
+- The shared gameplay UI shows one-shot reactive bow tips on the first early release and first overdraw, even after Prologue, pausing until the player continues with `Space` or `Enter`.
 - The Prologue wolf now uses a fixed lesson loot table: one `Training Bow`, one `Minor Healing Potion`, 5 gold, and 8 XP.
 - After the wolf dies, optional tips spotlight the XP/level reward, teach `E Pick Up`, then guide the player through the visible HUD menu into Inventory.
+- The Prologue backpack and potion slots start empty so its first item interaction comes from the authored wolf drops.
+- Inside Inventory, the optional lesson spotlights the dropped `Training Bow` and completes only after the player equips it.
 
 Still open:
 
 - Assign final background images, music, and SFX for the story cards.
 - Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
 - Add optional ready-shot/release guidance on top of the existing bow ready and shot fired signals, if the fight still needs it after playtesting.
-- Author the in-inventory equipment, stats, and potion-slot tutorial steps after the new pickup-to-inventory handoff is playtested.
+- Author the stats and potion-slot tutorial steps after the new Training Bow equip handoff is playtested.
 - Wire the post-inventory completion beat to the authored path blocker once that lesson is complete.
 
 ## Fresh Save Flow
@@ -64,8 +67,8 @@ Still open:
 | 7 | Failed Shot Lesson | Player learns that releasing too early fails, but only after they do it once. | Tip appears after first dry release. |
 | 8 | Ready Shot Lesson | Player learns to hold until ready, then release. | Tip waits for `ShootReady`, then `ShotFired`. |
 | 9 | Overdraw Lesson | Player learns that holding too long worsens aim, but only after they do it once. | Tip appears after first overdraw / over-hold signal. |
-| 10 | First Kill | Enemy dies. Player receives fixed introductory XP/gold, a Training Bow, and a Minor Healing Potion. | Spotlight XP/level, show `E Pick Up`, then guide clicks through the HUD menu into Inventory. |
-| 11 | Path To Haven | Player completes the inventory lesson, then continues through a calm final stretch. | Equipment, stats, and potion-slot tips are the next authored slice. |
+| 10 | First Kill | Enemy dies. Player receives fixed introductory XP/gold, a Training Bow, and a Minor Healing Potion. | Spotlight XP/level, show `E Pick Up`, guide clicks through the HUD menu into Inventory, then guides equipping the Training Bow. |
+| 11 | Path To Haven | Player completes the inventory lesson, then continues through a calm final stretch. | Stats and potion-slot tips are the next authored slice. |
 | 12 | Safe Haven Arrival | Player reaches the end trigger, sees final arrival story cards, then transitions into Safe Haven. | Optional location title/card, no heavy mechanics. |
 | 13 | Guide Handoff | Player walks up to the Guide and interacts. Existing `Guide_Intro` conversation continues from here. | Tutorial overlay should stay out of dialogue unless explicitly authored. |
 
@@ -177,12 +180,12 @@ Recommended capabilities:
 | Spawn | Player appears after the opening cards. | Fade in a small world-space prompt above the player: `WASD Move`. Fade it out once movement input is detected. | Movement enabled; combat, inventory, potion hotkeys, and unrelated menus gated. |
 | Explore Path | Player can move around and settle into controls. | No heavy overlay. Let the player walk naturally toward the authored wolf area. | Movement remains enabled. |
 | Wolf Reveal | Wolf becomes visible or the player enters the encounter area. | Show `Hold LMB to shoot`. | Bow attack enabled; inventory and unrelated menus still gated. |
-| First Underdraw | Player releases too early for the first time. | Pause and show tip: underdrawing fails the shot because the bow was not ready. Resume after `Space` or `Enter`. | Combat is held while the tip is open. |
-| First Overdraw | Player holds too long for the first time. | Cancel the held draw, pause, and explain that overdraw makes the shot unstable. Resume after `Space` or `Enter`. | Combat is held while the tip is open. |
+| First Underdraw | Player releases too early for the first time, during this fight or later combat. | Pause and show tip: underdrawing fails the shot because the bow was not ready. Resume after `Space` or `Enter`. | Combat is held while the tip is open; the tip remains eligible until triggered once. |
+| First Overdraw | Player holds too long for the first time, during this fight or later combat. | Cancel the held draw, pause, and explain that overdraw makes the shot unstable. Resume after `Space` or `Enter`. | Combat is held while the tip is open; the tip remains eligible until triggered once. |
 | Wolf Death | Wolf dies and drops fixed tutorial loot. | Pause with a spotlight on Level and XP, explaining that enemies grant XP and gold. Resume when the player dismisses it. | Gameplay held while the reward callout is open. |
 | Loot Pickup | The rewards remain on the ground after the callout. | Show `E Pick Up` above the player until both lesson items are collected. | Pickup enabled; menus still gated. |
-| Inventory Open | Player has picked up the loot. | Darken the screen and spotlight the HUD menu toggle; after it is clicked, spotlight the visible Inventory button. Do not rely on teaching its shortcut first. | Gameplay paused; only the highlighted UI route advances the lesson. |
-| Equip Training Bow | Wolf drop includes a predetermined `Training Bow` or similar barebones bow. | Guide the player to equip it. | Equipment changes enabled for the tutorial item. |
+| Inventory Open | Player has picked up the loot. | Darken the screen and spotlight the HUD menu toggle; after it is clicked, spotlight the visible Inventory button. If the HUD action panel is already open, skip directly to its visible Inventory button; if Inventory is already open, continue directly to the bow. Do not rely on teaching its shortcut first. | Gameplay paused; only the highlighted UI route advances the lesson. |
+| Equip Training Bow | Wolf drop includes a predetermined `Training Bow`. | Spotlight that inventory item and wait until the player right-clicks it into the weapon slot. | Equipment changes enabled for the tutorial item. Implemented. |
 | Stats Button | After equipping, point to the inventory stats button. | Explain that gear changes visible stats and builds can improve over time. | Stats panel introduced. |
 | Potion Slots | Wolf also drops a simple potion. | Explain potion slots and equipping/using potions. | Potion slots and potion hotkeys introduced. |
 | Path Unblocked | Inventory lesson completes. | Remove or disable the authored invisible blocker behind the wolf. | Restore normal prologue capabilities. |
@@ -231,7 +234,7 @@ Recommended reward:
 - Small gold amount.
 - Guaranteed `Training Bow` and `Minor Healing Potion` lesson drops.
 
-The first authored reward-to-inventory handoff is implemented: reward spotlight, grounded pickup, HUD menu toggle, then Inventory selection. The later equipment, stats, and potion-slot teaching remains to be authored.
+The first authored reward-to-equipment handoff is implemented: reward spotlight, grounded pickup, HUD menu toggle, Inventory selection, then equipping the Training Bow. The later stats and potion-slot teaching remains to be authored.
 
 ## Safe Haven Arrival
 
@@ -269,7 +272,7 @@ The Guide then starts or continues the existing introduction conversation. This 
 - Optional anchor prompts for HUD bars, later.
 - Per-step button text such as `Continue`, `Try it`, `Got it`.
 - Prologue-completed save flag so future loads can skip directly to `MainArea`.
-- Optional one-shot reactive tips for first dry release and first overdraw. Implemented for the Prologue wolf encounter with player-controlled dismissal.
+- Optional one-shot reactive tips for first dry release and first overdraw. Implemented across gameplay scenes through shared UI wiring, with player-controlled dismissal.
 
 ### Needed Gameplay Signals
 
@@ -282,6 +285,7 @@ Use existing events where possible:
 - Generic dry release / animation cancel from `PlayerBowController.DryReleased`.
 - Shot fired from `PlayerBowController.ShotFired`.
 - Overdraw / over-hold from `PlayerBowController.OverdrawStarted`.
+- `PlayerBowEventsSO` carries underdraw and overdraw occurrences across gameplay scenes to the shared UI-side reactive tutorial presenter.
 - Enemy killed from the enemy/death event path, if one exists.
 - Tutorial loot collected by observing `UIInventoryEventsSO.OnInventoryUpdated` and confirming both authored items are present in the backpack.
 - Reward explanation shown from the wolf death signal against registered HUD Level/XP bounds.
@@ -289,7 +293,7 @@ Use existing events where possible:
 - Inventory lesson opened from `UIEventsSO.OnScreenOpen` for `ScreenType.Inventory`.
 - Safe Haven entered from a transition/trigger event.
 
-These should be bridged into tutorial/prologue events without adding tutorial-specific logic into player or enemy controllers.
+These should be bridged into tutorial/prologue events without adding tutorial-specific logic into player or enemy controllers. The bow now reports neutral facts only; the UI-side tutorial presenter decides whether a saved tip is still due.
 
 ## Suggested Step IDs
 
@@ -306,6 +310,7 @@ These should be bridged into tutorial/prologue events without adding tutorial-sp
 | `prologue.bow.fire` | Release to shoot |
 | `prologue.bow.overdraw` | Holding too long worsens aim |
 | `prologue.reward` | XP/gold/drop explanation |
+| `prologue.inventory.equip_training_bow` | Equip the first weapon inside Inventory |
 | `prologue.safe_haven_arrival` | Arrival title or short note |
 | `smith.forge_tab.intro` | Existing Smith contextual tip |
 

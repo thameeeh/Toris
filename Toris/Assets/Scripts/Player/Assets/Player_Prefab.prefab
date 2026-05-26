@@ -355,6 +355,7 @@ MonoBehaviour:
   _playerFacing: {fileID: 1884929689371088939}
   _equipment: {fileID: 1016723389627658535}
   _abilityController: {fileID: 2003589166597666773}
+  _bowEvents: {fileID: 11400000, guid: bac745f3d92a4c25868d58aedfd5318e, type: 2}
   spawnOffsetFromCenter: 0.35
   _enableShootDebugLogs: 0
 --- !u!61 &5599079654927792221

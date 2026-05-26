@@ -1,7 +1,6 @@
 using OutlandHaven.Inventory;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 namespace OutlandHaven.Tutorial
@@ -15,17 +14,17 @@ namespace OutlandHaven.Tutorial
         private const string MovementCapabilityLockId = "PrologueTutorial.MovementPrompt";
         private const string PreWolfCapabilityLockId = "PrologueTutorial.PreWolf";
         private const string WolfEncounterCapabilityLockId = "PrologueTutorial.WolfEncounter";
-        private const string ReactiveTipCapabilityLockId = "PrologueTutorial.ReactiveTip";
         private const string PickupLessonCapabilityLockId = "PrologueTutorial.PickupLesson";
         private const string HudLessonCapabilityLockId = "PrologueTutorial.HudLesson";
         private const string MovementStepId = "prologue.movement";
         private const string ShootingStepId = "prologue.shooting";
-        private const string UnderdrawStepId = "prologue.bow.dry_release";
-        private const string OverdrawStepId = "prologue.bow.overdraw";
         private const string RewardsStepId = "prologue.rewards";
         private const string PickupStepId = "prologue.pickup";
         private const string HudMenuStepId = "prologue.hud.menu";
         private const string InventoryOpenStepId = "prologue.inventory.open";
+        private const string EquipTrainingBowStepId = "prologue.inventory.equip_training_bow";
+        private const string HudInventoryButtonAnchorId = "hud.inventory_button";
+        private const string InventoryTrainingBowAnchorId = "inventory.item.training_bow";
         private const string DefaultPromptAnchorName = "TutorialPromptAnchor";
         private const float MovementInputThresholdSqr = 0.01f;
         private const float MinimumPromptVisibleSeconds = 0.2f;
@@ -40,7 +39,8 @@ namespace OutlandHaven.Tutorial
             None = 0,
             Rewards = 1,
             MenuToggle = 2,
-            Inventory = 3
+            Inventory = 3,
+            EquipTrainingBow = 4
         }
 
         [Header("Flow")]
@@ -56,7 +56,6 @@ namespace OutlandHaven.Tutorial
         [SerializeField] private PlayerInputReaderSO inputReader;
         [SerializeField] private Transform playerTarget;
         [SerializeField] private Transform promptAnchor;
-        [SerializeField] private PlayerBowController playerBow;
         [SerializeField] private Camera worldCamera;
 
         [Header("Movement Prompt")]
@@ -97,23 +96,6 @@ namespace OutlandHaven.Tutorial
             GameplayInputCapability.QuickSaveLoad
         };
 
-        [Header("Reactive Bow Tips")]
-        [SerializeField] private string underdrawTipText = "Release too early and the shot fails.";
-        [SerializeField] private string overdrawTipText = "Holding too long makes the shot unstable.";
-        [SerializeField] private string reactiveTipContinueText = "Continue";
-        [SerializeField] private bool pauseGameplayForReactiveTips = true;
-        [SerializeField] private GameplayInputCapability[] lockedCapabilitiesDuringReactiveTip =
-        {
-            GameplayInputCapability.Movement,
-            GameplayInputCapability.Combat,
-            GameplayInputCapability.Interaction,
-            GameplayInputCapability.Inventory,
-            GameplayInputCapability.Skills,
-            GameplayInputCapability.QuestJournal,
-            GameplayInputCapability.PotionHotkeys,
-            GameplayInputCapability.QuickSaveLoad
-        };
-
         [Header("Post-Wolf Loot Lesson")]
         [SerializeField] private InventoryItemSO tutorialBowItem;
         [SerializeField] private InventoryItemSO tutorialPotionItem;
@@ -140,33 +122,23 @@ namespace OutlandHaven.Tutorial
 
         private VisualElement _promptRoot;
         private Label _promptLabel;
-        private VisualElement _promptContinueRoot;
-        private Label _promptContinueLabel;
         private TutorialOverlayView _hudLessonOverlay;
         private VisualElement _hudLessonClickAnchor;
         private bool _movementPromptActive;
         private bool _shootingPromptActive;
-        private bool _reactiveTipActive;
         private bool _pickupPromptActive;
         private bool _movementPromptCompleted;
         private bool _movementCapabilitiesLocked;
         private bool _preWolfCapabilitiesLocked;
         private bool _wolfEncounterCapabilitiesLocked;
-        private bool _reactiveTipCapabilitiesLocked;
         private bool _pickupLessonCapabilitiesLocked;
         private bool _hudLessonCapabilitiesLocked;
-        private bool _bowTutorialEventsBound;
         private bool _postWolfLessonEventsBound;
-        private bool _underdrawTipShownThisSession;
-        private bool _overdrawTipShownThisSession;
-        private bool _reactiveTipPausedGameplay;
         private bool _hudLessonPausedGameplay;
         private bool _promptAnchorSearchCompleted;
         private float _movementPromptVisibleSince;
-        private float _timeScaleBeforeReactiveTip = 1f;
         private float _timeScaleBeforeHudLesson = 1f;
         private int _fadeVersion;
-        private int _reactiveTipVersion;
         private int _hudLessonVersion;
         private PostWolfHudLesson _activeHudLesson;
         private Enemy _encounterEnemy;
@@ -202,18 +174,14 @@ namespace OutlandHaven.Tutorial
 
             _movementPromptActive = false;
             _shootingPromptActive = false;
-            _reactiveTipActive = false;
             _pickupPromptActive = false;
             UnbindShootingPromptInput();
-            UnbindBowTutorialEvents();
             UnbindEncounterEnemy();
             UnbindPostWolfLessonEvents();
             ReleaseMovementPromptCapabilities();
             ReleasePreWolfEncounterCapabilities();
             ReleaseWolfEncounterCapabilities();
-            ReleaseReactiveTipCapabilities();
             ReleasePickupLessonCapabilities();
-            ReleaseReactiveTipPause();
             HideHudLesson();
             HidePromptInstantly();
         }
@@ -222,19 +190,10 @@ namespace OutlandHaven.Tutorial
         {
             if (!_movementPromptActive
                 && !_shootingPromptActive
-                && !_reactiveTipActive
                 && !_pickupPromptActive)
                 return;
 
             UpdatePromptPosition();
-
-            if (_reactiveTipActive)
-            {
-                if (WasReactiveTipContinuePressed())
-                    CompleteReactiveTip();
-
-                return;
-            }
 
             if (_movementPromptActive
                 && inputReader != null
@@ -275,7 +234,6 @@ namespace OutlandHaven.Tutorial
 
             LockWolfEncounterCapabilities();
             BindEncounterEnemy(encounterEnemy);
-            BindBowTutorialEvents();
 
             if (!IsTutorialStepCompleted(ShootingStepId))
                 BeginShootingPrompt();
@@ -295,7 +253,6 @@ namespace OutlandHaven.Tutorial
             _promptLabel.text = string.IsNullOrWhiteSpace(movementPromptText)
                 ? "WASD Move"
                 : movementPromptText.Trim();
-            SetReactiveTipContinueVisible(false);
             _promptRoot.style.display = DisplayStyle.Flex;
             _promptRoot.BringToFront();
             UpdatePromptPosition();
@@ -326,7 +283,6 @@ namespace OutlandHaven.Tutorial
             _promptLabel.text = string.IsNullOrWhiteSpace(shootingPromptText)
                 ? "Hold LMB to shoot"
                 : shootingPromptText.Trim();
-            SetReactiveTipContinueVisible(false);
             _promptRoot.style.display = DisplayStyle.Flex;
             _promptRoot.BringToFront();
             UpdatePromptPosition();
@@ -353,36 +309,13 @@ namespace OutlandHaven.Tutorial
         private void HandleEncounterEnemyDied(Enemy enemy)
         {
             _shootingPromptActive = false;
-            _reactiveTipActive = false;
-            _reactiveTipVersion++;
             UnbindShootingPromptInput();
-            UnbindBowTutorialEvents();
             UnbindEncounterEnemy();
             ReleaseWolfEncounterCapabilities();
-            ReleaseReactiveTipCapabilities();
-            ReleaseReactiveTipPause();
             HidePromptInstantly();
 
             if (AreTutorialTipsEnabled())
                 BeginPostWolfRewardsLesson();
-        }
-
-        private void HandleUnderdrawReleased()
-        {
-            TryShowReactiveTip(
-                UnderdrawStepId,
-                underdrawTipText,
-                "Release too early and the shot fails.",
-                ref _underdrawTipShownThisSession);
-        }
-
-        private void HandleOverdrawStarted()
-        {
-            TryShowReactiveTip(
-                OverdrawStepId,
-                overdrawTipText,
-                "Holding too long makes the shot unstable.",
-                ref _overdrawTipShownThisSession);
         }
 
         private void LockMovementPromptCapabilities()
@@ -413,16 +346,6 @@ namespace OutlandHaven.Tutorial
         private void ReleaseWolfEncounterCapabilities()
         {
             ReleaseCapabilities(lockedCapabilitiesDuringWolfEncounter, WolfEncounterCapabilityLockId, ref _wolfEncounterCapabilitiesLocked);
-        }
-
-        private void LockReactiveTipCapabilities()
-        {
-            LockCapabilities(lockedCapabilitiesDuringReactiveTip, ReactiveTipCapabilityLockId, ref _reactiveTipCapabilitiesLocked);
-        }
-
-        private void ReleaseReactiveTipCapabilities()
-        {
-            ReleaseCapabilities(lockedCapabilitiesDuringReactiveTip, ReactiveTipCapabilityLockId, ref _reactiveTipCapabilitiesLocked);
         }
 
         private void LockPickupLessonCapabilities()
@@ -479,34 +402,6 @@ namespace OutlandHaven.Tutorial
                 inputReader.OnShootStarted -= HandleShootStarted;
         }
 
-        private void BindBowTutorialEvents()
-        {
-            if (_bowTutorialEventsBound)
-                return;
-
-            ResolvePlayerBow();
-            if (playerBow == null)
-                return;
-
-            playerBow.UnderdrawReleased += HandleUnderdrawReleased;
-            playerBow.OverdrawStarted += HandleOverdrawStarted;
-            _bowTutorialEventsBound = true;
-        }
-
-        private void UnbindBowTutorialEvents()
-        {
-            if (!_bowTutorialEventsBound)
-                return;
-
-            if (playerBow != null)
-            {
-                playerBow.UnderdrawReleased -= HandleUnderdrawReleased;
-                playerBow.OverdrawStarted -= HandleOverdrawStarted;
-            }
-
-            _bowTutorialEventsBound = false;
-        }
-
         private void BindEncounterEnemy(Enemy encounterEnemy)
         {
             if (_encounterEnemy == encounterEnemy)
@@ -528,7 +423,7 @@ namespace OutlandHaven.Tutorial
 
         private void BeginPostWolfRewardsLesson()
         {
-            if (IsTutorialStepCompleted(InventoryOpenStepId))
+            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
                 return;
 
             BindPostWolfLessonEvents();
@@ -545,7 +440,7 @@ namespace OutlandHaven.Tutorial
 
         private void BeginPostWolfPickupLesson()
         {
-            if (IsTutorialStepCompleted(InventoryOpenStepId))
+            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
                 return;
 
             BindPostWolfLessonEvents();
@@ -569,7 +464,13 @@ namespace OutlandHaven.Tutorial
         private void HandlePostWolfInventoryUpdated()
         {
             if (_pickupPromptActive && HasTutorialLootInBackpack())
+            {
                 CompletePickupLesson();
+                return;
+            }
+
+            if (_activeHudLesson == PostWolfHudLesson.EquipTrainingBow && IsTutorialBowEquipped())
+                CompleteTrainingBowLesson();
         }
 
         private void CompletePickupLesson()
@@ -579,14 +480,52 @@ namespace OutlandHaven.Tutorial
             gameSession?.MarkTutorialStepCompleted(PickupStepId);
             HidePromptInstantly();
 
-            if (IsTutorialStepCompleted(InventoryOpenStepId))
+            if (IsTutorialStepCompleted(EquipTrainingBowStepId))
             {
                 UnbindPostWolfLessonEvents();
                 return;
             }
 
+            if (IsTrainingBowAlreadyVisibleInInventory())
+            {
+                gameSession?.MarkTutorialStepCompleted(HudMenuStepId);
+                gameSession?.MarkTutorialStepCompleted(InventoryOpenStepId);
+                BeginPostWolfEquipTrainingBowLesson();
+                return;
+            }
+
+            if (IsHudInventoryButtonAlreadyVisible())
+            {
+                gameSession?.MarkTutorialStepCompleted(HudMenuStepId);
+                BeginPostWolfInventoryOpenLesson();
+                return;
+            }
+
             if (!BeginHudLesson(HudMenuStepId, PostWolfHudLesson.MenuToggle))
                 UnbindPostWolfLessonEvents();
+        }
+
+        private bool IsHudInventoryButtonAlreadyVisible()
+        {
+            // Cross-system boundary: the tutorial only reads the HUD's registered anchor.
+            // A visible Inventory action means the player already opened the HUD menu naturally.
+            return TutorialAnchorRegistry.TryGetVisibleBounds(HudInventoryButtonAnchorId, out _);
+        }
+
+        private bool IsTrainingBowAlreadyVisibleInInventory()
+        {
+            // Cross-system boundary: visible item anchors communicate existing UI progress
+            // without the tutorial opening, closing, or inspecting the Inventory view directly.
+            return TutorialAnchorRegistry.TryGetVisibleBounds(InventoryTrainingBowAnchorId, out _);
+        }
+
+        private void BeginPostWolfInventoryOpenLesson()
+        {
+            if (!BeginHudLesson(InventoryOpenStepId, PostWolfHudLesson.Inventory))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
         }
 
         private void HandlePostWolfScreenOpened(ScreenType screenType)
@@ -595,6 +534,37 @@ namespace OutlandHaven.Tutorial
                 return;
 
             gameSession?.MarkTutorialStepCompleted(InventoryOpenStepId);
+
+            BeginPostWolfEquipTrainingBowLesson();
+        }
+
+        private void BeginPostWolfEquipTrainingBowLesson()
+        {
+            if (IsTutorialBowEquipped())
+            {
+                CompleteTrainingBowLesson();
+                return;
+            }
+
+            if (!BeginHudLesson(EquipTrainingBowStepId, PostWolfHudLesson.EquipTrainingBow))
+            {
+                HideHudLesson();
+                UnbindPostWolfLessonEvents();
+            }
+        }
+
+        private bool IsTutorialBowEquipped()
+        {
+            return tutorialBowItem != null
+                && ContainsItem(gameSession != null ? gameSession.PlayerEquipment : null, tutorialBowItem);
+        }
+
+        private void CompleteTrainingBowLesson()
+        {
+            if (!IsTutorialBowEquipped())
+                return;
+
+            gameSession?.MarkTutorialStepCompleted(EquipTrainingBowStepId);
             HideHudLesson();
             UnbindPostWolfLessonEvents();
         }
@@ -714,11 +684,7 @@ namespace OutlandHaven.Tutorial
             _hudLessonOverlay?.Hide();
             UnbindHudLessonClickAnchor();
 
-            if (!BeginHudLesson(InventoryOpenStepId, PostWolfHudLesson.Inventory))
-            {
-                HideHudLesson();
-                UnbindPostWolfLessonEvents();
-            }
+            BeginPostWolfInventoryOpenLesson();
         }
 
         private void HideHudLesson()
@@ -829,111 +795,17 @@ namespace OutlandHaven.Tutorial
             return gameSession != null && gameSession.IsTutorialStepCompleted(stepId);
         }
 
-        private void TryShowReactiveTip(
-            string stepId,
-            string configuredText,
-            string fallbackText,
-            ref bool shownThisSession)
-        {
-            if (!AreTutorialTipsEnabled()
-                || shownThisSession
-                || IsTutorialStepCompleted(stepId)
-                || _encounterEnemy == null)
-            {
-                return;
-            }
-
-            if (!ShowReactiveTip(string.IsNullOrWhiteSpace(configuredText) ? fallbackText : configuredText.Trim()))
-                return;
-
-            shownThisSession = true;
-            gameSession?.MarkTutorialStepCompleted(stepId);
-        }
-
-        private bool ShowReactiveTip(string text)
-        {
-            if (!EnsurePromptView())
-                return false;
-
-            ReleaseReactiveTipPause();
-            ReleaseReactiveTipCapabilities();
-            _reactiveTipActive = true;
-            _reactiveTipVersion++;
-
-            _promptLabel.text = text;
-            _promptContinueLabel.text = string.IsNullOrWhiteSpace(reactiveTipContinueText)
-                ? "Continue"
-                : reactiveTipContinueText.Trim();
-            SetReactiveTipContinueVisible(true);
-            _promptRoot.style.display = DisplayStyle.Flex;
-            _promptRoot.BringToFront();
-            UpdatePromptPosition();
-
-            if (pauseGameplayForReactiveTips)
-            {
-                // An overdraw tip can open while LMB is held; cancel that draw before input
-                // gating so dismissing the explanation cannot release a queued shot.
-                playerBow?.CancelCurrentDraw("PrologueReactiveTip");
-                LockReactiveTipCapabilities();
-            }
-
-            PauseGameplayForReactiveTip();
-            FadePromptTo(1f, promptFadeSeconds, null);
-            return true;
-        }
-
         private bool ShowInstructionPrompt(string configuredText, string fallbackText)
         {
             if (!EnsurePromptView())
                 return false;
 
             _promptLabel.text = string.IsNullOrWhiteSpace(configuredText) ? fallbackText : configuredText.Trim();
-            SetReactiveTipContinueVisible(false);
             _promptRoot.style.display = DisplayStyle.Flex;
             _promptRoot.BringToFront();
             UpdatePromptPosition();
             FadePromptTo(1f, promptFadeSeconds, null);
             return true;
-        }
-
-        private void CompleteReactiveTip()
-        {
-            if (!_reactiveTipActive)
-                return;
-
-            _reactiveTipVersion++;
-            _reactiveTipActive = false;
-            ReleaseReactiveTipCapabilities();
-            ReleaseReactiveTipPause();
-            FadePromptTo(0f, promptFadeSeconds, HidePromptInstantly);
-        }
-
-        private void PauseGameplayForReactiveTip()
-        {
-            if (!pauseGameplayForReactiveTips || _reactiveTipPausedGameplay || Time.timeScale <= 0f)
-                return;
-
-            _timeScaleBeforeReactiveTip = Time.timeScale;
-            Time.timeScale = 0f;
-            _reactiveTipPausedGameplay = true;
-        }
-
-        private static bool WasReactiveTipContinuePressed()
-        {
-            Keyboard keyboard = Keyboard.current;
-            return keyboard != null
-                && (keyboard.spaceKey.wasPressedThisFrame
-                    || keyboard.enterKey.wasPressedThisFrame
-                    || keyboard.numpadEnterKey.wasPressedThisFrame);
-        }
-
-        private void ReleaseReactiveTipPause()
-        {
-            if (!_reactiveTipPausedGameplay)
-                return;
-
-            Time.timeScale = _timeScaleBeforeReactiveTip;
-            _reactiveTipPausedGameplay = false;
         }
 
         private bool EnsurePromptView()
@@ -957,37 +829,14 @@ namespace OutlandHaven.Tutorial
             _promptLabel = new Label { name = "PrologueMovementPromptLabel" };
             _promptLabel.AddToClassList("prologue-tutorial-prompt__label");
             _promptRoot.Add(_promptLabel);
-
-            _promptContinueRoot = new VisualElement { name = "PrologueTutorialPromptContinue" };
-            _promptContinueRoot.AddToClassList("prologue-tutorial-prompt__continue");
-
-            _promptContinueLabel = new Label { name = "PrologueTutorialPromptContinueLabel" };
-            _promptContinueLabel.AddToClassList("prologue-tutorial-prompt__continue-text");
-            _promptContinueRoot.Add(_promptContinueLabel);
-
-            Label continueKeycap = new Label { name = "PrologueTutorialPromptKeycap", text = "Space" };
-            continueKeycap.AddToClassList("prologue-tutorial-prompt__keycap");
-            _promptContinueRoot.Add(continueKeycap);
-
-            _promptRoot.Add(_promptContinueRoot);
             host.Add(_promptRoot);
             HidePromptInstantly();
             return true;
         }
 
-        private void SetReactiveTipContinueVisible(bool visible)
-        {
-            if (_promptContinueRoot != null)
-                _promptContinueRoot.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-        }
-
         private void HidePromptInstantly()
         {
             _fadeVersion++;
-            _reactiveTipActive = false;
-            SetReactiveTipContinueVisible(false);
-            ReleaseReactiveTipCapabilities();
-            ReleaseReactiveTipPause();
 
             if (_promptRoot == null)
                 return;
@@ -1103,7 +952,6 @@ namespace OutlandHaven.Tutorial
 
             ResolvePlayerTarget();
             ResolvePromptAnchor();
-            ResolvePlayerBow();
             ResolveCamera();
         }
 
@@ -1145,27 +993,6 @@ namespace OutlandHaven.Tutorial
             }
 
             _promptAnchorSearchCompleted = true;
-        }
-
-        private void ResolvePlayerBow()
-        {
-            if (playerBow != null)
-                return;
-
-            if (playerTarget != null)
-            {
-                if (playerTarget.TryGetComponent(out PlayerBowController resolvedBow))
-                {
-                    playerBow = resolvedBow;
-                    return;
-                }
-
-                playerBow = playerTarget.GetComponentInChildren<PlayerBowController>(true);
-                if (playerBow != null)
-                    return;
-            }
-
-            playerBow = FindFirstObjectByType<PlayerBowController>();
         }
 
         private void ResolveCamera()

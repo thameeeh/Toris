@@ -21,6 +21,8 @@ public class PlayerBowController : MonoBehaviour
     [SerializeField] private PlayerFacing _playerFacing;
     [SerializeField] private PlayerEquipmentController _equipment;
     [SerializeField] private PlayerAbilityController _abilityController;
+    [Tooltip("Publishes neutral bow outcomes for cross-scene presentation listeners.")]
+    [SerializeField] private PlayerBowEventsSO _bowEvents;
 
     [Header("Spawn Fallback")]
     [Tooltip("Used if muzzle is null. Arrow spawns this far from player along aim.")]
@@ -185,6 +187,7 @@ public class PlayerBowController : MonoBehaviour
                 _overdrawStartedRaised = true;
                 LogShoot($"Overdraw started. heldTime={heldTime:F3} overHoldStartsAt={_bow.overHoldStartsAt:F3}");
                 OverdrawStarted?.Invoke();
+                _bowEvents?.RaiseOverdrawStarted(this);
             }
         }
     }
@@ -256,6 +259,7 @@ public class PlayerBowController : MonoBehaviour
         {
             LogShoot($"Dry release before ready. heldTime={heldTime:F3} nockTime={_bow.nockTime:F3}");
             UnderdrawReleased?.Invoke();
+            _bowEvents?.RaiseUnderdrawReleased(this);
             DryReleased?.Invoke();
             return;
         }

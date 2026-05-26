@@ -9,8 +9,8 @@ namespace OutlandHaven.Tutorial
         private const float CutoutPadding = 8f;
         private const float ScreenPadding = 14f;
         // Includes the larger authored callout footprint so placement keeps it within narrow game views.
-        private const float TooltipWidth = 420f;
-        private const float TooltipFallbackHeight = 235f;
+        private const float TooltipWidth = 490f;
+        private const float TooltipFallbackHeight = 270f;
         private const string NextButtonText = "Next";
         private const string DoneButtonText = "Got it";
 

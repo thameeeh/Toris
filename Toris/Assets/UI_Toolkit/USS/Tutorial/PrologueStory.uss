@@ -43,12 +43,12 @@
     left: 8%;
     right: 8%;
     bottom: 9%;
-    max-width: 960px;
+    max-width: 1100px;
     flex-direction: column;
-    padding-left: 28px;
-    padding-right: 28px;
-    padding-top: 22px;
-    padding-bottom: 22px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 25px;
+    padding-bottom: 25px;
     border-left-width: 3px;
     border-left-color: rgb(226, 190, 108);
     background-color: rgba(7, 8, 10, 0.76);
@@ -56,58 +56,58 @@
 
 .prologue-story__title {
     color: rgb(247, 232, 197);
-    font-size: 42px;
+    font-size: 48px;
     -unity-font-style: bold;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     white-space: normal;
 }
 
 .prologue-story__body {
     color: rgb(229, 222, 209);
-    font-size: 24px;
+    font-size: 28px;
     white-space: normal;
-    margin-bottom: 20px;
+    margin-bottom: 23px;
 }
 
 .prologue-story__prompt {
     align-self: flex-end;
     flex-direction: row;
     align-items: center;
-    min-height: 44px;
+    min-height: 51px;
 }
 
 .prologue-story__prompt-text {
     color: rgb(247, 232, 197);
-    font-size: 20px;
+    font-size: 23px;
     -unity-font-style: bold;
-    margin-right: 12px;
+    margin-right: 14px;
 }
 
 .prologue-story__keycap {
     align-self: flex-end;
-    min-width: 120px;
-    height: 44px;
-    padding-left: 18px;
-    padding-right: 18px;
+    min-width: 138px;
+    height: 51px;
+    padding-left: 21px;
+    padding-right: 21px;
     border-width: 2px;
     border-color: rgba(247, 232, 197, 0.82);
     border-radius: 4px;
     color: rgb(247, 232, 197);
     background-color: rgba(0, 0, 0, 0.34);
-    font-size: 18px;
+    font-size: 21px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
 
 .prologue-tutorial-prompt {
     position: absolute;
-    min-width: 168px;
-    max-width: 360px;
-    min-height: 42px;
-    padding-left: 18px;
-    padding-right: 18px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    min-width: 194px;
+    max-width: 414px;
+    min-height: 48px;
+    padding-left: 21px;
+    padding-right: 21px;
+    padding-top: 9px;
+    padding-bottom: 9px;
     border-width: 2px;
     border-color: rgba(247, 232, 197, 0.82);
     border-radius: 4px;
@@ -119,37 +119,37 @@
 
 .prologue-tutorial-prompt__label {
     color: rgb(247, 232, 197);
-    font-size: 22px;
+    font-size: 25px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     white-space: normal;
 }
 
 .prologue-tutorial-prompt__continue {
-    margin-top: 10px;
+    margin-top: 12px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
 .prologue-tutorial-prompt__continue-text {
-    margin-right: 8px;
+    margin-right: 9px;
     color: rgb(217, 207, 185);
-    font-size: 16px;
+    font-size: 18px;
     -unity-font-style: bold;
 }
 
 .prologue-tutorial-prompt__keycap {
-    min-width: 58px;
-    height: 27px;
-    padding-left: 8px;
-    padding-right: 8px;
+    min-width: 67px;
+    height: 31px;
+    padding-left: 9px;
+    padding-right: 9px;
     border-width: 1px;
     border-color: rgba(247, 232, 197, 0.82);
     border-radius: 3px;
     color: rgb(247, 232, 197);
     background-color: rgba(0, 0, 0, 0.34);
-    font-size: 14px;
+    font-size: 16px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }

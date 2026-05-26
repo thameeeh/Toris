@@ -33,8 +33,8 @@ namespace OutlandHaven.Tutorial
         private const string DefaultPromptAnchorName = "TutorialPromptAnchor";
         private const float MovementInputThresholdSqr = 0.01f;
         private const float MinimumPromptVisibleSeconds = 0.2f;
-        private const float PromptFallbackWidth = 180f;
-        private const float PromptFallbackHeight = 46f;
+        private const float PromptFallbackWidth = 207f;
+        private const float PromptFallbackHeight = 53f;
         private const int FadeStepMilliseconds = 16;
         private const int MaxHudAnchorResolveAttempts = 8;
         private const int HudAnchorResolveRetryMilliseconds = 50;
@@ -131,6 +131,10 @@ namespace OutlandHaven.Tutorial
             GameplayInputCapability.QuickSaveLoad
         };
 
+        [Header("Path Handoff")]
+        [Tooltip("Optional scene blocker that keeps the player in the wolf lesson area until the post-wolf inventory tutorial completes.")]
+        [SerializeField] private GameObject prologueBlocker;
+
         private VisualElement _promptRoot;
         private Label _promptLabel;
         private TutorialOverlayView _hudLessonOverlay;
@@ -164,7 +168,16 @@ namespace OutlandHaven.Tutorial
             ResolveDependencies();
 
             if (!AreTutorialTipsEnabled())
+            {
+                ReleasePrologueBlocker();
                 return;
+            }
+
+            if (IsPostWolfInventoryLessonCompleted())
+            {
+                ReleasePrologueBlocker();
+                return;
+            }
 
             if (waitForOpeningStory && openingStorySequence != null)
             {
@@ -327,6 +340,8 @@ namespace OutlandHaven.Tutorial
 
             if (AreTutorialTipsEnabled())
                 BeginPostWolfRewardsLesson();
+            else
+                ReleasePrologueBlocker();
         }
 
         private void LockMovementPromptCapabilities()
@@ -702,6 +717,17 @@ namespace OutlandHaven.Tutorial
         {
             HideHudLesson();
             UnbindPostWolfLessonEvents();
+            ReleasePrologueBlocker();
+        }
+
+        private void ReleasePrologueBlocker()
+        {
+            if (prologueBlocker == null || !prologueBlocker.activeSelf)
+                return;
+
+            // Scene handoff only: this authored blocker holds the player in the
+            // lesson arena until the prologue tutorial has finished its inventory beat.
+            prologueBlocker.SetActive(false);
         }
 
         private bool IsPostWolfInventoryLessonCompleted()

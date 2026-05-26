@@ -45,13 +45,13 @@ Completed:
 - After the wolf dies, optional tips spotlight the XP/level reward, teach `E Pick Up`, then guide the player through the visible HUD menu into Inventory.
 - The Prologue backpack and potion slots start empty so its first item interaction comes from the authored wolf drops.
 - Inside Inventory, the optional lesson spotlights the dropped `Training Bow`, waits for it to be equipped, opens Stats, asks the player to drag the potion into a potion slot, then highlights the HUD hotkeys.
+- Completing the final post-wolf HUD hotkey beat disables the authored `prologueBlocker` scene object so the player can continue toward Safe Haven.
 
 Still open:
 
 - Assign final background images, music, and SFX for the story cards.
 - Add a prologue-completed save flag so future loads can skip directly to `MainArea`.
 - Add optional ready-shot/release guidance on top of the existing bow ready and shot fired signals, if the fight still needs it after playtesting.
-- Wire the post-inventory completion beat to the authored path blocker once that lesson is complete.
 
 ## Fresh Save Flow
 
@@ -187,7 +187,7 @@ Recommended capabilities:
 | Equip Training Bow | Wolf drop includes a predetermined `Training Bow`. | Spotlight that inventory item and wait until the player right-clicks it into the weapon slot. | Equipment changes enabled for the tutorial item. Implemented. |
 | Stats Button | After equipping, point to the inventory stats button. | Explain that gear changes visible stats and builds can improve over time. | Implemented. |
 | Potion Slots | Wolf also drops a simple potion. | Explain potion slots, ask the player to drag the potion into one, then spotlight the HUD `1` / `2` hotkeys. | Implemented. |
-| Path Unblocked | Inventory lesson completes. | Remove or disable the authored invisible blocker behind the wolf. | Restore normal prologue capabilities. |
+| Path Unblocked | Inventory lesson completes. | Disable the authored `prologueBlocker` scene object. | Implemented. |
 | Safe Haven Approach | Player continues along the path. | No more mechanical teaching unless something unexpected needs a small reminder. | Normal prologue play. |
 | Arrival Cards | Player reaches the exit trigger. | Arrival story cards play, then transition into Safe Haven. | Story overlay owns input until the transition starts. |
 

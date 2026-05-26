@@ -13,8 +13,8 @@ namespace OutlandHaven.Tutorial
         private const string CapabilityLockId = "Tutorial.ReactiveBow";
         private const string UnderdrawStepId = "prologue.bow.dry_release";
         private const string OverdrawStepId = "prologue.bow.overdraw";
-        private const float PromptFallbackWidth = 360f;
-        private const float PromptFallbackHeight = 92f;
+        private const float PromptFallbackWidth = 414f;
+        private const float PromptFallbackHeight = 106f;
 
         [Header("References")]
         [SerializeField] private UIDocument uiDocument;

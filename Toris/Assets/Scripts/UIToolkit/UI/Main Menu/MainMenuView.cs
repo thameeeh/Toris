@@ -107,12 +107,28 @@ public class MainMenuView : GameView
         {
             _saveSlotsPanel.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
+
+        VisualElement focusTarget = _playButton;
+        if (isVisible)
+        {
+            focusTarget = _saveSlotsContainer?.Q<Button>("Btn_SlotFrame") ?? _closeSlotsButton;
+        }
+
+        FocusWhenReady(focusTarget);
     }
 
     private void HandlePlayClicked() => OnPlayClicked?.Invoke();
     private void HandleSettingsClicked() => OnSettingsClicked?.Invoke();
     private void HandleExitClicked() => OnExitClicked?.Invoke();
     private void HandleCloseSlotsClicked() => OnCloseSlotsClicked?.Invoke();
+
+    private static void FocusWhenReady(VisualElement element)
+    {
+        if (ControllerFeatureGate.IsEnabled)
+        {
+            element?.schedule.Execute(() => element.Focus()).ExecuteLater(0);
+        }
+    }
 
     public override void Dispose()
     {

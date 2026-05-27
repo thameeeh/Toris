@@ -144,6 +144,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   autoCreateAlertIndicator: 1
   alertIndicator: {fileID: 0}
+  damageNumberEvents: {fileID: 11400000, guid: dc6a4cd0743d4c32a252026507216b64, type: 2}
   questEnemyId: 
   questEnemyTypeOrTag: 
   isPassivePrey: 0

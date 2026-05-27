@@ -19,6 +19,7 @@ namespace OutlandHaven.UIToolkit
         private List<AbilitySlotView> _slotViews = new List<AbilitySlotView>();
 
         private bool _eventsBound = false;
+        private bool _bindingEventsBound = false;
         private float _lastUpdateTime;
         private IVisualElementScheduledItem _updateTask;
 
@@ -49,6 +50,13 @@ namespace OutlandHaven.UIToolkit
                 _uiSkillEvents.OnAbilitySlotPressed += HandleAbilitySlotPressed;
                 _uiSkillEvents.OnAbilitySlotsUpdated += HandleAbilitySlotsUpdated;
                 _eventsBound = true;
+            }
+
+            if (!_bindingEventsBound)
+            {
+                // Settings rebinding hook: keep ability slot labels synced with saved overrides.
+                InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
+                _bindingEventsBound = true;
             }
 
             if (_updateTask == null)
@@ -88,6 +96,12 @@ namespace OutlandHaven.UIToolkit
                 _eventsBound = false;
             }
 
+            if (_bindingEventsBound)
+            {
+                InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
+                _bindingEventsBound = false;
+            }
+
             _updateTask?.Pause();
         }
 
@@ -100,15 +114,7 @@ namespace OutlandHaven.UIToolkit
 
             int slotCount = _abilityController.SlotCount;
             
-            // Read bindings directly from the generated Input Actions class
-            using var tempActions = new InputSystem_Actions();
-            UnityEngine.InputSystem.InputAction[] actions = {
-                tempActions.Player.Ability1,
-                tempActions.Player.Ability2,
-                tempActions.Player.Ability3,
-                tempActions.Player.Ability4,
-                tempActions.Player.Ability5
-            };
+            string[] hotkeys = BuildAbilityHotkeys();
 
             for (int i = 0; i < slotCount; i++)
             {
@@ -127,18 +133,41 @@ namespace OutlandHaven.UIToolkit
 
                 if (slotElement != null)
                 {
-                    string hotkey = i < actions.Length ? actions[i].GetBindingDisplayString(0) : "";
-                    
-                    // Clean up string like "Keyboard/Q" to just "Q"
-                    if (hotkey.Contains("/"))
-                    {
-                        hotkey = hotkey.Substring(hotkey.LastIndexOf('/') + 1);
-                    }
-
+                    string hotkey = i < hotkeys.Length ? hotkeys[i] : string.Empty;
                     var slotView = new AbilitySlotView(slotElement, hotkey.ToUpper(), _uiSkillEvents);
                     _slotViews.Add(slotView);
                 }
             }
+        }
+
+        private void HandleInputBindingsChanged()
+        {
+            RefreshHotkeyLabels();
+        }
+
+        private void RefreshHotkeyLabels()
+        {
+            string[] hotkeys = BuildAbilityHotkeys();
+            int count = Mathf.Min(_slotViews.Count, hotkeys.Length);
+            for (int i = 0; i < count; i++)
+            {
+                _slotViews[i].SetHotkey(hotkeys[i].ToUpper());
+            }
+        }
+
+        private static string[] BuildAbilityHotkeys()
+        {
+            using var tempActions = new InputSystem_Actions();
+            InputBindingSettings.ApplyTo(tempActions);
+
+            return new[]
+            {
+                InputBindingSettings.GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Ability1"),
+                InputBindingSettings.GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Ability2"),
+                InputBindingSettings.GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Ability3"),
+                InputBindingSettings.GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Ability4"),
+                InputBindingSettings.GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Ability5")
+            };
         }
 
         public void RefreshAll()
@@ -275,6 +304,14 @@ namespace OutlandHaven.UIToolkit
                 _timerLabel.style.display = DisplayStyle.None;
                 if (_manaLabel != null) _manaLabel.style.display = DisplayStyle.None;
                 _root.style.opacity = 1.0f;
+            }
+        }
+
+        public void SetHotkey(string hotkey)
+        {
+            if (_hotkeyLabel != null)
+            {
+                _hotkeyLabel.text = hotkey ?? string.Empty;
             }
         }
 

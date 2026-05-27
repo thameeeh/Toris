@@ -8,6 +8,9 @@ using OutlandHaven.SaveSystem;
 
 public class MainMenuController : MonoBehaviour
 {
+    private const string MainAreaSceneName = "MainArea";
+    private const string PrologueSceneName = "Prologue";
+
     [Header("Templates")]
     [SerializeField] private VisualTreeAsset _mainMenuTemplate;
     [SerializeField] private VisualTreeAsset _saveSlotTemplate; // Added for the Slot Cards
@@ -19,6 +22,9 @@ public class MainMenuController : MonoBehaviour
 
     [Header("Music")]
     [SerializeField, Min(0f)] private float _startGameMusicFadeOutSeconds = 1f;
+
+    [Header("New Game")]
+    [SerializeField] private string _newGameSceneName = PrologueSceneName;
 
     private MainMenuView _view;
     private MainMenuUIManager _uiManager;
@@ -32,6 +38,9 @@ public class MainMenuController : MonoBehaviour
     {
         _uiManager = FindFirstObjectByType<MainMenuUIManager>();
         _input = new InputSystem_Actions();
+        // Settings rebinding hook: menu-owned input instances also need saved overrides.
+        InputBindingSettings.ApplyTo(_input);
+        ControllerFeatureGate.ApplyAvailability(_input);
         
         // Ensure we have a SaveManager if not manually assigned
         if (_saveManager == null)
@@ -49,6 +58,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnEnable()
     {
+        InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
         _input?.UI.Enable();
         if (_input != null)
         {
@@ -58,6 +68,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnDisable()
     {
+        InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
         _input?.UI.Disable();
         if (_input != null)
         {
@@ -71,6 +82,13 @@ public class MainMenuController : MonoBehaviour
         {
             OnCloseSlotsRequested();
         }
+    }
+
+    private void HandleInputBindingsChanged()
+    {
+        // Settings rebinding hook: keep menu Escape/cancel input aligned with saved overrides.
+        InputBindingSettings.ApplyTo(_input);
+        ControllerFeatureGate.ApplyAvailability(_input);
     }
 
     private void Start()
@@ -192,8 +210,7 @@ public class MainMenuController : MonoBehaviour
             _saveManager.ActiveSession.ImportFromSaveData(loadedData, _saveManager.MasterItemDatabase);
 
             // 3. Transition Scene
-            string sceneToLoad = string.IsNullOrEmpty(loadedData.CurrentSceneName) ? "MainArea" : loadedData.CurrentSceneName;
-            StartGameSceneLoad(sceneToLoad);
+            StartGameSceneLoad(ResolveLoadedGameSceneName(loadedData));
         }
         else
         {
@@ -226,7 +243,33 @@ public class MainMenuController : MonoBehaviour
         _saveManager.ActiveSession.ActiveSaveSlot = enumIndex;
         _saveManager.ActiveSession.AllowAutoSaveForSlot(enumIndex);
         _saveManager.ActiveSession.PrepareNewGame(tutorialsEnabled);
-        StartGameSceneLoad("MainArea");
+        StartGameSceneLoad(ResolveNewGameSceneName());
+    }
+
+    private string ResolveNewGameSceneName()
+    {
+        return string.IsNullOrWhiteSpace(_newGameSceneName)
+            ? PrologueSceneName
+            : _newGameSceneName.Trim();
+    }
+
+    private static string ResolveLoadedGameSceneName(GameSaveData loadedData)
+    {
+        if (loadedData == null)
+            return MainAreaSceneName;
+
+        if (string.IsNullOrWhiteSpace(loadedData.CurrentSceneName))
+            return MainAreaSceneName;
+
+        // Prologue completion is a progression gate, not a scene-export concern.
+        // Handoff saves still record Prologue as active, so only those redirect.
+        if (loadedData.PrologueCompleted
+            && string.Equals(loadedData.CurrentSceneName.Trim(), PrologueSceneName, System.StringComparison.OrdinalIgnoreCase))
+        {
+            return MainAreaSceneName;
+        }
+
+        return loadedData.CurrentSceneName.Trim();
     }
 
     private void StartGameSceneLoad(string sceneName)

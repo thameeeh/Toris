@@ -14,6 +14,7 @@ public struct HitData
 
     public GameObject source;
     public bool bypassIFrames;
+    public bool showDamageNumber;
 
     public bool appliesStatus;
     public PlayerStatusEffectType statusType;
@@ -28,7 +29,8 @@ public struct HitData
         float dmg,
         float kb,
         GameObject src,
-        bool bypass = false)
+        bool bypass = false,
+        bool showDamageNumber = true)
     {
         this.origin = origin;
         this.direction = dir.sqrMagnitude > 0.0001f ? dir.normalized : Vector2.zero;
@@ -36,6 +38,7 @@ public struct HitData
         this.knockback = kb;
         this.source = src;
         this.bypassIFrames = bypass;
+        this.showDamageNumber = showDamageNumber;
 
         this.appliesStatus = false;
         this.statusType = default;

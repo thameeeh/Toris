@@ -8,8 +8,9 @@ namespace OutlandHaven.Tutorial
     {
         private const float CutoutPadding = 8f;
         private const float ScreenPadding = 14f;
-        private const float TooltipWidth = 320f;
-        private const float TooltipFallbackHeight = 190f;
+        // Includes the larger authored callout footprint so placement keeps it within narrow game views.
+        private const float TooltipWidth = 490f;
+        private const float TooltipFallbackHeight = 270f;
         private const string NextButtonText = "Next";
         private const string DoneButtonText = "Got it";
 
@@ -92,6 +93,9 @@ namespace OutlandHaven.Tutorial
             _titleLabel.text = step.Title;
             _bodyLabel.text = step.Body;
             _nextButton.text = hasNextStep ? NextButtonText : DoneButtonText;
+            _nextButton.style.display = step.DismissMode == TutorialDismissMode.NextButton
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
 
             _root.style.display = DisplayStyle.Flex;
             _root.BringToFront();

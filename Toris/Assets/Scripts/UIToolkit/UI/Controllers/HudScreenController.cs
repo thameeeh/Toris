@@ -20,6 +20,8 @@ namespace OutlandHaven.UIToolkit
         private UIManager _uiManager;
         private InventoryManager _potionInventory;
         private PlayerAbilityController _abilityController;
+        private readonly FpsCounterPresenter _fpsCounter = new FpsCounterPresenter();
+        private bool _showFps;
 
         void Awake()
         {
@@ -30,8 +32,26 @@ namespace OutlandHaven.UIToolkit
 
         private void OnEnable()
         {
-            if (_hudMainTemplate == null)
+            FpsDisplaySettings.OnShowFpsChanged += HandleShowFpsChanged;
+            HandleShowFpsChanged(FpsDisplaySettings.ShowFps);
+        }
+
+        private void OnDisable()
+        {
+            FpsDisplaySettings.OnShowFpsChanged -= HandleShowFpsChanged;
+        }
+
+        private void Update()
+        {
+            if (!_showFps || _view == null)
+            {
                 return;
+            }
+
+            if (_fpsCounter.TryTick(Time.unscaledDeltaTime, out string fpsText))
+            {
+                _view.SetFpsText(fpsText);
+            }
         }
 
         private void Start()
@@ -58,6 +78,19 @@ namespace OutlandHaven.UIToolkit
 
             // 3. Register to the HUD Zone
             _uiManager.RegisterView(_view, ScreenZone.HUD);
+            HandleShowFpsChanged(FpsDisplaySettings.ShowFps);
+        }
+
+        private void HandleShowFpsChanged(bool showFps)
+        {
+            _showFps = showFps;
+            _fpsCounter.Reset();
+            // Settings FPS hook: HUD samples frame rate only while the user-facing toggle is enabled.
+            _view?.SetFpsVisible(showFps);
+            if (showFps)
+            {
+                _view?.SetFpsText(_fpsCounter.CurrentText);
+            }
         }
 
 #if UNITY_EDITOR

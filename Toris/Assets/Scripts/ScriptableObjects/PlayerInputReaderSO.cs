@@ -7,6 +7,7 @@ public class PlayerInputReaderSO : ScriptableObject
     private const int AbilitySlotCount = 5;
 
     public Vector2 Move { get; private set; }
+    public Vector2 Look { get; private set; }
 
     public Action OnShootStarted;
     public Action OnShootReleased;
@@ -37,6 +38,7 @@ public class PlayerInputReaderSO : ScriptableObject
     public Action OnGameplayInputSuppressed;
 
     public void SetMove(Vector2 move) => Move = move;
+    public void SetLook(Vector2 look) => Look = look;
 
     public void RaiseAbilitySlotStarted(int slotIndex) => OnAbilitySlotStarted?.Invoke(slotIndex);
     public void RaiseAbilitySlotReleased(int slotIndex) => OnAbilitySlotReleased?.Invoke(slotIndex);
@@ -47,6 +49,8 @@ public class PlayerInputReaderSO : ScriptableObject
         {
             Move = Vector2.zero;
         }
+
+        Look = Vector2.zero;
 
         if (IsShootHeld)
         {

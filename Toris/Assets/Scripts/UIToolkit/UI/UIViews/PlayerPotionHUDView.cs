@@ -3,22 +3,29 @@ using UnityEngine.UIElements;
 using System;
 using System.Collections.Generic;
 using OutlandHaven.Inventory;
+using OutlandHaven.Tutorial;
 
 namespace OutlandHaven.UIToolkit
 {
     public class PlayerPotionHUDView : IDisposable
     {
+        private const string HudPotionSlotsTutorialAnchorId = "hud.potion_slots";
+
         private VisualElement _topElement;
         private VisualTreeAsset _slotTemplate;
         private UIInventoryEventsSO _uiInventoryEvents;
 
         private Dictionary<InventorySlot, InventorySlotView> _slotDictionary = new Dictionary<InventorySlot, InventorySlotView>();
 
+        private VisualElement _potionBarContainer;
         private VisualElement _slot1Container;
         private VisualElement _slot2Container;
+        private Label _slot1HotkeyLabel;
+        private Label _slot2HotkeyLabel;
 
         private InventoryManager _potionInventory;
         private bool _eventsBound = false;
+        private bool _bindingEventsBound = false;
 
         public PlayerPotionHUDView(VisualElement topElement, VisualTreeAsset slotTemplate, UIInventoryEventsSO uiInventoryEvents)
         {
@@ -31,8 +38,16 @@ namespace OutlandHaven.UIToolkit
 
         private void SetVisualElements()
         {
+            _potionBarContainer = _topElement.Q<VisualElement>("hud__potion-bar");
             _slot1Container = _topElement.Q<VisualElement>("hud__potion-slot-1");
             _slot2Container = _topElement.Q<VisualElement>("hud__potion-slot-2");
+            _slot1HotkeyLabel = _slot1Container?.Q<Label>(className: "hud-potion-hotkey");
+            _slot2HotkeyLabel = _slot2Container?.Q<Label>(className: "hud-potion-hotkey");
+
+            // Cross-system boundary: HUD exposes the hotkey slot bounds only.
+            // The tutorial flow owns when and why this anchor is highlighted.
+            TutorialAnchorRegistry.Register(HudPotionSlotsTutorialAnchorId, _potionBarContainer);
+            RefreshHotkeyLabels();
         }
 
         public void Setup(InventoryManager potionInventory)
@@ -49,6 +64,15 @@ namespace OutlandHaven.UIToolkit
                 _uiInventoryEvents.OnSpecificSlotsUpdated += HandleSpecificSlotsUpdated;
                 _eventsBound = true;
             }
+
+            if (!_bindingEventsBound)
+            {
+                // Settings rebinding hook: potion HUD keycaps mirror saved binding overrides.
+                InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
+                _bindingEventsBound = true;
+            }
+
+            RefreshHotkeyLabels();
             RefreshSlots();
         }
 
@@ -59,6 +83,12 @@ namespace OutlandHaven.UIToolkit
                 _uiInventoryEvents.OnInventoryUpdated -= OnInventoryUpdated;
                 _uiInventoryEvents.OnSpecificSlotsUpdated -= HandleSpecificSlotsUpdated;
                 _eventsBound = false;
+            }
+
+            if (_bindingEventsBound)
+            {
+                InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
+                _bindingEventsBound = false;
             }
         }
 
@@ -130,8 +160,34 @@ namespace OutlandHaven.UIToolkit
             _slotDictionary.Add(slotData, slotView);
         }
 
+        private void HandleInputBindingsChanged()
+        {
+            RefreshHotkeyLabels();
+        }
+
+        private void RefreshHotkeyLabels()
+        {
+            using var tempActions = new InputSystem_Actions();
+            InputBindingSettings.ApplyTo(tempActions);
+
+            if (_slot1HotkeyLabel != null)
+            {
+                _slot1HotkeyLabel.text = InputBindingSettings
+                    .GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Potion_1")
+                    .ToUpper();
+            }
+
+            if (_slot2HotkeyLabel != null)
+            {
+                _slot2HotkeyLabel.text = InputBindingSettings
+                    .GetPrimaryKeyboardMouseDisplayString(tempActions, "Player", "Potion_2")
+                    .ToUpper();
+            }
+        }
+
         public void Dispose()
         {
+            TutorialAnchorRegistry.Unregister(HudPotionSlotsTutorialAnchorId, _potionBarContainer);
             Hide();
         }
     }

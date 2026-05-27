@@ -24,12 +24,23 @@
 }
 
 .settings-title {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+}
+
+.settings-tabs {
+    flex-direction: row;
+    margin-bottom: 24px;
+}
+
+.settings-tab {
+    width: 180px;
+    flex-grow: 0;
 }
 
 .settings-content {
     flex-grow: 1; /* Fills all available vertical space, pushing the close button down */
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
 /* --- Added Slider Styles --- */
@@ -58,6 +69,114 @@
 
 .settings-slider {
     width: 250px;
+}
+
+.settings-dropdown {
+    width: 250px;
+    font-size: var(--font-size-small);
+}
+
+.settings-action-row {
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 20%;
+    margin-bottom: 15px;
+}
+
+.settings-apply-button {
+    width: 250px;
+    height: 44px;
+    font-size: var(--font-size-small);
+}
+
+.settings-control-status {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    margin-bottom: 14px;
+}
+
+.settings-controls-list {
+    flex-direction: column;
+    padding-right: 20%;
+}
+
+.settings-control-section {
+    flex-direction: column;
+}
+
+.settings-control-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.settings-control-action {
+    width: 190px;
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+}
+
+.settings-control-binding {
+    width: 130px;
+    color: var(--color-border-highlight);
+    font-size: var(--font-size-body);
+}
+
+.settings-control-button {
+    width: 110px;
+    height: 38px;
+    margin-left: 8px;
+    font-size: var(--font-size-small);
+}
+
+.settings-confirmation-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.82);
+    justify-content: center;
+    align-items: center;
+    picking-mode: Position;
+}
+
+.settings-confirmation-panel {
+    width: 460px;
+    min-height: 220px;
+    background-color: var(--color-bg-dark);
+    border-width: 2px;
+    border-color: var(--color-border-highlight);
+    padding: 28px;
+    align-items: center;
+}
+
+.settings-confirmation-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    color: var(--color-text-light);
+    font-size: var(--font-size-h3);
+    -unity-text-align: middle-center;
+    margin-bottom: 18px;
+}
+
+.settings-confirmation-message {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    white-space: normal;
+    -unity-text-align: middle-center;
+    margin-bottom: 24px;
+}
+
+.settings-confirmation-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.settings-confirmation-button {
+    width: 46%;
+    height: 46px;
+    font-size: var(--font-size-small);
 }
 
 /* -------------------------- */

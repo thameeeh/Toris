@@ -61,3 +61,147 @@ MonoBehaviour:
     priority: 0
     oneShot: 1
     prerequisiteStepIds: []
+  - stepId: prologue.rewards
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.progression
+    title: Rewards
+    body: Defeating enemies grants XP and gold. Gain enough XP to increase your level.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 0
+    dismissMode: 0
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 0
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.hud.menu
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.menu_toggle
+    title: Menu
+    body: Open your menu to see the actions available to you.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 1
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.open
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.inventory_button
+    title: Inventory
+    body: Choose Inventory to inspect and equip what you found.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 2
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.equip_training_bow
+    trigger: 100
+    requiredScreen: 0
+    anchorId: inventory.item.training_bow
+    title: Equip Your Bow
+    body: This Training Bow is your first weapon. Right-click it to equip it.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 3
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.stats_toggle
+    trigger: 100
+    requiredScreen: 0
+    anchorId: inventory.stats_toggle
+    title: Stats
+    body: Gear changes your core numbers. Open Stats to see what changed.
+    placement: 1
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 1
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 4
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.stats_panel
+    trigger: 100
+    requiredScreen: 0
+    anchorId: inventory.stats_panel
+    title: Your Build
+    body: This panel shows the main stats worth comparing when you change gear: health, stamina, damage, defense, speed, and regeneration.
+    placement: 2
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 0
+    dismissMode: 0
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 5
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.potion_slots
+    trigger: 100
+    requiredScreen: 0
+    anchorId: inventory.potion_slots
+    title: Potion Slots
+    body: Potions can be prepared here for quick use later. Keep healing ready before heading deeper into danger.
+    placement: 0
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 0
+    dismissMode: 0
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 6
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.inventory.assign_potion
+    trigger: 100
+    requiredScreen: 0
+    anchorId: inventory.potion_assignment_area
+    title: Prepare A Potion
+    body: Drag the Minor Healing Potion from your backpack into either potion slot.
+    placement: 1
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 0
+    dismissMode: 1
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 7
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []
+  - stepId: prologue.hud.potion_hotkeys
+    trigger: 100
+    requiredScreen: 0
+    anchorId: hud.potion_slots
+    title: Quick Potions
+    body: Prepared potions appear here. Press 1 or 2 to use them quickly when you need them.
+    placement: 3
+    blocksInput: 1
+    pauseGameplay: 1
+    allowHighlightedClick: 0
+    dismissMode: 0
+    sequenceId: prologue.post_wolf
+    sequenceIndex: 8
+    priority: 0
+    oneShot: 1
+    prerequisiteStepIds: []

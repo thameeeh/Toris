@@ -235,7 +235,7 @@ public class NecromancerShotProjectile : Projectile
 
         float sustainDamage = _damage * sustainDamageMultiplier;
         float sustainKnockback = _knockback * sustainKnockbackMultiplier;
-        if (!TryApplyTargetDamage(other, sustainDamage, sustainKnockback, sustainDamageBypassesIFrames))
+        if (!TryApplyTargetDamage(other, sustainDamage, sustainKnockback, sustainDamageBypassesIFrames, false))
             return;
 
         _nextAllowedSustainDamageTime = Time.time + sustainDamageInterval;
@@ -245,7 +245,8 @@ public class NecromancerShotProjectile : Projectile
         Collider2D other,
         float damageAmount,
         float knockbackAmount,
-        bool bypassIFrames)
+        bool bypassIFrames,
+        bool showDamageNumber = true)
     {
         if (!TryResolveDamageTarget(other, out IEnemyAggroTarget damageTarget))
             return false;
@@ -256,7 +257,14 @@ public class NecromancerShotProjectile : Projectile
             : transform.position;
 
         Vector2 hitDirection = GetCurrentTravelDirection(targetPosition);
-        HitData hitData = new HitData(origin, hitDirection, damageAmount, knockbackAmount, gameObject, bypassIFrames);
+        HitData hitData = new HitData(
+            origin,
+            hitDirection,
+            damageAmount,
+            knockbackAmount,
+            gameObject,
+            bypassIFrames,
+            showDamageNumber);
 #if UNITY_EDITOR
         Debug.Log(
             $"[EnemyAttack:NecroProjectile:{name}:{GetInstanceID()}] Hit {GetDebugTargetSummary(damageTarget)} " +

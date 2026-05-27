@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4295517615632503279}
   - component: {fileID: 855635045066507753}
   - component: {fileID: 1776180903281742796}
+  - component: {fileID: 1776180903281742797}
   m_Layer: 0
   m_Name: EffectManager
   m_TagString: Untagged
@@ -60,3 +61,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectsBootstrap
   effectsRoot: {fileID: 0}
+--- !u!114 &1776180903281742797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733445671213870557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e711fa2d311487ca177dd4ccb268d87, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::DamageNumberPresenter
+  damageNumberEvents: {fileID: 11400000, guid: dc6a4cd0743d4c32a252026507216b64, type: 2}
+  damageNumberEffectId: damage_number
+  outgoingDamageColor: {r: 0.94, g: 0.94, b: 0.9, a: 1}
+  incomingDamageColor: {r: 0.94, g: 0.2, b: 0.18, a: 1}

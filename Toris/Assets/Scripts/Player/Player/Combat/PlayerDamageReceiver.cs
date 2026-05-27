@@ -15,6 +15,9 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
     [Header("Status")]
     [SerializeField] private PlayerStatusController _statusController;
 
+    [Header("Presentation Feedback")]
+    [SerializeField] private DamageNumberEventsSO damageNumberEvents;
+
     private float _iFrameUntil;
     private float _flashUntil;
 
@@ -72,11 +75,15 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
             return;
 
         if (IsInvulnerable && !hit.bypassIFrames)
+        {
+            RaiseDamageNumber(hit, 0f, DamageNumberFeedbackKind.Invulnerable);
             return;
+        }
 
         float finalDamage = CalculateFinalDamage(hit.damage);
 
         _stats.ApplyDamage(finalDamage, DeathCauseSnapshot.FromHit(hit));
+        RaiseDamageNumber(hit, finalDamage, DamageNumberFeedbackKind.Damage);
         TryApplyStatus(hit);
 
         if (_stats.IsDead)
@@ -98,6 +105,11 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
         ReceiveHit(hitData);
     }
 
+    public void ReportRejectedDirectHit(in HitData hit)
+    {
+        RaiseDamageNumber(hit, 0f, DamageNumberFeedbackKind.Invulnerable);
+    }
+
     private float CalculateFinalDamage(float baseDamage)
     {
         const float minDamageMultiplier = 0f;
@@ -113,6 +125,28 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
         }
 
         return validatedBaseDamage * incomingDamageMultiplier;
+    }
+
+    private void RaiseDamageNumber(
+        in HitData hit,
+        float amount,
+        DamageNumberFeedbackKind feedbackKind)
+    {
+        if (!hit.showDamageNumber || damageNumberEvents == null)
+            return;
+
+        damageNumberEvents.RaiseDirectHitResolved(new DamageNumberRequest(
+            amount,
+            ResolveHitWorldPosition(hit),
+            DamageNumberTargetKind.Player,
+            feedbackKind));
+    }
+
+    private Vector2 ResolveHitWorldPosition(in HitData hit)
+    {
+        return _targetCollider != null
+            ? _targetCollider.ClosestPoint(hit.origin)
+            : TargetPosition;
     }
 
     private void TryApplyStatus(in HitData hit)

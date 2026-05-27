@@ -2,6 +2,7 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/HUD.uss?fileID=7433441132597879392&amp;guid=76aca9a85a7322240ba3777a79b12751&amp;type=3#HUD"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <ui:Label name="hud__fps-label" text="FPS: --" class="hud-fps-label"/>
     <ui:VisualElement name="hud__menu-section">
         <ui:Button name="hud__menu-tab" class="hud-menu-btn" style="background-image: url(&quot;project://database/Assets/Art/PixelArtGUI/Textures/Icons/32/Arrow01UpOutlined.png?fileID=21300000&amp;guid=40c750a592b85c64690f38a0ce004234&amp;type=3#Arrow01UpOutlined&quot;);"/>
         <ui:VisualElement name="hud__menu-options" class="hud-menu-container"/>
@@ -14,10 +15,12 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="hud__bars-container" class="hud-bars-container">
-                <ui:Label text="Level" name="hud__level-label" class="HUD"/>
-                <ui:ProgressBar value="0" name="hud__xp-bar">
-                    <ui:Label text="XP" class="HUD hud-bar-text-overlay" style="height: 19px; bottom: -7px; width: 353px;"/>
-                </ui:ProgressBar>
+                <ui:VisualElement name="hud__progression-container" class="hud-progression-container">
+                    <ui:Label text="Level" name="hud__level-label" class="HUD"/>
+                    <ui:ProgressBar value="0" name="hud__xp-bar">
+                        <ui:Label text="XP" class="HUD hud-bar-text-overlay" style="height: 19px; bottom: -7px; width: 353px;"/>
+                    </ui:ProgressBar>
+                </ui:VisualElement>
                 <ui:ProgressBar name="hud__health-bar" low-value="0" high-value="100">
                     <ui:Label text="HP" class="HUD hud-bar-text-overlay" style="height: 18px; width: 353px; bottom: 22px;"/>
                 </ui:ProgressBar>

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 457243471952126720}
   - component: {fileID: 7299906776416090952}
   - component: {fileID: 1767346267080940195}
+  - component: {fileID: 1767346267080940196}
   m_Layer: 0
   m_Name: EffectPoolManager
   m_TagString: Untagged
@@ -60,3 +61,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EffectManagerBehavior
   library: {fileID: 11400000, guid: 05f309c9d9e5e9945b2fffdb0ceadaa9, type: 2}
   persistAcrossScenes: 1
+--- !u!114 &1767346267080940196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662501000496325804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e711fa2d311487ca177dd4ccb268d87, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::DamageNumberPresenter
+  damageNumberEvents: {fileID: 11400000, guid: dc6a4cd0743d4c32a252026507216b64, type: 2}
+  damageNumberEffectId: damage_number
+  outgoingDamageColor: {r: 0.94, g: 0.94, b: 0.9, a: 1}
+  incomingDamageColor: {r: 0.94, g: 0.2, b: 0.18, a: 1}

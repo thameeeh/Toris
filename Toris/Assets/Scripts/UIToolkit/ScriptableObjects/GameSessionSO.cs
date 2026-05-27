@@ -66,8 +66,10 @@ namespace OutlandHaven.UIToolkit
 
         [Header("Tutorial")]
         [SerializeField] private bool _tutorialsEnabled = true;
+        [SerializeField] private bool _prologueCompleted;
         private readonly HashSet<string> _completedTutorialStepIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         public bool TutorialsEnabled => _tutorialsEnabled;
+        public bool PrologueCompleted => _prologueCompleted;
 
         // Specialized internal services
         private RuntimeSnapshotRegistry _snapshotRegistry = new RuntimeSnapshotRegistry();
@@ -81,6 +83,7 @@ namespace OutlandHaven.UIToolkit
             PlayerPotionInventory = null;
             PlayerHUD = null;
             targetSpawnPointID = string.Empty;
+            _prologueCompleted = false;
             _snapshotRegistry.Clear();
             _playerSkills.Reset();
             StartNewTutorialState(tutorialsEnabled: true);
@@ -97,6 +100,11 @@ namespace OutlandHaven.UIToolkit
         {
             _tutorialsEnabled = tutorialsEnabled;
             _completedTutorialStepIds.Clear();
+        }
+
+        public void MarkPrologueCompleted()
+        {
+            _prologueCompleted = true;
         }
 
         public bool IsAutoSaveBlockedForActiveSlot()
@@ -209,6 +217,7 @@ namespace OutlandHaven.UIToolkit
             );
 
             saveData.TutorialProgress = ExportTutorialProgress();
+            saveData.PrologueCompleted = _prologueCompleted;
             return saveData;
         }
 
@@ -232,6 +241,7 @@ namespace OutlandHaven.UIToolkit
             );
 
             ImportTutorialProgress(saveData.TutorialProgress);
+            _prologueCompleted = saveData.PrologueCompleted;
         }
         #endregion
     }

@@ -29,3 +29,11 @@ MonoBehaviour:
     maxPoolSize: 64
     maxInactive: 32
     oneShotLifetimeSeconds: 0.2
+  - id: damage_number
+    prefab: {fileID: 8030500705791470081, guid: 902d9f8de1a5490db919c101b92c66bd, type: 3}
+    category: 0
+    prewarmPool: 1
+    prewarmCount: 8
+    maxPoolSize: 32
+    maxInactive: 16
+    oneShotLifetimeSeconds: 0.8

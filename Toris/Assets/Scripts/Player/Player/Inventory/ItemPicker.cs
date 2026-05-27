@@ -61,12 +61,11 @@ namespace OutlandHaven.Inventory
         void Update()
         {
             ResolveRuntimeReferences();
+            // Some authored flows render their own prompt, but pickup selection must still work.
+            FindBestInteractable();
 
             if (_interactionUI == null)
                 return;
-
-            // CONSTANTLY scan items for UI
-            FindBestInteractable();
 
             if (_currentSelection != null)
             {
@@ -145,10 +144,6 @@ namespace OutlandHaven.Inventory
                 Debug.LogError("ItemPicker cannot resolve a player InventoryManager in the current scene.", this);
             }
 
-            if (_interactionUI == null)
-            {
-                Debug.LogError("ItemPicker cannot resolve an InteractionPromptUI in the current scene.", this);
-            }
         }
     }
 

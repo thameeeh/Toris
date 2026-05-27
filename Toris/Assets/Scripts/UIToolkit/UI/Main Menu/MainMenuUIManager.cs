@@ -14,6 +14,9 @@ namespace OutlandHaven.UIToolkit
 
         private void Awake()
         {
+            // Keep menu input keyboard/mouse-only while controller support is dormant.
+            UIToolkitInputBootstrap.EnsureEventSystem();
+
             // Just grab the root of the document. No need for complex zones.
             _rootZone = GetComponent<UIDocument>().rootVisualElement;
         }

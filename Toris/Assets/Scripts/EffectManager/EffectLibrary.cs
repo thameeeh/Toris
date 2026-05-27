@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(menuName = "Outland Haven/VFX/Effect Library", fileName = "EffectLibrary")]
 public sealed class EffectLibrary : ScriptableObject, IEffectCatalog

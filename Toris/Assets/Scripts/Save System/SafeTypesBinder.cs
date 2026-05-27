@@ -22,6 +22,19 @@ namespace OutlandHaven.SaveSystem
 
         private SafeTypesBinder()
         {
+            // --- Save-pipeline DTO types ---
+            // Old save files (written with TypeNameHandling.All) embed $type on
+            // every object. New saves (Auto) won't, but we must accept both
+            // for backward compatibility.
+            Allow<GameSaveData>();
+            Allow<SaveMetadata>();
+            Allow<SavedInventoryData>();
+            Allow<SavedSlotData>();
+            Allow<SavedItemData>();
+            Allow<SavedSkillProgressData>();
+            Allow<SavedTutorialProgressData>();
+            Allow<SavedGameplayStatisticsData>();
+
             // --- ItemComponentState subtypes (the only polymorphic types in saves) ---
             Allow<EvolvingState>();
             Allow<UpgradeableState>();

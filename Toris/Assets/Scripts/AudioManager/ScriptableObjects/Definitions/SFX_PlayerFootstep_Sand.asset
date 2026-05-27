@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b65f422b55f8b049b0034295a3fa496, type: 3}
+  m_Name: SFX_PlayerFootstep_Sand
+  m_EditorClassIdentifier: Assembly-CSharp::SfxDefinition
+  id: player_footstep_sand
+  clips:
+  - {fileID: 8300000, guid: 570fc8511e807ad49a47f9367efdb03b, type: 3}
+  - {fileID: 8300000, guid: 9532c43aecca0194bbff50f0251b6ce7, type: 3}
+  - {fileID: 8300000, guid: 7a74065d72ce4e2468a16cf44374ca22, type: 3}
+  - {fileID: 8300000, guid: e8c02907e629c194c8c9f2ef1f7e8eb3, type: 3}
+  - {fileID: 8300000, guid: 561fbc7302874cd4bb24c4156228ed20, type: 3}
+  - {fileID: 8300000, guid: 0a5de29d1f0a70041948ba19dd26a0ec, type: 3}
+  - {fileID: 8300000, guid: 0480e8a6116c12e408cdedda8ab53732, type: 3}
+  outputMixerGroup: {fileID: 0}
+  volumeMin: 0.08
+  volumeMax: 0.12
+  pitchMin: 0.95
+  pitchMax: 1.05
+  spatialBlend: 0
+  rolloffMode: 0
+  minDistance: 1
+  maxDistance: 25
+  maxSimultaneousInstances: 2
+  stealMode: 1
+  cooldownSeconds: 0

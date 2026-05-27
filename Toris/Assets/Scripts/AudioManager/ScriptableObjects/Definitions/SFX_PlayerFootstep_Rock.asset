@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b65f422b55f8b049b0034295a3fa496, type: 3}
+  m_Name: SFX_PlayerFootstep_Rock
+  m_EditorClassIdentifier: Assembly-CSharp::SfxDefinition
+  id: player_footstep_rock
+  clips:
+  - {fileID: 8300000, guid: b0c62482369527f4f9ba27d19693cc96, type: 3}
+  - {fileID: 8300000, guid: 26aed5e9f2e5ba5499601a55c83299f4, type: 3}
+  - {fileID: 8300000, guid: df3296133a74c5441b7b6d46508db93f, type: 3}
+  - {fileID: 8300000, guid: 54f81f8aa647f2e4fbb35b8d2b2e811f, type: 3}
+  - {fileID: 8300000, guid: 1a1580683180f414496b1b4e780aac54, type: 3}
+  - {fileID: 8300000, guid: fff24e5f4b2642e44ade16d0874fe168, type: 3}
+  - {fileID: 8300000, guid: 57db9a6cc9fdedd4c9209a7f75df3837, type: 3}
+  outputMixerGroup: {fileID: 0}
+  volumeMin: 0.08
+  volumeMax: 0.12
+  pitchMin: 0.95
+  pitchMax: 1.05
+  spatialBlend: 0
+  rolloffMode: 0
+  minDistance: 1
+  maxDistance: 25
+  maxSimultaneousInstances: 2
+  stealMode: 1
+  cooldownSeconds: 0

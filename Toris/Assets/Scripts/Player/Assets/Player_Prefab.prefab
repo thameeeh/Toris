@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 2003589166597666773}
   - component: {fileID: 503972616382245057}
   - component: {fileID: 8647224738935113748}
+  - component: {fileID: 6210735503131676250}
   - component: {fileID: 277378599010215229}
   - component: {fileID: 4896050849110528461}
   - component: {fileID: 7014179871662737768}
@@ -486,7 +487,6 @@ MonoBehaviour:
   rules:
   - {fileID: 11400000, guid: 758f9ed52e4891640ad4827edb4a360c, type: 2}
   legacyModules:
-  - {fileID: 11400000, guid: c3499cca59d0d2a469a97d013ed6de67, type: 2}
   - {fileID: 11400000, guid: ce6563ef3412d8c4095aea9496ef8e90, type: 2}
   - {fileID: 11400000, guid: 3ea2e61512cc04d46aa784e990b8f510, type: 2}
   debugLogEvents: 0
@@ -513,6 +513,28 @@ MonoBehaviour:
   inventoryActions: {fileID: 7812172008567482713}
   movementStartSpeed: 0.1
   debugLogSfxEvents: 0
+--- !u!114 &6210735503131676250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600970068102170111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8f1a7d2e3b4c58b62a104e7d93cf16, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerFootstepSfxEmitter
+  rb: {fileID: 4313767850351379256}
+  motor: {fileID: 6347703112388059557}
+  surfaceMap: {fileID: 11400000, guid: b7ca8d91f4ef4d73a827650cd91de542, type: 2}
+  distancePerStep: 0.8
+  firstStepDistance: 0.18
+  movementSpeedThreshold: 0.1
+  tileSampleOffset: {x: 0, y: 0, z: 0}
+  fallbackSfxId: player_footstep_leaf
+  force2D: 1
+  debugLogSteps: 0
 --- !u!114 &277378599010215229
 MonoBehaviour:
   m_ObjectHideFlags: 0

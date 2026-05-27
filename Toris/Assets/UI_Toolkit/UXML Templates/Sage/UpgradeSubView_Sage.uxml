@@ -1,0 +1,37 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/SageUpgrade.uss?fileID=7433441132597879392&amp;guid=73e3384c8c40b314ba13aefd1d000afe&amp;type=3#SageUpgrade"/>
+    <ui:VisualElement name="sage-body" class="sage-body-panel sage-body-panel--minimal">
+        <ui:VisualElement class="sage-input-section">
+            <ui:Label text="Place Weapon Here" class="sage-instruction-text"/>
+            <ui:VisualElement name="sage-upgrade-slot-container" class="sage-upgrade-slot-container"/>
+            <ui:Label name="weapon-name-label" text="Select weapon" class="sage-detail-name-minimal"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="detail-stats-panel" class="sage-stats-container sage-stats-container--minimal">
+            <ui:VisualElement class="sage-stat-row">
+                <ui:Label text="Level:" class="sage-stat-label"/>
+                <ui:Label name="level-before-label" text="-" class="sage-stat-val val-before"/>
+                <ui:Label text="➔" class="sage-stat-arrow"/>
+                <ui:Label name="level-after-label" text="-" class="sage-stat-val val-after val-green"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="sage-stat-row">
+                <ui:Label text="Damage:" class="sage-stat-label"/>
+                <ui:Label name="stat-before-label" text="-" class="sage-stat-val val-before"/>
+                <ui:Label text="➔" class="sage-stat-arrow"/>
+                <ui:Label name="stat-after-label" text="-" class="sage-stat-val val-after val-green"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="detail-action-panel" class="sage-action-container sage-action-container--minimal">
+            <ui:VisualElement class="sage-cost-row">
+                <ui:Label text="Upgrade Cost:" class="sage-cost-label"/>
+                <ui:Label name="upgrade-cost-label" text="0 Gold" class="sage-cost-value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="sage-cost-row">
+                <ui:Label text="Available Gold:" class="sage-cost-label"/>
+                <ui:Label name="player-gold-label" text="0 Gold" class="sage-gold-value"/>
+            </ui:VisualElement>
+            <ui:Button name="btn-upgrade" text="Upgrade Weapon" class="standard-button sage-upgrade-btn"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

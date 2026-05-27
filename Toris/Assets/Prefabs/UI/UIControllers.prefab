@@ -1,45 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1261419630489080757
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5899826444343102557}
-  m_Layer: 0
-  m_Name: UIControllers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5899826444343102557
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261419630489080757}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7823, y: -15.41383, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3974366360485666644}
-  - {fileID: 6588181249117131879}
-  - {fileID: 4349630414067324045}
-  - {fileID: 9102120794689432328}
-  - {fileID: 9207061014519278009}
-  - {fileID: 31622641991389297}
-  - {fileID: 4636143515910350807}
-  - {fileID: 6327502120465636549}
-  - {fileID: 710050000000000002}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &710050000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,10 +42,102 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0de922cc30f8e5549ac1c99ec9bc7084, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsMenuController
   _settingsTemplate: {fileID: 9197481963319205126, guid: 69d1645f9a7eb24408d1f134acb9738b, type: 3}
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+--- !u!1 &1261419630489080757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5899826444343102557}
+  m_Layer: 0
+  m_Name: UIControllers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5899826444343102557
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261419630489080757}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.7823, y: -15.41383, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3974366360485666644}
+  - {fileID: 6588181249117131879}
+  - {fileID: 4349630414067324045}
+  - {fileID: 9102120794689432328}
+  - {fileID: 9207061014519278009}
+  - {fileID: 31622641991389297}
+  - {fileID: 4636143515910350807}
+  - {fileID: 6327502120465636549}
+  - {fileID: 7195875898762730273}
+  - {fileID: 710050000000000002}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3270968033779958332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7195875898762730273}
+  - component: {fileID: 3702518948186650673}
+  m_Layer: 0
+  m_Name: SageScreenController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7195875898762730273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3270968033779958332}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5899826444343102557}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3702518948186650673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3270968033779958332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b68b7c9a1e431b499e126273b366742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SageUpgradeScreenController
+  _sageUpgradeTemplate: {fileID: 9197481963319205126, guid: fe9f7cacb541d834fae59fdc92158b97, type: 3}
+  _sageUpgradeSubViewTemplate: {fileID: 9197481963319205126, guid: 74dfd2d5d4f202543aed7d410170c751, type: 3}
+  _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
+  _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
+  _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
+  _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _upgradeManager: {fileID: 0}
 --- !u!1001 &905558793512845613
 PrefabInstance:
   m_ObjectHideFlags: 0

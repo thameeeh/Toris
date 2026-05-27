@@ -24,6 +24,9 @@ namespace OutlandHaven.Inventory
         public UnityAction<InventorySlot, InventorySlot> OnRequestForge;
         public UnityAction<CraftingRecipeSO> OnRequestCraftRecipe;
 
+        [Header("Sage Upgrade Events")]
+        public UnityAction<InventorySlot> OnRequestSageUpgrade;
+
         [Header("Player Inventory Actions")]
         public UnityAction<InventorySlot> OnRequestEquip;
         public UnityAction<InventorySlot> OnRequestUse;

@@ -286,7 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PixelCrushersSmithInteractable
   _uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   _questVariable: isSmithHaveQuest
-  _questSelectionConversation: Smith_Quest_Or_Shop
+  _questSelectionConversation: Smith
   _shopInventory: {fileID: 8752173885184601590}
 --- !u!1 &6129318122709328053
 GameObject:
@@ -297,10 +297,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5149227401761282677}
-  - component: {fileID: 7900864018743453055}
+  - component: {fileID: 6345721815547439015}
   - component: {fileID: 979884100347080529}
   m_Layer: 0
-  m_Name: Collider
+  m_Name: InteractableProximity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -321,8 +321,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8865766885898603617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 148.4}
---- !u!70 &7900864018743453055
-CapsuleCollider2D:
+--- !u!58 &6345721815547439015
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -356,8 +356,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.97, y: 1.34}
-  m_Direction: 1
+  m_Radius: 2
 --- !u!114 &979884100347080529
 MonoBehaviour:
   m_ObjectHideFlags: 0

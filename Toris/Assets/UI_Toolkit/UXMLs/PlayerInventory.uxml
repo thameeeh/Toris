@@ -3,7 +3,7 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <ui:VisualElement name="VisualElement" class="player-inventory-root">
-        <ui:VisualElement name="container__player" class="player-inventory-container">
+        <ui:VisualElement name="container__player" class="player-inventory-container" style="background-image: url(&quot;project://database/Assets/TextMesh%20Pro/Examples%20&amp;%20Extras/Textures/Wipe%20Pattern%20-%20Circle.psd?fileID=2800000&amp;guid=10c49fcd9c64421db7c0133e61e55f97&amp;type=3#Wipe Pattern - Circle&quot;); background-color: rgba(101, 100, 23, 0.95);">
             <ui:VisualElement name="Top__Section" class="player-top-section">
                 <ui:VisualElement name="Stats__Panel" class="player-stats-panel">
                     <ui:Label text="Stats" class="panel-title"/>

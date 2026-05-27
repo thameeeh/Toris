@@ -1,0 +1,19 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/SageUpgrade.uss?fileID=7433441132597879392&amp;guid=73e3384c8c40b314ba13aefd1d000afe&amp;type=3#SageUpgrade"/>
+    <ui:VisualElement class="sage-root-wrapper">
+        <ui:VisualElement name="container-sage" class="sage-main-container" style="background-image: url(&quot;project://database/Assets/TextMesh%20Pro/Examples%20&amp;%20Extras/Textures/Wipe%20Pattern%20-%20Circle.psd?fileID=2800000&amp;guid=10c49fcd9c64421db7c0133e61e55f97&amp;type=3#Wipe Pattern - Circle&quot;); background-color: rgba(26, 10, 46, 0.95);">
+            <ui:VisualElement class="sage-header-section">
+                <ui:Label text="Sage" class="sage-title"/>
+                <ui:VisualElement name="Sage_Upgrade--Tab" class="panel-tab panel-tab--active">
+                    <ui:Label text="Infusion" name="Upgrade_Label" class="panel-tab-label"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="Sage_Brewing--Tab" class="panel-tab" style="opacity: 0.5;">
+                    <ui:Label text="Brewing" name="Brewing_Label" class="panel-tab-label"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Sage-middle__panel" class="sage-middle-panel"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

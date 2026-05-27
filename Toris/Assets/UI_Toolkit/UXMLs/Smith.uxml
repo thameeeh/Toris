@@ -2,28 +2,21 @@
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Smith/Smith.uss?fileID=7433441132597879392&amp;guid=80cbcbd9f648eb245ae3518c5d19a6ed&amp;type=3#Smith"/>
-
     <ui:VisualElement class="smith-root-wrapper">
-        <ui:VisualElement name="container-smith" class="smith-main-container">
-            
+        <ui:VisualElement name="container-smith" class="smith-main-container" style="background-image: url(&quot;project://database/Assets/TextMesh%20Pro/Examples%20&amp;%20Extras/Textures/Wipe%20Pattern%20-%20Circle.psd?fileID=2800000&amp;guid=10c49fcd9c64421db7c0133e61e55f97&amp;type=3#Wipe Pattern - Circle&quot;); background-color: rgba(16, 26, 87, 0.95);">
             <ui:VisualElement class="smith-header-section">
                 <ui:Label text="Smith" class="smith-title"/>
-                
                 <ui:VisualElement name="Smith_Forge--Tab" class="panel-tab panel-tab--active">
                     <ui:Label text="Forge" name="Forge_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                
                 <ui:VisualElement name="Smith_Market--Tab" class="panel-tab">
                     <ui:Label text="Market" enable-rich-text="true" name="Market_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                
                 <ui:VisualElement name="Smith_Salvage--Tab" class="panel-tab">
                     <ui:Label text="Salvage" name="Salvage_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-            
             <ui:VisualElement name="Smith-middle__panel" class="smith-middle-panel"/>
-            
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

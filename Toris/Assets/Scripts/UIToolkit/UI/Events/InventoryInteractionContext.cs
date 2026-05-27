@@ -5,6 +5,7 @@ namespace OutlandHaven.Inventory
         Normal,
         Shop,
         Forge,
-        Salvage
+        Salvage,
+        SageUpgrade
     }
 }

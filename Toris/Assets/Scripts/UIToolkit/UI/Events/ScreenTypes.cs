@@ -13,6 +13,7 @@ namespace OutlandHaven.UIToolkit
         Smith,
         Mage,
         Potions,
+        SageUpgrade,
 
         PlayerEquipment,
         Skills,

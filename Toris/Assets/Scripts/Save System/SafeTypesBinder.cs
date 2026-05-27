@@ -59,6 +59,12 @@ namespace OutlandHaven.SaveSystem
 
         public Type BindToType(string assemblyName, string typeName)
         {
+            // Guard: empty $type values from edge-case serialization or
+            // legacy saves. Return null to let Json.NET fall back to its
+            // default type resolution (uses the declared member type).
+            if (string.IsNullOrEmpty(typeName))
+                return null;
+
             // Json.NET may pass the full key or split assemblyName/typeName.
             // Build the same key format we used during registration.
             string key = string.IsNullOrEmpty(assemblyName)
@@ -77,7 +83,19 @@ namespace OutlandHaven.SaveSystem
 
         public void BindToName(Type serializedType, out string assemblyName, out string typeName)
         {
-            // Let Json.NET use its default behavior for serialization output.
+            // Explicitly return the correct type info for whitelisted types.
+            // Unity's bundled Newtonsoft.Json fork does not correctly handle
+            // the null/null fallback convention — it writes empty "$type"
+            // strings into the JSON, which then fail on deserialization.
+            string key = $"{serializedType.FullName}, {serializedType.Assembly.GetName().Name}";
+            if (_allowedTypes.ContainsKey(key))
+            {
+                assemblyName = serializedType.Assembly.GetName().Name;
+                typeName = serializedType.FullName;
+                return;
+            }
+
+            // Unknown types: let Json.NET use its default behavior.
             assemblyName = null;
             typeName = null;
         }

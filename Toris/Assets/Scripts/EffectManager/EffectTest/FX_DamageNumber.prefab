@@ -47,6 +47,7 @@ MonoBehaviour:
   text: {fileID: 0}
   fontAsset: {fileID: 11400000, guid: 842ec822022395249b82c60b223d71d3, type: 2}
   fontSize: 6
+  messageFontSize: 4
   sortingLayerName: Default
   sortingOrder: 100
   durationSeconds: 0.65

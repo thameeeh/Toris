@@ -6,12 +6,23 @@ using UnityEngine;
 public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver, IEffectPoolListener
 {
     private const float MinimumDurationSeconds = 0.01f;
+    private const string InvulnerableVariantId = "invulnerable";
+    private const string ShotFailedVariantId = "shot_failed";
+    private const string PoisonAppliedVariantId = "poison_applied";
+    private const string BurningAppliedVariantId = "burning_applied";
+    private const string BleedingAppliedVariantId = "bleeding_applied";
+    private const string InvulnerableMessage = "Invulnerable!";
+    private const string ShotFailedMessage = "Shot Failed";
+    private const string PoisonAppliedMessage = "Poisoned!";
+    private const string BurningAppliedMessage = "Burning!";
+    private const string BleedingAppliedMessage = "Bleeding!";
     private static readonly List<DamageNumberPopup> ActivePopups = new List<DamageNumberPopup>();
 
     [Header("Text")]
     [SerializeField] private TextMeshPro text;
     [SerializeField] private TMP_FontAsset fontAsset;
     [SerializeField, Min(0.1f)] private float fontSize = 6f;
+    [SerializeField, Min(0.1f)] private float messageFontSize = 2.5f;
     [SerializeField] private string sortingLayerName = "Default";
     [SerializeField] private int sortingOrder = 100;
 
@@ -78,7 +89,17 @@ public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver
         EnsureText();
 
         _displayColor = variant.ColorOverride;
-        text.SetText("{0:0}", Mathf.RoundToInt(Mathf.Max(0f, magnitude)));
+        if (TryResolveMessage(variant.VariantId, out string message))
+        {
+            text.fontSize = messageFontSize;
+            text.SetText(message);
+        }
+        else
+        {
+            text.fontSize = fontSize;
+            text.SetText("{0:0}", Mathf.RoundToInt(Mathf.Max(0f, magnitude)));
+        }
+
         text.color = _displayColor;
     }
 
@@ -213,5 +234,30 @@ public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver
         Color color = _displayColor;
         color.a *= Mathf.Clamp01(alpha);
         text.color = color;
+    }
+
+    private static bool TryResolveMessage(string variantId, out string message)
+    {
+        switch (variantId)
+        {
+            case InvulnerableVariantId:
+                message = InvulnerableMessage;
+                return true;
+            case ShotFailedVariantId:
+                message = ShotFailedMessage;
+                return true;
+            case PoisonAppliedVariantId:
+                message = PoisonAppliedMessage;
+                return true;
+            case BurningAppliedVariantId:
+                message = BurningAppliedMessage;
+                return true;
+            case BleedingAppliedVariantId:
+                message = BleedingAppliedMessage;
+                return true;
+            default:
+                message = null;
+                return false;
+        }
     }
 }

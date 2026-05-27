@@ -2,7 +2,7 @@
 
 ## Goal
 
-Show a short-lived damage number at the world position where a direct combat hit is resolved.
+Show short-lived world-space combat feedback where a direct hit is resolved or status damage is applied to the player, plus immediate weapon-use failure feedback above the player.
 
 The game is a primarily 32x32 isometric pixel-art game, so damage text must remain crisp, small, and readable above compact actors without visually overwhelming combat.
 
@@ -10,12 +10,14 @@ The first implementation must cover:
 
 - player hits enemy
 - enemy hits player
-- direct hits only; damage-over-time ticks are deferred
+- player status application labels for poison, burning, and bleeding
+- player poison, burning, and bleeding damage-over-time ticks
+- bow underdraw feedback through the existing bow event channel
 - settings-menu integration initially deferred until the runtime presentation was stable
 
 ## Architectural Direction
 
-Damage numbers are presentation feedback. They must not own combat rules, mutate health, or decide whether damage is valid. Combat resolution may report a zero-damage result for an invulnerable or blocked direct hit so the presenter can display `0`.
+Damage numbers are presentation feedback. They must not own combat rules, mutate health, or decide whether damage is valid. Combat and status resolution report authoritative applied results, allowing the presenter to display a number, a defensive result such as `Invulnerable!`, or numeric `0` for the player's post-hit grace placeholder.
 
 The preferred implementation is a pooled world-space text effect:
 
@@ -32,10 +34,10 @@ This keeps the feature aligned with the existing SFX/VFX architecture, where gam
 
 The first-pass runtime system is implemented through:
 
-- `DamageNumberEventsSO`, a shared ScriptableObject event channel for resolved direct-hit feedback
+- `DamageNumberEventsSO`, a shared ScriptableObject event channel for resolved direct-hit and player status-tick feedback
 - `IDirectHitDamageable`, which lets attacks pass known enemy impact positions without changing existing `IDamageable` callers
 - `DamageNumberPresenter`, attached to the effect-manager prefabs and responsible for requesting pooled display effects
-- `DamageNumberPopup`, a pooled world-space TMP effect that rounds the value, drifts upward, and fades out
+- `DamageNumberPopup`, a pooled world-space TMP effect that renders numeric or implemented message feedback, drifts upward, and fades out
 - `FX_DamageNumber`, registered in the existing `EffectLibrary` under `damage_number`
 
 The current enemy, player, and effect-manager prefabs are wired to the shared event channel. The prologue wolf variant inherits its channel binding from the minion wolf prefab.
@@ -56,10 +58,10 @@ To reuse that look for world-space damage numbers:
 
 1. In the Unity Editor, open `Window > TextMeshPro > Font Asset Creator`.
 2. Set `Source Font File` to `bitcell_memesbruh03.ttf`.
-3. Use `Custom Characters` containing `0123456789-+!` for the first pass.
-4. Start with a small atlas, such as `512 x 512`, because the first pass renders only numbers and basic punctuation.
+3. Use `Custom Characters` containing `0123456789-+.! InvulnerableShot FailedPoisonedBurningBleeding` for the current feedback set.
+4. Start with a small atlas, such as `512 x 512`, because the current pass renders numbers, punctuation, and short outcome/status messages.
 5. Prefer a raster-style TMP render mode for crisp pixel-art text; verify that the saved atlas texture uses point filtering and does not blur at gameplay scale.
-6. Keep future feedback words such as `Invulnerable!` or `Blocked!` out of the first atlas unless they are implemented at the same time; the font asset can be regenerated with those letters later.
+6. Add future feedback words such as `Blocked!` only when their gameplay outcome is implemented, then regenerate the atlas with the additional letters.
 7. Generate the font atlas.
 8. Save the generated TMP font asset under a project-owned art or UI asset folder.
 9. Assign that TMP font asset to the damage-number prefab's `TextMeshPro` component.
@@ -70,18 +72,22 @@ The first-pass TMP font asset is generated and assigned to the damage-number eff
 
 `Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03_TMP_RASTER.asset`
 
-Use this `RASTER` asset for the initial damage-number prefab. `DamageNumberPopup` creates and configures its world-space `TextMeshPro` mesh once per pooled instance, using this asset and no Canvas. Regenerate a `RASTER_HINTED` comparison only if the gameplay-scale preview shows blurred or uneven digits.
+Use this `RASTER` asset for the damage-number prefab. Regenerate it with the current custom-character string before testing the status application labels, as those labels require additional `P`, `B`, `s`, and `g` glyphs beyond the prior set. `DamageNumberPopup` creates and configures its world-space `TextMeshPro` mesh once per pooled instance, using this asset and no Canvas. Regenerate a `RASTER_HINTED` comparison only if the gameplay-scale preview shows blurred or uneven text.
 
 ## Event Flow
 
 The intended flow is:
 
 1. Combat system resolves a direct hit.
-2. The target emits a resolved direct-hit presentation event with the final applied amount, including `0` for a blocked or invulnerable direct hit in the first implementation.
+2. The target emits a resolved direct-hit presentation event with the final applied amount or an authoritative rejected-hit outcome.
 3. The event includes the best available world hit position.
 4. A damage-number presenter or effect bridge receives the event.
 5. The presenter requests a pooled damage-number effect.
-6. The effect instance formats the number, animates, fades, and returns to the pool.
+6. The effect instance formats a number or resolved message, animates, fades, and returns to the pool.
+
+Bow underdraw feedback uses the existing `PlayerBowEventsSO.UnderdrawReleased` event. `DamageNumberPresenter` observes that neutral bow outcome and requests a `Shot Failed` popup above the player without creating a damage event.
+
+Player status feedback uses the existing authoritative `PlayerStatusController` events. When a new condition succeeds, `OnStatusApplied` becomes a matching `Poisoned!`, `Burning!`, or `Bleeding!` popup above the player. A refresh of an already-active condition does not repeat that announcement. After health changes, `OnStatusDamageTick` becomes a colored numeric status-tick request. Missed-frame catch-up remains aggregated by the status system, so presentation receives one popup request for the actual applied tick amount.
 
 ## Enemy Damage Events
 
@@ -106,7 +112,7 @@ That is the best place to emit player damage-number events because it has:
 - the target hurtbox/collider position
 - i-frame acceptance logic
 
-Accepted direct damage should produce its final applied amount. A rejected direct hit due to invulnerability or blocking should produce zero-damage presentation feedback without changing health. This may require a resolved-hit feedback event before the current i-frame early return.
+Accepted direct damage should produce its final applied amount. The player's post-hit grace rejection remains numeric `0` and does not claim a defensive ability occurred.
 
 ## Presentation Effect
 
@@ -117,16 +123,23 @@ The damage number effect should be a prefab with:
 - configurable lifetime, upward float distance, spread, scale, fade, and color
 - a light gray or white outgoing-damage style for damage dealt to enemies
 - a red incoming-damage style for damage dealt to the player
-- display of whole-number damage only
+- a green poison-tick style, orange burning-tick style, and red bleeding-tick style for player status damage
+- matching green `Poisoned!`, orange `Burning!`, and red `Bleeding!` labels when a status first begins
+- display of whole-number damage plus implemented outcome messages
 - no gameplay dependencies
 
 The first pass can use fixed animation in script. If designers later want authored timing, an Animator can be added without changing the gameplay event flow.
 
 ## Deferred Behavior
 
-- Damage-over-time ticks do not produce popups in the first implementation.
-- Blocked or invulnerable direct hits display `0` in the first implementation without applying damage.
-- Richer feedback labels such as `Invulnerable!` or `Blocked!` are deferred until the direct-hit system is established.
+- Player poison, burning, and bleeding damage-over-time ticks display numeric popups after damage is applied.
+- Newly applied player statuses display `Poisoned!`, `Burning!`, or `Bleeding!`; reapplying an already active status only refreshes gameplay state.
+- Repeating contact or sustain damage, such as the necromancer projectile overlap tick, remains silent to prevent continuous popup clutter.
+- Outgoing damage-over-time against enemies remains deferred until an authoritative enemy status-damage path exists.
+- The necromancer's active summon-protection shield displays `Invulnerable!` when it rejects a direct player hit.
+- Player post-hit grace still displays `0`; it is not labeled as defensive invulnerability.
+- `Blocked!`, dodge, and evasion feedback remain deferred until authoritative mechanics produce those outcomes.
+- Bow underdraw displays `Shot Failed` above the player.
 - Damage-number visibility is now exposed as a global Gameplay setting after the initial runtime pass.
 
 Displayed damage uses conventional whole-number rounding through `Mathf.RoundToInt`, so `47.534` displays as `48`.
@@ -145,6 +158,10 @@ Implemented first pass:
 8. Formatted displayed damage as whole numbers using `Mathf.RoundToInt`.
 9. Resolved wolf bite hit payloads at attack time so incoming popups anchor on the bite-facing side of the player.
 10. Added active-popup separation so rapid hits near the same area fan into readable adjacent positions.
+11. Added `Invulnerable!` feedback for active necromancer summon-protection rejections.
+12. Added `Shot Failed` feedback for underdraw bow releases through `PlayerBowEventsSO`.
+13. Added player poison, burning, and bleeding tick popups with status-specific colors.
+14. Added one-time status application labels for newly acquired poison, burning, and bleeding effects.
 
 ## Rapid Hit Separation
 
@@ -157,7 +174,12 @@ The prefab exposes minimum separation distance, horizontal step, vertical step, 
 - First version shows direct-hit damage only.
 - Outgoing enemy damage numbers use a white or light-gray style; incoming player damage numbers use red.
 - Damage numbers drift upward and fade out.
-- The first version shows `0` for blocked or invulnerable direct-hit feedback; named labels are future work.
+- Active necromancer defensive invulnerability displays `Invulnerable!`; player post-hit grace continues to display `0`.
+- Underdraw releases display `Shot Failed`; no projectile or damage event is fabricated.
+- Applied player poison ticks use green, burning ticks use orange, and bleeding ticks reuse incoming red.
+- Newly applied poison, burning, and bleeding show matching colored status labels once per newly started condition.
+- Enemy outgoing DoT and repeating sustain/contact damage are intentionally not displayed yet.
+- `Blocked!` and dodge/evasion messages are intentionally not wired yet.
 - A later settings pass adds a global Damage Numbers toggle; the presenter suppresses popups while combat resolution remains unchanged.
 - Decimal damage is displayed using conventional whole-number rounding (`47.534` displays `48`).
 
@@ -170,8 +192,12 @@ Static verification:
 - no Canvas or `TextMeshProUGUI` dependency is introduced
 - existing `Damaged(float)` subscribers still compile
 - damage numbers only spawn after a resolved direct-hit outcome
-- blocked or invulnerable direct hits display `0` without mutating health
-- damage-over-time does not spawn a number in the first implementation
+- active necromancer shield rejections emit `Invulnerable!` without mutating health
+- player post-hit grace rejections emit numeric `0` without mutating health
+- bow underdraw emits `Shot Failed` without spawning a projectile
+- player status damage spawns one numeric popup for each applied poison, burning, or bleeding tick event
+- successful new player status applications spawn their matching colored status labels
+- sustained-contact projectile damage remains excluded from popups
 - the Damage Numbers setting gates presentation spawning only and does not mutate combat outcomes
 - new debug logs, if any, are wrapped in `#if UNITY_EDITOR`
 - magic values are constants or serialized fields
@@ -183,7 +209,15 @@ Manual Unity checks:
 - arrow hit on enemy shows a number near the hit
 - arrow rain and chain shot show numbers at their resolved hit points
 - wolf, boar, necromancer, and blood mage hits on player show numbers near the player hurt area
-- i-frame-blocked or otherwise invulnerable direct hits show `0` without reducing health
+- a direct hit rejected by active necromancer summon protection shows `Invulnerable!` without reducing health
+- player post-hit grace rejects follow-up direct hits with `0`, not `Invulnerable!`
+- an underdraw release shows `Shot Failed` above the player without firing an arrow
+- poison ticks show green damage numbers above the player
+- burning ticks show orange damage numbers above the player
+- bleeding ticks show red damage numbers above the player
+- first poison application shows green `Poisoned!`, first burning application shows orange `Burning!`, and first bleeding application shows red `Bleeding!`
+- refreshing an already active status does not repeatedly show its application label
+- necromancer projectile sustained-contact overlap does not repeatedly produce popups
 - outgoing damage is light colored and incoming damage is red
 - popups remain crisp and legible at the normal isometric gameplay zoom
 - popups float upward and fade out

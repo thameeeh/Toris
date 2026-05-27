@@ -28,6 +28,7 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
 
     private Color _originalColor;
     private bool _flashActive;
+    private bool _statusEventsBound;
 
     public event Action OnHurtReceived;
 
@@ -64,6 +65,16 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
         }
     }
 
+    private void OnEnable()
+    {
+        BindStatusEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnbindStatusEvents();
+    }
+
     private void Update()
     {
         UpdateFlash();
@@ -76,7 +87,7 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
 
         if (IsInvulnerable && !hit.bypassIFrames)
         {
-            RaiseDamageNumber(hit, 0f, DamageNumberFeedbackKind.Invulnerable);
+            RaiseDamageNumber(hit, 0f, DamageNumberFeedbackKind.PostHitGrace);
             return;
         }
 
@@ -107,7 +118,7 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
 
     public void ReportRejectedDirectHit(in HitData hit)
     {
-        RaiseDamageNumber(hit, 0f, DamageNumberFeedbackKind.Invulnerable);
+        RaiseDamageNumber(hit, 0f, DamageNumberFeedbackKind.PostHitGrace);
     }
 
     private float CalculateFinalDamage(float baseDamage)
@@ -160,6 +171,72 @@ public class PlayerDamageReceiver : MonoBehaviour, IEnemyAggroTarget
             hit.statusDuration,
             hit.statusTickInterval,
             hit.statusStacks);
+    }
+
+    private void BindStatusEvents()
+    {
+        if (_statusEventsBound || _statusController == null)
+            return;
+
+        _statusController.OnStatusApplied += HandleStatusApplied;
+        _statusController.OnStatusDamageTick += HandleStatusDamageTick;
+        _statusEventsBound = true;
+    }
+
+    private void UnbindStatusEvents()
+    {
+        if (!_statusEventsBound || _statusController == null)
+            return;
+
+        _statusController.OnStatusApplied -= HandleStatusApplied;
+        _statusController.OnStatusDamageTick -= HandleStatusDamageTick;
+        _statusEventsBound = false;
+    }
+
+    private void HandleStatusApplied(PlayerStatusEffectType statusType)
+    {
+        if (damageNumberEvents == null)
+            return;
+
+        damageNumberEvents.RaiseStatusEffectApplied(new DamageNumberRequest(
+            0f,
+            TargetPosition,
+            DamageNumberTargetKind.Player,
+            ResolveStatusAppliedFeedbackKind(statusType)));
+    }
+
+    private void HandleStatusDamageTick(PlayerStatusEffectType statusType, float amount)
+    {
+        if (amount <= 0f || damageNumberEvents == null)
+            return;
+
+        damageNumberEvents.RaiseStatusDamageTickResolved(new DamageNumberRequest(
+            amount,
+            TargetPosition,
+            DamageNumberTargetKind.Player,
+            ResolveStatusFeedbackKind(statusType)));
+    }
+
+    private static DamageNumberFeedbackKind ResolveStatusAppliedFeedbackKind(PlayerStatusEffectType statusType)
+    {
+        return statusType switch
+        {
+            PlayerStatusEffectType.Poison => DamageNumberFeedbackKind.PoisonApplied,
+            PlayerStatusEffectType.Burning => DamageNumberFeedbackKind.BurningApplied,
+            PlayerStatusEffectType.Bleeding => DamageNumberFeedbackKind.BleedingApplied,
+            _ => DamageNumberFeedbackKind.Damage
+        };
+    }
+
+    private static DamageNumberFeedbackKind ResolveStatusFeedbackKind(PlayerStatusEffectType statusType)
+    {
+        return statusType switch
+        {
+            PlayerStatusEffectType.Poison => DamageNumberFeedbackKind.PoisonTick,
+            PlayerStatusEffectType.Burning => DamageNumberFeedbackKind.BurningTick,
+            PlayerStatusEffectType.Bleeding => DamageNumberFeedbackKind.BleedingTick,
+            _ => DamageNumberFeedbackKind.Damage
+        };
     }
 
     private void StartFlash()

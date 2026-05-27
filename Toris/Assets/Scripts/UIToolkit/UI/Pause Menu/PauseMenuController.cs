@@ -65,6 +65,8 @@ namespace OutlandHaven.UIToolkit
             {
                 _isPaused = true;
                 Time.timeScale = 0f;
+                // SFX-only request: pause world/gameplay audio while pause-menu UI feedback remains available.
+                _uiEvents?.OnGameplaySfxPauseChanged?.Invoke(true);
                 _isStatsPanelOpen = false;
                 _isItemsPanelOpen = false;
                 if (_view != null)
@@ -81,6 +83,8 @@ namespace OutlandHaven.UIToolkit
             {
                 _isPaused = false;
                 Time.timeScale = 1f;
+                // SFX-only request: gameplay audio may resume once the pause screen is dismissed.
+                _uiEvents?.OnGameplaySfxPauseChanged?.Invoke(false);
                 _isStatsPanelOpen = false;
                 _isItemsPanelOpen = false;
                 if (_view != null)
@@ -198,6 +202,7 @@ namespace OutlandHaven.UIToolkit
         private void OnDestroy()
         {
             Time.timeScale = 1f; // Safety reset
+            _uiEvents?.OnGameplaySfxPauseChanged?.Invoke(false);
             if (_view != null)
             {
                 _view.OnResumeClicked -= Resume;

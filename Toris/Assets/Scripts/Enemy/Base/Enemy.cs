@@ -166,7 +166,7 @@ public abstract class Enemy : MonoBehaviour, IDirectHitDamageable, IEnemyMoveabl
 
         DamageNumberFeedbackKind feedbackKind = appliedDamage
             ? DamageNumberFeedbackKind.Damage
-            : DamageNumberFeedbackKind.Invulnerable;
+            : ResolveRejectedDirectHitFeedback();
         float displayedDamage = appliedDamage ? damageAmount : 0f;
 
         damageNumberEvents.RaiseDirectHitResolved(new DamageNumberRequest(
@@ -196,6 +196,9 @@ public abstract class Enemy : MonoBehaviour, IDirectHitDamageable, IEnemyMoveabl
     }
 
     protected virtual bool CanTakeDamage() => CurrentHealth > 0f;
+
+    protected virtual DamageNumberFeedbackKind ResolveRejectedDirectHitFeedback() =>
+        DamageNumberFeedbackKind.Damage;
 
     public virtual void Die()
     {

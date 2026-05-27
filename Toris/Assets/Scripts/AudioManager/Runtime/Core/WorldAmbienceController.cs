@@ -9,10 +9,12 @@ public sealed class WorldAmbienceController : MonoBehaviour
     [SerializeField] private bool ambienceEnabled = true;
 
     [Header("Scenes")]
+    [SerializeField] private string prologueSceneName = "Prologue";
     [SerializeField] private string mainAreaSceneName = "MainArea";
     [SerializeField] private string proceduralSceneName = "ProceduralTiles";
 
     [Header("Wind Ambience")]
+    [SerializeField] private string prologueSfxId = "amb_wind";
     [SerializeField] private string mainAreaSfxId = "amb_wind";
     [SerializeField] private string defaultBiomeSfxId = "amb_wind";
     [SerializeField, Range(0f, 2f)] private float windVolumeMultiplier = 1f;
@@ -113,6 +115,9 @@ public sealed class WorldAmbienceController : MonoBehaviour
     private string ResolveWindAmbienceId()
     {
         Scene activeScene = SceneManager.GetActiveScene();
+        if (SceneNameEquals(activeScene.name, prologueSceneName))
+            return prologueSfxId;
+
         if (SceneNameEquals(activeScene.name, mainAreaSceneName))
             return mainAreaSfxId;
 

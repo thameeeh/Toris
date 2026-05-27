@@ -348,6 +348,13 @@ public class Necromancer : Enemy
         return base.CanTakeDamage();
     }
 
+    protected override DamageNumberFeedbackKind ResolveRejectedDirectHitFeedback()
+    {
+        return enableBloodMageSummonProtection && HasActiveSummonProtection
+            ? DamageNumberFeedbackKind.Invulnerable
+            : base.ResolveRejectedDirectHitFeedback();
+    }
+
     public override void Die()
     {
         if (CurrentHealth > 0f)

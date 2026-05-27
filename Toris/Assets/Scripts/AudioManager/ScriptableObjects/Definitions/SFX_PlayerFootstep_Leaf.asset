@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b65f422b55f8b049b0034295a3fa496, type: 3}
+  m_Name: SFX_PlayerFootstep_Leaf
+  m_EditorClassIdentifier: Assembly-CSharp::SfxDefinition
+  id: player_footstep_leaf
+  clips:
+  - {fileID: 8300000, guid: 5c089d169cf821248bc855a710cc5431, type: 3}
+  - {fileID: 8300000, guid: 799d2520c6433b446a166c18f4112787, type: 3}
+  - {fileID: 8300000, guid: 98992b2b7e441d4459ce0bdf58d1cdd1, type: 3}
+  - {fileID: 8300000, guid: 22c8e53b7c505384d9b94a9e85d71e43, type: 3}
+  - {fileID: 8300000, guid: 5eceff0c956f8a446b82b9229d28eef6, type: 3}
+  - {fileID: 8300000, guid: b040f9173026edb4cbd97864aebc80fd, type: 3}
+  - {fileID: 8300000, guid: ba70ae4d615bbe14493c68aa52626438, type: 3}
+  outputMixerGroup: {fileID: 0}
+  volumeMin: 0.08
+  volumeMax: 0.12
+  pitchMin: 0.95
+  pitchMax: 1.05
+  spatialBlend: 0
+  rolloffMode: 0
+  minDistance: 1
+  maxDistance: 25
+  maxSimultaneousInstances: 2
+  stealMode: 1
+  cooldownSeconds: 0

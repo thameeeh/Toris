@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PlayerAnimationPresenter : MonoBehaviour
 {
+    private const float DefaultLocomotionPlaybackSpeed = 1f;
+
     [Header("References")]
     [SerializeField] private PlayerAnimationController _animationController;
     [SerializeField] private PlayerMotor _motor;
@@ -85,7 +87,10 @@ public class PlayerAnimationPresenter : MonoBehaviour
             return;
 
         Vector2 animationMoveInput = _motor.isDashing ? Vector2.zero : _motor.CurrentMoveInput;
-        _animationController.Tick(animationMoveInput);
+        float locomotionPlaybackSpeed = _playerStats != null
+            ? _playerStats.ResolvedEffects.moveSpeedMultiplier
+            : DefaultLocomotionPlaybackSpeed;
+        _animationController.Tick(animationMoveInput, locomotionPlaybackSpeed);
 
         if (_bowController != null && _bowController.IsDrawing)
         {

@@ -81,7 +81,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public Vector2 CurrentFacing => _lastDir;
 
-    public void Tick(Vector2 move)
+    public void Tick(Vector2 move, float locomotionPlaybackSpeed)
     {
         if (_view == null || _character == null)
             return;
@@ -110,7 +110,12 @@ public class PlayerAnimationController : MonoBehaviour
             LogShoot($"Returning to locomotion from OneShotBusy. activeAction={_activeActionKey} facing={FormatVector(_lastDir)}");
             _state = AnimState.Locomotion;
             SetActionLock(false);
-            _view.SetPlaybackSpeed(1f);
+        }
+
+        if (_state == AnimState.Locomotion)
+        {
+            // Presentation only: movement-speed effects keep locomotion cycles aligned with real travel speed.
+            _view.SetPlaybackSpeed(isMoving ? Mathf.Max(0f, locomotionPlaybackSpeed) : 1f);
         }
     }
 

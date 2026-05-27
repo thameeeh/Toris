@@ -136,7 +136,8 @@ Stateless ScriptableObject assets.
 - Decide which sounds to play in response to events.
 - Contain IDs and configuration.
 - Do not store runtime state.
-- Still supported through `PlayerSfx.legacyModules` for existing bow, dash, and footstep assets.
+- Still supported through `PlayerSfx.legacyModules` for existing bow and dash assets.
+- The player prefab now uses `PlayerFootstepSfxEmitter` for surface-aware footfalls; the old generic looping footstep module is a retirement candidate after reference checks.
 
 ## 2. Startup Sequence
 
@@ -327,3 +328,20 @@ Bleed tick:
 - Filter Status Type enabled, Status Type `Bleeding`.
 - Playback Mode: `AttachedOneShot` or `OneShot2D`.
 - Optional: enable event amount as volume so larger DOT ticks can sound stronger.
+
+## 11. Planned SFX Work
+
+Player feedback batch:
+
+- Player hurt impact/reaction sound.
+- Player death sound.
+- Status and effect sounds, prioritizing mana restore, poison, and bleeding feedback.
+
+Cleanup:
+
+- Verify that the generic looping `PlayerSfxModule_Footsteps` asset and `SFX_PlayerFootstep` definition are no longer referenced by live prefabs or scenes, then remove or archive the legacy path.
+
+Balancing follow-up:
+
+- `PlayerFootstepSfxEmitter` compresses audible cadence during movement-speed buffs without changing player travel speed or locomotion animation speed.
+- Default tuning uses `boostedCadenceInfluence = 0.7` and `maxBoostedCadenceMultiplier = 1.7`, so a `2x` movement effect produces approximately `1.7x` footstep cadence and stronger buffs do not exceed that audible cap.

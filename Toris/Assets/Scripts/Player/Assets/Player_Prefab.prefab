@@ -527,10 +527,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFootstepSfxEmitter
   rb: {fileID: 4313767850351379256}
   motor: {fileID: 6347703112388059557}
+  stats: {fileID: 8137892244548921797}
   surfaceMap: {fileID: 11400000, guid: b7ca8d91f4ef4d73a827650cd91de542, type: 2}
   distancePerStep: 0.8
   firstStepDistance: 0.18
   movementSpeedThreshold: 0.1
+  boostedCadenceInfluence: 0.7
+  maxBoostedCadenceMultiplier: 1.7
   tileSampleOffset: {x: 0, y: 0, z: 0}
   fallbackSfxId: player_footstep_leaf
   force2D: 1

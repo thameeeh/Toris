@@ -6,15 +6,24 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Rigidbody2D))]
 public sealed class PlayerFootstepSfxEmitter : MonoBehaviour
 {
+    private const float NormalMovementMultiplier = 1f;
+
     [Header("Dependencies")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerMotor motor;
+    [SerializeField] private PlayerStats stats;
     [SerializeField] private FootstepSurfaceMap surfaceMap;
 
     [Header("Step Cadence")]
     [SerializeField, Min(0.01f)] private float distancePerStep = 0.8f;
     [SerializeField, Min(0f)] private float firstStepDistance = 0.18f;
     [SerializeField, Min(0f)] private float movementSpeedThreshold = 0.1f;
+
+    [Header("Boosted Movement Cadence")]
+    [Tooltip("How strongly movement speed above 1x increases audible step cadence. At 0.7, a 2x speed effect targets 1.7x cadence before the cap.")]
+    [SerializeField, Range(0f, 1f)] private float boostedCadenceInfluence = 0.7f;
+    [Tooltip("Maximum audible footstep cadence multiplier during movement-speed buffs.")]
+    [SerializeField, Min(1f)] private float maxBoostedCadenceMultiplier = 1.7f;
 
     [Header("Surface Sampling")]
     [SerializeField] private Vector3 tileSampleOffset;
@@ -66,7 +75,7 @@ public sealed class PlayerFootstepSfxEmitter : MonoBehaviour
         if (!wasMoving)
         {
             wasMoving = true;
-            remainingStepDistance = Mathf.Min(firstStepDistance, distancePerStep);
+            remainingStepDistance = Mathf.Min(firstStepDistance, GetEffectiveDistancePerStep());
         }
 
         remainingStepDistance -= movedDistance;
@@ -74,7 +83,7 @@ public sealed class PlayerFootstepSfxEmitter : MonoBehaviour
             return;
 
         PlayStep(currentPosition);
-        remainingStepDistance += Mathf.Max(0.01f, distancePerStep);
+        remainingStepDistance += GetEffectiveDistancePerStep();
     }
 
     private void OnValidate()
@@ -83,6 +92,8 @@ public sealed class PlayerFootstepSfxEmitter : MonoBehaviour
         distancePerStep = Mathf.Max(0.01f, distancePerStep);
         firstStepDistance = Mathf.Max(0f, firstStepDistance);
         movementSpeedThreshold = Mathf.Max(0f, movementSpeedThreshold);
+        boostedCadenceInfluence = Mathf.Clamp01(boostedCadenceInfluence);
+        maxBoostedCadenceMultiplier = Mathf.Max(NormalMovementMultiplier, maxBoostedCadenceMultiplier);
     }
 
     private void HandleActiveSceneChanged(Scene previousScene, Scene nextScene)
@@ -98,6 +109,9 @@ public sealed class PlayerFootstepSfxEmitter : MonoBehaviour
 
         if (motor == null)
             TryGetComponent(out motor);
+
+        if (stats == null)
+            TryGetComponent(out stats);
     }
 
     private bool CanEmitFootsteps()
@@ -114,6 +128,26 @@ public sealed class PlayerFootstepSfxEmitter : MonoBehaviour
         Vector2 velocity = rb.velocity;
 #endif
         return velocity.sqrMagnitude > movementSpeedThreshold * movementSpeedThreshold;
+    }
+
+    private float GetEffectiveDistancePerStep()
+    {
+        float baseDistancePerStep = Mathf.Max(0.01f, distancePerStep);
+        if (stats == null)
+            return baseDistancePerStep;
+
+        float movementMultiplier = Mathf.Max(0f, stats.ResolvedEffects.moveSpeedMultiplier);
+        if (movementMultiplier <= NormalMovementMultiplier)
+            return baseDistancePerStep;
+
+        // SFX-only tuning: boosted travel remains unchanged while audible footfalls scale more gently.
+        float uncappedCadenceMultiplier = NormalMovementMultiplier
+            + ((movementMultiplier - NormalMovementMultiplier) * Mathf.Clamp01(boostedCadenceInfluence));
+        float cadenceMultiplier = Mathf.Min(
+            Mathf.Max(NormalMovementMultiplier, maxBoostedCadenceMultiplier),
+            uncappedCadenceMultiplier);
+
+        return baseDistancePerStep * movementMultiplier / cadenceMultiplier;
     }
 
     private void PlayStep(Vector3 worldPosition)

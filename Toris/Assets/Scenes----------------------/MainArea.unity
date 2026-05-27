@@ -3335,6 +3335,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GuideNPC
       objectReference: {fileID: 0}
+    - target: {fileID: 874577071310736719, guid: dfe6c861ab4181a4e9fe907edc8fcf3f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6118729068483249781, guid: dfe6c861ab4181a4e9fe907edc8fcf3f, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -3431,7 +3435,6 @@ SceneRoots:
   - {fileID: 238257603}
   - {fileID: 351610157}
   - {fileID: 81074661}
-  - {fileID: 8430792196830571822}
   - {fileID: 5404132937794942682}
   - {fileID: 902290754}
   - {fileID: 1681090516}
@@ -3439,8 +3442,9 @@ SceneRoots:
   - {fileID: 5222840374706630204}
   - {fileID: 87562002}
   - {fileID: 213805312}
+  - {fileID: 778222150}
   - {fileID: 1411739281}
   - {fileID: 437710527}
   - {fileID: 5204684200828140435}
   - {fileID: 1555206289}
-  - {fileID: 778222150}
+  - {fileID: 8430792196830571822}

@@ -1,5 +1,9 @@
 # Implementation Plan: Procedural Collectible Spawning (Corrected)
 
+> [!NOTE]
+> **CURRENT STATUS: PENDING**
+> This procedural spawning and collectible persistence pipeline has not been started yet. All design blueprints, script hooks (such as `CollectibleSiteBridge.cs`), placement algorithms, and scene assets are mapped out and ready to be built in a future task.
+
 This plan details how to procedurally spawn interactive, collectible items (flowers, herbs) across the world, making them persistent (they don't respawn once collected), leveraging the existing map generation pipeline.
 
 > [!IMPORTANT]

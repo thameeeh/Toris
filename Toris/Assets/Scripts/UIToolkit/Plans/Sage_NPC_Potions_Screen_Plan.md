@@ -1,5 +1,9 @@
 # Implementation Plan: Sage NPC, Generic Service Interactable, and Custom Potions Screen
 
+> [!NOTE]
+> **CURRENT STATUS: COMPLETED (INTEGRATED)**
+> Instead of a separate standalone green/purple panel, this plan was successfully unified with the Sage Upgrade interface under the amethyst/gold theme. Potion brewing was implemented as the dedicated **Brewing Tab** within `ScreenType.SageUpgrade` using `BrewSubView_Sage.cs` and `BrewSubView_Sage.uxml`, dynamically referencing alchemical potion recipes via `CraftingManagerSO`.
+
 This plan details the addition of **Eldrin the Sage**, a new NPC responsible for potions, bow upgrades, and skills. We will implement a highly reusable interaction component to avoid duplicate NPC logic and create a gorgeous, custom-themed green/purple **Potions & Upgrades** screen by duplicating and tailoring the Smith's UI Toolkit architecture.
 
 ---

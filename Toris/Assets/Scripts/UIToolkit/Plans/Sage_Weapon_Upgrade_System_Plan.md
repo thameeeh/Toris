@@ -1,5 +1,9 @@
 # Implementation Plan: Sage Weapon Upgrade System (Corrected)
 
+> [!NOTE]
+> **CURRENT STATUS: COMPLETED**
+> This system has been fully implemented, registered, and compiled. We built the specialized `InfusionSubView_Sage.cs` presenter and successfully integrated it inside the tabbed coordinator shell `SageUpgradeView.cs`. It runs weapon upgrades seamlessly via the `UpgradeSalvageManagerSO` database.
+
 This plan adds a dedicated weapon upgrade screen at the **Sage NPC (Eldrin)**. The player selects a weapon from their inventory, previews the stat boost, and spends gold to level it up (+1 → +2 → +3, etc.).
 
 > [!IMPORTANT]

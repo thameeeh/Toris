@@ -44,6 +44,19 @@
     padding-left: 20px;
 }
 
+.hud-fps-label {
+    display: none;
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    color: var(--color-text-light);
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.85);
+}
+
 .hud-menu-btn {
     width: 60px;
     height: 60px;

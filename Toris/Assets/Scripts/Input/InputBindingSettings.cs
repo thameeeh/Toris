@@ -11,6 +11,7 @@ public struct InputBindingDisplayEntry
         string actionMapName,
         string actionName,
         int bindingIndex,
+        string controlSchemeName,
         string bindingLabel,
         bool hasOverride)
     {
@@ -19,6 +20,7 @@ public struct InputBindingDisplayEntry
         ActionMapName = actionMapName;
         ActionName = actionName;
         BindingIndex = bindingIndex;
+        ControlSchemeName = controlSchemeName;
         BindingLabel = bindingLabel;
         HasOverride = hasOverride;
     }
@@ -28,6 +30,7 @@ public struct InputBindingDisplayEntry
     public string ActionMapName { get; }
     public string ActionName { get; }
     public int BindingIndex { get; }
+    public string ControlSchemeName { get; }
     public string BindingLabel { get; }
     public bool HasOverride { get; }
 }
@@ -36,10 +39,11 @@ public static class InputBindingSettings
 {
     private const string BindingOverridesKey = "input.binding_overrides";
     private const string KeyboardMouseGroup = "Keyboard&Mouse";
+    private const string GamepadGroup = "Gamepad";
     private const string PlayerMap = "Player";
     private const string UiMap = "UI";
 
-    private static readonly BindingDefinition[] BindingDefinitions =
+    private static readonly BindingDefinition[] KeyboardMouseBindingDefinitions =
     {
         new BindingDefinition("Move Up", PlayerMap, "Move", "<Keyboard>/w", "up"),
         new BindingDefinition("Move Down", PlayerMap, "Move", "<Keyboard>/s", "down"),
@@ -58,9 +62,26 @@ public static class InputBindingSettings
         new BindingDefinition("Pause", PlayerMap, "Pause", "<Keyboard>/escape"),
         new BindingDefinition("Inventory", UiMap, "ToggleInventory", "<Keyboard>/i"),
         new BindingDefinition("Skills", UiMap, "ToggleSkills", "<Keyboard>/u"),
-        new BindingDefinition("Quest Journal", UiMap, "ToggleQuestJournal", "<Keyboard>/j"),
-        new BindingDefinition("Quick Save", UiMap, "QuickSave", "<Keyboard>/f5"),
-        new BindingDefinition("Quick Load", UiMap, "QuickLoad", "<Keyboard>/f9")
+        new BindingDefinition("Quest Journal", UiMap, "ToggleQuestJournal", "<Keyboard>/j")
+    };
+
+    private static readonly BindingDefinition[] GamepadBindingDefinitions =
+    {
+        new BindingDefinition("Move", PlayerMap, "Move", "<Gamepad>/leftStick", null, GamepadGroup),
+        new BindingDefinition("Attack", PlayerMap, "Attack", "<Gamepad>/rightTrigger", null, GamepadGroup),
+        new BindingDefinition("Interact", PlayerMap, "Interact", "<Gamepad>/buttonSouth", null, GamepadGroup),
+        new BindingDefinition("Dash", PlayerMap, "Sprint", "<Gamepad>/buttonEast", null, GamepadGroup),
+        new BindingDefinition("Ability 1", PlayerMap, "Ability1", "<Gamepad>/rightShoulder", null, GamepadGroup),
+        new BindingDefinition("Ability 2", PlayerMap, "Ability2", "<Gamepad>/leftShoulder", null, GamepadGroup),
+        new BindingDefinition("Ability 3", PlayerMap, "Ability3", "<Gamepad>/dpad/up", null, GamepadGroup),
+        new BindingDefinition("Ability 4", PlayerMap, "Ability4", "<Gamepad>/dpad/right", null, GamepadGroup),
+        new BindingDefinition("Ability 5", PlayerMap, "Ability5", "<Gamepad>/dpad/down", null, GamepadGroup),
+        new BindingDefinition("Potion 1", PlayerMap, "Potion_1", "<Gamepad>/dpad/left", null, GamepadGroup),
+        new BindingDefinition("Potion 2", PlayerMap, "Potion_2", "<Gamepad>/leftTrigger", null, GamepadGroup),
+        new BindingDefinition("Pause", PlayerMap, "Pause", "<Gamepad>/startButton", null, GamepadGroup),
+        new BindingDefinition("Inventory", UiMap, "ToggleInventory", "<Gamepad>/selectButton", null, GamepadGroup),
+        new BindingDefinition("Skills", UiMap, "ToggleSkills", "<Gamepad>/buttonNorth", null, GamepadGroup),
+        new BindingDefinition("Quest Journal", UiMap, "ToggleQuestJournal", "<Gamepad>/rightStickPress", null, GamepadGroup)
     };
 
     public static event Action OnBindingsChanged;
@@ -152,9 +173,25 @@ public static class InputBindingSettings
             return entries;
         }
 
-        for (int i = 0; i < BindingDefinitions.Length; i++)
+        AddDisplayEntries(actions, KeyboardMouseBindingDefinitions, entries);
+        AddDisplayEntries(actions, GamepadBindingDefinitions, entries);
+
+        return entries;
+    }
+
+    public static bool IsGamepadControlScheme(string controlSchemeName)
+    {
+        return string.Equals(controlSchemeName, GamepadGroup, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void AddDisplayEntries(
+        InputSystem_Actions actions,
+        BindingDefinition[] definitions,
+        List<InputBindingDisplayEntry> entries)
+    {
+        for (int i = 0; i < definitions.Length; i++)
         {
-            BindingDefinition definition = BindingDefinitions[i];
+            BindingDefinition definition = definitions[i];
             if (!TryResolveBinding(actions, definition, out InputAction action, out int bindingIndex))
             {
                 continue;
@@ -167,11 +204,10 @@ public static class InputBindingSettings
                 definition.ActionMapName,
                 definition.ActionName,
                 bindingIndex,
+                definition.ControlSchemeName,
                 GetBindingDisplayString(action, bindingIndex),
                 HasOverride(binding)));
         }
-
-        return entries;
     }
 
     public static bool TryFindDisplayEntry(IList<InputBindingDisplayEntry> entries, string entryId, out InputBindingDisplayEntry entry)
@@ -206,7 +242,7 @@ public static class InputBindingSettings
         }
 
         InputAction targetAction = FindAction(actions, targetEntry.ActionMapName, targetEntry.ActionName);
-        if (!TryGetComparableBindingPath(targetAction, targetEntry.BindingIndex, out string targetPath))
+        if (!TryGetComparableBindingPath(targetAction, targetEntry.BindingIndex, targetEntry.ControlSchemeName, out string targetPath))
         {
             return false;
         }
@@ -219,8 +255,13 @@ public static class InputBindingSettings
                 continue;
             }
 
+            if (!string.Equals(candidateEntry.ControlSchemeName, targetEntry.ControlSchemeName, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
             InputAction candidateAction = FindAction(actions, candidateEntry.ActionMapName, candidateEntry.ActionName);
-            if (!TryGetComparableBindingPath(candidateAction, candidateEntry.BindingIndex, out string candidatePath))
+            if (!TryGetComparableBindingPath(candidateAction, candidateEntry.BindingIndex, candidateEntry.ControlSchemeName, out string candidatePath))
             {
                 continue;
             }
@@ -293,7 +334,7 @@ public static class InputBindingSettings
         for (int i = 0; i < action.bindings.Count; i++)
         {
             InputBinding binding = action.bindings[i];
-            if (IsMatchingCompositePart(binding, definition.CompositePartName))
+            if (IsMatchingCompositePart(binding, definition.CompositePartName, definition.ControlSchemeName))
             {
                 bindingIndex = i;
                 return true;
@@ -303,7 +344,7 @@ public static class InputBindingSettings
         for (int i = 0; i < action.bindings.Count; i++)
         {
             InputBinding binding = action.bindings[i];
-            if (!binding.isComposite && !binding.isPartOfComposite && IsKeyboardMouseBinding(binding))
+            if (!binding.isComposite && !binding.isPartOfComposite && IsBindingInControlScheme(binding, definition.ControlSchemeName))
             {
                 bindingIndex = i;
                 return true;
@@ -313,7 +354,11 @@ public static class InputBindingSettings
         return false;
     }
 
-    private static bool TryGetComparableBindingPath(InputAction action, int bindingIndex, out string path)
+    private static bool TryGetComparableBindingPath(
+        InputAction action,
+        int bindingIndex,
+        string controlSchemeName,
+        out string path)
     {
         path = string.Empty;
         if (action == null || bindingIndex < 0 || bindingIndex >= action.bindings.Count)
@@ -322,7 +367,7 @@ public static class InputBindingSettings
         }
 
         InputBinding binding = action.bindings[bindingIndex];
-        if (!IsKeyboardMouseBinding(binding))
+        if (!IsBindingInControlScheme(binding, controlSchemeName))
         {
             return false;
         }
@@ -331,12 +376,19 @@ public static class InputBindingSettings
         return !string.IsNullOrEmpty(path);
     }
 
-    private static bool IsMatchingCompositePart(InputBinding binding, string compositePartName)
+    private static bool IsMatchingCompositePart(InputBinding binding, string compositePartName, string controlSchemeName)
     {
         return !string.IsNullOrWhiteSpace(compositePartName)
             && binding.isPartOfComposite
-            && IsKeyboardMouseBinding(binding)
+            && IsBindingInControlScheme(binding, controlSchemeName)
             && string.Equals(binding.name, compositePartName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsBindingInControlScheme(InputBinding binding, string controlSchemeName)
+    {
+        return IsGamepadControlScheme(controlSchemeName)
+            ? IsGamepadBinding(binding)
+            : IsKeyboardMouseBinding(binding);
     }
 
     private static bool IsKeyboardMouseBinding(InputBinding binding)
@@ -346,10 +398,21 @@ public static class InputBindingSettings
             || StartsWithDevice(binding.effectivePath, "<Mouse>");
     }
 
+    private static bool IsGamepadBinding(InputBinding binding)
+    {
+        return ContainsGroup(binding.groups, GamepadGroup)
+            || StartsWithDevice(binding.effectivePath, "<Gamepad>");
+    }
+
     private static bool ContainsKeyboardMouseGroup(string groups)
     {
+        return ContainsGroup(groups, KeyboardMouseGroup);
+    }
+
+    private static bool ContainsGroup(string groups, string groupName)
+    {
         return !string.IsNullOrWhiteSpace(groups)
-            && groups.IndexOf(KeyboardMouseGroup, StringComparison.OrdinalIgnoreCase) >= 0;
+            && groups.IndexOf(groupName, StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     private static bool StartsWithDevice(string path, string devicePrefix)
@@ -401,7 +464,7 @@ public static class InputBindingSettings
             return string.Empty;
         }
 
-        string cleaned = displayString.Trim();
+        string cleaned = NormalizeKnownGamepadDisplay(displayString.Trim());
         int slashIndex = cleaned.LastIndexOf('/');
         if (slashIndex >= 0 && slashIndex < cleaned.Length - 1)
         {
@@ -414,7 +477,42 @@ public static class InputBindingSettings
             .Replace("middleButton", "MMB")
             .Replace("leftShift", "Left Shift")
             .Replace("escape", "Escape")
-            .Replace("enter", "Enter");
+            .Replace("enter", "Enter")
+            .Replace("buttonSouth", "A")
+            .Replace("buttonEast", "B")
+            .Replace("buttonWest", "X")
+            .Replace("buttonNorth", "Y")
+            .Replace("leftStickPress", "L3")
+            .Replace("rightStickPress", "R3")
+            .Replace("Left Stick Press", "L3")
+            .Replace("Right Stick Press", "R3")
+            .Replace("Button South", "A")
+            .Replace("Button East", "B")
+            .Replace("Button West", "X")
+            .Replace("Button North", "Y");
+    }
+
+    private static string NormalizeKnownGamepadDisplay(string displayString)
+    {
+        return displayString
+            .Replace("<Gamepad>/dpad/up", "D-Pad Up")
+            .Replace("<Gamepad>/dpad/down", "D-Pad Down")
+            .Replace("<Gamepad>/dpad/left", "D-Pad Left")
+            .Replace("<Gamepad>/dpad/right", "D-Pad Right")
+            .Replace("<Gamepad>/rightTrigger", "RT")
+            .Replace("<Gamepad>/leftTrigger", "LT")
+            .Replace("<Gamepad>/rightShoulder", "RB")
+            .Replace("<Gamepad>/leftShoulder", "LB")
+            .Replace("<Gamepad>/startButton", "Start")
+            .Replace("<Gamepad>/selectButton", "Select")
+            .Replace("<Gamepad>/rightStickPress", "R3")
+            .Replace("<Gamepad>/leftStickPress", "L3")
+            .Replace("Right Trigger", "RT")
+            .Replace("Left Trigger", "LT")
+            .Replace("Right Shoulder", "RB")
+            .Replace("Left Shoulder", "LB")
+            .Replace("Start Button", "Start")
+            .Replace("Select Button", "Select");
     }
 
     private static string NormalizeBindingPath(string path)
@@ -431,13 +529,20 @@ public static class InputBindingSettings
 
     private struct BindingDefinition
     {
-        public BindingDefinition(string displayName, string actionMapName, string actionName, string preferredPath, string compositePartName = null)
+        public BindingDefinition(
+            string displayName,
+            string actionMapName,
+            string actionName,
+            string preferredPath,
+            string compositePartName = null,
+            string controlSchemeName = KeyboardMouseGroup)
         {
             DisplayName = displayName;
             ActionMapName = actionMapName;
             ActionName = actionName;
             PreferredPath = preferredPath;
             CompositePartName = compositePartName;
+            ControlSchemeName = controlSchemeName;
         }
 
         public string DisplayName { get; }
@@ -445,5 +550,6 @@ public static class InputBindingSettings
         public string ActionName { get; }
         public string PreferredPath { get; }
         public string CompositePartName { get; }
+        public string ControlSchemeName { get; }
     }
 }

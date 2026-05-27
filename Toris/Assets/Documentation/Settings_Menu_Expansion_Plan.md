@@ -8,7 +8,8 @@ Confirmed settings:
 
 - Resolution selection.
 - Windowed and fullscreen mode selection.
-- Key rebinding for keyboard and mouse first, with gamepad support planned later.
+- Key rebinding for keyboard and mouse, plus the chosen controller layout.
+- Show FPS toggle.
 - Damage numbers toggle later, after the damage number system exists.
 
 Current settings already implemented:
@@ -17,6 +18,10 @@ Current settings already implemented:
 - Music Volume.
 - SFX Volume.
 - Loot Vacuum toggle.
+- Display, monitor, and window mode settings.
+- Keyboard and mouse rebinding with duplicate protection.
+- Controller rebinding for gameplay and menu actions, excluding Quick Save and Quick Load.
+- Show FPS toggle.
 
 ## Existing Architecture
 
@@ -28,6 +33,7 @@ The Settings menu is currently shared by the main menu and gameplay pause flow.
 - `SettingsMenu.uss` owns layout and styling.
 - `AudioVolumeSettings` stores audio values in `PlayerPrefs` and applies master volume through `AudioListener.volume`.
 - `LootMagnetSettings` stores the Loot Vacuum toggle in `PlayerPrefs`; `WorldItemMagnet` reads it at runtime.
+- `FpsDisplaySettings` stores the Show FPS toggle in `PlayerPrefs`; the HUD controller samples frame rate only while the setting is enabled.
 
 The expansion should keep the same pattern:
 
@@ -156,11 +162,11 @@ Suggested controls:
 - `DropdownField` named `Dropdown_WindowMode`.
 - `Button` named `Btn_ApplyDisplay`.
 
-Keep the current right-side panel structure. Use two top-level tabs only: `Main` for current settings, and `Controls` for keyboard and mouse rebinding work.
+Keep the current right-side panel structure. Use two top-level tabs only: `Main` for current settings, and `Controls` for keyboard, mouse, and controller rebinding work.
 
 ## Phase 2: Key Rebinding
 
-Key rebinding is valuable, but it has more risk than display settings because this project uses Unity's generated `InputSystem_Actions.cs`. The first pass should support keyboard and mouse only. Gamepad rebinding should be planned, but not implemented until keyboard and mouse rebinding is stable.
+Key rebinding is valuable, but it has more risk than display settings because this project uses Unity's generated `InputSystem_Actions.cs`. The first pass supports keyboard and mouse. Controller rebinding should only expose bindings that already exist in the input asset until a full controller layout is deliberately chosen.
 
 Project rule:
 
@@ -179,8 +185,10 @@ Recommended first implementation:
 - Load overrides immediately after each `InputSystem_Actions` instance is created.
 - Save overrides after a successful rebind.
 - Provide reset-to-defaults for individual bindings and all bindings.
-- Keep the first pass to primary keyboard and mouse bindings; leave alternate keyboard bindings and gamepad for later.
+- Keep keyboard and mouse to primary bindings.
+- Expose controller bindings only when matching gamepad defaults exist in the input asset.
 - Reject duplicate primary keyboard and mouse bindings, restoring the previous binding and showing a short conflict message.
+- Reject duplicate controller bindings separately from keyboard and mouse bindings.
 
 Likely support class:
 
@@ -189,7 +197,7 @@ Likely support class:
 
 Likely UI flow:
 
-- A `Controls` tab lists high-value keyboard and mouse actions only at first:
+- A `Controls` tab lists high-value keyboard and mouse actions:
   - Move.
   - Attack.
   - Interact.
@@ -204,9 +212,39 @@ Likely UI flow:
 - When rebinding, the view enters a "listening" state and the controller starts Unity's interactive rebinding operation.
 - Escape should cancel the pending rebind instead of closing the settings menu.
 - Prevent duplicate primary keyboard and mouse bindings.
+- A separate `Controller` section lists gamepad-supported actions:
+  - Move.
+  - Attack.
+  - Interact.
+  - Dash.
+  - Ability 1 through Ability 5.
+  - Potion 1 and Potion 2.
+  - Inventory.
+  - Skills.
+  - Quest Journal.
+  - Pause.
+- Prevent duplicate controller bindings inside the controller section.
 - Do not auto-swap duplicate bindings in the first pass; reject the duplicate so movement and hotkeys cannot become ambiguous.
-- Leave gamepad binding display and rebinding out of the first implementation, but avoid designing the support class in a way that blocks gamepad later.
+- Quick Save and Quick Load should not appear in the rebind list because they are keyboard-centric utility actions, not regular player-facing controls.
 - Ability and potion HUD labels should refresh from the active binding display strings after rebinds or resets.
+
+Default controller layout:
+
+- Move: Left Stick.
+- Attack: Right Trigger.
+- Interact: A / South Button.
+- Dash: B / East Button.
+- Ability 1: Right Shoulder.
+- Ability 2: Left Shoulder.
+- Ability 3: D-Pad Up.
+- Ability 4: D-Pad Right.
+- Ability 5: D-Pad Down.
+- Potion 1: D-Pad Left.
+- Potion 2: Left Trigger.
+- Pause: Start.
+- Inventory: Select / View.
+- Skills: Y / North Button.
+- Quest Journal: R3 / Right Stick Press.
 
 Because this requires coordinated changes across all input action creation sites, key rebinding should be implemented after display settings are stable.
 
@@ -214,17 +252,15 @@ Because this requires coordinated changes across all input action creation sites
 
 These fit the game better than graphics quality settings:
 
-- Screen shake intensity: `Off`, `Low`, `Normal`.
+- Show FPS toggle.
 - Damage numbers toggle, but only after the damage number system exists. Do not add a non-functional toggle ahead of the feature.
 - Floating pickup text toggle, if item pickup popups exist or are planned.
-- Auto-pickup distance or Loot Vacuum strength, if the existing loot magnet should become tunable rather than only enabled or disabled.
 - UI scale, if UI Toolkit layout supports it safely.
 - Tutorial hints enabled, if tutorials remain a player preference after new-game selection.
 - Quest tracking popups enabled, if quest UI becomes noisy.
 
 Recommended near-term extra:
 
-- Screen shake intensity only if there is already a centralized camera shake system.
 - Damage numbers once implemented.
 - Otherwise, keep the first pass to Display, Audio, Gameplay, and later Controls.
 
@@ -233,7 +269,7 @@ Recommended near-term extra:
 The Settings menu should use two top-level tabs:
 
 - `Main`: Audio, Display, Gameplay, and other general comfort settings.
-- `Controls`: Keyboard and mouse rebinding first, gamepad later.
+- `Controls`: Keyboard, mouse, and existing controller rebinding.
 
 The tab implementation should follow existing UI Toolkit MVP rules:
 
@@ -252,7 +288,10 @@ The tab implementation should follow existing UI Toolkit MVP rules:
 6. Add display `Apply` handling with confirm/revert behavior.
 7. Save display settings only after confirmation.
 8. Update documentation with the final behavior.
-9. Add key rebinding in a separate pass after confirming the display settings UX.
+9. Add key rebinding after confirming the display settings UX.
+10. Add Show FPS as a Main settings toggle.
+11. Add controller rebinding for the chosen full controller layout.
+12. Later, add damage number accessibility settings after damage numbers exist.
 
 ## Verification Plan
 
@@ -269,6 +308,9 @@ Static checks:
 - Confirm key rebinding stores overrides in `PlayerPrefs` and does not directly edit `.inputactions` or generated C#.
 - Confirm all `InputSystem_Actions` instances apply saved binding overrides after construction.
 - Confirm duplicate keyboard/mouse bindings are rejected and restore the previous binding.
+- Confirm duplicate controller bindings are rejected and restore the previous binding.
+- Confirm Quick Save and Quick Load do not appear in keyboard/mouse or controller rebinding lists.
+- Confirm Show FPS stores a global preference and only updates the HUD counter while visible.
 
 Unity manual checks:
 
@@ -284,7 +326,10 @@ Unity manual checks:
 - Rebind potion keys and verify the HUD potion key labels update.
 - Reset one binding and reset all bindings.
 - Try rebinding `Move Up` to the same key as `Move Left` and confirm the duplicate is rejected.
+- Try rebinding a controller action to the same input as another controller action and confirm the duplicate is rejected.
+- Confirm Quick Save and Quick Load are not shown in Controls.
 - Press Escape while rebinding and confirm the pending rebind cancels without closing Settings.
+- Toggle Show FPS on and off from Main settings and confirm the HUD label appears and disappears.
 - Close and reopen Settings to confirm displayed values persist.
 - Restart the game and confirm saved display settings load.
 - Confirm Escape closes Settings correctly.

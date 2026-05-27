@@ -13,7 +13,9 @@ public class SettingsMenuView : GameView
     private VisualElement _controlsTab;
     private VisualElement _mainContent;
     private VisualElement _controlsContent;
-    private VisualElement _controlBindingsList;
+    private VisualElement _keyboardControlBindingsList;
+    private VisualElement _gamepadControlSection;
+    private VisualElement _gamepadControlBindingsList;
     private Label _controlRebindStatus;
     private Button _resetAllControlsButton;
     private Slider _masterVolumeSlider;
@@ -28,6 +30,7 @@ public class SettingsMenuView : GameView
     private Button _keepDisplayButton;
     private Button _revertDisplayButton;
     private Toggle _lootMagnetToggle;
+    private Toggle _showFpsToggle;
     private readonly Dictionary<string, Button> _controlRebindButtons = new Dictionary<string, Button>();
     private readonly Dictionary<string, Button> _controlResetButtons = new Dictionary<string, Button>();
 
@@ -42,6 +45,7 @@ public class SettingsMenuView : GameView
     public event Action OnKeepDisplayClicked;
     public event Action OnRevertDisplayClicked;
     public event Action<bool> OnLootMagnetToggled;
+    public event Action<bool> OnShowFpsToggled;
     public event Action<string> OnRebindControlRequested;
     public event Action<string> OnResetControlRequested;
     public event Action OnResetAllControlsRequested;
@@ -68,7 +72,9 @@ public class SettingsMenuView : GameView
 
         _mainContent = Root.Q<VisualElement>("Settings_MainContent");
         _controlsContent = Root.Q<VisualElement>("Settings_ControlsContent");
-        _controlBindingsList = Root.Q<VisualElement>("Controls_BindingsList");
+        _keyboardControlBindingsList = Root.Q<VisualElement>("Controls_KeyboardBindingsList");
+        _gamepadControlSection = Root.Q<VisualElement>("Controls_GamepadSection");
+        _gamepadControlBindingsList = Root.Q<VisualElement>("Controls_GamepadBindingsList");
         _controlRebindStatus = Root.Q<Label>("Label_ControlRebindStatus");
         _resetAllControlsButton = Root.Q<Button>("Btn_ResetAllControls");
         if (_resetAllControlsButton != null)
@@ -138,6 +144,12 @@ public class SettingsMenuView : GameView
         if (_lootMagnetToggle != null)
         {
             _lootMagnetToggle.RegisterValueChangedCallback(HandleLootMagnetToggled);
+        }
+
+        _showFpsToggle = Root.Q<Toggle>("Toggle_ShowFps");
+        if (_showFpsToggle != null)
+        {
+            _showFpsToggle.RegisterValueChangedCallback(HandleShowFpsToggled);
         }
 
         ShowMainTab();
@@ -223,24 +235,38 @@ public class SettingsMenuView : GameView
         _lootMagnetToggle?.SetValueWithoutNotify(enabled);
     }
 
-    public void SetControlBindings(IList<InputBindingDisplayEntry> entries, string activeRebindId)
+    public void SetShowFpsValue(bool enabled)
     {
-        if (_controlBindingsList == null)
+        _showFpsToggle?.SetValueWithoutNotify(enabled);
+    }
+
+    public void SetControlBindings(
+        IList<InputBindingDisplayEntry> keyboardEntries,
+        IList<InputBindingDisplayEntry> gamepadEntries,
+        string activeRebindId)
+    {
+        if (_keyboardControlBindingsList == null && _gamepadControlBindingsList == null)
         {
             return;
         }
 
-        _controlBindingsList.Clear();
+        _keyboardControlBindingsList?.Clear();
+        _gamepadControlBindingsList?.Clear();
         _controlRebindButtons.Clear();
         _controlResetButtons.Clear();
 
         bool hasActiveRebind = !string.IsNullOrEmpty(activeRebindId);
-        if (entries != null)
+        AddControlBindingRows(_keyboardControlBindingsList, keyboardEntries, activeRebindId, hasActiveRebind);
+
+        bool hasGamepadEntries = gamepadEntries != null && gamepadEntries.Count > 0;
+        if (_gamepadControlSection != null)
         {
-            for (int i = 0; i < entries.Count; i++)
-            {
-                AddControlBindingRow(entries[i], activeRebindId, hasActiveRebind);
-            }
+            _gamepadControlSection.style.display = hasGamepadEntries ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        if (hasGamepadEntries)
+        {
+            AddControlBindingRows(_gamepadControlBindingsList, gamepadEntries, activeRebindId, hasActiveRebind);
         }
 
         _resetAllControlsButton?.SetEnabled(!hasActiveRebind);
@@ -290,6 +316,7 @@ public class SettingsMenuView : GameView
     private void HandleKeepDisplayClicked() => OnKeepDisplayClicked?.Invoke();
     private void HandleRevertDisplayClicked() => OnRevertDisplayClicked?.Invoke();
     private void HandleLootMagnetToggled(ChangeEvent<bool> evt) => OnLootMagnetToggled?.Invoke(evt.newValue);
+    private void HandleShowFpsToggled(ChangeEvent<bool> evt) => OnShowFpsToggled?.Invoke(evt.newValue);
     private void HandleResetAllControlsClicked() => OnResetAllControlsRequested?.Invoke();
 
     public override void Dispose()
@@ -307,11 +334,33 @@ public class SettingsMenuView : GameView
         if (_keepDisplayButton != null) _keepDisplayButton.clicked -= HandleKeepDisplayClicked;
         if (_revertDisplayButton != null) _revertDisplayButton.clicked -= HandleRevertDisplayClicked;
         if (_lootMagnetToggle != null) _lootMagnetToggle.UnregisterValueChangedCallback(HandleLootMagnetToggled);
+        if (_showFpsToggle != null) _showFpsToggle.UnregisterValueChangedCallback(HandleShowFpsToggled);
         if (_resetAllControlsButton != null) _resetAllControlsButton.clicked -= HandleResetAllControlsClicked;
         base.Dispose();
     }
 
-    private void AddControlBindingRow(InputBindingDisplayEntry entry, string activeRebindId, bool hasActiveRebind)
+    private void AddControlBindingRows(
+        VisualElement bindingsList,
+        IList<InputBindingDisplayEntry> entries,
+        string activeRebindId,
+        bool hasActiveRebind)
+    {
+        if (bindingsList == null || entries == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            AddControlBindingRow(bindingsList, entries[i], activeRebindId, hasActiveRebind);
+        }
+    }
+
+    private void AddControlBindingRow(
+        VisualElement bindingsList,
+        InputBindingDisplayEntry entry,
+        string activeRebindId,
+        bool hasActiveRebind)
     {
         string entryId = entry.Id;
         bool isActiveRebind = string.Equals(entryId, activeRebindId, StringComparison.Ordinal);
@@ -347,7 +396,7 @@ public class SettingsMenuView : GameView
         row.Add(resetButton);
         _controlResetButtons[entryId] = resetButton;
 
-        _controlBindingsList.Add(row);
+        bindingsList.Add(row);
     }
 
     private void ShowTab(VisualElement activeTab, VisualElement activeContent)

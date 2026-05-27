@@ -56,6 +56,11 @@
                 <ui:Label text="Gameplay" class="settings-section-header settings-section-spacing"/>
 
                 <ui:VisualElement class="settings-slider-row">
+                    <ui:Label text="Show FPS" class="stat-label"/>
+                    <ui:Toggle name="Toggle_ShowFps" value="false"/>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Loot Vacuum" class="stat-label"/>
                     <ui:Toggle name="Toggle_LootMagnet" value="true"/>
                 </ui:VisualElement>
@@ -63,7 +68,11 @@
             <ui:ScrollView name="Settings_ControlsContent" class="settings-content">
                 <ui:Label text="Keyboard &amp; Mouse" class="settings-section-header"/>
                 <ui:Label name="Label_ControlRebindStatus" class="settings-control-status"/>
-                <ui:VisualElement name="Controls_BindingsList" class="settings-controls-list"/>
+                <ui:VisualElement name="Controls_KeyboardBindingsList" class="settings-controls-list"/>
+                <ui:VisualElement name="Controls_GamepadSection" class="settings-control-section">
+                    <ui:Label text="Controller" class="settings-section-header settings-section-spacing"/>
+                    <ui:VisualElement name="Controls_GamepadBindingsList" class="settings-controls-list"/>
+                </ui:VisualElement>
                 <ui:VisualElement class="settings-action-row">
                     <ui:Button name="Btn_ResetAllControls" text="Reset All" class="standard-button settings-apply-button"/>
                 </ui:VisualElement>

@@ -20,6 +20,7 @@ namespace OutlandHaven.UIToolkit
         private ProgressBar _xpBar;
         private Label _levelLabel;
         private Label _goldLabel;
+        private Label _fpsLabel;
         private VisualElement _progressionContainer;
         private Button _mainToggleBtn;
         private Button _inventoryMenuButton;
@@ -107,6 +108,7 @@ namespace OutlandHaven.UIToolkit
             _xpBar = m_TopElement.Q<ProgressBar>("hud__xp-bar");
             _levelLabel = m_TopElement.Q<Label>("hud__level-label");
             _goldLabel = m_TopElement.Q<Label>("hud__gold-label");
+            _fpsLabel = m_TopElement.Q<Label>("hud__fps-label");
             _progressionContainer = m_TopElement.Q<VisualElement>("hud__progression-container");
 
             // Menu Tab Elements
@@ -116,6 +118,27 @@ namespace OutlandHaven.UIToolkit
             // Clear any placeholder content from the UI Builder
             _optionsContainer?.Clear();
             _optionsContainer.style.display = DisplayStyle.None; // Start hidden
+            SetFpsVisible(false);
+        }
+
+        public void SetFpsVisible(bool visible)
+        {
+            if (_fpsLabel == null)
+            {
+                return;
+            }
+
+            _fpsLabel.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        public void SetFpsText(string fpsText)
+        {
+            if (_fpsLabel == null)
+            {
+                return;
+            }
+
+            _fpsLabel.text = string.IsNullOrWhiteSpace(fpsText) ? "FPS: --" : fpsText;
         }
 
         private void GenerateMenuButtons()

@@ -24,6 +24,8 @@ public class SettingsMenuController : MonoBehaviour
     private readonly List<GameDisplayOption> _availableDisplays = new List<GameDisplayOption>();
     private readonly List<GameDisplayResolution> _availableResolutions = new List<GameDisplayResolution>();
     private readonly List<InputBindingDisplayEntry> _controlBindingEntries = new List<InputBindingDisplayEntry>();
+    private readonly List<InputBindingDisplayEntry> _keyboardControlBindingEntries = new List<InputBindingDisplayEntry>();
+    private readonly List<InputBindingDisplayEntry> _gamepadControlBindingEntries = new List<InputBindingDisplayEntry>();
     private readonly List<FullScreenMode> _availableWindowModes = new List<FullScreenMode>
     {
         FullScreenMode.FullScreenWindow,
@@ -132,6 +134,7 @@ public class SettingsMenuController : MonoBehaviour
             AudioVolumeSettings.SfxVolume);
 
         _view.SetLootMagnetValue(LootMagnetSettings.LootMagnetEnabled);
+        _view.SetShowFpsValue(FpsDisplaySettings.ShowFps);
         InitializeDisplaySettings();
         InitializeControlSettings();
 
@@ -145,6 +148,7 @@ public class SettingsMenuController : MonoBehaviour
         _view.OnKeepDisplayClicked += HandleKeepDisplayClicked;
         _view.OnRevertDisplayClicked += HandleRevertDisplayClicked;
         _view.OnLootMagnetToggled += HandleLootMagnetToggled;
+        _view.OnShowFpsToggled += HandleShowFpsToggled;
         _view.OnRebindControlRequested += HandleRebindControlRequested;
         _view.OnResetControlRequested += HandleResetControlRequested;
         _view.OnResetAllControlsRequested += HandleResetAllControlsRequested;
@@ -208,6 +212,11 @@ public class SettingsMenuController : MonoBehaviour
     private void HandleLootMagnetToggled(bool value)
     {
         LootMagnetSettings.SetLootMagnetEnabled(value);
+    }
+
+    private void HandleShowFpsToggled(bool value)
+    {
+        FpsDisplaySettings.SetShowFps(value);
     }
 
     private void InitializeControlSettings()
@@ -351,6 +360,7 @@ public class SettingsMenuController : MonoBehaviour
 
         AudioVolumeSettings.Save();
         LootMagnetSettings.Save();
+        FpsDisplaySettings.Save();
     }
 
     private void RevertPendingDisplayChanges()
@@ -528,11 +538,7 @@ public class SettingsMenuController : MonoBehaviour
         _view.SetControlRebindStatus($"Listening for {entry.DisplayName}");
         RefreshControlBindings();
 
-        _rebindingOperation = action.PerformInteractiveRebinding(entry.BindingIndex)
-            .WithControlsExcluding("<Gamepad>")
-            .WithControlsExcluding("<Joystick>")
-            .WithControlsExcluding("<Touchscreen>")
-            .WithControlsExcluding("<XRController>")
+        _rebindingOperation = ConfigureRebindingOperation(action.PerformInteractiveRebinding(entry.BindingIndex), entry)
             .WithCancelingThrough("<Keyboard>/escape")
             .OnCancel(operation => CompleteControlRebind(saveChanges: false))
             .OnComplete(operation => CompleteControlRebind(saveChanges: true))
@@ -621,7 +627,43 @@ public class SettingsMenuController : MonoBehaviour
     {
         _controlBindingEntries.Clear();
         _controlBindingEntries.AddRange(InputBindingSettings.GetDisplayEntries(_bindingActions));
-        _view?.SetControlBindings(_controlBindingEntries, _activeControlRebindId);
+
+        _keyboardControlBindingEntries.Clear();
+        _gamepadControlBindingEntries.Clear();
+        for (int i = 0; i < _controlBindingEntries.Count; i++)
+        {
+            InputBindingDisplayEntry entry = _controlBindingEntries[i];
+            if (InputBindingSettings.IsGamepadControlScheme(entry.ControlSchemeName))
+            {
+                _gamepadControlBindingEntries.Add(entry);
+            }
+            else
+            {
+                _keyboardControlBindingEntries.Add(entry);
+            }
+        }
+
+        _view?.SetControlBindings(_keyboardControlBindingEntries, _gamepadControlBindingEntries, _activeControlRebindId);
+    }
+
+    private static InputActionRebindingExtensions.RebindingOperation ConfigureRebindingOperation(
+        InputActionRebindingExtensions.RebindingOperation operation,
+        InputBindingDisplayEntry entry)
+    {
+        if (InputBindingSettings.IsGamepadControlScheme(entry.ControlSchemeName))
+        {
+            return operation
+                .WithControlsHavingToMatchPath("<Gamepad>")
+                .WithControlsExcluding("<Touchscreen>")
+                .WithControlsExcluding("<XRController>")
+                .WithControlsExcluding("<Joystick>");
+        }
+
+        return operation
+            .WithControlsExcluding("<Gamepad>")
+            .WithControlsExcluding("<Joystick>")
+            .WithControlsExcluding("<Touchscreen>")
+            .WithControlsExcluding("<XRController>");
     }
 
     private void RestorePreviousControlBindingOverride()
@@ -679,6 +721,7 @@ public class SettingsMenuController : MonoBehaviour
             _view.OnKeepDisplayClicked -= HandleKeepDisplayClicked;
             _view.OnRevertDisplayClicked -= HandleRevertDisplayClicked;
             _view.OnLootMagnetToggled -= HandleLootMagnetToggled;
+            _view.OnShowFpsToggled -= HandleShowFpsToggled;
             _view.OnRebindControlRequested -= HandleRebindControlRequested;
             _view.OnResetControlRequested -= HandleResetControlRequested;
             _view.OnResetAllControlsRequested -= HandleResetAllControlsRequested;

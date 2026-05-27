@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UIElements;
 
 public class SettingsMenuController : MonoBehaviour
@@ -59,6 +60,7 @@ public class SettingsMenuController : MonoBehaviour
         _input = new InputSystem_Actions();
         // Settings rebinding hook: Settings owns this input instance in the main menu.
         InputBindingSettings.ApplyTo(_input);
+        ControllerFeatureGate.ApplyAvailability(_input);
         _bindingActions = new InputSystem_Actions();
         InputBindingSettings.ApplyTo(_bindingActions);
     }
@@ -573,6 +575,7 @@ public class SettingsMenuController : MonoBehaviour
     private void HandleInputBindingsChanged()
     {
         InputBindingSettings.ApplyTo(_input);
+        ControllerFeatureGate.ApplyAvailability(_input);
         if (_rebindingOperation == null)
         {
             InputBindingSettings.ApplyTo(_bindingActions);
@@ -652,11 +655,18 @@ public class SettingsMenuController : MonoBehaviour
     {
         if (InputBindingSettings.IsGamepadControlScheme(entry.ControlSchemeName))
         {
-            return operation
+            operation = operation
                 .WithControlsHavingToMatchPath("<Gamepad>")
                 .WithControlsExcluding("<Touchscreen>")
                 .WithControlsExcluding("<XRController>")
                 .WithControlsExcluding("<Joystick>");
+
+            if (IsVector2Rebind(entry))
+            {
+                operation = operation.WithExpectedControlType<Vector2Control>();
+            }
+
+            return operation;
         }
 
         return operation
@@ -664,6 +674,11 @@ public class SettingsMenuController : MonoBehaviour
             .WithControlsExcluding("<Joystick>")
             .WithControlsExcluding("<Touchscreen>")
             .WithControlsExcluding("<XRController>");
+    }
+
+    private static bool IsVector2Rebind(InputBindingDisplayEntry entry)
+    {
+        return string.Equals(entry.ActionName, "Look", System.StringComparison.Ordinal);
     }
 
     private void RestorePreviousControlBindingOverride()

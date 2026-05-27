@@ -214,6 +214,7 @@ Likely UI flow:
 - Prevent duplicate primary keyboard and mouse bindings.
 - A separate `Controller` section lists gamepad-supported actions:
   - Move.
+  - Aim.
   - Attack.
   - Interact.
   - Dash.
@@ -224,6 +225,7 @@ Likely UI flow:
   - Quest Journal.
   - Pause.
 - Prevent duplicate controller bindings inside the controller section.
+- Aim rebinding should accept gamepad vector controls only, such as sticks or D-Pad controls.
 - Do not auto-swap duplicate bindings in the first pass; reject the duplicate so movement and hotkeys cannot become ambiguous.
 - Quick Save and Quick Load should not appear in the rebind list because they are keyboard-centric utility actions, not regular player-facing controls.
 - Ability and potion HUD labels should refresh from the active binding display strings after rebinds or resets.
@@ -231,6 +233,7 @@ Likely UI flow:
 Default controller layout:
 
 - Move: Left Stick.
+- Aim: Right Stick.
 - Attack: Right Trigger.
 - Interact: A / South Button.
 - Dash: B / East Button.
@@ -245,6 +248,20 @@ Default controller layout:
 - Inventory: Select / View.
 - Skills: Y / North Button.
 - Quest Journal: R3 / Right Stick Press.
+
+Controller menu navigation support:
+
+- When controller support is resumed, runtime UI Toolkit menus will need an `EventSystem` with `InputSystemUIInputModule` actions. Gameplay scenes can provide this in-scene, while menu-only scenes may bootstrap it at runtime.
+- When controller support is resumed, an opened view should focus the first usable control so gamepad Navigate and Submit have a starting point.
+- When controller support is resumed, Settings tabs should use focusable controls rather than plain `VisualElement`s so controller Submit can switch tabs.
+
+Controller release gate:
+
+- Controller functionality is dormant in both the Unity Editor and player builds until it is stable.
+- `ControllerFeatureGate` enables controller bindings only under the `TORIS_ENABLE_CONTROLLER_SUPPORT` scripting define.
+- Without that define, the project suppresses live gamepad, joystick, and XR controller bindings, hides the Controller rebind section, skips controller-only menu focus behavior, and leaves keyboard UI Submit/Cancel available.
+- UI event modules still bootstrap where needed so dialogue and menu integrations receive the same filtered keyboard/mouse action set rather than creating unfiltered default controller mappings.
+- Once controller support is release-ready, add `TORIS_ENABLE_CONTROLLER_SUPPORT` to the build target scripting define symbols.
 
 Because this requires coordinated changes across all input action creation sites, key rebinding should be implemented after display settings are stable.
 

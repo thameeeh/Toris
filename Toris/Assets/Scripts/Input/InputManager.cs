@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using OutlandHaven.UIToolkit; // for screen types
 using OutlandHaven.Inventory;
@@ -30,13 +31,14 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     [SerializeField] private string[] _combatDisabledSceneNames = { "MainArea" };
 
     private InputSystem_Actions _inputActions;
-    private int _lastFrameEscapeProcessed = -1;
+    private int _lastFramePauseOrCancelProcessed = -1;
 
     private void OnEnable()
     {
         _inputActions = new InputSystem_Actions();
         // Settings rebinding hook: apply saved overrides before gameplay starts reading actions.
         InputBindingSettings.ApplyTo(_inputActions);
+        ControllerFeatureGate.ApplyAvailability(_inputActions);
         _inputActions.Enable();
         _inputActions.Player.SetCallbacks(this);
         _inputActions.UI.SetCallbacks(this);
@@ -101,7 +103,18 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     // -------- IPlayerActions implementation --------
     public void OnJump(InputAction.CallbackContext context) {}
-    public void OnLook(InputAction.CallbackContext context) {}
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        if (_inputReader == null)
+            return;
+
+        bool isGamepadVectorLook = context.control?.device is Gamepad
+            && context.valueType == typeof(Vector2);
+
+        _inputReader.SetLook(isGamepadVectorLook && AllowsCombatInput()
+            ? context.ReadValue<Vector2>()
+            : Vector2.zero);
+    }
     public void OnMove(InputAction.CallbackContext context) 
     {
         if (_inputReader == null)
@@ -182,7 +195,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnNext(InputAction.CallbackContext context) { /* Handle Next */ }
     public void OnPause(InputAction.CallbackContext context) 
     {
-        HandleEscapeLogic(context);
+        HandlePauseLogic(context);
     }
     public void OnPrevious(InputAction.CallbackContext context) { /* Handle Previous */ }
 
@@ -244,7 +257,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnSubmit(InputAction.CallbackContext context) { }
     public void OnCancel(InputAction.CallbackContext context)
     {
-        HandleEscapeLogic(context);
+        HandleCancelLogic(context);
     }
     public void OnPoint(InputAction.CallbackContext context) { }
     public void OnClick(InputAction.CallbackContext context) { }
@@ -255,17 +268,17 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context) { }
 
     /// <summary>
-    /// Centralized logic for the Escape key. 
+    /// Centralized logic for the Pause input.
     /// Priority: 1. Close any open UI windows. 2. If no windows are open, open the Pause Menu.
     /// Uses frame-level coordination to prevent race conditions between Pause and Cancel actions.
     /// </summary>
-    private void HandleEscapeLogic(InputAction.CallbackContext context)
+    private void HandlePauseLogic(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
         // Prevent processing both 'Pause' and 'Cancel' bindings in the same frame
-        if (_lastFrameEscapeProcessed == Time.frameCount) return;
-        _lastFrameEscapeProcessed = Time.frameCount;
+        if (_lastFramePauseOrCancelProcessed == Time.frameCount) return;
+        _lastFramePauseOrCancelProcessed = Time.frameCount;
 
         if (IsDeathInputLocked())
             return;
@@ -273,7 +286,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         if (IsTutorialInputLocked())
             return;
 
-        // Settings can sit on top of Pause, so Escape closes that modal before broad UI teardown.
+        // Settings can sit on top of Pause, so the pause input closes that modal before broad UI teardown.
         if (_openBlockingScreens.Contains(ScreenType.SettingsModal))
         {
             _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
@@ -289,6 +302,38 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         {
             // If the screen is clear, we proceed to open the Pause Menu.
             _uiEvents.OnRequestOpen?.Invoke(ScreenType.PauseMenu, null);
+        }
+    }
+
+    private void HandleCancelLogic(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        if (IsDeathInputLocked())
+            return;
+
+        if (IsTutorialInputLocked())
+            return;
+
+        bool shouldCloseSettings = _openBlockingScreens.Contains(ScreenType.SettingsModal);
+        bool shouldCloseBlockingUi = HasGameplayInputBlockers();
+        if (!shouldCloseSettings && !shouldCloseBlockingUi)
+            return;
+
+        // Controller/UI Cancel can share buttons with gameplay actions such as Dash.
+        // It closes existing UI, but Pause remains the only input that opens the pause menu.
+        if (_lastFramePauseOrCancelProcessed == Time.frameCount) return;
+        _lastFramePauseOrCancelProcessed = Time.frameCount;
+
+        if (shouldCloseSettings)
+        {
+            _uiEvents.OnRequestClose?.Invoke(ScreenType.SettingsModal);
+            return;
+        }
+
+        if (shouldCloseBlockingUi)
+        {
+            _uiEvents.OnRequestCloseAll?.Invoke();
         }
     }
 
@@ -453,6 +498,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             _inputReader.SetMove(Vector2.zero);
         }
 
+        _inputReader.SetLook(AllowsCombatInput() ? ReadCurrentGamepadLookInput() : Vector2.zero);
+
         if (uiBlockingGameplay)
         {
             _inputReader.CancelGameplayInputState(clearMove: !allowsMovementInput, notifyGameplaySuppressed: true);
@@ -470,10 +517,31 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
             : Vector2.zero;
     }
 
+    private Vector2 ReadCurrentGamepadLookInput()
+    {
+        if (_inputActions == null)
+        {
+            return Vector2.zero;
+        }
+
+        InputAction lookAction = _inputActions.Player.Look;
+        for (int i = 0; i < lookAction.controls.Count; i++)
+        {
+            InputControl control = lookAction.controls[i];
+            if (control.device is Gamepad && control is Vector2Control vectorControl)
+            {
+                return vectorControl.ReadValue();
+            }
+        }
+
+        return Vector2.zero;
+    }
+
     private void HandleInputBindingsChanged()
     {
         // Settings rebinding hook: keep the live gameplay input instance synced.
         InputBindingSettings.ApplyTo(_inputActions);
+        ControllerFeatureGate.ApplyAvailability(_inputActions);
         RefreshGameplayInputState();
     }
 

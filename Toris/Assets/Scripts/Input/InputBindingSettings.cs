@@ -68,6 +68,7 @@ public static class InputBindingSettings
     private static readonly BindingDefinition[] GamepadBindingDefinitions =
     {
         new BindingDefinition("Move", PlayerMap, "Move", "<Gamepad>/leftStick", null, GamepadGroup),
+        new BindingDefinition("Aim", PlayerMap, "Look", "<Gamepad>/rightStick", null, GamepadGroup),
         new BindingDefinition("Attack", PlayerMap, "Attack", "<Gamepad>/rightTrigger", null, GamepadGroup),
         new BindingDefinition("Interact", PlayerMap, "Interact", "<Gamepad>/buttonSouth", null, GamepadGroup),
         new BindingDefinition("Dash", PlayerMap, "Sprint", "<Gamepad>/buttonEast", null, GamepadGroup),
@@ -174,7 +175,10 @@ public static class InputBindingSettings
         }
 
         AddDisplayEntries(actions, KeyboardMouseBindingDefinitions, entries);
-        AddDisplayEntries(actions, GamepadBindingDefinitions, entries);
+        if (ControllerFeatureGate.IsEnabled)
+        {
+            AddDisplayEntries(actions, GamepadBindingDefinitions, entries);
+        }
 
         return entries;
     }
@@ -503,6 +507,7 @@ public static class InputBindingSettings
             .Replace("<Gamepad>/leftTrigger", "LT")
             .Replace("<Gamepad>/rightShoulder", "RB")
             .Replace("<Gamepad>/leftShoulder", "LB")
+            .Replace("<Gamepad>/rightStick", "Right Stick")
             .Replace("<Gamepad>/startButton", "Start")
             .Replace("<Gamepad>/selectButton", "Select")
             .Replace("<Gamepad>/rightStickPress", "R3")

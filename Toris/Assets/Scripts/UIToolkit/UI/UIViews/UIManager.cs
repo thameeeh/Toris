@@ -31,6 +31,9 @@ namespace OutlandHaven.UIToolkit
 
         private void Awake()
         {
+            // Keep the shared UI input bridge filtered to the currently supported device set.
+            UIToolkitInputBootstrap.EnsureEventSystem();
+
             var root = GetComponent<UIDocument>().rootVisualElement;
             ResolveInventoryEvents();
             ResolveSkillEvents();

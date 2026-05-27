@@ -34,7 +34,7 @@ public class PlayerBowController : MonoBehaviour
     public BowSO BowConfig => _bow;
     public bool IsDrawing => drawing;
     public Vector2 CurrentAimDirection => GetAimDirection();
-    public Vector2 CurrentAimWorldPoint => GetPointerWorldPoint();
+    public Vector2 CurrentAimWorldPoint => GetAimWorldPoint();
 
     public bool CancelCurrentDraw(string reason)
     {
@@ -475,8 +475,25 @@ public class PlayerBowController : MonoBehaviour
         return world;
     }
 
+    private Vector2 GetAimWorldPoint()
+    {
+        Vector2 stickAimDirection = GetStickAimDirection();
+        if (stickAimDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
+        {
+            return (Vector2)transform.position + stickAimDirection;
+        }
+
+        return GetPointerWorldPoint();
+    }
+
     private Vector2 GetAimDirection()
     {
+        Vector2 stickAimDirection = GetStickAimDirection();
+        if (stickAimDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE)
+        {
+            return stickAimDirection;
+        }
+
         Vector3 world = GetPointerWorldPoint();
         Vector3 myPos = transform.position;
         Vector2 centerOrigin = (Vector2)myPos;
@@ -492,6 +509,19 @@ public class PlayerBowController : MonoBehaviour
         return aimedDirection.sqrMagnitude > MIN_DIRECTION_SQR_MAGNITUDE
             ? aimedDirection.normalized
             : facingDirection;
+    }
+
+    private Vector2 GetStickAimDirection()
+    {
+        if (!ControllerFeatureGate.IsEnabled
+            || _input == null
+            || _input.Look.sqrMagnitude <= MIN_DIRECTION_SQR_MAGNITUDE)
+        {
+            return Vector2.zero;
+        }
+
+        // Controller aim uses a direction vector, while mouse aim still resolves through the pointer world point.
+        return _input.Look.normalized;
     }
 
     public void FireMultiShotVolley(BowSO.ShotStats stats, int arrowCount, float totalSpreadDegrees, bool playReleaseAnimation = false)

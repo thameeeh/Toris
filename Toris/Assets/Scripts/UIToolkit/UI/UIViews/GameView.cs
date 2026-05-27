@@ -32,6 +32,10 @@ namespace OutlandHaven.UIToolkit
         {
             base.Show();
             UIEvents.OnScreenOpen?.Invoke(ID);
+            if (ControllerFeatureGate.IsEnabled)
+            {
+                FocusFirstInteractiveElement();
+            }
         }
 
         public override void Hide()
@@ -129,6 +133,68 @@ namespace OutlandHaven.UIToolkit
             }
 
             return target is VisualElement element ? element.GetFirstAncestorOfType<Button>() : null;
+        }
+
+        private void FocusFirstInteractiveElement()
+        {
+            if (ID == ScreenType.HUD || m_TopElement == null)
+            {
+                return;
+            }
+
+            // Controller navigation needs an initial focused control before Navigate/Submit events can move.
+            m_TopElement.schedule.Execute(FocusFirstInteractiveElementNow).ExecuteLater(0);
+        }
+
+        private void FocusFirstInteractiveElementNow()
+        {
+            if (m_TopElement == null || IsHidden)
+            {
+                return;
+            }
+
+            FindFirstInteractiveElement(m_TopElement)?.Focus();
+        }
+
+        private static VisualElement FindFirstInteractiveElement(VisualElement root)
+        {
+            if (root == null || !IsElementAvailable(root))
+            {
+                return null;
+            }
+
+            if (IsInteractiveElement(root))
+            {
+                return root;
+            }
+
+            int childCount = root.hierarchy.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                VisualElement match = FindFirstInteractiveElement(root.ElementAt(i));
+                if (match != null)
+                {
+                    return match;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool IsInteractiveElement(VisualElement element)
+        {
+            return element.focusable
+                && (element is Button
+                    || element is Toggle
+                    || element is Slider
+                    || element is DropdownField);
+        }
+
+        private static bool IsElementAvailable(VisualElement element)
+        {
+            return element.enabledInHierarchy
+                && element.visible
+                && element.resolvedStyle.display != DisplayStyle.None;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace OutlandHaven.UIToolkit
             _inputActions = new InputSystem_Actions();
             // Settings rebinding hook: this standalone toggle input must honor saved overrides.
             InputBindingSettings.ApplyTo(_inputActions);
+            ControllerFeatureGate.ApplyAvailability(_inputActions);
             _inputActions.UI.Enable();
             _inputActions.UI.ToggleSkills.performed += OnToggleSkills;
             InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
@@ -33,6 +34,7 @@ namespace OutlandHaven.UIToolkit
         private void HandleInputBindingsChanged()
         {
             InputBindingSettings.ApplyTo(_inputActions);
+            ControllerFeatureGate.ApplyAvailability(_inputActions);
         }
 
         private void OnToggleSkills(InputAction.CallbackContext context)

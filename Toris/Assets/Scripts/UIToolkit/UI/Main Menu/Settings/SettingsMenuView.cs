@@ -212,6 +212,8 @@ public class SettingsMenuView : GameView
         {
             _displayConfirmationOverlay.style.display = DisplayStyle.Flex;
         }
+
+        FocusWhenReady(_revertDisplayButton);
     }
 
     public void SetDisplayConfirmationMessage(string message)
@@ -228,6 +230,8 @@ public class SettingsMenuView : GameView
         {
             _displayConfirmationOverlay.style.display = DisplayStyle.None;
         }
+
+        FocusWhenReady(_applyDisplayButton);
     }
 
     public void SetLootMagnetValue(bool enabled)
@@ -318,6 +322,14 @@ public class SettingsMenuView : GameView
     private void HandleLootMagnetToggled(ChangeEvent<bool> evt) => OnLootMagnetToggled?.Invoke(evt.newValue);
     private void HandleShowFpsToggled(ChangeEvent<bool> evt) => OnShowFpsToggled?.Invoke(evt.newValue);
     private void HandleResetAllControlsClicked() => OnResetAllControlsRequested?.Invoke();
+
+    private static void FocusWhenReady(VisualElement element)
+    {
+        if (ControllerFeatureGate.IsEnabled)
+        {
+            element?.schedule.Execute(() => element.Focus()).ExecuteLater(0);
+        }
+    }
 
     public override void Dispose()
     {

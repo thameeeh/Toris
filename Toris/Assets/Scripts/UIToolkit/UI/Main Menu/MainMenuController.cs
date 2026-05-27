@@ -40,6 +40,7 @@ public class MainMenuController : MonoBehaviour
         _input = new InputSystem_Actions();
         // Settings rebinding hook: menu-owned input instances also need saved overrides.
         InputBindingSettings.ApplyTo(_input);
+        ControllerFeatureGate.ApplyAvailability(_input);
         
         // Ensure we have a SaveManager if not manually assigned
         if (_saveManager == null)
@@ -87,6 +88,7 @@ public class MainMenuController : MonoBehaviour
     {
         // Settings rebinding hook: keep menu Escape/cancel input aligned with saved overrides.
         InputBindingSettings.ApplyTo(_input);
+        ControllerFeatureGate.ApplyAvailability(_input);
     }
 
     private void Start()

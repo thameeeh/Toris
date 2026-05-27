@@ -15,6 +15,7 @@ public interface ISfxManager
     AudioVoiceHandle PlayLoop(string id, Vector3 worldPosition, SfxPlayRequest request);
 
     bool Stop(AudioVoiceHandle handle, float fadeOutSeconds = 0f);
+    void SetGameplayPaused(bool paused);
 }
 
 public sealed class SfxManager : ISfxManager
@@ -117,6 +118,9 @@ public sealed class SfxManager : ISfxManager
 
     public bool Stop(AudioVoiceHandle handle, float fadeOutSeconds = 0f) =>
         voicePool.TryStop(handle, fadeOutSeconds);
+
+    public void SetGameplayPaused(bool paused) =>
+        voicePool.SetGameplayPaused(paused);
 
     private bool TryGetDefinition(string id, out SfxDefinition definition)
     {

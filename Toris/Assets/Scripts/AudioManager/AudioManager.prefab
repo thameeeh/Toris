@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManagerBehaviour
   sfxLibrary: {fileID: 11400000, guid: cd26690da2932734bb475850539446af, type: 2}
   musicLibrary: {fileID: 11400000, guid: 827bd703b366e1e4198a9684ae0b6e40, type: 2}
+  uiEvents: {fileID: 11400000, guid: bc882e791796dac45b9f5aafd9fff6cb, type: 2}
   initialSfxVoices: 12
   defaultSfxMixerGroup: {fileID: 0}
 --- !u!114 &5389781673131331535
@@ -81,8 +82,10 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::WorldAmbienceController
   ambienceEnabled: 1
+  prologueSceneName: Prologue
   mainAreaSceneName: MainArea
   proceduralSceneName: ProceduralTiles
+  prologueSfxId: amb_wind
   mainAreaSfxId: amb_wind
   defaultBiomeSfxId: amb_wind
   windVolumeMultiplier: 1

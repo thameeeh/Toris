@@ -46,6 +46,10 @@ namespace OutlandHaven.UIToolkit
         // systems; this is for UI interactions such as buttons and screen lifecycle.
         public UnityAction<string> OnSfxRequested;
 
+        // Audio-only pause signal: pause screens silence world/gameplay SFX while
+        // audio bridges may continue to play UI feedback.
+        public UnityAction<bool> OnGameplaySfxPauseChanged;
+
         // Broad lock for modal gameplay blockers such as story cards or death flow.
         public UnityAction<string> OnGameplayInputLockRequested;
 

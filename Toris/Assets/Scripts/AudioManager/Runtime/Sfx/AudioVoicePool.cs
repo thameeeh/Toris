@@ -22,6 +22,8 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         public float fadeOutRemaining;
         public float fadeOutStartVolume;
         public float fadeOutTargetVolume;
+        public bool allowDuringGameplayPause;
+        public bool isPausedForGameplay;
     }
 
     private readonly List<VoiceRecord> allVoices = new List<VoiceRecord>();
@@ -35,6 +37,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
 
     private int nextHandleId = 1;
     private float currentUnscaledTime;
+    private bool gameplayPaused;
 
     public AudioVoicePool(GameObject owner, int initialVoiceCount, AudioMixerGroup defaultMixerGroup)
     {
@@ -98,7 +101,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         if (definition == null) return false;
         if (!definition.HasAnyClips) return false;
 
-        if (!CanPlay(definition)) return false;
+        if (!CanPlay(definition, request)) return false;
 
         if (!TryGetVoiceFor(definition, out VoiceRecord voice)) return false;
 
@@ -146,7 +149,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         if (followTarget == null) return false;
         if (!definition.HasAnyClips) return false;
 
-        if (!CanPlay(definition)) return false;
+        if (!CanPlay(definition, request)) return false;
 
         if (!TryGetVoiceFor(definition, out VoiceRecord voice)) return false;
 
@@ -195,7 +198,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         if (definition == null) return false;
         if (!definition.HasAnyClips) return false;
 
-        if (!CanPlay(definition)) return false;
+        if (!CanPlay(definition, request)) return false;
 
         if (!TryGetVoiceFor(definition, out VoiceRecord voice)) return false;
 
@@ -244,7 +247,7 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         if (followTarget == null) return false;
         if (!definition.HasAnyClips) return false;
 
-        if (!CanPlay(definition)) return false;
+        if (!CanPlay(definition, request)) return false;
 
         if (!TryGetVoiceFor(definition, out VoiceRecord voice)) return false;
 
@@ -292,6 +295,12 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             VoiceRecord voice = activeVoices[i];
             if (voice.handleId != handle.id) continue;
 
+            if (voice.isPausedForGameplay)
+            {
+                ReleaseVoice(voice);
+                return true;
+            }
+
             if (fadeOutSeconds <= 0f)
             {
                 ReleaseVoice(voice);
@@ -308,6 +317,41 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
 
         return false;
     }
+
+    public void SetGameplayPaused(bool paused)
+    {
+        if (gameplayPaused == paused)
+            return;
+
+        gameplayPaused = paused;
+
+        for (int i = activeVoices.Count - 1; i >= 0; i--)
+        {
+            VoiceRecord voice = activeVoices[i];
+            if (voice.allowDuringGameplayPause)
+                continue;
+
+            if (paused)
+            {
+                if (!voice.isLooping)
+                {
+                    ReleaseVoice(voice);
+                    continue;
+                }
+
+                voice.source.Pause();
+                voice.isPausedForGameplay = true;
+                continue;
+            }
+
+            if (!voice.isPausedForGameplay)
+                continue;
+
+            voice.source.UnPause();
+            voice.isPausedForGameplay = false;
+        }
+    }
+
     public void Tick(float unscaledDeltaTime)
     {
         if (unscaledDeltaTime < 0f) unscaledDeltaTime = 0f;
@@ -324,6 +368,9 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
                 Vector3 followPosition = voice.followTarget.TransformPoint(voice.followOffset);
                 source.transform.position = followPosition;
             }
+
+            if (voice.isPausedForGameplay)
+                continue;
 
             // Fade out (if requested)
             if (voice.fadeOutRemaining > 0f)
@@ -368,10 +415,11 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
             }
         }
     }
-    private bool CanPlay(SfxDefinition definition)
+    private bool CanPlay(SfxDefinition definition, SfxPlayRequest request)
     {
         string id = definition.Id;
         if (string.IsNullOrWhiteSpace(id)) return false;
+        if (gameplayPaused && !request.allowDuringGameplayPause) return false;
 
         // Cooldown
         if (definition.CooldownSeconds > 0f &&
@@ -471,6 +519,8 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         voice.fadeOutRemaining = 0f;
         voice.fadeOutStartVolume = 0f;
         voice.fadeOutTargetVolume = 0f;
+        voice.allowDuringGameplayPause = false;
+        voice.isPausedForGameplay = false;
 
         freeVoices.Enqueue(voice);
     }
@@ -496,6 +546,8 @@ public sealed class AudioVoicePool : IAudioRuntimeTick
         voice.fadeInDuration = Mathf.Max(0f, request.fadeInSeconds);
         voice.fadeInRemaining = voice.fadeInDuration;
         voice.baseVolume = voice.fadeInDuration > 0f ? 0f : voice.targetBaseVolume;
+        voice.allowDuringGameplayPause = request.allowDuringGameplayPause;
+        voice.isPausedForGameplay = false;
         source.volume = ResolveSfxOutputVolume(voice.baseVolume);
         source.pitch = Mathf.Clamp(pitch, -3f, 3f);
     }

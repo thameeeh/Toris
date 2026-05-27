@@ -10,6 +10,7 @@ public struct SfxPlayRequest
 
     // Optional runtime routing adjustments.
     public bool force2D;             // if true, spatialBlend becomes 0
+    public bool allowDuringGameplayPause; // UI feedback may still play while world/gameplay audio is suspended
 
     // Optional: if provided, overrides position even for non-attached calls.
     public Vector3? explicitWorldPosition;
@@ -21,6 +22,7 @@ public struct SfxPlayRequest
         pitchMultiplier = 1f,
         fadeInSeconds = 0f,
         force2D = false,
+        allowDuringGameplayPause = false,
         explicitWorldPosition = null
     };
 }

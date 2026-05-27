@@ -89,6 +89,7 @@ public sealed class UISfxEventBridge : MonoBehaviour
         SfxPlayRequest request = SfxPlayRequest.Default;
         request.volumeMultiplier = eventVolumeMultiplier > 0f ? eventVolumeMultiplier : 1f;
         request.force2D = force2D;
+        request.allowDuringGameplayPause = true;
         AudioBootstrap.Sfx.Play(sfxId, request);
     }
 
@@ -105,6 +106,7 @@ public sealed class UISfxEventBridge : MonoBehaviour
         SfxPlayRequest request = SfxPlayRequest.Default;
         request.volumeMultiplier = eventVolumeMultiplier > 0f ? eventVolumeMultiplier : 1f;
         request.force2D = force2D;
+        request.allowDuringGameplayPause = true;
         return request;
     }
 
@@ -134,6 +136,7 @@ public sealed class UISfxEventBridge : MonoBehaviour
             SfxPlayRequest request = SfxPlayRequest.Default;
             request.volumeMultiplier = volumeMultiplier > 0f ? volumeMultiplier : 1f;
             request.force2D = force2D;
+            request.allowDuringGameplayPause = true;
             return request;
         }
     }

@@ -35,9 +35,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     private void OnEnable()
     {
         _inputActions = new InputSystem_Actions();
+        // Settings rebinding hook: apply saved overrides before gameplay starts reading actions.
+        InputBindingSettings.ApplyTo(_inputActions);
         _inputActions.Enable();
         _inputActions.Player.SetCallbacks(this);
         _inputActions.UI.SetCallbacks(this);
+        InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
 
         if (_uiEvents != null)
         {
@@ -55,6 +58,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
 
     private void OnDisable()
     {
+        InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
+
         if (_uiEvents != null)
         {
             _uiEvents.OnScreenOpen -= HandleScreenOpened;
@@ -70,9 +75,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         _gameplayInputLocks.Clear();
         _gameplayCapabilityLocks.Clear();
 
-        _inputActions.Player.SetCallbacks(null);
-        _inputActions.UI.SetCallbacks(null);
-        _inputActions.Disable();
+        if (_inputActions != null)
+        {
+            _inputActions.Player.SetCallbacks(null);
+            _inputActions.UI.SetCallbacks(null);
+            _inputActions.Disable();
+        }
     }
 
     private void OnValidate()
@@ -460,6 +468,13 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
         return _inputActions != null
             ? _inputActions.Player.Move.ReadValue<Vector2>()
             : Vector2.zero;
+    }
+
+    private void HandleInputBindingsChanged()
+    {
+        // Settings rebinding hook: keep the live gameplay input instance synced.
+        InputBindingSettings.ApplyTo(_inputActions);
+        RefreshGameplayInputState();
     }
 
     private bool AllowsMovementInput()

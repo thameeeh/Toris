@@ -89,6 +89,42 @@
     font-size: var(--font-size-small);
 }
 
+.settings-control-status {
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+    margin-bottom: 14px;
+}
+
+.settings-controls-list {
+    flex-direction: column;
+    padding-right: 20%;
+}
+
+.settings-control-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.settings-control-action {
+    width: 190px;
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+}
+
+.settings-control-binding {
+    width: 130px;
+    color: var(--color-border-highlight);
+    font-size: var(--font-size-body);
+}
+
+.settings-control-button {
+    width: 110px;
+    height: 38px;
+    margin-left: 8px;
+    font-size: var(--font-size-small);
+}
+
 .settings-confirmation-overlay {
     position: absolute;
     top: 0;

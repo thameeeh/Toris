@@ -13,6 +13,9 @@ public class SettingsMenuView : GameView
     private VisualElement _controlsTab;
     private VisualElement _mainContent;
     private VisualElement _controlsContent;
+    private VisualElement _controlBindingsList;
+    private Label _controlRebindStatus;
+    private Button _resetAllControlsButton;
     private Slider _masterVolumeSlider;
     private Slider _musicVolumeSlider;
     private Slider _sfxVolumeSlider;
@@ -25,6 +28,8 @@ public class SettingsMenuView : GameView
     private Button _keepDisplayButton;
     private Button _revertDisplayButton;
     private Toggle _lootMagnetToggle;
+    private readonly Dictionary<string, Button> _controlRebindButtons = new Dictionary<string, Button>();
+    private readonly Dictionary<string, Button> _controlResetButtons = new Dictionary<string, Button>();
 
     public event Action OnCloseClicked;
     public event Action<float> OnMasterVolumeChanged;
@@ -37,6 +42,9 @@ public class SettingsMenuView : GameView
     public event Action OnKeepDisplayClicked;
     public event Action OnRevertDisplayClicked;
     public event Action<bool> OnLootMagnetToggled;
+    public event Action<string> OnRebindControlRequested;
+    public event Action<string> OnResetControlRequested;
+    public event Action OnResetAllControlsRequested;
 
     public SettingsMenuView(VisualElement topElement, UIEventsSO uiEvents) : base(topElement, uiEvents) { }
 
@@ -60,6 +68,13 @@ public class SettingsMenuView : GameView
 
         _mainContent = Root.Q<VisualElement>("Settings_MainContent");
         _controlsContent = Root.Q<VisualElement>("Settings_ControlsContent");
+        _controlBindingsList = Root.Q<VisualElement>("Controls_BindingsList");
+        _controlRebindStatus = Root.Q<Label>("Label_ControlRebindStatus");
+        _resetAllControlsButton = Root.Q<Button>("Btn_ResetAllControls");
+        if (_resetAllControlsButton != null)
+        {
+            _resetAllControlsButton.clicked += HandleResetAllControlsClicked;
+        }
 
         _masterVolumeSlider = Root.Q<Slider>("Slider_MasterVolume");
         if (_masterVolumeSlider != null)
@@ -208,6 +223,44 @@ public class SettingsMenuView : GameView
         _lootMagnetToggle?.SetValueWithoutNotify(enabled);
     }
 
+    public void SetControlBindings(IList<InputBindingDisplayEntry> entries, string activeRebindId)
+    {
+        if (_controlBindingsList == null)
+        {
+            return;
+        }
+
+        _controlBindingsList.Clear();
+        _controlRebindButtons.Clear();
+        _controlResetButtons.Clear();
+
+        bool hasActiveRebind = !string.IsNullOrEmpty(activeRebindId);
+        if (entries != null)
+        {
+            for (int i = 0; i < entries.Count; i++)
+            {
+                AddControlBindingRow(entries[i], activeRebindId, hasActiveRebind);
+            }
+        }
+
+        _resetAllControlsButton?.SetEnabled(!hasActiveRebind);
+        _mainTab?.SetEnabled(!hasActiveRebind);
+        _controlsTab?.SetEnabled(!hasActiveRebind);
+    }
+
+    public void SetControlRebindStatus(string statusText)
+    {
+        if (_controlRebindStatus == null)
+        {
+            return;
+        }
+
+        _controlRebindStatus.text = statusText ?? string.Empty;
+        _controlRebindStatus.style.display = string.IsNullOrWhiteSpace(statusText)
+            ? DisplayStyle.None
+            : DisplayStyle.Flex;
+    }
+
     public override void Show()
     {
         ShowMainTab();
@@ -237,6 +290,7 @@ public class SettingsMenuView : GameView
     private void HandleKeepDisplayClicked() => OnKeepDisplayClicked?.Invoke();
     private void HandleRevertDisplayClicked() => OnRevertDisplayClicked?.Invoke();
     private void HandleLootMagnetToggled(ChangeEvent<bool> evt) => OnLootMagnetToggled?.Invoke(evt.newValue);
+    private void HandleResetAllControlsClicked() => OnResetAllControlsRequested?.Invoke();
 
     public override void Dispose()
     {
@@ -253,7 +307,47 @@ public class SettingsMenuView : GameView
         if (_keepDisplayButton != null) _keepDisplayButton.clicked -= HandleKeepDisplayClicked;
         if (_revertDisplayButton != null) _revertDisplayButton.clicked -= HandleRevertDisplayClicked;
         if (_lootMagnetToggle != null) _lootMagnetToggle.UnregisterValueChangedCallback(HandleLootMagnetToggled);
+        if (_resetAllControlsButton != null) _resetAllControlsButton.clicked -= HandleResetAllControlsClicked;
         base.Dispose();
+    }
+
+    private void AddControlBindingRow(InputBindingDisplayEntry entry, string activeRebindId, bool hasActiveRebind)
+    {
+        string entryId = entry.Id;
+        bool isActiveRebind = string.Equals(entryId, activeRebindId, StringComparison.Ordinal);
+
+        VisualElement row = new VisualElement();
+        row.AddToClassList("settings-control-row");
+
+        Label actionLabel = new Label(entry.DisplayName);
+        actionLabel.AddToClassList("settings-control-action");
+        row.Add(actionLabel);
+
+        Label bindingLabel = new Label(isActiveRebind ? "Listening..." : entry.BindingLabel);
+        bindingLabel.AddToClassList("settings-control-binding");
+        row.Add(bindingLabel);
+
+        Button rebindButton = new Button(() => OnRebindControlRequested?.Invoke(entryId))
+        {
+            text = isActiveRebind ? "Listening" : "Rebind"
+        };
+        rebindButton.AddToClassList("standard-button");
+        rebindButton.AddToClassList("settings-control-button");
+        rebindButton.SetEnabled(!hasActiveRebind);
+        row.Add(rebindButton);
+        _controlRebindButtons[entryId] = rebindButton;
+
+        Button resetButton = new Button(() => OnResetControlRequested?.Invoke(entryId))
+        {
+            text = "Reset"
+        };
+        resetButton.AddToClassList("standard-button");
+        resetButton.AddToClassList("settings-control-button");
+        resetButton.SetEnabled(!hasActiveRebind && entry.HasOverride);
+        row.Add(resetButton);
+        _controlResetButtons[entryId] = resetButton;
+
+        _controlBindingsList.Add(row);
     }
 
     private void ShowTab(VisualElement activeTab, VisualElement activeContent)

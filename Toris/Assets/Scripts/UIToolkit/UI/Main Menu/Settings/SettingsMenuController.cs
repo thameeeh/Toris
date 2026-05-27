@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using OutlandHaven.UIToolkit;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class SettingsMenuController : MonoBehaviour
@@ -16,9 +17,13 @@ public class SettingsMenuController : MonoBehaviour
     private MainMenuUIManager _mainMenuUiManager;
     private UIManager _gameUiManager;
     private InputSystem_Actions _input;
+    private InputSystem_Actions _bindingActions;
     private Coroutine _displayApplyRoutine;
+    private InputActionRebindingExtensions.RebindingOperation _rebindingOperation;
+    private InputAction _rebindingAction;
     private readonly List<GameDisplayOption> _availableDisplays = new List<GameDisplayOption>();
     private readonly List<GameDisplayResolution> _availableResolutions = new List<GameDisplayResolution>();
+    private readonly List<InputBindingDisplayEntry> _controlBindingEntries = new List<InputBindingDisplayEntry>();
     private readonly List<FullScreenMode> _availableWindowModes = new List<FullScreenMode>
     {
         FullScreenMode.FullScreenWindow,
@@ -32,6 +37,10 @@ public class SettingsMenuController : MonoBehaviour
     private bool _ownsCancelInput;
     private bool _awaitingDisplayConfirmation;
     private bool _displayApplyInProgress;
+    private bool _rebindingActionWasEnabled;
+    private int _rebindingBindingIndex = -1;
+    private string _previousBindingOverridePath;
+    private string _activeControlRebindId;
 
     private void Awake()
     {
@@ -46,10 +55,16 @@ public class SettingsMenuController : MonoBehaviour
         }
 
         _input = new InputSystem_Actions();
+        // Settings rebinding hook: Settings owns this input instance in the main menu.
+        InputBindingSettings.ApplyTo(_input);
+        _bindingActions = new InputSystem_Actions();
+        InputBindingSettings.ApplyTo(_bindingActions);
     }
 
     private void OnEnable()
     {
+        InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
+
         if (!_ownsCancelInput)
             return;
 
@@ -63,6 +78,9 @@ public class SettingsMenuController : MonoBehaviour
 
     private void OnDisable()
     {
+        InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
+        CancelActiveControlRebind();
+
         if (!_ownsCancelInput)
             return;
 
@@ -77,6 +95,12 @@ public class SettingsMenuController : MonoBehaviour
     {
         if (_view == null || _view.IsHidden)
             return;
+
+        if (_rebindingOperation != null)
+        {
+            CancelActiveControlRebind();
+            return;
+        }
 
         OnCloseRequested();
     }
@@ -109,6 +133,7 @@ public class SettingsMenuController : MonoBehaviour
 
         _view.SetLootMagnetValue(LootMagnetSettings.LootMagnetEnabled);
         InitializeDisplaySettings();
+        InitializeControlSettings();
 
         _view.OnMasterVolumeChanged += HandleMasterVolumeChanged;
         _view.OnMusicVolumeChanged += HandleMusicVolumeChanged;
@@ -120,6 +145,9 @@ public class SettingsMenuController : MonoBehaviour
         _view.OnKeepDisplayClicked += HandleKeepDisplayClicked;
         _view.OnRevertDisplayClicked += HandleRevertDisplayClicked;
         _view.OnLootMagnetToggled += HandleLootMagnetToggled;
+        _view.OnRebindControlRequested += HandleRebindControlRequested;
+        _view.OnResetControlRequested += HandleResetControlRequested;
+        _view.OnResetAllControlsRequested += HandleResetAllControlsRequested;
 
         if (_mainMenuUiManager != null)
         {
@@ -180,6 +208,12 @@ public class SettingsMenuController : MonoBehaviour
     private void HandleLootMagnetToggled(bool value)
     {
         LootMagnetSettings.SetLootMagnetEnabled(value);
+    }
+
+    private void InitializeControlSettings()
+    {
+        RefreshControlBindings();
+        _view.SetControlRebindStatus(string.Empty);
     }
 
     private void InitializeDisplaySettings()
@@ -303,6 +337,8 @@ public class SettingsMenuController : MonoBehaviour
     {
         if (screenType != ScreenType.SettingsModal)
             return;
+
+        CancelActiveControlRebind();
 
         if (_awaitingDisplayConfirmation)
         {
@@ -467,8 +503,149 @@ public class SettingsMenuController : MonoBehaviour
             Mathf.CeilToInt(Mathf.Max(0f, remainingSeconds)));
     }
 
+    private void HandleRebindControlRequested(string entryId)
+    {
+        if (_rebindingOperation != null)
+            return;
+
+        if (!InputBindingSettings.TryFindDisplayEntry(_controlBindingEntries, entryId, out InputBindingDisplayEntry entry))
+            return;
+
+        InputAction action = InputBindingSettings.FindAction(_bindingActions, entry.ActionMapName, entry.ActionName);
+        if (action == null || entry.BindingIndex < 0 || entry.BindingIndex >= action.bindings.Count)
+            return;
+
+        _activeControlRebindId = entry.Id;
+        _rebindingAction = action;
+        _rebindingBindingIndex = entry.BindingIndex;
+        _previousBindingOverridePath = action.bindings[entry.BindingIndex].overridePath;
+        _rebindingActionWasEnabled = action.enabled;
+        if (_rebindingActionWasEnabled)
+        {
+            action.Disable();
+        }
+
+        _view.SetControlRebindStatus($"Listening for {entry.DisplayName}");
+        RefreshControlBindings();
+
+        _rebindingOperation = action.PerformInteractiveRebinding(entry.BindingIndex)
+            .WithControlsExcluding("<Gamepad>")
+            .WithControlsExcluding("<Joystick>")
+            .WithControlsExcluding("<Touchscreen>")
+            .WithControlsExcluding("<XRController>")
+            .WithCancelingThrough("<Keyboard>/escape")
+            .OnCancel(operation => CompleteControlRebind(saveChanges: false))
+            .OnComplete(operation => CompleteControlRebind(saveChanges: true))
+            .Start();
+    }
+
+    private void HandleResetControlRequested(string entryId)
+    {
+        if (_rebindingOperation != null)
+            return;
+
+        if (!InputBindingSettings.TryFindDisplayEntry(_controlBindingEntries, entryId, out InputBindingDisplayEntry entry))
+            return;
+
+        InputAction action = InputBindingSettings.FindAction(_bindingActions, entry.ActionMapName, entry.ActionName);
+        if (action == null || entry.BindingIndex < 0 || entry.BindingIndex >= action.bindings.Count)
+            return;
+
+        action.RemoveBindingOverride(entry.BindingIndex);
+        InputBindingSettings.SaveOverrides(_bindingActions);
+    }
+
+    private void HandleResetAllControlsRequested()
+    {
+        if (_rebindingOperation != null)
+            return;
+
+        _bindingActions?.asset.RemoveAllBindingOverrides();
+        InputBindingSettings.SaveOverrides(_bindingActions);
+    }
+
+    private void HandleInputBindingsChanged()
+    {
+        InputBindingSettings.ApplyTo(_input);
+        if (_rebindingOperation == null)
+        {
+            InputBindingSettings.ApplyTo(_bindingActions);
+        }
+
+        RefreshControlBindings();
+    }
+
+    private void CancelActiveControlRebind()
+    {
+        _rebindingOperation?.Cancel();
+    }
+
+    private void CompleteControlRebind(bool saveChanges)
+    {
+        InputActionRebindingExtensions.RebindingOperation completedOperation = _rebindingOperation;
+        _rebindingOperation = null;
+        completedOperation?.Dispose();
+
+        string statusText = string.Empty;
+        if (saveChanges
+            && InputBindingSettings.TryFindDisplayEntry(_controlBindingEntries, _activeControlRebindId, out InputBindingDisplayEntry activeEntry)
+            && InputBindingSettings.TryFindDuplicateBinding(_bindingActions, _controlBindingEntries, activeEntry, out InputBindingDisplayEntry duplicateEntry))
+        {
+            RestorePreviousControlBindingOverride();
+            statusText = $"{activeEntry.DisplayName} already conflicts with {duplicateEntry.DisplayName}.";
+            saveChanges = false;
+        }
+
+        if (_rebindingAction != null && _rebindingActionWasEnabled)
+        {
+            _rebindingAction.Enable();
+        }
+
+        _rebindingAction = null;
+        _rebindingActionWasEnabled = false;
+        _rebindingBindingIndex = -1;
+        _previousBindingOverridePath = null;
+        _activeControlRebindId = null;
+        _view?.SetControlRebindStatus(statusText);
+
+        if (saveChanges)
+        {
+            InputBindingSettings.SaveOverrides(_bindingActions);
+            return;
+        }
+
+        RefreshControlBindings();
+    }
+
+    private void RefreshControlBindings()
+    {
+        _controlBindingEntries.Clear();
+        _controlBindingEntries.AddRange(InputBindingSettings.GetDisplayEntries(_bindingActions));
+        _view?.SetControlBindings(_controlBindingEntries, _activeControlRebindId);
+    }
+
+    private void RestorePreviousControlBindingOverride()
+    {
+        if (_rebindingAction == null
+            || _rebindingBindingIndex < 0
+            || _rebindingBindingIndex >= _rebindingAction.bindings.Count)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_previousBindingOverridePath))
+        {
+            _rebindingAction.RemoveBindingOverride(_rebindingBindingIndex);
+            return;
+        }
+
+        _rebindingAction.ApplyBindingOverride(_rebindingBindingIndex, _previousBindingOverridePath);
+    }
+
     private void OnDestroy()
     {
+        CancelActiveControlRebind();
+
         bool wasDisplayApplyInProgress = _displayApplyInProgress;
         if (_displayApplyRoutine != null)
         {
@@ -502,7 +679,12 @@ public class SettingsMenuController : MonoBehaviour
             _view.OnKeepDisplayClicked -= HandleKeepDisplayClicked;
             _view.OnRevertDisplayClicked -= HandleRevertDisplayClicked;
             _view.OnLootMagnetToggled -= HandleLootMagnetToggled;
+            _view.OnRebindControlRequested -= HandleRebindControlRequested;
+            _view.OnResetControlRequested -= HandleResetControlRequested;
+            _view.OnResetAllControlsRequested -= HandleResetAllControlsRequested;
             _view.Dispose();
         }
+
+        _bindingActions?.Dispose();
     }
 }

@@ -178,11 +178,14 @@ Recommended first implementation:
 - Store binding overrides in `PlayerPrefs` using Unity Input System binding override JSON.
 - Load overrides immediately after each `InputSystem_Actions` instance is created.
 - Save overrides after a successful rebind.
-- Provide reset-to-defaults for bindings.
+- Provide reset-to-defaults for individual bindings and all bindings.
+- Keep the first pass to primary keyboard and mouse bindings; leave alternate keyboard bindings and gamepad for later.
+- Reject duplicate primary keyboard and mouse bindings, restoring the previous binding and showing a short conflict message.
 
 Likely support class:
 
 - `InputBindingSettings`, responsible for loading, saving, applying, and clearing binding overrides.
+- `InputBindingSettings.OnBindingsChanged`, responsible for notifying HUD/menu systems that displayed hotkey labels need to refresh.
 
 Likely UI flow:
 
@@ -200,8 +203,10 @@ Likely UI flow:
 - Each row shows the action name, current binding, and a rebind button.
 - When rebinding, the view enters a "listening" state and the controller starts Unity's interactive rebinding operation.
 - Escape should cancel the pending rebind instead of closing the settings menu.
-- Prevent duplicate critical bindings where possible, or at least warn and allow reset.
+- Prevent duplicate primary keyboard and mouse bindings.
+- Do not auto-swap duplicate bindings in the first pass; reject the duplicate so movement and hotkeys cannot become ambiguous.
 - Leave gamepad binding display and rebinding out of the first implementation, but avoid designing the support class in a way that blocks gamepad later.
+- Ability and potion HUD labels should refresh from the active binding display strings after rebinds or resets.
 
 Because this requires coordinated changes across all input action creation sites, key rebinding should be implemented after display settings are stable.
 
@@ -261,7 +266,9 @@ Static checks:
 - Confirm no new gameplay logic is placed in the view.
 - Confirm tab switching only changes visible UI content and active tab styling.
 - Confirm display changes can revert to the previous monitor, resolution, and window mode.
-- Confirm no key rebinding implementation changes only one of `.inputactions` or generated C#.
+- Confirm key rebinding stores overrides in `PlayerPrefs` and does not directly edit `.inputactions` or generated C#.
+- Confirm all `InputSystem_Actions` instances apply saved binding overrides after construction.
+- Confirm duplicate keyboard/mouse bindings are rejected and restore the previous binding.
 
 Unity manual checks:
 
@@ -273,6 +280,11 @@ Unity manual checks:
 - Switch between fullscreen and windowed modes.
 - On a multi-monitor setup, switch the monitor selection and confirm the window moves to the selected display.
 - On a multi-monitor setup, switch the monitor selection and reject or time out the confirmation, then verify it returns to the previous display.
+- Switch to `Controls`, rebind an ability key, and verify the HUD ability key label updates.
+- Rebind potion keys and verify the HUD potion key labels update.
+- Reset one binding and reset all bindings.
+- Try rebinding `Move Up` to the same key as `Move Left` and confirm the duplicate is rejected.
+- Press Escape while rebinding and confirm the pending rebind cancels without closing Settings.
 - Close and reopen Settings to confirm displayed values persist.
 - Restart the game and confirm saved display settings load.
 - Confirm Escape closes Settings correctly.

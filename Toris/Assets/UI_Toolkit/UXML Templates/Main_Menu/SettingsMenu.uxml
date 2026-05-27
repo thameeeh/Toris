@@ -62,6 +62,11 @@
             </ui:ScrollView>
             <ui:ScrollView name="Settings_ControlsContent" class="settings-content">
                 <ui:Label text="Keyboard &amp; Mouse" class="settings-section-header"/>
+                <ui:Label name="Label_ControlRebindStatus" class="settings-control-status"/>
+                <ui:VisualElement name="Controls_BindingsList" class="settings-controls-list"/>
+                <ui:VisualElement class="settings-action-row">
+                    <ui:Button name="Btn_ResetAllControls" text="Reset All" class="standard-button settings-apply-button"/>
+                </ui:VisualElement>
             </ui:ScrollView>
             <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>
             <ui:VisualElement name="DisplayConfirmationOverlay" class="settings-confirmation-overlay">

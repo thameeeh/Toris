@@ -12,17 +12,27 @@ namespace OutlandHaven.UIToolkit
         private void OnEnable()
         {
             _inputActions = new InputSystem_Actions();
+            // Settings rebinding hook: this standalone toggle input must honor saved overrides.
+            InputBindingSettings.ApplyTo(_inputActions);
             _inputActions.UI.Enable();
             _inputActions.UI.ToggleSkills.performed += OnToggleSkills;
+            InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
         }
 
         private void OnDisable()
         {
+            InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
+
             if (_inputActions != null)
             {
                 _inputActions.UI.ToggleSkills.performed -= OnToggleSkills;
                 _inputActions.UI.Disable();
             }
+        }
+
+        private void HandleInputBindingsChanged()
+        {
+            InputBindingSettings.ApplyTo(_inputActions);
         }
 
         private void OnToggleSkills(InputAction.CallbackContext context)

@@ -38,6 +38,8 @@ public class MainMenuController : MonoBehaviour
     {
         _uiManager = FindFirstObjectByType<MainMenuUIManager>();
         _input = new InputSystem_Actions();
+        // Settings rebinding hook: menu-owned input instances also need saved overrides.
+        InputBindingSettings.ApplyTo(_input);
         
         // Ensure we have a SaveManager if not manually assigned
         if (_saveManager == null)
@@ -55,6 +57,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnEnable()
     {
+        InputBindingSettings.OnBindingsChanged += HandleInputBindingsChanged;
         _input?.UI.Enable();
         if (_input != null)
         {
@@ -64,6 +67,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnDisable()
     {
+        InputBindingSettings.OnBindingsChanged -= HandleInputBindingsChanged;
         _input?.UI.Disable();
         if (_input != null)
         {
@@ -77,6 +81,12 @@ public class MainMenuController : MonoBehaviour
         {
             OnCloseSlotsRequested();
         }
+    }
+
+    private void HandleInputBindingsChanged()
+    {
+        // Settings rebinding hook: keep menu Escape/cancel input aligned with saved overrides.
+        InputBindingSettings.ApplyTo(_input);
     }
 
     private void Start()

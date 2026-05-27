@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DecoyTotemConfig", menuName = "Game/Abilities/Decoy Totem")]
+[CreateAssetMenu(fileName = "DecoyTotemConfig", menuName = "Outland Haven/Player/Abilities/Decoy Totem")]
 public class DecoyTotemConfig : PlayerAbilitySO
 {
     private const float MinDirectionSqrMagnitude = 0.0001f;

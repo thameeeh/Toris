@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Boar_Idle_Stand", menuName = "Enemy Logic/Idle Logic/Boar Idle")]
+[CreateAssetMenu(fileName = "Boar_Idle_Stand", menuName = "Outland Haven/Enemy/Behaviors/Idle Logic/Boar Idle")]
 public class BoarIdleSO : IdleSOBase<Boar>
 {
     [SerializeField, Min(0f)] private float idleDurationMin = 1.25f;

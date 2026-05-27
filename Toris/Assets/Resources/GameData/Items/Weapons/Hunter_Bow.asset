@@ -20,6 +20,7 @@ MonoBehaviour:
   Components:
   - rid: 3501180790566551701
   - rid: 3501180790566551702
+  - rid: 6598858192008773920
   references:
     version: 2
     RefIds:
@@ -38,3 +39,7 @@ MonoBehaviour:
       data:
         BaseDamage: 10
         AttackSpeed: 1
+    - rid: 6598858192008773920
+      type: {class: UpgradeableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        MaxLevel: 5

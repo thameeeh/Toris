@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efca9940c3f31e24d8d37927910172df, type: 3}
+  m_Name: Sage Crafting Registry SO
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.CraftingRegistrySO
+  CraftingRecipes:
+  - {fileID: 11400000, guid: 2772d2e4a43a423ca3b86373e7b5f922, type: 2}
+  - {fileID: 11400000, guid: 843021b07a364c2fb4dba73f5f8b9eb6, type: 2}
+  - {fileID: 11400000, guid: 8b3d641499284955ad6dbdccbb2e0711, type: 2}
+  - {fileID: 11400000, guid: 7d6d45ca80684d99b2a38a6ba3ab8c02, type: 2}
+  - {fileID: 11400000, guid: d7e4c9949a7b4c3fae95854f2b9d5a10, type: 2}
+  SalvageRecipes: []

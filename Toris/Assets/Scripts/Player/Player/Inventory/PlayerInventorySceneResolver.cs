@@ -53,7 +53,9 @@ namespace OutlandHaven.Inventory
             {
                 if (current != null && current != gameSession.PlayerInventory)
                 {
+#if UNITY_EDITOR
                     Debug.Log($"[Resolver] Syncing Player Inventory reference. Moving from '{current.name}' to session instance '{gameSession.PlayerInventory.name}'.");
+#endif
                 }
                 return gameSession.PlayerInventory;
             }
@@ -90,7 +92,9 @@ namespace OutlandHaven.Inventory
             {
                 if (current != null && current != gameSession.PlayerPotionInventory)
                 {
+#if UNITY_EDITOR
                     Debug.Log($"[Resolver] Syncing Potion reference. Moving from '{current.name}' to session instance '{gameSession.PlayerPotionInventory.name}'.");
+#endif
                 }
                 return gameSession.PlayerPotionInventory;
             }
@@ -119,7 +123,9 @@ namespace OutlandHaven.Inventory
             {
                 if (current != null && current != gameSession.PlayerEquipment)
                 {
+#if UNITY_EDITOR
                     Debug.Log($"[Resolver] Syncing Equipment reference. Moving from '{current.name}' to session instance '{gameSession.PlayerEquipment.name}'.");
+#endif
                 }
                 return gameSession.PlayerEquipment;
             }

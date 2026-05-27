@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "Effects/Enemy VFX Modules/Death",
+    menuName = "Outland Haven/Effects/Enemy VFX Modules/Death",
     fileName = "EnemyVfxModule_Death")]
 public sealed class EnemyVfxModule_Death : EnemyVfxModule
 {

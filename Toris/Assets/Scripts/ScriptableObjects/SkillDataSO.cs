@@ -6,7 +6,7 @@ public enum SkillCategory
     Weapon
 }
 
-[CreateAssetMenu(fileName = "NewSkill", menuName = "Game/Player/Skill")]
+[CreateAssetMenu(fileName = "NewSkill", menuName = "Outland Haven/Player/Skills/Skill")]
 public class SkillData : ScriptableObject
 {
     [Header("Core Identity")]

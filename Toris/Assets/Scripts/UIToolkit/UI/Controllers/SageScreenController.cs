@@ -9,11 +9,13 @@ namespace OutlandHaven.UIToolkit
         [Header("Dependencies")]
         [SerializeField] private VisualTreeAsset _sageUpgradeTemplate; // Drag SageUpgrade.uxml here
         [SerializeField] private VisualTreeAsset _sageUpgradeSubViewTemplate; // Drag UpgradeSubView_Sage.uxml here
+        [SerializeField] private VisualTreeAsset _sageBrewTemplate; // Drag BrewSubView_Sage.uxml here
         [SerializeField] private VisualTreeAsset _slotTemplate; // Drag Slot.uxml here
         [SerializeField] private UIEventsSO _uiEvents;
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;
         [SerializeField] private GameSessionSO _gameSession;
         [SerializeField] private UpgradeSalvageManagerSO _upgradeManager;
+        [SerializeField] private CraftingManagerSO _brewingManager; // Drag potion brewing CraftingManagerSO here
 
         private SageUpgradeView _view;
         private UIManager _uiManager;
@@ -24,6 +26,10 @@ namespace OutlandHaven.UIToolkit
             if (_gameSession == null)
             {
                 _gameSession = GameSessionSO.LoadDefault();
+            }
+            if (_brewingManager != null)
+            {
+                _brewingManager.Initialize();
             }
         }
 
@@ -48,9 +54,17 @@ namespace OutlandHaven.UIToolkit
             {
                 Debug.LogError("SageUpgradeScreenController: Sage Upgrade SubView UXML Template is missing!");
             }
+            if (_sageBrewTemplate == null)
+            {
+                Debug.LogError("SageUpgradeScreenController: Sage Brew UXML Template is missing!");
+            }
             if (_slotTemplate == null)
             {
                 Debug.LogError("SageUpgradeScreenController: Slot Template is missing!");
+            }
+            if (_brewingManager == null)
+            {
+                Debug.LogError("SageUpgradeScreenController: Brewing Manager SO is missing!");
             }
         }
 
@@ -70,7 +84,7 @@ namespace OutlandHaven.UIToolkit
 
         private void Start()
         {
-            if (_sageUpgradeTemplate == null || _sageUpgradeSubViewTemplate == null || _slotTemplate == null) return;
+            if (_sageUpgradeTemplate == null || _sageUpgradeSubViewTemplate == null || _sageBrewTemplate == null || _slotTemplate == null) return;
             if (_gameSession == null)
             {
                 _gameSession = GameSessionSO.LoadDefault();
@@ -82,11 +96,13 @@ namespace OutlandHaven.UIToolkit
             _view = new SageUpgradeView(
                 sageInstance,
                 _sageUpgradeSubViewTemplate,
+                _sageBrewTemplate,
                 _slotTemplate,
                 _uiEvents,
                 _uiInventoryEvents,
                 _gameSession,
-                _upgradeManager
+                _upgradeManager,
+                _brewingManager
             );
             _view.Initialize();
 

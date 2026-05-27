@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace OutlandHaven.UIToolkit
 {
 
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/Events/UIEventsSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Events/UI Events")]
     public class UIEventsSO : ScriptableObject
     {
         // UI SFX requests live on the UI event bus so pure C# views can ask for sound

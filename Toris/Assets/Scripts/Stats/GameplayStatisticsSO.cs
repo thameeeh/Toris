@@ -12,29 +12,54 @@ using OutlandHaven.Inventory;
 /// during the standard Toris save pipeline. ScriptableObject field values are volatile
 /// in standalone builds, so all persistence goes through the JSON save files.
 /// </summary>
-[CreateAssetMenu(fileName = "GameplayStatistics", menuName = "Stats/Gameplay Statistics")]
+[CreateAssetMenu(fileName = "GameplayStatistics", menuName = "Outland Haven/System/Gameplay Statistics")]
 public class GameplayStatisticsSO : ScriptableObject
 {
     private const string DefaultResourcePath = "GameData/GameplayStatistics";
 
+    // --- Encapsulated runtime state ---
+    // Public getters for read access; mutations go through dedicated methods
+    // to prevent accidental writes from external scripts.
+
     [Header("Lifetime Kill Stats")]
     [Tooltip("Total number of enemies killed across all types.")]
-    public int TotalKills;
+    [SerializeField] private int _totalKills;
+    public int TotalKills => _totalKills;
 
     [Tooltip("Total number of wolves killed specifically.")]
-    public int WolfKills;
+    [SerializeField] private int _wolfKills;
+    public int WolfKills => _wolfKills;
 
     [Header("Lifetime Pick Up Stats")]
     [Tooltip("Total number of items picked up across all types.")]
-    public int TotalPickUps;
+    [SerializeField] private int _totalPickUps;
+    public int TotalPickUps => _totalPickUps;
 
     [Header("Lifetime Time Stats")]
     [Tooltip("Total playtime accumulated in seconds across all sessions.")]
-    public float PlayTime;
+    [SerializeField] private float _playTime;
+    public float PlayTime => _playTime;
 
     [Header("Lifetime Generic Item Pick Up Stats")]
     [Tooltip("Pickup counts for each unique item ID. Keys match the InventoryItemSO asset name.")]
-    public Dictionary<string, int> ItemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
+    private Dictionary<string, int> _itemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
+
+    /// <summary>
+    /// Read-only view of per-item pickup counts. Returns null-safe.
+    /// </summary>
+    public IReadOnlyDictionary<string, int> ItemPickUps => _itemPickUps;
+
+    // --- Mutation API ---
+
+    /// <summary>
+    /// Adds elapsed time to the play timer. Called by SaveManager.Update() each frame.
+    /// </summary>
+    public void AddPlayTime(float deltaSeconds)
+    {
+        _playTime += deltaSeconds;
+    }
+
+    // --- Event-driven stat tracking (internal) ---
 
     private void OnEnable()
     {
@@ -51,51 +76,53 @@ public class GameplayStatisticsSO : ScriptableObject
         switch (fact.Type)
         {
             case QuestFactType.Kill:
-                TotalKills += fact.Amount;
+                _totalKills += fact.Amount;
 
                 // Track wolf kills specifically by checking ExactId or TypeOrTag
                 if (!string.IsNullOrEmpty(fact.ExactId) &&
                     fact.ExactId.IndexOf("Wolf", System.StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    WolfKills += fact.Amount;
+                    _wolfKills += fact.Amount;
                 }
                 else if (!string.IsNullOrEmpty(fact.TypeOrTag) &&
                          fact.TypeOrTag.IndexOf("Wolf", System.StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    WolfKills += fact.Amount;
+                    _wolfKills += fact.Amount;
                 }
                 break;
 
             case QuestFactType.PickUp:
-                TotalPickUps += fact.Amount;
+                _totalPickUps += fact.Amount;
 
                 // Generically track all item pickups by item ID (fact.ExactId)
                 if (!string.IsNullOrEmpty(fact.ExactId))
                 {
-                    if (ItemPickUps == null)
+                    if (_itemPickUps == null)
                     {
-                        ItemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
+                        _itemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
                     }
 
-                    if (ItemPickUps.ContainsKey(fact.ExactId))
+                    if (_itemPickUps.ContainsKey(fact.ExactId))
                     {
-                        ItemPickUps[fact.ExactId] += fact.Amount;
+                        _itemPickUps[fact.ExactId] += fact.Amount;
                     }
                     else
                     {
-                        ItemPickUps[fact.ExactId] = fact.Amount;
+                        _itemPickUps[fact.ExactId] = fact.Amount;
                     }
                 }
                 break;
         }
     }
 
+    // --- Query API ---
+
     /// <summary>
     /// Gets the pickup count for a specific item ID.
     /// </summary>
     public int GetPickUpCount(string itemAssetId)
     {
-        if (ItemPickUps != null && !string.IsNullOrEmpty(itemAssetId) && ItemPickUps.TryGetValue(itemAssetId, out int count))
+        if (_itemPickUps != null && !string.IsNullOrEmpty(itemAssetId) && _itemPickUps.TryGetValue(itemAssetId, out int count))
         {
             return count;
         }
@@ -117,11 +144,11 @@ public class GameplayStatisticsSO : ScriptableObject
     public Dictionary<InventoryItemSO, int> GetResolvedItemPickUps(ItemDatabaseSO itemDatabase)
     {
         var resolved = new Dictionary<InventoryItemSO, int>();
-        if (itemDatabase == null || ItemPickUps == null)
+        if (itemDatabase == null || _itemPickUps == null)
             return resolved;
 
         itemDatabase.Initialize();
-        foreach (var kvp in ItemPickUps)
+        foreach (var kvp in _itemPickUps)
         {
             InventoryItemSO blueprint = itemDatabase.GetItemByID(kvp.Key);
             if (blueprint != null)
@@ -132,6 +159,8 @@ public class GameplayStatisticsSO : ScriptableObject
         return resolved;
     }
 
+    // --- Save/Load pipeline ---
+
     /// <summary>
     /// Captures current stats into a serializable DTO for the save system.
     /// </summary>
@@ -139,11 +168,11 @@ public class GameplayStatisticsSO : ScriptableObject
     {
         return new SavedGameplayStatisticsData
         {
-            TotalKills = TotalKills,
-            WolfKills = WolfKills,
-            PlayTime = PlayTime,
-            TotalPickUps = TotalPickUps,
-            ItemPickUps = ItemPickUps != null ? new Dictionary<string, int>(ItemPickUps, System.StringComparer.Ordinal) : new Dictionary<string, int>(System.StringComparer.Ordinal)
+            TotalKills = _totalKills,
+            WolfKills = _wolfKills,
+            PlayTime = _playTime,
+            TotalPickUps = _totalPickUps,
+            ItemPickUps = _itemPickUps != null ? new Dictionary<string, int>(_itemPickUps, System.StringComparer.Ordinal) : new Dictionary<string, int>(System.StringComparer.Ordinal)
         };
     }
 
@@ -158,11 +187,11 @@ public class GameplayStatisticsSO : ScriptableObject
             return;
         }
 
-        TotalKills = data.TotalKills;
-        WolfKills = data.WolfKills;
-        PlayTime = data.PlayTime;
-        TotalPickUps = data.TotalPickUps;
-        ItemPickUps = data.ItemPickUps != null ? new Dictionary<string, int>(data.ItemPickUps, System.StringComparer.Ordinal) : new Dictionary<string, int>(System.StringComparer.Ordinal);
+        _totalKills = data.TotalKills;
+        _wolfKills = data.WolfKills;
+        _playTime = data.PlayTime;
+        _totalPickUps = data.TotalPickUps;
+        _itemPickUps = data.ItemPickUps != null ? new Dictionary<string, int>(data.ItemPickUps, System.StringComparer.Ordinal) : new Dictionary<string, int>(System.StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -170,17 +199,17 @@ public class GameplayStatisticsSO : ScriptableObject
     /// </summary>
     public void ResetStats()
     {
-        TotalKills = 0;
-        WolfKills = 0;
-        PlayTime = 0f;
-        TotalPickUps = 0;
-        if (ItemPickUps != null)
+        _totalKills = 0;
+        _wolfKills = 0;
+        _playTime = 0f;
+        _totalPickUps = 0;
+        if (_itemPickUps != null)
         {
-            ItemPickUps.Clear();
+            _itemPickUps.Clear();
         }
         else
         {
-            ItemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
+            _itemPickUps = new Dictionary<string, int>(System.StringComparer.Ordinal);
         }
     }
 

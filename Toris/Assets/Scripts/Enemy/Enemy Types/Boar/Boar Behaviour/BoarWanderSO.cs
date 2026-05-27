@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Boar_Wander_Roam", menuName = "Enemy Logic/Wander Logic/Boar Wander")]
+[CreateAssetMenu(fileName = "Boar_Wander_Roam", menuName = "Outland Haven/Enemy/Behaviors/Wander Logic/Boar Wander")]
 public class BoarWanderSO : EnemyBehaviourSO<Boar>
 {
     [SerializeField, Min(0.1f)] private float wanderRadius = 4f;

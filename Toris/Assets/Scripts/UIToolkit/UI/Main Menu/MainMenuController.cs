@@ -153,7 +153,9 @@ public class MainMenuController : MonoBehaviour
             "DELETE SAVE",
             $"Are you sure you want to permanently delete Slot {slotIndex}?\nThis action cannot be undone.",
             () => {
+#if UNITY_EDITOR
                 Debug.Log($"UI Intent: Delete Save Slot {slotIndex} ({enumIndex}).");
+#endif
                 _saveManager.DeleteSave(enumIndex);
                 PopulateSaveSlotsFromFiles();
             }
@@ -173,7 +175,9 @@ public class MainMenuController : MonoBehaviour
         // Convert the 1-based UI index back to the 0-based Enum
         SaveSlotIndex enumIndex = (SaveSlotIndex)(slotIndex - 1);
 
+#if UNITY_EDITOR
         Debug.Log($"UI Intent: Selected Save Slot {slotIndex} ({enumIndex}). Requesting Load...");
+#endif
 
         // Store the active slot in the session
         _saveManager.ActiveSession.ActiveSaveSlot = enumIndex;
@@ -193,7 +197,9 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
+#if UNITY_EDITOR
             Debug.Log($"[MainMenuController] Slot {slotIndex} is empty. Initializing New Game sequence...");
+#endif
             PromptTutorialChoiceForNewGame(slotIndex, enumIndex);
         }
     }
@@ -259,7 +265,9 @@ public class MainMenuController : MonoBehaviour
 
     private void OnPlayRequested()
     {
+#if UNITY_EDITOR
         Debug.Log("UI Intent: Play Clicked. (Slots are already visible on the right).");
+#endif
 
         if (!_slotsGenerated)
         {
@@ -273,7 +281,9 @@ public class MainMenuController : MonoBehaviour
 
     private void OnSettingsRequested()
     {
+#if UNITY_EDITOR
         Debug.Log("UI Intent: Settings Clicked. Opening Modal...");
+#endif
         _uiEvents.OnRequestOpen?.Invoke(ScreenType.SettingsModal, null);
     }
 
@@ -283,7 +293,9 @@ public class MainMenuController : MonoBehaviour
             "EXIT GAME",
             "Are you sure you want to quit to desktop?",
             () => {
+#if UNITY_EDITOR
                 Debug.Log("UI Intent: Exit Confirmed. Closing Application.");
+#endif
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #else

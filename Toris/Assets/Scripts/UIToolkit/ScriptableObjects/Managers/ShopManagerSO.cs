@@ -3,7 +3,7 @@ using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/ShopManagerSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Managers/Shop Manager")]
     public class ShopManagerSO : ScriptableObject
     {
         private const string DefaultCoinTransactionSfxId = "ui_coin_purchase";
@@ -23,7 +23,6 @@ namespace OutlandHaven.UIToolkit
         public void Initialize()
         {
             Cleanup();
-            Debug.Log("Hello from shop manager!");
             if (InventoryEvents != null)
             {
                 InventoryEvents.OnRequestBuy += HandleRequestBuy;

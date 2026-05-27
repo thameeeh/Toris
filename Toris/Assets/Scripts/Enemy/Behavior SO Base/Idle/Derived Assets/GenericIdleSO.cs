@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Generic_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Generic Idle Wander")]
+[CreateAssetMenu(fileName = "Generic_Idle_Wander", menuName = "Outland Haven/Enemy/Behaviors/Idle Logic/Generic Idle Wander")]
 public class GenericIdleSO : IdleSOBase<Generic>
 {
     public override void Initialize(GameObject gameObject, Generic enemy, Transform player)

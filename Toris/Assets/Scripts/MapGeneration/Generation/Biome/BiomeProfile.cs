@@ -10,7 +10,7 @@ public sealed class BiomeTreeVariant
     public bool IsValid => obstacleTile != null || canopyTile != null;
 }
 
-[CreateAssetMenu(menuName = "WorldGen/Biome Profile", fileName = "BiomeProfile")]
+[CreateAssetMenu(menuName = "Outland Haven/WorldGen/Biome Profile", fileName = "BiomeProfile")]
 public sealed class BiomeProfile : ScriptableObject
 {
     [Header("Identity")]

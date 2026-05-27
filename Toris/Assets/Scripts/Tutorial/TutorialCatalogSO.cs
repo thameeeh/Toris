@@ -70,7 +70,7 @@ namespace OutlandHaven.Tutorial
         public IReadOnlyList<string> PrerequisiteStepIds => prerequisiteStepIds;
     }
 
-    [CreateAssetMenu(fileName = "TutorialCatalog", menuName = "Tutorial/Tutorial Catalog")]
+    [CreateAssetMenu(fileName = "TutorialCatalog", menuName = "Outland Haven/System/Tutorial Catalog")]
     public class TutorialCatalogSO : ScriptableObject
     {
         private const string DefaultResourcePath = "GameData/Tutorial/DefaultTutorialCatalog";

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Encounters/Boar Oasis Encounter Config",
+    menuName = "Outland Haven/WorldGen/Encounters/Boar Oasis Encounter Config",
     fileName = "BoarOasisEncounterConfig")]
 public sealed class BoarOasisEncounterConfig : WorldSiteRuntimeConfig, IWorldEncounterPackageConfig
 {

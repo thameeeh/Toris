@@ -3,7 +3,7 @@ using OutlandHaven.UIToolkit;
 
 namespace OutlandHaven.Inventory
 {
-    [CreateAssetMenu(menuName = "UI/Inventory/Container Blueprint")]
+    [CreateAssetMenu(menuName = "Outland Haven/Inventory/Container Blueprint")]
     public class InventoryContainerSO : ScriptableObject
     {
         public int SlotCount = 20;

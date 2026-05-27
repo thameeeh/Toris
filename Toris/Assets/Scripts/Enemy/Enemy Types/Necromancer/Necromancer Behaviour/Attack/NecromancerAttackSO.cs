@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Necromancer_Attack_BoltCast", menuName = "Enemy Logic/Attack Logic/Necromancer Bolt Cast")]
+[CreateAssetMenu(fileName = "Necromancer_Attack_BoltCast", menuName = "Outland Haven/Enemy/Behaviors/Attack Logic/Necromancer Bolt Cast")]
 public class NecromancerAttackSO : AttackSOBase<Necromancer>
 {
     private const float FullCircleDegrees = 360f;

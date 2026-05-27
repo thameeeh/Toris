@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Build Steps/Wildlife Spawn Step",
+    menuName = "Outland Haven/WorldGen/Biomes/Build Steps/Wildlife Spawn Step",
     fileName = "WildlifeSpawnBuildStepDefinition")]
 public sealed class WildlifeSpawnBuildStepDefinition : BiomeBuildStepDefinition
 {

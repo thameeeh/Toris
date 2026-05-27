@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BloodMage_Attack_BubblePool", menuName = "Enemy Logic/Attack Logic/BloodMage Bubble Pool")]
+[CreateAssetMenu(fileName = "BloodMage_Attack_BubblePool", menuName = "Outland Haven/Enemy/Behaviors/Attack Logic/BloodMage Bubble Pool")]
 public class BloodMageAttackSO : AttackSOBase<BloodMage>
 {
     [Header("Timing")]

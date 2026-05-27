@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Build Steps/Site Placement Rule Step",
+    menuName = "Outland Haven/WorldGen/Biomes/Build Steps/Site Placement Rule Step",
     fileName = "SitePlacementRuleBuildStepDefinition")]
 public sealed class SitePlacementRuleBuildStepDefinition : BiomeBuildStepDefinition
 {

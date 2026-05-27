@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Music Library", fileName = "MusicLibrary")]
+[CreateAssetMenu(menuName = "Outland Haven/Audio/Music Library", fileName = "MusicLibrary")]
 public sealed class MusicLibrary : ScriptableObject
 {
     [SerializeField] private MusicDefinition[] definitions;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Necromancer_Chase_CastRange", menuName = "Enemy Logic/Chase Logic/Necromancer Cast Range Chase")]
+[CreateAssetMenu(fileName = "Necromancer_Chase_CastRange", menuName = "Outland Haven/Enemy/Behaviors/Chase Logic/Necromancer Cast Range Chase")]
 public class NecromancerChaseSO : ChaseSOBase<Necromancer>
 {
     [Header("Ranges")]

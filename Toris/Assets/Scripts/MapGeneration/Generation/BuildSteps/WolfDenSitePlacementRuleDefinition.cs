@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Site Rules/Wolf Den Site Rule",
+    menuName = "Outland Haven/WorldGen/Biomes/Site Rules/Wolf Den Site Rule",
     fileName = "WolfDenSitePlacementRuleDefinition")]
 public sealed class WolfDenSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {

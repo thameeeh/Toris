@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Build Steps/Road Surface Step",
+    menuName = "Outland Haven/WorldGen/Biomes/Build Steps/Road Surface Step",
     fileName = "RoadSurfaceBuildStepDefinition")]
 public sealed class RoadSurfaceBuildStepDefinition : BiomeBuildStepDefinition
 {

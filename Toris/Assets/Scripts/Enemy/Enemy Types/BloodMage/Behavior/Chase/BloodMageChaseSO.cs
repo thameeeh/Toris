@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BloodMage_Chase_Leashed", menuName = "Enemy Logic/Chase Logic/BloodMage Leashed Chase")]
+[CreateAssetMenu(fileName = "BloodMage_Chase_Leashed", menuName = "Outland Haven/Enemy/Behaviors/Chase Logic/BloodMage Leashed Chase")]
 public class BloodMageChaseSO : ChaseSOBase<BloodMage>
 {
     private const float DefaultGuardRadius = 1.75f;

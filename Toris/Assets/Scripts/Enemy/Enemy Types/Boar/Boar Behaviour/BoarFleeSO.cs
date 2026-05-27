@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Boar_Flee_AfterCharge", menuName = "Enemy Logic/Flee Logic/Boar Flee")]
+[CreateAssetMenu(fileName = "Boar_Flee_AfterCharge", menuName = "Outland Haven/Enemy/Behaviors/Flee Logic/Boar Flee")]
 public class BoarFleeSO : EnemyBehaviourSO<Boar>
 {
     [SerializeField, Min(0.1f)] private float minimumFleeDuration = 2f;

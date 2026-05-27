@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Sites/Site Tile Layout Definition",
+    menuName = "Outland Haven/WorldGen/Sites/Site Tile Layout Definition",
     fileName = "SiteTileLayoutDefinition")]
 public sealed class SiteTileLayoutDefinition : ScriptableObject
 {

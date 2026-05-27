@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BowConfig_Starter", menuName = "Game/Weapons/Bow Config")]
+[CreateAssetMenu(fileName = "BowConfig_Starter", menuName = "Outland Haven/Player/Weapons/Bow Config")]
 public class BowSO : ScriptableObject
 {
     [Header("Draw (seconds)")]

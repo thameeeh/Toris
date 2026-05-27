@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 [CreateAssetMenu(
     fileName = "QuestFactProgressRuleSet",
-    menuName = "Quest/Pixel Crushers/Quest Fact Progress Rule Set")]
+    menuName = "Outland Haven/Quest/Pixel Crushers/Quest Fact Progress Rule Set")]
 public class QuestFactProgressRuleSetSO : ScriptableObject
 {
     [Tooltip("Each rule says: when this Toris fact happens, increment this Pixel Crushers quest variable and complete the configured entry when the threshold is reached.")]

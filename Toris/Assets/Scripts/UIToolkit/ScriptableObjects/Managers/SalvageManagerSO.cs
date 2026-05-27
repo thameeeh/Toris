@@ -9,7 +9,7 @@ namespace OutlandHaven.UIToolkit
         Material
     }
 
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/SalvageManagerSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Managers/Salvage Manager")]
     public class SalvageManagerSO : ScriptableObject
     {
         private const string DefaultSalvageSuccessSfxId = "craft_salvage";

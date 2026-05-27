@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DeathPenaltyConfig", menuName = "Game/Player/Death Penalty Config")]
+[CreateAssetMenu(fileName = "DeathPenaltyConfig", menuName = "Outland Haven/Player/Death Penalty Config")]
 public sealed class DeathPenaltyConfigSO : ScriptableObject
 {
     [Header("Progression")]

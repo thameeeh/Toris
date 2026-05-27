@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Deer_Dead", menuName = "Enemy Logic/Dead Logic/Deer Dead")]
+[CreateAssetMenu(fileName = "Deer_Dead", menuName = "Outland Haven/Enemy/Behaviors/Dead Logic/Deer Dead")]
 public class DeerDeadSO : DeadSOBase<Deer>
 {
     [SerializeField, Min(0f)] private float holdDuration = 0.15f;

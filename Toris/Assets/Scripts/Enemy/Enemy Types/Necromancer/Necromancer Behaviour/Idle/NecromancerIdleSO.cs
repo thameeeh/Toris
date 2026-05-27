@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Necromancer_Idle_Stand", menuName = "Enemy Logic/Idle Logic/Necromancer Idle")]
+[CreateAssetMenu(fileName = "Necromancer_Idle_Stand", menuName = "Outland Haven/Enemy/Behaviors/Idle Logic/Necromancer Idle")]
 public class NecromancerIdleSO : IdleSOBase<Necromancer>
 {
     [Header("Roaming")]

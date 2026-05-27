@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 [CreateAssetMenu(
     fileName = "PixelCrushersQuestAbandonSet",
-    menuName = "Quest/Pixel Crushers/Quest Abandon Set")]
+    menuName = "Outland Haven/Quest/Pixel Crushers/Quest Abandon Set")]
 public class PixelCrushersQuestAbandonSetSO : ScriptableObject
 {
     [Tooltip("Abandon entries keyed by Pixel Crushers quest name. Only quests listed here can use the Toris abandon flow.")]

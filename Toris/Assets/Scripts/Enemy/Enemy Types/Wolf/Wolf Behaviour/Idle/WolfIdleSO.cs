@@ -1,7 +1,7 @@
 using OutlandHaven.UIToolkit;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Enemy Logic/Idle Logic/Wolf Idle Wander")]
+[CreateAssetMenu(fileName = "Wolf_Idle_Wander", menuName = "Outland Haven/Enemy/Behaviors/Idle Logic/Wolf Idle Wander")]
 public class WolfIdleSO : IdleSOBase<Wolf>
 {
     private enum IdleMode

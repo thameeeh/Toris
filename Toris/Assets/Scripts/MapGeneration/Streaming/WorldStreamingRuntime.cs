@@ -131,6 +131,7 @@ public sealed class WorldStreamingRuntime
             return;
         }
 
+#if UNITY_EDITOR
         Debug.Log(
             $"[WorldGen] unload={(int)processingFrameStats.UnloadMs}ms, " +
             $"genChunks={processingFrameStats.GeneratedChunkCount}/{maxChunksPerFrame} " +
@@ -141,5 +142,6 @@ public sealed class WorldStreamingRuntime
             $"loaded={(chunkStreamingSystem != null ? chunkStreamingSystem.LoadedChunkCount : 0)} " +
             $"chunkSize={worldProfile.chunkSize}"
         );
+#endif
     }
 }

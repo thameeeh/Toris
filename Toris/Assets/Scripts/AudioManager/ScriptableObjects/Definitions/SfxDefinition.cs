@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-[CreateAssetMenu(menuName = "Audio/SFX Definition", fileName = "SfxDefinition")]
+[CreateAssetMenu(menuName = "Outland Haven/Audio/SFX Definition", fileName = "SfxDefinition")]
 public sealed class SfxDefinition : ScriptableObject
 {
     [Header("Identity")]

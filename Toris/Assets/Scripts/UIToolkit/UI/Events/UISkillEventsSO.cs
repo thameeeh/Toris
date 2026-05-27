@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace OutlandHaven.Skills
 {
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/Events/UISkillEventsSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Events/UI Skill Events")]
     public class UISkillEventsSO : ScriptableObject
     {
         [Header("System -> UI Updates")]

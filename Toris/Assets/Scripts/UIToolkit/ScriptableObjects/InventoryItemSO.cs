@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OutlandHaven.Inventory
 {
-    [CreateAssetMenu(menuName = "Item")]
+    [CreateAssetMenu(menuName = "Outland Haven/Inventory/Item")]
     public class InventoryItemSO : ScriptableObject
     {
         public string ItemName;

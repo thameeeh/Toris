@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Site Rules/Roadside Vignette Rule",
+    menuName = "Outland Haven/WorldGen/Biomes/Site Rules/Roadside Vignette Rule",
     fileName = "RoadsideVignettePlacementRuleDefinition")]
 public sealed class RoadsideVignettePlacementRuleDefinition : SitePlacementRuleDefinition
 {

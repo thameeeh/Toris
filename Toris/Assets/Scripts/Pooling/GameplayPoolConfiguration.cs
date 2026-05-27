@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Gameplay/Pools/Gameplay Pool Configuration", fileName = "GameplayPoolConfiguration")]
+[CreateAssetMenu(menuName = "Outland Haven/System/Pool Configuration", fileName = "GameplayPoolConfiguration")]
 public class GameplayPoolConfiguration : ScriptableObject
 {
     [SerializeField]

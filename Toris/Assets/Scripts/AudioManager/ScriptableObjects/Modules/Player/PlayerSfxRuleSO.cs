@@ -11,7 +11,7 @@ public enum PlayerSfxPlaybackMode
     StopLoop
 }
 
-[CreateAssetMenu(menuName = "Audio/Player SFX Rule", fileName = "PlayerSfxRule")]
+[CreateAssetMenu(menuName = "Outland Haven/Audio/Player SFX Rule", fileName = "PlayerSfxRule")]
 public sealed class PlayerSfxRuleSO : ScriptableObject
 {
     [Header("Trigger")]

@@ -13,6 +13,8 @@
     flex-grow: 1;
     flex-direction: column; /* Stack header on top, middle panel below */
     background-color: var(--color-bg-dark);
+    border-width: 2px;
+    border-color: rgb(212, 160, 23);
     width: 100%;
     height: 100%;
     padding: 10px;

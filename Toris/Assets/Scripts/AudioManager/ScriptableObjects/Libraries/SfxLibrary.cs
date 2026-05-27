@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/SFX Library", fileName = "SfxLibrary")]
+[CreateAssetMenu(menuName = "Outland Haven/Audio/SFX Library", fileName = "SfxLibrary")]
 public sealed class SfxLibrary : ScriptableObject
 {
     [SerializeField] private SfxCategory[] categories;

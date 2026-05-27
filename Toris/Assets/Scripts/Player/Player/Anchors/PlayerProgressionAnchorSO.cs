@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Anchors/PlayerProgressionAnchorSO", fileName = "PlayerProgressionAnchor")]
+[CreateAssetMenu(menuName = "Outland Haven/Player/Anchors/Progression Anchor", fileName = "PlayerProgressionAnchor")]
 public class PlayerProgressionAnchorSO : ScriptableObject
 {
     [System.NonSerialized]

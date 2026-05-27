@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "Audio/Enemy SFX Modules/Impact Hit",
+    menuName = "Outland Haven/Audio/Enemy SFX Modules/Impact Hit",
     fileName = "EnemySfxModule_ImpactHit")]
 public sealed class EnemySfxModule_ImpactHit : EnemySfxModule
 {

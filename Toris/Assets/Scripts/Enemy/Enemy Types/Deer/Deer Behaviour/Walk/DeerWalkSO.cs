@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Deer_Walk", menuName = "Enemy Logic/Walk Logic/Deer Walk")]
+[CreateAssetMenu(fileName = "Deer_Walk", menuName = "Outland Haven/Enemy/Behaviors/Walk Logic/Deer Walk")]
 public class DeerWalkSO : WalkSOBase<Deer>
 {
     [SerializeField, Min(0.1f)] private float wanderRadius = 4f;

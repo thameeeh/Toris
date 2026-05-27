@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Necromancer_Dead_Final", menuName = "Enemy Logic/Dead Logic/Necromancer Dead Final")]
+[CreateAssetMenu(fileName = "Necromancer_Dead_Final", menuName = "Outland Haven/Enemy/Behaviors/Dead Logic/Necromancer Dead Final")]
 public class NecromancerDeadSO : DeadSOBase<Necromancer>
 {
     public override void DoEnterLogic()

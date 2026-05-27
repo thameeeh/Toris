@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "WorldGen/Biomes/Basic Biome", fileName = "BasicBiomeDefinition")]
+[CreateAssetMenu(menuName = "Outland Haven/WorldGen/Biomes/Basic Biome", fileName = "BasicBiomeDefinition")]
 public sealed class BasicBiomeDefinition : BiomeDefinition
 {
     [Header("Build Steps")]

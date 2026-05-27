@@ -7,7 +7,7 @@ namespace OutlandHaven.UIToolkit
     /// <summary>
     /// Recipe for transformative crafting (e.g., combining items into entirely new items).
     /// </summary>
-    [CreateAssetMenu(menuName = "UI/Crafting/Crafting Recipe")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Crafting/Recipe")]
     public class CraftingRecipeSO : ScriptableObject
     {
         [Header("Inputs")]

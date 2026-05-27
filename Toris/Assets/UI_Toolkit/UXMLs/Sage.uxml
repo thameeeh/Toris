@@ -9,7 +9,7 @@
                 <ui:VisualElement name="Sage_Upgrade--Tab" class="panel-tab panel-tab--active">
                     <ui:Label text="Infusion" name="Upgrade_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Sage_Brewing--Tab" class="panel-tab" style="opacity: 0.5;">
+                <ui:VisualElement name="Sage_Brewing--Tab" class="panel-tab">
                     <ui:Label text="Brewing" name="Brewing_Label" class="panel-tab-label"/>
                 </ui:VisualElement>
             </ui:VisualElement>

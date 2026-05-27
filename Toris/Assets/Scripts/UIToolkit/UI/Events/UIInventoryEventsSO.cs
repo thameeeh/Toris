@@ -4,7 +4,7 @@ using OutlandHaven.UIToolkit;
 
 namespace OutlandHaven.Inventory
 {
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/Events/UIInventoryEventsSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Events/UI Inventory Events")]
     public class UIInventoryEventsSO : ScriptableObject
     {
         public UnityAction OnInventoryUpdated;

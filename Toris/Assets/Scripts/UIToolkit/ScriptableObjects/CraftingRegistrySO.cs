@@ -7,7 +7,7 @@ namespace OutlandHaven.UIToolkit
     /// <summary>
     /// Acts as a central database for all crafting transformations and salvage recipes.
     /// </summary>
-    [CreateAssetMenu(menuName = "UI/Crafting/Crafting Registry")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Crafting/Registry")]
     public class CraftingRegistrySO : ScriptableObject
     {
         [Tooltip("List of all transformative crafting recipes")]

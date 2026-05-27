@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Anchors/PlayerStatsAnchorSO", fileName = "PlayerStatsAnchor")]
+[CreateAssetMenu(menuName = "Outland Haven/Player/Anchors/Stats Anchor", fileName = "PlayerStatsAnchor")]
 public class PlayerStatsAnchorSO : ScriptableObject
 {
     [System.NonSerialized]

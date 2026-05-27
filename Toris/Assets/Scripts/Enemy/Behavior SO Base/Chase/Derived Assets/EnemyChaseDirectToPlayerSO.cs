@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Generic_Chase_Direct", menuName = "Enemy Logic/Chase Logic/Generic Chase Direct")]
+[CreateAssetMenu(fileName = "Generic_Chase_Direct", menuName = "Outland Haven/Enemy/Behaviors/Chase Logic/Generic Chase Direct")]
 public class EnemyChaseDirectToPlayer : ChaseSOBase<Generic>
 {
     [SerializeField] private float _movementSpeed = 0.2f;

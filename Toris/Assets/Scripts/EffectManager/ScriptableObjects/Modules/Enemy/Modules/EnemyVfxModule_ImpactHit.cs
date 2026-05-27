@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "Effects/Enemy VFX Modules/Impact Hit",
+    menuName = "Outland Haven/Effects/Enemy VFX Modules/Impact Hit",
     fileName = "EnemyVfxModule_ImpactHit")]
 public sealed class EnemyVfxModule_ImpactHit : EnemyVfxModule
 {

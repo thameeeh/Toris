@@ -173,7 +173,9 @@ namespace OutlandHaven.UIToolkit
             if (SceneManager.GetActiveScene().name == MainAreaSceneName)
             {
                 // Save/procedural transfer related: only hub quits are save points.
+#if UNITY_EDITOR
                 Debug.Log("[PauseMenu] Auto-saving MainArea progress before quitting to Main Menu...");
+#endif
                 _uiEvents?.OnQuickSaveRequested?.Invoke();
             }
 #if UNITY_EDITOR

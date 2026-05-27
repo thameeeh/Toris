@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MultiShotConfig", menuName = "Game/Abilities/Multi Shot")]
+[CreateAssetMenu(fileName = "MultiShotConfig", menuName = "Outland Haven/Player/Abilities/Multi Shot")]
 public class MultiShotConfig : PlayerAbilitySO
 {
     [Header("Pattern")]

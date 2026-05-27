@@ -184,7 +184,9 @@ public class PlayerAbilityController : MonoBehaviour
                 // 3. Broadcast the change so the HUD updates
                 PublishAbilitySlotsChanged();
                 
+#if UNITY_EDITOR
                 Debug.Log($"[Ability] Auto-equipped {newAbility.abilityName} to slot {i}");
+#endif
                 return;
             }
         }

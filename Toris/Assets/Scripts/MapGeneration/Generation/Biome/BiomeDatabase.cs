@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "WorldGen/Biome Database", fileName = "BiomeDatabase")]
+[CreateAssetMenu(menuName = "Outland Haven/WorldGen/Biome Database", fileName = "BiomeDatabase")]
 public sealed class BiomeDatabase : ScriptableObject
 {
     public BiomeDefinition[] biomes;

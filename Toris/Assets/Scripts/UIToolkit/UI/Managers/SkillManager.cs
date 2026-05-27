@@ -36,7 +36,9 @@ namespace OutlandHaven.Skills
                     _skillEvents.OnAbilityAutoEquip?.Invoke(skill.associatedAbility);
                 }
 
+#if UNITY_EDITOR
                 Debug.Log($"Successfully unlocked {skill.skillID}!");
+#endif
             }
             else
             {

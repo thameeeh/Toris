@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Character Animation Profile", menuName = "Game/Characters/Animation/Character Anim Profile")]
+[CreateAssetMenu(fileName = "Character Animation Profile", menuName = "Outland Haven/Player/Animation/Character Anim")]
 public class CharacterAnimSO : ScriptableObject
 {
     [Header("Base Layer")]

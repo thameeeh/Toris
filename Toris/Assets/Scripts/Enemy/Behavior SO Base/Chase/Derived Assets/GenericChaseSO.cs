@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Generic_Chase_Empty", menuName = "Enemy Logic/Chase Logic/Generic Chase Empty")]
+[CreateAssetMenu(fileName = "Generic_Chase_Empty", menuName = "Outland Haven/Enemy/Behaviors/Chase Logic/Generic Chase Empty")]
 public class GenericChaseSO : ChaseSOBase<Generic>
 {
     public override void Initialize(GameObject gameObject, Generic enemy, Transform player)

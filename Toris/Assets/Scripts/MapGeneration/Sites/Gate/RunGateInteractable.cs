@@ -121,7 +121,9 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
         {
             if (TryUnlockWithKey())
             {
+#if UNITY_EDITOR
                 Debug.Log($"[RunGateInteractable] Portal unlocked using '{_requiredKeyItemName}' key!");
+#endif
             }
             else
             {

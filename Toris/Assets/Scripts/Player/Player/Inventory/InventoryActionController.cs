@@ -74,14 +74,18 @@ public class InventoryActionController : MonoBehaviour
 
     private void HandlePotion1Pressed()
     {
+#if UNITY_EDITOR
         Debug.Log("[InventoryActionController] Potion 1 hotkey pressed.");
+#endif
         ResolveRuntimeReferences();
         TryConsumePotionSlot(0);
     }
 
     private void HandlePotion2Pressed()
     {
+#if UNITY_EDITOR
         Debug.Log("[InventoryActionController] Potion 2 hotkey pressed.");
+#endif
         ResolveRuntimeReferences();
         TryConsumePotionSlot(1);
     }
@@ -104,11 +108,15 @@ public class InventoryActionController : MonoBehaviour
         
         if (slot == null || slot.IsEmpty)
         {
+#if UNITY_EDITOR
             Debug.Log("[InventoryActionController] Potion slot is null or empty.");
+#endif
             return;
         }
 
+#if UNITY_EDITOR
         Debug.Log($"[InventoryActionController] Attempting to consume potion in slot {slotIndex}. Item: {slot.HeldItem.BaseItem.name}");
+#endif
         HandleRequestUse(slot);
     }
 
@@ -199,7 +207,9 @@ public class InventoryActionController : MonoBehaviour
 
         if (equipmentSlot.IsEmpty)
         {
+#if UNITY_EDITOR
             Debug.Log($"[InventoryActionController] <b>EQUIP</b>: Moving '{sourceSlot.HeldItem.BaseItem.ItemName}' from <b>{_playerInventory.name}</b> (SaveID: {_playerInventory.SaveID}) to <b>{_equipmentInventory.name}</b> (Slot: {equipable.TargetSlot})");
+#endif
             equipmentSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
             sourceSlot.Clear();
         }
@@ -208,7 +218,9 @@ public class InventoryActionController : MonoBehaviour
             ItemInstance tempItem = equipmentSlot.HeldItem;
             int tempCount = equipmentSlot.Count;
 
+#if UNITY_EDITOR
             Debug.Log($"[InventoryActionController] <b>SWAP-EQUIP</b>: Swapping '{sourceSlot.HeldItem.BaseItem.ItemName}' from <b>{_playerInventory.name}</b> with '{tempItem.BaseItem.ItemName}' in <b>{_equipmentInventory.name}</b>");
+#endif
 
             equipmentSlot.SetItem(sourceSlot.HeldItem, sourceSlot.Count);
             sourceSlot.SetItem(tempItem, tempCount);
@@ -249,7 +261,9 @@ public class InventoryActionController : MonoBehaviour
             return false;
         }
 
+#if UNITY_EDITOR
         Debug.Log($"[InventoryActionController] <b>UNEQUIP</b>: Moving '{itemName}' from <b>{_equipmentInventory.name}</b> back to <b>{_playerInventory.name}</b> (SaveID: {_playerInventory.SaveID})");
+#endif
 
         equipmentSlot.Clear();
         _uiInventoryEvents?.OnInventoryUpdated?.Invoke();

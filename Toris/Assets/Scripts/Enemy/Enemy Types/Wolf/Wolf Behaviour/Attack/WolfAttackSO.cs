@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wolf_Attack_QuickBite", menuName = "Enemy Logic/Attack Logic/Wolf Attack QuickBite")]
+[CreateAssetMenu(fileName = "Wolf_Attack_QuickBite", menuName = "Outland Haven/Enemy/Behaviors/Attack Logic/Wolf Attack QuickBite")]
 public class WolfAttackSO : AttackSOBase<Wolf>
 {
     public bool isComplete {  get; private set; }

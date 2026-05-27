@@ -309,7 +309,9 @@ public class PixelCrushersInventoryBridge : MonoBehaviour
     {
         if (_debugBridge)
         {
+#if UNITY_EDITOR
             Debug.Log($"[PixelCrushersInventoryBridge] {message}", this);
+#endif
         }
     }
 

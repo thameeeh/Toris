@@ -1,21 +1,14 @@
-/* ==========================================================================
-   SMITH FORGE LAYOUT
-   Root layout for the crafting station and recipe list.
-========================================================================== */
-
 .forge-subview-container {
     flex-grow: 1;
-    background-color: var(--color-bg-shop); /* Replaced rgb(20,20,20) */
     padding: 10px;
     flex-direction: column;
 }
 
-/* --- TOP PANEL (The Crafting Station) --- */
 .forge-top-panel {
     flex-grow: 0;
     flex-shrink: 0;
     height: 260px;
-    align-items: center; /* Centers the forge station horizontally */
+    align-items: center;
     justify-content: flex-start;
     border-bottom-width: 2px;
     border-bottom-color: var(--color-border-default);
@@ -39,8 +32,8 @@
 
 .forge-plus-label {
     -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
-    color: var(--color-text-light); /* Replaced 'white' */
-    font-size: var(--font-size-h2); /* Replaced '24px' */
+    color: var(--color-text-light);
+    font-size: var(--font-size-h2);
     margin-left: 15px;
     margin-right: 15px;
     -unity-font-style: bold;
@@ -54,11 +47,10 @@
     flex-shrink: 0;
 }
 
-/* Base custom slot for forge inputs */
 .forge-slot {
     width: 72px;
     height: 72px;
-    flex-shrink: 0; /* Rule 4: Prevent squish */
+    flex-shrink: 0;
     background-color: var(--color-bg-panel);
     border-width: 2px;
     border-color: var(--color-border-default);
@@ -72,11 +64,10 @@
     border-width: 0;
 }
 
-/* Highlighted result slot */
 .forge-slot-result {
     width: 64px;
     height: 64px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
     background-color: var(--color-bg-dark);
     border-width: 2px;
     border-color: var(--color-border-highlight);
@@ -91,9 +82,8 @@
     border-width: 0;
 }
 
-/* --- BOTTOM PANEL (The Recipe List) --- */
 .forge-bottom-panel {
-    flex-grow: 1; /* Takes up the remaining space */
+    flex-grow: 1;
     flex-direction: column;
     padding-top: 10px;
 }
@@ -172,10 +162,42 @@
     white-space: normal;
 }
 
-/* Scrollbar Overrides for the Recipe List */
-.forge-recipe-scroll .unity-scroller--vertical { width: 14px; background-color: transparent; margin-left: 4px; }
-.forge-recipe-scroll .unity-scroller__low-button, .forge-recipe-scroll .unity-scroller__high-button { display: none; }
-.forge-recipe-scroll .unity-scroller--vertical .unity-slider { margin: 0; background-color: transparent; }
-.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__tracker { background-color: var(--color-bg-shop); border-color: var(--color-shop-slot-border); border-width: 1px; border-radius: 4px; }
-.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger { background-color: var(--color-border-highlight); border-color: var(--color-coin-gold); border-width: 1px; border-radius: 4px; width: 10px; left: auto; right: auto; margin-left: 0; margin-right: 0; align-self: center; }
-.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover { background-color: var(--color-coin-gold); }
+.forge-recipe-scroll .unity-scroller--vertical {
+    width: 14px;
+    background-color: transparent;
+    margin-left: 4px;
+}
+
+.forge-recipe-scroll .unity-scroller__low-button,
+.forge-recipe-scroll .unity-scroller__high-button {
+    display: none;
+}
+
+.forge-recipe-scroll .unity-scroller--vertical .unity-slider {
+    margin: 0;
+    background-color: transparent;
+}
+
+.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: var(--color-bg-shop);
+    border-color: var(--color-shop-slot-border);
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--color-border-highlight);
+    border-color: var(--color-coin-gold);
+    border-width: 1px;
+    border-radius: 4px;
+    width: 10px;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    align-self: center;
+}
+
+.forge-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover {
+    background-color: var(--color-coin-gold);
+}

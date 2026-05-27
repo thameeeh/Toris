@@ -28,9 +28,12 @@ namespace OutlandHaven.SaveSystem
                 {
                     _jsonSettings = new JsonSerializerSettings
                     {
-                        // All ensures that every object includes its type metadata, 
-                        // which is essential for abstract/polymorphic lists like ItemComponentState.
-                        TypeNameHandling = TypeNameHandling.All,
+                        // Auto only emits $type metadata where the declared type differs from
+                        // the actual type (i.e., the polymorphic ItemComponentState list).
+                        // Combined with the SafeTypesBinder whitelist, this prevents RCE
+                        // attacks via crafted save files (CWE-502).
+                        TypeNameHandling = TypeNameHandling.Auto,
+                        SerializationBinder = SafeTypesBinder.Instance,
                         // ReadAhead ensures that metadata properties like $type are processed 
                         // even if they aren't the first property in the JSON object.
                         MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
@@ -56,7 +59,7 @@ namespace OutlandHaven.SaveSystem
             {
                 if (Time.timeScale > 0f)
                 {
-                    ActiveSession.GameplayStatistics.PlayTime += Time.deltaTime;
+                    ActiveSession.GameplayStatistics.AddPlayTime(Time.deltaTime);
                 }
             }
         }

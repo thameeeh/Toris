@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RambowBowConfig", menuName = "Game/Abilities/Rambow")]
+[CreateAssetMenu(fileName = "RambowBowConfig", menuName = "Outland Haven/Player/Abilities/Rambow")]
 public class RambowBowConfig : PlayerAbilitySO
 {
     private const string ProjectileDebugSource = "Rambow";

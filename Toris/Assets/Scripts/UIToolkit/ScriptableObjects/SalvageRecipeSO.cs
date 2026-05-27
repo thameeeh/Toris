@@ -7,7 +7,7 @@ namespace OutlandHaven.UIToolkit
     /// <summary>
     /// Recipe defining what materials an item yields when destroyed.
     /// </summary>
-    [CreateAssetMenu(menuName = "UI/Crafting/Salvage Recipe")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Crafting/Salvage Recipe")]
     public class SalvageRecipeSO : ScriptableObject
     {
         [Header("Input")]

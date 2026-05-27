@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Site Rules/Boar Oasis Site Rule",
+    menuName = "Outland Haven/WorldGen/Biomes/Site Rules/Boar Oasis Site Rule",
     fileName = "BoarOasisSitePlacementRuleDefinition")]
 public sealed class BoarOasisSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {

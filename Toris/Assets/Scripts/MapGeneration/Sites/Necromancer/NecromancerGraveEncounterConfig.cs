@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Sites/Necromancer Grave Encounter Config",
+    menuName = "Outland Haven/WorldGen/Sites/Necromancer Grave Encounter Config",
     fileName = "NecromancerGraveEncounterConfig")]
 public sealed class NecromancerGraveEncounterConfig : WorldSiteRuntimeConfig
 {

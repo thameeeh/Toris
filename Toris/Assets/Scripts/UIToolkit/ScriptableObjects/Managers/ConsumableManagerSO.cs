@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace OutlandHaven.Inventory
 {
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/ConsumableManagerSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Managers/Consumable Manager")]
     public class ConsumableManagerSO : ScriptableObject
     {
         [Header("Event Channels")]
@@ -41,7 +41,9 @@ namespace OutlandHaven.Inventory
             {
                 // 3. Execution: Apply the effect to the player
                 // consumable.ApplyEffect(_playerAnchor.CurrentPlayer);
+#if UNITY_EDITOR
                 Debug.Log($"[ConsumableManager] Consumed 1x {slot.HeldItem.BaseItem.ItemName}");
+#endif
 
                 // 4. State Mutation: Decrease the stack
                 slot.Count--;

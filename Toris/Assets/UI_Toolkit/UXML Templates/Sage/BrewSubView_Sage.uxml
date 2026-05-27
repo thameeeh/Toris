@@ -1,0 +1,31 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/SageUpgrade.uss?fileID=7433441132597879392&amp;guid=73e3384c8c40b314ba13aefd1d000afe&amp;type=3#SageUpgrade"/>
+    
+    <ui:VisualElement name="brew-container" class="brew-subview-container">
+        <!-- TOP PANEL: The Brewing Station -->
+        <ui:VisualElement name="brew-top_panel" class="brew-top-panel">
+            <ui:Label text="Alchemical Laboratory" class="brew-title panel-title text-white-bald"/>
+            
+            <ui:VisualElement name="brew-inputs" class="brew-inputs-wrapper">
+                <ui:VisualElement name="brew-slot-1" class="brew-slot"/>
+                <ui:Label text="+" class="brew-plus-label"/>
+                <ui:VisualElement name="brew-slot-2" class="brew-slot"/>
+            </ui:VisualElement>
+            
+            <ui:Button name="btn-brew-items" text="Brew Potion" class="standard-button text-white-bald brew-action-btn"/>
+            <ui:VisualElement name="brew-result-slot" class="brew-slot-result"/>
+        </ui:VisualElement>
+        
+        <!-- BOTTOM PANEL: Recipes list -->
+        <ui:VisualElement name="brew-bottom_panel" class="brew-bottom-panel">
+            <ui:Label text="Alchemical Recipes" class="brew-recipe-header"/>
+            
+            <ui:ScrollView class="brew-recipe-scroll">
+                <ui:VisualElement name="brew-recipe-list-container" style="flex-direction: column;">
+                </ui:VisualElement>
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

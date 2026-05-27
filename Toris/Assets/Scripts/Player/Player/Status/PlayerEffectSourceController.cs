@@ -38,7 +38,9 @@ public class PlayerEffectSourceController : MonoBehaviour
             return;
         }
 
+#if UNITY_EDITOR
         Debug.Log($"[Stats] Updating stats source: {source.SourceKey}");
+#endif
         _activeSources[source.SourceKey] = source;
         RebuildResolvedEffects();
     }

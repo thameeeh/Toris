@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wolf_Howl_Alert", menuName = "Enemy Logic/Howl Logic/Wolf Howl Alert")]
+[CreateAssetMenu(fileName = "Wolf_Howl_Alert", menuName = "Outland Haven/Enemy/Behaviors/Howl Logic/Wolf Howl Alert")]
 public class WolfHowlSO : HowlSOBase<Wolf>
 {
     [SerializeField] private float howlDuration = 1f;

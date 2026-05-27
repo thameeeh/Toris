@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Sites/Site Stamp Definition",
+    menuName = "Outland Haven/WorldGen/Sites/Site Stamp Definition",
     fileName = "SiteStampDefinition")]
 public sealed class SiteStampDefinition : ScriptableObject
 {

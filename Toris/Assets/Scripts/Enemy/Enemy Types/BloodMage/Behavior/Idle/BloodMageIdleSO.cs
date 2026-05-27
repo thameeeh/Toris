@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BloodMage_Idle_Summoned", menuName = "Enemy Logic/Idle Logic/BloodMage Summoned Idle")]
+[CreateAssetMenu(fileName = "BloodMage_Idle_Summoned", menuName = "Outland Haven/Enemy/Behaviors/Idle Logic/BloodMage Summoned Idle")]
 public class BloodMageIdleSO : IdleSOBase<BloodMage>
 {
     [SerializeField, Min(0f)] private float summonedSettleDuration = 0.2f;

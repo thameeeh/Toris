@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ArrowRainConfig", menuName = "Game/Abilities/Arrow Rain")]
+[CreateAssetMenu(fileName = "ArrowRainConfig", menuName = "Outland Haven/Player/Abilities/Arrow Rain")]
 public class ArrowRainConfig : PlayerAbilitySO
 {
     [Header("Targeting")]

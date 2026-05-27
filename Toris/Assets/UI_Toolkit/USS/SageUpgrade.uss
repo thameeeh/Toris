@@ -17,7 +17,6 @@
     background-image: linear-gradient(to bottom, rgba(26, 10, 46, 0.98), rgba(45, 27, 105, 0.98));
     border-width: 2px;
     border-color: rgb(212, 160, 23); /* Gold border highlight */
-    border-radius: 12px;
     width: 100%;
     height: 100%;
     padding: 20px;
@@ -393,5 +392,223 @@
     border-radius: 8px;
     padding: 15px 20px;
 }
+
+/* --- SAGE POTION BREWING VIEW --- */
+.brew-subview-container {
+    flex-grow: 1;
+    background-color: rgba(26, 10, 46, 0.4);
+    padding: 10px;
+    flex-direction: column;
+}
+
+.brew-top-panel {
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 260px;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom-width: 2px;
+    border-bottom-color: rgba(212, 160, 23, 0.3);
+    padding-top: 8px;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.brew-inputs-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+}
+
+.brew-plus-label {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    color: rgb(212, 160, 23);
+    font-size: var(--font-size-h2);
+    margin-left: 15px;
+    margin-right: 15px;
+    -unity-font-style: bold;
+}
+
+.brew-action-btn {
+    height: 32px;
+    min-height: 32px;
+    margin-bottom: 8px;
+    width: 160px;
+    flex-shrink: 0;
+}
+
+.brew-slot {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-width: 2px;
+    border-color: rgba(212, 160, 23, 0.3);
+    border-radius: 6px;
+}
+
+.brew-slot .item-slot {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-width: 0;
+}
+
+.brew-slot-result {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-width: 2px;
+    border-color: rgb(212, 160, 23);
+    border-radius: 6px;
+    align-self: center;
+}
+
+.brew-slot-result .item-slot {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-width: 0;
+}
+
+.brew-bottom-panel {
+    flex-grow: 1;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.brew-recipe-header {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    color: rgb(212, 160, 23);
+    font-size: var(--font-size-h3);
+    -unity-font-style: bold;
+    margin-bottom: 12px;
+}
+
+.brew-recipe-scroll {
+    flex-grow: 1;
+}
+
+.brew-blueprint-row {
+    min-height: 96px;
+    max-height: 96px;
+    margin-bottom: 8px;
+    padding: 8px;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-width: 1px;
+    border-color: rgba(212, 160, 23, 0.2);
+    border-radius: 6px;
+    -unity-text-align: middle-left;
+    justify-content: flex-start;
+    transition-duration: 0.1s;
+}
+
+.brew-blueprint-row:hover {
+    background-color: rgba(45, 27, 105, 0.6);
+    border-color: rgb(212, 160, 23);
+}
+
+.brew-blueprint-row--selected {
+    border-width: 2px;
+    border-color: rgb(212, 160, 23);
+    background-color: rgba(212, 160, 23, 0.15);
+}
+
+.brew-blueprint-row--locked {
+    opacity: 0.6;
+}
+
+.brew-blueprint-row--available {
+    opacity: 1;
+}
+
+.brew-blueprint-icon {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    margin-right: 14px;
+}
+
+.brew-blueprint-details {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.brew-blueprint-title {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    color: rgb(255, 255, 255);
+    font-size: var(--font-size-body);
+    -unity-font-style: bold;
+    min-height: 30px;
+    margin-bottom: 2px;
+}
+
+.brew-blueprint-requirements {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--font-size-small);
+    min-height: 52px;
+    white-space: normal;
+}
+
+/* ==========================================================================
+   SCROLLBAR OVERRIDES (Targeting Unity Base Slider for Brewing Panel)
+ ========================================================================== */
+
+/* The main vertical scroller container */
+.brew-recipe-scroll .unity-scroller--vertical {
+    width: 14px;
+    background-color: transparent;
+    margin-left: 4px; 
+}
+
+/* Hide the default Unity up/down arrow buttons */
+.brew-recipe-scroll .unity-scroller__low-button,
+.brew-recipe-scroll .unity-scroller__high-button {
+    display: none;
+}
+
+/* Kill the residual gray background on the slider container */
+.brew-recipe-scroll .unity-scroller--vertical .unity-slider {
+    margin: 0;
+    background-color: transparent;
+}
+
+/* The background track (Amethyst base background) */
+.brew-recipe-scroll .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: rgba(26, 10, 46, 0.6);
+    border-color: rgba(212, 160, 23, 0.3);
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+/* The draggable thumb (Golden from highlights) */
+.brew-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: rgb(212, 160, 23);
+    border-color: rgb(255, 220, 100);
+    border-width: 1px;
+    border-radius: 4px;
+    width: 10px; 
+    
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    align-self: center; 
+}
+
+/* Draggable thumb hover state (Bright Gold) */
+.brew-recipe-scroll .unity-scroller--vertical .unity-base-slider__dragger:hover {
+    background-color: rgb(255, 220, 100);
+}
+
+
 
 

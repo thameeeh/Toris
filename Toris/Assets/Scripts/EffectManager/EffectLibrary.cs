@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effects/Effect Library", fileName = "EffectLibrary")]
+[CreateAssetMenu(menuName = "Outland Haven/VFX/Effect Library", fileName = "EffectLibrary")]
 public sealed class EffectLibrary : ScriptableObject, IEffectCatalog
 {
     [SerializeField]

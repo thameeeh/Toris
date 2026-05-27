@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Wildlife/Wildlife Spawn Definition",
+    menuName = "Outland Haven/WorldGen/Wildlife/Wildlife Spawn Definition",
     fileName = "WildlifeSpawnDefinition")]
 public sealed class WorldWildlifeSpawnDefinition : ScriptableObject
 {

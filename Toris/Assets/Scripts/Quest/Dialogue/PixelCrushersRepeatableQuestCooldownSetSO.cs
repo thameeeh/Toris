@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 [CreateAssetMenu(
     fileName = "PixelCrushersRepeatableQuestCooldownSet",
-    menuName = "Quest/Pixel Crushers/Repeatable Quest Cooldown Set")]
+    menuName = "Outland Haven/Quest/Pixel Crushers/Repeatable Quest Cooldown Set")]
 public class PixelCrushersRepeatableQuestCooldownSetSO : ScriptableObject
 {
     [Tooltip("Repeatable quest cooldown entries keyed by Pixel Crushers quest name.")]

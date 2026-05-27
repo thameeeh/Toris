@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 [CreateAssetMenu(
     fileName = "PixelCrushersQuestRewardSet",
-    menuName = "Quest/Pixel Crushers/Quest Reward Set")]
+    menuName = "Outland Haven/Quest/Pixel Crushers/Quest Reward Set")]
 public class PixelCrushersQuestRewardSetSO : ScriptableObject
 {
     [Tooltip("Reward entries keyed by Pixel Crushers quest name. Rewards pay once when the quest reaches success.")]

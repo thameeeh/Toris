@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effects/Legacy/Player VFX Modules/Dash", fileName = "PlayerVfxModule_Dash")]
+[CreateAssetMenu(menuName = "Outland Haven/VFX/Legacy/Dash Module", fileName = "PlayerVfxModule_Dash")]
 public sealed class PlayerVfxModule_Dash : PlayerVfxModule
 {
     [Header("Effect IDs")]

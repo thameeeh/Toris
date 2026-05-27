@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Site Rules/Gate Site Rule",
+    menuName = "Outland Haven/WorldGen/Biomes/Site Rules/Gate Site Rule",
     fileName = "GateSitePlacementRuleDefinition")]
 public sealed class GateSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {

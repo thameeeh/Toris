@@ -4,7 +4,7 @@ using OutlandHaven.UIToolkit;
 
 namespace OutlandHaven.Inventory
 {
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/Managers/InventoryTransferManagerSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Managers/Transfer Manager")]
     public class InventoryTransferManagerSO : ScriptableObject
     {
         [SerializeField] private UIInventoryEventsSO _uiInventoryEvents;

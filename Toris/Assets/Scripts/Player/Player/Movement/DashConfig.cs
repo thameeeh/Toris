@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DashConfig", menuName = "Game/Characters/Movement/Dash Config")]
+[CreateAssetMenu(fileName = "DashConfig", menuName = "Outland Haven/Player/Movement/Dash Config")]
 public class DashConfig : ScriptableObject
 {
     [Header("Tuning")]

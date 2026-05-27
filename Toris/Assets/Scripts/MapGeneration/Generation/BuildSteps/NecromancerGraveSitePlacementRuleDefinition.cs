@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Site Rules/Necromancer Grave Site Rule",
+    menuName = "Outland Haven/WorldGen/Biomes/Site Rules/Necromancer Grave Site Rule",
     fileName = "NecromancerGraveSitePlacementRuleDefinition")]
 public sealed class NecromancerGraveSitePlacementRuleDefinition : SitePlacementRuleDefinition
 {

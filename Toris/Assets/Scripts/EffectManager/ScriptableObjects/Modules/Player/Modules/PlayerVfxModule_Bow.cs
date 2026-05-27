@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effects/Legacy/Player VFX Modules/Bow", fileName = "PlayerVfxModule_Bow")]
+[CreateAssetMenu(menuName = "Outland Haven/VFX/Legacy/Bow Module", fileName = "PlayerVfxModule_Bow")]
 public sealed class PlayerVfxModule_Bow : PlayerVfxModule
 {
     [Header("Effect IDs")]

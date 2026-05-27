@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Deer_Idle", menuName = "Enemy Logic/Idle Logic/Deer Idle")]
+[CreateAssetMenu(fileName = "Deer_Idle", menuName = "Outland Haven/Enemy/Behaviors/Idle Logic/Deer Idle")]
 public class DeerIdleSO : IdleSOBase<Deer>
 {
     [SerializeField, Min(0f)] private float idleDurationMin = 1.5f;

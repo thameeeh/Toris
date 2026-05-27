@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Weapon Profile", menuName = "Game/Weapons/Weapon Profile")]
+[CreateAssetMenu(fileName = "Weapon Profile", menuName = "Outland Haven/Player/Weapons/Weapon Profile")]
 public class WeaponProfile : ScriptableObject
 {
     [System.Serializable]

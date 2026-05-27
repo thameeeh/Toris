@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OutlandHaven.Inventory;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyLootTable", menuName = "Enemy/Loot/Enemy Loot Table")]
+[CreateAssetMenu(fileName = "EnemyLootTable", menuName = "Outland Haven/Enemy/Loot Table")]
 public class EnemyLootTableSO : ScriptableObject
 {
     private const string DefaultGoldRewardSfxId = "item_coin_pickup";

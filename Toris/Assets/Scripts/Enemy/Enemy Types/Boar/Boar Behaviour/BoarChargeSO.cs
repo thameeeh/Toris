@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Boar_Charge_Run", menuName = "Enemy Logic/Attack Logic/Boar Charge")]
+[CreateAssetMenu(fileName = "Boar_Charge_Run", menuName = "Outland Haven/Enemy/Behaviors/Attack Logic/Boar Charge")]
 public class BoarChargeSO : AttackSOBase<Boar>
 {
     [SerializeField, Min(0f)] private float aimDuration = 0.5f;

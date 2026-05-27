@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Encounters/Wolf Den Encounter Config",
+    menuName = "Outland Haven/WorldGen/Encounters/Wolf Den Encounter Config",
     fileName = "WolfDenEncounterConfig")]
 public sealed class WolfDenEncounterConfig : WorldSiteRuntimeConfig, IWorldEncounterPackageConfig
 {

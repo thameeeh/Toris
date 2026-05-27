@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerProgressionConfig", menuName = "Game/Player/Player Progression Config")]
+[CreateAssetMenu(fileName = "PlayerProgressionConfig", menuName = "Outland Haven/Player/Status/Progression Config")]
 public class PlayerProgressionConfigSO : ScriptableObject
 {
     [Header("Starting Values")]

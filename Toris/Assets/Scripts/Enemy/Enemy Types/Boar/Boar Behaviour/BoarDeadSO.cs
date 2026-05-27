@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Boar_Dead_Despawn", menuName = "Enemy Logic/Dead Logic/Boar Dead")]
+[CreateAssetMenu(fileName = "Boar_Dead_Despawn", menuName = "Outland Haven/Enemy/Behaviors/Dead Logic/Boar Dead")]
 public class BoarDeadSO : DeadSOBase<Boar>
 {
     [SerializeField, Min(0f)] private float holdDuration = 0.15f;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "InputReaderSO", menuName = "Scriptable Objects/PlayerInputReaderSO")]
+[CreateAssetMenu(fileName = "InputReaderSO", menuName = "Outland Haven/System/Input Reader")]
 public class PlayerInputReaderSO : ScriptableObject
 {
     private const int AbilitySlotCount = 5;

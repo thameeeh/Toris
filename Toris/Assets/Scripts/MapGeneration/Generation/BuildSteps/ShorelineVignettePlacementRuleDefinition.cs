@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Site Rules/Shoreline Vignette Rule",
+    menuName = "Outland Haven/WorldGen/Biomes/Site Rules/Shoreline Vignette Rule",
     fileName = "ShorelineVignettePlacementRuleDefinition")]
 public sealed class ShorelineVignettePlacementRuleDefinition : SitePlacementRuleDefinition
 {

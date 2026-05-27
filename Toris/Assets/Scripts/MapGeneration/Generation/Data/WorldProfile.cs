@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "WorldGen/World Profile", fileName = "WorldProfile")]
+[CreateAssetMenu(menuName = "Outland Haven/WorldGen/World Profile", fileName = "WorldProfile")]
 public sealed class WorldProfile : ScriptableObject
 {
     [Header("World")]

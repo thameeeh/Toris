@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Biomes/Build Steps/Persistent Site Placement Step",
+    menuName = "Outland Haven/WorldGen/Biomes/Build Steps/Persistent Site Placement Step",
     fileName = "PersistentSitePlacementBuildStepDefinition")]
 public sealed class PersistentSitePlacementBuildStepDefinition : BiomeBuildStepDefinition
 {

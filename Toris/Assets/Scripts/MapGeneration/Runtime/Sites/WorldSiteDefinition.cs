@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "WorldGen/Sites/World Site Definition",
+    menuName = "Outland Haven/WorldGen/Sites/World Site Definition",
     fileName = "WorldSiteDefinition")]
 public sealed class WorldSiteDefinition : ScriptableObject
 {

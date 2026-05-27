@@ -342,7 +342,9 @@ namespace OutlandHaven.Inventory
             }
             else if (!string.IsNullOrEmpty(type))
             {
+#if UNITY_EDITOR
                 Debug.Log($"[Inventory] No {type} snapshot found in GameSession for '{gameObject.name}'. Starting with fresh/blueprint slots.");
+#endif
             }
         }
 

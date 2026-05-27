@@ -4,7 +4,7 @@ using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/CraftingManagerSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Managers/Crafting Manager")]
     public class CraftingManagerSO : ScriptableObject
     {
         private const string DefaultForgeSuccessSfxId = "craft_forge_hit";

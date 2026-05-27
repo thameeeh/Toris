@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-[CreateAssetMenu(menuName = "Audio/Music Definition", fileName = "MusicDefinition")]
+[CreateAssetMenu(menuName = "Outland Haven/Audio/Music Definition", fileName = "MusicDefinition")]
 public sealed class MusicDefinition : ScriptableObject
 {
     [SerializeField] private string id;

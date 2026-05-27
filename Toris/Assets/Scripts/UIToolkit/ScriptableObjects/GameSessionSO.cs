@@ -20,7 +20,7 @@ namespace OutlandHaven.UIToolkit
         Mage
     }
 
-    [CreateAssetMenu(menuName = "UI/Scriptable Objects/GameSessionSO")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Game Session")]
     public class GameSessionSO : ScriptableObject
     {
         /*

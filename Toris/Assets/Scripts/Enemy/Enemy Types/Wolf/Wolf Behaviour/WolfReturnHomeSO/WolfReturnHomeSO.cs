@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wolf_ReturnHome", menuName = "Enemy Logic/Return Logic/Wolf Return Home")]
+[CreateAssetMenu(fileName = "Wolf_ReturnHome", menuName = "Outland Haven/Enemy/Behaviors/Return Logic/Wolf Return Home")]
 public class WolfReturnHomeSO : EnemyBehaviourSO<Wolf>
 {
     [Header("Arrival")]

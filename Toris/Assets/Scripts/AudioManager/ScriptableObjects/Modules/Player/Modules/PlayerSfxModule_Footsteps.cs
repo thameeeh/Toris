@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Legacy/Player SFX Modules/Footsteps", fileName = "PlayerSfxModule_Footsteps")]
+[CreateAssetMenu(menuName = "Outland Haven/Audio/Legacy/Footsteps Module", fileName = "PlayerSfxModule_Footsteps")]
 public sealed class PlayerSfxModule_Footsteps : PlayerSfxModule
 {
     [Header("SFX ID (loop)")]

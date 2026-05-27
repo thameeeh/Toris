@@ -1,5 +1,5 @@
 using UnityEngine;
-[CreateAssetMenu(fileName = "Generic_Chase_Runaway", menuName = "Enemy Logic/Chase Logic/Generic Chase Runaway")]
+[CreateAssetMenu(fileName = "Generic_Chase_Runaway", menuName = "Outland Haven/Enemy/Behaviors/Chase Logic/Generic Chase Runaway")]
 public class EnemyRunAway : ChaseSOBase<Generic>
 {
     [SerializeField] private float _runawaySpeed = 0.2f;

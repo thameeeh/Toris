@@ -18,7 +18,7 @@ public enum PlayerVfxRotationMode
     BowAimDirection
 }
 
-[CreateAssetMenu(menuName = "Effects/Player VFX Rule", fileName = "PlayerVfxRule")]
+[CreateAssetMenu(menuName = "Outland Haven/VFX/Player VFX Rule", fileName = "PlayerVfxRule")]
 public sealed class PlayerVfxRuleSO : ScriptableObject
 {
     private const float MIN_DIRECTION_SQR_MAGNITUDE = 0.0001f;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerBaseEffects", menuName = "Game/Player/Player Base Effects")]
+[CreateAssetMenu(fileName = "PlayerBaseEffects", menuName = "Outland Haven/Player/Status/Base Effects")]
 public class PlayerBaseEffectsSO : ScriptableObject
 {
     [Header("Resources")]

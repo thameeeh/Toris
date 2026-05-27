@@ -3,7 +3,7 @@ using OutlandHaven.Inventory;
 
 namespace OutlandHaven.UIToolkit
 {
-    [CreateAssetMenu(menuName = "UI/Crafting/Upgrade and Salvage Manager")]
+    [CreateAssetMenu(menuName = "Outland Haven/UI/Crafting/Upgrade & Salvage Manager")]
     public class UpgradeSalvageManagerSO : ScriptableObject
     {
         [Header("References")]

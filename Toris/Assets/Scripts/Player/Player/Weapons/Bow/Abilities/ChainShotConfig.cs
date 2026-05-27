@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ChainShotConfig", menuName = "Game/Abilities/Chain Shot")]
+[CreateAssetMenu(fileName = "ChainShotConfig", menuName = "Outland Haven/Player/Abilities/Chain Shot")]
 public class ChainShotConfig : PlayerAbilitySO
 {
     [Header("Damage")]

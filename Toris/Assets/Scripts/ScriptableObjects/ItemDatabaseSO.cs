@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OutlandHaven.Inventory
 {
-    [CreateAssetMenu(menuName = "Data/Item Database")]
+    [CreateAssetMenu(menuName = "Outland Haven/Inventory/Item Database")]
     public class ItemDatabaseSO : ScriptableObject
     {
         [Tooltip("Master list of all item blueprints in the game.")]

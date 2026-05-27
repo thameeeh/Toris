@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(
-    menuName = "Audio/Enemy SFX Modules/Death",
+    menuName = "Outland Haven/Audio/Enemy SFX Modules/Death",
     fileName = "EnemySfxModule_Death")]
 public sealed class EnemySfxModule_Death : EnemySfxModule
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Deer_RunAway", menuName = "Enemy Logic/Chase Logic/Deer Run Away")]
+[CreateAssetMenu(fileName = "Deer_RunAway", menuName = "Outland Haven/Enemy/Behaviors/Chase Logic/Deer Run Away")]
 public class DeerRunAwaySO : ChaseSOBase<Deer>
 {
     [SerializeField, Min(0.1f)] private float retargetInterval = 0.75f;

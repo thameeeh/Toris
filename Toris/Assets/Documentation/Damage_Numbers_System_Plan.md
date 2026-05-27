@@ -144,6 +144,13 @@ Implemented first pass:
 7. Excluded necromancer sustained-contact ticks from first-pass display.
 8. Formatted displayed damage as whole numbers using `Mathf.RoundToInt`.
 9. Resolved wolf bite hit payloads at attack time so incoming popups anchor on the bite-facing side of the player.
+10. Added active-popup separation so rapid hits near the same area fan into readable adjacent positions.
+
+## Rapid Hit Separation
+
+`DamageNumberPopup` tracks only currently playing popup instances for presentation layout. A new number first tries the actual requested hit position. If that position is too close to a visible damage number, it selects the first free offset slot in an upward side-to-side fan.
+
+The prefab exposes minimum separation distance, horizontal step, vertical step, and maximum alternate slots so the layout can be tuned alongside font size and camera zoom. This changes presentation placement only; resolved damage values and combat events remain authoritative and unchanged.
 
 ## Decisions Confirmed
 

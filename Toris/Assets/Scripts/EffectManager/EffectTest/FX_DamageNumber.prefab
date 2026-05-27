@@ -51,6 +51,10 @@ MonoBehaviour:
   sortingOrder: 100
   durationSeconds: 0.65
   initialWorldOffset: {x: 0, y: 0.12, z: 0}
-  riseDistance: 0.36
+  riseDistance: 0.55
   fadeStartNormalized: 0.35
-  horizontalSpread: 0.04
+  horizontalSpread: 0.15
+  minimumPopupDistance: 0.32
+  separationHorizontalStep: 0.3
+  separationVerticalStep: 0.2
+  maximumSeparationSlots: 6

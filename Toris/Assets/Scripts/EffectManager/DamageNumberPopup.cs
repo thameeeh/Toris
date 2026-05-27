@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ using UnityEngine;
 public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver, IEffectPoolListener
 {
     private const float MinimumDurationSeconds = 0.01f;
+    private static readonly List<DamageNumberPopup> ActivePopups = new List<DamageNumberPopup>();
 
     [Header("Text")]
     [SerializeField] private TextMeshPro text;
@@ -19,6 +21,12 @@ public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver
     [SerializeField, Min(0f)] private float riseDistance = 0.36f;
     [SerializeField, Range(0f, 1f)] private float fadeStartNormalized = 0.35f;
     [SerializeField, Min(0f)] private float horizontalSpread = 0.04f;
+
+    [Header("Rapid Hit Separation")]
+    [SerializeField, Min(0f)] private float minimumPopupDistance = 0.32f;
+    [SerializeField, Min(0f)] private float separationHorizontalStep = 0.3f;
+    [SerializeField, Min(0f)] private float separationVerticalStep = 0.2f;
+    [SerializeField, Min(0)] private int maximumSeparationSlots = 6;
 
     private EffectInstancePool _pooledInstance;
     private Vector3 _startPosition;
@@ -59,6 +67,12 @@ public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver
         _pooledInstance?.OnEffectFinished();
     }
 
+    private void OnDisable()
+    {
+        UnregisterActivePopup();
+        _isPlaying = false;
+    }
+
     public void ApplyEffectParameters(EffectVariant variant, float magnitude)
     {
         EnsureText();
@@ -75,16 +89,19 @@ public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver
         if (_pooledInstance == null)
             TryGetComponent(out _pooledInstance);
 
-        _startPosition = transform.position + initialWorldOffset;
+        UnregisterActivePopup();
+        _startPosition = ResolveSeparatedStartPosition(transform.position + initialWorldOffset);
         transform.position = _startPosition;
         _horizontalOffset = Random.Range(-horizontalSpread, horizontalSpread);
         _elapsedSeconds = 0f;
         _isPlaying = true;
+        RegisterActivePopup();
         SetTextAlpha(1f);
     }
 
     public void OnEffectReleased()
     {
+        UnregisterActivePopup();
         _isPlaying = false;
         _elapsedSeconds = 0f;
         _horizontalOffset = 0f;
@@ -94,6 +111,73 @@ public sealed class DamageNumberPopup : MonoBehaviour, IEffectParametersReceiver
 
         text.SetText(string.Empty);
         SetTextAlpha(0f);
+    }
+
+    private Vector3 ResolveSeparatedStartPosition(Vector3 requestedPosition)
+    {
+        CleanupInactivePopups();
+
+        float minimumDistance = Mathf.Max(0f, minimumPopupDistance);
+        int availableSlots = Mathf.Max(0, maximumSeparationSlots);
+        if (minimumDistance <= 0f || availableSlots <= 0)
+            return requestedPosition;
+
+        float minimumDistanceSqr = minimumDistance * minimumDistance;
+        for (int slotIndex = 0; slotIndex <= availableSlots; slotIndex++)
+        {
+            Vector3 candidatePosition = requestedPosition + CalculateSeparationOffset(slotIndex);
+            if (!OverlapsActivePopup(candidatePosition, minimumDistanceSqr))
+                return candidatePosition;
+        }
+
+        return requestedPosition + CalculateSeparationOffset(availableSlots);
+    }
+
+    private Vector3 CalculateSeparationOffset(int slotIndex)
+    {
+        if (slotIndex <= 0)
+            return Vector3.zero;
+
+        int tier = (slotIndex + 1) / 2;
+        float direction = slotIndex % 2 == 1 ? 1f : -1f;
+        return new Vector3(
+            direction * separationHorizontalStep * tier,
+            separationVerticalStep * tier,
+            0f);
+    }
+
+    private static bool OverlapsActivePopup(Vector3 candidatePosition, float minimumDistanceSqr)
+    {
+        for (int i = 0; i < ActivePopups.Count; i++)
+        {
+            DamageNumberPopup popup = ActivePopups[i];
+            if ((popup.transform.position - candidatePosition).sqrMagnitude < minimumDistanceSqr)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void RegisterActivePopup()
+    {
+        CleanupInactivePopups();
+        if (!ActivePopups.Contains(this))
+            ActivePopups.Add(this);
+    }
+
+    private void UnregisterActivePopup()
+    {
+        ActivePopups.Remove(this);
+    }
+
+    private static void CleanupInactivePopups()
+    {
+        for (int i = ActivePopups.Count - 1; i >= 0; i--)
+        {
+            DamageNumberPopup popup = ActivePopups[i];
+            if (popup == null || !popup._isPlaying || !popup.isActiveAndEnabled)
+                ActivePopups.RemoveAt(i);
+        }
     }
 
     private void EnsureText()

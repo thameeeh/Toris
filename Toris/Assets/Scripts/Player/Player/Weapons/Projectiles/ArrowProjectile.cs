@@ -242,7 +242,10 @@ public class ArrowProjectile : Projectile
         if (dmgTarget != null)
         {
             Vector2 hitPoint = target.ClosestPoint(transform.position);
-            dmgTarget.Damage(damage);
+            if (dmgTarget is IDirectHitDamageable directHitDamageable)
+                directHitDamageable.ApplyDirectHit(damage, hitPoint);
+            else
+                dmgTarget.Damage(damage);
             DamageApplied?.Invoke(this, target, dmgTarget, hitPoint);
             return true;
         }

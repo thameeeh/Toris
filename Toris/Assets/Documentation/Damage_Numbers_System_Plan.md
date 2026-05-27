@@ -2,18 +2,20 @@
 
 ## Goal
 
-Show a short-lived damage number at the world position where confirmed damage lands.
+Show a short-lived damage number at the world position where a direct combat hit is resolved.
 
-The system must cover:
+The game is a primarily 32x32 isometric pixel-art game, so damage text must remain crisp, small, and readable above compact actors without visually overwhelming combat.
+
+The first implementation must cover:
 
 - player hits enemy
 - enemy hits player
-- damage-over-time ticks, if enabled for the final feature
-- future settings support for turning damage numbers on or off
+- direct hits only; damage-over-time ticks are deferred
+- no settings-menu or damage-number-toggle work
 
 ## Architectural Direction
 
-Damage numbers are presentation feedback. They must not own combat rules, mutate health, or decide whether damage is valid.
+Damage numbers are presentation feedback. They must not own combat rules, mutate health, or decide whether damage is valid. Combat resolution may report a zero-damage result for an invulnerable or blocked direct hit so the presenter can display `0`.
 
 The preferred implementation is a pooled world-space text effect:
 
@@ -22,8 +24,21 @@ The preferred implementation is a pooled world-space text effect:
 - spawn through an event-driven presentation bridge
 - pool instances through the existing effect/presentation pipeline
 - feed each popup a simple payload: damage amount, world position, target kind, and optional variant data
+- animate each popup upward while fading out
 
 This keeps the feature aligned with the existing SFX/VFX architecture, where gameplay exposes confirmed events and presentation systems react.
+
+## Implementation Status
+
+The first-pass runtime system is implemented through:
+
+- `DamageNumberEventsSO`, a shared ScriptableObject event channel for resolved direct-hit feedback
+- `IDirectHitDamageable`, which lets attacks pass known enemy impact positions without changing existing `IDamageable` callers
+- `DamageNumberPresenter`, attached to the effect-manager prefabs and responsible for requesting pooled display effects
+- `DamageNumberPopup`, a pooled world-space TMP effect that rounds the value, drifts upward, and fades out
+- `FX_DamageNumber`, registered in the existing `EffectLibrary` under `damage_number`
+
+The current enemy, player, and effect-manager prefabs are wired to the shared event channel. The prologue wolf variant inherits its channel binding from the minion wolf prefab.
 
 ## Why Not Canvas
 
@@ -41,19 +56,28 @@ To reuse that look for world-space damage numbers:
 
 1. In the Unity Editor, open `Window > TextMeshPro > Font Asset Creator`.
 2. Set `Source Font File` to `bitcell_memesbruh03.ttf`.
-3. Use an atlas size large enough for digits and common symbols. A small atlas is enough if the damage text only needs `0-9`, `-`, `+`, and optional crit/status symbols.
-4. Generate the font atlas.
-5. Save the generated TMP font asset under a project-owned art or UI asset folder.
-6. Assign that TMP font asset to the damage-number prefab's `TextMeshPro` component.
+3. Use `Custom Characters` containing `0123456789-+!` for the first pass.
+4. Start with a small atlas, such as `512 x 512`, because the first pass renders only numbers and basic punctuation.
+5. Prefer a raster-style TMP render mode for crisp pixel-art text; verify that the saved atlas texture uses point filtering and does not blur at gameplay scale.
+6. Keep future feedback words such as `Invulnerable!` or `Blocked!` out of the first atlas unless they are implemented at the same time; the font asset can be regenerated with those letters later.
+7. Generate the font atlas.
+8. Save the generated TMP font asset under a project-owned art or UI asset folder.
+9. Assign that TMP font asset to the damage-number prefab's `TextMeshPro` component.
 
 The runtime system should reference the prefab or effect definition, not the raw font file.
+
+The first-pass TMP font asset is generated and assigned to the damage-number effect at:
+
+`Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03_TMP_RASTER.asset`
+
+Use this `RASTER` asset for the initial damage-number prefab. `DamageNumberPopup` creates and configures its world-space `TextMeshPro` mesh once per pooled instance, using this asset and no Canvas. Regenerate a `RASTER_HINTED` comparison only if the gameplay-scale preview shows blurred or uneven digits.
 
 ## Event Flow
 
 The intended flow is:
 
-1. Combat system applies validated damage.
-2. The damaged target emits a confirmed damage event with the final applied amount.
+1. Combat system resolves a direct hit.
+2. The target emits a resolved direct-hit presentation event with the final applied amount, including `0` for a blocked or invulnerable direct hit in the first implementation.
 3. The event includes the best available world hit position.
 4. A damage-number presenter or effect bridge receives the event.
 5. The presenter requests a pooled damage-number effect.
@@ -82,7 +106,7 @@ That is the best place to emit player damage-number events because it has:
 - the target hurtbox/collider position
 - i-frame acceptance logic
 
-Only accepted damage should produce a number.
+Accepted direct damage should produce its final applied amount. A rejected direct hit due to invulnerability or blocking should produce zero-damage presentation feedback without changing health. This may require a resolved-hit feedback event before the current i-frame early return.
 
 ## Presentation Effect
 
@@ -90,38 +114,45 @@ The damage number effect should be a prefab with:
 
 - `TextMeshPro`
 - a small runtime component that implements effect parameter receiving or a dedicated setup method
-- configurable lifetime, float distance, spread, scale, fade, and color
+- configurable lifetime, upward float distance, spread, scale, fade, and color
+- a light gray or white outgoing-damage style for damage dealt to enemies
+- a red incoming-damage style for damage dealt to the player
+- display of whole-number damage only
 - no gameplay dependencies
 
 The first pass can use fixed animation in script. If designers later want authored timing, an Animator can be added without changing the gameplay event flow.
 
-## Settings Hook
+## Deferred Behavior
 
-The Settings plan already reserves a damage-numbers toggle for after this feature exists.
+- Damage-over-time ticks do not produce popups in the first implementation.
+- Blocked or invulnerable direct hits display `0` in the first implementation without applying damage.
+- Richer feedback labels such as `Invulnerable!` or `Blocked!` are deferred until the direct-hit system is established.
+- A damage-numbers setting is deliberately out of scope for this task.
 
-Add the toggle only after the core system is functional. Store it through a small settings owner using `PlayerPrefs`, following the existing `LootMagnetSettings` pattern.
-
-The presenter should check the setting before spawning a number.
+Displayed damage uses conventional whole-number rounding through `Mathf.RoundToInt`, so `47.534` displays as `48`.
 
 ## First Implementation Pass
 
-Recommended first pass:
+Implemented first pass:
 
-1. Add a small damage-number payload type.
-2. Add a contextful enemy damage event without removing `Damaged(float)`.
-3. Emit player damage-number events from `PlayerDamageReceiver` after final damage is confirmed.
-4. Add a pooled world-space `TextMeshPro` damage-number prefab and presenter.
-5. Wire enemy and player damage events to the presenter.
-6. Add fallback placement for older call sites that only know the target.
-7. Add the settings toggle after the feature is visible and working.
+1. Added a small damage-number payload type and ScriptableObject event channel.
+2. Added contextful direct-hit enemy damage without removing `Damaged(float)`.
+3. Emitted player damage-number requests from `PlayerDamageReceiver` after direct-hit resolution.
+4. Added a pooled world-space `TextMeshPro` damage-number prefab and presenter.
+5. Wired enemy and player damage events through the existing EffectManager host.
+6. Passed exact enemy impact positions from arrow, arrow rain, and chain shot attacks.
+7. Excluded necromancer sustained-contact ticks from first-pass display.
+8. Formatted displayed damage as whole numbers using `Mathf.RoundToInt`.
+9. Resolved wolf bite hit payloads at attack time so incoming popups anchor on the bite-facing side of the player.
 
-## Open Decisions
+## Decisions Confirmed
 
-- Whether damage-over-time ticks should show numbers by default.
-- Whether blocked, absorbed, or zero-damage hits should show special text.
-- Whether player damage and enemy damage use different colors.
-- Whether critical hits exist now or should be left as a future variant.
-- Whether damage numbers should spawn exactly at contact points or slightly above target centers for readability.
+- First version shows direct-hit damage only.
+- Outgoing enemy damage numbers use a white or light-gray style; incoming player damage numbers use red.
+- Damage numbers drift upward and fade out.
+- The first version shows `0` for blocked or invulnerable direct-hit feedback; named labels are future work.
+- Settings integration is excluded from this task.
+- Decimal damage is displayed using conventional whole-number rounding (`47.534` displays `48`).
 
 ## Verification
 
@@ -131,16 +162,24 @@ Static verification:
 
 - no Canvas or `TextMeshProUGUI` dependency is introduced
 - existing `Damaged(float)` subscribers still compile
-- damage numbers only spawn after accepted damage
+- damage numbers only spawn after a resolved direct-hit outcome
+- blocked or invulnerable direct hits display `0` without mutating health
+- damage-over-time does not spawn a number in the first implementation
+- no settings changes are made
 - new debug logs, if any, are wrapped in `#if UNITY_EDITOR`
 - magic values are constants or serialized fields
 - pooled instances reset text, color, alpha, position, and scale on reuse
 
 Manual Unity checks:
 
+- let Unity import the new scripts/assets and confirm no Console compile or serialization errors
 - arrow hit on enemy shows a number near the hit
 - arrow rain and chain shot show numbers at their resolved hit points
 - wolf, boar, necromancer, and blood mage hits on player show numbers near the player hurt area
-- i-frame-blocked hits do not show numbers
+- i-frame-blocked or otherwise invulnerable direct hits show `0` without reducing health
+- outgoing damage is light colored and incoming damage is red
+- popups remain crisp and legible at the normal isometric gameplay zoom
+- popups float upward and fade out
 - pooled numbers reset correctly during rapid hits
 - numbers render above actors without requiring a Canvas
+- tune `FX_DamageNumber` font size, offset, rise distance, and sorting order if the normal gameplay zoom asks for it

@@ -9,6 +9,8 @@ public enum WolfRole { Leader, Minion }
 
 public class Wolf : Enemy
 {
+    private const float BiteKnockback = 1f;
+
     [Space][Space][Header("Stats")]
     public float AttackDamage = 20f;
     public float MovementSpeed = 2f;
@@ -42,7 +44,6 @@ public class Wolf : Enemy
     [Header("Leader Pack")]
     public PackController pack;
 
-    private HitData _hitData;
     private float _baseAttackDamage;
     private float _baseMaxHealth;
     private float _spawnBaseMaxHealth;
@@ -268,7 +269,6 @@ public class Wolf : Enemy
     public void InitializeRuntimeState()
     {
         CurrentHealth = MaxHealth;
-        _hitData = new HitData(Vector2.zero, Vector2.zero, AttackDamage, 1, gameObject);
 
         ResetRuntimeStateForDeathOrReuse();
 
@@ -512,7 +512,7 @@ public class Wolf : Enemy
 #if UNITY_EDITOR
         DebugAttackLog($"Wolf legacy DamagePlayer wrapper damage={damage:0.##}");
 #endif
-        base.DamagePlayer(damage, _hitData);
+        base.DamagePlayer(damage, CreateBiteHitData(damage));
     }
 
     public bool DamageCurrentTarget(float damage)
@@ -520,6 +520,13 @@ public class Wolf : Enemy
 #if UNITY_EDITOR
         DebugAttackLog($"Wolf bite DamageCurrentTarget damage={damage:0.##} {GetAttackDebugTargetSummary()}");
 #endif
-        return DamageAggroTarget(damage, _hitData);
+        return DamageAggroTarget(damage, CreateBiteHitData(damage));
+    }
+
+    private HitData CreateBiteHitData(float damage)
+    {
+        Vector2 origin = rb != null ? rb.position : (Vector2)transform.position;
+        Vector2 hitDirection = GetDirectionToAggroTarget(origin);
+        return new HitData(origin, hitDirection, damage, BiteKnockback, gameObject);
     }
 }

@@ -706,6 +706,7 @@ MonoBehaviour:
   hurtFlashTime: 0.12
   knockbackMultiplier: 1
   _statusController: {fileID: 957290264796575780}
+  damageNumberEvents: {fileID: 11400000, guid: dc6a4cd0743d4c32a252026507216b64, type: 2}
 --- !u!114 &1884929689371088939
 MonoBehaviour:
   m_ObjectHideFlags: 0

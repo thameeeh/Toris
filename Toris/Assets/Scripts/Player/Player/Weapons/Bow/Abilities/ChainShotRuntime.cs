@@ -258,7 +258,10 @@ public sealed class ChainShotRuntime : PlayerAbilityRuntime
             return;
 
         Vector2 hitPoint = GetTargetPoint(target, pendingImpact.startPoint);
-        target.damageable.Damage(pendingImpact.damage);
+        if (target.damageable is IDirectHitDamageable directHitDamageable)
+            directHitDamageable.ApplyDirectHit(pendingImpact.damage, hitPoint);
+        else
+            target.damageable.Damage(pendingImpact.damage);
 
         if (session.settings.playImpactEffect && session.bow != null)
             session.bow.PlayDefaultArrowHitEffect(hitPoint);

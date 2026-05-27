@@ -181,7 +181,10 @@ public sealed class ArrowRainRuntime : PlayerAbilityRuntime
 
             Log(context.bow,
                 $"Damage hit. target={targetName} collider={overlapCollider.name} strikePoint={FormatVector(pendingStrike.point)} closestPoint={FormatVector(closestPoint)} closestDistanceFromStrike={Vector2.Distance(pendingStrike.point, closestPoint):F2} targetPosition={FormatVector(targetPosition)} targetDistanceFromCastOrigin={Vector2.Distance(_settings.castOrigin, targetPosition):F2}");
-            damageable.Damage(pendingStrike.damage);
+            if (damageable is IDirectHitDamageable directHitDamageable)
+                directHitDamageable.ApplyDirectHit(pendingStrike.damage, closestPoint);
+            else
+                damageable.Damage(pendingStrike.damage);
         }
     }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable, IEnemyAggroTarget
+public abstract class Enemy : MonoBehaviour, IDirectHitDamageable, IEnemyMoveable, ITriggerCheckable, IEnemyAggroTarget
 {
     private bool _isAggroed;
     public bool IsAggroed
@@ -45,6 +45,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
     [Header("Alert Indicator")]
     [SerializeField] private bool autoCreateAlertIndicator = true;
     [SerializeField] private EnemyAlertIndicator alertIndicator;
+
+    [Header("Presentation Feedback")]
+    [SerializeField] private DamageNumberEventsSO damageNumberEvents;
 
     // Quest reporting stays data-driven: enemies expose stable IDs, then report facts.
     // Quest-specific progress mapping stays outside enemy gameplay code.
@@ -152,7 +155,31 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
     public void Damage(float damageAmount)
     {
-        if (!CanTakeDamage()) return;
+        TryApplyDamage(damageAmount);
+    }
+
+    public void ApplyDirectHit(float damageAmount, Vector2 worldHitPosition)
+    {
+        bool appliedDamage = TryApplyDamage(damageAmount);
+        if (damageNumberEvents == null)
+            return;
+
+        DamageNumberFeedbackKind feedbackKind = appliedDamage
+            ? DamageNumberFeedbackKind.Damage
+            : DamageNumberFeedbackKind.Invulnerable;
+        float displayedDamage = appliedDamage ? damageAmount : 0f;
+
+        damageNumberEvents.RaiseDirectHitResolved(new DamageNumberRequest(
+            displayedDamage,
+            worldHitPosition,
+            DamageNumberTargetKind.Enemy,
+            feedbackKind));
+    }
+
+    private bool TryApplyDamage(float damageAmount)
+    {
+        if (!CanTakeDamage())
+            return false;
 
         CurrentHealth -= damageAmount;
 
@@ -164,6 +191,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
         {
             Die();
         }
+
+        return true;
     }
 
     protected virtual bool CanTakeDamage() => CurrentHealth > 0f;
@@ -386,6 +415,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITrigg
 
         if (target is PlayerDamageReceiver damageReceiver && damageReceiver.IsInvulnerable && !hitData.bypassIFrames)
         {
+            hitData.source = ResolveDirectAttackSource(hitData.source);
+            hitData.damage = amount;
+            damageReceiver.ReportRejectedDirectHit(hitData);
 #if UNITY_EDITOR
             DebugAttackLog($"DamageAggroTarget blocked: target has i-frames -> {GetAttackDebugTargetSummary(target)} amount={amount:0.##}");
 #endif

@@ -136,6 +136,7 @@ public class SettingsMenuController : MonoBehaviour
             AudioVolumeSettings.SfxVolume);
 
         _view.SetLootMagnetValue(LootMagnetSettings.LootMagnetEnabled);
+        _view.SetDamageNumbersValue(DamageNumberSettings.ShowDamageNumbers);
         _view.SetShowFpsValue(FpsDisplaySettings.ShowFps);
         InitializeDisplaySettings();
         InitializeControlSettings();
@@ -150,6 +151,7 @@ public class SettingsMenuController : MonoBehaviour
         _view.OnKeepDisplayClicked += HandleKeepDisplayClicked;
         _view.OnRevertDisplayClicked += HandleRevertDisplayClicked;
         _view.OnLootMagnetToggled += HandleLootMagnetToggled;
+        _view.OnDamageNumbersToggled += HandleDamageNumbersToggled;
         _view.OnShowFpsToggled += HandleShowFpsToggled;
         _view.OnRebindControlRequested += HandleRebindControlRequested;
         _view.OnResetControlRequested += HandleResetControlRequested;
@@ -214,6 +216,11 @@ public class SettingsMenuController : MonoBehaviour
     private void HandleLootMagnetToggled(bool value)
     {
         LootMagnetSettings.SetLootMagnetEnabled(value);
+    }
+
+    private void HandleDamageNumbersToggled(bool value)
+    {
+        DamageNumberSettings.SetShowDamageNumbers(value);
     }
 
     private void HandleShowFpsToggled(bool value)
@@ -362,6 +369,7 @@ public class SettingsMenuController : MonoBehaviour
 
         AudioVolumeSettings.Save();
         LootMagnetSettings.Save();
+        DamageNumberSettings.Save();
         FpsDisplaySettings.Save();
     }
 
@@ -736,6 +744,7 @@ public class SettingsMenuController : MonoBehaviour
             _view.OnKeepDisplayClicked -= HandleKeepDisplayClicked;
             _view.OnRevertDisplayClicked -= HandleRevertDisplayClicked;
             _view.OnLootMagnetToggled -= HandleLootMagnetToggled;
+            _view.OnDamageNumbersToggled -= HandleDamageNumbersToggled;
             _view.OnShowFpsToggled -= HandleShowFpsToggled;
             _view.OnRebindControlRequested -= HandleRebindControlRequested;
             _view.OnResetControlRequested -= HandleResetControlRequested;

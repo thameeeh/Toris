@@ -64,6 +64,11 @@
                     <ui:Label text="Loot Vacuum" class="stat-label"/>
                     <ui:Toggle name="Toggle_LootMagnet" value="true"/>
                 </ui:VisualElement>
+
+                <ui:VisualElement class="settings-slider-row">
+                    <ui:Label text="Damage Numbers" class="stat-label"/>
+                    <ui:Toggle name="Toggle_DamageNumbers" value="true"/>
+                </ui:VisualElement>
             </ui:ScrollView>
             <ui:ScrollView name="Settings_ControlsContent" class="settings-content">
                 <ui:Label text="Keyboard &amp; Mouse" class="settings-section-header"/>

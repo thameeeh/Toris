@@ -10,7 +10,7 @@ Confirmed settings:
 - Windowed and fullscreen mode selection.
 - Key rebinding for keyboard and mouse, plus the chosen controller layout.
 - Show FPS toggle.
-- Damage numbers toggle later, after the damage number system exists.
+- Damage numbers toggle.
 
 Current settings already implemented:
 
@@ -22,6 +22,7 @@ Current settings already implemented:
 - Keyboard and mouse rebinding with duplicate protection.
 - Controller rebinding for gameplay and menu actions, excluding Quick Save and Quick Load.
 - Show FPS toggle.
+- Damage Numbers toggle.
 
 ## Existing Architecture
 
@@ -34,6 +35,7 @@ The Settings menu is currently shared by the main menu and gameplay pause flow.
 - `AudioVolumeSettings` stores audio values in `PlayerPrefs` and applies master volume through `AudioListener.volume`.
 - `LootMagnetSettings` stores the Loot Vacuum toggle in `PlayerPrefs`; `WorldItemMagnet` reads it at runtime.
 - `FpsDisplaySettings` stores the Show FPS toggle in `PlayerPrefs`; the HUD controller samples frame rate only while the setting is enabled.
+- `DamageNumberSettings` stores the Damage Numbers toggle in `PlayerPrefs`; `DamageNumberPresenter` suppresses popup spawning while it is disabled.
 
 The expansion should keep the same pattern:
 
@@ -270,16 +272,13 @@ Because this requires coordinated changes across all input action creation sites
 These fit the game better than graphics quality settings:
 
 - Show FPS toggle.
-- Damage numbers toggle, but only after the damage number system exists. Do not add a non-functional toggle ahead of the feature.
+- Damage numbers toggle, now implemented after the presentation system became available.
 - Floating pickup text toggle, if item pickup popups exist or are planned.
 - UI scale, if UI Toolkit layout supports it safely.
 - Tutorial hints enabled, if tutorials remain a player preference after new-game selection.
 - Quest tracking popups enabled, if quest UI becomes noisy.
 
-Recommended near-term extra:
-
-- Damage numbers once implemented.
-- Otherwise, keep the first pass to Display, Audio, Gameplay, and later Controls.
+Recommended near-term extras should remain restrained now that damage-number visibility is implemented.
 
 ## Tabbed Settings Direction
 
@@ -308,7 +307,7 @@ The tab implementation should follow existing UI Toolkit MVP rules:
 9. Add key rebinding after confirming the display settings UX.
 10. Add Show FPS as a Main settings toggle.
 11. Add controller rebinding for the chosen full controller layout.
-12. Later, add damage number accessibility settings after damage numbers exist.
+12. Add damage-number visibility after damage numbers exist. Completed after the first polished runtime pass.
 
 ## Verification Plan
 
@@ -328,6 +327,7 @@ Static checks:
 - Confirm duplicate controller bindings are rejected and restore the previous binding.
 - Confirm Quick Save and Quick Load do not appear in keyboard/mouse or controller rebinding lists.
 - Confirm Show FPS stores a global preference and only updates the HUD counter while visible.
+- Confirm Damage Numbers stores a global preference and gates presentation rather than damage resolution.
 
 Unity manual checks:
 
@@ -347,7 +347,8 @@ Unity manual checks:
 - Confirm Quick Save and Quick Load are not shown in Controls.
 - Press Escape while rebinding and confirm the pending rebind cancels without closing Settings.
 - Toggle Show FPS on and off from Main settings and confirm the HUD label appears and disappears.
+- Toggle Damage Numbers off and confirm enemy and player hits no longer spawn number popups, then turn it back on and confirm popups resume.
 - Close and reopen Settings to confirm displayed values persist.
 - Restart the game and confirm saved display settings load.
 - Confirm Escape closes Settings correctly.
-- Confirm audio sliders and Loot Vacuum still work.
+- Confirm audio sliders, Loot Vacuum, and Damage Numbers still work.

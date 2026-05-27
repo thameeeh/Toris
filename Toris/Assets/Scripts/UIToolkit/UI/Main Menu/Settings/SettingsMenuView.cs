@@ -30,6 +30,7 @@ public class SettingsMenuView : GameView
     private Button _keepDisplayButton;
     private Button _revertDisplayButton;
     private Toggle _lootMagnetToggle;
+    private Toggle _damageNumbersToggle;
     private Toggle _showFpsToggle;
     private readonly Dictionary<string, Button> _controlRebindButtons = new Dictionary<string, Button>();
     private readonly Dictionary<string, Button> _controlResetButtons = new Dictionary<string, Button>();
@@ -45,6 +46,7 @@ public class SettingsMenuView : GameView
     public event Action OnKeepDisplayClicked;
     public event Action OnRevertDisplayClicked;
     public event Action<bool> OnLootMagnetToggled;
+    public event Action<bool> OnDamageNumbersToggled;
     public event Action<bool> OnShowFpsToggled;
     public event Action<string> OnRebindControlRequested;
     public event Action<string> OnResetControlRequested;
@@ -146,6 +148,12 @@ public class SettingsMenuView : GameView
             _lootMagnetToggle.RegisterValueChangedCallback(HandleLootMagnetToggled);
         }
 
+        _damageNumbersToggle = Root.Q<Toggle>("Toggle_DamageNumbers");
+        if (_damageNumbersToggle != null)
+        {
+            _damageNumbersToggle.RegisterValueChangedCallback(HandleDamageNumbersToggled);
+        }
+
         _showFpsToggle = Root.Q<Toggle>("Toggle_ShowFps");
         if (_showFpsToggle != null)
         {
@@ -239,6 +247,11 @@ public class SettingsMenuView : GameView
         _lootMagnetToggle?.SetValueWithoutNotify(enabled);
     }
 
+    public void SetDamageNumbersValue(bool enabled)
+    {
+        _damageNumbersToggle?.SetValueWithoutNotify(enabled);
+    }
+
     public void SetShowFpsValue(bool enabled)
     {
         _showFpsToggle?.SetValueWithoutNotify(enabled);
@@ -320,6 +333,7 @@ public class SettingsMenuView : GameView
     private void HandleKeepDisplayClicked() => OnKeepDisplayClicked?.Invoke();
     private void HandleRevertDisplayClicked() => OnRevertDisplayClicked?.Invoke();
     private void HandleLootMagnetToggled(ChangeEvent<bool> evt) => OnLootMagnetToggled?.Invoke(evt.newValue);
+    private void HandleDamageNumbersToggled(ChangeEvent<bool> evt) => OnDamageNumbersToggled?.Invoke(evt.newValue);
     private void HandleShowFpsToggled(ChangeEvent<bool> evt) => OnShowFpsToggled?.Invoke(evt.newValue);
     private void HandleResetAllControlsClicked() => OnResetAllControlsRequested?.Invoke();
 
@@ -346,6 +360,7 @@ public class SettingsMenuView : GameView
         if (_keepDisplayButton != null) _keepDisplayButton.clicked -= HandleKeepDisplayClicked;
         if (_revertDisplayButton != null) _revertDisplayButton.clicked -= HandleRevertDisplayClicked;
         if (_lootMagnetToggle != null) _lootMagnetToggle.UnregisterValueChangedCallback(HandleLootMagnetToggled);
+        if (_damageNumbersToggle != null) _damageNumbersToggle.UnregisterValueChangedCallback(HandleDamageNumbersToggled);
         if (_showFpsToggle != null) _showFpsToggle.UnregisterValueChangedCallback(HandleShowFpsToggled);
         if (_resetAllControlsButton != null) _resetAllControlsButton.clicked -= HandleResetAllControlsClicked;
         base.Dispose();

@@ -11,7 +11,7 @@ The first implementation must cover:
 - player hits enemy
 - enemy hits player
 - direct hits only; damage-over-time ticks are deferred
-- no settings-menu or damage-number-toggle work
+- settings-menu integration initially deferred until the runtime presentation was stable
 
 ## Architectural Direction
 
@@ -127,7 +127,7 @@ The first pass can use fixed animation in script. If designers later want author
 - Damage-over-time ticks do not produce popups in the first implementation.
 - Blocked or invulnerable direct hits display `0` in the first implementation without applying damage.
 - Richer feedback labels such as `Invulnerable!` or `Blocked!` are deferred until the direct-hit system is established.
-- A damage-numbers setting is deliberately out of scope for this task.
+- Damage-number visibility is now exposed as a global Gameplay setting after the initial runtime pass.
 
 Displayed damage uses conventional whole-number rounding through `Mathf.RoundToInt`, so `47.534` displays as `48`.
 
@@ -158,7 +158,7 @@ The prefab exposes minimum separation distance, horizontal step, vertical step, 
 - Outgoing enemy damage numbers use a white or light-gray style; incoming player damage numbers use red.
 - Damage numbers drift upward and fade out.
 - The first version shows `0` for blocked or invulnerable direct-hit feedback; named labels are future work.
-- Settings integration is excluded from this task.
+- A later settings pass adds a global Damage Numbers toggle; the presenter suppresses popups while combat resolution remains unchanged.
 - Decimal damage is displayed using conventional whole-number rounding (`47.534` displays `48`).
 
 ## Verification
@@ -172,7 +172,7 @@ Static verification:
 - damage numbers only spawn after a resolved direct-hit outcome
 - blocked or invulnerable direct hits display `0` without mutating health
 - damage-over-time does not spawn a number in the first implementation
-- no settings changes are made
+- the Damage Numbers setting gates presentation spawning only and does not mutate combat outcomes
 - new debug logs, if any, are wrapped in `#if UNITY_EDITOR`
 - magic values are constants or serialized fields
 - pooled instances reset text, color, alpha, position, and scale on reuse
@@ -190,3 +190,4 @@ Manual Unity checks:
 - pooled numbers reset correctly during rapid hits
 - numbers render above actors without requiring a Canvas
 - tune `FX_DamageNumber` font size, offset, rise distance, and sorting order if the normal gameplay zoom asks for it
+- toggle Damage Numbers off in Settings and confirm direct hits still apply damage without spawning popups; toggle it back on and confirm popups resume

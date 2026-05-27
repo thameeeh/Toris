@@ -48,7 +48,8 @@ public sealed class DamageNumberPresenter : MonoBehaviour
 
     private void HandleDirectHitResolved(DamageNumberRequest request)
     {
-        if (string.IsNullOrWhiteSpace(damageNumberEffectId))
+        // Settings hook: visual feedback may be hidden without changing resolved combat events.
+        if (!DamageNumberSettings.ShowDamageNumbers || string.IsNullOrWhiteSpace(damageNumberEffectId))
             return;
 
         Color displayColor = request.TargetKind == DamageNumberTargetKind.Player

@@ -57,17 +57,17 @@
 
                 <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Show FPS" class="stat-label"/>
-                    <ui:Toggle name="Toggle_ShowFps" value="false"/>
+                    <ui:Toggle name="Toggle_ShowFps" value="false" class="settings-toggle"/>
                 </ui:VisualElement>
 
                 <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Loot Vacuum" class="stat-label"/>
-                    <ui:Toggle name="Toggle_LootMagnet" value="true"/>
+                    <ui:Toggle name="Toggle_LootMagnet" value="true" class="settings-toggle"/>
                 </ui:VisualElement>
 
                 <ui:VisualElement class="settings-slider-row">
                     <ui:Label text="Damage Numbers" class="stat-label"/>
-                    <ui:Toggle name="Toggle_DamageNumbers" value="true"/>
+                    <ui:Toggle name="Toggle_DamageNumbers" value="true" class="settings-toggle"/>
                 </ui:VisualElement>
             </ui:ScrollView>
             <ui:ScrollView name="Settings_ControlsContent" class="settings-content">

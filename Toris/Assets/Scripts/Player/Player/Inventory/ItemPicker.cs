@@ -23,6 +23,7 @@ namespace OutlandHaven.Inventory
         private void Awake()
         {
             ResolveRuntimeReferences(logErrors: true);
+            EnsureRequiredLayers();
         }
 
 #if UNITY_EDITOR
@@ -44,8 +45,21 @@ namespace OutlandHaven.Inventory
             {
                 Debug.LogWarning($"<b><color=teal>[InteractionUI]</color></b> is not assigned on GameObject: <b>{name}</b>. ItemPicker will try to auto-resolve the prompt UI at runtime.", this);
             }
+
+            EnsureRequiredLayers();
         }
 #endif
+
+        private void EnsureRequiredLayers()
+        {
+            int itemLayer = LayerMask.NameToLayer("Item");
+            int collectiblesLayer = LayerMask.NameToLayer("Collectibles");
+            int defaultLayer = LayerMask.NameToLayer("Default");
+
+            if (itemLayer >= 0) _layerMask |= (1 << itemLayer);
+            if (collectiblesLayer >= 0) _layerMask |= (1 << collectiblesLayer);
+            if (defaultLayer >= 0) _layerMask |= (1 << defaultLayer);
+        }
         private void OnEnable()
         {
             if (_itemPickerSO != null)

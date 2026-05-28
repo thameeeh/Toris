@@ -64,6 +64,6 @@ MonoBehaviour:
   - offset: {x: 2, y: 1}
     ground: {fileID: 11400000, guid: 2e8634c189ad3f0479c0d0557bc8ae04, type: 2}
     water: {fileID: 0}
-    decoration: {fileID: 11400000, guid: dccd01c275eba804c9a1b34e186d483a, type: 2}
+    decoration: {fileID: 11400000, guid: 59026419a025dcb4f8e100bd5237381b, type: 2}
     obstacle: {fileID: 0}
     canopy: {fileID: 0}

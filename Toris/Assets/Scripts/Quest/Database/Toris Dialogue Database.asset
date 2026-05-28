@@ -201,7 +201,7 @@ MonoBehaviour:
       type: 3
       typeString: CustomFieldType_Files
     - title: Description
-      value: 
+      value: He will ask to gather some herbs.
       type: 0
       typeString: 
     - title: Success Description

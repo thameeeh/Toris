@@ -76,6 +76,11 @@ namespace OutlandHaven.Inventory
             {
                 // Visual feedback, sound effects go here
                 ReportQuestPickUpFactIfNeeded();
+
+                // Notify world site persistence (if spawned by the procedural pipeline)
+                var siteBridge = GetComponent<CollectibleSiteBridge>();
+                if (siteBridge != null) siteBridge.OnCollected();
+
                 Destroy(gameObject);
                 return true;
             }

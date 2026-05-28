@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e76c18c0472ef74d9663541a75a01f1, type: 3}
+  m_Name: Plains_CollectiblePlacementRule
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleSitePlacementRuleDefinition
+  collectibleSiteDefinitions:
+  - {fileID: 11400000, guid: 6ba7d79c137622f4f8544243254ca38a, type: 2}
+  - {fileID: 11400000, guid: ab3654c5a34a07848a2e89784f964145, type: 2}
+  minCount: 50
+  maxCount: 130
+  minSpacingTiles: 8
+  placementRadiusFactor: 1
+  avoidOriginRadiusTiles: 11
+  avoidExistingSites: 0

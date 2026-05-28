@@ -1,5 +1,18 @@
 # UI Toolkit Changelog
 
+### [2026-05-28] Sage Upgrades, Alchemical Brewing, & Settings UI Refactor
+- **Decoupled Tab Views Shell:** Refactored `SageUpgradeView.cs` into a modular shell coordinator governing dynamic subview presenters under `ScreenType.SageUpgrade`.
+- **Weapon Infusion Presenter ([InfusionSubView_Sage.cs](file:///d:/GameDev/Unity/Game%20Project%20Toris/Toris/Toris/Assets/Scripts/UIToolkit/UI/UIViews/SageUpgrade/InfusionSubView_Sage.cs)):** Redesigned the Sage Weapon Forge into a minimalistic single-column vertical layout utilizing direct drag-and-drop slots, validating item components, and displaying live progression stats.
+- **Alchemical Potion Brewing ([BrewSubView_Sage.cs](file:///d:/GameDev/Unity/Game%20Project%20Toris/Toris/Toris/Assets/Scripts/UIToolkit/UI/UIViews/SageUpgrade/BrewSubView_Sage.cs)):** Built a dedicated brewing panel to load alchemical blueprints (`CraftingRecipeSO`) and process ingredient merging transactions via the `CraftingManagerSO` events bus.
+- **Settings Menu Styling Overrides:** Skinned settings components inside `SettingsMenu.uss` to match the amethyst/gold pixel-art themes:
+  - Custom-styled scrollbar sliders for `#Settings_MainContent` and `#Settings_ControlsContent` ScrollViews.
+  - Skinned unchecked checkbox toggles with deep purple backgrounds and golden borders, highlighting with a glowing gold checked tint when selected.
+  - Tailored volume sliders with sleek dark track lanes and glowing gold thumb draggers.
+  - Added responsive hover and active highlights to settings navigation tabs.
+- **Assembly Integration:** Registered the new subview presenters within `Assembly-CSharp.csproj` to keep the codebase compiling perfectly with zero errors.
+
+---
+
 ### [2026-05-19] Ability Snapshot Integration & UI Refactor
 - **Ability Snapshots:** Integrated `PlayerAbilitySlotSnapshot` as the single source of truth for the Ability HUD, enabling dynamic mana cost and cooldown scaling.
 - **Timer Fix:** Resolved a bug where ability cooldowns ran at half-speed; switched to precise delta time tracking in the UI schedule loop.

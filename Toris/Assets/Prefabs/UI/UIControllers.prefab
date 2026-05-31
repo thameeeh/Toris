@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b68b7c9a1e431b499e126273b366742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.UIToolkit.SageUpgradeScreenController
-  _sageUpgradeTemplate: {fileID: 9197481963319205126, guid: fe9f7cacb541d834fae59fdc92158b97, type: 3}
+  _sageTemplate: {fileID: 9197481963319205126, guid: fe9f7cacb541d834fae59fdc92158b97, type: 3}
   _sageUpgradeSubViewTemplate: {fileID: 9197481963319205126, guid: 74dfd2d5d4f202543aed7d410170c751, type: 3}
   _sageBrewTemplate: {fileID: 9197481963319205126, guid: ea557a70e81b7274395ece0ec41fba9d, type: 3}
   _slotTemplate: {fileID: 9197481963319205126, guid: 5f03184f2c3b19d4ab20f52a221b7116, type: 3}
@@ -382,6 +382,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathScreenController
       objectReference: {fileID: 0}
+    - target: {fileID: 8991190993950063195, guid: 2342bd27df9a3e84b859a75f600006b5, type: 3}
+      propertyPath: _uiInventoryEvents
+      value: 
+      objectReference: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -403,6 +407,10 @@ PrefabInstance:
     - target: {fileID: 4776024105873510148, guid: 24803e1e8fb13a74a9eb3c2e073d7081, type: 3}
       propertyPath: m_Name
       value: SkillScreenController
+      objectReference: {fileID: 0}
+    - target: {fileID: 6105083024837737687, guid: 24803e1e8fb13a74a9eb3c2e073d7081, type: 3}
+      propertyPath: '_skillDatabase.Array.data[5]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6747237837832267135, guid: 24803e1e8fb13a74a9eb3c2e073d7081, type: 3}
       propertyPath: m_LocalPosition.x

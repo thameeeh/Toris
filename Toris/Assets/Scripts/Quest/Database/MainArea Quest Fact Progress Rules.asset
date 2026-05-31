@@ -13,47 +13,14 @@ MonoBehaviour:
   m_Name: MainArea Quest Fact Progress Rules
   m_EditorClassIdentifier: 
   _rules:
-  - FactType: 1
+  - FactType: 13
     ExactId: 
-    TypeOrTag: Wolf
+    TypeOrTag: Portal
     ContextId: 
-    QuestName: Kill3Wolves
+    QuestName: Talk To Town Guide
     RequireQuestActive: 1
-    ProgressVariableName: wolvesKilled
-    RequiredAmount: 3
-    EntryNumber: 1
-    EntryCompleteState: 4
-    QuestCompleteState: 64
-  - FactType: 6
-    ExactId: SmithNPC
-    TypeOrTag: 
-    ContextId: MainArea
-    QuestName: Guide_Talk_To_Smith
-    RequireQuestActive: 1
-    ProgressVariableName: TalkedToSmith
+    ProgressVariableName: isPortalUnlocked
     RequiredAmount: 1
     EntryNumber: 1
     EntryCompleteState: 4
     QuestCompleteState: 64
-  - FactType: 6
-    ExactId: SmithNPC
-    TypeOrTag: 
-    ContextId: MainArea
-    QuestName: Smith_Check_Forge
-    RequireQuestActive: 1
-    ProgressVariableName: SmithCheckForgeTalked
-    RequiredAmount: 1
-    EntryNumber: 1
-    EntryCompleteState: 4
-    QuestCompleteState: 64
-  - FactType: 9
-    ExactId: Ore_Prog
-    TypeOrTag: 
-    ContextId: 
-    QuestName: Guide_Buy_Ore
-    RequireQuestActive: 1
-    ProgressVariableName: GuideBuyOreCount
-    RequiredAmount: 1
-    EntryNumber: 1
-    EntryCompleteState: 4
-    QuestCompleteState: 4

@@ -18,6 +18,11 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
     [SerializeField] private GameObject _stoneVisuals;
     [SerializeField] private GameObject _gateCollision;
     [SerializeField] private string _unlockSfxId = "world_portal_unlock";
+    [SerializeField] private bool _completeQuestEntryOnUnlock = true;
+    [SerializeField] private string _questToComplete = "Unlock the Teleporter";
+    [SerializeField] private int _entryToComplete = 1;
+    [SerializeField] private bool _activateNextEntryOnUnlock = true;
+    [SerializeField] private int _entryToActivate = 2;
 
     [Header("SFX")]
     [SerializeField] private string teleportLeaveSfxId = "world_teleport_leave";
@@ -100,6 +105,21 @@ public class RunGateInteractable : MonoBehaviour, IInteractable, IWorldSiteBridg
                     if (PixelCrushers.DialogueSystem.DialogueManager.hasInstance)
                     {
                         PixelCrushers.DialogueSystem.DialogueLua.SetVariable(_portalUnlockedLuaVariable, true);
+
+                        if (_completeQuestEntryOnUnlock)
+                        {
+                            // Set Entry 1 to Success
+                            PixelCrushersQuestBridge.SetQuestEntryState(_questToComplete, _entryToComplete, "success");
+                            
+                            // Directly activate Entry 2 in C#
+                            if (_activateNextEntryOnUnlock)
+                            {
+                                PixelCrushersQuestBridge.SetQuestEntryState(_questToComplete, _entryToActivate, "active");
+                            }
+                            
+                            // Automatically transition overall quest to ReturnToNPC so the player goes back to the Guide
+                            PixelCrushersQuestBridge.SetQuestState(_questToComplete, "returnToNPC");
+                        }
                     }
                     
                     if (!string.IsNullOrWhiteSpace(_unlockSfxId) && AudioBootstrap.Sfx != null)

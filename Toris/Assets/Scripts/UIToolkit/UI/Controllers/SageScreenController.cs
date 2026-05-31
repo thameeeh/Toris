@@ -7,7 +7,7 @@ namespace OutlandHaven.UIToolkit
     public class SageUpgradeScreenController : MonoBehaviour
     {
         [Header("Dependencies")]
-        [SerializeField] private VisualTreeAsset _sageUpgradeTemplate; // Drag SageUpgrade.uxml here
+        [SerializeField] private VisualTreeAsset _sageTemplate; // Drag SageUpgrade.uxml here
         [SerializeField] private VisualTreeAsset _sageUpgradeSubViewTemplate; // Drag UpgradeSubView_Sage.uxml here
         [SerializeField] private VisualTreeAsset _sageBrewTemplate; // Drag BrewSubView_Sage.uxml here
         [SerializeField] private VisualTreeAsset _slotTemplate; // Drag Slot.uxml here
@@ -46,7 +46,7 @@ namespace OutlandHaven.UIToolkit
                 _uiInventoryEvents.OnRequestSageUpgrade += HandleUpgradeRequest;
             }
 
-            if (_sageUpgradeTemplate == null)
+            if (_sageTemplate == null)
             {
                 Debug.LogError("SageUpgradeScreenController: Sage Upgrade UXML Template is missing!");
             }
@@ -84,13 +84,13 @@ namespace OutlandHaven.UIToolkit
 
         private void Start()
         {
-            if (_sageUpgradeTemplate == null || _sageUpgradeSubViewTemplate == null || _sageBrewTemplate == null || _slotTemplate == null) return;
+            if (_sageTemplate == null || _sageUpgradeSubViewTemplate == null || _sageBrewTemplate == null || _slotTemplate == null) return;
             if (_gameSession == null)
             {
                 _gameSession = GameSessionSO.LoadDefault();
             }
 
-            TemplateContainer sageInstance = _sageUpgradeTemplate.Instantiate();
+            TemplateContainer sageInstance = _sageTemplate.Instantiate();
             sageInstance.style.flexGrow = 1; // Fit inside the zone container
 
             _view = new SageUpgradeView(

@@ -18,7 +18,7 @@ namespace OutlandHaven.Inventory
 
             AddBasicRows(data, item, slot);
             AddConsumableRows(data, item);
-            AddEquipmentRows(data, item);
+            AddEquipmentRows(data, item, slot);
             AddProgressionRows(data, item);
             AddStateRows(data, slot);
 
@@ -74,7 +74,7 @@ namespace OutlandHaven.Inventory
             }
         }
 
-        private static void AddEquipmentRows(ItemTooltipData data, InventoryItemSO item)
+        private static void AddEquipmentRows(ItemTooltipData data, InventoryItemSO item, InventorySlot slot)
         {
             EquipableComponent equipable = item.GetComponent<EquipableComponent>();
             if (equipable != null)
@@ -91,7 +91,17 @@ namespace OutlandHaven.Inventory
             OffensiveComponent offensive = item.GetComponent<OffensiveComponent>();
             if (offensive != null)
             {
-                data.AddRow("Damage", FormatNumber(offensive.BaseDamage));
+                float finalDamage = offensive.BaseDamage;
+                if (slot != null && slot.HeldItem != null)
+                {
+                    WeaponComputedStats weaponStats = EquippedItemStatCalculator.CalculateWeapon(slot.HeldItem);
+                    if (weaponStats.IsValid)
+                    {
+                        finalDamage = weaponStats.FinalWeaponDamage;
+                    }
+                }
+
+                data.AddRow("Damage", FormatNumber(finalDamage));
                 data.AddRow("Attack Speed", $"{FormatNumber(offensive.AttackSpeed)}/s");
             }
 

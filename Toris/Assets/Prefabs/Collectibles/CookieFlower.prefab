@@ -146,7 +146,7 @@ MonoBehaviour:
   _quantity: 1
   _reportQuestPickUpFact: 1
   _questItemFactType: 2
-  _questItemExactId: 
+  _questItemExactId: CookieFlower
   _questItemTypeOrTag: Herb
   _questItemContextId: 
 --- !u!114 &252339856899540523

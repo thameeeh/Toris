@@ -1,49 +1,98 @@
-/* The wrapper that fills the TemplateContainer */
+/* ==========================================================================
+   SETTINGS SCREEN LAYOUT (SettingsMenu.uss)
+   Smith-inspired modal shell for global settings.
+   ========================================================================== */
+
 .settings-root {
     flex-grow: 1;
     width: 100%;
     height: 100%;
-    flex-direction: row;
-    justify-content: flex-end; /* Pushes the child panel to the far right */
-    picking-mode: Ignore; /* Lets clicks pass through the invisible left side */
+    justify-content: center;
+    align-items: center;
+    picking-mode: Ignore;
 }
 
-/* The visible right-side panel */
-.settings-panel {
-    width: 65%; /* Takes up roughly the right two-thirds of the screen */
+.settings-backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.76);
+}
+
+.settings-main-container {
+    flex-grow: 1;
+    width: 100%;
     height: 100%;
-    
-    /* Using your established theme variables */
-    background-color: var(--color-bg-dark); 
-    border-left-width: 2px;
-    border-left-color: var(--color-border-default);
-    
-    padding: 60px;
     flex-direction: column;
-    picking-mode: Position; /* Catches clicks so they don't hit the main menu underneath */
+    background-color: var(--color-bg-dark);
+    border-width: 2px;
+    border-color: var(--color-border-highlight);
+    padding: 10px;
+    picking-mode: Position;
+}
+
+.settings-header-section {
+    flex-direction: row;
+    align-items: flex-end;
+    min-height: 62px;
+    margin-bottom: 10px;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-border-default);
 }
 
 .settings-title {
-    margin-bottom: 20px;
+    flex-shrink: 0;
+    -unity-text-align: middle-left;
+    color: var(--color-text-light);
+    font-size: var(--font-size-h2);
+    margin-right: 20px;
+    margin-bottom: 5px;
 }
 
 .settings-tabs {
     flex-direction: row;
-    margin-bottom: 24px;
+    flex-grow: 0;
+    align-items: flex-end;
 }
 
 .settings-tab {
-    width: 180px;
+    width: 220px;
     flex-grow: 0;
+    height: 44px;
+}
+
+.settings-tab .panel-tab-label {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 22px;
+}
+
+.settings-tab.panel-tab--active .panel-tab-label {
+    color: var(--color-text-light);
+}
+
+.settings-middle-panel {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+    min-height: 0;
+    margin-bottom: 10px;
+    overflow: hidden;
 }
 
 .settings-content {
-    flex-grow: 1; /* Fills all available vertical space, pushing the close button down */
+    flex-grow: 1;
+    flex-shrink: 1;
     flex-direction: column;
-    margin-bottom: 20px;
+    height: 100%;
+    padding: 14px 30px 18px 30px;
 }
 
-/* --- Added Slider Styles --- */
+.settings-content .unity-scroll-view__content-container {
+    padding-bottom: 52px;
+}
+
 .settings-section-header {
     -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
     font-size: 24px;
@@ -56,30 +105,39 @@
 }
 
 .settings-section-spacing {
-    margin-top: 40px;
+    margin-top: 34px;
 }
 
 .settings-slider-row {
+    width: 78%;
+    max-width: 860px;
+    min-width: 620px;
+    align-self: center;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    padding-right: 20%; /* Keep sliders from hitting the very edge */
 }
 
 .settings-slider {
-    width: 250px;
+    width: 340px;
+    height: 24px;
+    justify-content: center;
 }
 
 .settings-dropdown {
-    width: 250px;
+    width: 340px;
+    height: 38px;
     font-size: var(--font-size-small);
 }
 
 .settings-action-row {
+    width: 78%;
+    max-width: 860px;
+    min-width: 620px;
+    align-self: center;
     flex-direction: row;
     justify-content: flex-end;
-    padding-right: 20%;
     margin-bottom: 15px;
 }
 
@@ -90,34 +148,47 @@
 }
 
 .settings-control-status {
+    width: 88%;
+    align-self: center;
     color: var(--color-text-light);
     font-size: var(--font-size-body);
     margin-bottom: 14px;
 }
 
 .settings-controls-list {
+    width: 88%;
+    max-width: 980px;
+    align-self: center;
     flex-direction: column;
-    padding-right: 20%;
 }
 
 .settings-control-section {
+    width: 88%;
+    max-width: 980px;
+    align-self: center;
     flex-direction: column;
 }
 
 .settings-control-row {
     flex-direction: row;
     align-items: center;
-    margin-bottom: 12px;
+    min-height: 48px;
+    margin-bottom: 10px;
+    padding: 6px 8px;
+    background-color: var(--color-bg-panel);
+    border-width: 1px;
+    border-color: var(--color-border-default);
+    border-radius: 4px;
 }
 
 .settings-control-action {
-    width: 190px;
+    width: 230px;
     color: var(--color-text-light);
     font-size: var(--font-size-body);
 }
 
 .settings-control-binding {
-    width: 130px;
+    width: 160px;
     color: var(--color-border-highlight);
     font-size: var(--font-size-body);
 }
@@ -128,6 +199,162 @@
     margin-left: 8px;
     font-size: var(--font-size-small);
 }
+
+.settings-footer-section {
+    flex-direction: row;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    min-height: 56px;
+    border-top-width: 1px;
+    border-top-color: var(--color-border-default);
+    padding-top: 10px;
+}
+
+.settings-close-button {
+    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
+    height: 42px;
+    width: 220px;
+    font-size: var(--font-size-body);
+}
+
+/* --- Slider Controls --- */
+
+.settings-slider .unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: var(--color-border-default);
+    border-width: 1px;
+    border-radius: 0;
+    height: 8px;
+    margin-top: -4px;
+}
+
+.settings-slider .unity-base-slider__dragger {
+    background-color: var(--color-border-highlight);
+    border-color: var(--color-coin-gold);
+    border-width: 1px;
+    border-radius: 0;
+    width: 12px;
+    height: 18px;
+    margin-top: -9px;
+    transition-duration: 0.1s;
+}
+
+.settings-slider .unity-base-slider__dragger:hover {
+    background-color: var(--color-coin-gold);
+    border-color: var(--color-text-light);
+    scale: 1.1;
+}
+
+/* --- Dropdown Fields --- */
+
+.settings-dropdown .unity-base-popup-field__input,
+.settings-dropdown .unity-dropdown-field__input {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: var(--color-border-default);
+    border-width: 1px;
+    border-radius: 0;
+    padding: 4px 8px;
+    color: var(--color-text-light);
+    transition-duration: 0.15s;
+}
+
+.settings-dropdown .unity-base-popup-field__input:hover,
+.settings-dropdown .unity-dropdown-field__input:hover {
+    border-color: var(--color-border-highlight);
+    background-color: rgba(212, 160, 23, 0.05);
+}
+
+.settings-dropdown .unity-base-popup-field__text {
+    color: var(--color-text-light);
+}
+
+.settings-dropdown .unity-base-popup-field__arrow {
+    -unity-background-image-tint-color: var(--color-border-highlight);
+}
+
+.settings-dropdown:disabled .unity-base-popup-field__input,
+.settings-dropdown:disabled .unity-dropdown-field__input {
+    background-color: rgba(100, 100, 100, 0.22);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.settings-dropdown:disabled .unity-base-popup-field__text {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* --- Toggles --- */
+
+.settings-toggle {
+    width: 340px;
+    align-items: flex-end;
+}
+
+.settings-toggle .unity-toggle__checkmark {
+    background-color: rgba(30, 20, 50, 0.6);
+    border-color: rgba(212, 160, 23, 0.5);
+    border-width: 1.5px;
+    border-radius: 0;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.1);
+    transition-duration: 0.15s;
+}
+
+.settings-toggle:hover .unity-toggle__checkmark {
+    border-color: var(--color-border-highlight);
+    background-color: rgba(212, 160, 23, 0.15);
+}
+
+.settings-toggle .unity-toggle__checkmark:checked {
+    background-color: rgba(212, 160, 23, 0.25);
+    border-color: var(--color-border-highlight);
+    -unity-background-image-tint-color: var(--color-coin-gold);
+}
+
+/* --- Scrollbars --- */
+
+.settings-content .unity-scroller--vertical {
+    width: 14px;
+    background-color: transparent;
+    margin-left: 4px;
+}
+
+.settings-content .unity-scroller__low-button,
+.settings-content .unity-scroller__high-button {
+    display: none;
+}
+
+.settings-content .unity-scroller--vertical .unity-slider {
+    margin: 0;
+    background-color: transparent;
+}
+
+.settings-content .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: var(--color-border-default);
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+.settings-content .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--color-border-highlight);
+    border-color: var(--color-coin-gold);
+    border-width: 1px;
+    border-radius: 4px;
+    width: 10px;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    align-self: center;
+}
+
+.settings-content .unity-scroller--vertical .unity-base-slider__dragger:hover {
+    background-color: var(--color-coin-gold);
+}
+
+/* --- Display Confirmation Overlay --- */
 
 .settings-confirmation-overlay {
     position: absolute;
@@ -178,179 +405,3 @@
     height: 46px;
     font-size: var(--font-size-small);
 }
-
-/* -------------------------- */
-
-.settings-close-button {
-    -unity-font-definition: url("project://database/Assets/Art/PixelArtGUI/Fonts/bitcell_memesbruh03.ttf?fileID=12800000&guid=65378f308d5a3fc428e7292ee3d8095b&type=3#bitcell_memesbruh03");
-    height: 60px;
-    width: 250px;
-    align-self: flex-end; /* Aligns the button to the bottom right corner */
-    font-size: var(--font-size-body);
-}
-
-/* ==========================================================================
-   PREMIUM CUSTOM STYLES (Tabs, Sliders, Dropdowns, Toggles)
-   ========================================================================== */
-
-/* --- Interactive Tabs --- */
-.settings-tab {
-    background-color: rgba(0, 0, 0, 0.4);
-    border-width: 1px;
-    border-color: var(--color-border-default);
-    border-radius: 0; /* Keep borders sharp */
-    padding: 8px 16px;
-    justify-content: center;
-    align-items: center;
-    transition-duration: 0.15s;
-}
-
-.settings-tab:hover {
-    background-color: rgba(212, 160, 23, 0.08);
-    border-color: var(--color-border-highlight);
-}
-
-.settings-tab.panel-tab--active {
-    background-color: rgba(212, 160, 23, 0.15);
-    border-width: 2px;
-    border-color: var(--color-border-highlight);
-}
-
-.settings-tab .panel-tab-label {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: var(--font-size-body);
-    -unity-font-style: normal;
-}
-
-.settings-tab.panel-tab--active .panel-tab-label {
-    color: var(--color-border-highlight);
-    -unity-font-style: bold;
-}
-
-/* --- Premium Volume Sliders --- */
-.settings-slider {
-    height: 24px;
-    justify-content: center;
-}
-
-.settings-slider .unity-base-slider__tracker {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-color: var(--color-border-default);
-    border-width: 1px;
-    border-radius: 0; /* Sharp corners */
-    height: 8px;
-    margin-top: -4px; /* Center vertical alignment */
-}
-
-.settings-slider .unity-base-slider__dragger {
-    background-color: var(--color-border-highlight);
-    border-color: var(--color-coin-gold);
-    border-width: 1px;
-    border-radius: 0; /* Sharp corners */
-    width: 12px;
-    height: 18px;
-    margin-top: -9px; /* Correctly center thumb vertically over track */
-    transition-duration: 0.1s;
-}
-
-.settings-slider .unity-base-slider__dragger:hover {
-    background-color: var(--color-coin-gold);
-    border-color: var(--color-text-light);
-    scale: 1.1;
-}
-
-/* --- Sleek Dropdown Fields --- */
-.settings-dropdown .unity-dropdown-field__input {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-color: var(--color-border-default);
-    border-width: 1px;
-    border-radius: 0; /* Sharp corners */
-    padding: 4px 8px;
-    color: var(--color-text-light);
-    transition-duration: 0.15s;
-}
-
-.settings-dropdown .unity-dropdown-field__input:hover {
-    border-color: var(--color-border-highlight);
-    background-color: rgba(212, 160, 23, 0.05);
-}
-
-/* --- Custom Checkbox Toggles --- */
-.settings-toggle {
-    width: 250px;
-    align-items: flex-end; /* Align checkmark container to the right */
-}
-
-.settings-toggle .unity-toggle__checkmark {
-    background-color: rgba(30, 20, 50, 0.6); /* Mystical dark purple base */
-    border-color: rgba(212, 160, 23, 0.5); /* Bright gold unchecked border outline */
-    border-width: 1.5px;
-    border-radius: 0; /* Sharp corners */
-    width: 20px;
-    height: 20px;
-    margin: 0;
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0.1); /* Hide/fade checkmark when unchecked */
-    transition-duration: 0.15s;
-}
-
-.settings-toggle:hover .unity-toggle__checkmark {
-    border-color: var(--color-border-highlight);
-    background-color: rgba(212, 160, 23, 0.15);
-}
-
-.settings-toggle .unity-toggle__checkmark:checked {
-    background-color: rgba(212, 160, 23, 0.25); /* Gold background tint */
-    border-color: var(--color-border-highlight);
-    -unity-background-image-tint-color: var(--color-coin-gold); /* Bright glowing gold checkmark! */
-}
-
-/* --- Scrollbar Custom Styling for Settings Content Panels --- */
-
-/* The main vertical scroller container */
-.settings-content .unity-scroller--vertical {
-    width: 14px;
-    background-color: transparent;
-    margin-left: 4px; 
-}
-
-/* Hide the default Unity up/down arrow buttons */
-.settings-content .unity-scroller__low-button,
-.settings-content .unity-scroller__high-button {
-    display: none;
-}
-
-/* Kill the residual gray background on the slider container */
-.settings-content .unity-scroller--vertical .unity-slider {
-    margin: 0;
-    background-color: transparent;
-}
-
-/* The background track (dark depth track) */
-.settings-content .unity-scroller--vertical .unity-base-slider__tracker {
-    background-color: rgba(0, 0, 0, 0.4);
-    border-color: var(--color-border-default);
-    border-width: 1px;
-    border-radius: 4px;
-}
-
-/* The draggable thumb (Golden highlight dragger) */
-.settings-content .unity-scroller--vertical .unity-base-slider__dragger {
-    background-color: var(--color-border-highlight);
-    border-color: var(--color-coin-gold);
-    border-width: 1px;
-    border-radius: 4px;
-    width: 10px; 
-    
-    left: auto;
-    right: auto;
-    margin-left: 0;
-    margin-right: 0;
-    align-self: center; 
-}
-
-/* Draggable thumb hover state (Bright Gold) */
-.settings-content .unity-scroller--vertical .unity-base-slider__dragger:hover {
-    background-color: var(--color-coin-gold);
-}
-
-

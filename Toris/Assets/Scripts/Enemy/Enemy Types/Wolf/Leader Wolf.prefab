@@ -335,6 +335,7 @@ MonoBehaviour:
   MovementSpeed: 3
   role: 0
   healthMultiplier: 1.75
+  startDormant: 0
   fallbackHomeRadius: 4
   pack: {fileID: -2298867679096013564}
   minimumChaseCommitmentSeconds: 0.65

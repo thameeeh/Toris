@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5598878772317553663
 Transform:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 3898751519822590366}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.78, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8600001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -284,13 +284,14 @@ GameObject:
   - component: {fileID: 8865766885898603617}
   - component: {fileID: 8752173885184601590}
   - component: {fileID: 3470949079517702298}
+  - component: {fileID: 2030386806706402943}
   m_Layer: 0
   m_Name: SmithNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8865766885898603617
 Transform:
   m_ObjectHideFlags: 0
@@ -486,6 +487,22 @@ MonoBehaviour:
   _questVariable: isSmithHaveQuest
   _questSelectionConversation: Smith
   _shopInventory: {fileID: 8752173885184601590}
+--- !u!114 &2030386806706402943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676936000085796728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0620e5145b9c6e246b8ce7d8aadcc075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestIndicatorController
+  _quests:
+  - Collect Cookie Flowers
+  _availableIndicator: {fileID: 1199751678313502918}
+  _readyToTurnInIndicator: {fileID: 3898751519822590366}
 --- !u!1 &5246256802245165336
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,8 +527,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5246256802245165336}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.83, y: 0.5899999, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

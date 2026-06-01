@@ -191,7 +191,7 @@ MonoBehaviour:
       type: 0
       typeString: 
     - title: State
-      value: unassigned
+      value: grantable
       type: 0
       typeString: 
     - title: Is Item
@@ -210,6 +210,56 @@ MonoBehaviour:
       value: True
       type: 2
       typeString: CustomFieldType_Boolean
+    - title: Entry Count
+      value: 2
+      type: 1
+      typeString: CustomFieldType_Number
+    - title: Entry 1 State
+      value: unassigned
+      type: 0
+      typeString: 
+    - title: Entry 1
+      value: Wolfs killed [var=WolfsKilled]/3
+      type: 0
+      typeString: 
+    - title: Entry 2 State
+      value: unassigned
+      type: 0
+      typeString: 
+    - title: Entry 2
+      value: Get back to Guide
+      type: 0
+      typeString: 
+  - id: 4
+    fields:
+    - title: Name
+      value: Collect Cookie Flowers
+      type: 0
+      typeString: 
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Success Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Failure Description
+      value: 
+      type: 0
+      typeString: 
+    - title: State
+      value: grantable
+      type: 0
+      typeString: 
+    - title: Is Item
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
   locations: []
   variables:
   - id: 1
@@ -217,7 +267,7 @@ MonoBehaviour:
     - title: Name
       value: isPortalUnlocked
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Initial Value
       value: False
       type: 2
@@ -225,7 +275,21 @@ MonoBehaviour:
     - title: Description
       value: 
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
+  - id: 2
+    fields:
+    - title: Name
+      value: WolfsKilled
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: Initial Value
+      value: 0
+      type: 1
+      typeString: CustomFieldType_Number
+    - title: Description
+      value: 
+      type: 0
+      typeString: CustomFieldType_Text
   conversations:
   - id: 16
     fields:
@@ -335,6 +399,12 @@ MonoBehaviour:
         destinationDialogueID: 8
         isConnector: 0
         priority: 2
+      - originConversationID: 16
+        originDialogueID: 0
+        destinationConversationID: 16
+        destinationDialogueID: 19
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -396,15 +466,16 @@ MonoBehaviour:
         destinationDialogueID: 4
         isConnector: 0
         priority: 2
-      conditionsString: 'Variable["isPortalUnlocked"]'
-      userScript: SetQuestState("Talk To Town Guide", "succeed")
+      conditionsString: Variable["isPortalUnlocked"] and (CurrentQuestEntryState("Kill
+        3 Wolves", 2) == "unassigned")
+      userScript: SetQuestState("Talk To Town Guide", "success")
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 772.5729
-        y: 160.92734
+        x: 770.93353
+        y: 159.288
         width: 160
         height: 30
     - id: 3
@@ -501,13 +572,13 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: SetQuestState("Kill 3 Wolves", "unassigned");
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 668.34033
+        x: 669.4042
         y: 240.65636
         width: 160
         height: 30
@@ -540,7 +611,11 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
-        value: SetActive(SmithNPC, true)
+        value: SetActive(Smith <-->, true)
+        type: 0
+        typeString: 
+      - title: Response Menu Sequence
+        value: 
         type: 0
         typeString: 
       conversationID: 16
@@ -551,20 +626,20 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: CurrentQuestEntryState("Kill3Wolves", 1) == "active"
-      userScript: 'SetQuestState("Talk To Smith", "active");
+      conditionsString: CurrentQuestEntryState("Kill 3 Wolves", 2) == "active"
+      userScript: 'SetQuestState("Collect Cookie Flowers", "unassigned");
 
-        CurrentQuestState("Kill3Wolves")
-        == "success"
+        SetQuestState("Kill
+        3 Wolves", "success");
 
-        var=isSmithhaveQuest == true'
+        SetQuestEntryState("Kill 3 Wolves", 2, "success");'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 785.1804
-        y: 414.0729
+        x: 839.2788
+        y: 407.51553
         width: 160
         height: 30
     - id: 9
@@ -572,11 +647,11 @@ MonoBehaviour:
       - title: Title
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Description
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Actor
         value: 2
         type: 5
@@ -588,17 +663,17 @@ MonoBehaviour:
       - title: Menu Text
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: 'Glad to hear that.
 
           Here is your mission.'
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Sequence
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 16
       isRoot: 0
       isGroup: 0
@@ -608,17 +683,17 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 'SetQuestState("Kill3Wolves", "active");
+      userScript: 'SetQuestState("Kill 3 Wolves", "active");
 
-        SetQuestEntryState("Kill3Wolves",
-        1, "active");'
+        SetQuestEntryState("Kill
+        3 Wolves", 1, "active");'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 886.1706
-        y: 331.1799
+        x: 887.80994
+        y: 332.81924
         width: 160
         height: 30
     - id: 10
@@ -672,7 +747,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 176.67824
+        x: 177.77715
         y: 162.69705
         width: 160
         height: 30
@@ -1004,7 +1079,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 274.67502
-        y: 373.07434
+        y: 372.4988
         width: 160
         height: 30
     - id: 18
@@ -1057,9 +1132,58 @@ MonoBehaviour:
         y: 464.36975
         width: 160
         height: 30
+    - id: 19
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: You prooved your worth!
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 822.5712
+        y: 488.03265
+        width: 160
+        height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 47.11048, y: 76.031}
-    canvasZoom: 0.90999997
+    canvasScrollPosition: {x: 68.852356, y: 0}
+    canvasZoom: 0.61000025
   - id: 17
     fields:
     - title: Title
@@ -1216,7 +1340,7 @@ MonoBehaviour:
         destinationDialogueID: 2
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("Talk To Smith") == "active"
+      conditionsString: CurrentQuestState("Collect Cookie Flowers") == "unassigned"
       userScript: 
       onExecute:
         m_PersistentCalls:

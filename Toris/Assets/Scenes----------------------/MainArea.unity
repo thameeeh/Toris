@@ -996,37 +996,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1110099300559700021, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1110099300559700021, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1110099300559700021, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1110099300559700021, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1110099300559700021, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1199751678313502918, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4676936000085796728, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_Name
       value: Smith <-->
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054082011774847153, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.8600001
       objectReference: {fileID: 0}
     - target: {fileID: 8865766885898603617, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1071,10 +1043,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4676936000085796728, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1880548298}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
 --- !u!1001 &755659146
 PrefabInstance:
@@ -1451,11 +1420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5a8b39e11f4d3e99ef6d6c0a5e2f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableProximity
---- !u!1 &1186221618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4676936000085796728, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
-  m_PrefabInstance: {fileID: 750314501}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1199175632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1701,13 +1665,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0620e5145b9c6e246b8ce7d8aadcc075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestIndicatorController
-  questName: 
-  questStateIndicatorLevels: []
-  questEntryStateIndicatorLevels: []
-  suppressOnEnterStateEventsOnStart: 0
-  m_questStateIndicator: {fileID: 0}
+  _quests: []
   _availableIndicator: {fileID: 0}
-  _inProgressIndicator: {fileID: 0}
   _readyToTurnInIndicator: {fileID: 0}
 --- !u!1001 &1383614956
 PrefabInstance:
@@ -3143,32 +3102,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8752173885184601590, guid: cf1c80d7b71346142ad3844f81a2daee, type: 3}
   m_PrefabInstance: {fileID: 750314501}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186221618}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41cb9c9126219b946a84f9567feae7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryManager
---- !u!114 &1880548298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186221618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0620e5145b9c6e246b8ce7d8aadcc075, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestIndicatorController
-  questName: 
-  questStateIndicatorLevels: []
-  questEntryStateIndicatorLevels: []
-  suppressOnEnterStateEventsOnStart: 0
-  m_questStateIndicator: {fileID: 0}
-  _availableIndicator: {fileID: 0}
-  _inProgressIndicator: {fileID: 0}
-  _readyToTurnInIndicator: {fileID: 0}
 --- !u!1 &1924643740
 GameObject:
   m_ObjectHideFlags: 0
@@ -3508,7 +3447,7 @@ GameObject:
   - component: {fileID: 315143156211483167}
   - component: {fileID: 7401220315737769893}
   - component: {fileID: 7401220315737769894}
-  - component: {fileID: 7401220315737769895}
+  - component: {fileID: 7401220315737769896}
   m_Layer: 0
   m_Name: Guide <-->
   m_TagString: Untagged
@@ -4135,7 +4074,7 @@ MonoBehaviour:
   _npcFactTypeOrTag: 
   _npcFactContextId: 
   _debugConversationSelection: 1
---- !u!114 &7401220315737769895
+--- !u!114 &7401220315737769896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4147,13 +4086,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0620e5145b9c6e246b8ce7d8aadcc075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestIndicatorController
-  questName: Kill 3 Wolves
-  questStateIndicatorLevels: []
-  questEntryStateIndicatorLevels: []
-  suppressOnEnterStateEventsOnStart: 1
-  m_questStateIndicator: {fileID: 0}
+  _quests:
+  - Talk To Town Guide
+  - Kill 3 Wolves
   _availableIndicator: {fileID: 2107161443}
-  _inProgressIndicator: {fileID: 0}
   _readyToTurnInIndicator: {fileID: 1220630557}
 --- !u!1 &7632093638848000752
 GameObject:

@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: MainArea Quest Fact Progress Rules
   m_EditorClassIdentifier: 
   _rules:
-  - FactType: 13
+  - FactType: 1
     ExactId: 
-    TypeOrTag: Portal
+    TypeOrTag: Wolf
     ContextId: 
-    QuestName: Talk To Town Guide
+    QuestName: Kill 3 Wolves
     RequireQuestActive: 1
-    ProgressVariableName: isPortalUnlocked
-    RequiredAmount: 1
+    ProgressVariableName: WolfsKilled
+    RequiredAmount: 3
     EntryNumber: 1
     EntryCompleteState: 4
     QuestCompleteState: 64
+    ActivateNextEntry: 1
+    NextEntryNumber: 2

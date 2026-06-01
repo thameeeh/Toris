@@ -206,6 +206,12 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
             return true;
 
         PixelCrushersQuestBridge.SetQuestEntryState(rule.QuestName, rule.EntryNumber, rule.EntryCompleteState);
+        
+        if (rule.ActivateNextEntry)
+        {
+            PixelCrushersQuestBridge.SetQuestEntryState(rule.QuestName, rule.NextEntryNumber, QuestState.Active);
+        }
+        
         PixelCrushersQuestBridge.SetQuestState(rule.QuestName, rule.QuestCompleteState);
 
 #if UNITY_EDITOR
@@ -306,6 +312,13 @@ public class PixelCrushersQuestProgressMapper : MonoBehaviour
 
         int entryNumber = Mathf.Max(1, _conventionProgress.EntryNumber);
         PixelCrushersQuestBridge.SetQuestEntryState(questName, entryNumber, _conventionProgress.EntryCompleteState);
+        
+        if (_conventionProgress.ActivateNextEntry)
+        {
+            int nextEntry = Mathf.Max(1, _conventionProgress.NextEntryNumber);
+            PixelCrushersQuestBridge.SetQuestEntryState(questName, nextEntry, QuestState.Active);
+        }
+        
         PixelCrushersQuestBridge.SetQuestState(questName, _conventionProgress.QuestCompleteState);
 
 #if UNITY_EDITOR
@@ -380,6 +393,10 @@ public class QuestFactConventionProgressSettings
     public QuestState EntryCompleteState = QuestState.Success;
     [Tooltip("State assigned to the quest when the convention variable reaches its required amount.")]
     public QuestState QuestCompleteState = QuestState.ReturnToNPC;
+    [Tooltip("If enabled, automatically activates the next quest entry upon completing this rule.")]
+    public bool ActivateNextEntry = true;
+    [Tooltip("The entry number to activate (usually current EntryNumber + 1).")]
+    [Min(1)] public int NextEntryNumber = 2;
 
     public QuestFactConventionProgressSettings Clone()
     {
@@ -390,7 +407,9 @@ public class QuestFactConventionProgressSettings
             DefaultRequiredAmount = DefaultRequiredAmount,
             EntryNumber = EntryNumber,
             EntryCompleteState = EntryCompleteState,
-            QuestCompleteState = QuestCompleteState
+            QuestCompleteState = QuestCompleteState,
+            ActivateNextEntry = ActivateNextEntry,
+            NextEntryNumber = NextEntryNumber
         };
     }
 }
@@ -425,6 +444,10 @@ public class QuestFactProgressRule
     public QuestState EntryCompleteState = QuestState.Success;
     [Tooltip("State assigned to the overall quest when the required amount is reached. Usually ReturnToNPC.")]
     public QuestState QuestCompleteState = QuestState.ReturnToNPC;
+    [Tooltip("If enabled, automatically activates the next quest entry upon completing this rule.")]
+    public bool ActivateNextEntry = true;
+    [Tooltip("The entry number to activate (usually current EntryNumber + 1).")]
+    [Min(1)] public int NextEntryNumber = 2;
 
     public string ResolvedProgressVariableName
     {

@@ -18,6 +18,7 @@ namespace OutlandHaven.Inventory
         public event Action<InventorySlot> OnLocalClicked;
         public event Action<InventorySlot> OnLocalRightClicked;
         public event Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnLocalMoveItemRequested;
+        public event Action<InventoryManager, InventorySlot, int> OnLocalDropItemRequested;
         public event Action<InventorySlot, string> OnLocalSelectForProcessingRequested;
 
         public event Action<Sprite, Vector2, Vector2> OnLocalDragStarted;
@@ -251,6 +252,10 @@ namespace OutlandHaven.Inventory
                 {
                     // It's a proxy slot
                     OnLocalSelectForProcessingRequested?.Invoke(_slotData, proxySlotID);
+                }
+                else if (_owningContainer != null && _slotData != null && !_slotData.IsEmpty)
+                {
+                    OnLocalDropItemRequested?.Invoke(_owningContainer, _slotData, _slotData.Count);
                 }
             }
             else

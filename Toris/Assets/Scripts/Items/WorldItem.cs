@@ -9,6 +9,8 @@ namespace OutlandHaven.Inventory
         [Header("Data")]
         [SerializeField] private InventoryItemSO _itemData;
         [SerializeField] private int _quantity = 1;
+        private ItemInstance _runtimeItem;
+        private bool _shouldReportPickupFact = true;
 
         [Header("Quest Facts")]
         [Tooltip("Enable to override the generic PickUp fact with custom quest details. Successful pickups always report a quest fact.")]
@@ -38,8 +40,19 @@ namespace OutlandHaven.Inventory
 
         public void Initialize(InventoryItemSO itemData, int quantity)
         {
+            _runtimeItem = null;
             _itemData = itemData;
             _quantity = Mathf.Max(1, quantity);
+            _shouldReportPickupFact = true;
+            ApplyVisuals();
+        }
+
+        public void InitializeDroppedItem(ItemInstance itemInstance, int quantity)
+        {
+            _runtimeItem = itemInstance != null ? itemInstance.Clone() : null;
+            _itemData = _runtimeItem != null ? _runtimeItem.BaseItem : null;
+            _quantity = Mathf.Max(1, quantity);
+            _shouldReportPickupFact = false;
             ApplyVisuals();
         }
 
@@ -68,14 +81,15 @@ namespace OutlandHaven.Inventory
             if (targetContainer == null) return false;
             if (_itemData == null) return false;
 
-            ItemInstance item = new ItemInstance(_itemData);
+            ItemInstance item = _runtimeItem != null ? _runtimeItem.Clone() : new ItemInstance(_itemData);
             // Attempt to add the item to the container passed in
             bool success = targetContainer.AddItem(item, _quantity);
 
             if (success)
             {
                 // Visual feedback, sound effects go here
-                ReportQuestPickUpFactIfNeeded();
+                if (_shouldReportPickupFact)
+                    ReportQuestPickUpFactIfNeeded();
 
                 // Notify world site persistence (if spawned by the procedural pipeline)
                 var siteBridge = GetComponent<CollectibleSiteBridge>();

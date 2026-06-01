@@ -213,23 +213,37 @@ public static class GameDisplaySettings
     public static void Apply(GameDisplaySettingsSnapshot settings)
     {
         GameDisplaySettingsSnapshot sanitizedSettings = Sanitize(settings);
-        MoveMainWindowToDisplay(sanitizedSettings);
+        MoveMainWindowToDisplayIfChanged(sanitizedSettings);
         ApplyResolutionAndMode(sanitizedSettings);
+    }
+
+    public static AsyncOperation MoveMainWindowToDisplayIfChanged(GameDisplaySettingsSnapshot settings)
+    {
+        GameDisplaySettingsSnapshot sanitizedSettings = Sanitize(settings);
+        // Keep the window where the player placed it unless the selected monitor changed.
+        return sanitizedSettings.DisplayIndex == ResolveCurrentDisplayIndex()
+            ? null
+            : MoveMainWindowToDisplay(sanitizedSettings);
     }
 
     public static AsyncOperation MoveMainWindowToDisplay(GameDisplaySettingsSnapshot settings)
     {
+        GameDisplaySettingsSnapshot sanitizedSettings = Sanitize(settings);
         List<DisplayInfo> displays = GetDisplayLayoutSafe();
         if (displays.Count == 0)
         {
             return null;
         }
 
-        int displayIndex = ClampDisplayIndex(settings.DisplayIndex, displays.Count);
+        int displayIndex = ClampDisplayIndex(sanitizedSettings.DisplayIndex, displays.Count);
         DisplayInfo display = displays[displayIndex];
+        Vector2Int centeredPosition = ResolveCenteredWindowPosition(
+            display,
+            ResolveOutputResolution(sanitizedSettings));
+
         try
         {
-            return Screen.MoveMainWindowTo(display, Vector2Int.zero);
+            return Screen.MoveMainWindowTo(display, centeredPosition);
         }
         catch (Exception)
         {
@@ -382,6 +396,13 @@ public static class GameDisplaySettings
         return settings.WindowMode == FullScreenMode.Windowed
             ? settings.Resolution
             : ResolveDisplayResolution(settings.DisplayIndex);
+    }
+
+    private static Vector2Int ResolveCenteredWindowPosition(DisplayInfo display, GameDisplayResolution resolution)
+    {
+        int centeredX = Mathf.Max(0, (display.width - resolution.Width) / 2);
+        int centeredY = Mathf.Max(0, (display.height - resolution.Height) / 2);
+        return new Vector2Int(centeredX, centeredY);
     }
 
     private static GameDisplayResolution ResolveDisplayResolution(int displayIndex)

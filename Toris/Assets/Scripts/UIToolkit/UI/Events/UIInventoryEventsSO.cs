@@ -31,6 +31,7 @@ namespace OutlandHaven.Inventory
         public UnityAction<InventorySlot> OnRequestEquip;
         public UnityAction<InventorySlot> OnRequestUse;
         public UnityAction<EquipmentSlot> OnRequestUnequip;
+        public System.Action<InventoryManager, InventorySlot, int> OnRequestDropItem;
         
         [Header("Drag and Drop Events")]
         public System.Action<InventoryManager, InventorySlot, InventoryManager, InventorySlot, int> OnRequestMoveItem;

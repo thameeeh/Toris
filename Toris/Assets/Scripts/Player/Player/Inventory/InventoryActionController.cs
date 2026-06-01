@@ -6,6 +6,12 @@ using OutlandHaven.UIToolkit;
 public class InventoryActionController : MonoBehaviour
 {
     private const string DefaultEquipSfxId = "ui_equip_armor";
+    private const float MinDropDirectionSqrMagnitude = 0.0001f;
+    private const float DropTriggerRadius = 0.3f;
+    private const float DropHeightOffset = 0.2f;
+    private const float DropSpriteScale = 0.8f;
+    private const int DropSortingOrder = 0;
+    private const int FallbackItemLayer = 17;
 
     [Header("Runtime References")]
     private InventoryManager _playerInventory;
@@ -17,6 +23,16 @@ public class InventoryActionController : MonoBehaviour
     [SerializeField] private PlayerStatsAnchorSO _playerStatsAnchor;
     [SerializeField] private PlayerEffectSourceController _playerEffectSourceController;
     [SerializeField] private GameSessionSO _gameSession;
+    [SerializeField] private PlayerFacing _playerFacing;
+
+    [Header("Item Dropping")]
+    [SerializeField] private Transform _dropOrigin;
+    [SerializeField] private float _dropDistance = 0.85f;
+    [SerializeField] private float _dropScatterRadius = 0.15f;
+
+    [Header("Item Drop Presentation")]
+    [SerializeField] private GameObject _dropGlowPrefab;
+    [SerializeField] private GameObject _dropShadowPrefab;
 
     [Header("SFX")]
     [SerializeField] private string equipSfxId = DefaultEquipSfxId;
@@ -48,6 +64,7 @@ public class InventoryActionController : MonoBehaviour
         _uiInventoryEvents.OnRequestEquip += HandleRequestEquip;
         _uiInventoryEvents.OnRequestUse += HandleRequestUse;
         _uiInventoryEvents.OnRequestUnequip += HandleRequestUnequip;
+        _uiInventoryEvents.OnRequestDropItem += HandleRequestDropItem;
 
         if (_inputReader != null)
         {
@@ -64,6 +81,7 @@ public class InventoryActionController : MonoBehaviour
         _uiInventoryEvents.OnRequestEquip -= HandleRequestEquip;
         _uiInventoryEvents.OnRequestUse -= HandleRequestUse;
         _uiInventoryEvents.OnRequestUnequip -= HandleRequestUnequip;
+        _uiInventoryEvents.OnRequestDropItem -= HandleRequestDropItem;
 
         if (_inputReader != null)
         {
@@ -153,6 +171,31 @@ public class InventoryActionController : MonoBehaviour
     {
         ResolveRuntimeReferences();
         TryUnequip(slot);
+    }
+
+    private void HandleRequestDropItem(InventoryManager sourceInventory, InventorySlot sourceSlot, int quantity)
+    {
+        ResolveRuntimeReferences();
+
+        if (!CanDropItem(sourceInventory, sourceSlot, quantity))
+            return;
+
+        int dropQuantity = Mathf.Min(quantity, sourceSlot.Count);
+        ItemInstance droppedItem = sourceSlot.HeldItem.Clone();
+
+        if (!TrySpawnDroppedWorldItem(droppedItem, dropQuantity))
+            return;
+
+        if (sourceSlot.Count > dropQuantity)
+        {
+            sourceSlot.DecreaseCount(dropQuantity);
+        }
+        else
+        {
+            sourceSlot.Clear();
+        }
+
+        sourceInventory.NotifyInventoryUpdated();
     }
 
     public bool TryEquipFromInventorySlot(int slotIndex)
@@ -299,6 +342,117 @@ public class InventoryActionController : MonoBehaviour
                slot.HeldItem.BaseItem.UsableBehavior != null;
     }
 
+    private bool CanDropItem(InventoryManager sourceInventory, InventorySlot sourceSlot, int quantity)
+    {
+        if (sourceInventory == null || sourceSlot == null)
+            return false;
+
+        if (sourceSlot.IsEmpty || sourceSlot.HeldItem?.BaseItem == null)
+            return false;
+
+        if (quantity <= 0 || sourceSlot.Count <= 0)
+            return false;
+
+        if (!IsPlayerOwnedInventory(sourceInventory))
+            return false;
+
+        return sourceInventory.LiveSlots != null && sourceInventory.LiveSlots.Contains(sourceSlot);
+    }
+
+    private bool IsPlayerOwnedInventory(InventoryManager inventory)
+    {
+        return inventory != null
+               && (inventory == _playerInventory
+                   || inventory == _equipmentInventory
+                   || inventory == _potionInventory);
+    }
+
+    private bool TrySpawnDroppedWorldItem(ItemInstance itemInstance, int quantity)
+    {
+        if (itemInstance == null || itemInstance.BaseItem == null || quantity <= 0)
+            return false;
+
+        Vector3 startPosition = GetDropStartPosition();
+        Vector3 landingPosition = GetDropLandingPosition();
+
+        GameObject dropObject = new GameObject($"WorldItem_{itemInstance.BaseItem.ItemName}");
+        dropObject.transform.position = landingPosition;
+        dropObject.layer = GetItemLayer();
+
+        SpriteRenderer rootRenderer = dropObject.AddComponent<SpriteRenderer>();
+        rootRenderer.enabled = false;
+
+        CircleCollider2D collider = dropObject.AddComponent<CircleCollider2D>();
+        collider.isTrigger = true;
+        collider.radius = DropTriggerRadius;
+
+        WorldItem worldItem = dropObject.AddComponent<WorldItem>();
+        SpriteRenderer itemRenderer = CreateDropItemVisual(dropObject.transform, itemInstance.BaseItem);
+        worldItem.SetVisualRenderer(itemRenderer);
+        worldItem.InitializeDroppedItem(itemInstance, quantity);
+
+        WorldItemDropPresentation presentation = dropObject.AddComponent<WorldItemDropPresentation>();
+        presentation.Initialize(
+            itemRenderer.transform,
+            collider,
+            startPosition,
+            landingPosition,
+            _dropGlowPrefab,
+            _dropShadowPrefab,
+            DropSortingOrder);
+
+        return true;
+    }
+
+    private SpriteRenderer CreateDropItemVisual(Transform parent, InventoryItemSO item)
+    {
+        GameObject visualObject = new GameObject("Visual");
+        visualObject.transform.SetParent(parent, false);
+        visualObject.transform.localScale = Vector3.one * DropSpriteScale;
+
+        SpriteRenderer itemRenderer = visualObject.AddComponent<SpriteRenderer>();
+        itemRenderer.sprite = item.Icon;
+        itemRenderer.sortingOrder = DropSortingOrder;
+        itemRenderer.spriteSortPoint = SpriteSortPoint.Pivot;
+        return itemRenderer;
+    }
+
+    private Vector3 GetDropStartPosition()
+    {
+        Transform origin = _dropOrigin != null ? _dropOrigin : transform;
+        Vector3 originPosition = origin.position;
+        return new Vector3(
+            originPosition.x,
+            originPosition.y + DropHeightOffset,
+            0f);
+    }
+
+    private Vector3 GetDropLandingPosition()
+    {
+        Transform origin = _dropOrigin != null ? _dropOrigin : transform;
+        Vector2 facing = GetDropFacingDirection();
+        Vector2 scatter = UnityEngine.Random.insideUnitCircle * Mathf.Max(0f, _dropScatterRadius);
+        Vector2 dropOffset = (facing * Mathf.Max(0f, _dropDistance)) + scatter;
+
+        Vector3 originPosition = origin.position;
+        return new Vector3(
+            originPosition.x + dropOffset.x,
+            originPosition.y + dropOffset.y,
+            0f);
+    }
+
+    private Vector2 GetDropFacingDirection()
+    {
+        Vector2 facing = _playerFacing != null ? _playerFacing.CurrentFacing : Vector2.down;
+        return facing.sqrMagnitude > MinDropDirectionSqrMagnitude ? facing.normalized : Vector2.down;
+    }
+
+    private static int GetItemLayer()
+    {
+        int itemLayer = LayerMask.NameToLayer("Item");
+        return itemLayer >= 0 ? itemLayer : FallbackItemLayer;
+    }
+
     private void EnsureConsumableController()
     {
         if (_consumableController == null)
@@ -336,6 +490,9 @@ public class InventoryActionController : MonoBehaviour
 
         if (_playerEffectSourceController == null)
             TryGetComponent(out _playerEffectSourceController);
+
+        if (_playerFacing == null)
+            TryGetComponent(out _playerFacing);
 
         _playerStatsAnchor = PlayerInventorySceneResolver.ResolvePlayerStatsAnchor(_playerStatsAnchor);
         EnsureConsumableController();

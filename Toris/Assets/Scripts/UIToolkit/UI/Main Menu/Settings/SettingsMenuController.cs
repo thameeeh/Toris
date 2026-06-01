@@ -10,6 +10,7 @@ public class SettingsMenuController : MonoBehaviour
 {
     private const int DisplayConfirmationTimeoutSeconds = 10;
     private const string DisplayConfirmationMessageFormat = "Keep these display settings?\nReverting in {0} seconds.";
+    private const string RuntimeOverlayClass = "settings-runtime-overlay";
 
     [SerializeField] private VisualTreeAsset _settingsTemplate;
     [SerializeField] private UIEventsSO _uiEvents;
@@ -114,13 +115,7 @@ public class SettingsMenuController : MonoBehaviour
         if (_settingsTemplate == null || (_mainMenuUiManager == null && _gameUiManager == null)) return;
 
         TemplateContainer settingsInstance = _settingsTemplate.Instantiate();
-
-        // RULE 3.5 FIX: Force the runtime wrapper to be a full-screen absolute overlay
-        settingsInstance.style.position = Position.Absolute;
-        settingsInstance.style.top = 0;
-        settingsInstance.style.bottom = 0;
-        settingsInstance.style.left = 0;
-        settingsInstance.style.right = 0;
+        settingsInstance.AddToClassList(RuntimeOverlayClass);
 
         settingsInstance.pickingMode = PickingMode.Ignore;
 
@@ -313,7 +308,7 @@ public class SettingsMenuController : MonoBehaviour
         RefreshDisplayControlInteractivity();
         _view.SetDisplayApplyEnabled(false);
 
-        AsyncOperation moveOperation = GameDisplaySettings.MoveMainWindowToDisplay(_pendingDisplaySettings);
+        AsyncOperation moveOperation = GameDisplaySettings.MoveMainWindowToDisplayIfChanged(_pendingDisplaySettings);
         while (moveOperation != null && !moveOperation.isDone)
         {
             yield return null;

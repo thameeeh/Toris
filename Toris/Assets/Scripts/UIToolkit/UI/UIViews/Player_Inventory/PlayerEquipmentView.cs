@@ -139,17 +139,9 @@ namespace OutlandHaven.Inventory
                 } 
             };
 
-            slotView.OnLocalRightClicked += (slot) => {
-                // The equipment system always interprets right clicks as unequips, ignoring context.
-                if (slot != null && !slot.IsEmpty) {
-                    // Find the index of this slot in the inventory
-                    int slotIndex = _equipmentInventory.LiveSlots.IndexOf(slot);
-                    if (slotIndex >= 0) {
-                        _uiInventoryEvents.OnRequestUnequip?.Invoke((EquipmentSlot)slotIndex);
-                    }
-                }
-            };
+            slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestDropItem?.Invoke(_equipmentInventory, slot, 1);
             slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
+            slotView.OnLocalDropItemRequested += (sourceContainer, sourceSlot, quantity) => _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceContainer, sourceSlot, quantity);
             slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
 
             slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);

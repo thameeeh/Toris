@@ -1,88 +1,98 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI_Toolkit/USS/Main_Menu/SettingsMenu.uss?fileID=7433441132597879392&amp;guid=a56279cc27183fe47a6de56251d1fbea&amp;type=3#SettingsMenu"/>
-    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
     <Style src="project://database/Assets/UI_Toolkit/USS/Components.uss?fileID=7433441132597879392&amp;guid=d0085ff5eb75fdd4cbe240b3b663c746&amp;type=3#Components"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/theme-variables.uss?fileID=7433441132597879392&amp;guid=3ce3b574d9cc48546bcf181900c85e05&amp;type=3#theme-variables"/>
+    <Style src="project://database/Assets/UI_Toolkit/USS/Main_Menu/SettingsMenu.uss?fileID=7433441132597879392&amp;guid=a56279cc27183fe47a6de56251d1fbea&amp;type=3#SettingsMenu"/>
     <ui:VisualElement class="settings-root">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.76);"/>
-        <ui:VisualElement name="VisualElement" class="settings-panel">
-            <ui:Label text="SETTINGS" class="panel-title settings-title"/>
-            <ui:VisualElement class="settings-tabs">
-                <ui:VisualElement name="Settings_MainTab" class="panel-tab settings-tab">
-                    <ui:Label text="Main" class="panel-tab-label"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="Settings_ControlsTab" class="panel-tab settings-tab">
-                    <ui:Label text="Controls" class="panel-tab-label"/>
+        <ui:VisualElement name="Settings_Backdrop" class="settings-backdrop"/>
+        <ui:VisualElement name="Settings_Panel" class="settings-main-container">
+            <ui:VisualElement class="settings-header-section">
+                <ui:Label text="Settings" class="settings-title"/>
+                <ui:VisualElement class="settings-tabs">
+                    <ui:VisualElement name="Settings_MainTab" class="panel-tab settings-tab">
+                        <ui:Label text="Main" class="panel-tab-label"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Settings_ControlsTab" class="panel-tab settings-tab">
+                        <ui:Label text="Controls" class="panel-tab-label"/>
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:ScrollView name="Settings_MainContent" class="settings-content">
-                <ui:Label text="Audio" class="settings-section-header"/>
-                
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Master Volume" class="stat-label"/>
-                    <ui:Slider name="Slider_MasterVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
-                </ui:VisualElement>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Music Volume" class="stat-label"/>
-                    <ui:Slider name="Slider_MusicVolume" low-value="0" high-value="1" value="0.8" class="settings-slider"/>
-                </ui:VisualElement>
+            <ui:VisualElement name="Settings_ContentPanel" class="settings-middle-panel">
+                <ui:ScrollView name="Settings_MainContent" class="settings-content">
+                    <ui:Label text="Audio" class="settings-section-header"/>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="SFX Volume" class="stat-label"/>
-                    <ui:Slider name="Slider_SFXVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
-                </ui:VisualElement>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Master Volume" class="stat-label"/>
+                        <ui:Slider name="Slider_MasterVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
+                    </ui:VisualElement>
 
-                <ui:Label text="Display" class="settings-section-header settings-section-spacing"/>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Music Volume" class="stat-label"/>
+                        <ui:Slider name="Slider_MusicVolume" low-value="0" high-value="1" value="0.8" class="settings-slider"/>
+                    </ui:VisualElement>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Monitor" class="stat-label"/>
-                    <ui:DropdownField name="Dropdown_Display" class="settings-dropdown"/>
-                </ui:VisualElement>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="SFX Volume" class="stat-label"/>
+                        <ui:Slider name="Slider_SFXVolume" low-value="0" high-value="1" value="1" class="settings-slider"/>
+                    </ui:VisualElement>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Resolution" class="stat-label"/>
-                    <ui:DropdownField name="Dropdown_Resolution" class="settings-dropdown"/>
-                </ui:VisualElement>
+                    <ui:Label text="Display" class="settings-section-header settings-section-spacing"/>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Window Mode" class="stat-label"/>
-                    <ui:DropdownField name="Dropdown_WindowMode" class="settings-dropdown"/>
-                </ui:VisualElement>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Monitor" class="stat-label"/>
+                        <ui:DropdownField name="Dropdown_Display" class="settings-dropdown"/>
+                    </ui:VisualElement>
 
-                <ui:VisualElement class="settings-action-row">
-                    <ui:Button name="Btn_ApplyDisplay" text="Apply Display" class="standard-button settings-apply-button"/>
-                </ui:VisualElement>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Resolution" class="stat-label"/>
+                        <ui:DropdownField name="Dropdown_Resolution" class="settings-dropdown"/>
+                    </ui:VisualElement>
 
-                <ui:Label text="Gameplay" class="settings-section-header settings-section-spacing"/>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Window Mode" class="stat-label"/>
+                        <ui:DropdownField name="Dropdown_WindowMode" class="settings-dropdown"/>
+                    </ui:VisualElement>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Show FPS" class="stat-label"/>
-                    <ui:Toggle name="Toggle_ShowFps" value="false" class="settings-toggle"/>
-                </ui:VisualElement>
+                    <ui:VisualElement class="settings-action-row">
+                        <ui:Button name="Btn_ApplyDisplay" text="Apply Display" class="standard-button settings-apply-button"/>
+                    </ui:VisualElement>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Loot Vacuum" class="stat-label"/>
-                    <ui:Toggle name="Toggle_LootMagnet" value="true" class="settings-toggle"/>
-                </ui:VisualElement>
+                    <ui:Label text="Gameplay" class="settings-section-header settings-section-spacing"/>
 
-                <ui:VisualElement class="settings-slider-row">
-                    <ui:Label text="Damage Numbers" class="stat-label"/>
-                    <ui:Toggle name="Toggle_DamageNumbers" value="true" class="settings-toggle"/>
-                </ui:VisualElement>
-            </ui:ScrollView>
-            <ui:ScrollView name="Settings_ControlsContent" class="settings-content">
-                <ui:Label text="Keyboard &amp; Mouse" class="settings-section-header"/>
-                <ui:Label name="Label_ControlRebindStatus" class="settings-control-status"/>
-                <ui:VisualElement name="Controls_KeyboardBindingsList" class="settings-controls-list"/>
-                <ui:VisualElement name="Controls_GamepadSection" class="settings-control-section">
-                    <ui:Label text="Controller" class="settings-section-header settings-section-spacing"/>
-                    <ui:VisualElement name="Controls_GamepadBindingsList" class="settings-controls-list"/>
-                </ui:VisualElement>
-                <ui:VisualElement class="settings-action-row">
-                    <ui:Button name="Btn_ResetAllControls" text="Reset All" class="standard-button settings-apply-button"/>
-                </ui:VisualElement>
-            </ui:ScrollView>
-            <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Show FPS" class="stat-label"/>
+                        <ui:Toggle name="Toggle_ShowFps" value="false" class="settings-toggle"/>
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Loot Vacuum" class="stat-label"/>
+                        <ui:Toggle name="Toggle_LootMagnet" value="true" class="settings-toggle"/>
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="settings-slider-row">
+                        <ui:Label text="Damage Numbers" class="stat-label"/>
+                        <ui:Toggle name="Toggle_DamageNumbers" value="true" class="settings-toggle"/>
+                    </ui:VisualElement>
+                </ui:ScrollView>
+
+                <ui:ScrollView name="Settings_ControlsContent" class="settings-content">
+                    <ui:Label text="Keyboard &amp; Mouse" class="settings-section-header"/>
+                    <ui:Label name="Label_ControlRebindStatus" class="settings-control-status"/>
+                    <ui:VisualElement name="Controls_KeyboardBindingsList" class="settings-controls-list"/>
+                    <ui:VisualElement name="Controls_GamepadSection" class="settings-control-section">
+                        <ui:Label text="Controller" class="settings-section-header settings-section-spacing"/>
+                        <ui:VisualElement name="Controls_GamepadBindingsList" class="settings-controls-list"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="settings-action-row">
+                        <ui:Button name="Btn_ResetAllControls" text="Reset All" class="standard-button settings-apply-button"/>
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="settings-footer-section">
+                <ui:Button name="Btn_Close" text="Close Settings" class="standard-button settings-close-button"/>
+            </ui:VisualElement>
+
             <ui:VisualElement name="DisplayConfirmationOverlay" class="settings-confirmation-overlay">
                 <ui:VisualElement class="settings-confirmation-panel">
                     <ui:Label text="DISPLAY CHANGES" class="settings-confirmation-title"/>

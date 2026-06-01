@@ -844,6 +844,12 @@ MonoBehaviour:
   _playerStatsAnchor: {fileID: 11400000, guid: ca55d4c8ecff29f4e841703974475460, type: 2}
   _playerEffectSourceController: {fileID: 4459608157227879889}
   _gameSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
+  _playerFacing: {fileID: 0}
+  _dropOrigin: {fileID: 0}
+  _dropDistance: 0.85
+  _dropScatterRadius: 0.15
+  _dropGlowPrefab: {fileID: 1561985148853079896, guid: c333680bd76e9d142919326cd81d1369, type: 3}
+  _dropShadowPrefab: {fileID: 719343916627612111, guid: cb0da83b83c0c5b40a546894f7af7ca8, type: 3}
   equipSfxId: ui_equip_armor
 --- !u!114 &9194752483613569355
 MonoBehaviour:

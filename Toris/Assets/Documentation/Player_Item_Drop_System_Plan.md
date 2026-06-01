@@ -23,11 +23,10 @@ It should not create a second pickup or inventory system.
 
 ## Player-Facing Rules
 
-The first pass should support three drop inputs:
+The first pass should support two drop inputs:
 
 - Drag an item outside the inventory UI: drop the whole slot quantity.
-- Press the drop hotkey while hovering an item slot: drop 1 item.
-- Press shift plus the drop hotkey while hovering an item slot: open an amount chooser, then drop the chosen amount.
+- Right-click an item slot: drop 1 item.
 
 Allowed player sources:
 
@@ -136,17 +135,10 @@ Drag-out UI use:
 _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, sourceSlot, sourceSlot.Count);
 ```
 
-Hotkey while hovering use:
+Right-click use:
 
 ```csharp
 _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, hoveredSlot, 1);
-```
-
-Shift plus hotkey use:
-
-```csharp
-// UI opens amount chooser first.
-_uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, hoveredSlot, chosenQuantity);
 ```
 
 ## Backend Owner
@@ -209,7 +201,7 @@ Add a runtime instance field:
 
 ```csharp
 private ItemInstance _runtimeItem;
-private bool _reportQuestPickupFact = true;
+private bool _shouldReportPickupFact = true;
 ```
 
 Keep the existing blueprint initializer for authored drops and enemy loot:
@@ -220,7 +212,7 @@ public void Initialize(InventoryItemSO itemData, int quantity)
     _runtimeItem = null;
     _itemData = itemData;
     _quantity = Mathf.Max(1, quantity);
-    _reportQuestPickupFact = true;
+    _shouldReportPickupFact = true;
     ApplyVisuals();
 }
 ```
@@ -233,7 +225,7 @@ public void InitializeDroppedItem(ItemInstance itemInstance, int quantity)
     _runtimeItem = itemInstance != null ? itemInstance.Clone() : null;
     _itemData = _runtimeItem != null ? _runtimeItem.BaseItem : null;
     _quantity = Mathf.Max(1, quantity);
-    _reportQuestPickupFact = false;
+    _shouldReportPickupFact = false;
     ApplyVisuals();
 }
 ```
@@ -271,7 +263,7 @@ For first pass:
 Implementation idea:
 
 ```csharp
-if (_reportQuestPickupFact)
+if (_shouldReportPickupFact)
 {
     ReportQuestPickUpFactIfNeeded();
 }
@@ -312,8 +304,7 @@ The backend should not care why the drop was requested. It should only receive a
 Quantity should be chosen by the caller:
 
 - drag outside inventory: `sourceSlot.Count`
-- hotkey while hovering: `1`
-- shift plus hotkey while hovering: amount chooser result
+- right-click: `1`
 
 The backend still clamps and validates the requested quantity before dropping.
 
@@ -327,6 +318,8 @@ Recommended serialized fields:
 [SerializeField] private Transform _dropOrigin;
 [SerializeField] private float _dropDistance = 0.85f;
 [SerializeField] private float _dropScatterRadius = 0.2f;
+[SerializeField] private GameObject _dropGlowPrefab;
+[SerializeField] private GameObject _dropShadowPrefab;
 ```
 
 Position rule:
@@ -335,6 +328,7 @@ Position rule:
 - Otherwise use the player transform position.
 - Add a small offset in the player's facing direction.
 - Add tiny random scatter so repeated drops do not stack exactly.
+- Assign the same glow/shadow prefabs used by enemy loot to `_dropGlowPrefab` and `_dropShadowPrefab`.
 
 If facing direction is awkward to access, use the player interaction point or last non-zero movement direction as the first-pass facing source.
 
@@ -382,10 +376,13 @@ The player drop version can be much smaller:
 
 - create `GameObject`
 - set layer to `Item`
-- add `SpriteRenderer`
+- add disabled root `SpriteRenderer`
+- add child `Visual` with the item sprite
 - add `CircleCollider2D`
 - add `WorldItem`
+- call `SetVisualRenderer()` with the child visual renderer
 - initialize from cloned `ItemInstance`
+- add `WorldItemDropPresentation`
 - do not add `WorldItemMagnet`
 
 Longer term, enemy loot and player drop spawning could share a `WorldItemSpawnFactory`, but that is not required for the first pass.
@@ -450,19 +447,18 @@ _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, sourceSlot, source
 Input mapping:
 
 - drag-out should call the event with the full slot count
-- normal hotkey should call the event with `1`
-- shift plus hotkey should open amount selection first, then call the event with the selected amount
+- right-click should call the event with `1`
 
 ## First Pass Acceptance Checklist
 
 - Dropping an empty slot does nothing.
 - Dragging outside inventory drops the full slot quantity.
-- Hotkey while hovering drops 1 item.
-- Shift plus hotkey while hovering drops the selected amount.
+- Right-clicking a player-owned slot drops 1 item.
 - Dropping a partial stack leaves the remaining quantity in the original slot.
 - Dropping a non-stackable item clears only that slot.
 - Dropping from backpack, potion slots, and equipment slots works.
 - Dropped item appears in the world with the correct sprite.
+- Dropped item uses the same arc/bob presentation component as enemy loot.
 - Dropped item does not instantly return to the player inventory.
 - Player-dropped items do not use `WorldItemMagnet`.
 - Player can pick the dropped item back up with the existing pickup input.
@@ -478,9 +474,9 @@ Input mapping:
 2. Add `OnRequestDropItem` to `UIInventoryEventsSO`.
 3. Add backend drop handling in `InventoryActionController` or a new `PlayerItemDropController`.
 4. Add world item spawn helper.
-5. Omit `WorldItemMagnet` from player drops.
-6. Wire drag-out, hotkey, and shift-hotkey UI actions to the event.
-7. Test full-stack, one-item, selected-amount, equipment, potion, and non-stackable drops.
+5. Add `WorldItemDropPresentation` without `WorldItemMagnet`.
+6. Wire drag-out and right-click UI actions to the event.
+7. Test full-stack, one-item, equipment, potion, and non-stackable drops.
 
 ## Future Improvements
 

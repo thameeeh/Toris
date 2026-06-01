@@ -144,12 +144,14 @@ namespace OutlandHaven.UIToolkit
 
             var slotView = new InventorySlotView(slotInstance, _potionInventory, _uiInventoryEvents);
 
-            // Important: Right click on HUD also uses the potion
-            slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestUse?.Invoke(slot);
-            
             // Drag and drop support on HUD
+            slotView.OnLocalRightClicked += (slot) =>
+                _uiInventoryEvents.OnRequestDropItem?.Invoke(_potionInventory, slot, 1);
+
             slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => 
                 _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
+            slotView.OnLocalDropItemRequested += (sourceContainer, sourceSlot, quantity) =>
+                _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceContainer, sourceSlot, quantity);
 
             slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
             slotView.OnLocalDragUpdated += (pos) => _uiInventoryEvents.OnGlobalDragUpdated?.Invoke(pos);

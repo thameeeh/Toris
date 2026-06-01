@@ -179,6 +179,7 @@ namespace OutlandHaven.Inventory
                 slotView.OnLocalClicked += (slot) => _uiInventoryEvents.OnItemClicked?.Invoke(slot);
                 slotView.OnLocalRightClicked += HandleMainInventoryRightClick;
                 slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
+                slotView.OnLocalDropItemRequested += (sourceContainer, sourceSlot, quantity) => _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceContainer, sourceSlot, quantity);
                 slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);
 
                 slotView.OnLocalDragStarted += (sprite, pos, size) => _uiInventoryEvents.OnGlobalDragStarted?.Invoke(sprite, pos, size);
@@ -281,14 +282,7 @@ namespace OutlandHaven.Inventory
                     if (dataSlot == null || dataSlot.IsEmpty || dataSlot.HeldItem?.BaseItem == null)
                         return;
 
-                    if (dataSlot.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null)
-                    {
-                        _uiInventoryEvents.OnRequestUse?.Invoke(dataSlot);
-                    }
-                    else if (dataSlot.HeldItem.BaseItem.GetComponent<EquipableComponent>() != null)
-                    {
-                        _uiInventoryEvents.OnRequestEquip?.Invoke(dataSlot);
-                    }
+                    _uiInventoryEvents.OnRequestDropItem?.Invoke(_gameSession.PlayerInventory, dataSlot, 1);
                     break;
             }
         }

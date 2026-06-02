@@ -151,6 +151,7 @@ public class BloodMageAttackSO : AttackSOBase<BloodMage>
             bubbleKnockback,
             enemy.ProjectileIgnoreColliders,
             enemy.AggroTarget,
+            enemy.gameObject,
             enemy.name);
 
 #if UNITY_EDITOR

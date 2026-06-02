@@ -18,6 +18,7 @@ public class BloodMageBubbleSpell : Projectile
     private ContactFilter2D _contactFilter;
     private Collider2D[] _ignoredOwnerColliders;
     private IEnemyAggroTarget _intendedTarget;
+    private GameObject _damageSource;
 #if UNITY_EDITOR
     private string _debugOwnerName;
 #endif
@@ -51,6 +52,7 @@ public class BloodMageBubbleSpell : Projectile
 
         _ignoredOwnerColliders = null;
         _intendedTarget = null;
+        _damageSource = null;
 #if UNITY_EDITOR
         _debugOwnerName = string.Empty;
 #endif
@@ -68,6 +70,7 @@ public class BloodMageBubbleSpell : Projectile
 
         _ignoredOwnerColliders = null;
         _intendedTarget = null;
+        _damageSource = null;
 #if UNITY_EDITOR
         _debugOwnerName = string.Empty;
 #endif
@@ -95,6 +98,7 @@ public class BloodMageBubbleSpell : Projectile
         float knockback,
         Collider2D[] ownerColliders = null,
         IEnemyAggroTarget intendedTarget = null,
+        GameObject damageSource = null,
         string debugOwnerName = null)
     {
         transform.position = targetPosition;
@@ -104,6 +108,7 @@ public class BloodMageBubbleSpell : Projectile
         _knockback = knockback;
         _ignoredOwnerColliders = ownerColliders;
         _intendedTarget = intendedTarget;
+        _damageSource = damageSource != null ? damageSource : gameObject;
 #if UNITY_EDITOR
         _debugOwnerName = debugOwnerName;
         Debug.Log(
@@ -177,7 +182,8 @@ public class BloodMageBubbleSpell : Projectile
             if (hitDirection.sqrMagnitude <= MinDirectionSqr)
                 hitDirection = Vector2.zero;
 
-            HitData hitData = new HitData(origin, hitDirection, _damage, _knockback, gameObject, bypassPlayerIFrames);
+            GameObject hitSource = _damageSource != null ? _damageSource : gameObject;
+            HitData hitData = new HitData(origin, hitDirection, _damage, _knockback, hitSource, bypassPlayerIFrames);
 #if UNITY_EDITOR
             Debug.Log(
                 $"[EnemyAttack:BloodMageBubble:{name}:{GetInstanceID()}] Hit {GetDebugTargetSummary(damageTarget)} " +

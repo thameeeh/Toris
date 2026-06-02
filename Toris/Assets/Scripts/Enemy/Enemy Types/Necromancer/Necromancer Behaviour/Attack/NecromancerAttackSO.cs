@@ -502,6 +502,7 @@ public class NecromancerAttackSO : AttackSOBase<Necromancer>
             spellProjectileKnockback,
             enemy.ProjectileIgnoreColliders,
             enemy.AggroTarget,
+            enemy.gameObject,
             enemy.name);
 
 #if UNITY_EDITOR

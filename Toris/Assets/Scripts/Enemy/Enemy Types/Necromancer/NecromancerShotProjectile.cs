@@ -31,6 +31,7 @@ public class NecromancerShotProjectile : Projectile
 
     private Collider2D[] _ignoredOwnerColliders;
     private IEnemyAggroTarget _intendedTarget;
+    private GameObject _damageSource;
 #if UNITY_EDITOR
     private string _debugOwnerName;
 #endif
@@ -110,6 +111,7 @@ public class NecromancerShotProjectile : Projectile
 
         _ignoredOwnerColliders = null;
         _intendedTarget = null;
+        _damageSource = null;
 #if UNITY_EDITOR
         _debugOwnerName = string.Empty;
 #endif
@@ -138,6 +140,7 @@ public class NecromancerShotProjectile : Projectile
 
         _ignoredOwnerColliders = null;
         _intendedTarget = null;
+        _damageSource = null;
 #if UNITY_EDITOR
         _debugOwnerName = string.Empty;
 #endif
@@ -172,6 +175,7 @@ public class NecromancerShotProjectile : Projectile
         float knockback,
         Collider2D[] ownerColliders = null,
         IEnemyAggroTarget intendedTarget = null,
+        GameObject damageSource = null,
         string debugOwnerName = null)
     {
         _damage = damage;
@@ -182,6 +186,7 @@ public class NecromancerShotProjectile : Projectile
         _spawnPosition = transform.position;
         _ignoredOwnerColliders = ownerColliders;
         _intendedTarget = intendedTarget;
+        _damageSource = damageSource != null ? damageSource : gameObject;
 #if UNITY_EDITOR
         _debugOwnerName = debugOwnerName;
         Debug.Log(
@@ -257,12 +262,13 @@ public class NecromancerShotProjectile : Projectile
             : transform.position;
 
         Vector2 hitDirection = GetCurrentTravelDirection(targetPosition);
+        GameObject hitSource = _damageSource != null ? _damageSource : gameObject;
         HitData hitData = new HitData(
             origin,
             hitDirection,
             damageAmount,
             knockbackAmount,
-            gameObject,
+            hitSource,
             bypassIFrames,
             showDamageNumber);
 #if UNITY_EDITOR

@@ -19,11 +19,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 16c68d7b8551fe84aa32782a2b6abb45, type: 3}
   - {fileID: 8300000, guid: c8905b39c36a78349abcd30a948cf052, type: 3}
   outputMixerGroup: {fileID: 0}
-  volumeMin: 0.55
-  volumeMax: 0.75
+  volumeMin: 0.8
+  volumeMax: 1
   pitchMin: 0.9
   pitchMax: 1.1
   spatialBlend: 0
+  rolloffMode: 0
   minDistance: 1
   maxDistance: 25
   maxSimultaneousInstances: 8

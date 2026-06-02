@@ -16,11 +16,12 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 10e272f2b686ed34a807d6d738316a51, type: 3}
   outputMixerGroup: {fileID: 0}
-  volumeMin: 1
-  volumeMax: 1
+  volumeMin: 1.15
+  volumeMax: 1.25
   pitchMin: 1
   pitchMax: 1
   spatialBlend: 1
+  rolloffMode: 0
   minDistance: 1
   maxDistance: 25
   maxSimultaneousInstances: 8

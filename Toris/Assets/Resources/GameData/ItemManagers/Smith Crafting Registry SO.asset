@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: faae6b68d7a24dd8a6dbef578d2f019f, type: 2}
   - {fileID: 11400000, guid: b08199c3d90a4f1884d8390fad8e0e54, type: 2}
   - {fileID: 11400000, guid: f37d75bf72a5483793c2d9135f54e029, type: 2}
+  - {fileID: 11400000, guid: 165b7465a5d244649b921d52ea71611a, type: 2}
   SalvageRecipes:
   - {fileID: 11400000, guid: a621d8134d4d4cf0a55f74e507ae6021, type: 2}
   - {fileID: 11400000, guid: bd7b51c0eb9f48c89d3be28d7e8501df, type: 2}
@@ -41,3 +42,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 47bb7983de724f3d8f5dfd3d676f245d, type: 2}
   - {fileID: 11400000, guid: 282ec9ac1a3045ef801e55e403ee2a5f, type: 2}
   - {fileID: 11400000, guid: 1f5657a2ca874424908b3dd0b7030e8f, type: 2}
+  - {fileID: 11400000, guid: bfa5819a8ec3e7c48aab8559c89f27b6, type: 2}

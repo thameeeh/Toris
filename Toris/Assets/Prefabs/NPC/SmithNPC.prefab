@@ -285,13 +285,14 @@ GameObject:
   - component: {fileID: 8752173885184601590}
   - component: {fileID: 3470949079517702298}
   - component: {fileID: 2030386806706402943}
+  - component: {fileID: 6894182197186028489}
   m_Layer: 0
   m_Name: SmithNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8865766885898603617
 Transform:
   m_ObjectHideFlags: 0
@@ -325,6 +326,12 @@ MonoBehaviour:
   SaveID: Smith_Shop_Inventory
   ContainerBlueprint: {fileID: 11400000, guid: eda49e115f94b5b41ac113067cc612b5, type: 2}
   LiveSlots:
+  - HeldItem:
+      InstanceID: 4f47d90f-6dac-4e0a-ae14-245e0a76e67f
+      BaseItem: {fileID: 11400000, guid: 712e3a625d05aff48ab172405722057f, type: 2}
+      States: []
+    Count: 10
+    AllowedFilter: -1
   - HeldItem:
       InstanceID: smith_training_bow
       BaseItem: {fileID: 11400000, guid: 7ee7e7b1e3e64ad69d4d8bfb3a1bc234, type: 2}
@@ -448,12 +455,6 @@ MonoBehaviour:
       States: []
     Count: 0
     AllowedFilter: -1
-  - HeldItem:
-      InstanceID: 4f47d90f-6dac-4e0a-ae14-245e0a76e67f
-      BaseItem: {fileID: 0}
-      States: []
-    Count: 0
-    AllowedFilter: -1
   _uiInventoryEvents: {fileID: 11400000, guid: d33b7d82fabf1524d8fb6f6ceea43669, type: 2}
   GlobalSession: {fileID: 11400000, guid: 375230783c43f814db289d47d0317cc4, type: 2}
   references:
@@ -501,8 +502,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestIndicatorController
   _quests:
   - Collect Cookie Flowers
+  - Craft Cookies
+  - Cookies Made
   _availableIndicator: {fileID: 1199751678313502918}
   _readyToTurnInIndicator: {fileID: 3898751519822590366}
+--- !u!114 &6894182197186028489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676936000085796728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d64df9ae68abb4cbf300902db1f560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestStateActiveSwitch
+  _targetObject: {fileID: 4676936000085796728}
+  _evaluateOnStart: 1
+  _evaluateOnQuestChanges: 1
+  _condition:
+    luaConditions: []
+    questConditions:
+    - questName: Kill 3 Wolves
+      questState: 4
+      checkQuestEntry: 0
+      entryNumber: 0
+      questEntryState: 0
+    acceptedTags: []
+    acceptedGameObjects: []
+    luaWizardIndex: -1
+    lastEvaluationValue: 0
 --- !u!1 &5246256802245165336
 GameObject:
   m_ObjectHideFlags: 0

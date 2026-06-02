@@ -167,6 +167,7 @@ namespace OutlandHaven.Inventory
                 return false; // Safely abort without corrupting data
             }
 
+            int addedQuantity = quantity;
             bool isStackable = itemInstance.BaseItem.MaxStackSize > 1;
 
             // 2. We know it fits. If it's stackable, try to fill existing stacks first.
@@ -211,6 +212,20 @@ namespace OutlandHaven.Inventory
                         }
 
                         if (quantity <= 0) break;
+                    }
+                }
+            }
+
+            // 🚀 Special Dialogue System Track: If a Cookie is added to the backpack, increment the CraftedCookies Lua variable.
+            if (IsPlayerBackpackContainer() && itemInstance.BaseItem != null)
+            {
+                if (itemInstance.BaseItem.ItemName == "Cookie")
+                {
+                    if (PixelCrushers.DialogueSystem.DialogueManager.hasInstance)
+                    {
+                        int currentCount = PixelCrushers.DialogueSystem.DialogueLua.GetVariable("CraftedCookies").asInt;
+                        PixelCrushers.DialogueSystem.DialogueLua.SetVariable("CraftedCookies", currentCount + addedQuantity);
+                        PixelCrushers.DialogueSystem.DialogueManager.SendUpdateTracker();
                     }
                 }
             }

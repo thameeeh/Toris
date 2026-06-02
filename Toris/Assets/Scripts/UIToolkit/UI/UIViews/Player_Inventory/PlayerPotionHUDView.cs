@@ -130,9 +130,11 @@ namespace OutlandHaven.Inventory
             var slotView = new InventorySlotView(slotInstance, _potionInventory, _uiInventoryEvents);
 
             // Hotbar items are for display and quick-action, but we still support drag-and-drop to it
-            slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestDropItem?.Invoke(_potionInventory, slot, 1);
             slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
             slotView.OnLocalDropItemRequested += (sourceContainer, sourceSlot, quantity) => _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceContainer, sourceSlot, quantity);
+
+            // Allow right-click usage from the HUD too
+            slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestUse?.Invoke(slot);
 
             slotView.Update(slotData);
 

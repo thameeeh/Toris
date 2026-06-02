@@ -282,7 +282,14 @@ namespace OutlandHaven.Inventory
                     if (dataSlot == null || dataSlot.IsEmpty || dataSlot.HeldItem?.BaseItem == null)
                         return;
 
-                    _uiInventoryEvents.OnRequestDropItem?.Invoke(_gameSession.PlayerInventory, dataSlot, 1);
+                    if (dataSlot.HeldItem.BaseItem.GetComponent<ConsumableComponent>() != null)
+                    {
+                        _uiInventoryEvents.OnRequestUse?.Invoke(dataSlot);
+                    }
+                    else if (dataSlot.HeldItem.BaseItem.GetComponent<EquipableComponent>() != null)
+                    {
+                        _uiInventoryEvents.OnRequestEquip?.Invoke(dataSlot);
+                    }
                     break;
             }
         }

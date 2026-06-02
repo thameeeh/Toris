@@ -120,7 +120,6 @@ namespace OutlandHaven.Inventory
 
             var slotView = new InventorySlotView(slotInstance, _potionInventory, _uiInventoryEvents);
 
-            slotView.OnLocalRightClicked += (slot) => _uiInventoryEvents.OnRequestDropItem?.Invoke(_potionInventory, slot, 1);
             slotView.OnLocalMoveItemRequested += (sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove) => _uiInventoryEvents.OnRequestMoveItem?.Invoke(sourceContainer, sourceSlot, targetContainer, targetSlot, amountToMove);
             slotView.OnLocalDropItemRequested += (sourceContainer, sourceSlot, quantity) => _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceContainer, sourceSlot, quantity);
             slotView.OnLocalSelectForProcessingRequested += (slot, proxyID) => _uiInventoryEvents.OnRequestSelectForProcessing?.Invoke(slot, proxyID);

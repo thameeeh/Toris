@@ -23,10 +23,9 @@ It should not create a second pickup or inventory system.
 
 ## Player-Facing Rules
 
-The first pass should support two drop inputs:
+The first pass should support one drop input:
 
 - Drag an item outside the inventory UI: drop the whole slot quantity.
-- Right-click an item slot: drop 1 item.
 
 Allowed player sources:
 
@@ -133,12 +132,6 @@ Drag-out UI use:
 
 ```csharp
 _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, sourceSlot, sourceSlot.Count);
-```
-
-Right-click use:
-
-```csharp
-_uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, hoveredSlot, 1);
 ```
 
 ## Backend Owner
@@ -304,7 +297,6 @@ The backend should not care why the drop was requested. It should only receive a
 Quantity should be chosen by the caller:
 
 - drag outside inventory: `sourceSlot.Count`
-- right-click: `1`
 
 The backend still clamps and validates the requested quantity before dropping.
 
@@ -447,13 +439,11 @@ _uiInventoryEvents.OnRequestDropItem?.Invoke(sourceInventory, sourceSlot, source
 Input mapping:
 
 - drag-out should call the event with the full slot count
-- right-click should call the event with `1`
 
 ## First Pass Acceptance Checklist
 
 - Dropping an empty slot does nothing.
 - Dragging outside inventory drops the full slot quantity.
-- Right-clicking a player-owned slot drops 1 item.
 - Dropping a partial stack leaves the remaining quantity in the original slot.
 - Dropping a non-stackable item clears only that slot.
 - Dropping from backpack, potion slots, and equipment slots works.
@@ -475,8 +465,8 @@ Input mapping:
 3. Add backend drop handling in `InventoryActionController` or a new `PlayerItemDropController`.
 4. Add world item spawn helper.
 5. Add `WorldItemDropPresentation` without `WorldItemMagnet`.
-6. Wire drag-out and right-click UI actions to the event.
-7. Test full-stack, one-item, equipment, potion, and non-stackable drops.
+6. Wire drag-out UI actions to the event.
+7. Test full-stack, equipment, potion, and non-stackable drops.
 
 ## Future Improvements
 

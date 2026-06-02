@@ -58,7 +58,7 @@ MonoBehaviour:
       type: 0
       typeString: 
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: -6358332656303933714, guid: 5abeb4969ebc06d4d92975dc097eb1f2, type: 3}
     alternatePortraits: []
     spritePortraits: []
   - id: 2
@@ -102,7 +102,29 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: -3977378887079403499, guid: 25033ae8f1fc2b14bb18e8243ae349d2, type: 3}
+    alternatePortraits: []
+    spritePortraits: []
+  - id: 4
+    fields:
+    - title: Name
+      value: Sage
+      type: 0
+      typeString: 
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: 
+      type: 0
+      typeString: CustomFieldType_Text
+    - title: IsPlayer
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    portrait: {fileID: 0}
+    spritePortrait: {fileID: 7797193734266067756, guid: c1e84015ea156c34f90d9b922171b249, type: 3}
     alternatePortraits: []
     spritePortraits: []
   items:
@@ -490,6 +512,20 @@ MonoBehaviour:
       value: 
       type: 0
       typeString: CustomFieldType_Text
+  - id: 6
+    fields:
+    - title: Name
+      value: isSageHaveQuest
+      type: 0
+      typeString: 
+    - title: Initial Value
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
   conversations:
   - id: 16
     fields:
@@ -1385,8 +1421,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 413.93063, y: 94.25966}
-    canvasZoom: 1.03
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 0.6100003
   - id: 17
     fields:
     - title: Title
@@ -1562,7 +1598,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
+        x: 161.06384
         y: 80
         width: 160
         height: 30
@@ -1719,7 +1755,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 195.74469
-        y: 275
+        y: 277.12766
         width: 160
         height: 30
     - id: 5
@@ -1828,16 +1864,16 @@ MonoBehaviour:
         SetQuestState("Craft Cookies", "success");
 
         SetQuestState("Cookies
-        Made", "active");
+        Made", "returnToNPC");
 
-        SetQuestEntryState("Cookies Made", 1, "active")'
+        SetQuestEntryState("Cookies Made", 1, "active");'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 428.68085
-        y: 149.02127
+        x: 425.48938
+        y: 171.3617
         width: 160
         height: 30
     - id: 7
@@ -1863,7 +1899,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: make some cookies
+        value: Now you know how to use the Salvage and Craft. Go to the sage it will
+          show you about the abilities that are going to be useful in the battle.
         type: 0
         typeString: 
       - title: Sequence
@@ -1881,19 +1918,29 @@ MonoBehaviour:
       conditionsString: Variable["CraftedCookies"] >= 2
       userScript: 'TorisGiveItem("Flour", 5);
 
-        SetQuestState("Cookies Made",
-        "succeed");
+        SetQuestState("Craft Cookies",
+        "success");
 
-        SetQuestEntryState("Cookies Made", 1, "succeed");
+        SetQuestState("Collect Cookie Flowers", "success");
+
+        SetQuestEntryState("Cookies
+        Made", 1, "success");
+
+        SetQuestState("Cookies Made", "success");
 
         SetQuestState("Talk
-        to Sage", "unassigned")'
+        to Sage", "unassigned");
+
+        Variable["isSmithHaveQuest"] = false;
+
+        Variable["isSageHaveQuest"]
+        = true;'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 683.40424
+        x: 687.65955
         y: 82.127655
         width: 160
         height: 30
@@ -2101,14 +2148,16 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: 'TorisGiveSP(3);
+
+        SetQuestState("Talk to Sage", "success")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 94
-        y: 152
+        x: 98
+        y: 153
         width: 160
         height: 30
     - id: 3
@@ -2309,7 +2358,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: TorisGiveSP(3);
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -2356,7 +2405,13 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 19
+        originDialogueID: 2
+        destinationConversationID: 19
+        destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -2366,6 +2421,55 @@ MonoBehaviour:
         serializedVersion: 2
         x: 269
         y: 104
+        width: 160
+        height: 30
+    - id: 3
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 19
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 268
+        y: 154
         width: 160
         height: 30
     entryGroups: []

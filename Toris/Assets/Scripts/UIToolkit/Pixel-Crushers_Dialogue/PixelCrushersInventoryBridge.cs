@@ -24,6 +24,10 @@ public class PixelCrushersInventoryBridge : MonoBehaviour
     private const string GiveGoldFuncName = "TorisGiveGold";
     private const string TakeGoldFuncName = "TorisTakeGold";
 
+    private const string GetSPFuncName = "TorisGetSP";
+    private const string GiveSPFuncName = "TorisGiveSP";
+    private const string TakeSPFuncName = "TorisTakeSP";
+
     [Header("Item Database Reference")]
     [Tooltip("The database containing all items, used to map string IDs from dialogue to actual Item ScriptableObjects.")]
     [SerializeField] private ItemDatabaseSO _itemDatabase;
@@ -45,7 +49,12 @@ public class PixelCrushersInventoryBridge : MonoBehaviour
         Lua.RegisterFunction(GiveGoldFuncName, this, SymbolExtensions.GetMethodInfo(() => TorisGiveGold(0D)));
         Lua.RegisterFunction(TakeGoldFuncName, this, SymbolExtensions.GetMethodInfo(() => TorisTakeGold(0D)));
 
-        LogDebug("Registered all Toris Inventory and Gold Lua functions successfully.");
+        // Register Skill Point Lua Functions
+        Lua.RegisterFunction(GetSPFuncName, this, SymbolExtensions.GetMethodInfo(() => TorisGetSP()));
+        Lua.RegisterFunction(GiveSPFuncName, this, SymbolExtensions.GetMethodInfo(() => TorisGiveSP(0D)));
+        Lua.RegisterFunction(TakeSPFuncName, this, SymbolExtensions.GetMethodInfo(() => TorisTakeSP(0D)));
+
+        LogDebug("Registered all Toris Inventory, Gold, and SP Lua functions successfully.");
     }
 
     private void OnDisable()
@@ -60,7 +69,11 @@ public class PixelCrushersInventoryBridge : MonoBehaviour
         Lua.UnregisterFunction(GiveGoldFuncName);
         Lua.UnregisterFunction(TakeGoldFuncName);
 
-        LogDebug("Unregistered all Toris Inventory and Gold Lua functions.");
+        Lua.UnregisterFunction(GetSPFuncName);
+        Lua.UnregisterFunction(GiveSPFuncName);
+        Lua.UnregisterFunction(TakeSPFuncName);
+
+        LogDebug("Unregistered all Toris Inventory, Gold, and SP Lua functions.");
     }
 
     #region Lua Inventory Interface
@@ -244,6 +257,78 @@ public class PixelCrushersInventoryBridge : MonoBehaviour
         bool success = progression.TrySpendGold(goldToSpend);
         LogDebug($"TorisTakeGold transaction: spend={goldToSpend} -> Success={success}, new total={progression.CurrentGold}");
         return success;
+    }
+
+    #endregion
+
+    #region Lua Skill Points Interface
+
+    /// <summary>
+    /// Gets the current amount of available skill points (SP) the player has.
+    /// Usage in Lua: TorisGetSP()
+    /// </summary>
+    public double TorisGetSP()
+    {
+        GameSessionSO session = GameSessionSO.LoadDefault();
+        if (session == null || session.PlayerSkills == null)
+        {
+            LogWarning("TorisGetSP failed: GameSession or SkillTracker cannot be resolved.");
+            return 0D;
+        }
+
+        double sp = session.PlayerSkills.AvailableSP;
+        LogDebug($"TorisGetSP: current available SP={sp}");
+        return sp;
+    }
+
+    /// <summary>
+    /// Adds a quantity of Skill Points (SP) to the player's available pool.
+    /// Usage in Lua: TorisGiveSP(3)
+    /// </summary>
+    public bool TorisGiveSP(double amount)
+    {
+        int spToAdd = Mathf.Max(0, Mathf.RoundToInt((float)amount));
+        if (spToAdd <= 0) return true;
+
+        GameSessionSO session = GameSessionSO.LoadDefault();
+        if (session == null || session.PlayerSkills == null)
+        {
+            LogWarning("TorisGiveSP failed: GameSession or SkillTracker cannot be resolved.");
+            return false;
+        }
+
+        session.PlayerSkills.AddSP(spToAdd);
+        LogDebug($"TorisGiveSP transaction: added={spToAdd}, new total={session.PlayerSkills.AvailableSP}");
+        return true;
+    }
+
+    /// <summary>
+    /// Deducts a quantity of Skill Points (SP) from the player's available pool.
+    /// Returns false if the player doesn't have enough SP.
+    /// Usage in Lua: TorisTakeSP(1)
+    /// </summary>
+    public bool TorisTakeSP(double amount)
+    {
+        int spToSpend = Mathf.Max(0, Mathf.RoundToInt((float)amount));
+        if (spToSpend <= 0) return true;
+
+        GameSessionSO session = GameSessionSO.LoadDefault();
+        if (session == null || session.PlayerSkills == null)
+        {
+            LogWarning("TorisTakeSP failed: GameSession or SkillTracker cannot be resolved.");
+            return false;
+        }
+
+        if (session.PlayerSkills.AvailableSP < spToSpend)
+        {
+            LogWarning($"TorisTakeSP failed: Insufficient SP. Need {spToSpend}, have {session.PlayerSkills.AvailableSP}.");
+            return false;
+        }
+
+        // Subtract SP. SkillTracker doesn't have a direct Subtract method, but we can do AddSP(-amount)
+        session.PlayerSkills.AddSP(-spToSpend);
+        LogDebug($"TorisTakeSP transaction: spent={spToSpend}, new total={session.PlayerSkills.AvailableSP}");
+        return true;
     }
 
     #endregion

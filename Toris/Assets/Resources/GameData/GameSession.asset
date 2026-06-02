@@ -17,5 +17,7 @@ MonoBehaviour:
   GameplayStatistics: {fileID: 11400000, guid: ef87d7c11a388f04388e74cdb8557bf7, type: 2}
   targetSpawnPointID: 
   _playerSkills:
-    _availableSP: 10
+    _availableSP: 1
     _unlockedSkillIDs: []
+  _tutorialsEnabled: 1
+  _prologueCompleted: 0

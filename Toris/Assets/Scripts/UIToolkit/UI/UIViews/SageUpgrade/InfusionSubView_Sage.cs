@@ -243,7 +243,7 @@ namespace OutlandHaven.UIToolkit
         {
             if (_selectedSlot == null || _selectedSlot.IsEmpty)
             {
-                if (_weaponNameLabel != null) _weaponNameLabel.text = "Select a weapon from inventory";
+                if (_weaponNameLabel != null) _weaponNameLabel.text = "Select a weapon";
                 if (_levelBeforeLabel != null) _levelBeforeLabel.text = "-";
                 if (_levelAfterLabel != null) _levelAfterLabel.text = "-";
                 if (_statBeforeLabel != null) _statBeforeLabel.text = "-";

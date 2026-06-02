@@ -1436,7 +1436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1199175633
 Transform:
   m_ObjectHideFlags: 0
@@ -1613,6 +1613,7 @@ GameObject:
   - component: {fileID: 1311066356}
   - component: {fileID: 1311066355}
   - component: {fileID: 1311066357}
+  - component: {fileID: 1311066358}
   m_Layer: 0
   m_Name: Sage <-->
   m_TagString: Untagged
@@ -1665,9 +1666,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0620e5145b9c6e246b8ce7d8aadcc075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuestIndicatorController
-  _quests: []
-  _availableIndicator: {fileID: 0}
-  _readyToTurnInIndicator: {fileID: 0}
+  _quests:
+  - Talk to Sage
+  _availableIndicator: {fileID: 1592481054}
+  _readyToTurnInIndicator: {fileID: 1199175632}
+--- !u!114 &1311066358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311066354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d64df9ae68abb4cbf300902db1f560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestStateActiveSwitch
+  _targetObject: {fileID: 1311066354}
+  _evaluateOnStart: 1
+  _evaluateOnQuestChanges: 1
+  _condition:
+    luaConditions: []
+    questConditions:
+    - questName: 
+      questState: 0
+      checkQuestEntry: 0
+      entryNumber: 0
+      questEntryState: 0
+    acceptedTags: []
+    acceptedGameObjects: []
+    luaWizardIndex: -1
+    lastEvaluationValue: 0
 --- !u!1001 &1383614956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2040,7 +2069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1592481055
 Transform:
   m_ObjectHideFlags: 0

@@ -85,6 +85,15 @@ public class PixelCrushersSmithInteractable : MonoBehaviour, IInteractable
         }
     }
 
+    /// <summary>
+    /// Opens the Smith shop/service screen.
+    /// Can be called from external scripts or Dialogue System sequences via SendMessage.
+    /// </summary>
+    public void OpenShop()
+    {
+        OpenSmithScreen();
+    }
+
     private void OpenSmithScreen()
     {
         if (_uiEvents == null)

@@ -26,3 +26,29 @@ MonoBehaviour:
     QuestCompleteState: 64
     ActivateNextEntry: 1
     NextEntryNumber: 2
+  - FactType: 2
+    ExactId: 
+    TypeOrTag: Herb
+    ContextId: 
+    QuestName: Collect Cookie Flowers
+    RequireQuestActive: 1
+    ProgressVariableName: CookieFlowersCollected
+    RequiredAmount: 5
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 64
+    ActivateNextEntry: 1
+    NextEntryNumber: 2
+  - FactType: 2
+    ExactId: 
+    TypeOrTag: 
+    ContextId: 
+    QuestName: Cookies Made
+    RequireQuestActive: 1
+    ProgressVariableName: CraftedCookies
+    RequiredAmount: 2
+    EntryNumber: 1
+    EntryCompleteState: 4
+    QuestCompleteState: 68
+    ActivateNextEntry: 0
+    NextEntryNumber: 2

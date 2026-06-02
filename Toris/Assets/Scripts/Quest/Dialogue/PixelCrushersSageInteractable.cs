@@ -68,6 +68,15 @@ public class PixelCrushersSageInteractable : MonoBehaviour, IInteractable
         }
     }
 
+    /// <summary>
+    /// Opens the Sage shop/service screen.
+    /// Can be called from external scripts or Dialogue System sequences via SendMessage.
+    /// </summary>
+    public void OpenShop()
+    {
+        OpenSageUpgradeScreen();
+    }
+
     private void OpenSageUpgradeScreen()
     {
         if (_uiEvents == null)

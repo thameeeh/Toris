@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544fbd8aa0e720144ab7e663f48ff21b, type: 3}
+  m_Name: Cookie
+  m_EditorClassIdentifier: Assembly-CSharp::OutlandHaven.Inventory.InventoryItemSO
+  ItemName: Cookie
+  Description: Eat to restore your energy
+  Icon: {fileID: 21300000, guid: 8e94f2317ca2b466d84f782f2b4f2fd8, type: 3}
+  MaxStackSize: 8
+  GoldValue: 10
+  Components:
+  - rid: 1212364438754557952
+  references:
+    version: 2
+    RefIds:
+    - rid: 1212364438754557952
+      type: {class: ConsumableComponent, ns: OutlandHaven.Inventory, asm: Assembly-CSharp}
+      data:
+        EffectMode: 0
+        EffectPayload: 0
+        amount: 50
+        TimedEffectDefinition: {fileID: 0}
+        TimedEffectDefinitionResourcePath: 
+        TimedEffectDuration: 5
+        CooldownDuration: 1.5

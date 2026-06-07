@@ -57,12 +57,14 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
     private BiomeLoadingTransitionService biomeLoadingTransitionService;
     private WorldNavigationLifecycle worldNavigationLifecycle;
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
+    private int runSeed;
 
     #endregion
 
     #region Public API
     public WorldContext Context => ctx;
     public Transform FollowTarget => followTarget;
+    public int RunSeed => runSeed;
     #endregion
 
     #region Unity Lifecycle
@@ -112,7 +114,8 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             Debug.LogWarning($"{nameof(WorldGenRunner)} has no SceneTransitionService assigned. Run gate site transitions will be unavailable.", this);
         }
 
-        ctx = new WorldContext(profile);
+        runSeed = profile.ResolveRunSeed();
+        ctx = new WorldContext(profile, runSeed);
         chunkStateStore = new ChunkStateStore();
         ChunkGenerator generator = new ChunkGenerator(ctx);
         TilemapApplier applier = new TilemapApplier(
@@ -143,6 +146,7 @@ public sealed class WorldGenRunner : MonoBehaviour, IWorldDiagnosticsSource
             ctx,
             chunkStateStore,
             chunkStreamingSystem,
+            runSeed,
             gateCooldownSeconds);
 
         IGateTransitionService gateTransitionService = worldTransitionSystem;

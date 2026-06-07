@@ -8,6 +8,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
     private readonly WorldContext worldContext;
     private readonly ChunkStateStore chunkStateStore;
     private readonly ChunkStreamingSystem chunkStreamingSystem;
+    private readonly int runSeed;
     private readonly float gateCooldownSeconds;
 
     private WorldFeatureLifecycleSystem worldFeatureLifecycleSystem;
@@ -35,6 +36,27 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         ChunkStateStore chunkStateStore,
         ChunkStreamingSystem chunkStreamingSystem,
         float gateCooldownSeconds)
+        : this(
+            worldProfile,
+            biomeDatabase,
+            worldNavigationLifecycle,
+            worldContext,
+            chunkStateStore,
+            chunkStreamingSystem,
+            worldProfile != null ? worldProfile.seed : 0,
+            gateCooldownSeconds)
+    {
+    }
+
+    public WorldTransitionSystem(
+        WorldProfile worldProfile,
+        BiomeDatabase biomeDatabase,
+        WorldNavigationLifecycle worldNavigationLifecycle,
+        WorldContext worldContext,
+        ChunkStateStore chunkStateStore,
+        ChunkStreamingSystem chunkStreamingSystem,
+        int runSeed,
+        float gateCooldownSeconds)
     {
         this.worldProfile = worldProfile;
         this.biomeDatabase = biomeDatabase;
@@ -42,6 +64,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
         this.worldContext = worldContext;
         this.chunkStateStore = chunkStateStore;
         this.chunkStreamingSystem = chunkStreamingSystem;
+        this.runSeed = runSeed;
         this.gateCooldownSeconds = gateCooldownSeconds;
     }
 
@@ -109,7 +132,7 @@ public sealed class WorldTransitionSystem : IGateTransitionService
 
         biomeIndex = nextBiomeIndex;
 
-        int biomeSeed = ComputeBiomeSeed(worldProfile.seed, biomeIndex);
+        int biomeSeed = ComputeBiomeSeed(runSeed, biomeIndex);
 
         BiomeInstance biomeInstance = new BiomeInstance(
             biomeIndex,

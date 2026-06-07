@@ -59,6 +59,7 @@ File: `Assets/Scripts/MapGeneration/Runtime/World/WorldGenRunner.cs`
 What it should do:
 
 - own serialized references and startup settings
+- resolve the run seed once from `WorldProfile` before composing dependent systems
 - build the runtime object graph in `Awake()`
 - delegate per-frame chunk streaming through `WorldStreamingRuntime`
 - expose diagnostics through `IWorldDiagnosticsSource`
@@ -76,12 +77,15 @@ File: `Assets/Scripts/MapGeneration/Runtime/World/WorldContext.cs`
 `WorldContext` is the active-biome runtime state. It owns:
 
 - `WorldProfile`
+- resolved run seed
 - active biome definition and profile
 - active biome instance
 - mask and noise context
 - authoritative generated output through `WorldBuildOutput`
 
 When a biome is rebound, `WorldContext.BindBiome(...)` clears the current build output and runs the active biome's build steps to generate a fresh set of neutral world data.
+
+`WorldProfile.autoGenerateSeed` controls whether a play session uses the serialized `seed` value or a fresh runtime seed. The resolved run seed should be passed through runtime systems instead of mutating the profile asset during play.
 
 ## Authoritative Build Output
 

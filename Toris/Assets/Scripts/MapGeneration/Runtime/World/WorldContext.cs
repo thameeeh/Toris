@@ -4,6 +4,8 @@ public sealed class WorldContext
 {
     public readonly WorldProfile World;
 
+    public int RunSeed { get; }
+
     public BiomeInstance ActiveBiome { get; private set; }
     public BiomeDefinition ActiveDef { get; private set; }
     public BiomeProfile Biome => ActiveDef != null ? ActiveDef.profile : null;
@@ -16,13 +18,19 @@ public sealed class WorldContext
     public AnimationCurve DangerCurve => World.dangerCurve;
 
     public WorldContext(WorldProfile world)
+        : this(world, world != null ? world.seed : 0)
+    {
+    }
+
+    public WorldContext(WorldProfile world, int runSeed)
     {
         World = world;
+        RunSeed = runSeed;
 
         Mask = new BiomeMask();
         BuildOutput = new WorldBuildOutput();
 
-        ActiveBiome = new BiomeInstance(0, World.seed, Vector2Int.zero, world.worldRadiusTiles);
+        ActiveBiome = new BiomeInstance(0, RunSeed, Vector2Int.zero, world.worldRadiusTiles);
         Noise = new NoiseContext(ActiveBiome.Seed);
     }
 
